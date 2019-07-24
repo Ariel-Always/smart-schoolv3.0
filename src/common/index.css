@@ -1,0 +1,18 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.page{
+    height: 50px;
+    text-align: center;
+}
+.page img{
+    display: block;
+}
+.table{
+    height: 200px;
+    text-align: center;
+}
+.table img{
+    display: block;
+}
