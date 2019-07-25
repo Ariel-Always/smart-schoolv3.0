@@ -23,7 +23,7 @@ class App extends Component{
                                    <div>会员信息总览</div>
                                </span>
                            </NavLink>
-                             <NavLink to="/grade/1" className="frame_leftmenu_mainitem main_menu_item no_child">
+                            {/* <NavLink to="/grade/1" className="frame_leftmenu_mainitem main_menu_item no_child">
                                   <span className="frame_leftmenu_mainitem_name main_menu_tab menu10">
                                    <div>一年级</div>
                                </span>
@@ -32,7 +32,7 @@ class App extends Component{
                                   <span className="frame_leftmenu_mainitem_name main_menu_tab menu10">
                                    <div>二年级1班</div>
                                </span>
-                             </NavLink>
+                             </NavLink>*/}
                          </div>
                      </div>
                  </div>

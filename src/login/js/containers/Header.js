@@ -34,12 +34,12 @@ class Header extends Component{
                                     <div className="frame_home_header_menu">
                                         <input id="frame_ci_btn_logout" className="frame_home_logout" title="退出"
                                                type="button" value="" />
-                                                <a href="javascript:;" className="frame_home_user_name">
+                                                <div  className="frame_home_user_name">
                                                     <span id="ctl08_frame_ci_txt_userName" title="蓝鸽监事员"
                                                           className="frame_ci_txt_userName frame_ci_link"
                                                           data-login="true"
                                                           data-url="http://192.168.129.2:20102/UserMgr/PersonalMgr/Default.aspx?lg_tk=ca6271de-1012-432f-a763-e7dee533579c">蓝鸽监事员</span>
-                                                </a>
+                                                </div>
                                     </div>
                                 </div>
 

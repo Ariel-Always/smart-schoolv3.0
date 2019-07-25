@@ -1,5 +1,6 @@
 import 'core-js'
 import React from 'react';
+import ProTypes from 'prop-types';
 import './index.scss'
 
 /*
@@ -113,6 +114,141 @@ Button.defaultProps = {
     /*type:'normal',
     size:'normal'*/
 }
+/*
+ * 选择组件（单选、多选、全选） start
+ * */
+class Radio extends React.Component{    //单选
+    static contextTypes={
+        radioGroup:ProTypes.object
+    }
+    render() {
+        const {name, selectedValue, onChange} = this.context.radioGroup;
+        const {children,disabled} = this.props;
+        const optional = {};
+        if(selectedValue !== undefined) {
+            optional.checked = (this.props.value === selectedValue);
+        }
+        if(disabled !== undefined){
+            optional.disabled = (this.props.disabled === disabled)        ;
+        }
+        if(typeof onChange === 'function') {
+            optional.onChange = onChange.bind(null, this.props.value);
+        }
+        return (
+                <label className={`radio_wrapper ${disabled?'disabled':''}`} name={name} onClick={optional.disabled?function(){}:optional.onChange}>
+                    <span className={`radio_span ${optional.checked?'radio_checked':''}`}></span>
+                    <span>{children}</span>
+                </label>
+        );
+    }
+}
+class RadioGroup extends React.Component{   //单选组
+    static defaultProps = {
+        Component: "div"
+    }
+    static childContextTypes  ={
+        radioGroup:ProTypes.object
+    }
+    getChildContext() {
+        const {name, selectedValue, onChange} = this.props;
+        return {
+            radioGroup: {
+                name, selectedValue, onChange
+            }
+        }
+    }
+    render() {
+        const {Component, name, selectedValue, onChange, children, ...rest} = this.props;
+        return (
+            <Component {...rest}>{children}</Component>
+        )
+    }
+}
+class CheckBox extends React.Component{
+    static contextTypes={
+      CheckBoxGroup:ProTypes.object
+    };
+    changeChecked(obj){
+      let {value,checkedList,changeItem,plainOptions,optLength,isGroup,checkAll}=obj;
+      if(isGroup){
+          if(checkAll){
+              checkedList=[];
+              checkAll = false;
+          }else{
+            checkedList=plainOptions
+              checkAll=true;
+          }
+          return changeItem.bind(null,{checkAll,checkedList})();
+      }else {
+          if (checkedList.includes(value)) {
+              checkedList = checkedList.filter((item) => {
+                  return item !== value
+              });
+          } else {
+              checkedList.push(value);
+          }
+          return changeItem.bind(null,{checkedList:checkedList,
+              checkAll:checkedList.length===optLength?true:false})();
+      }
+
+    }
+    render() {
+        const {children,options,disabled} = this.props;
+        if (options&&options.isGroup){
+            const {isGroup,checkAll,checkedList,plainOptions,changeItem} = this.props.options;
+            return (
+                <label className={`checkbox_wrapper ${disabled?'disabled':''}`} onClick={disabled?()=>{}:this.changeChecked.bind(this,{isGroup,checkedList,checkAll,plainOptions,changeItem})}>
+                    <span className={`checkbox_span ${checkAll===true?'checked':''}`}></span>
+                    <span>{children}</span>
+                </label>
+            );
+        }else{
+            const {name,changeItem,checkedList,optLength} = this.context.CheckBoxGroup.options;
+            const {value} = this.props;
+            return (
+                <label className={`checkbox_wrapper ${disabled?'disabled':''}`} name={name} onClick={disabled?()=>{}:this.changeChecked.bind(this,
+                    {checkedList,value,changeItem,optLength}
+                    )}>
+                    <span className={`checkbox_span ${checkedList.includes(value)?'checked':''}`}></span>
+                    <span>{children}</span>
+                </label>
+            );
+        }
+
+    }
+}
+class CheckBoxGroup extends React.Component{ //多选组件
+    static defaultProps={
+        Component:'div'
+    };
+    static childContextTypes={
+        CheckBoxGroup:ProTypes.object
+    };
+    getChildContext(){
+        const {options} = this.props;
+       return {
+           CheckBoxGroup:{
+              options:options
+           }
+       }
+    }
+    render() {
+        const {Component,children,options,...reset}= this.props;
+        return (
+         <Component {...reset}>{children}</Component>
+        );
+    }
+}
+/*
+ * 选择组件（单选、多选、全选） end
+ * */
+
+
+
 export {
-   Button
+   Button,
+   Radio,
+   RadioGroup,
+    CheckBox,
+    CheckBoxGroup
 }

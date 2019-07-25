@@ -67,3 +67,98 @@
   width: 50px;
   height: 30px;
 }
+/*
+组件：单选框 start
+*/
+.radio_wrapper{
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 8px;
+  font-size: 14px;
+  color: #333333;
+  cursor: pointer;
+  white-space: nowrap;
+  .radio_span{
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    width:13px;
+    height:13px;
+    margin-right:4px;
+    margin-top:-3px;
+    border:1px solid #999999;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-position: center;
+    &.radio_checked{
+      border-color:#0099ff;
+      &::after{
+        position: absolute;
+        content:'';
+        width:9px;
+        height:9px;
+        left:2px;
+        top:2px;
+        background-color:#0099ff;
+        border-radius: 50%;
+      }
+    }
+  }
+  &.disabled{
+    cursor: not-allowed;
+    color:#bbbbbb;
+    .radio_span{
+      border-color:#bbbbbb;
+      background-color:#cdcdcd;
+      &::after{
+        background-color:#bbbbbb;
+      }
+    }
+  }
+}
+/*
+组件：单选框 end
+*/
+/*
+组件：复选框 start
+*/
+.checkbox_wrapper{
+  cursor: pointer;
+  margin-left:4px;
+  &>span{
+    vertical-align: middle;
+  }
+  .checkbox_span{
+    position: relative;
+    display: inline-block;
+    width:13px;
+    height:13px;
+    border:1px solid #cccccc;
+    margin-right:4px;
+    &.checked{
+      border-color: #0099ff;
+      background-color:#0099ff;
+      &::after{
+        position: absolute;
+        content:'';
+        text-align: center;
+        border: 2px solid #fff;
+        top:0%;
+        left:32%;
+        width:4px;
+        height:9px;
+        border-top: 0;
+        border-left: 0;
+        transform: rotate(38deg);
+      }
+    }
+  }
+  &.disabled{
+    color: #bbbbbb;
+    cursor: not-allowed;
+    .checkbox_span{
+      border-color:#bbbbbb;
+      background-color:#cdcdcd;
+    }
+  }
+}
