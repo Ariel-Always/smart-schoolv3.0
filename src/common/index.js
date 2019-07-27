@@ -161,8 +161,9 @@ Button.defaultProps = {
  * */
     class Table extends React.Component{
         render() {
+            const {children,...reset} = this.props;
             return (
-                <AntTable></AntTable>
+                <AntTable {...reset}>{children}</AntTable>
             );
         }
     }
@@ -174,5 +175,6 @@ export {
     Radio,
     RadioGroup,
     CheckBox,
-    CheckBoxGroup
+    CheckBoxGroup,
+    Table
 }
