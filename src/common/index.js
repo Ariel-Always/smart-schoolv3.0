@@ -1,8 +1,7 @@
 import 'core-js'
 import React from 'react';
-import ProTypes from 'prop-types';
-import {Radio as AntRadio,Checkbox as AntCheckBox,Table as AntTable
-} from 'antd';
+import {Radio as AntRadio,Checkbox as AntCheckBox,Table as AntTable,
+Pagination as AntPagination} from 'antd';
 import 'antd/dist/antd.min.css';
 import './index.scss'
 
@@ -170,11 +169,26 @@ Button.defaultProps = {
 /*
  * table组件 end
  * */
+/*
+ * 分页组件 start
+ * */
+    class PagiNation extends React.Component{
+        render() {
+            const {children,hideOnSinglePage,...reset} = this.props;
+            return (
+                <AntPagination {...reset} hideOnSinglePage={hideOnSinglePage?hideOnSinglePage:true}>{children}</AntPagination>
+            );
+        }
+    }
+/*
+ * 分页组件 end
+ * */
 export {
    Button,
     Radio,
     RadioGroup,
     CheckBox,
     CheckBoxGroup,
-    Table
+    Table,
+    PagiNation
 }

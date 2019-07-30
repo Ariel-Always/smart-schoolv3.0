@@ -134,31 +134,6 @@ module.exports = function(webpackEnv) {
       })
   });
 
-/*  const commonImagesLoader =  paths.commonImgArray.map(function (v) { //打包和上传common里面的images
-      return {
-          test:[/\.bmp$/,/\.gif$/,/\.jpe?g$/,/\.png$/],
-              loader:'url-loader',
-          include:path.resolve(__dirname,`../src/common/${v}`),
-          options:{
-          limit:10000,
-              name:`App_Themes/Skin/common/images/${v}/[name].[hash].[ext]`,
-              publicPath:'/'
-          }
-      };
-  });
-  const imagesLoader = paths.imgArray.map(function (v) {
-      return {
-          test:[/\.bmp$/,/\.gif$/,/\.jpe?g$/,/\.png$/],
-          loader:require.resolve('url-loader'),
-          include:path.resolve(__dirname,`../src/${v}`),
-          options:{
-              limit:10000,
-              name:`App_Themes/Skin/${v}/images/[name].[hash].[ext]`,
-              publicPath:'/'
-          }
-      };
-  });*/
-
   return {
     mode: isEnvProduction ? 'production' : isEnvDevelopment && 'development',
     // Stop compilation early in production
@@ -307,14 +282,16 @@ module.exports = function(webpackEnv) {
                 test:/[\\/]node_modules[\\/]/,
                 chunks:"initial",
                 name:"vendor",
-                priority:2
+                priority:2,
+                minChunks:2
             },
             base:{      //分离common公共组件中的js文件，命名为base.js
                 test:path.resolve(__dirname,'../src/common'),
                 chunks: "all",
                 name:"base",
                 minSize:0,
-                priority:1
+                priority:1,
+                minChunks:2
             }
           }
       },
