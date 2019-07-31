@@ -1,12 +1,12 @@
-* {
-  margin: 0;
-  padding: 0;
-}
 /*公共变量 start*/
-  $tableBgColor:#ebebeb;//table的鼠标浮动的背景色
-  $pagiThemeColor:#379ef5;//分页的主题色
-  $pageDisabled:#d9d9d9;//分页禁止点击颜色
-  $themeColor:#333333;//整个界面的文字主题色
+$themeColor:#333333;//整个界面的文字主题色
+$tableBgColor:#ebebeb;//table的鼠标浮动的背景色
+$pagiThemeColor:#379ef5;//分页的主题色
+$pageDisabled:#d9d9d9;//分页禁止点击颜色
+$dropBorder:#bac7d9;//下拉组件正常主题色
+$dropHoverBorder:#5897ed;//下拉组件鼠标悬停后的边框色
+$dropHoverBg:#e8edf5;//下拉组件鼠标悬停后的背景色
+$dropDisabled:#bfbfbf;//下拉组件禁用主题色
 /*公共变量 end*/
 /*公共minix start*/
 @mixin textOverFlow(){
@@ -15,7 +15,11 @@
   white-space: nowrap;
 }
 /*公共mixin end*/
-
+*{
+  margin: 0;
+  padding: 0;
+  color:#333333;
+}
 
 /*
 组件：按钮组
@@ -290,9 +294,10 @@
         }
       }//在搜索框中的下拉区域
       .search_select_ul{
-        position: absolute;
-        display: none;
+        position:absolute;
+        display:none;
         width: 83px;
+        max-height:112px;
         left: 0;
         top:28px;
         overflow-y: auto;
@@ -389,3 +394,104 @@
   //placeholder
 }
 /*组件：搜索 end*/
+/*组件：下拉 start*/
+.dropdown_container{
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  .dropdown_title_span{
+    float: left;
+    line-height: 28px;
+  }//dropdown的title
+  .dropdown_wrapper{
+    position: relative;
+    display: inline-block;
+    float: left;
+    vertical-align: middle;
+    margin-left:8px;
+    .dropdown_default_span{
+      position: relative;
+      display: inline-block;
+      vertical-align: middle;
+      text-decoration: none;
+      background-color: #ffffff;
+      overflow: hidden;
+      cursor: pointer;
+      line-height: 26px;
+      height:28px;
+      border: solid 1px $dropBorder;
+      border-radius: 3px;
+      .dropdown_icon_span{
+        position: absolute;
+        width: 0;
+        height: 0;
+        right:10px;
+        top:11px;
+        border-width:6px;
+        border-color:$dropBorder transparent transparent transparent;
+        border-style: solid;
+        &.slide{
+          top:5px;
+          border-color:transparent transparent $dropBorder transparent;
+        }
+      }//icon
+      .dropdown_text_span{
+        display: block;
+        padding:0px 22px 0px 11px;
+        @include textOverFlow;
+      }//已选中
+      &:hover{
+        border-color: $dropHoverBorder;
+        .dropdown_icon_span{
+          border-color: $dropHoverBorder transparent transparent transparent;
+          &.slide{
+            border-color:transparent transparent $dropHoverBorder transparent;
+          }
+        }
+      }//鼠标上浮状态
+      &.disabled{
+        cursor: not-allowed;
+        border-color:$dropDisabled;
+        background-color:#efefef;
+        .dropdown_icon_span{
+          border-color:$dropDisabled transparent transparent transparent;
+        }
+        .dropdown_text_span{
+          color:#999999;
+        }
+        &:hover{
+          border-color:$dropDisabled;
+          .dropdown_icon_span{
+            border-color:$dropDisabled transparent transparent transparent;
+          }
+        }
+      }//禁用状态
+    }//已选项
+    .dropdown_select_ul{
+      position: absolute;
+      display:none;
+      max-height:112px;
+      left: 0;
+      top: 32px;
+      overflow-y: auto;
+      border: 1px solid $dropBorder;
+      background-color: #ffffff;
+      border-radius: 3px;
+      .dropdown_select_li{
+        position: relative;
+        height:24px;
+        text-indent:11px;
+        font-size: 14px;
+        list-style:none;
+        cursor: pointer;
+        line-height: 24px;
+        text-align: left;
+        @include textOverFlow;
+        &:hover{
+          background-color: $dropHoverBg;
+        }
+      }
+    }//待选列表
+  }//下拉部分
+}
+/*组件：下拉 end*/
