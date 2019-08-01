@@ -4,6 +4,7 @@ import 'antd/dist/antd.min.css';
 import './index.scss'
 import {Radio as AntRadio,Checkbox as AntCheckBox,Table as AntTable,
 Pagination as AntPagination} from 'antd';
+import {Scrollbars} from 'react-custom-scrollbars';
 const $ = require('jquery');
 
 /*
@@ -239,13 +240,15 @@ Button.defaultProps = {
         handleEnterKey(e){
             const {select,selectOptions,onClickSearch}= this.props;
             if (e.nativeEvent.keyCode===13){
-                return onClickSearch( {selectdValue:
-                        select?(
-                                this.state.selectdValue?this.state.selectdValue.value
-                                    :selectOptions.selectdValue.value)
-                            :null,
-                    value:this.refs.search_text_input.value
-                })
+                if (onClickSearch){
+                    return onClickSearch( {selectdValue:
+                            select?(
+                                    this.state.selectdValue?this.state.selectdValue.value
+                                        :selectOptions.selectdValue.value)
+                                :null,
+                        value:this.refs.search_text_input.value
+                    })
+                }
             }
         }//键盘enter事件
         render() {
@@ -290,7 +293,7 @@ Button.defaultProps = {
                             <td className="search_left_td">
                                 <input id="search_text_input" ref='search_text_input'
                                        className="search_text_input"
-                                       type="text" placeholder={placeHolder}
+                                       type="text" placeholder={placeHolder?placeHolder:'输入关键词快速搜索'}
                                        onFocus={this.onInputFocus.bind(this)}
                                        onBlur={this.onInputBlur.bind(this)}
                                        onKeyPress={this.handleEnterKey.bind(this)}
@@ -300,17 +303,19 @@ Button.defaultProps = {
                             <td className="search_right_td">
                                 <input  className="search_btn_input" type="button"
                                        onClick={
-                                           ()=>onClickSearch( //点击搜索之后传值给调用的界面
-                                               {selectdValue:
-                                               select?(
-                                               this.state.selectdValue?this.state.selectdValue.value
-                                               :selectOptions.selectdValue.value)
-                                               :null,
-                                               value:this.refs.search_text_input.value
+                                           () => {
+                                               if (onClickSearch) {
+                                                   onClickSearch({
+                                                       selectdValue:
+                                                           select ? (
+                                                                   this.state.selectdValue ? this.state.selectdValue.value
+                                                                       : selectOptions.selectdValue.value)
+                                                               : null,
+                                                       value: this.refs.search_text_input.value
+                                                   });
                                                }
-                                               )
-                                       }
-                                />
+                                           }
+                                       }/>
                             </td>
                         </tr>
                         </tbody>
@@ -330,7 +335,9 @@ class DropDown extends React.Component{
         super(props);
         this.state={
             dropSelectd:'',
-            dropListShow:false
+            dropListShow:false,
+            range2ListShow:'',
+            range2ListActive:''
         }
     }
     onToggleDropList(){
@@ -338,14 +345,46 @@ class DropDown extends React.Component{
             $(this.refs.dropdown_select_ul).slideToggle('fast');
         });
     }//展示或者隐藏下拉列表
-    onDropChange(e){
-       const {onChange,value,title}= e;
-       this.setState({dropListShow:false},()=>{
-           $(this.refs.dropdown_select_ul).hide();
-           onChange({value,title});
-       });
-       this.setState({dropSelectd:{value,title}});
-    }//改变下拉选项的时候调用
+    onSimpleDropChange(e) {
+        const {onChange, value, title} = e;
+        this.setState({dropListShow: false, dropSelectd: {value, title}}, () => {
+            $(this.refs.dropdown_select_ul).hide();
+            if (onChange) {
+                onChange({value, title});
+            }
+        });
+    }
+    //改变下拉选项的时候调用
+    onMultipleRang2DropChange(e){
+        const {id,name,preName,showId,onChange,k1,k2} = e;
+        this.setState({ //点击选项之后
+            dropListShow:false,
+            dropSelectd:{
+                value:`${preName}${name}${showId?`[${id}]`:''}`,
+                title:`${preName}${name}${showId?`[${id}]`:''}`
+            },
+            range2ListActive:`${k1}${k2}`
+        },()=>{
+            $(this.refs.dropdown_select_ul).hide();//隐藏下拉框
+            if(onChange){
+                onChange({value:`${preName}-${name}`,id:id});//调用外部传入的行数
+            }
+        });
+    }//二级下拉改变下拉的时候调用
+    onRange2ListShow(k1){
+        if (this.state.range2ListShow===k1){
+            this.setState({range2ListShow:''},()=>{
+                $(this.refs[`dropdown_list_ul3_${k1}`]).slideToggle();
+            });
+        }else{
+            $(this.refs[`dropdown_list_ul3_${this.state.range2ListShow}`]).slideToggle();
+
+            this.setState({range2ListShow:k1},()=>{
+                $(this.refs[`dropdown_list_ul3_${k1}`]).slideToggle();
+            })
+        }
+
+    }//在二级的时候展开下拉
     componentDidMount(){
         document.addEventListener('click',(e)=>this.outDropClick({
             that:this,
@@ -356,14 +395,96 @@ class DropDown extends React.Component{
     }
     outDropClick(e) {
         const {that, target, ulDom, spanDom} = e;
-        if (!spanDom.contains(target)) {
+        if ((!spanDom.contains(target))&&(!ulDom.contains(target))){
             that.setState({dropListShow:false},()=>{
                 $(ulDom).hide();
             })
         }
     }//当点击事件发生在下拉组件之外的时候
     render() {
-        const {title,width,disabled,dropSelectd,dropList,onChange,...reset} = this.props;
+        const {title,width,height,disabled,dropSelectd,dropList,onChange,type,
+            mutipleOptions,...reset} = this.props;
+        let dropContainer='';
+        let selectUlWidth=(mutipleOptions&&mutipleOptions.width?mutipleOptions.width:540);
+        let selectUlHeight=(mutipleOptions&&mutipleOptions.height?mutipleOptions.height:280);
+        let searchWidth = (mutipleOptions&&mutipleOptions.searchWidth? mutipleOptions.searchWidth:320);
+        let scrollWrapperWidth=(mutipleOptions&&mutipleOptions.width?(mutipleOptions.width-20):520);
+        let scrollWrapperHeight=(mutipleOptions&&mutipleOptions.height?(mutipleOptions.height-72):228);
+        let showId =(mutipleOptions&&mutipleOptions.dropIdShow)?mutipleOptions.dropIdShow:false;
+        //所需的参数
+        let dropMultipleList='';
+        //判断等级渲染相对应的元素
+        if(mutipleOptions&&mutipleOptions.range===2){ //如果range的等级为2
+            dropMultipleList=mutipleOptions.dropMultipleList.map((item1,k1)=>{//遍历第一个数组
+                return <li key={k1} className="dropdown_list_item1">
+                        <div className={`dropdown_item1_name ${this.state.range2ListShow===k1?'slide':''}`} //判断是否是活动状态
+                         title={item1.name} onClick={this.onRange2ListShow.bind(this,k1)}>{item1.name}</div>
+                        <ul ref={`dropdown_list_ul3_${k1}`} className={`dropdown_list_ul3 clearfix`}>
+                            {//遍历第二个数组
+                                item1.list.map((item2,k2)=>{
+                                    return <li key={k2} className={`dropdown_item3_li ${this.state.range2ListActive===`${k1}${k2}`?'active':''}`} //判断是否是active
+                                               title={`${item2.name}${showId?`[${item2.id}]`:''}`}
+                                    onClick={this.onMultipleRang2DropChange.bind(this,{
+                                            name:item2.name,
+                                            id:item2.id,
+                                            preName:item1.name,
+                                            showId,
+                                            k1,k2,
+                                            onChange:mutipleOptions.dropMultipleChange
+                                        })}//绑定点击事件
+                                    >
+                                        <span className="dropdown_item3_name">{item2.name}</span>
+                                        {
+                                            showId?<span className="dropdown_item3_id">{`[${item2.id}]`}</span>:''
+                                        }
+                                    </li>
+                                })
+                            }
+                        </ul>
+                </li>
+            });
+        }else if (mutipleOptions&&mutipleOptions.range===3){
+            //等待后期扩展使用
+        }
+
+        if(type&&type==='multiple'){
+            dropContainer=
+                <div ref="dropdown_select_ul" className="dropdown_select_ul" style={{width:selectUlWidth,height:selectUlHeight}}>
+                    <div className="dropdown_multiple_container">
+                        <div className="dropdown_search_wrapper">
+                            <Search placeHolder={mutipleOptions&&mutipleOptions.searchPlaceholder?mutipleOptions.searchPlaceholder:null} width={searchWidth}></Search>
+                        </div>
+                        <Scrollbars style={{width:scrollWrapperWidth,height:scrollWrapperHeight}}>
+                            <ul className="dropdown_list_ul">
+                                {dropMultipleList}
+                            </ul>
+                        </Scrollbars>
+                    </div>
+                </div>
+        }else{
+            dropContainer=<ul className="dropdown_select_ul"
+                              ref="dropdown_select_ul"
+                              style={{width:width?width:120,height:height?height:48}}>
+                {//dropList是否存在？dropList:''
+                    dropList?
+                        dropList.map((item,key)=>{
+                            return <li key={key} className="dropdown_select_li"
+                                       title={item.value}
+                                       data-vaule={item.title}
+                                       onClick={
+                                           this.onSimpleDropChange.bind(this,{
+                                               onChange:onChange,
+                                               value:item.value,
+                                               title:item.title
+                                           })
+                                       }
+                            >{item.title}</li>
+                        })
+                        :''
+                }
+
+            </ul>;
+        }
         return (
             <div className="dropdown_container" {...reset}>
              <span className="dropdown_title_span">{title}</span>
@@ -384,28 +505,9 @@ class DropDown extends React.Component{
                         )
                     }
                 </span>
-                <ul className="dropdown_select_ul"
-                    ref="dropdown_select_ul"
-                    style={{width:width?width:120}}>
-                    {//dropList是否存在？dropList:''
-                        dropList?
-                        dropList.map((item,key)=>{
-                            return <li key={key} className="dropdown_select_li"
-                            title={item.value}
-                            data-vaule={item.title}
-                             onClick={
-                                this.onDropChange.bind(this,{
-                                         onChange:onChange,
-                                         value:item.value,
-                                         title:item.title
-                                     })
-                             }
-                            >{item.title}</li>
-                        })
-                        :''
-                    }
-
-                </ul>
+                {
+                 dropContainer
+                }
             </span>
             </div>
         );

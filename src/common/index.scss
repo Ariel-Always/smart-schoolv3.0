@@ -15,12 +15,24 @@ $dropDisabled:#bfbfbf;//下拉组件禁用主题色
   white-space: nowrap;
 }
 /*公共mixin end*/
+
+/*公共css start*/
 *{
   margin: 0;
   padding: 0;
   color:#333333;
 }
-
+.clearfix::after{
+  content: "";
+  display: block;
+  height: 0;
+  clear:both;
+  visibility: hidden;
+}
+.clearfix{
+  *zoom: 1;/*ie6清除浮动的方式 *号只有IE6-IE7执行，其他浏览器不执行*/
+}
+/*公共css end*/
 /*
 组件：按钮组
 */
@@ -470,10 +482,9 @@ $dropDisabled:#bfbfbf;//下拉组件禁用主题色
     .dropdown_select_ul{
       position: absolute;
       display:none;
-      max-height:112px;
       left: 0;
       top: 32px;
-      overflow-y: auto;
+      overflow:hidden;
       border: 1px solid $dropBorder;
       background-color: #ffffff;
       border-radius: 3px;
@@ -490,8 +501,88 @@ $dropDisabled:#bfbfbf;//下拉组件禁用主题色
         &:hover{
           background-color: $dropHoverBg;
         }
-      }
+      }//简单的待选列表
+      .dropdown_multiple_container{
+        padding: 0 10px;
+        text-align: center;
+        .dropdown_search_wrapper{
+          padding:10px 0;
+          border-bottom:1px dashed #dddddd;
+        } //搜索
+        .dropdown_list_ul{  //列表
+          margin:10px auto;
+        }
+        .dropdown_list_item1{ //第一级列表
+          margin-bottom: 12px;
+          .dropdown_item1_name{ //第二级title
+            position:relative;
+            background: #E5F2FB;
+            padding-left: 24px;
+            line-height: 30px;
+            background-repeat: no-repeat;
+            background-position: 10px center;
+            cursor: pointer;
+            border-bottom: 1px dashed #9ABBD1;
+            text-align: left;
+            &::after{     //左侧三角
+              position: absolute;
+              width:0;
+              height:0;
+              left:11px;
+              top:11px;
+              content:'';
+              border-style:solid;
+              border-width:4px;
+              border-color:transparent transparent transparent #487ea3;
+            }
+            &.slide{
+              background-color:#F8E6D8;
+              &::after{     //左侧三角
+                position: absolute;
+                width:0;
+                height:0;
+                left:11px;
+                top:14px;
+                content:'';
+                border-style:solid;
+                border-width:4px;
+                border-color:#c78e5e transparent transparent transparent ;
+              }
+            }
+          }
+          .dropdown_list_ul3{ //第二级列表
+            position: relative;
+            background-color:#FFF8F2;
+            margin:0 auto;
+            display:none;
+          } //第三级列表
+          .dropdown_item3_li{ //第三级列表title
+            float: left;
+            width: 134px;
+            height:24px;
+            padding:0 6px;
+            line-height:24px;
+            cursor: pointer;
+            border: 1px solid #EBC2A0;
+            border-radius: 4px;
+            @include textOverFlow;
+            margin:10px 0px 10px 16px;
+            .dropdown_item3_id{
+              color:#999999;
+            }
+            &:hover,
+            &.active{
+              .dropdown_item3_name,
+              .dropdown_item3_id{
+                color:#ffffff;
+              }
+              background-color:#C26013;
+            }
+          }//第三级列表的元素
+        }
+      }//高级多选列表
     }//待选列表
+
   }//下拉部分
 }
 /*组件：下拉 end*/
