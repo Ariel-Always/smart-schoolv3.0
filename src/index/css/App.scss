@@ -1,0 +1,117 @@
+.App {
+  text-align: center;
+
+  .ButtonBox {
+
+    .Box-btn {
+      position: relative;
+      width: 100%;
+      min-height: 300px;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: center;
+      margin: 20px 0;
+
+    }
+
+
+  }
+  .Box {
+    position: relative;
+    width: 100%;
+    min-height: 300px;
+    border-bottom: 1px #000 solid;
+
+    .BoxTop {
+      width: 100%;
+      height: 50px;
+      background: #008aff;
+      .BoxTop_title {
+        line-height: 50px;
+        text-align: left;
+        padding: 0 20px;
+        color: #fff;
+        font-size: 18px;
+      }
+    }
+  }
+  .Box-content {
+    position: relative;
+    width: 100%;
+    min-height: 300px;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    margin: 20px 0;
+  }
+
+  .Box-flex {
+    width: 1200px;
+    min-height: 300px;
+    display: flex;
+    flex-flow: row nowrap;
+
+    .Box-tips {
+      width: 300px;
+      .tips {
+        color: #000;
+        font-size: 16px;
+        text-align: left;
+      }
+    }
+    .Box-content-show {
+      width: 900px;
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: flex-start;
+      align-items: flex-start;
+
+      button {
+        margin: 0 30px 20px;
+      }
+
+      .ant-input {
+        width: 250px;
+        margin:0 20px;
+      }
+    }
+
+    .Box-DatePicker-show{
+      .ant-input {
+        width: 250px;
+        margin:0 ;
+      }
+
+      .ant-calendar-picker{
+        margin: 0 20px;
+      }
+    }
+  }
+}
+
+.circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 15px;
+  padding: 0;
+}
+
+.ant-input-affix-wrapper .ant-input-prefix {
+  left: 30px;
+}
+.ant-input-affix-wrapper{
+  width: auto;
+}
+
+.ModalContent{
+  width: 100%;
+  height: 100% ;
+  background: #f5f5f5;
+  text-align: center;
+  font-size: 72px;
+  color: #b8b8b8;
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+}
