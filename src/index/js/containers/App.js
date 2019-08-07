@@ -494,7 +494,7 @@ class App extends React.Component {
                                 <p className="tips">最小尺度：正常状态-鼠标悬停状态-禁用状态</p>
                             </div>
                             <div className="Box-content-show">
-                                <Button type="primary" size="small" value="按钮dddddddd" />
+                                <Button type="primary" size="small" value="自适应按钮" />
                                 <Button type="primary" size="small" value="按钮" />
                                 <Button type="primary" size="small" color="green" value="按钮" />
                                 <Button type="primary" size="small" color="blue" value="按钮" />
@@ -502,6 +502,20 @@ class App extends React.Component {
                                 <Button type="primary" size="small" onClick={handleClick} color="mazarine"
                                     value="按钮" />
                                 <Button type="default" size="small" shape="round" disabled value="按钮" />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="Box-btn">
+                        <div className="Box-flex">
+                            <div className="Box-tips">
+                                <p className="tips">其他大小类型</p>
+                            </div>
+                            <div className="Box-content-show">
+                                <Button type="primary" size="" value="自适应按钮" />
+                                <Button type="primary" block size="small" value="父按钮" />
+                                <Button type="primary" style={{margin:'0 30px 20px'}} href='http://www.baidu.com' value="百度按钮-不开新页面" />
+                                <Button type="primary" style={{margin:'0 30px 20px'}}
+                                 href='http://www.baidu.com' value="百度按钮-开新页面" target="_blank"/>
                             </div>
                         </div>
                     </div>
@@ -523,6 +537,7 @@ class App extends React.Component {
                                     type="textarea"
                                     rows="3"
                                     cols="30"
+                                    size="large"
                                     name="textarea1"
                                     autocomplete="123"
                                 />
@@ -537,6 +552,7 @@ class App extends React.Component {
                                     type="textarea"
                                     name="textarea3"
                                     autocomplete="123"
+                                    value="禁止输入"
                                     disabled
                                 />
 

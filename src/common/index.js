@@ -1,4 +1,4 @@
-import 'core-js'
+
 import React from 'react';
 import 'antd/dist/antd.min.css';
 import './index.scss'
@@ -43,7 +43,7 @@ class Button extends React.Component {
             onClick: props.onClick,
             onChange: props.onChange,
             style: props.style,
-            className: props.className
+            className: props.className?props.className:''
 
         }
     }
@@ -143,6 +143,9 @@ class Button extends React.Component {
                     disabled={this.state.disabled}
                     onClick={this.state.onClick}
                     style={this.state.style}
+                    block={this.props.block}
+                    href = {this.props.href}
+                    target = {this.props.target}
                 >{this.props.children ? this.props.children : this.state.value}</AntdButton>
             </ConfigProvider>
         )
@@ -190,8 +193,10 @@ class Input extends React.Component {
             Input = (
                 <AntdInput.TextArea
                     rows={this.state.rows}
+                    value={this.state.value}
                     cols={this.state.cols}
                     placeholder={this.state.placeholder}
+                    size={this.state.size}
                     style={{ resize: 'none' }}
                     className={this.state.className}
                     disabled={this.state.disabled}
@@ -213,6 +218,8 @@ class Input extends React.Component {
             Input = (
                 <AntdInput
                     type="password"
+                    size={this.state.size}
+                    value={this.state.value}
                     placeholder={this.state.placeholder}
                     className={this.state.className}
                     disabled={this.state.disabled}
@@ -234,6 +241,8 @@ class Input extends React.Component {
             Input = (
                 <AntdInput
                     type={this.state.type}
+                    size={this.state.size}
+                    value={this.state.value}
                     placeholder={this.state.placeholder}
                     className={this.state.className}
                     disabled={this.state.disabled}
@@ -1027,8 +1036,8 @@ class Menu extends React.Component {
                         <div className="frame_leftmenu_twograde_container" key={object.key}>
                             <div className="frame_leftmenu_twograde_grounp">
                                 <span className="frame_leftmenu_twograde_arrow"></span>
-                                <span 
-                                className="frame_leftmenu_twograde_text"
+                                <span
+                                    className="frame_leftmenu_twograde_text"
                                     onClick={object.onTitleClick}
                                 >{object.title}</span>
                                 <span className="frame_left_menu_right_arrow"></span>
@@ -1045,7 +1054,7 @@ class Menu extends React.Component {
                             key={object.key}
                         >
                             <span
-                             className={`frame_leftmenu_mainitem_name ${object.icon} ${object.active ? 'active' : ''}`}
+                                className={`frame_leftmenu_mainitem_name ${object.icon} ${object.active ? 'active' : ''}`}
                                 onClick={object.onTitleClick}
                             >
                                 {object.title}
@@ -1075,7 +1084,7 @@ class Menu extends React.Component {
                         >
                             <span className="frame_leftmenu_point">
                             </span>
-                            <span 
+                            <span
                                 className="frame_leftmenu_onegrade_name frame_ellipsis"
                                 onClick={object.onTitleClick}
                             >
@@ -1133,7 +1142,7 @@ class Menu extends React.Component {
 /*
  * loading start
  * */
-class Loading extends React.Component{
+class Loading extends React.Component {
     constructor(props) {
         super(props);
 
