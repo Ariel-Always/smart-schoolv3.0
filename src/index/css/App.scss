@@ -48,11 +48,18 @@
   .Box-flex {
     width: 1200px;
     min-height: 300px;
-    display: flex;
-    flex-flow: row nowrap;
-
+    margin: 0 auto;
+    &::after{
+      content:"";/*设置内容为空*/
+      height:0;/*高度为0*/
+      line-height:0;/*行高为0*/
+      display:block;/*将文本转为块级元素*/
+      visibility:hidden;/*将元素隐藏*/
+      clear:both;/*清除浮动*/
+    }
     .Box-tips {
       width: 300px;
+      float: left;
       .tips {
         color: #000;
         font-size: 16px;
@@ -61,11 +68,17 @@
     }
     .Box-content-show {
       width: 900px;
-      display: flex;
-      flex-flow: row wrap;
-      justify-content: flex-start;
-      align-items: flex-start;
-
+      float: left;
+      display:-webkit-box;
+      display:-webkit-flex;
+      display:-moz-box;
+      display:-ms-flexbox;
+      display:flex;
+      -webkit-flex-wrap: wrap;
+      -moz-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+      -o-flex-wrap: wrap;
+      flex-wrap:wrap;
       button {
         margin: 0 30px 20px;
       }
@@ -83,7 +96,7 @@
       }
 
       .ant-calendar-picker{
-        margin: 0 20px;
+        margin:10px 20px;
       }
     }
   }
@@ -115,3 +128,4 @@
   justify-content: center;
   align-items: center;
 }
+

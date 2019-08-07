@@ -153,13 +153,12 @@ class App extends React.Component {
                         }
                     },
                     {
-                        title: "姓名",
-                        dataIndex: "name",
-                        width: 150,
-                        align: "center",
-                        render: (item) => {
-                            // eslint-disable-next-line
-                            return <a href="#">{item}</a>
+                        title:"姓名",
+                        dataIndex:"name",
+                        width:150,
+                        align:"center",
+                        render:(item)=>{
+                            return <a href="http://www.baidu.com">{item}</a>
                         }
                     },
                     {

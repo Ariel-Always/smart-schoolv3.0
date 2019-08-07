@@ -4,27 +4,27 @@
   "private": true,
   "dependencies": {
     "@babel/core": "7.4.3",
-    "@babel/plugin-transform-runtime": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
-    "@babel/runtime-corejs2": "^7.5.5",
     "@svgr/webpack": "4.1.0",
     "@typescript-eslint/eslint-plugin": "1.6.0",
     "@typescript-eslint/parser": "1.6.0",
-    "antd": "^3.20.7",
+    "antd": "^3.21.1",
     "babel-eslint": "10.0.1",
     "babel-jest": "^24.8.0",
     "babel-loader": "8.0.5",
     "babel-plugin-import": "^1.12.0",
     "babel-plugin-named-asset-import": "^0.3.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-react-app": "^9.0.0",
     "camelcase": "^5.2.0",
     "case-sensitive-paths-webpack-plugin": "2.2.0",
     "compass-mixins": "^0.12.10",
-    "core-js": "^2.6.9",
+    "core-js": "^3.1.4",
     "css-loader": "2.1.1",
     "dotenv": "6.2.0",
     "dotenv-expand": "4.2.0",
+    "es6-shim": "^0.35.5",
     "eslint": "^5.16.0",
     "eslint-config-react-app": "^4.0.1",
     "eslint-loader": "2.1.2",
@@ -89,14 +89,14 @@
       ">0.2%",
       "not dead",
       "not op_mini all",
-      "ie 10"
+      "ie 9"
     ],
     "development": [
       "last 2 version",
       ">0.2%",
       "not dead",
       "not op_mini all",
-      "ie 10"
+      "ie 9"
     ]
   },
   "jest": {
@@ -146,31 +146,9 @@
   },
   "babel": {
     "presets": [
-      "react-app",
-      [
-        "@babel/preset-env",
-        {
-          "modules": false,
-          "targets": {
-            "browsers": [
-              "ie >= 10"
-            ]
-          },
-          "useBuiltIns": "entry"
-        }
-      ]
+      "react-app"
     ],
     "plugins": [
-      [
-        "@babel/plugin-transform-runtime",
-        {
-          "absoluteRuntime": false,
-          "corejs": 2,
-          "helpers": true,
-          "regenerator": true,
-          "useESModules": false
-        }
-      ],
       [
         "transform-class-properties"
       ],
@@ -178,8 +156,10 @@
         "import",
         {
           "libraryName": "antd",
+          "libraryDirectory": "es",
           "style": "css"
-        }
+        },
+        "antd"
       ]
     ]
   },

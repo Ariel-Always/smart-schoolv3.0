@@ -1130,6 +1130,30 @@ class Menu extends React.Component {
 /*
  * 下拉 end
  * */
+/*
+ * loading start
+ * */
+class Loading extends React.Component{
+    constructor(props) {
+        super(props);
+
+    }
+
+    render() {
+        return (
+            <div>
+                <Icon type="search" spin></Icon>
+            </div>
+        );
+    }
+}
+/*
+ * loading end
+ * */
+
+/*
+ * 下拉 end
+ * */
 
 export {
     Radio,
@@ -1144,6 +1168,5 @@ export {
     Input,
     Empty,
     Modal,
-
     Menu
 }
