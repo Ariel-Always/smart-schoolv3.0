@@ -1,4 +1,4 @@
-import 'core-js'
+import 'es6-shim';
 import React from 'react';
 import 'antd/dist/antd.min.css';
 import './index.scss'
@@ -668,7 +668,15 @@ class Search extends React.Component {
                                            this.setState({cancleShow: false}, ()=> {
                                                this.refs.search_text_input.value = '';
                                                if (onCancelSearch) {
-                                                   onCancelSearch();
+                                                   onCancelSearch(
+                                                       {
+                                                           selectdValue: select ? (
+                                                                   this.state.selectdValue ? this.state.selectdValue.value
+                                                                       : selectOptions.selectdValue.value)
+                                                               : null,
+                                                           value:''
+                                                       }
+                                                   );
                                                }
                                            })
                                        }
@@ -968,24 +976,199 @@ class DropDown extends React.Component {
  * 下拉 end
  * */
 /*
- * loading start
+ * 加载中 start
  * */
 class Loading extends React.Component{
-    constructor(props) {
-        super(props);
-
-    }
-
     render() {
+        const {type,size,tip,wrapperClassName,children,...reset} = this.props;
+
+        let Fragments = '';
+
+        if (type){
+          if (type === 'point'){   //自己写的loading
+
+              Fragments= <div className="loading_mask">
+                  <div className="loading_point_container">
+                      <div className="point_container">
+                          <span className="point1 point"></span>
+                          <span className="point2 point"></span>
+                          <span className="point3 point"></span>
+                          <span className="point4 point"></span>
+                      </div>
+                      <div className="point_loading_text">{tip}</div>
+                  </div>
+              </div>
+          }else { //icon图标的loading
+             let antIcon = <Icon type={type} spin {...reset}/>
+             Fragments = <Spin indicator={antIcon} size={size} tip={tip} wrapperClassName={wrapperClassName}>{children}</Spin>}
+        }else { //默认loading
+            Fragments = <Spin {...reset} size={size} tip={tip} wrapperClassName={wrapperClassName}>{children}</Spin>
+        }
         return (
-            <div>
-                <Icon type="search" spin></Icon>
-            </div>
+                <React.Fragment>    {/*空标签*/}
+                    {Fragments}
+                </React.Fragment>
         );
     }
 }
 /*
- * loading end
+ * 加载中 end
+ * */
+/*
+ * 弹出框 start
+ * */
+class Alert extends React.Component{
+    constructor(props) {
+        super(props);
+        this.state={
+            show:props.show?props.show:false
+        }
+    }
+    //如果是success、error、tips将其出现后就消失掉
+    componentWillReceiveProps(nextProps) {
+        let {type,onHide} = nextProps;
+        this.setState({show: nextProps.show},()=>{
+            switch (type) {
+                case "success":
+                case "error":
+                case "tips":
+                    $(this.refs.alert_tips_tab).delay(1000).animate({opacity:0},1500,()=>{
+                        this.setState({show:false},()=>{
+                            $(this.refs.alert_tips_tab).css("opacity",1);
+                            if (onHide){
+                                onHide();
+                            }
+                        });
+                    });
+                    break;
+                default:
+                    $(this.refs.alert_tips_tab).delay(1000).animate({opacity:0},1500,()=>{
+                        this.setState({show:false},()=>{
+                            $(this.refs.alert_tips_tab).css("opacity",1);
+                            if (onHide){
+                                onHide();
+                            }
+                        });
+                    });
+            }
+        });
+    }
+    //关闭按钮
+    closeAlert(e){
+        const {onClose} = this.props;
+        this.setState({show:false},()=>{
+            if (onClose){
+                onClose();
+            }
+        });
+    }
+    //点击ok
+    ok(e){
+        const {onOk} = this.props;
+        this.setState({show:false},()=>{
+            if (onOk){
+                onOk();
+            }
+        });
+    }
+    //点击cancel按钮
+    cancel(e){
+        const {onCancel} = this.props;
+        this.setState({show:false},()=>{
+            if (onCancel){
+                onCancel();
+            }
+        });
+    }
+
+    render() {
+        const {type,title,abstract,okTitle,cancelTitle,show} = this.props;
+        let maskShow,cancelShow,okShow = false;
+        let okContent,cancelContent= '';
+        switch (type) {
+            case "btn-success":
+            case "btn-error":
+            case "btn-warn":
+                maskShow = true;
+                okShow = true;
+                cancelShow = true;
+                okContent = okTitle ? okTitle : '确定';
+                cancelContent = cancelTitle ? cancelTitle : '取消';
+                break;
+            case "btn-query":
+                maskShow = true;
+                okShow = true;
+                cancelShow = true;
+                okContent = okTitle ? okTitle : '确定';
+                cancelContent = cancelTitle ? cancelTitle : '取消';
+                break;
+            case "btn-tips":
+                maskShow = true;
+                cancelShow = true;
+                cancelContent = cancelTitle ? cancelTitle : '我知道了';
+                break;
+            default:
+                maskShow = false;
+                cancelShow = false;
+                okShow = false;
+                okContent="确定";
+                cancelContent="取消";
+        }
+
+        return (
+            <React.Fragment>
+                {
+                 maskShow?
+                 <React.Fragment>
+                     <div className="alert_dialog_mask" style={{display:`${this.state.show?'block':'none'}`}}></div>
+                     <div className="alert_dialog_tab" style={{display:`${this.state.show?'block':'none'}`}}>
+                         <div className="border alert_dialog_wrapper">
+                             <div className="alert_close_btn" onClick={this.closeAlert.bind(this)}></div>
+                                 <div className="alert_dialog_content">
+                                     {
+                                         abstract?
+                                             <div className={`big_icon ${type}`}></div>
+                                             : ''
+                                     }
+                                     <div className={`alert_dialog_msg ${abstract?'big':type}`}>
+                                         {title}
+                                     </div>
+                                     {
+                                         abstract?
+                                             <div className="alert_dialog_abstract">{abstract}</div>
+                                             :''
+                                     }
+                                 </div>
+                                 <div className="alert_dialog_footer">
+                                     {
+                                         okShow?
+                                         <input type="button" className="ok" onClick={this.ok.bind(this)} value={okContent}/>
+                                         :''
+                                     }
+                                     {
+                                         cancelShow?
+                                         <input type="button" className="cancel" onClick={this.cancel.bind(this)} value={cancelContent}/>
+                                         :''
+                                     }
+                                 </div>
+                         </div>
+                     </div>
+                 </React.Fragment>
+                 :
+                 <div className="alert_tips_tab" ref="alert_tips_tab" style={{display:`${this.state.show?'block':'none'}`}}>
+                     <div className="border">
+                        <div className={`alert_tab_content ${type}`}>{title}</div>
+                     </div>
+                 </div>
+                }
+
+            </React.Fragment>
+
+        );
+    }
+}
+/*
+ * 弹出框 end
  * */
 /*
  * 左侧菜单
@@ -1075,5 +1258,7 @@ export {
     Input,
     Empty,
     Modal,
-    Menu
+    Menu,
+    Loading,
+    Alert
 }
