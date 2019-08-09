@@ -10,11 +10,14 @@ $dropHoverBorder:#5897ed;//下拉组件鼠标悬停后的边框色
 $dropHoverBg:#e8edf5;//下拉组件鼠标悬停后的背景色
 $dropDisabled:#bfbfbf;//下拉组件禁用主题色
 $image_url:"./images/";
+$MenuSelect: linear-gradient(90deg,
+        #ff4200 0%,
+        #ffab3d 100%); /*菜单栏栏目选中状态*/
 /*公共变量 end*/
 /*公共minix start*/
-@mixin textOverFlow(){
-  overflow:hidden;
-  text-overflow:ellipsis;
+@mixin textOverFlow() {
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 @mixin flex{
@@ -54,9 +57,11 @@ body{
   clear:both;
   visibility: hidden;
 }
-.clearfix{
-  *zoom: 1;/*ie6清除浮动的方式 *号只有IE6-IE7执行，其他浏览器不执行*/
+
+.clearfix {
+  *zoom: 1; /*ie6清除浮动的方式 *号只有IE6-IE7执行，其他浏览器不执行*/
 }
+
 /*公共css end*/
 /*
 组件：按钮组
@@ -101,7 +106,6 @@ body{
   font-size: 16px;
   padding: 0 20px;
 }
-
 
 .btn-orange {
   background-image: linear-gradient(90deg,
@@ -305,7 +309,7 @@ body{
 
 .btn-red-default {
   color: #ff1b10;
-  border:1px solid #ff1b10;
+  border: 1px solid #ff1b10;
   &:hover {
     background-image: linear-gradient(90deg,
             #ff6b53 0%,
@@ -323,8 +327,8 @@ body{
 }
 
 .btn-mazarine-default {
-  color:#0051ae;
-  border:1px solid #0051ae;
+  color: #0051ae;
+  border: 1px solid #0051ae;
   &:hover {
     background-image: linear-gradient(90deg,
             #369ae0 0%,
@@ -345,7 +349,7 @@ body{
 
 .btn-disabled-default {
   color: #7a7a7a;
-  border:1px solid #7a7a7a;
+  border: 1px solid #7a7a7a;
   &:hover {
     background-image: linear-gradient(90deg,
             #d1d1d1 0%,
@@ -360,74 +364,72 @@ body{
   }
 }
 
-
 /*
 输入框
 */
 
-textarea.ant-input{
-  resize:none;
-  border:1px solid #bac7d9;
+textarea.ant-input {
+  resize: none;
+  border: 1px solid #bac7d9;
   line-height: 28px;
   font-size: 14px;
-  padding:10px 12px 10px 8px;
-  outline:none;
-  color:#333;
+  padding: 10px 12px 10px 8px;
+  outline: none;
+  color: #333;
 
 }
-
 
 /*
 空数据提示
 */
-.emptyBox{
+.emptyBox {
 
   display: flex;
   flex-flow: column nowrap;
   justify-content: flex-start;
   align-items: center;
 
-  .empty{
+  .empty {
     position: relative;
     display: inline-block;
 
   }
-  .tips-error-1{
+  .tips-error-1 {
     width: 410px;
     height: 180px;
     background: url("./images/empty/tips-error-1.png") no-repeat center;
     background-size: 410px 180px;
   }
 
-  .tips-error-2{
+  .tips-error-2 {
     width: 154px;
     height: 154px;
     background: url("./images/empty/tips-error-2.png") no-repeat center;
     background-size: 154px 154px;
   }
-  .tips-error-3{
+  .tips-error-3 {
     width: 353px;
     height: 93px;
     background: url("./images/empty/tips-error-3.png") no-repeat center;
     background-size: 353px 93px;
   }
-  .tips-error-4{
+  .tips-error-4 {
     width: 160px;
     height: 100px;
     background: url("./images/empty/tips-error-4.png") no-repeat center;
     background-size: 160px 100px;
   }
-  .tips-error-5{
+  .tips-error-5 {
     width: 300px;
     height: 180px;
     background: url("./images/empty/tips-error-5.png") no-repeat center top;
     background-size: 300px 264px;
   }
 
-  .noTitle{
+  .noTitle {
     display: none;
   }
-  .initTitle{
+  .initTitle {
     height: 20px;
     font-size: 16px;
     color: #999999;
@@ -436,31 +438,33 @@ textarea.ant-input{
     line-height: 1.5;
   }
 }
+
 /*
 空数据提示
 */
-.Empty{
+.Empty {
   width: 450px;
   margin: 20px 0 50px;
 }
+
 /*
 模态框
 */
-.Modal-1{
+.Modal-1 {
   position: relative;
   width: 810px;
-  .ant-modal-close{
-    height:48px;
-    .ant-modal-close-x{
-      height:48px;
+  .ant-modal-close {
+    height: 48px;
+    .ant-modal-close-x {
+      height: 48px;
       line-height: 48px;
       width: 48px;
-      color:#fff;
+      color: #fff;
     }
   }
-  .ant-modal-header{
-    width:100%;
-    height:48px;
+  .ant-modal-header {
+    width: 100%;
+    height: 48px;
     padding: 16px 20px 14px;
     display: flex;
     flex-flow: row;
@@ -469,13 +473,13 @@ textarea.ant-input{
             #05e4f8 0%,
             #03c3fc 62%,
             #00a1ff 100%);
-    .ant-modal-title{
-      color:#fff;
-      font-size:18px;
+    .ant-modal-title {
+      color: #fff;
+      font-size: 18px;
     }
   }
 
-  .ant-modal-body{
+  .ant-modal-body {
     position: relative;
     height: 456px;
     overflow: auto;
@@ -483,45 +487,44 @@ textarea.ant-input{
     padding: 24px 36px;
   }
 
-  .ant-modal-footer{
+  .ant-modal-footer {
     height: 56px;
     padding: 13px 24px;
     background-color: #e8eff7;
 
-    .ant-btn{
+    .ant-btn {
 
     }
   }
 }
 
-
-.Modal-2{
+.Modal-2 {
   position: relative;
   width: 810px;
-  .ant-modal-close{
-    height:56px;
-    .ant-modal-close-x{
-      height:56px;
+  .ant-modal-close {
+    height: 56px;
+    .ant-modal-close-x {
+      height: 56px;
       line-height: 56px;
       width: 48px;
-      color:#b8b8b8;
+      color: #b8b8b8;
     }
   }
-  .ant-modal-header{
-    width:100%;
-    height:56px;
+  .ant-modal-header {
+    width: 100%;
+    height: 56px;
     background: #fff;
     display: flex;
     flex-flow: row;
     align-items: center;
     border-bottom: dashed 1px #ccc;
-    .ant-modal-title{
-      color:#333;
-      font-size:20px;
+    .ant-modal-title {
+      color: #333;
+      font-size: 20px;
     }
   }
 
-  .ant-modal-body{
+  .ant-modal-body {
     position: relative;
     height: 411px;
     box-sizing: border-box;
@@ -529,42 +532,42 @@ textarea.ant-input{
     overflow: auto;
   }
 
-  .ant-modal-footer{
+  .ant-modal-footer {
 
-
-    .ant-btn{
+    .ant-btn {
 
     }
   }
 }
-.Modal-3{
+
+.Modal-3 {
   position: relative;
   width: 588px;
-  .ant-modal-close{
-    height:42px;
-    .ant-modal-close-x{
-      height:48px;
+  .ant-modal-close {
+    height: 42px;
+    .ant-modal-close-x {
+      height: 48px;
       line-height: 48px;
       width: 48px;
-      color:#fff;
+      color: #fff;
     }
   }
-  .ant-modal-header{
-    width:100%;
-    height:48px;
+  .ant-modal-header {
+    width: 100%;
+    height: 48px;
     display: flex;
     flex-flow: row;
     align-items: center;
     background-image: linear-gradient(-90deg,
             #00ffe4 0%,
             #0099ff 100%);
-    .ant-modal-title{
-      color:#fff;
-      font-size:16px;
+    .ant-modal-title {
+      color: #fff;
+      font-size: 16px;
     }
   }
 
-  .ant-modal-body{
+  .ant-modal-body {
     position: relative;
     height: 293px;
     box-sizing: border-box;
@@ -572,13 +575,12 @@ textarea.ant-input{
     overflow: auto;
   }
 
-  .ant-modal-footer{
+  .ant-modal-footer {
     height: 48px;
     background-color: #ffffff;
-    box-shadow: 0 0 1px 0
-    rgba(0, 0, 0, 0.36);
+    box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.36);
 
-    .ant-btn{
+    .ant-btn {
 
     }
   }
