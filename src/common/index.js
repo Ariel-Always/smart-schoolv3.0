@@ -513,21 +513,6 @@ class Table extends React.Component {
 /*
  * 分页组件 start
  * */
-/*class PagiNation extends React.Component {
-    render() {
-        const { children, hideOnSinglePage, simple, showQuickJumper, ...reset } = this.props;
-        return (
-            <ConfigProvider locale={zhCN}>
-                <AntPagination {...reset} hideOnSinglePage={hideOnSinglePage ? hideOnSinglePage : true}
-                    showQuickJumper={simple ? false : {
-                        goButton: <span className="pagination_go_button">Go</span>
-                    }}
-                    simple={simple ? true : false}
-                >{children}</AntPagination>
-            </ConfigProvider>
-        );
-    }
-}*/
 class PagiNation extends React.Component {
     render() {
         const {
