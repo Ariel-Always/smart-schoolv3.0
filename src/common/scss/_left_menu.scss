@@ -1,6 +1,5 @@
 @charset "utf-8";
-@import "~_compass-mixins@0.12.10@compass-mixins";
-
+@import "~compass-mixins/lib/animate";
 $image-url :"../images";
 .clearfix:before{
  /* display: block;

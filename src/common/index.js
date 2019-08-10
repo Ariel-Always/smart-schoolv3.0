@@ -7,7 +7,7 @@ import './js/leftMenu'
 import {
     Radio as AntRadio, Checkbox as AntCheckBox, Table as AntTable,
     Pagination as AntPagination, Button as AntdButton, Input as AntdInput,
-    Modal as AntdModal, Icon, ConfigProvider
+    Modal as AntdModal, Icon, ConfigProvider,Spin
 } from 'antd';
 import { Scrollbars } from 'react-custom-scrollbars';
 import zhCN from 'antd/es/locale/zh_CN';
@@ -163,7 +163,7 @@ class Input extends React.Component {
             type: props.type,
             className: props.className,
             style: props.style,
-            size: props.size ? props.size : 'normal',
+            size: props.size ? props.size : 'default',
             value: props.value,
             placeholder: props.placeholder,
             rows: props.rows ? props.rows : '5',
@@ -277,7 +277,6 @@ class Input extends React.Component {
         )
     }
 }
-
 
 /*
  * 空数据提示
@@ -514,7 +513,7 @@ class Table extends React.Component {
 /*
  * 分页组件 start
  * */
-class PagiNation extends React.Component {
+/*class PagiNation extends React.Component {
     render() {
         const { children, hideOnSinglePage, simple, showQuickJumper, ...reset } = this.props;
         return (
@@ -524,6 +523,31 @@ class PagiNation extends React.Component {
                         goButton: <span className="pagination_go_button">Go</span>
                     }}
                     simple={simple ? true : false}
+                >{children}</AntPagination>
+            </ConfigProvider>
+        );
+    }
+}*/
+class PagiNation extends React.Component {
+    render() {
+        const {
+            children,
+            hideOnSinglePage,
+            size,
+            showQuickJumper,
+            ...reset
+        } = this.props;
+
+
+        return (
+            <ConfigProvider locale={zhCN}>
+                <AntPagination
+                    {...reset} hideOnSinglePage={hideOnSinglePage ? hideOnSinglePage : true}
+                    showQuickJumper={size==='micro'?true:{
+                        goButton: <span className="pagination_go_button">Go</span>
+                    }}
+                    className={size==='micro'?'micro':''}
+                    size={size}
                 >{children}</AntPagination>
             </ConfigProvider>
         );
@@ -1342,30 +1366,7 @@ class Menu extends React.Component {
         )
     }
 }
-/*
- * 下拉 end
- * */
-/*
- * loading start
- * */
-class Loading extends React.Component {
-    constructor(props) {
-        super(props);
 
-    }
-
-    render() {
-        return (
-            <div>
-                <Icon type="search" spin></Icon>
-            </div>
-        );
-    }
-}
-
-/*
- * 下拉 end
- * */
 
 export {
     Radio,

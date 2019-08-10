@@ -226,13 +226,14 @@ class App extends React.Component {
             },
             currentPage: 1,
             currentSmallPage: 1,
+            currentMcroPage:1,
             simpleSearch: '',
             selectSearch: {
                 selectValue: '',
                 value: ''
             },
-            dropSearchList: [],
-            dropIdShow: false,
+            dropSearchList:[],
+            dropIdShow:false,
             MenuParams: {
                 initParams: {
                     mode: 'inline',
@@ -296,9 +297,7 @@ class App extends React.Component {
                         onTitleClick: handleClick,
                     }]
                 }]
-            }
-            dropSearchList:[],
-            dropIdShow:false,
+            },
             successAlert:false,
             errorAlert:false,
             warnAlert:false,
@@ -403,7 +402,9 @@ class App extends React.Component {
     changeSmallPage(e) {
         this.setState({ currentSmallPage: e });
     }
-
+    changeMcroPage(e){
+        this.setState({currentMcroPage:e});
+    }
     selectClickSearch(e) {
         this.setState({
             selectSearch: {
@@ -888,7 +889,17 @@ class App extends React.Component {
                             </div>
                         </div>
                     </div>
-
+                    <div className="Box-content">
+                        <div className="Box-flex">
+                            <div className="Box-tips">
+                                <p className="tips">最小尺寸的分页：</p>
+                            </div>
+                            <div className="Box-content-show">
+                                <PagiNation defaultCurrent={1} size="micro" onChange={this.changeMcroPage.bind(this)} total={2000}></PagiNation>
+                                <div style={{marginLeft:30}}>当前的页码数为:{this.state.currentMcroPage}</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 {/*搜索组件*/}
                 <div className="Box InputBox">
@@ -1055,7 +1066,6 @@ class App extends React.Component {
                             </div>
                         </div>
                     </div>
-
                 </div>
                 {/*左侧菜单组件*/}
                 <div className="Box InputBox">
@@ -1076,10 +1086,6 @@ class App extends React.Component {
                         </div>
                     </div>
                 </div>
-            </div>
-        );
-    }
-             </div>
              {/*加载中组件*/}
              <div className="Box InputBox">
                  <div className="BoxTop">
