@@ -1,0 +1,58 @@
+//灰色的checkbox组件
+$grayColor:#758992;
+.ant-checkbox-gray{
+  .ant-checkbox{
+    vertical-align: middle;
+    &:hover{
+      border-color: $grayColor;
+      .ant-checkbox-inner{
+        border-color:$grayColor;
+      }
+    }
+  }
+  .ant-checkbox-inner{
+    width: 12px;
+    height: 12px;
+    border-color: $grayColor;
+    &:after{
+      width:8px;
+      height: 8px;
+      left:1px;
+      top:1px;
+      content:'';
+      @include transform(rotate(0deg));
+      border:0;
+      background-color:$grayColor;
+    }
+  }
+  span:not(.ant-checkbox){
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .ant-checkbox-checked{
+    .ant-checkbox-inner{
+      background-color: #ffffff;
+    }
+    &:after{
+      border:0;
+    }
+  }
+  .ant-checkbox-disabled{
+    .ant-checkbox-inner{
+      border-color: $grayColor!important;
+      background-color:#cfcfcf;
+      &:after{
+        left: 2px;
+        top: 2px;
+        width: 6px;
+        height: 6px;
+      }
+    }
+    &:after{
+      border:0;
+    }
+  }
+  .ant-checkbox-input:focus+.ant-checkbox-inner{
+    border-color: $grayColor;
+  }
+}

@@ -760,6 +760,38 @@ class App extends React.Component {
                             </div>
                         </div>
                     </div>
+                    <div className="Box-content">
+                        <div className="Box-flex">
+                            <div className="Box-tips">
+                                <p className="tips">类型为gray的单选：</p>
+                            </div>
+                            <div className="Box-content-show">
+                                <Radio value="windows" type="gray" >windows</Radio>
+                                <Radio value="iOS" type="gray" disabled>iOS</Radio>
+                                <Radio value="Android" type="gray" defaultChecked={true} disabled>Android</Radio>
+                                <Radio value="Linux" type="gray" defaultChecked={true} >Linux</Radio>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="Box-content">
+                        <div className="Box-flex">
+                            <div className="Box-tips">
+                                <p className="tips">类型为gray的单选组：</p>
+                            </div>
+                            <div className="Box-content-show">
+                                <RadioGroup name="radio" value={this.state.radioValue}
+                                            onChange={this.changeRadio.bind(this)}>
+                                    <Radio type="gray" value="windows">windows</Radio>
+                                    <Radio type="gray" value="iOS">iOS</Radio>
+                                    <Radio type="gray" value="Android">Android</Radio>
+                                    <Radio type="gray" value="Linux">Linux</Radio>
+                                    <br />
+                                    <br />
+                                    <div style={{ textAlign: "left" }}>已选中：{this.state.radioValue}</div>
+                                </RadioGroup>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 {/*多选组件*/}
                 <div className="Box InputBox">
@@ -807,6 +839,40 @@ class App extends React.Component {
                                 </CheckBoxGroup>
                                 <CheckBox onChange={this.changeAllCheckBox.bind(this)}
                                     checked={this.state.checkAll}>全选</CheckBox>
+                                <div>已选中：{this.state.checkedList.map((item) => {
+                                    return `${item}、`
+                                })}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="Box-content">
+                        <div className="Box-flex">
+                            <div className="Box-tips">
+                                <p className="tips">多选type为gray类型：</p>
+                            </div>
+                            <div className="Box-content-show">
+                                <CheckBox type="gray"  value="windows">windows</CheckBox>
+                                <CheckBox type="gray" checked disabled value="iOS">iOS</CheckBox>
+                                <CheckBox type="gray" checked value="Android">Android</CheckBox>
+                                <CheckBox type="gray" disabled value="Linux">Linux</CheckBox>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="Box-content">
+                        <div className="Box-flex">
+                            <div className="Box-tips">
+                                <p className="tips">type为gray的多选组：</p>
+                            </div>
+                            <div className="Box-content-show">
+                                <CheckBoxGroup value={this.state.checkedList}
+                                               onChange={this.changeCheckBox.bind(this)}>
+                                    <CheckBox type="gray" value="windows">windows</CheckBox>
+                                    <CheckBox type="gray" value="iOS">iOS</CheckBox>
+                                    <CheckBox type="gray" value="Android">Android</CheckBox>
+                                    <CheckBox type="gray" value="Linux">Linux</CheckBox>
+                                </CheckBoxGroup>
+                                <CheckBox type="gray" onChange={this.changeAllCheckBox.bind(this)}
+                                          checked={this.state.checkAll}>全选</CheckBox>
                                 <div>已选中：{this.state.checkedList.map((item) => {
                                     return `${item}、`
                                 })}</div>

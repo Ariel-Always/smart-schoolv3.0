@@ -452,10 +452,10 @@ class Modal extends React.Component {
  * */
 class Radio extends React.Component {
     render() {
-        const {children, ...reset} = this.props;
+        const {children,type,...reset} = this.props;
         return (
             <ConfigProvider locale={zhCN}>
-                <AntRadio {...reset}>{children}</AntRadio>
+                <AntRadio className={type&&type==='gray'?'ant-radio-gray':''} {...reset}>{children}</AntRadio>
             </ConfigProvider>
         );
     }
@@ -472,10 +472,10 @@ class RadioGroup extends React.Component {
 }
 class CheckBox extends React.Component {
     render() {
-        const {children, ...reset} = this.props;
+        const {children,type, ...reset} = this.props;
         return (
             <ConfigProvider locale={zhCN}>
-                <AntCheckBox {...reset}>{children}</AntCheckBox>
+                <AntCheckBox className={type&&type==='gray'?'ant-checkbox-gray':''} {...reset}>{children}</AntCheckBox>
             </ConfigProvider>
         );
     }
@@ -531,7 +531,7 @@ class PagiNation extends React.Component {
                     showQuickJumper={size==='micro'?true:{
                         goButton: <span className="pagination_go_button">Go</span>
                     }}
-                    className={size==='micro'?'micro':''}
+                    className={size&&size==='micro'?'micro':''}
                     size={size}
                 >{children}</AntPagination>
             </ConfigProvider>
@@ -554,7 +554,6 @@ class Search extends React.Component {
             inputFocus: false
         }
     }
-
     componentDidMount() {
         const { select } = this.props;
         if (select) {

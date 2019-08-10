@@ -585,9 +585,19 @@ textarea.ant-input {
     }
   }
 }
+//分页
 @import "./scss/pagination";
-@import "./scss/pagination";
+//搜索
 @import "./scss/search";
+//下拉
 @import "./scss/dropdown";
+//loading加载中
 @import "./scss/loading";
+//弹出提示框
 @import "./scss/alert";
+//单选
+@import "./scss/radio";
+//table
+@import "./scss/table";
+//多选
+@import "./scss/checkbox";
