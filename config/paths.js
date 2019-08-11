@@ -108,12 +108,20 @@ Array.prototype.remove = function(val) {
     }
 };  //数组去除一个元素2
 
-const htmlArray = globby.sync([resolveApp('src')+'/*/index.html']); //获取所有的入口html的地址
-const jsArray = globby.sync([resolveApp('src')+'/*/index.js']); //获取所有的入口index.js的地址
+const htmlArray = globby.sync([path.posix.join(resolveApp('src')+'/*/index.html').replace(/\\/g,'/')]); //获取所有的入口html的地址
+const jsArray = globby.sync([path.posix.join(resolveApp('src'),'/*/index.js').replace(/\\/g,'/')]); //获取所有的入口index.js的地址
+
+  /* globby([path.posix.join(resolveApp('src'),'/!*!/index.js').replace(/\\/g,'/')]).then(function (res) {
+       console.log(res);
+   });*/
+
+
+
 /*const commonImgArray = getDirs(resolveApp('src/common/images'));    //获取common公共目录下的images目录
 const imgArray = getDirs(resolveApp('src'));    //获取src下的所有的目录，作为打包后images目录名称
 imgArray.remove('common');  //去除common下的image的目录，common下的image后面处理*/
-jsArray.remove(globby.sync([resolveApp('src')+'/common/index.js'])[0]); //去除所有入口index.js路径里面的common的路径，common的index.js不作为入口文件
+jsArray.remove(resolveApp('src/common/index.js').replace(/\\/g,'/')); //去除所有入口index.js路径里面的common的路径，common的index.js不作为入口文件
+
 
 // config after eject: we're in ./config/
 module.exports = {

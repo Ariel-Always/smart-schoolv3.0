@@ -1351,6 +1351,84 @@ class Menu extends React.Component {
     }
 }
 
+/*界面框架*/
+class Frame extends React.Component{
+    constructor(props) {
+        super(props);
+        this.state={
+            type:props.type?props.type:'triangle'
+        }
+    }
+    render() {
+        let bgAnimateDom='';
+        let beyondAnimateDom='';
+
+        switch (this.state.type) {
+            case "oblong":
+                bgAnimateDom = <div className="frame-oblong-animation"></div>
+                break;
+            case "circle":
+                bgAnimateDom=
+                    <React.Fragment>
+                        <div className="frame-circle-animation1"></div>
+                        <div className="frame-circle-animation2"></div>
+                        <div className="frame-circle-animation3"></div>
+                        <div className="frame-circle-animation4"></div>
+                        <div className="frame-circle-animation5"></div>
+                        <div className="frame-circle-animation6"></div>
+                    </React.Fragment>
+                break;
+            case "square":
+                beyondAnimateDom=
+                    <ul className="frame-square-wrapper">
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                break;
+            case 'triangle':
+                beyondAnimateDom=
+                    <ul className="frame-triangle-wrapper">
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                break;
+            default:
+                bgAnimateDom='';
+                beyondAnimateDom='';
+        }
+
+
+
+        return (
+            <div className="frame-drag-flag">
+                <div className="frame-header-wrapper">
+                    <div className="frame-header-bg">
+                        <div className="frame-header-star-bg">
+                            {bgAnimateDom}
+                        </div>   {/*星星的背景图*/}
+                    </div>
+                    {beyondAnimateDom}
+                </div>
+            </div>
+        );
+    }
+}
 
 export {
     Radio,
@@ -1367,5 +1445,6 @@ export {
     Modal,
     Menu,
     Loading,
-    Alert
+    Alert,
+    Frame
 }
