@@ -12,6 +12,7 @@ import {
 import { Scrollbars } from 'react-custom-scrollbars';
 import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
+import CONFIG from './js/config';
 import 'moment/locale/zh-cn';
 const $ = require('jquery');
 
@@ -1356,10 +1357,16 @@ class Frame extends React.Component{
     constructor(props) {
         super(props);
         this.state={
-            type:props.type?props.type:'triangle'
+            type:props.type?props.type:'triangle',
+            module:props.module?props.module:'',
+            userInfo:props.userInfo?props.userInfo:'',
+            msg:props.msg?props.msg:false,
+            showLeftMenu:props.showLeftMenu?props.showLeftMenu:false
         }
     }
     render() {
+        const {children} = this.props;
+        console.log(children);
         let bgAnimateDom='';
         let beyondAnimateDom='';
 
@@ -1417,14 +1424,46 @@ class Frame extends React.Component{
 
         return (
             <div className="frame-drag-flag">
-                <div className="frame-header-wrapper">
-                    <div className="frame-header-bg">
-                        <div className="frame-header-star-bg">
-                            {bgAnimateDom}
-                        </div>   {/*星星的背景图*/}
+                    <div className="frame-header-wrapper">
+                        <div className={`frame-header-bg ${this.state.type}`}>
+                            <div className="frame-header-star-bg">
+                                {bgAnimateDom}
+                            </div>   {/*星星的背景图*/}
+                        </div>
+                        {beyondAnimateDom}
+                        <div className="frame-home-header">
+                            <div className="frame-home-header-content">
+                                <div className="frame-home-logo" style={{backgroundImage:`url(${CONFIG.logo})`}}>
+                                    <a href="">{CONFIG.name}</a>
+                                </div>
+
+                                <div className="frame-home-header-menus">
+                                    <div className="frame-home-header-menu">
+                                        <input className="frame-home-logout" title="退出" type="button" value="" />
+                                        <a href="/html/personal/index.html" target="_blank" className="frame-home-username">{this.state.userInfo.name}</a>
+                                        <span className="frame-home-userpic" style={{backgroundImage:`url(${this.state.userInfo.image})`}}></span>
+                                    </div>
+                                    <div className="frame-home-header-menu">
+                                        <a href="http://www.baidu.com" target="_blank" className={`frame-home-msg-menu ${this.state.msg?'msg':''}`} title="我的消息"></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div className="frame-block-wrapper" style={{backgroundImage:`url(${this.state.module.image})`}}>
+                            <div className="frame-block-zh-name">{this.state.module.cnname}</div>
+                            <div className="frame-block-en-name">{this.state.module.enname}</div>
+                        </div>
                     </div>
-                    {beyondAnimateDom}
-                </div>
+                    <div className="frame-content-wrapper clearfix">
+                        <div className={`frame-content-leftside ${this.state.showLeftMenu?'':'frame-hide'}`}>
+                            {this.state.showLeftMenu?children[0]:''}
+                        </div>
+                        <div className={`frame-content-rightside ${this.state.showLeftMenu?'':'frame-fluid'}`}>
+                            {this.state.showLeftMenu?children[1]:children}
+                        </div>
+                    </div>
+                    <div className="frame-bottom">{CONFIG.footer}</div>
             </div>
         );
     }

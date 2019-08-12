@@ -1,6 +1,7 @@
 @import "./animation";
 $img_url:'#{$image_url}/frame';
 //界面框架整体
+
 .frame-drag-flag{
   width: 100%;
   background-color:#f5f5f5;
@@ -20,7 +21,19 @@ $img_url:'#{$image_url}/frame';
   bottom: 0;
   left: 0;
   margin: auto;
-  background-image: linear-gradient(90deg, #362df8 0%, #2d53f8 100%);;
+  background-image: linear-gradient(90deg, #362df8 0%, #2d53f8 100%);
+  &.triangle{
+    background-image: linear-gradient(90deg, #0044de 0%, #00b4ff 100%);
+  }
+  &.circle{
+    background-image: linear-gradient(90deg, #008aff 0%, #00ccff 100%);
+  }
+  &.square{
+    background-image: linear-gradient(90deg, #004088 0%, #007eff 100%);
+  }
+  &.oblong{
+    background-image: linear-gradient(90deg, #362df8 0%, #2d53f8 100%);
+  }
 }
 //星星背景
 .frame-header-star-bg{
@@ -206,5 +219,181 @@ $img_url:'#{$image_url}/frame';
 .frame-triangle-wrapper li{
   background: url("#{$img_url}/triangle.png") no-repeat center;
   @include background-size(contain);
+}
+//顶部栏
+.frame-home-header{
+  position: relative;
+  min-width: 1200px;
+  margin: 0 auto;
+  max-width: 1920px;
+  height: 40px;
+  line-height: 40px;
+  background: rgba(0, 0, 0, 0.2);
+  @include box-shadow(0 0 1px rgba(0, 0, 0, 0.2) inset);
+}
+.frame-home-header-content{
+  position: relative;
+  z-index: 2;
+  width: 1200px;
+  margin: 0 auto;
+}
+//logo
+.frame-home-logo{
+  float: left;
+  display: inline-block;
+  vertical-align: middle;
+  color: #d2f3fe;
+  padding-left:48px;
+  font-size: 16px;
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: 36px 24px;
+  a{
+    color: #d2f3fe;
+    text-decoration: none;
+  }
+}
+//模块中文名称
+.frame-block-wrapper{
+  position: relative;
+  width: 1200px;
+  height: 110px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding-left: 97px;
+  padding-top: 36px;
+  background-repeat: no-repeat;
+  background-position: 28px 27px;
+}
+.frame-block-zh-name{
+  font-weight: bold;
+  font-size: 24px;
+  color: #ffffff;
+  line-height: 30px;
+}
+.frame-block-en-name{
+  padding-left: 3px;
+  font-size: 14px;
+  line-height: 18px;
+  color: #ffffff;
+  opacity: 0.8;
+}
+//右侧的头部
+.frame-home-header-menus{
+  float: right;
+  display: inline-block;
+  vertical-align: middle;
+  .frame-home-header-menu{
+    position: relative;
+    float: right;
+    min-width: 41px;
+    height: 40px;
+    background: url("#{$img_url}/split-line.png") no-repeat right center;
+    &:first-child{
+      background:none;
+    }
+  }
+}
+.frame-home-username{
+  float: right;
+  font-size: 14px;
+  color: #ccedf7;
+  text-decoration: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 82px;
+}
+.frame-home-logout{
+  float: right;
+  position: relative;
+  border:0;
+  outline: none;
+  top: -1px;
+  width: 14px;
+  height: 14px;
+  margin-left: 4px;
+  margin-top: 14px;
+  cursor: pointer;
+  background: url("#{$img_url}/logout-icon.png") no-repeat center;
+  &:hover{
+    background-image: url("#{$img_url}/logout-icon-hover.png");
+  }
+}
+.frame-home-userpic{
+  display: inline-block;
+  width: 26px;
+  height: 26px;
+  margin-top:4px;
+  margin-left: 12px;
+  margin-right: 5px;
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:cover;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.frame-home-msg-menu{
+  position: relative;
+  display: inline-block;
+  top: 2px;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  width: 16px;
+  height: 16px;
+  margin-left: 12px;
+  background: url("#{$img_url}/msg.png") no-repeat center top;
+  &.msg{
+    &:after{
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      content: '';
+      background-color: #ff0000;
+      right: -2px;
+      top: -2px;
+      @include border-radius(50%);
+    }
+  }
+  &:hover{
+    opacity: 0.8;
+  }
+}
+//中间内容区域
+.frame-content-wrapper{
+  width: 1200px;
+  margin:20px auto 0px auto;
+}
+.frame-content-rightside{
+  float: left;
+  width: 944px;
+  min-height: 626px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.03);
+  &.frame-fluid{
+    width: 1200px;
+  }
+}
+.frame-content-leftside{
+  float: left;
+  width: 240px;
+  min-height: 80px;
+  margin-right: 16px;
+  border-radius: 12px 12px 0 0;
+  &.frame-hide{
+    display: none;
+  }
+}
+//脚部
+.frame-bottom{
+  margin: 0 auto;
+  font-size: 14px;
+  line-height: 60px;
+  padding-bottom: 8px;
+  color: #a8a8a9;
+  text-align: center;
 }
 
