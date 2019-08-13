@@ -1364,7 +1364,7 @@ class Frame extends React.Component{
     }
     render() {
         const {children} = this.props;
-        console.log(children);
+
         let bgAnimateDom='';
         let beyondAnimateDom='';
 
@@ -1432,17 +1432,17 @@ class Frame extends React.Component{
                         <div className="frame-home-header">
                             <div className="frame-home-header-content">
                                 <div className="frame-home-logo" style={{backgroundImage:`url(${CONFIG.logo})`}}>
-                                    <a href="">{CONFIG.name}</a>
+                                    <a href="#" target="_blank" rel="noopener noreferrer">{CONFIG.name}</a>
                                 </div>
 
                                 <div className="frame-home-header-menus">
                                     <div className="frame-home-header-menu">
                                         <input className="frame-home-logout" title="退出" type="button" value="" />
-                                        <a href="/html/personal/index.html" target="_blank" className="frame-home-username">{this.state.userInfo.name}</a>
+                                        <a href="/html/personal/index.html" rel="noopener noreferrer" target="_blank" className="frame-home-username">{this.state.userInfo.name}</a>
                                         <span className="frame-home-userpic" style={{backgroundImage:`url(${this.state.userInfo.image})`}}></span>
                                     </div>
                                     <div className="frame-home-header-menu">
-                                        <a href="http://www.baidu.com" target="_blank" className={`frame-home-msg-menu ${this.state.msg?'msg':''}`} title="我的消息"></a>
+                                        <a href="http://www.baidu.com" rel="noopener noreferrer" target="_blank" className={`frame-home-msg-menu ${this.state.msg?'msg':''}`} title="我的消息"></a>
                                     </div>
                                 </div>
                             </div>

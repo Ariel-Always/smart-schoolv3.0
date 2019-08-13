@@ -1,9 +1,5 @@
-import 'es6-shim';
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-import './css/index.scss';
-/*import '../common/index.scss'*/
 import App from './js/containers/App';
 
 
