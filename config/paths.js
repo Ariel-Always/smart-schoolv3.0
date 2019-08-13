@@ -122,6 +122,7 @@ const imgArray = getDirs(resolveApp('src'));    //获取src下的所有的目录
 imgArray.remove('common');  //去除common下的image的目录，common下的image后面处理*/
 jsArray.remove(resolveApp('src/common/index.js').replace(/\\/g,'/')); //去除所有入口index.js路径里面的common的路径，common的index.js不作为入口文件
 
+console.log(jsArray);
 
 // config after eject: we're in ./config/
 module.exports = {
