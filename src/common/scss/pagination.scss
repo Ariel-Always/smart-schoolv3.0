@@ -1,0 +1,194 @@
+/*组件：分页 start*/
+.ant-pagination{
+  &>li{
+    min-width:40px;
+    height:28px;
+    line-height:26px;
+    border-color: $pagiThemeColor;
+    margin-right: 3px;
+    &.ant-pagination-item{
+      &:hover{
+        background-color:$pagiThemeColor;
+      }
+    }
+    &.ant-pagination-item-active{
+      &>a{
+        color: #ffffff;
+        background-color:$pagiThemeColor;
+      }//分页活动状态a链接的样式
+    }//分页active状态
+    &.ant-pagination-disabled{
+      border-color:$pageDisabled;
+      &>.ant-pagination-item-link{
+        border-color:$pageDisabled;
+        &:hover{
+          background-color:#ffffff;
+          color:$pageDisabled;
+        }
+      }//分页禁止后的鼠标上浮
+    }//分页禁止状态
+    &.ant-pagination-prev,
+    &.ant-pagination-next{
+      min-width:32px;
+      width:32px;
+      &>a:hover{
+        color: #ffffff;
+      }
+    }//前后next和prev
+    &>a{
+      color:$pagiThemeColor;
+      border-color: $pagiThemeColor;
+      &.ant-pagination-item-link{
+        border-color: $pagiThemeColor;
+      }
+      &:hover{
+        color: #ffffff;
+        background-color:$pagiThemeColor;
+        border-radius:3px;
+      }
+    }//分页正常状态的a的样式
+    &.ant-pagination-options{
+      color: #666666;
+      font-size: 12px;
+      input{
+        width: 28px;
+        padding:0px;
+        height: 28px;
+        line-height: 28px;
+        vertical-align: top;
+        border-color: #bac7d9;
+        border-radius: 3px;
+        text-align: center;
+        margin:0 4px;
+        &:focus{
+          border-color: #5897ed;
+          @include box-shadow(0 0 0 0);
+        }
+      }
+      .pagination_go_button{
+        display:inline-block;
+        width: 40px;
+        height: 28px;
+        text-align: center;
+        cursor: pointer;
+        line-height: 28px;
+        border-radius: 3px;
+        background-color:$pagiThemeColor;
+        color: #ffffff;
+        margin-left: 8px;
+        vertical-align: top;
+        &:hover{
+          background-color:#0099ff;
+        }
+      }//go按钮
+    }//跳转至
+  }
+  &.mini{     //mini型
+    li{
+      a{
+        display: block;
+        width:100%;
+        padding:0;
+      }
+      .ant-pagination-item-link{
+        &:hover{
+          background-color:#ffffff;
+        }
+      }
+      .pagination_go_button{
+        width: 32px;
+        height: 24px;
+        line-height: 24px;
+      }
+      .ant-pagination-options-quick-jumper{
+        vertical-align: middle;
+        input{
+          padding:0;
+          width:24px;
+        }
+      }
+    }
+    .ant-pagination-item{
+      margin-right: 3px;
+    } //数字分页按钮
+    .ant-pagination-item:not(.ant-pagination-item-active){
+      border-color:$pagiThemeColor;
+      margin-right:3px;
+    }
+    .ant-pagination-prev,
+    .ant-pagination-next{
+      width:24px;
+      margin-right:3px;
+      border: 1px solid $pagiThemeColor;
+      .ant-pagination-item-link{
+        &:hover{
+          background-color: $pagiThemeColor;
+        }
+      }
+      &:hover{
+        background-color: $pagiThemeColor;
+      }
+      &.ant-pagination-disabled{
+        border:1px solid $dropBorder;
+        &:hover{
+          background-color:#ffffff;
+        }
+      }
+    }//prev、next按钮
+    .anticon{
+      vertical-align: 0;
+    }//<>的图标
+  }//小型分页
+  &.micro{
+    li{
+      height:14px;
+      min-width: 14px;
+      line-height: 14px;
+      font-size: 12px;
+      border-radius:2px;
+      border:0;
+      a{
+        padding:0;
+        color: #999999;
+        background-color:#e6e6e6;
+        border-radius:2px;
+        &:hover{
+          background-color:#cfcfcf;
+        }
+      }
+      &.ant-pagination-options{
+        input{ //输入框
+          width:20px;
+          height: 14px;
+          border:1px solid rgb(207,207,207);
+          color:#999999;
+          background-color:rgb(230,230,230);
+          &:focus{
+            border-color:rgb(0,153,255);
+          }
+        }
+      }
+    }
+    .ant-pagination-prev,
+    .ant-pagination-next{ //<>按钮
+      width: 14px;
+      .ant-pagination-item-link{
+        border-color: transparent;
+      }
+    }
+    .ant-pagination-item-active{
+      a{
+        color:$pagiThemeColor;
+      }
+    }
+    .ant-pagination-jump-next,
+    .ant-pagination-jump-prev{ //向前，向后跳转
+      margin-right:8px;
+    }
+    .ant-pagination-options-quick-jumper{
+      height: 14px;
+      line-height: 14px;
+    }
+  } //微型分页
+}
+/*组件：分页 */

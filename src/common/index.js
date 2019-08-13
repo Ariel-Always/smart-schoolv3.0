@@ -1,4 +1,4 @@
-
+import 'es6-shim';
 import React from 'react';
 import 'antd/dist/antd.min.css';
 import './index.scss'
@@ -7,11 +7,12 @@ import './js/leftMenu'
 import {
     Radio as AntRadio, Checkbox as AntCheckBox, Table as AntTable,
     Pagination as AntPagination, Button as AntdButton, Input as AntdInput,
-    Modal as AntdModal, Icon, ConfigProvider
+    Modal as AntdModal, Icon, ConfigProvider,Spin
 } from 'antd';
 import { Scrollbars } from 'react-custom-scrollbars';
 import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
+import CONFIG from './js/config';
 import 'moment/locale/zh-cn';
 const $ = require('jquery');
 
@@ -163,7 +164,7 @@ class Input extends React.Component {
             type: props.type,
             className: props.className,
             style: props.style,
-            size: props.size ? props.size : 'normal',
+            size: props.size ? props.size : 'default',
             value: props.value,
             placeholder: props.placeholder,
             rows: props.rows ? props.rows : '5',
@@ -274,7 +275,6 @@ class Input extends React.Component {
         )
     }
 }
-
 
 /*
  * 空数据提示
@@ -451,17 +451,17 @@ class Modal extends React.Component {
  * */
 class Radio extends React.Component {
     render() {
-        const { children, ...reset } = this.props;
+        const {children,type,...reset} = this.props;
         return (
             <ConfigProvider locale={zhCN}>
-                <AntRadio {...reset}>{children}</AntRadio>
+                <AntRadio className={type&&type==='gray'?'ant-radio-gray':''} {...reset}>{children}</AntRadio>
             </ConfigProvider>
         );
     }
 }
 class RadioGroup extends React.Component {
     render() {
-        const { children, ...reset } = this.props;
+        const {children, ...reset} = this.props;
         return (
             <ConfigProvider locale={zhCN}>
                 <AntRadio.Group {...reset}>{children}</AntRadio.Group>
@@ -471,17 +471,17 @@ class RadioGroup extends React.Component {
 }
 class CheckBox extends React.Component {
     render() {
-        const { children, ...reset } = this.props;
+        const {children,type, ...reset} = this.props;
         return (
             <ConfigProvider locale={zhCN}>
-                <AntCheckBox {...reset}>{children}</AntCheckBox>
+                <AntCheckBox className={type&&type==='gray'?'ant-checkbox-gray':''} {...reset}>{children}</AntCheckBox>
             </ConfigProvider>
         );
     }
 }
 class CheckBoxGroup extends React.Component {
     render() {
-        const { children, ...reset } = this.props;
+        const {children, ...reset} = this.props;
         return (
             <ConfigProvider locale={zhCN}>
                 <AntCheckBox.Group {...reset}>{children}</AntCheckBox.Group>
@@ -514,14 +514,24 @@ class Table extends React.Component {
  * */
 class PagiNation extends React.Component {
     render() {
-        const { children, hideOnSinglePage, simple, showQuickJumper, ...reset } = this.props;
+        const {
+            children,
+            hideOnSinglePage,
+            size,
+            showQuickJumper,
+            ...reset
+        } = this.props;
+
+
         return (
             <ConfigProvider locale={zhCN}>
-                <AntPagination {...reset} hideOnSinglePage={hideOnSinglePage ? hideOnSinglePage : true}
-                    showQuickJumper={simple ? false : {
+                <AntPagination
+                    {...reset} hideOnSinglePage={hideOnSinglePage ? hideOnSinglePage : true}
+                    showQuickJumper={size==='micro'?true:{
                         goButton: <span className="pagination_go_button">Go</span>
                     }}
-                    simple={simple ? true : false}
+                    className={size&&size==='micro'?'micro':''}
+                    size={size}
                 >{children}</AntPagination>
             </ConfigProvider>
         );
@@ -543,7 +553,6 @@ class Search extends React.Component {
             inputFocus: false
         }
     }
-
     componentDidMount() {
         const { select } = this.props;
         if (select) {
@@ -638,83 +647,91 @@ class Search extends React.Component {
                                                         :
                                                         ((selectOptions && selectOptions.selectdValue) ?
                                                             <span className="search_select_text"
-                                                                data-value={selectOptions.selectdValue.value}
-                                                                title={selectOptions.selectdValue.title}>{selectOptions.selectdValue.title}</span>
+                                                                  data-value={selectOptions.selectdValue.value}
+                                                                  title={selectOptions.selectdValue.title}>{selectOptions.selectdValue.title}</span>
                                                             : ''
-                                                        )
-                                                }
-
-                                            </span>
-                                            <ul className='search_select_ul' ref='search_select_ul'>
-                                                {
-                                                    //选项列表 (是否外界传值)？：使用外界值：''
-                                                    (selectOptions && selectOptions.selectList) ?
-                                                        selectOptions.selectList.map((item, k) => {
-                                                            return <li key={k} onClick={this.changeSelect.bind(this, {
-                                                                value: item.value,
-                                                                title: item.title
-                                                            })} className="search_select_li" data-value={item.value}
-                                                                title={item.title}>{item.title}</li>
-                                                        })
-                                                        : ''
-                                                }
-
-                                            </ul>
-                                            <span className="search_select_gap"></span>
-                                        </div>
-                                    </td> : null}
-                            <td className="search_left_td">
-                                <input ref='search_text_input'
-                                    className="search_text_input"
-                                    type="text" placeholder={placeHolder ? placeHolder : '输入关键词快速搜索'}
-                                    onFocus={this.onInputFocus.bind(this)}
-                                    onBlur={this.onInputBlur.bind(this)}
-                                    onKeyPress={this.handleEnterKey.bind(this)}
-                                />
-                                <input className="search_cancel_input" type="button"
-                                    onClick={
-                                        () => {
-                                            this.setState({ cancleShow: false }, () => {
-                                                this.refs.search_text_input.value = '';
-                                                if (onCancelSearch) {
-                                                    onCancelSearch();
-                                                }
-                                            })
-                                        }
-                                    }
-                                    style={{ display: this.state.cancleShow === true ? 'block' : 'none' }} />
-                            </td>
-                            <td className="search_right_td">
-                                <input className="search_btn_input" type="button"
-                                    onClick={
-                                        () => {
-                                            if (this.refs.search_text_input.value) {
-                                                this.setState({ cancleShow: true }, () => {
-                                                    if (onClickSearch) {
-                                                        onClickSearch({
-                                                            selectdValue: select ? (
-                                                                this.state.selectdValue ? this.state.selectdValue.value
-                                                                    : selectOptions.selectdValue.value)
-                                                                : null,
-                                                            value: this.refs.search_text_input.value
-                                                        });
-                                                    }
-                                                });
-                                            } else {
-                                                if (onClickSearch) {
-                                                    onClickSearch({
-                                                        selectdValue: select ? (
-                                                            this.state.selectdValue ? this.state.selectdValue.value
-                                                                : selectOptions.selectdValue.value)
-                                                            : null,
-                                                        value: this.refs.search_text_input.value
-                                                    });
-                                                }
+                                                    )
                                             }
-                                        }
-                                    } />
-                            </td>
-                        </tr>
+
+                                        </span>
+                                        <ul className='search_select_ul' ref='search_select_ul'>
+                                            {
+                                                //选项列表 (是否外界传值)？：使用外界值：''
+                                                (selectOptions && selectOptions.selectList) ?
+                                                    selectOptions.selectList.map((item, k)=> {
+                                                        return <li key={k} onClick={this.changeSelect.bind(this, {
+                                                            value: item.value,
+                                                            title: item.title
+                                                        })} className="search_select_li" data-value={item.value}
+                                                                   title={item.title}>{item.title}</li>
+                                                    })
+                                                    : ''
+                                            }
+
+                                        </ul>
+                                        <span className="search_select_gap"></span>
+                                    </div>
+                                </td> : null}
+                        <td className="search_left_td">
+                            <input  ref='search_text_input'
+                                   className="search_text_input"
+                                   type="text" placeholder={placeHolder ? placeHolder : '输入关键词快速搜索'}
+                                   onFocus={this.onInputFocus.bind(this)}
+                                   onBlur={this.onInputBlur.bind(this)}
+                                   onKeyPress={this.handleEnterKey.bind(this)}
+                            />
+                            <input className="search_cancel_input" type="button"
+                                   onClick={
+                                       ()=> {
+                                           this.setState({cancleShow: false}, ()=> {
+                                               this.refs.search_text_input.value = '';
+                                               if (onCancelSearch) {
+                                                   onCancelSearch(
+                                                       {
+                                                           selectdValue: select ? (
+                                                                   this.state.selectdValue ? this.state.selectdValue.value
+                                                                       : selectOptions.selectdValue.value)
+                                                               : null,
+                                                           value:''
+                                                       }
+                                                   );
+                                               }
+                                           })
+                                       }
+                                   }
+                                   style={{display: this.state.cancleShow === true ? 'block' : 'none'}}/>
+                        </td>
+                        <td className="search_right_td">
+                            <input className="search_btn_input" type="button"
+                                   onClick={
+                                       () => {
+                                           if (this.refs.search_text_input.value) {
+                                               this.setState({cancleShow: true}, ()=> {
+                                                   if (onClickSearch) {
+                                                       onClickSearch({
+                                                           selectdValue: select ? (
+                                                               this.state.selectdValue ? this.state.selectdValue.value
+                                                                   : selectOptions.selectdValue.value)
+                                                               : null,
+                                                           value: this.refs.search_text_input.value
+                                                       });
+                                                   }
+                                               });
+                                           } else {
+                                               if (onClickSearch) {
+                                                   onClickSearch({
+                                                       selectdValue: select ? (
+                                                           this.state.selectdValue ? this.state.selectdValue.value
+                                                               : selectOptions.selectdValue.value)
+                                                           : null,
+                                                       value: this.refs.search_text_input.value
+                                                   });
+                                               }
+                                           }
+                                       }
+                                   }/>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -974,6 +991,204 @@ class DropDown extends React.Component {
     }
 }
 /*
+ * 下拉 end
+ * */
+/*
+ * 加载中 start
+ * */
+class Loading extends React.Component{
+    render() {
+        const {type,size,tip,wrapperClassName,children,...reset} = this.props;
+
+        let Fragments = '';
+
+        if (type){
+          if (type === 'point'){   //自己写的loading
+
+              Fragments= <div className="loading_mask">
+                  <div className="loading_point_container">
+                      <div className="point_container">
+                          <span className="point1 point"></span>
+                          <span className="point2 point"></span>
+                          <span className="point3 point"></span>
+                          <span className="point4 point"></span>
+                      </div>
+                      <div className="point_loading_text">{tip}</div>
+                  </div>
+              </div>
+          }else { //icon图标的loading
+             let antIcon = <Icon type={type} spin {...reset}/>
+             Fragments = <Spin indicator={antIcon} size={size} tip={tip} wrapperClassName={wrapperClassName}>{children}</Spin>}
+        }else { //默认loading
+            Fragments = <Spin {...reset} size={size} tip={tip} wrapperClassName={wrapperClassName}>{children}</Spin>
+        }
+        return (
+                <React.Fragment>    {/*空标签*/}
+                    {Fragments}
+                </React.Fragment>
+        );
+    }
+}
+/*
+ * 加载中 end
+ * */
+/*
+ * 弹出框 start
+ * */
+class Alert extends React.Component{
+    constructor(props) {
+        super(props);
+        this.state={
+            show:props.show?props.show:false
+        }
+    }
+    //如果是success、error、tips将其出现后就消失掉
+    componentWillReceiveProps(nextProps) {
+        let {type,onHide} = nextProps;
+        this.setState({show: nextProps.show},()=>{
+            switch (type) {
+                case "success":
+                case "error":
+                case "tips":
+                    $(this.refs.alert_tips_tab).delay(1000).animate({opacity:0},1500,()=>{
+                        this.setState({show:false},()=>{
+                            $(this.refs.alert_tips_tab).css("opacity",1);
+                            if (onHide){
+                                onHide();
+                            }
+                        });
+                    });
+                    break;
+                default:
+                    $(this.refs.alert_tips_tab).delay(1000).animate({opacity:0},1500,()=>{
+                        this.setState({show:false},()=>{
+                            $(this.refs.alert_tips_tab).css("opacity",1);
+                            if (onHide){
+                                onHide();
+                            }
+                        });
+                    });
+            }
+        });
+    }
+    //关闭按钮
+    closeAlert(e){
+        const {onClose} = this.props;
+        this.setState({show:false},()=>{
+            if (onClose){
+                onClose();
+            }
+        });
+    }
+    //点击ok
+    ok(e){
+        const {onOk} = this.props;
+        this.setState({show:false},()=>{
+            if (onOk){
+                onOk();
+            }
+        });
+    }
+    //点击cancel按钮
+    cancel(e){
+        const {onCancel} = this.props;
+        this.setState({show:false},()=>{
+            if (onCancel){
+                onCancel();
+            }
+        });
+    }
+
+    render() {
+        const {type,title,abstract,okTitle,cancelTitle,show} = this.props;
+        let maskShow,cancelShow,okShow = false;
+        let okContent,cancelContent= '';
+        switch (type) {
+            case "btn-success":
+            case "btn-error":
+            case "btn-warn":
+                maskShow = true;
+                okShow = true;
+                cancelShow = true;
+                okContent = okTitle ? okTitle : '确定';
+                cancelContent = cancelTitle ? cancelTitle : '取消';
+                break;
+            case "btn-query":
+                maskShow = true;
+                okShow = true;
+                cancelShow = true;
+                okContent = okTitle ? okTitle : '确定';
+                cancelContent = cancelTitle ? cancelTitle : '取消';
+                break;
+            case "btn-tips":
+                maskShow = true;
+                cancelShow = true;
+                cancelContent = cancelTitle ? cancelTitle : '我知道了';
+                break;
+            default:
+                maskShow = false;
+                cancelShow = false;
+                okShow = false;
+                okContent="确定";
+                cancelContent="取消";
+        }
+
+        return (
+            <React.Fragment>
+                {
+                 maskShow?
+                 <React.Fragment>
+                     <div className="alert_dialog_mask" style={{display:`${this.state.show?'block':'none'}`}}></div>
+                     <div className="alert_dialog_tab" style={{display:`${this.state.show?'block':'none'}`}}>
+                         <div className="border alert_dialog_wrapper">
+                             <div className="alert_close_btn" onClick={this.closeAlert.bind(this)}></div>
+                                 <div className="alert_dialog_content">
+                                     {
+                                         abstract?
+                                             <div className={`big_icon ${type}`}></div>
+                                             : ''
+                                     }
+                                     <div className={`alert_dialog_msg ${abstract?'big':type}`}>
+                                         {title}
+                                     </div>
+                                     {
+                                         abstract?
+                                             <div className="alert_dialog_abstract">{abstract}</div>
+                                             :''
+                                     }
+                                 </div>
+                                 <div className="alert_dialog_footer">
+                                     {
+                                         okShow?
+                                         <input type="button" className="ok" onClick={this.ok.bind(this)} value={okContent}/>
+                                         :''
+                                     }
+                                     {
+                                         cancelShow?
+                                         <input type="button" className="cancel" onClick={this.cancel.bind(this)} value={cancelContent}/>
+                                         :''
+                                     }
+                                 </div>
+                         </div>
+                     </div>
+                 </React.Fragment>
+                 :
+                 <div className="alert_tips_tab" ref="alert_tips_tab" style={{display:`${this.state.show?'block':'none'}`}}>
+                     <div className="border">
+                        <div className={`alert_tab_content ${type}`}>{title}</div>
+                     </div>
+                 </div>
+                }
+
+            </React.Fragment>
+
+        );
+    }
+}
+/*
+ * 弹出框 end
+ * */
+/*
  * 左侧菜单
  * */
 
@@ -1134,33 +1349,123 @@ class Menu extends React.Component {
         )
     }
 }
-/*
- * 下拉 end
- * */
-/*
- * loading start
- * */
-class Loading extends React.Component {
+
+/*界面框架*/
+class Frame extends React.Component{
     constructor(props) {
         super(props);
-
+        this.state={
+            type:props.type?props.type:'triangle',
+            module:props.module?props.module:'',
+            userInfo:props.userInfo?props.userInfo:'',
+            msg:props.msg?props.msg:false,
+            showLeftMenu:props.showLeftMenu?props.showLeftMenu:false
+        }
     }
-
     render() {
+        const {children} = this.props;
+        console.log(children);
+        let bgAnimateDom='';
+        let beyondAnimateDom='';
+
+        switch (this.state.type) {
+            case "oblong":
+                bgAnimateDom = <div className="frame-oblong-animation"></div>
+                break;
+            case "circle":
+                bgAnimateDom=
+                    <React.Fragment>
+                        <div className="frame-circle-animation1"></div>
+                        <div className="frame-circle-animation2"></div>
+                        <div className="frame-circle-animation3"></div>
+                        <div className="frame-circle-animation4"></div>
+                        <div className="frame-circle-animation5"></div>
+                        <div className="frame-circle-animation6"></div>
+                    </React.Fragment>
+                break;
+            case "square":
+                beyondAnimateDom=
+                    <ul className="frame-square-wrapper">
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                break;
+            case 'triangle':
+                beyondAnimateDom=
+                    <ul className="frame-triangle-wrapper">
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                break;
+            default:
+                bgAnimateDom='';
+                beyondAnimateDom='';
+        }
+
+
+
         return (
-            <div>
-                <Icon type="search" spin></Icon>
+            <div className="frame-drag-flag">
+                    <div className="frame-header-wrapper">
+                        <div className={`frame-header-bg ${this.state.type}`}>
+                            <div className="frame-header-star-bg">
+                                {bgAnimateDom}
+                            </div>   {/*星星的背景图*/}
+                        </div>
+                        {beyondAnimateDom}
+                        <div className="frame-home-header">
+                            <div className="frame-home-header-content">
+                                <div className="frame-home-logo" style={{backgroundImage:`url(${CONFIG.logo})`}}>
+                                    <a href="">{CONFIG.name}</a>
+                                </div>
+
+                                <div className="frame-home-header-menus">
+                                    <div className="frame-home-header-menu">
+                                        <input className="frame-home-logout" title="退出" type="button" value="" />
+                                        <a href="/html/personal/index.html" target="_blank" className="frame-home-username">{this.state.userInfo.name}</a>
+                                        <span className="frame-home-userpic" style={{backgroundImage:`url(${this.state.userInfo.image})`}}></span>
+                                    </div>
+                                    <div className="frame-home-header-menu">
+                                        <a href="http://www.baidu.com" target="_blank" className={`frame-home-msg-menu ${this.state.msg?'msg':''}`} title="我的消息"></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div className="frame-block-wrapper" style={{backgroundImage:`url(${this.state.module.image})`}}>
+                            <div className="frame-block-zh-name">{this.state.module.cnname}</div>
+                            <div className="frame-block-en-name">{this.state.module.enname}</div>
+                        </div>
+                    </div>
+                    <div className="frame-content-wrapper clearfix">
+                        <div className={`frame-content-leftside ${this.state.showLeftMenu?'':'frame-hide'}`}>
+                            {this.state.showLeftMenu?children[0]:''}
+                        </div>
+                        <div className={`frame-content-rightside ${this.state.showLeftMenu?'':'frame-fluid'}`}>
+                            {this.state.showLeftMenu?children[1]:children}
+                        </div>
+                    </div>
+                    <div className="frame-bottom">{CONFIG.footer}</div>
             </div>
         );
     }
 }
-/*
- * loading end
- * */
-
-/*
- * 下拉 end
- * */
 
 export {
     Radio,
@@ -1175,5 +1480,8 @@ export {
     Input,
     Empty,
     Modal,
-    Menu
+    Menu,
+    Loading,
+    Alert,
+    Frame
 }

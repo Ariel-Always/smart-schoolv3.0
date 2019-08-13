@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     Button, Input, Empty, Radio, Modal, CheckBox,
-    CheckBoxGroup, RadioGroup, Table, PagiNation, Search, DropDown, Menu
+    CheckBoxGroup, RadioGroup, Table, PagiNation, Search, DropDown, Menu,Loading,Alert
 } from '../../../common'
 import { DatePicker } from 'antd';
 import { Icon } from 'antd';
@@ -187,15 +187,13 @@ class App extends React.Component {
                         width: 200,
                         render: (item) => {
 
-                            return item.map((i, index) => {
-                                if (i === "编辑") {
-                                    return <Button key={index} type="primary" size="small" color="blue" value={i}
-                                        style={{ display: "inline-block", margin: "0 10px 0 0" }} />
-                                } else {
-                                    return <Button key={index} type="primary" size="small" color="red" value={i}
-                                        style={{ display: "inline-block", margin: 0 }} />
-                                }
-                            });
+                          return item.map((i,k)=>{
+                              if(i==="编辑"){
+                                  return  <Button type="primary" key={k} size="small" color="blue" value={i} style={{display:"inline-block",margin:"0 10px 0 0" }}/>
+                              }else{
+                                  return  <Button type="primary" key={k} size="small" color="red" value={i} style={{display:"inline-block",margin:0}}/>
+                              }
+                           });
                         }
                     }
                 ],
@@ -228,13 +226,14 @@ class App extends React.Component {
             },
             currentPage: 1,
             currentSmallPage: 1,
+            currentMcroPage:1,
             simpleSearch: '',
             selectSearch: {
                 selectValue: '',
                 value: ''
             },
-            dropSearchList: [],
-            dropIdShow: false,
+            dropSearchList:[],
+            dropIdShow:false,
             MenuParams: {
                 initParams: {
                     mode: 'inline',
@@ -298,7 +297,17 @@ class App extends React.Component {
                         onTitleClick: handleClick,
                     }]
                 }]
-            }
+            },
+            successAlert:false,
+            errorAlert:false,
+            warnAlert:false,
+            queryAlert:false,
+            tipsAlert:false,
+            btnsuccessAlert:false,
+            btnerrorAlert:false,
+            btnwarnAlert:false,
+            btnqueryAlert:false,
+            btntipsAlert:false
         }
     }
 
@@ -393,7 +402,9 @@ class App extends React.Component {
     changeSmallPage(e) {
         this.setState({ currentSmallPage: e });
     }
-
+    changeMcroPage(e){
+        this.setState({currentMcroPage:e});
+    }
     selectClickSearch(e) {
         this.setState({
             selectSearch: {
@@ -433,92 +444,74 @@ class App extends React.Component {
             });
         }
     }
-    ;
-
-    dropMultipleChange(e) {
+    dropMultipleChange(e){
     }
-    ;
-
-    dropCancelSearch(e) {
+    dropCancelSearch(e){
         this.setState({
             dropIdShow: false
         });
     }
-    ;
-
-    render() {
-        return (
-            <div className="App">
-                {/*
-                 按钮组件
-                 */}
-                <div className="Box ButtonBox">
-                    <div className="BoxTop">
-                        <p className="BoxTop_title">按钮组件</p>
-                    </div>
-                    <div className="Box-btn">
-                        <div className="Box-flex">
-                            <div className="Box-tips">
-                                <p className="tips">最大尺度：正常状态-鼠标悬停状态-禁用状态</p>
-                            </div>
-                            <div className="Box-content-show">
-                                <Button type="primary" style={{ color: 'red' }} size="large" shape="round"
-                                    color="orange"
-                                    value="按钮" />
-                                <Button type="primary" size="large" color="green" value="按钮" />
-                                <Button type="primary" className="circle" shape="circle" color="blue" value="按钮" />
-                                <Button type="primary" size="large" color="red" value="按钮" />
-                                <Button type="primary" size="large" color="mazarine" value="按钮" />
-                                <Button size="large" disabled value="按钮" />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="Box-btn">
-                        <div className="Box-flex">
-                            <div className="Box-tips">
-                                <p className="tips">中等尺度：正常状态-鼠标悬停状态-禁用状态</p>
-                            </div>
-                            <div className="Box-content-show">
-                                <Button type="primary" size="normal" value="按钮" />
-                                <Button type="primary" size="normal" color="green" value="按钮" />
-                                <Button type="default" size="normal" color="blue" value="按钮" />
-                                <Button type="primary" size="normal" color="red" value="按钮" />
-                                <Button type="default" size="normal" color="mazarine" value="按钮" />
-                                <Button type="primary" size="normal" disabled value="按钮" />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="Box-btn">
-                        <div className="Box-flex">
-                            <div className="Box-tips">
-                                <p className="tips">最小尺度：正常状态-鼠标悬停状态-禁用状态</p>
-                            </div>
-                            <div className="Box-content-show">
-                                <Button type="primary" size="small" value="自适应按钮" />
-                                <Button type="primary" size="small" value="按钮" />
-                                <Button type="primary" size="small" color="green" value="按钮" />
-                                <Button type="primary" size="small" color="blue" value="按钮" />
-                                <Button type="primary" size="small" color="red" value="按钮" />
-                                <Button type="primary" size="small" onClick={handleClick} color="mazarine"
-                                    value="按钮" />
-                                <Button type="default" size="small" shape="round" disabled value="按钮" />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="Box-btn">
-                        <div className="Box-flex">
-                            <div className="Box-tips">
-                                <p className="tips">其他大小类型</p>
-                            </div>
-                            <div className="Box-content-show">
-                                <Button type="primary" size="" value="自适应按钮" />
-                                <Button type="primary" block size="small" value="父按钮" />
-                                <Button type="primary" style={{margin:'0 30px 20px'}} href='http://www.baidu.com' value="百度按钮-不开新页面" />
-                                <Button type="primary" style={{margin:'0 30px 20px'}}
-                                 href='http://www.baidu.com' value="百度按钮-开新页面" target="_blank"/>
-                            </div>
-                        </div>
-                    </div>
+    alert(e){
+        let target= {};
+        target[`${e}Alert`]=true;
+        this.setState(Object.assign({},target));
+    }
+ render(){
+     return (
+         <div className="App">
+             {/*
+              按钮组件
+              */}
+             <div className="Box ButtonBox">
+                 <div className="BoxTop">
+                     <p className="BoxTop_title">按钮组件</p>
+                 </div>
+                 <div className="Box-btn">
+                     <div className="Box-flex">
+                         <div className="Box-tips">
+                             <p className="tips">最大尺度：正常状态-鼠标悬停状态-禁用状态</p>
+                         </div>
+                         <div className="Box-content-show">
+                             <Button type="primary" style={{color:'red'}} size="large" shape="round" color="orange" value="按钮" />
+                             <Button type="primary" size="large" color="green" value="按钮"/>
+                             <Button type="primary" className="circle"  shape="circle" color="blue" value="按钮"/>
+                             <Button type="primary" size="large" color="red" value="按钮"/>
+                             <Button type="primary" size="large" color="mazarine" value="按钮"/>
+                             <Button  size="large" disabled value="按钮"/>
+                         </div>
+                     </div>
+                 </div>
+                 <div className="Box-btn">
+                     <div className="Box-flex">
+                         <div className="Box-tips">
+                             <p className="tips">中等尺度：正常状态-鼠标悬停状态-禁用状态</p>
+                         </div>
+                         <div className="Box-content-show">
+                             <Button type="primary" size="normal" value="按钮"/>
+                             <Button type="primary" size="normal" color="green" value="按钮"/>
+                             <Button type="default" size="normal" color="blue" value="按钮"/>
+                             <Button type="primary" size="normal" color="red" value="按钮"/>
+                             <Button type="default" size="normal" color="mazarine" value="按钮"/>
+                             <Button type="primary" size="normal" disabled value="按钮"/>
+                         </div>
+                     </div>
+                 </div>
+                 <div className="Box-btn">
+                     <div className="Box-flex">
+                         <div className="Box-tips">
+                             <p className="tips">最小尺度：正常状态-鼠标悬停状态-禁用状态</p>
+                         </div>
+                         <div className="Box-content-show">
+                             <Button type="primary" size="small" value="按钮dddddddd"/>
+                             <Button type="primary" size="small" value="按钮"/>
+                             <Button type="primary" size="small" color="green" value="按钮"/>
+                             <Button type="primary" size="small" color="blue" value="按钮"/>
+                             <Button type="primary" size="small" color="red" value="按钮"/>
+                             <Button type="primary" size="small" onClick={handleClick} color="mazarine" value="按钮"/>
+                             <Button type="default" size="small"  shape="round" disabled value="按钮"/>
+                         </div>
+                     </div>
+                 </div>
 
                 </div>
                 {/*输入框组件*/}
@@ -711,9 +704,9 @@ class App extends React.Component {
                                 >
                                     <div className="ModalContent">内容</div>
 
-                                </Modal>
-                            </div>
-                        </div>
+                             </Modal>
+                         </div>
+                     </div>
 
                     </div>
                 </div>
@@ -760,6 +753,38 @@ class App extends React.Component {
                                     <Radio value="iOS">iOS</Radio>
                                     <Radio value="Android">Android</Radio>
                                     <Radio value="Linux">Linux</Radio>
+                                    <br />
+                                    <br />
+                                    <div style={{ textAlign: "left" }}>已选中：{this.state.radioValue}</div>
+                                </RadioGroup>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="Box-content">
+                        <div className="Box-flex">
+                            <div className="Box-tips">
+                                <p className="tips">类型为gray的单选：</p>
+                            </div>
+                            <div className="Box-content-show">
+                                <Radio value="windows" type="gray" >windows</Radio>
+                                <Radio value="iOS" type="gray" disabled>iOS</Radio>
+                                <Radio value="Android" type="gray" defaultChecked={true} disabled>Android</Radio>
+                                <Radio value="Linux" type="gray" defaultChecked={true} >Linux</Radio>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="Box-content">
+                        <div className="Box-flex">
+                            <div className="Box-tips">
+                                <p className="tips">类型为gray的单选组：</p>
+                            </div>
+                            <div className="Box-content-show">
+                                <RadioGroup name="radio" value={this.state.radioValue}
+                                            onChange={this.changeRadio.bind(this)}>
+                                    <Radio type="gray" value="windows">windows</Radio>
+                                    <Radio type="gray" value="iOS">iOS</Radio>
+                                    <Radio type="gray" value="Android">Android</Radio>
+                                    <Radio type="gray" value="Linux">Linux</Radio>
                                     <br />
                                     <br />
                                     <div style={{ textAlign: "left" }}>已选中：{this.state.radioValue}</div>
@@ -814,6 +839,40 @@ class App extends React.Component {
                                 </CheckBoxGroup>
                                 <CheckBox onChange={this.changeAllCheckBox.bind(this)}
                                     checked={this.state.checkAll}>全选</CheckBox>
+                                <div>已选中：{this.state.checkedList.map((item) => {
+                                    return `${item}、`
+                                })}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="Box-content">
+                        <div className="Box-flex">
+                            <div className="Box-tips">
+                                <p className="tips">多选type为gray类型：</p>
+                            </div>
+                            <div className="Box-content-show">
+                                <CheckBox type="gray"  value="windows">windows</CheckBox>
+                                <CheckBox type="gray" checked disabled value="iOS">iOS</CheckBox>
+                                <CheckBox type="gray" checked value="Android">Android</CheckBox>
+                                <CheckBox type="gray" disabled value="Linux">Linux</CheckBox>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="Box-content">
+                        <div className="Box-flex">
+                            <div className="Box-tips">
+                                <p className="tips">type为gray的多选组：</p>
+                            </div>
+                            <div className="Box-content-show">
+                                <CheckBoxGroup value={this.state.checkedList}
+                                               onChange={this.changeCheckBox.bind(this)}>
+                                    <CheckBox type="gray" value="windows">windows</CheckBox>
+                                    <CheckBox type="gray" value="iOS">iOS</CheckBox>
+                                    <CheckBox type="gray" value="Android">Android</CheckBox>
+                                    <CheckBox type="gray" value="Linux">Linux</CheckBox>
+                                </CheckBoxGroup>
+                                <CheckBox type="gray" onChange={this.changeAllCheckBox.bind(this)}
+                                          checked={this.state.checkAll}>全选</CheckBox>
                                 <div>已选中：{this.state.checkedList.map((item) => {
                                     return `${item}、`
                                 })}</div>
@@ -896,7 +955,17 @@ class App extends React.Component {
                             </div>
                         </div>
                     </div>
-
+                    <div className="Box-content">
+                        <div className="Box-flex">
+                            <div className="Box-tips">
+                                <p className="tips">最小尺寸的分页：</p>
+                            </div>
+                            <div className="Box-content-show">
+                                <PagiNation defaultCurrent={1} size="micro" onChange={this.changeMcroPage.bind(this)} total={2000}></PagiNation>
+                                <div style={{marginLeft:30}}>当前的页码数为:{this.state.currentMcroPage}</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 {/*搜索组件*/}
                 <div className="Box InputBox">
@@ -1063,7 +1132,6 @@ class App extends React.Component {
                             </div>
                         </div>
                     </div>
-
                 </div>
                 {/*左侧菜单组件*/}
                 <div className="Box InputBox">
@@ -1084,9 +1152,275 @@ class App extends React.Component {
                         </div>
                     </div>
                 </div>
-            </div>
-        );
-    }
+             {/*加载中组件*/}
+             <div className="Box InputBox">
+                 <div className="BoxTop">
+                     <p className="BoxTop_title">加载中组件</p>
+                 </div>
+                 <div className="Box-content">
+                     <div className="Box-flex">
+                         <div className="Box-tips">
+                             <p className="tips">组件1：</p>
+                         </div>
+                         <div className="Box-content-show">
+                             <Loading  tip="loading..." size="large"></Loading>
+                         </div>
+                     </div>
+                 </div>
+                 <div className="Box-content">
+                     <div className="Box-flex">
+                         <div className="Box-tips">
+                             <p className="tips">组件2：</p>
+                         </div>
+                         <div className="Box-content-show">
+                             <Loading  type="loading" tip="loading..." size="large"></Loading>
+                         </div>
+                     </div>
+                 </div>
+                 <div className="Box-content">
+                     <div className="Box-flex">
+                         <div className="Box-tips">
+                             <p className="tips">组件2+加容器：</p>
+                         </div>
+                         <div className="Box-content-show">
+                             <Loading  type="loading" tip="loading..." size="large">
+                                 <div className="loading_warpper">
+                                     Further details about the context of this alert.
+                                 </div>
+                             </Loading>
+                         </div>
+                     </div>
+                 </div>
+                 <div className="Box-content">
+                     <div className="Box-flex">
+                         <div className="Box-tips">
+                             <p className="tips">组件3：</p>
+                         </div>
+                         <div className="Box-content-show">
+                             <Loading  type="point" tip="loading..." size="large"></Loading>
+                         </div>
+                     </div>
+                 </div>
+                 <div className="Box-content">
+                     <div className="Box-flex">
+                         <div className="Box-tips">
+                             <p className="tips">组件3+容器：</p>
+                         </div>
+                         <div className="Box-content-show">
+                             <div className="loading_warpper">
+                                 Further details about the context of this alert.
+                                 <Loading  type="point" tip="loading..." size="large"></Loading>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                 <div className="Box-content">
+                     <div className="Box-flex">
+                         <div className="Box-tips">
+                             <p className="tips">其他组件+容器：</p>
+                         </div>
+                         <div className="Box-content-show">
+                             <Loading  type="sync" tip="loading..." size="large">
+                                 <div className="loading_warpper">
+                                     Further details about the context of this alert.
+                                 </div>
+                             </Loading>
+
+                         </div>
+                     </div>
+                 </div>
+             </div>
+             {/*提示弹框组件*/}
+             <div className="Box InputBox">
+                 <div className="BoxTop">
+                     <p className="BoxTop_title">提示弹框组件</p>
+                 </div>
+                 <div className="Box-content">
+                     <div className="Box-flex">
+                         <div className="Box-tips">
+                             <p className="tips">type：success</p>
+                         </div>
+                         <div className="Box-content-show">
+                           <div className="alert_container">
+                               弹出框父窗口
+                               <div className="alert_btn" onClick={this.alert.bind(this,'success')}>弹出提示框</div>
+                               <Alert type="success"  show={this.state.successAlert} title="提示信息"></Alert>
+                           </div>
+                         </div>
+                     </div>
+                 </div>
+                 <div className="Box-content">
+                 <div className="Box-flex">
+                     <div className="Box-tips">
+                         <p className="tips">type：error</p>
+                     </div>
+                     <div className="Box-content-show">
+                         <div className="alert_container">
+                             弹出框父窗口
+                             <div className="alert_btn" onClick={this.alert.bind(this,'error')}>弹出提示框</div>
+                             <Alert type="error" show={this.state.errorAlert} title="提示信息"></Alert>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+                 <div className="Box-content">
+                     <div className="Box-flex">
+                         <div className="Box-tips">
+                             <p className="tips">type：tips</p>
+                         </div>
+                         <div className="Box-content-show">
+                             <div className="alert_container">
+                                 弹出框父窗口
+                                 <div className="alert_btn" onClick={this.alert.bind(this,'tips')}>弹出提示框</div>
+                                 <Alert type="tips" show={this.state.tipsAlert} title="提示信息"></Alert>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                 <div className="Box-content">
+                     <div className="Box-flex">
+                         <div className="Box-tips">
+                             <p className="tips">type：btn-success</p>
+                         </div>
+                         <div className="Box-content-show">
+                             <div className="alert_container">
+                                 弹出框父窗口
+                                 <div className="alert_btn" onClick={this.alert.bind(this,'btnsuccess')}>弹出提示框</div>
+                                 <Alert type="btn-success"  show={this.state.btnsuccessAlert}  title="提示信息"></Alert>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                 <div className="Box-content">
+                     <div className="Box-flex">
+                         <div className="Box-tips">
+                             <p className="tips">type：btn-error</p>
+                         </div>
+                         <div className="Box-content-show">
+                             <div className="alert_container">
+                                 弹出框父窗口
+                                 <div className="alert_btn" onClick={this.alert.bind(this,'btnerror')}>弹出提示框</div>
+                                 <Alert type="btn-error"  show={this.state.btnerrorAlert}  title="提示信息"></Alert>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                 <div className="Box-content">
+                     <div className="Box-flex">
+                         <div className="Box-tips">
+                             <p className="tips">type：btn-warn</p>
+                         </div>
+                         <div className="Box-content-show">
+                             <div className="alert_container">
+                                 弹出框父窗口
+                                 <div className="alert_btn" onClick={this.alert.bind(this,'btnwarn')}>弹出提示框</div>
+                                 <Alert type="btn-warn"  show={this.state.btnwarnAlert}  title="提示信息"></Alert>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                 <div className="Box-content">
+                     <div className="Box-flex">
+                         <div className="Box-tips">
+                             <p className="tips">type：btn-query</p>
+                         </div>
+                         <div className="Box-content-show">
+                             <div className="alert_container">
+                                 弹出框父窗口
+                                 <div className="alert_btn" onClick={this.alert.bind(this,'btnquery')}>弹出提示框</div>
+                                 <Alert type="btn-query"  show={this.state.btnqueryAlert}  title="提示信息"></Alert>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                 <div className="Box-content">
+                     <div className="Box-flex">
+                         <div className="Box-tips">
+                             <p className="tips">type：btn-tips</p>
+                         </div>
+                         <div className="Box-content-show">
+                             <div className="alert_container">
+                                 弹出框父窗口
+                                 <div className="alert_btn" onClick={this.alert.bind(this,'btntips')}>弹出提示框</div>
+                                 <Alert type="btn-tips"  show={this.state.btntipsAlert}  title="提示信息"></Alert>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                 <div className="Box-content">
+                     <div className="Box-flex">
+                         <div className="Box-tips">
+                             <p className="tips">type：btn-success+abstract</p>
+                         </div>
+                         <div className="Box-content-show">
+                             <div className="alert_container">
+                                 弹出框父窗口
+                                 <div className="alert_btn" onClick={this.alert.bind(this,'btnsuccess')}>弹出提示框</div>
+                                 <Alert type="btn-success"  show={this.state.btnsuccessAlert}  title="提示信息" abstract="这是一个提示框！"></Alert>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                 <div className="Box-content">
+                     <div className="Box-flex">
+                         <div className="Box-tips">
+                             <p className="tips">type：btn-error+abstract</p>
+                         </div>
+                         <div className="Box-content-show">
+                             <div className="alert_container">
+                                 弹出框父窗口
+                                 <div className="alert_btn" onClick={this.alert.bind(this,'btnerror')}>弹出提示框</div>
+                                 <Alert type="btn-error"  show={this.state.btnerrorAlert}  title="提示信息"></Alert>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                 <div className="Box-content">
+                     <div className="Box-flex">
+                         <div className="Box-tips">
+                             <p className="tips">type：btn-warn+abstract</p>
+                         </div>
+                         <div className="Box-content-show">
+                             <div className="alert_container">
+                                 弹出框父窗口
+                                 <div className="alert_btn" onClick={this.alert.bind(this,'btnwarn')}>弹出提示框</div>
+                                 <Alert type="btn-warn"  show={this.state.btnwarnAlert}  title="提示信息"></Alert>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                 <div className="Box-content">
+                     <div className="Box-flex">
+                         <div className="Box-tips">
+                             <p className="tips">type：btn-query+abstract</p>
+                         </div>
+                         <div className="Box-content-show">
+                             <div className="alert_container">
+                                 弹出框父窗口
+                                 <div className="alert_btn" onClick={this.alert.bind(this,'btnquery')}>弹出提示框</div>
+                                 <Alert type="btn-query"  show={this.state.btnqueryAlert}  title="提示信息"></Alert>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                 <div className="Box-content">
+                     <div className="Box-flex">
+                         <div className="Box-tips">
+                             <p className="tips">type：btn-tips+abstract</p>
+                         </div>
+                         <div className="Box-content-show">
+                             <div className="alert_container">
+                                 弹出框父窗口
+                                 <div className="alert_btn" onClick={this.alert.bind(this,'btntips')}>弹出提示框</div>
+                                 <Alert type="btn-tips"  show={this.state.btntipsAlert}  title="提示信息"></Alert>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     );
+ }
 }
 
 export default App;

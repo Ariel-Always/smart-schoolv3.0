@@ -1,0 +1,130 @@
+/*组件：loading start*/
+.loading_mask{
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  .loading_point_container{
+    position: relative;
+    display: inline-block;
+    height: 54px;
+    width: 180px;
+    top: 50%;
+    margin-top: -27px;
+  }
+}
+.point_container{
+  margin: 0 auto 8px auto;
+  width: 104px;
+  height: 24px;
+  line-height: 24px;
+  .point_loading_text{
+    font-size: 16px;
+    color: #0d51c2;
+  }
+  .point{
+    float: left;
+    width: 0px;
+    height: 0px;
+    padding: 9px;
+    border-radius: 50%;
+    margin-top: 3px;
+    &:first-child{
+      margin-left: 4px;
+    }
+    &:not(:first-child){
+      margin-left: 8px;
+    }
+    &.point1{
+      @include animation(point_loading1 1s infinite);
+    }
+    &.point2{
+      @include animation(point_loading12 1s infinite);
+    }
+    &.point3{
+      @include animation(point_loading13 1s infinite);
+    }
+    &.point4{
+      @include animation(point_loading14 1s infinite);
+    }
+  }
+}
+@include keyframes(point_loading1){
+  0%{
+    background-color: #d4f0fe;
+  }
+  25%{
+    background-color:#1aadf8;
+  }
+  50%{
+    background-color:#5dc5fb;
+  }
+  75%{
+    background-color: #9eddfd;
+  }
+  100%{
+    background-color: #d4f0fe;
+  }
+};
+@include keyframes(point_loading12){
+  0%{
+
+    background-color: #9eddfd;
+  }
+  25%{
+
+    background-color: #d4f0fe;
+  }
+  50%{
+    background-color:#1aadf8;
+  }
+  75%{
+    background-color:#5dc5fb;
+  }
+  100%{
+    background-color: #9eddfd;
+  }
+};
+
+@include keyframes(point_loading13){
+  0%{
+    background-color:#5dc5fb;
+  }
+  25%{
+
+    background-color: #9eddfd;
+  }
+  50%{
+
+
+    background-color: #d4f0fe;
+  }
+  75%{
+
+    background-color:#1aadf8;
+  }
+  100%{
+    background-color:#5dc5fb;
+  }
+};
+@include keyframes(point_loading14){
+  0%{
+    background-color:#1aadf8;
+  }
+  25%{
+    background-color:#5dc5fb;
+  }
+  50%{
+    background-color: #9eddfd;
+  }
+  75%{
+    background-color: #d4f0fe;
+  }
+  100%{
+    background-color:#1aadf8;
+  }
+};
+/*组件：loading end*/
