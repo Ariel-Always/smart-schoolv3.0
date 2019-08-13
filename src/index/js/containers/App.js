@@ -537,7 +537,7 @@ class App extends React.Component {
                                     type="textarea"
                                     rows="3"
                                     cols="30"
-                                    size="large"
+                                
                                     name="textarea1"
                                     autocomplete="123"
                                 />

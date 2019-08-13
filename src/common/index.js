@@ -196,7 +196,6 @@ class Input extends React.Component {
                     value={this.state.value}
                     cols={this.state.cols}
                     placeholder={this.state.placeholder}
-                    size={this.state.size}
                     style={{ resize: 'none' }}
                     className={this.state.className}
                     disabled={this.state.disabled}
@@ -218,7 +217,6 @@ class Input extends React.Component {
             Input = (
                 <AntdInput
                     type="password"
-                    size={this.state.size}
                     value={this.state.value}
                     placeholder={this.state.placeholder}
                     className={this.state.className}
@@ -241,7 +239,6 @@ class Input extends React.Component {
             Input = (
                 <AntdInput
                     type={this.state.type}
-                    size={this.state.size}
                     value={this.state.value}
                     placeholder={this.state.placeholder}
                     className={this.state.className}
@@ -426,6 +423,7 @@ class Modal extends React.Component {
                 okText={this.state.okText}
                 maskClosable={this.state.maskClosable}
                 mask={this.state.mask}
+                maskStyle={this.props.maskStyle}
                 closable={this.state.closable}
                 bodyStyle={this.state.bodyStyle}
                 afterClose={this.state.afterClose}
