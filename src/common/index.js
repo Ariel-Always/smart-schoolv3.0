@@ -1370,6 +1370,7 @@ class Frame extends React.Component{
         let timeBarner='';
         let leftMenu = '';
         let rightContent='';
+        let otherDom = '';
         if (children){
             children.map((item)=>{
                switch (item.ref) {
@@ -1383,7 +1384,7 @@ class Frame extends React.Component{
                        rightContent = item;
                        break;
                    default:
-                      return;
+                      otherDom = item;
                }
             });
         }

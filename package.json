@@ -82,7 +82,8 @@
       "no-restricted-globals": "off",
       "no-unused-vars": "off",
       "jsx-a11y/anchor-is-valid": "off",
-      "jsx-a11y/anchor-has-content": "off"
+      "jsx-a11y/anchor-has-content": "off",
+      "array-callback-return":"off"
     }
   },
   "browserslist": {
