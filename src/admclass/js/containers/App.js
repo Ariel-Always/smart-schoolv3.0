@@ -1,13 +1,14 @@
 import React,{Component} from 'react';
-import {Table} from '../../../common';
+import {Frame} from "../../../common";
+
 class App extends Component{
     render() {
         return (
-            <div>
-                <h4>this is a Table</h4>
-                <Table></Table>
-                <h4>this is a login page click <a href="/index.html">this</a> to desktop</h4>
-            </div>
+            <Frame type="triangle" showLeftMenu={true}>
+                <div ref="frame-time-barner">这是time-barner</div>
+                <div ref="frame-left-menu">这是左侧菜单</div>
+                <div ref="frame-right-content">内容区域</div>
+            </Frame>
         );
     }
 }

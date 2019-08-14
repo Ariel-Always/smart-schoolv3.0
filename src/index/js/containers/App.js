@@ -13,7 +13,12 @@ class App extends Component {
                            enname: "Index Page",
                            image: "http://192.168.129.1:10102/CloudMgr/Themes/skin/zh/Images/block-icon.png"
                        }}
-                ></Frame>
+                  showLeftMenu={true}
+                >
+                    <div ref="frame-time-barner">这是time-barner</div>
+                    <div ref="frame-left-menu">这是左侧菜单</div>
+                    <div ref="frame-right-content">内容区域</div>
+                </Frame>
             </div>
         );
     }

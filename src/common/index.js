@@ -1359,14 +1359,34 @@ class Frame extends React.Component{
             module:props.module?props.module:'',
             userInfo:props.userInfo?props.userInfo:'',
             msg:props.msg?props.msg:false,
-            showLeftMenu:props.showLeftMenu?props.showLeftMenu:false
+            showLeftMenu:props.showLeftMenu?props.showLeftMenu:false,
+            showBarner:props.showBarner?props.showBarner:true
         }
     }
     render() {
         const {children} = this.props;
-
         let bgAnimateDom='';
         let beyondAnimateDom='';
+        let timeBarner='';
+        let leftMenu = '';
+        let rightContent='';
+        if (children){
+            children.map((item)=>{
+               switch (item.ref) {
+                   case 'frame-time-barner':
+                       timeBarner = item;
+                       break;
+                   case 'frame-left-menu':
+                       leftMenu = item;
+                       break;
+                   case 'frame-right-content':
+                       rightContent = item;
+                       break;
+                   default:
+                      return;
+               }
+            });
+        }
 
         switch (this.state.type) {
             case "oblong":
@@ -1432,7 +1452,7 @@ class Frame extends React.Component{
                         <div className="frame-home-header">
                             <div className="frame-home-header-content">
                                 <div className="frame-home-logo" style={{backgroundImage:`url(${CONFIG.logo})`}}>
-                                    <a href="#" target="_blank" rel="noopener noreferrer">{CONFIG.name}</a>
+                                    <a href="#"  rel="noopener noreferrer">{CONFIG.name}</a>
                                 </div>
 
                                 <div className="frame-home-header-menus">
@@ -1446,19 +1466,27 @@ class Frame extends React.Component{
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                         <div className="frame-block-wrapper" style={{backgroundImage:`url(${this.state.module.image})`}}>
                             <div className="frame-block-zh-name">{this.state.module.cnname}</div>
                             <div className="frame-block-en-name">{this.state.module.enname}</div>
                         </div>
                     </div>
+                    {
+                        this.state.showBarner?
+                         <div className="frame-time-bar">
+                             <div className="frame-nav-content">
+                                 {timeBarner}
+                             </div>
+                         </div>
+                         :''
+                    }
                     <div className="frame-content-wrapper clearfix">
                         <div className={`frame-content-leftside ${this.state.showLeftMenu?'':'frame-hide'}`}>
-                            {this.state.showLeftMenu?children[0]:''}
+                            {leftMenu}
                         </div>
                         <div className={`frame-content-rightside ${this.state.showLeftMenu?'':'frame-fluid'}`}>
-                            {this.state.showLeftMenu?children[1]:children}
+                            {rightContent}
                         </div>
                     </div>
                     <div className="frame-bottom">{CONFIG.footer}</div>
