@@ -12,7 +12,7 @@ function AESEncryptionBody(paramsObj, CRYPTOJSKEY = COMMONKEY, SecurityLevel) {/
         plain = getSign(paramsObj,CRYPTOJSKEY,randomString,'post');
     }
     
-    console.log(decrypt(encrypt(plain,CRYPTOJSKEY)))
+    // console.log(decrypt(encrypt(plain,CRYPTOJSKEY)))
     return encrypt(plain);
 }
 //AES加密传输参数：get
