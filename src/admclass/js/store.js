@@ -5,9 +5,9 @@ import { createLogger } from 'redux-logger';
 
 import DevTools from './DevTools'; // 辅助工具
 
-import reducers, { initialState } from './reducers';
+import rootReducers, { initialState } from './reducers';
 
-let enhancer = applyMiddleware(thunk);npm
+let enhancer = applyMiddleware(thunk);
 if (process.env.NODE_ENV === 'development') {
     enhancer = compose(
         applyMiddleware(thunk, createLogger()),
@@ -16,7 +16,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 let store = createStore(
-    reducers,
+    rootReducers,
     initialState,
     enhancer
 );

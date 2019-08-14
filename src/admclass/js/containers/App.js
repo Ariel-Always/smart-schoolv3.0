@@ -1,8 +1,12 @@
 import React,{Component} from 'react';
 import {Frame} from "../../../common";
+import {connect} from 'react-redux';
+import {HashRouter as Router,Route,Link} from 'react-router-dom';
 
 class App extends Component{
     render() {
+        const {LoginUserInfo} = this.props;
+
         return (
             <Frame type="triangle" showLeftMenu={true}>
                 <div ref="frame-time-barner">这是time-barner</div>
@@ -12,4 +16,10 @@ class App extends Component{
         );
     }
 }
-export default App;
+const  mapStateToProps = (state) => {
+    let {LoginUserInfo} = state;
+    return {
+        LoginUserInfo
+    }
+};
+export default connect(mapStateToProps)(App);
