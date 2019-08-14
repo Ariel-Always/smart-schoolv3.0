@@ -1,7 +1,10 @@
-const UIState = (state={},actions) => {
+import uiStateUpdate from '../actions/UIState';
+const UIState = (state={appLoading:true},actions) => {
     switch (actions.type) {
-        case "login":
-            return {...state};
+        case uiStateUpdate.APPLOADINGOPEN:
+             return {appLoading:true};
+        case uiStateUpdate.APPLOADINGCLOSE:
+            return {appLoading:false};
         default:
             return state;
     }

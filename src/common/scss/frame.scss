@@ -263,7 +263,7 @@ $img_url:'#{$image_url}/frame';
   height: 110px;
   margin: 0 auto;
   box-sizing: border-box;
-  padding-left: 97px;
+  padding-left:110px;
   padding-top: 36px;
   background-repeat: no-repeat;
   background-position: 28px 27px;
@@ -392,6 +392,9 @@ $img_url:'#{$image_url}/frame';
 .frame-content-wrapper{
   width: 1200px;
   margin:0 auto;
+  &.barnerHide{
+    margin-top: 20px;
+  }
 }
 .frame-content-rightside{
   float: left;

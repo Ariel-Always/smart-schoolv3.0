@@ -1352,19 +1352,11 @@ class Menu extends React.Component {
 
 /*界面框架*/
 class Frame extends React.Component{
-    constructor(props) {
-        super(props);
-        this.state={
-            type:props.type?props.type:'triangle',
-            module:props.module?props.module:'',
-            userInfo:props.userInfo?props.userInfo:'',
-            msg:props.msg?props.msg:false,
-            showLeftMenu:props.showLeftMenu?props.showLeftMenu:false,
-            showBarner:props.showBarner?props.showBarner:true
-        }
-    }
+
+
     render() {
-        const {children} = this.props;
+        const {children,type,module,userInfo,msg,showLeftMenu,showBarner=true,...reset} = this.props;
+
         let bgAnimateDom='';
         let beyondAnimateDom='';
         let timeBarner='';
@@ -1389,7 +1381,7 @@ class Frame extends React.Component{
             });
         }
 
-        switch (this.state.type) {
+        switch (type) {
             case "oblong":
                 bgAnimateDom = <div className="frame-oblong-animation"></div>
                 break;
@@ -1442,9 +1434,9 @@ class Frame extends React.Component{
 
 
         return (
-            <div className="frame-drag-flag">
+            <div className="frame-drag-flag" {...reset}>
                     <div className="frame-header-wrapper">
-                        <div className={`frame-header-bg ${this.state.type}`}>
+                        <div className={`frame-header-bg ${type?type:''}`}>
                             <div className="frame-header-star-bg">
                                 {bgAnimateDom}
                             </div>   {/*星星的背景图*/}
@@ -1459,22 +1451,22 @@ class Frame extends React.Component{
                                 <div className="frame-home-header-menus">
                                     <div className="frame-home-header-menu">
                                         <input className="frame-home-logout" title="退出" type="button" value="" />
-                                        <a href="/html/personal/index.html" rel="noopener noreferrer" target="_blank" className="frame-home-username">{this.state.userInfo.name}</a>
-                                        <span className="frame-home-userpic" style={{backgroundImage:`url(${this.state.userInfo.image})`}}></span>
+                                        <a href="/html/personal/index.html" rel="noopener noreferrer" target="_blank" className="frame-home-username">{userInfo&&userInfo.name?userInfo.name:''}</a>
+                                        <span className="frame-home-userpic" style={{backgroundImage:`url(${userInfo&&userInfo.image?userInfo.image:''})`}}></span>
                                     </div>
                                     <div className="frame-home-header-menu">
-                                        <a href="http://www.baidu.com" rel="noopener noreferrer" target="_blank" className={`frame-home-msg-menu ${this.state.msg?'msg':''}`} title="我的消息"></a>
+                                        <a href="http://www.baidu.com" rel="noopener noreferrer" target="_blank" className={`frame-home-msg-menu ${msg?'msg':''}`} title="我的消息"></a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="frame-block-wrapper" style={{backgroundImage:`url(${this.state.module.image})`}}>
-                            <div className="frame-block-zh-name">{this.state.module.cnname}</div>
-                            <div className="frame-block-en-name">{this.state.module.enname}</div>
+                        <div className="frame-block-wrapper" style={{backgroundImage:`url(${module&&module.image?module.image:''})`}}>
+                            <div className="frame-block-zh-name">{(module&&module.cnname)?module.cnname:''}</div>
+                            <div className="frame-block-en-name">{(module&&module.enname)?module.enname:''}</div>
                         </div>
                     </div>
                     {
-                        this.state.showBarner?
+                        showBarner?
                          <div className="frame-time-bar">
                              <div className="frame-nav-content">
                                  {timeBarner}
@@ -1482,11 +1474,11 @@ class Frame extends React.Component{
                          </div>
                          :''
                     }
-                    <div className="frame-content-wrapper clearfix">
-                        <div className={`frame-content-leftside ${this.state.showLeftMenu?'':'frame-hide'}`}>
+                    <div className={`frame-content-wrapper clearfix ${showBarner?'':'barnerHide'}`}>
+                        <div className={`frame-content-leftside ${showLeftMenu?'':'frame-hide'}`}>
                             {leftMenu}
                         </div>
-                        <div className={`frame-content-rightside ${this.state.showLeftMenu?'':'frame-fluid'}`}>
+                        <div className={`frame-content-rightside ${showLeftMenu?'':'frame-fluid'}`}>
                             {rightContent}
                         </div>
                     </div>
