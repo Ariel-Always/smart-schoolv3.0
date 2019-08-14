@@ -123,6 +123,7 @@ imgArray.remove('common');  //去除common下的image的目录，common下的ima
 jsArray.remove(resolveApp('src/common/index.js').replace(/\\/g,'/')); //去除所有入口index.js路径里面的common的路径，common的index.js不作为入口文件
 
 
+
 // config after eject: we're in ./config/
 module.exports = {
   dotenv: resolveApp('.env'),
