@@ -12,7 +12,7 @@ function AESEncryptionBody(paramsObj, CRYPTOJSKEY = COMMONKEY, SecurityLevel) {/
         plain = getSign(paramsObj,CRYPTOJSKEY,randomString,'post');
     }
     
-    console.log(decrypt(encrypt(plain,CRYPTOJSKEY)))
+    // console.log(decrypt(encrypt(plain,CRYPTOJSKEY)))
     return encrypt(plain);
 }
 //AES加密传输参数：get
@@ -24,7 +24,7 @@ function AESEncryptionUrl(url, CRYPTOJSKEY = COMMONKEY, SecurityLevel) {//加密
 
 
 
-return host + '?' + encrypt(params);
+return host + '?' + encrypt(params,CRYPTOJSKEY);
 }
 // 加密
 function encrypt(plaintText,CRYPTOJSKEY) {
@@ -100,8 +100,10 @@ function getSign(param, securityKey, randomString, method) {  // 获取签名   
             return "?randomString=" + randomString + "&sign=" + calculateSign(param, securityKey);
         }else if(method === 'post'){
             param['randomString'] = randomString;
-            param['sign'] = calculateSign(param,securityKey);
-            return JSON.stringify(param);
+            let newParam = $.param(param);//JSON序列化为字符串：a=1&b=2
+            let sign = calculateSign(newParam,securityKey);
+            //return JSON.stringify(param);
+            return newParam + '&' + sign;
         }
     }
     catch(err){
