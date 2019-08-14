@@ -125,8 +125,6 @@ module.exports = function(webpackEnv) {
          v].filter(Boolean);
   }); //根据所有的入口index.js（除了common目录下）来设置入口entry
 
-  console.log(entrys);
-
   const  modulehtmls = paths.htmlArray.map(function (v) { //设置其他模块的入口index.html
       let arr = v.split('/');
       return new HtmlWebpackPlugin({
