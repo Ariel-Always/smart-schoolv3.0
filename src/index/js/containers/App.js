@@ -1,6 +1,12 @@
 import React,{Component} from 'react';
 import {Frame} from "../../../common";
+import Fetch from './testFetch';
 class App extends Component {
+
+    
+    componentWillMount(){
+        sessionStorage.setItem('token','test')
+    }
     render() {
         return (
             <div>
@@ -17,7 +23,9 @@ class App extends Component {
                 >
                     <div ref="frame-time-barner">这是time-barner</div>
                     <div ref="frame-left-menu">这是左侧菜单</div>
-                    <div ref="frame-right-content">内容区域</div>
+                    <div ref="frame-right-content">
+                        <Fetch></Fetch>
+                    </div>
                 </Frame>
             </div>
         );
