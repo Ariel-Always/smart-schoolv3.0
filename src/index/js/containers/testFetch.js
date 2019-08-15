@@ -14,6 +14,8 @@ class Fetch extends React.Component {
 
     handleGet() {
         getData('https://www.easy-mock.com/mock/5d4e8764c0779262e01c9b28/example/UserArchivesMsgOverView?tips=test').then(res => {
+           return res.json()
+        }).then(res => {
             console.log(res)
         });
     }
