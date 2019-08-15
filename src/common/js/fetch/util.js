@@ -132,7 +132,7 @@ function formatDate(url) {
             fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     
     let nonce = fetch(url,{
-        method: 'post',//*post、get、put、delete，此项为请求方法相关的配置 
+        method: 'get',//*post、get、put、delete，此项为请求方法相关的配置
         mode: 'cors',//no-cors(跨域模式但服务器端不支持cors),*cors(跨域模式，需要服务器通过Access-control-Allow-Origin来
         //允许指定的源进行跨域),same-origin(同源)
         cache: 'no-cache',//*no-cache,default,reload,force-cache,only-ifcached,此项为缓存相关配置
