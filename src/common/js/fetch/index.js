@@ -8,6 +8,21 @@ import {AESEncryptionBody,AESEncryptionUrl,requestSecure} from './util'
 
 
 function postData(url, paramsObj, SecurityLevel) {
+
+    let token = sessionStorage.getItem('token');
+    let Autorization = null;
+
+    if (!token && SecurityLevel !== 1) {
+        console.log('token无效，请重新登录');//后期会进行无token的事件操作
+        return new Promise(function (resolve,reject) {
+            if (resolve){
+                resolve({Status:4001,Msg:"token无效，请重新登录"});
+            }else{
+                reject({Status:4000,Msg:"错误！"});
+            }
+        });
+    }
+
     let result = fetch(url, {
         method: 'post',//*post、get、put、delete，此项为请求方法相关的配置 
         mode: 'cors',//no-cors(跨域模式但服务器端不支持cors),*cors(跨域模式，需要服务器通过Access-control-Allow-Origin来
@@ -39,6 +54,7 @@ function postData(url, paramsObj, SecurityLevel) {
 }
 
 function getData(url, SecurityLevel) {
+
     let result = fetch(AESEncryptionUrl(url,TESTKEY), {
         method: 'get',//*post、get、put、delete，此项为请求方法相关的配置 
         mode: 'cors',//no-cors(跨域模式但服务器端不支持cors),*cors(跨域模式，需要服务器通过Access-control-Allow-Origin来
