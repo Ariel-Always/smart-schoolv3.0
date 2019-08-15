@@ -13,12 +13,12 @@ class Fetch extends React.Component {
     }
 
     handleGet() {
-        getData('https://www.easy-mock.com/mock/5d4e8764c0779262e01c9b28/example/UserArchivesMsgOverView?tips=test', 4).then(res => {
+        getData('https://www.easy-mock.com/mock/5d4e8764c0779262e01c9b28/example/UserArchivesMsgOverView?tips=test').then(res => {
             console.log(res)
         });
     }
     handlePost() {
-        postData('https://www.easy-mock.com/mock/5d4e8764c0779262e01c9b28/example/upload',{tips:'test'}, 4).then(res => {
+        postData('https://www.easy-mock.com/mock/5d4e8764c0779262e01c9b28/example/upload',{tips:'test'}).then(res => {
             console.log(res)
         });
     }

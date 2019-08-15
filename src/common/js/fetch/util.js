@@ -6,10 +6,9 @@ import md5 from 'md5'
 import $ from 'jquery'
 //import { type } from 'os';
 
-let timeStamp = formatDate('http://192.168.2.248:8075/Global/GetTimestramp');//生成统一的时间戳
-let randomString = getRandomString(8, timeStamp);
+
 //AES加密传输参数：post
-function AESEncryptionBody(paramsObj,CRYPTOJSKEY = COMMONKEY) {//加密所使用的的key，需要与服务器端的解密key相对应
+function AESEncryptionBody(paramsObj, CRYPTOJSKEY = COMMONKEY) {//加密所使用的的key，需要与服务器端的解密key相对应
 
     let plain = $.param(paramsObj);//json序列化
     // if (SecurityLevel === 4) {
@@ -17,7 +16,7 @@ function AESEncryptionBody(paramsObj,CRYPTOJSKEY = COMMONKEY) {//加密所使用
     // }
 
     // console.log(decrypt(encrypt(plain,CRYPTOJSKEY)))
-    let body = {p:encrypt(plain,CRYPTOJSKEY)}
+    let body = { p: encrypt(plain, CRYPTOJSKEY) }
     return JSON.stringify(body);
 }
 //AES加密传输参数：get
@@ -31,7 +30,7 @@ function AESEncryptionUrl(url, CRYPTOJSKEY = COMMONKEY, SecurityLevel) {//加密
 }
 
 //请求安全，根据安全级别SecurityLevel返回token+签名
-function requestSecure(params, securityKey,SecurityLevel = 1) {
+function requestSecure(params, securityKey, SecurityLevel = 1) {
     let token = sessionStorage.getItem('token');
     let Autorization = null;
 
@@ -45,9 +44,11 @@ function requestSecure(params, securityKey,SecurityLevel = 1) {
     } else if (SecurityLevel === 2) {//级别2为带上token
         Autorization = "X-Token=" + token;
     } else if (SecurityLevel === 3) {//级别2为带上token和签名
-        Autorization = "X-Token=" + token + '&sign=' + getSign(token,params,securityKey);
+        Autorization = "X-Token=" + token + '&sign=' + getSign(token, params, securityKey);
     } else if (SecurityLevel === 4) {//级别4为带上token+随机字符串+时间戳+签名
-        Autorization = "X-Token=" + token + '&randomString=' + randomString + '&sign=' + getSign(token,params,securityKey,randomString);
+        let timeStamp = formatDate('http://192.168.2.248:8075/Global/GetTimestramp');//生成统一的时间戳
+        let randomString = getRandomString(8, timeStamp);
+        Autorization = "X-Token=" + token + '&randomString=' + randomString + '&sign=' + getSign(token, params, securityKey, randomString);
     } else {
         console.log('SecurityLevel有误，请重新设置');
     }
@@ -68,7 +69,7 @@ function getRandomString(len, timeStamp) {
     return randomStr + timeStamp;
 }
 
-function getSign(token,params, securityKey, randomString) {  // 获取签名   返回一个包含"?"的参数串
+function getSign(token, params, securityKey, randomString) {  // 获取签名   返回一个包含"?"的参数串
     try {
 
         let param = handleParam(params);//处理params,返回序列化后的params
@@ -130,14 +131,14 @@ function formatDate(url) {
     for (var k in o)
         if (new RegExp("(" + k + ")").test(fmt))
             fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-    
-    let nonce = fetch(url,{
+
+    let nonce = fetch(url, {
         method: 'get',//*post、get、put、delete，此项为请求方法相关的配置
         mode: 'cors',//no-cors(跨域模式但服务器端不支持cors),*cors(跨域模式，需要服务器通过Access-control-Allow-Origin来
         //允许指定的源进行跨域),same-origin(同源)
         cache: 'no-cache',//*no-cache,default,reload,force-cache,only-ifcached,此项为缓存相关配置
         credentials: 'include',//*include(携带cookie)、same-origin(cookie同源携带)、omit(不携带)
-        
+
         headers: {
             'Accept': 'application/json, text/plain, */*',//请求头，代表的、发送端（客户端）希望接收的数据类型
             'Content-Type': 'application/x-www-form-urlencodeed',//实体头，代表发送端（客户端|服务器）发送的实体数据的数据类型
@@ -151,8 +152,8 @@ function formatDate(url) {
 
     }).then(json => {
         console.log(json)
-        if(!json)
-        return 
+        if (!json)
+            return
         return json.data.randomStr;
     })
 
