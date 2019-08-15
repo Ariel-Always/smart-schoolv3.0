@@ -41,11 +41,9 @@ function postData(url, paramsObj, SecurityLevel = 1) {
     })
 
     result.then(res => {//做提前处理
-        return res.json()
+        console.log(res)
+        return res;
     }, err => {
-
-    }).then(json => {
-        console.log(json);
 
     })
 
@@ -85,12 +83,12 @@ function getData(url, SecurityLevel = 1) {
         
     })
 
-    result.then(res => {
-        return res.json()
+    result.then(res => {//做提前处理
+        
+        console.log(res)
+        return res;
     }, err => {
 
-    }).then(json => {
-        console.log(json)
     })
 
     return result;
