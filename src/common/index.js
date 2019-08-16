@@ -621,12 +621,12 @@ class Search extends React.Component {
         }
     }//键盘enter事件
     render() {
-        const { width, select, placeHolder, selectOptions, onClickSearch, onCancelSearch } = this.props;
+        const { width, select, placeHolder, selectOptions, onClickSearch, onCancelSearch,className} = this.props;
         return (
-            <div className="search_container" style={{
+            <div className={`search_container ${className?className:''}`} style={{
                 width: width ? width : '',
                 borderColor: this.state.inputFocus ? '#5897ed' : '#bac7d9'
-            }}>
+            }} >
                 <table className="search_wrapper_table">
                     <tbody>
                         <tr>

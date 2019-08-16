@@ -164,6 +164,9 @@ function formatDate(url) {
         if (!json)
             return
         return json.data.randomStr;*/
+<<<<<<< HEAD
+>>>>>>> 2a462e4c0801b83fb24b170b5c5171cb01721dd0
+=======
 >>>>>>> 2a462e4c0801b83fb24b170b5c5171cb01721dd0
     })
 
