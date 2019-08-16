@@ -1,12 +1,11 @@
-import uiStateUpdate from '../actions/UIState';
-const UIState = (state={appLoading:true},actions) => {
-    switch (actions.type) {
-        case uiStateUpdate.APPLOADINGOPEN:
-             return {appLoading:true};
-        case uiStateUpdate.APPLOADINGCLOSE:
-            return {appLoading:false};
-        default:
-            return state;
-    }
-};
+import {combineReducers} from 'redux'
+import AppLoading from './ui/AppLoading';
+import AppAlert from './ui/AppAlert';
+const  UIState = combineReducers({
+    AppLoading,
+    AppAlert
+});
+
 export default UIState;
+
+

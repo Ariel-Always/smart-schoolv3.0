@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
-import LoginUserInfo from './LoginUserInfo';
+import DataState from './DataState';
 import UIState from './UIState';
 
 export let initialState = {};
 
 let rootReducers = combineReducers({
-    LoginUserInfo,
+    DataState,
     UIState
 });
 export default rootReducers;

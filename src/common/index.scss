@@ -75,173 +75,177 @@ body{
 
 }
 
-.btn-large {
-  min-width: 240px;
-  height: 42px;
-  line-height: 42px;
+.ant-btn{
+  &.btn-large {
+    min-width: 240px;
+    height: 42px;
+    line-height: 42px;
 
-  font-size: 20px;
-  padding: 0 25px;
-}
-
-.btn-small {
-  min-width: 72px;
-  height: 28px;
-  line-height: 28px;
-  font-size: 14px;
-  padding: 0 15px;
-}
-
-.btn-normal {
-  min-width: 160px;
-  height: 32px;
-  line-height: 32px;
-  font-size: 16px;
-  padding: 0 20px;
-}
-
-.btn-size {
-  width: auto;
-  height: 32px;
-  line-height: 32px;
-  font-size: 16px;
-  padding: 0 20px;
-}
-
-.btn-orange {
-  background-image: linear-gradient(90deg,
-          #ffba15 0%,
-          #ff9f0b 45%,
-          #ff8400 100%
-  );
-
-  &:hover {
-    background-image: linear-gradient(90deg,
-            #ffcf5b 0%,
-            #ffb42e 45%,
-            #ff9900 100%
-    );
-    color: #fff;
+    font-size: 20px;
+    padding: 0 25px;
   }
-  &:focus {
+
+  &.btn-small {
+    min-width: 72px;
+    height: 28px;
+    line-height: 28px;
+    font-size: 14px;
+    padding: 0 15px;
+  }
+
+  &.btn-normal {
+    min-width: 160px;
+    height: 32px;
+    line-height: 32px;
+    font-size: 16px;
+    padding: 0 20px;
+  }
+
+  &.btn-size {
+    width: auto;
+    height: 32px;
+    line-height: 32px;
+    font-size: 16px;
+    padding: 0 20px;
+  }
+
+  &.btn-orange {
     background-image: linear-gradient(90deg,
             #ffba15 0%,
             #ff9f0b 45%,
             #ff8400 100%
     );
-    color: #fff;
-  }
-}
 
-.btn-green {
-  background-image: linear-gradient(90deg,
-          #00e566 0%,
-          #12d033 45%,
-          #23ba00 100%
-  );
-  &:hover {
-    background-image: linear-gradient(90deg,
-            #00f36d 0%,
-            #14e037 45%,
-            #27cd00 100%
-    );
-    color: #fff;
+    &:hover {
+      background-image: linear-gradient(90deg,
+              #ffcf5b 0%,
+              #ffb42e 45%,
+              #ff9900 100%
+      );
+      color: #fff;
+    }
+    &:focus {
+      background-image: linear-gradient(90deg,
+              #ffba15 0%,
+              #ff9f0b 45%,
+              #ff8400 100%
+      );
+      color: #fff;
+    }
   }
-  &:focus {
+
+  &.btn-green {
     background-image: linear-gradient(90deg,
             #00e566 0%,
             #12d033 45%,
             #23ba00 100%
     );
-    color: #fff;
+    &:hover {
+      background-image: linear-gradient(90deg,
+              #00f36d 0%,
+              #14e037 45%,
+              #27cd00 100%
+      );
+      color: #fff;
+    }
+    &:focus {
+      background-image: linear-gradient(90deg,
+              #00e566 0%,
+              #12d033 45%,
+              #23ba00 100%
+      );
+      color: #fff;
+    }
   }
-}
 
-.btn-blue {
-  background-image: linear-gradient(90deg,
-          #0fc1fc 0%,
-          #1da4fe 100%
-  );
-  &:hover {
-    background-image: linear-gradient(90deg,
-            #32ccff 0%,
-            #3ab0ff 100%
-    );
-    color: #fff;
-  }
-  &:focus {
+  &.btn-blue {
     background-image: linear-gradient(90deg,
             #0fc1fc 0%,
             #1da4fe 100%
     );
-    color: #fff;
+    &:hover {
+      background-image: linear-gradient(90deg,
+              #32ccff 0%,
+              #3ab0ff 100%
+      );
+      color: #fff;
+    }
+    &:focus {
+      background-image: linear-gradient(90deg,
+              #0fc1fc 0%,
+              #1da4fe 100%
+      );
+      color: #fff;
+    }
   }
-}
 
-.btn-red {
-  background-image: linear-gradient(90deg,
-          #ff593e 0%,
-          #ff1b10 100%
-  );
-  &:hover {
-    background-image: linear-gradient(90deg,
-            #ff6b53 0%,
-            #ff352b 100%
-    );
-    color: #fff;
-  }
-  &:focus {
+  &.btn-red {
     background-image: linear-gradient(90deg,
             #ff593e 0%,
             #ff1b10 100%
     );
-    color: #fff;
+    &:hover {
+      background-image: linear-gradient(90deg,
+              #ff6b53 0%,
+              #ff352b 100%
+      );
+      color: #fff;
+    }
+    &:focus {
+      background-image: linear-gradient(90deg,
+              #ff593e 0%,
+              #ff1b10 100%
+      );
+      color: #fff;
+    }
   }
-}
 
-.btn-mazarine {
-  background-image: linear-gradient(90deg,
-          #4585ce 0%,
-          #236bbe 62%,
-          #0051ae 100%
-  );
-  &:hover {
-    background-image: linear-gradient(90deg,
-            #369ae0 0%,
-            #1f82dd 62%,
-            #0769da 100%
-    );
-    color: #fff;
-  }
-  &:focus {
+  &.btn-mazarine {
     background-image: linear-gradient(90deg,
             #4585ce 0%,
             #236bbe 62%,
             #0051ae 100%
     );
-    color: #fff;
+    &:hover {
+      background-image: linear-gradient(90deg,
+              #369ae0 0%,
+              #1f82dd 62%,
+              #0769da 100%
+      );
+      color: #fff;
+    }
+    &:focus {
+      background-image: linear-gradient(90deg,
+              #4585ce 0%,
+              #236bbe 62%,
+              #0051ae 100%
+      );
+      color: #fff;
+    }
+  }
+
+  &.btn-disabled {
+    background-image: linear-gradient(90deg,
+            #d1d1d1 0%,
+            #949494 100%
+    );
+    color: #fff !important;
+    &:hover {
+      background-image: linear-gradient(90deg,
+              #d1d1d1 0%,
+              #949494 100%
+      );
+    }
+    &:focus {
+      background-image: linear-gradient(90deg,
+              #d1d1d1 0%,
+              #949494 100%
+      );
+    }
   }
 }
 
-.btn-disabled {
-  background-image: linear-gradient(90deg,
-          #d1d1d1 0%,
-          #949494 100%
-  );
-  color: #fff !important;
-  &:hover {
-    background-image: linear-gradient(90deg,
-            #d1d1d1 0%,
-            #949494 100%
-    );
-  }
-  &:focus {
-    background-image: linear-gradient(90deg,
-            #d1d1d1 0%,
-            #949494 100%
-    );
-  }
-}
+
 
 /*default*/
 

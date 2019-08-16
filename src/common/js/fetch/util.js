@@ -6,7 +6,6 @@ import md5 from 'md5'
 import $ from 'jquery'
 //import { type } from 'os';
 
-
 //AES加密传输参数：post
 function AESEncryptionBody(paramsObj, CRYPTOJSKEY = COMMONKEY) {//加密所使用的的key，需要与服务器端的解密key相对应
 
@@ -147,14 +146,15 @@ function formatDate(url) {
         // referrer: 'no-referrer',//该首部字段会告知服务器请求的原始资源的URI
         // 注意post时候参数的形式  
     }).then(res => {
-        return res.json()
+       console.log(res);
     }, err => {
 
     }).then(json => {
-        console.log(json)
+        console.log(json);
+       /* console.log(json)
         if (!json)
             return
-        return json.data.randomStr;
+        return json.data.randomStr;*/
     })
 
     return nonce;
