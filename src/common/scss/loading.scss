@@ -127,4 +127,19 @@
     background-color:#1aadf8;
   }
 };
+
+.ant-spin-container{
+  &.ant-spin-blur:after{
+    opacity:1;
+  }
+}
+
+.ant-spin-nested-loading{
+  &>div{
+    &>div.ant-spin{
+      max-height: 600px;
+    }
+  }
+
+}
 /*组件：loading end*/

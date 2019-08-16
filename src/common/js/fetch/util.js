@@ -6,7 +6,6 @@ import md5 from 'md5'
 import $ from 'jquery'
 //import { type } from 'os';
 
-
 //AES加密传输参数：post
 function AESEncryptionBody(paramsObj, CRYPTOJSKEY = COMMONKEY) {//加密所使用的的key，需要与服务器端的解密key相对应
 
@@ -146,6 +145,7 @@ function formatDate(url) {
         redirect: 'follow',//manual、*follow(自动重定向)、error，此项为重定向的相关配置
         // referrer: 'no-referrer',//该首部字段会告知服务器请求的原始资源的URI
         // 注意post时候参数的形式  
+<<<<<<< HEAD
     })
     nonce.then(res => {
         
@@ -153,6 +153,18 @@ function formatDate(url) {
         return res
     }, err => {
         console.log(err)
+=======
+    }).then(res => {
+       console.log(res);
+    }, err => {
+
+    }).then(json => {
+        console.log(json);
+       /* console.log(json)
+        if (!json)
+            return
+        return json.data.randomStr;*/
+>>>>>>> 2a462e4c0801b83fb24b170b5c5171cb01721dd0
     })
 
     console.log(nonce)
