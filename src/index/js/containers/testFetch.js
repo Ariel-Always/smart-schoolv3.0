@@ -13,14 +13,14 @@ class Fetch extends React.Component {
     }
 
     handleGet() {
-        getData('https://www.easy-mock.com/mock/5d4e8764c0779262e01c9b28/example/UserArchivesMsgOverView?tips=test').then(res => {
+        getData('https://www.easy-mock.com/mock/5d4e8764c0779262e01c9b28/example/UserArchivesMsgOverView?tips=test',4).then(res => {
            return res.json()
         }).then(res => {
             console.log(res)
         });
     }
     handlePost() {
-        postData('https://www.easy-mock.com/mock/5d4e8764c0779262e01c9b28/example/upload',{tips:'test'}).then(res => {
+        postData('https://www.easy-mock.com/mock/5d4e8764c0779262e01c9b28/example/upload',{tips:'test'},4).then(res => {
             console.log(res)
         });
     }
@@ -28,7 +28,7 @@ class Fetch extends React.Component {
     render() {
         return (
             <div>
-                <Button style={{margin:20+'px'}} onClick={this.handleGet}>get</Button>
+                <Button style={{margin:20+'px'}} color='red' shape='round' onClick={this.handleGet}>get</Button>
                 <Button style={{margin:20+'px'}} onClick={this.handlePost}>post</Button>
             </div>
 

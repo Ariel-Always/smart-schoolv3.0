@@ -586,6 +586,54 @@ textarea.ant-input {
     }
   }
 }
+
+
+.MenuBox_top{
+    width: 240px;
+    height: 80px;
+    background-color: #f5f5f5;
+    border-radius: 12px 12px 0px 0px;
+
+
+    
+}
+
+.menu_top_pic1{
+  background: url(./images/left-menu/new/pic1.png) center top no-repeat;
+  background-size: contain;
+}
+.menu_top_pic2{
+  background: url(./images/left-menu/new/pic2.png) center top no-repeat;
+  background-size: contain;
+}
+.menu_top_pic3{
+  background: url(./images/left-menu/new/pic3.png) center top no-repeat;
+  background-size: contain;
+}
+.menu_top_pic4{
+  background: url(./images/left-menu/new/pic4.png) center top no-repeat;
+  background-size: contain;
+}
+.menu_top_pic5{
+  background: url(./images/left-menu/new/pic5.png) center top no-repeat;
+  background-size: contain;
+}
+.menu_top_pic6{
+  background: url(./images/left-menu/new/pic6.png) center top no-repeat;
+  background-size: contain;
+}
+.menu_top_pic7{
+  background: url(./images/left-menu/new/pic7.png) center top no-repeat;
+  background-size: contain;
+}
+.menu_top_pic8{
+  background: url(./images/left-menu/new/pic8.png) center top no-repeat;
+  background-size: contain;
+}
+.menu_top_pic9{
+  background: url(./images/left-menu/new/pic9.png) center top no-repeat;
+  background-size: contain;
+}
 //分页
 @import "./scss/pagination";
 //搜索

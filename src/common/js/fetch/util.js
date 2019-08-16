@@ -134,7 +134,7 @@ function formatDate(url) {
 
     let nonce = fetch(url, {
         method: 'get',//*post、get、put、delete，此项为请求方法相关的配置
-        mode: 'cors',//no-cors(跨域模式但服务器端不支持cors),*cors(跨域模式，需要服务器通过Access-control-Allow-Origin来
+        mode: 'no-cors',//no-cors(跨域模式但服务器端不支持cors),*cors(跨域模式，需要服务器通过Access-control-Allow-Origin来
         //允许指定的源进行跨域),same-origin(同源)
         cache: 'no-cache',//*no-cache,default,reload,force-cache,only-ifcached,此项为缓存相关配置
         credentials: 'include',//*include(携带cookie)、same-origin(cookie同源携带)、omit(不携带)
@@ -146,17 +146,16 @@ function formatDate(url) {
         redirect: 'follow',//manual、*follow(自动重定向)、error，此项为重定向的相关配置
         // referrer: 'no-referrer',//该首部字段会告知服务器请求的原始资源的URI
         // 注意post时候参数的形式  
-    }).then(res => {
-        return res.json()
+    })
+    nonce.then(res => {
+        
+        console.log(res.json())
+        return res
     }, err => {
-
-    }).then(json => {
-        console.log(json)
-        if (!json)
-            return
-        return json.data.randomStr;
+        console.log(err)
     })
 
+    console.log(nonce)
     return nonce;
 }
 // 加密

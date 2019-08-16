@@ -7,7 +7,7 @@ import './js/leftMenu'
 import {
     Radio as AntRadio, Checkbox as AntCheckBox, Table as AntTable,
     Pagination as AntPagination, Button as AntdButton, Input as AntdInput,
-    Modal as AntdModal, Icon, ConfigProvider,Spin
+    Modal as AntdModal, Icon, ConfigProvider, Spin
 } from 'antd';
 import { Scrollbars } from 'react-custom-scrollbars';
 import zhCN from 'antd/es/locale/zh_CN';
@@ -44,7 +44,7 @@ class Button extends React.Component {
             onClick: props.onClick,
             onChange: props.onChange,
             style: props.style,
-            className: props.className?props.className:''
+            className: props.className ? props.className : ''
 
         }
     }
@@ -145,8 +145,8 @@ class Button extends React.Component {
                     onClick={this.state.onClick}
                     style={this.state.style}
                     block={this.props.block}
-                    href = {this.props.href}
-                    target = {this.props.target}
+                    href={this.props.href}
+                    target={this.props.target}
                 >{this.props.children ? this.props.children : this.state.value}</AntdButton>
             </ConfigProvider>
         )
@@ -451,17 +451,17 @@ class Modal extends React.Component {
  * */
 class Radio extends React.Component {
     render() {
-        const {children,type,...reset} = this.props;
+        const { children, type, ...reset } = this.props;
         return (
             <ConfigProvider locale={zhCN}>
-                <AntRadio className={type&&type==='gray'?'ant-radio-gray':''} {...reset}>{children}</AntRadio>
+                <AntRadio className={type && type === 'gray' ? 'ant-radio-gray' : ''} {...reset}>{children}</AntRadio>
             </ConfigProvider>
         );
     }
 }
 class RadioGroup extends React.Component {
     render() {
-        const {children, ...reset} = this.props;
+        const { children, ...reset } = this.props;
         return (
             <ConfigProvider locale={zhCN}>
                 <AntRadio.Group {...reset}>{children}</AntRadio.Group>
@@ -471,17 +471,17 @@ class RadioGroup extends React.Component {
 }
 class CheckBox extends React.Component {
     render() {
-        const {children,type, ...reset} = this.props;
+        const { children, type, ...reset } = this.props;
         return (
             <ConfigProvider locale={zhCN}>
-                <AntCheckBox className={type&&type==='gray'?'ant-checkbox-gray':''} {...reset}>{children}</AntCheckBox>
+                <AntCheckBox className={type && type === 'gray' ? 'ant-checkbox-gray' : ''} {...reset}>{children}</AntCheckBox>
             </ConfigProvider>
         );
     }
 }
 class CheckBoxGroup extends React.Component {
     render() {
-        const {children, ...reset} = this.props;
+        const { children, ...reset } = this.props;
         return (
             <ConfigProvider locale={zhCN}>
                 <AntCheckBox.Group {...reset}>{children}</AntCheckBox.Group>
@@ -527,10 +527,10 @@ class PagiNation extends React.Component {
             <ConfigProvider locale={zhCN}>
                 <AntPagination
                     {...reset} hideOnSinglePage={hideOnSinglePage ? hideOnSinglePage : true}
-                    showQuickJumper={size==='micro'?true:{
+                    showQuickJumper={size === 'micro' ? true : {
                         goButton: <span className="pagination_go_button">Go</span>
                     }}
-                    className={size&&size==='micro'?'micro':''}
+                    className={size && size === 'micro' ? 'micro' : ''}
                     size={size}
                 >{children}</AntPagination>
             </ConfigProvider>
@@ -647,91 +647,91 @@ class Search extends React.Component {
                                                         :
                                                         ((selectOptions && selectOptions.selectdValue) ?
                                                             <span className="search_select_text"
-                                                                  data-value={selectOptions.selectdValue.value}
-                                                                  title={selectOptions.selectdValue.title}>{selectOptions.selectdValue.title}</span>
+                                                                data-value={selectOptions.selectdValue.value}
+                                                                title={selectOptions.selectdValue.title}>{selectOptions.selectdValue.title}</span>
                                                             : ''
-                                                    )
-                                            }
+                                                        )
+                                                }
 
-                                        </span>
-                                        <ul className='search_select_ul' ref='search_select_ul'>
-                                            {
-                                                //选项列表 (是否外界传值)？：使用外界值：''
-                                                (selectOptions && selectOptions.selectList) ?
-                                                    selectOptions.selectList.map((item, k)=> {
-                                                        return <li key={k} onClick={this.changeSelect.bind(this, {
-                                                            value: item.value,
-                                                            title: item.title
-                                                        })} className="search_select_li" data-value={item.value}
-                                                                   title={item.title}>{item.title}</li>
-                                                    })
-                                                    : ''
-                                            }
+                                            </span>
+                                            <ul className='search_select_ul' ref='search_select_ul'>
+                                                {
+                                                    //选项列表 (是否外界传值)？：使用外界值：''
+                                                    (selectOptions && selectOptions.selectList) ?
+                                                        selectOptions.selectList.map((item, k) => {
+                                                            return <li key={k} onClick={this.changeSelect.bind(this, {
+                                                                value: item.value,
+                                                                title: item.title
+                                                            })} className="search_select_li" data-value={item.value}
+                                                                title={item.title}>{item.title}</li>
+                                                        })
+                                                        : ''
+                                                }
 
-                                        </ul>
-                                        <span className="search_select_gap"></span>
-                                    </div>
-                                </td> : null}
-                        <td className="search_left_td">
-                            <input  ref='search_text_input'
-                                   className="search_text_input"
-                                   type="text" placeholder={placeHolder ? placeHolder : '输入关键词快速搜索'}
-                                   onFocus={this.onInputFocus.bind(this)}
-                                   onBlur={this.onInputBlur.bind(this)}
-                                   onKeyPress={this.handleEnterKey.bind(this)}
-                            />
-                            <input className="search_cancel_input" type="button"
-                                   onClick={
-                                       ()=> {
-                                           this.setState({cancleShow: false}, ()=> {
-                                               this.refs.search_text_input.value = '';
-                                               if (onCancelSearch) {
-                                                   onCancelSearch(
-                                                       {
-                                                           selectdValue: select ? (
-                                                                   this.state.selectdValue ? this.state.selectdValue.value
-                                                                       : selectOptions.selectdValue.value)
-                                                               : null,
-                                                           value:''
-                                                       }
-                                                   );
-                                               }
-                                           })
-                                       }
-                                   }
-                                   style={{display: this.state.cancleShow === true ? 'block' : 'none'}}/>
-                        </td>
-                        <td className="search_right_td">
-                            <input className="search_btn_input" type="button"
-                                   onClick={
-                                       () => {
-                                           if (this.refs.search_text_input.value) {
-                                               this.setState({cancleShow: true}, ()=> {
-                                                   if (onClickSearch) {
-                                                       onClickSearch({
-                                                           selectdValue: select ? (
-                                                               this.state.selectdValue ? this.state.selectdValue.value
-                                                                   : selectOptions.selectdValue.value)
-                                                               : null,
-                                                           value: this.refs.search_text_input.value
-                                                       });
-                                                   }
-                                               });
-                                           } else {
-                                               if (onClickSearch) {
-                                                   onClickSearch({
-                                                       selectdValue: select ? (
-                                                           this.state.selectdValue ? this.state.selectdValue.value
-                                                               : selectOptions.selectdValue.value)
-                                                           : null,
-                                                       value: this.refs.search_text_input.value
-                                                   });
-                                               }
-                                           }
-                                       }
-                                   }/>
-                        </td>
-                    </tr>
+                                            </ul>
+                                            <span className="search_select_gap"></span>
+                                        </div>
+                                    </td> : null}
+                            <td className="search_left_td">
+                                <input ref='search_text_input'
+                                    className="search_text_input"
+                                    type="text" placeholder={placeHolder ? placeHolder : '输入关键词快速搜索'}
+                                    onFocus={this.onInputFocus.bind(this)}
+                                    onBlur={this.onInputBlur.bind(this)}
+                                    onKeyPress={this.handleEnterKey.bind(this)}
+                                />
+                                <input className="search_cancel_input" type="button"
+                                    onClick={
+                                        () => {
+                                            this.setState({ cancleShow: false }, () => {
+                                                this.refs.search_text_input.value = '';
+                                                if (onCancelSearch) {
+                                                    onCancelSearch(
+                                                        {
+                                                            selectdValue: select ? (
+                                                                this.state.selectdValue ? this.state.selectdValue.value
+                                                                    : selectOptions.selectdValue.value)
+                                                                : null,
+                                                            value: ''
+                                                        }
+                                                    );
+                                                }
+                                            })
+                                        }
+                                    }
+                                    style={{ display: this.state.cancleShow === true ? 'block' : 'none' }} />
+                            </td>
+                            <td className="search_right_td">
+                                <input className="search_btn_input" type="button"
+                                    onClick={
+                                        () => {
+                                            if (this.refs.search_text_input.value) {
+                                                this.setState({ cancleShow: true }, () => {
+                                                    if (onClickSearch) {
+                                                        onClickSearch({
+                                                            selectdValue: select ? (
+                                                                this.state.selectdValue ? this.state.selectdValue.value
+                                                                    : selectOptions.selectdValue.value)
+                                                                : null,
+                                                            value: this.refs.search_text_input.value
+                                                        });
+                                                    }
+                                                });
+                                            } else {
+                                                if (onClickSearch) {
+                                                    onClickSearch({
+                                                        selectdValue: select ? (
+                                                            this.state.selectdValue ? this.state.selectdValue.value
+                                                                : selectOptions.selectdValue.value)
+                                                            : null,
+                                                        value: this.refs.search_text_input.value
+                                                    });
+                                                }
+                                            }
+                                        }
+                                    } />
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -996,36 +996,37 @@ class DropDown extends React.Component {
 /*
  * 加载中 start
  * */
-class Loading extends React.Component{
+class Loading extends React.Component {
     render() {
-        const {type,size,tip,wrapperClassName,children,...reset} = this.props;
+        const { type, size, tip, wrapperClassName, children, ...reset } = this.props;
 
         let Fragments = '';
 
-        if (type){
-          if (type === 'point'){   //自己写的loading
+        if (type) {
+            if (type === 'point') {   //自己写的loading
 
-              Fragments= <div className="loading_mask">
-                  <div className="loading_point_container">
-                      <div className="point_container">
-                          <span className="point1 point"></span>
-                          <span className="point2 point"></span>
-                          <span className="point3 point"></span>
-                          <span className="point4 point"></span>
-                      </div>
-                      <div className="point_loading_text">{tip}</div>
-                  </div>
-              </div>
-          }else { //icon图标的loading
-             let antIcon = <Icon type={type} spin {...reset}/>
-             Fragments = <Spin indicator={antIcon} size={size} tip={tip} wrapperClassName={wrapperClassName}>{children}</Spin>}
-        }else { //默认loading
+                Fragments = <div className="loading_mask">
+                    <div className="loading_point_container">
+                        <div className="point_container">
+                            <span className="point1 point"></span>
+                            <span className="point2 point"></span>
+                            <span className="point3 point"></span>
+                            <span className="point4 point"></span>
+                        </div>
+                        <div className="point_loading_text">{tip}</div>
+                    </div>
+                </div>
+            } else { //icon图标的loading
+                let antIcon = <Icon type={type} spin {...reset} />
+                Fragments = <Spin indicator={antIcon} size={size} tip={tip} wrapperClassName={wrapperClassName}>{children}</Spin>
+            }
+        } else { //默认loading
             Fragments = <Spin {...reset} size={size} tip={tip} wrapperClassName={wrapperClassName}>{children}</Spin>
         }
         return (
-                <React.Fragment>    {/*空标签*/}
-                    {Fragments}
-                </React.Fragment>
+            <React.Fragment>    {/*空标签*/}
+                {Fragments}
+            </React.Fragment>
         );
     }
 }
@@ -1035,35 +1036,35 @@ class Loading extends React.Component{
 /*
  * 弹出框 start
  * */
-class Alert extends React.Component{
+class Alert extends React.Component {
     constructor(props) {
         super(props);
-        this.state={
-            show:props.show?props.show:false
+        this.state = {
+            show: props.show ? props.show : false
         }
     }
     //如果是success、error、tips将其出现后就消失掉
     componentWillReceiveProps(nextProps) {
-        let {type,onHide} = nextProps;
-        this.setState({show: nextProps.show},()=>{
+        let { type, onHide } = nextProps;
+        this.setState({ show: nextProps.show }, () => {
             switch (type) {
                 case "success":
                 case "error":
                 case "tips":
-                    $(this.refs.alert_tips_tab).delay(1000).animate({opacity:0},1500,()=>{
-                        this.setState({show:false},()=>{
-                            $(this.refs.alert_tips_tab).css("opacity",1);
-                            if (onHide){
+                    $(this.refs.alert_tips_tab).delay(1000).animate({ opacity: 0 }, 1500, () => {
+                        this.setState({ show: false }, () => {
+                            $(this.refs.alert_tips_tab).css("opacity", 1);
+                            if (onHide) {
                                 onHide();
                             }
                         });
                     });
                     break;
                 default:
-                    $(this.refs.alert_tips_tab).delay(1000).animate({opacity:0},1500,()=>{
-                        this.setState({show:false},()=>{
-                            $(this.refs.alert_tips_tab).css("opacity",1);
-                            if (onHide){
+                    $(this.refs.alert_tips_tab).delay(1000).animate({ opacity: 0 }, 1500, () => {
+                        this.setState({ show: false }, () => {
+                            $(this.refs.alert_tips_tab).css("opacity", 1);
+                            if (onHide) {
                                 onHide();
                             }
                         });
@@ -1072,37 +1073,37 @@ class Alert extends React.Component{
         });
     }
     //关闭按钮
-    closeAlert(e){
-        const {onClose} = this.props;
-        this.setState({show:false},()=>{
-            if (onClose){
+    closeAlert(e) {
+        const { onClose } = this.props;
+        this.setState({ show: false }, () => {
+            if (onClose) {
                 onClose();
             }
         });
     }
     //点击ok
-    ok(e){
-        const {onOk} = this.props;
-        this.setState({show:false},()=>{
-            if (onOk){
+    ok(e) {
+        const { onOk } = this.props;
+        this.setState({ show: false }, () => {
+            if (onOk) {
                 onOk();
             }
         });
     }
     //点击cancel按钮
-    cancel(e){
-        const {onCancel} = this.props;
-        this.setState({show:false},()=>{
-            if (onCancel){
+    cancel(e) {
+        const { onCancel } = this.props;
+        this.setState({ show: false }, () => {
+            if (onCancel) {
                 onCancel();
             }
         });
     }
 
     render() {
-        const {type,title,abstract,okTitle,cancelTitle,show} = this.props;
-        let maskShow,cancelShow,okShow = false;
-        let okContent,cancelContent= '';
+        const { type, title, abstract, okTitle, cancelTitle, show } = this.props;
+        let maskShow, cancelShow, okShow = false;
+        let okContent, cancelContent = '';
         switch (type) {
             case "btn-success":
             case "btn-error":
@@ -1129,55 +1130,55 @@ class Alert extends React.Component{
                 maskShow = false;
                 cancelShow = false;
                 okShow = false;
-                okContent="确定";
-                cancelContent="取消";
+                okContent = "确定";
+                cancelContent = "取消";
         }
 
         return (
             <React.Fragment>
                 {
-                 maskShow?
-                 <React.Fragment>
-                     <div className="alert_dialog_mask" style={{display:`${this.state.show?'block':'none'}`}}></div>
-                     <div className="alert_dialog_tab" style={{display:`${this.state.show?'block':'none'}`}}>
-                         <div className="border alert_dialog_wrapper">
-                             <div className="alert_close_btn" onClick={this.closeAlert.bind(this)}></div>
-                                 <div className="alert_dialog_content">
-                                     {
-                                         abstract?
-                                             <div className={`big_icon ${type}`}></div>
-                                             : ''
-                                     }
-                                     <div className={`alert_dialog_msg ${abstract?'big':type}`}>
-                                         {title}
-                                     </div>
-                                     {
-                                         abstract?
-                                             <div className="alert_dialog_abstract">{abstract}</div>
-                                             :''
-                                     }
-                                 </div>
-                                 <div className="alert_dialog_footer">
-                                     {
-                                         okShow?
-                                         <input type="button" className="ok" onClick={this.ok.bind(this)} value={okContent}/>
-                                         :''
-                                     }
-                                     {
-                                         cancelShow?
-                                         <input type="button" className="cancel" onClick={this.cancel.bind(this)} value={cancelContent}/>
-                                         :''
-                                     }
-                                 </div>
-                         </div>
-                     </div>
-                 </React.Fragment>
-                 :
-                 <div className="alert_tips_tab" ref="alert_tips_tab" style={{display:`${this.state.show?'block':'none'}`}}>
-                     <div className="border">
-                        <div className={`alert_tab_content ${type}`}>{title}</div>
-                     </div>
-                 </div>
+                    maskShow ?
+                        <React.Fragment>
+                            <div className="alert_dialog_mask" style={{ display: `${this.state.show ? 'block' : 'none'}` }}></div>
+                            <div className="alert_dialog_tab" style={{ display: `${this.state.show ? 'block' : 'none'}` }}>
+                                <div className="border alert_dialog_wrapper">
+                                    <div className="alert_close_btn" onClick={this.closeAlert.bind(this)}></div>
+                                    <div className="alert_dialog_content">
+                                        {
+                                            abstract ?
+                                                <div className={`big_icon ${type}`}></div>
+                                                : ''
+                                        }
+                                        <div className={`alert_dialog_msg ${abstract ? 'big' : type}`}>
+                                            {title}
+                                        </div>
+                                        {
+                                            abstract ?
+                                                <div className="alert_dialog_abstract">{abstract}</div>
+                                                : ''
+                                        }
+                                    </div>
+                                    <div className="alert_dialog_footer">
+                                        {
+                                            okShow ?
+                                                <input type="button" className="ok" onClick={this.ok.bind(this)} value={okContent} />
+                                                : ''
+                                        }
+                                        {
+                                            cancelShow ?
+                                                <input type="button" className="cancel" onClick={this.cancel.bind(this)} value={cancelContent} />
+                                                : ''
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </React.Fragment>
+                        :
+                        <div className="alert_tips_tab" ref="alert_tips_tab" style={{ display: `${this.state.show ? 'block' : 'none'}` }}>
+                            <div className="border">
+                                <div className={`alert_tab_content ${type}`}>{title}</div>
+                            </div>
+                        </div>
                 }
 
             </React.Fragment>
@@ -1217,24 +1218,27 @@ class Menu extends React.Component {
 
 
 
+
     /*多层对象解构*/
     objectDeconstruction = (object, layer, ulDisbled) => {
         let myLayer = layer;
         /*级数*/
-        if (typeof object && isNaN(object.length)) {
+        if ('object' === typeof object && isNaN(object.length)) {
             if (object.children) { /*有下一级*/
                 const { children, ...params } = object;
                 if (myLayer === 1) {
+
                     return (
                         <React.Fragment key={object.key}>
-                            <div className="frame_leftmenu_mainitem">
+                            <div className={`frame_leftmenu_mainitem ${object.active ? 'active' : ''} ${object.selected ? 'selected' : ''} `}>
                                 <span
-                                    className={`frame_leftmenu_mainitem_name ${object.icon} ${object.active ? 'active' : ''}`}
-                                    onClick={object.onTitleClick}
+                                    className={`frame_leftmenu_mainitem_name ${object.icon} ${object.active ? 'active' : ''} `}
+                                    onClick={() => object.onTitleClick(object.key)}
+
                                 >
                                     {object.title}
                                 </span>
-                                <span className="frame_leftmenu_arrow"></span>
+                                <span className="frame_leftmenu_arrow" ></span>
                             </div>
                             <div className="frame_leftmenu_nextgrade_container" style={{ display: 'none' }}>
 
@@ -1251,9 +1255,10 @@ class Menu extends React.Component {
                                 <span className="frame_leftmenu_twograde_arrow"></span>
                                 <span
                                     className="frame_leftmenu_twograde_text"
-                                    onClick={object.onTitleClick}
+                                    onClick={() => object.onTitleClick(object.key)}
+
                                 >{object.title}</span>
-                                <span className="frame_left_menu_right_arrow"></span>
+                                <span className="frame_left_menu_right_arrow" ></span>
                             </div>
                             {this.objectDeconstruction(children, myLayer + 1, true)}
                         </div>
@@ -1263,12 +1268,12 @@ class Menu extends React.Component {
                 if (myLayer === 1) {/*最后一级*/
                     return (
                         <div
-                            className={`frame_leftmenu_mainitem no_child ${object.active ? 'active' : ''} ${object.selected ? 'selected' : ''}`}
+                            className={`frame_leftmenu_mainitem no_child ${object.active ? 'active' : ''} ${object.selected ? 'selected' : ''} ${object.select ? 'selectd active' : ''} `}
                             key={object.key}
                         >
                             <span
-                                className={`frame_leftmenu_mainitem_name ${object.icon} ${object.active ? 'active' : ''}`}
-                                onClick={object.onTitleClick}
+                                className={`frame_leftmenu_mainitem_name ${object.icon} ${object.active ? 'active' : ''} `}
+                                onClick={() => object.onTitleClick(object.key)}
                             >
                                 {object.title}
                             </span>
@@ -1284,7 +1289,8 @@ class Menu extends React.Component {
                             </span>
                             <span
                                 className="frame_leftmenu_onegrade_name frame_ellipsis"
-                                onClick={object.onTitleClick}
+                                onClick={() => object.onTitleClick(object.key)}
+
                             >
                                 {object.title}</span>
                         </li>
@@ -1299,7 +1305,8 @@ class Menu extends React.Component {
                             </span>
                             <span
                                 className="frame_leftmenu_onegrade_name frame_ellipsis"
-                                onClick={object.onTitleClick}
+                                onClick={() => object.onTitleClick(object.key)}
+
                             >
                                 {object.title}</span>
                         </li>
@@ -1319,7 +1326,9 @@ class Menu extends React.Component {
                 )
             })
             if (end) {
-                if (ulDisbled)
+                if (layer === 1)
+                    return listItem
+                else if (ulDisbled)
                     return <ul className="frame_leftmenu_lastgrade_ul" style={{ display: 'none' }}>{listItem}</ul>;
                 else
                     return <ul className="frame_leftmenu_onegrade_ul" >{listItem}</ul>;
@@ -1336,6 +1345,12 @@ class Menu extends React.Component {
     componentWillMount() {
         this.paramsDeconstruction(this.props)
     }
+    componentWillReceiveProps() {
+
+        this.paramsDeconstruction(this.props)//props有变化时执行
+
+
+    }
 
     render() {
         return (
@@ -1351,33 +1366,33 @@ class Menu extends React.Component {
 }
 
 /*界面框架*/
-class Frame extends React.Component{
+class Frame extends React.Component {
 
 
     render() {
-        const {children,type,module,userInfo,msg,showLeftMenu,showBarner=true,...reset} = this.props;
+        const { children, type, module, userInfo, msg, showLeftMenu, showBarner = true, ...reset } = this.props;
 
-        let bgAnimateDom='';
-        let beyondAnimateDom='';
-        let timeBarner='';
+        let bgAnimateDom = '';
+        let beyondAnimateDom = '';
+        let timeBarner = '';
         let leftMenu = '';
-        let rightContent='';
+        let rightContent = '';
         let otherDom = '';
-        if (children){
-            children.map((item)=>{
-               switch (item.ref) {
-                   case 'frame-time-barner':
-                       timeBarner = item;
-                       break;
-                   case 'frame-left-menu':
-                       leftMenu = item;
-                       break;
-                   case 'frame-right-content':
-                       rightContent = item;
-                       break;
-                   default:
-                      otherDom = item;
-               }
+        if (children) {
+            children.map((item) => {
+                switch (item.ref) {
+                    case 'frame-time-barner':
+                        timeBarner = item;
+                        break;
+                    case 'frame-left-menu':
+                        leftMenu = item;
+                        break;
+                    case 'frame-right-content':
+                        rightContent = item;
+                        break;
+                    default:
+                        otherDom = item;
+                }
             });
         }
 
@@ -1386,7 +1401,7 @@ class Frame extends React.Component{
                 bgAnimateDom = <div className="frame-oblong-animation"></div>
                 break;
             case "circle":
-                bgAnimateDom=
+                bgAnimateDom =
                     <React.Fragment>
                         <div className="frame-circle-animation1"></div>
                         <div className="frame-circle-animation2"></div>
@@ -1397,7 +1412,7 @@ class Frame extends React.Component{
                     </React.Fragment>
                 break;
             case "square":
-                beyondAnimateDom=
+                beyondAnimateDom =
                     <ul className="frame-square-wrapper">
                         <li></li>
                         <li></li>
@@ -1412,7 +1427,7 @@ class Frame extends React.Component{
                     </ul>
                 break;
             case 'triangle':
-                beyondAnimateDom=
+                beyondAnimateDom =
                     <ul className="frame-triangle-wrapper">
                         <li></li>
                         <li></li>
@@ -1427,62 +1442,62 @@ class Frame extends React.Component{
                     </ul>
                 break;
             default:
-                bgAnimateDom='';
-                beyondAnimateDom='';
+                bgAnimateDom = '';
+                beyondAnimateDom = '';
         }
 
 
 
         return (
             <div className="frame-drag-flag" {...reset}>
-                    <div className="frame-header-wrapper">
-                        <div className={`frame-header-bg ${type?type:''}`}>
-                            <div className="frame-header-star-bg">
-                                {bgAnimateDom}
-                            </div>   {/*星星的背景图*/}
-                        </div>
-                        {beyondAnimateDom}
-                        <div className="frame-home-header">
-                            <div className="frame-home-header-content">
-                                <div className="frame-home-logo" style={{backgroundImage:`url(${CONFIG.logo})`}}>
-                                    <a href="#"  rel="noopener noreferrer">{CONFIG.name}</a>
-                                </div>
+                <div className="frame-header-wrapper">
+                    <div className={`frame-header-bg ${type ? type : ''}`}>
+                        <div className="frame-header-star-bg">
+                            {bgAnimateDom}
+                        </div>   {/*星星的背景图*/}
+                    </div>
+                    {beyondAnimateDom}
+                    <div className="frame-home-header">
+                        <div className="frame-home-header-content">
+                            <div className="frame-home-logo" style={{ backgroundImage: `url(${CONFIG.logo})` }}>
+                                <a href="#" rel="noopener noreferrer">{CONFIG.name}</a>
+                            </div>
 
-                                <div className="frame-home-header-menus">
-                                    <div className="frame-home-header-menu">
-                                        <input className="frame-home-logout" title="退出" type="button" value="" />
-                                        <a href="/html/personal/index.html" rel="noopener noreferrer" target="_blank" className="frame-home-username">{userInfo&&userInfo.name?userInfo.name:''}</a>
-                                        <span className="frame-home-userpic" style={{backgroundImage:`url(${userInfo&&userInfo.image?userInfo.image:''})`}}></span>
-                                    </div>
-                                    <div className="frame-home-header-menu">
-                                        <a href="http://www.baidu.com" rel="noopener noreferrer" target="_blank" className={`frame-home-msg-menu ${msg?'msg':''}`} title="我的消息"></a>
-                                    </div>
+                            <div className="frame-home-header-menus">
+                                <div className="frame-home-header-menu">
+                                    <input className="frame-home-logout" title="退出" type="button" value="" />
+                                    <a href="/html/personal/index.html" rel="noopener noreferrer" target="_blank" className="frame-home-username">{userInfo && userInfo.name ? userInfo.name : ''}</a>
+                                    <span className="frame-home-userpic" style={{ backgroundImage: `url(${userInfo && userInfo.image ? userInfo.image : ''})` }}></span>
+                                </div>
+                                <div className="frame-home-header-menu">
+                                    <a href="http://www.baidu.com" rel="noopener noreferrer" target="_blank" className={`frame-home-msg-menu ${msg ? 'msg' : ''}`} title="我的消息"></a>
                                 </div>
                             </div>
                         </div>
-                        <div className="frame-block-wrapper" style={{backgroundImage:`url(${module&&module.image?module.image:''})`}}>
-                            <div className="frame-block-zh-name">{(module&&module.cnname)?module.cnname:''}</div>
-                            <div className="frame-block-en-name">{(module&&module.enname)?module.enname:''}</div>
-                        </div>
                     </div>
-                    {
-                        showBarner?
-                         <div className="frame-time-bar">
-                             <div className="frame-nav-content">
-                                 {timeBarner}
-                             </div>
-                         </div>
-                         :''
-                    }
-                    <div className={`frame-content-wrapper clearfix ${showBarner?'':'barnerHide'}`}>
-                        <div className={`frame-content-leftside ${showLeftMenu?'':'frame-hide'}`}>
-                            {leftMenu}
-                        </div>
-                        <div className={`frame-content-rightside ${showLeftMenu?'':'frame-fluid'}`}>
-                            {rightContent}
-                        </div>
+                    <div className="frame-block-wrapper" style={{ backgroundImage: `url(${module && module.image ? module.image : ''})` }}>
+                        <div className="frame-block-zh-name">{(module && module.cnname) ? module.cnname : ''}</div>
+                        <div className="frame-block-en-name">{(module && module.enname) ? module.enname : ''}</div>
                     </div>
-                    <div className="frame-bottom">{CONFIG.footer}</div>
+                </div>
+                {
+                    showBarner ?
+                        <div className="frame-time-bar">
+                            <div className="frame-nav-content">
+                                {timeBarner}
+                            </div>
+                        </div>
+                        : ''
+                }
+                <div className={`frame-content-wrapper clearfix ${showBarner ? '' : 'barnerHide'}`}>
+                    <div className={`frame-content-leftside ${showLeftMenu ? '' : 'frame-hide'}`}>
+                        {leftMenu}
+                    </div>
+                    <div className={`frame-content-rightside ${showLeftMenu ? '' : 'frame-fluid'}`}>
+                        {rightContent}
+                    </div>
+                </div>
+                <div className="frame-bottom">{CONFIG.footer}</div>
             </div>
         );
     }
