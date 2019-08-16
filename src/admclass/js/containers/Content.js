@@ -4,19 +4,29 @@ import {Search} from "../../../common";
 import ContentWrapper from '../component/ContentWrapper';
 import Statistics from '../component/Statistics'
 import PartData from '../component/PartData';
+import connect from "react-redux/es/connect/connect";
+
 class Content extends Component{
     render() {
-        const {AllGradePreview} = this.props.data;
+        const {UIState,DataState} = this.props;
+        console.log()
         return (
             <React.Fragment>
                 <TitleBar title="班级信息总览"></TitleBar>
                 <ContentWrapper>
                     <Search className="admclass-search"></Search>
-                    <Statistics classNum={AllGradePreview.Class} teacherNum={AllGradePreview.CourseTecher} studentNum={AllGradePreview.Student}></Statistics>
-                    <PartData PartDataList={AllGradePreview.List}></PartData>
+                    <Statistics classNum={DataState.AllGradePreview.Class} teacherNum={DataState.AllGradePreview.CourseTecher} studentNum={DataState.AllGradePreview.Student}></Statistics>
+                    <PartData PartDataList={DataState.AllGradePreview.List}></PartData>
                 </ContentWrapper>
             </React.Fragment>
         );
     }
 }
-export default Content;
+const  mapStateToProps = (state) => {
+    let {UIState,DataState} = state;
+    return {
+        UIState,
+        DataState
+    }
+};
+export default connect(mapStateToProps)(Content);
