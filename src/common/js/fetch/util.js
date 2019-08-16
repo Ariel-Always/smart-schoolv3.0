@@ -145,30 +145,8 @@ function formatDate(url) {
         redirect: 'follow',//manual、*follow(自动重定向)、error，此项为重定向的相关配置
         // referrer: 'no-referrer',//该首部字段会告知服务器请求的原始资源的URI
         // 注意post时候参数的形式  
-<<<<<<< HEAD
     })
-    nonce.then(res => {
-        
-        console.log(res.json())
-        return res
-    }, err => {
-        console.log(err)
-=======
-    }).then(res => {
-       console.log(res);
-    }, err => {
-
-    }).then(json => {
-        console.log(json);
-       /* console.log(json)
-        if (!json)
-            return
-        return json.data.randomStr;*/
-<<<<<<< HEAD
->>>>>>> 2a462e4c0801b83fb24b170b5c5171cb01721dd0
-=======
->>>>>>> 2a462e4c0801b83fb24b170b5c5171cb01721dd0
-    })
+    
 
     console.log(nonce)
     return nonce;
