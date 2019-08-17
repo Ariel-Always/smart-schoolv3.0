@@ -83,13 +83,13 @@ function getData(url, SecurityLevel = 1) {
         
     })
 
-    result.then(res => {//做提前处理
+    // result.then(res => {//做提前处理
         
-        console.log(res)
-        return res;
-    }, err => {
+    //     console.log(res)
+    //     return res;
+    // }, err => {
 
-    })
+    // })
 
     return result;
 }

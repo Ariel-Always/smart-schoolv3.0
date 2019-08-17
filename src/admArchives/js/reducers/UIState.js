@@ -1,9 +1,11 @@
-const UIState = (state={},actions) => {
-    switch (actions.type) {
-        case "login":
-            return {...state};
-        default:
-            return state;
-    }
-};
+import {combineReducers} from 'redux'
+import AppLoading from './ui/AppLoading';
+import AppAlert from './ui/AppAlert';
+const  UIState = combineReducers({
+    AppLoading,
+    AppAlert
+});
+
 export default UIState;
+
+

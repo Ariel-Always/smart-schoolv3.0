@@ -1309,3 +1309,38 @@ ul{
 .frame_left_menu_container {
   padding-bottom: 8px;
 }
+
+
+
+// 新左侧菜单
+.MenuBox_top {
+  margin-bottom: 1px;
+  height: 80px;
+  &.menu_top_pic1 {
+    background: url(#{$image-url}/new/left-menu/new/pic1.png) no-repeat center bottom;
+  }
+  &.menu_top_pic2{
+    background: url(#{$image-url}/new/left-menu/new/pic2.png) no-repeat center bottom;
+  }
+  &.menu_top_pic3{
+    background: url(#{$image-url}/new/left-menu/new/pic3.png) no-repeat center bottom;
+  }
+  &.menu_top_pic4{
+    background: url(#{$image-url}/new/left-menu/new/pic4.png) no-repeat center bottom;
+  }
+  &.menu_top_pic5{
+    background: url(#{$image-url}/new/left-menu/new/pic5.png) no-repeat center bottom;
+  }
+  &.menu_top_pic6{
+    background: url(#{$image-url}/new/left-menu/new/pic6.png) no-repeat center bottom;
+  }
+  &.menu_top_pic7{
+    background: url(#{$image-url}/new/left-menu/new/pic7.png) no-repeat center bottom;
+  }
+  &.menu_top_pic8{
+    background: url(#{$image-url}/new/left-menu/new/pic8.png) no-repeat center bottom;
+  }
+  &.menu_top_pic9{
+    background: url(#{$image-url}/new/left-menu/new/pic9.png) no-repeat center bottom;
+  }
+}
