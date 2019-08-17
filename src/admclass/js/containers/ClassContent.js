@@ -8,19 +8,24 @@ import connect from "react-redux/es/connect/connect";
 import UpUIState from '../actions/UpUIState';
 import UpDataState from '../actions/UpDataState';
 import {Loading} from "../../../common";
+import TheGradePreview from "../reducers/data/TheGradePreview";
 
 class ClassContent extends Component{
-
-    componentWillReceiveProps(nextProps){
-        const {dispatch} = nextProps;
-
+    constructor(props) {
+        super(props);
+        const {dispatch} = this.props;
+        dispatch(UpDataState.getTheGradePreview());//获取数据
+        console.log(this.props.match.params);
     }
-
+    componentWillReceiveProps(nextProps){
+        console.log(nextProps.location.query);
+    }
     render() {
         const {UIState,DataState} = this.props;
         const {ClassLoading} = UIState;
+        const {TheGradePreview} = DataState;
         return (
-            <Loading tip="加载中..." show={ClassLoading.show}  size="large">
+            <Loading tip="加载中..." spinning={ClassLoading.show}  size="large">
                 <TitleBar title="班级信息总览"></TitleBar>
                 <ContentWrapper>
                     <Search className="admclass-search"></Search>

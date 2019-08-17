@@ -1,7 +1,8 @@
 import React,{Component} from 'react';
 import {Frame,Loading,Alert,LeftMenu} from "../../../common";
 import {connect} from 'react-redux';
-import {HashRouter as Router,Route,Link} from 'react-router-dom';
+import {HashRouter as Router,Route,Switch} from 'react-router-dom';
+
 import '../../scss/index.scss';
 import UpUIState from '../actions/UpUIState';
 import UpDataState from '../actions/UpDataState';
@@ -78,7 +79,7 @@ class App extends Component{
 
 
         return (
-                <Router>
+                <Router >
 
                     <React.Fragment>
 
@@ -98,8 +99,10 @@ class App extends Component{
                                 </div>
                                     {/*右侧内容区域，Router变化区域*/}
                                  <div ref="frame-right-content">
-                                    <Route path="/" exact component={GradeContent}></Route>
-                                    <Route path="/:id" exact component={ClassContent}></Route>
+                                     <Switch>
+                                        <Route path="/" exact component={GradeContent}></Route>
+                                        <Route path="/:params" exact component={ClassContent}></Route>
+                                     </Switch>
                                 </div>
                         </Frame>
                     </Loading>

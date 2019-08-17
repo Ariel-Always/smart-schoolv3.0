@@ -33,7 +33,11 @@ const  getPageInit = () => {
 //获取xx年级的总览数据
 const getTheGradePreview = (url) =>{
     return dispatch =>{
-        getXuGetData(GET_THE_GRADE_PREVIEW,'/AdmTheGradePreview');
+        fetch(`${CONFIG.proxy}/AdmTheGradePreview`).then(res=>res.json()).then((json)=>{
+          return  dispatch({type:GET_THE_GRADE_PREVIEW,data:json.Data});
+        }).then(()=>{
+            dispatch({type:UpUIState.CLASS_LOADING_HIDE});
+        })
     }
 };
 
@@ -41,6 +45,7 @@ const getTheGradePreview = (url) =>{
 //从徐工那边获取的数据以及数据格式
 const getXuGetData = (type,url) => {
     return dispatch=>{
+        dispatch({type:UpUIState.CLASS_LOADING_SHOW});//先loading后取消
         fetch(CONFIG.proxy+url).then((res)=>{
             return res.json();
         }).then((json)=>{
@@ -49,22 +54,14 @@ const getXuGetData = (type,url) => {
     }
 }
 
-//获取所有年级总览信息
-const getAllGradePreview = (url) =>{
-    return (dispatch)=>{
-        console.log(CONFIG.proxy+url);
-        fetch(CONFIG.proxy+url).then(res=>{
-            return res.json();
-        }).then(json=>{
-            dispatch({type:GET_ALL_GRADE_PREVIEW,data:json.Data});
-        });
-    }
-}
+
+
 
 
 
 export default {
     getPageInit,
+    getTheGradePreview,
     GET_LOGIN_USER_INFO,
     GET_ALL_GRADE_PREVIEW,
     GET_SHCOOL_GRADE_CLASSES,
