@@ -3,11 +3,13 @@ import {Frame,Loading,Alert,LeftMenu} from "../../../common";
 import {connect} from 'react-redux';
 import {HashRouter as Router,Route,Link} from 'react-router-dom';
 import '../../scss/index.scss';
-import actions from '../actions';
+import UpUIState from '../actions/UpUIState';
+import UpDataState from '../actions/UpDataState';
 import logo from '../../images/logo.png';
 import Banner from '../component/Banner';
-import Content from '../containers/Content';
-import Empty from '../component/Empty'
+import GradeContent from '../containers/GradeContent';
+import ClassContent from '../containers/ClassContent';
+
 import 'whatwg-fetch';
 
 
@@ -18,13 +20,13 @@ class App extends Component{
         const {dispatch} = props;
         //判断token是否存在
         if (sessionStorage.getItem('token')){
-            dispatch(actions.UpDataState.getLoginUser('/Login?method=GetUserInfo'));
-            dispatch(actions.UpDataState.getAllGradePreview('/classPreview'));
-            dispatch({type:actions.UpUIState.APP_LOADING_CLOSE});
+            //初始化界面
+            dispatch(UpDataState.getPageInit());
+
         }else{
             //不存在的情况下
-            dispatch({type:actions.UpUIState.APP_LOADING_SHOW});
-            dispatch(actions.UpUIState.showErrorAlert({
+            dispatch({type:UpUIState.APP_LOADING_SHOW});
+            dispatch(UpUIState.showErrorAlert({
                 type:'btn-error',
                 title:"登录错误，请重新登录!",
                 ok:this.onAppAlertOK.bind(this),
@@ -36,42 +38,69 @@ class App extends Component{
     }
     onAppAlertOK(){
         const {dispatch}= this.props;
-        dispatch(actions.UpUIState.hideErrorAlert());
+        dispatch(UpUIState.hideErrorAlert());
         window.location.href="/html/login"
     }
     onAppAlertCancel(){
         const {dispatch}= this.props;
-        dispatch(actions.UpUIState.hideErrorAlert());
+        dispatch(UpUIState.hideErrorAlert());
     }
     onAppAlertClose(){
         const {dispatch}= this.props;
-        dispatch(actions.UpUIState.hideErrorAlert());
+        dispatch(UpUIState.hideErrorAlert());
     }
 
     render() {
         const {UIState,DataState} = this.props;
+        const {Grades=[]} = DataState.SchoolGradeClasses;//左侧菜单的年级和班级信息
+        let Menu =[{name:"班级信息总览",link:"/",menu:"menu10",id:"all"}];
+
+        //遍历年级和班级将menu填充
+        Grades.map((item,key)=>{
+            let Data = {
+                name:item.GradeName,
+                id:item.GradeID,
+                menu:"menu20",
+                link:`/${item.GradeID}`,
+                List:[]
+            };
+            if (item.Classes){
+                item.Classes.map((i,k)=>{
+                    Data['List'].push({
+                       name:i.ClassName,
+                       id:i.ClassID,
+                       link:`/${item.GradeID}/${i.ClassID}`
+                    });
+                })
+            }
+            Menu.push(Data);
+        });
+
+
         return (
                 <Router>
+
                     <React.Fragment>
 
                     {/*loading包含Frame*/}
-                    <Loading className="AppLoading" tip="加载中..." size="large" spinning={UIState.AppLoading.show}>
+                    <Loading className="AppLoading" tip="加载中..." size="large" delay={200} spinning={UIState.AppLoading.show}>
 
                         <Frame type="triangle" showLeftMenu={true} style={{display:`${UIState.AppLoading.show?'none':'block'}`}}
                            userInfo={{name:DataState.LoginUser.UserName,image:DataState.LoginUser.PhotoPath}}
                            module={{cnname:"行政班管理",enname:"Administration class management",image:logo}}>
                                 {/*banner*/}
                                  <div ref="frame-time-barner">
-                               <Banner></Banner>
-                            </div>
+                                   <Banner></Banner>
+                                </div>
                                   {/*  左侧菜单*/}
                                  <div ref="frame-left-menu">
-                                <LeftMenu></LeftMenu>
-                            </div>
+                                    <LeftMenu Menu={Menu}></LeftMenu>
+                                </div>
                                     {/*右侧内容区域，Router变化区域*/}
                                  <div ref="frame-right-content">
-                                <Route path="/"  component={Content}></Route>
-                            </div>
+                                    <Route path="/" exact component={GradeContent}></Route>
+                                    <Route path="/:id" exact component={ClassContent}></Route>
+                                </div>
                         </Frame>
                     </Loading>
                         {/*{提示弹出框组件}*/}

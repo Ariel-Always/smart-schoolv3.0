@@ -1388,11 +1388,11 @@ class MenuLeft extends React.Component{
                                     //active状态的类名
                                     let activeClass='';
 
-                                    if( pathname === `/${item.link}` ){
+                                    if( pathname === `${item.link}` ){
 
                                         activeClass="active selected";
 
-                                    }else if( pathname.indexOf(`/${item.link}`)===0 ){
+                                    }else if( pathname.indexOf(`${item.link}`)===0 ){
 
                                         activeClass = 'selected';
 
@@ -1402,7 +1402,7 @@ class MenuLeft extends React.Component{
                                         {/* {第二级别块}*/}
                                         <div className={`frame_leftmenu_mainitem ${activeClass}`}>
 
-                                            <NavLink exact to={{pathname:`/${item.link}`,query:{id:item.id}}} className={`frame_leftmenu_mainitem_name ${item.menu?item.menu:''}`}>{item.name}</NavLink>
+                                            <NavLink exact to={{pathname:item.link,query:{id:item.id}}} className={`frame_leftmenu_mainitem_name ${item.menu?item.menu:''}`}>{item.name}</NavLink>
 
                                             <span className={`frame_leftmenu_arrow ${activeClass==='selected'?'spread':''}`}></span>
 
