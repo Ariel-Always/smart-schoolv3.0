@@ -3,7 +3,8 @@ import React from 'react';
 import 'antd/dist/antd.min.css';
 import './index.scss'
 import './scss/_left_menu.scss';
-import './js/leftMenu'
+import {HashRouter as Router,NavLink,withRouter } from 'react-router-dom';
+import './js/leftMenu';
 import {
     Radio as AntRadio, Checkbox as AntCheckBox, Table as AntTable,
     Pagination as AntPagination, Button as AntdButton, Input as AntdInput,
@@ -1365,9 +1366,97 @@ class Menu extends React.Component {
     }
 }
 
+class MenuLeft extends React.Component{
+
+    render() {
+        //传递的参数的数据
+        const {Menu,Icon} = this.props;
+        //history.pathname路由
+        const  pathname = this.props.history.location.pathname;
+
+        return (
+            <Router>
+                <div className="frame_left_menu_pin">
+
+                    <div className={`frame_left_menu_pic ${Icon?Icon:'pic1'}`}></div>
+
+                    <div id="frame_left_menu_container" className="frame_left_menu_container">
+                        {
+                            Menu&&Menu.map(( item , key ) => {
+                                //如果有第二级别
+                                if (item.List) {
+                                    //active状态的类名
+                                    let activeClass='';
+
+                                    if( pathname === `${item.link}` ){
+
+                                        activeClass="active selected";
+
+                                    }else if( pathname.indexOf(`${item.link}`)===0 ){
+
+                                        activeClass = 'selected';
+
+                                    }
+
+                                    return <React.Fragment key={key}>
+                                        {/* {第二级别块}*/}
+                                        <div className={`frame_leftmenu_mainitem ${activeClass}`}>
+
+                                            <NavLink exact to={{pathname:item.link,query:{id:item.id,name:item.name}}} className={`frame_leftmenu_mainitem_name ${item.menu?item.menu:''}`}>{item.name}</NavLink>
+
+                                            <span className={`frame_leftmenu_arrow ${activeClass==='selected'?'spread':''}`}></span>
+
+                                        </div>
+                                        <div className="frame_leftmenu_nextgrade_container" style={{display:`${activeClass==='selected'?'block':'none'}`}}>
+
+                                            <ul className="frame_leftmenu_onegrade_ul">
+                                                {
+                                                    item.List&&item.List.map((i,k)=>{
+
+                                                        return <li key={k} className={`clearfix ${pathname.indexOf(i.link)===0?'active':''}`}>
+
+                                                            <span className={`frame_leftmenu_point ${pathname.indexOf(i.link)===0?'active':''}`}></span>
+
+                                                            <NavLink to={{pathname:i.link,query:{id:i.id,name:i.name}}} className={`frame_leftmenu_onegrade_name frame_ellipsis ${pathname.indexOf(i.link)===0?'active':''}`}>{i.name}</NavLink>
+
+                                                        </li>
+                                                    })
+                                                }
+                                            </ul>
+
+                                        </div>
+
+                                    </React.Fragment>
+
+                                }else {
+                                    //如果没有第二级直接返回，同时pathname和NavLink的参数相同处于活动状态
+                                    return <div key={key} className={`frame_leftmenu_mainitem no_child ${pathname === item.link?"active selected":''}`}>
+
+                                        <NavLink exact to={{pathname:item.link,query:{id:item.id,name:item.name}}} className={`frame_leftmenu_mainitem_name ${item.menu?item.menu:''}`}>{item.name}</NavLink>
+
+                                    </div>
+                                }
+                            })
+                        }
+                    </div>
+
+                </div>
+
+            </Router>
+        );
+    }
+}
+
+
 /*界面框架*/
 class Frame extends React.Component {
 
+    LogOut() {
+        const {onLogOut} = this.props;
+        if (onLogOut) {
+            onLogOut()
+        }
+    }
 
     render() {
         const { children, type, module, userInfo, msg, showLeftMenu, showBarner = true, ...reset } = this.props;
@@ -1465,7 +1554,7 @@ class Frame extends React.Component {
 
                             <div className="frame-home-header-menus">
                                 <div className="frame-home-header-menu">
-                                    <input className="frame-home-logout" title="退出" type="button" value="" />
+                                    <input className="frame-home-logout" title="退出" type="button" onClick={this.LogOut.bind(this)} value="" />
                                     <a href="/html/personal/index.html" rel="noopener noreferrer" target="_blank" className="frame-home-username">{userInfo && userInfo.name ? userInfo.name : ''}</a>
                                     <span className="frame-home-userpic" style={{ backgroundImage: `url(${userInfo && userInfo.image ? userInfo.image : ''})` }}></span>
                                 </div>
@@ -1503,6 +1592,8 @@ class Frame extends React.Component {
     }
 }
 
+const LeftMenu = withRouter(MenuLeft);
+
 export {
     Radio,
     RadioGroup,
@@ -1519,5 +1610,6 @@ export {
     Menu,
     Loading,
     Alert,
-    Frame
+    Frame,
+    LeftMenu
 }

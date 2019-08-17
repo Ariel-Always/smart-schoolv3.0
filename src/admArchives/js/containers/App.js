@@ -32,8 +32,8 @@ class App extends Component {
                     title: '用户档案总览',
                     icon: 'menu10',
                     onTitleClick: this.handleClick,
-                    // active: true,
-                    // selected: true
+                    active: true,
+                    selected: true
                 },
                 {
                     key: 'Student',
