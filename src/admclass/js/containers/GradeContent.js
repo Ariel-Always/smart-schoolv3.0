@@ -5,9 +5,23 @@ import ContentWrapper from '../component/ContentWrapper';
 import Statistics from '../component/Statistics'
 import PartData from '../component/PartData';
 import connect from "react-redux/es/connect/connect";
+import UpDataState from '../actions/UpDataState';
+import UpUIState from '../actions/UpUIState';
 
 class GradeContent extends Component{
+
+    constructor(props) {
+
+        super(props);
+
+        const {dispatch} = props;
+
+        dispatch(UpDataState.getAllGradePreview());
+
+    }
+
     render() {
+
         const {UIState,DataState} = this.props;
 
         return (
@@ -16,7 +30,7 @@ class GradeContent extends Component{
                 <ContentWrapper>
                     <Search className="admclass-search"></Search>
                     <Statistics classNum={DataState.AllGradePreview.Class} teacherNum={DataState.AllGradePreview.CourseTecher} studentNum={DataState.AllGradePreview.Student}></Statistics>
-                    <PartData PartDataList={DataState.AllGradePreview.List}></PartData>
+                    <PartData type="grade" PartDataList={DataState.AllGradePreview.List}></PartData>
                 </ContentWrapper>
             </React.Fragment>
         );

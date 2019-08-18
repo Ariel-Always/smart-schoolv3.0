@@ -10,6 +10,7 @@ import logo from '../../images/logo.png';
 import Banner from '../component/Banner';
 import GradeContent from '../containers/GradeContent';
 import ClassContent from '../containers/ClassContent';
+import StudentContent from '../containers/StudentContent';
 
 import 'whatwg-fetch';
 
@@ -58,11 +59,12 @@ class App extends Component{
 
         //遍历年级和班级将menu填充
         Grades.map((item,key)=>{
+
             let Data = {
                 name:item.GradeName,
                 id:item.GradeID,
                 menu:"menu20",
-                link:`/${item.GradeID}`,
+                link:`/${item.GradeID}/${item.GradeName}`,
                 List:[]
             };
             if (item.Classes){
@@ -70,7 +72,7 @@ class App extends Component{
                     Data['List'].push({
                        name:i.ClassName,
                        id:i.ClassID,
-                       link:`/${item.GradeID}/${i.ClassID}`
+                       link:`/${item.GradeID}/${i.ClassID}/${i.ClassName}`
                     });
                 })
             }
@@ -101,7 +103,8 @@ class App extends Component{
                                  <div ref="frame-right-content">
                                      <Switch>
                                         <Route path="/" exact component={GradeContent}></Route>
-                                        <Route path="/:params" exact component={ClassContent}></Route>
+                                        <Route path="/:GradeId/:GradeName" exact component={ClassContent}></Route>
+                                        <Route path="/:GradeId/:ClassId/:ClassName" exact component={StudentContent}></Route>
                                      </Switch>
                                 </div>
                         </Frame>

@@ -10,7 +10,7 @@ import {Loading} from "../../../common";
 
 
 
-class ClassContent extends Component{
+class StudentContent extends Component{
     constructor(props) {
         super(props);
 
@@ -20,22 +20,14 @@ class ClassContent extends Component{
 
     }
 
-
     render() {
-        const {UIState,DataState,match} = this.props;
+        const {UIState,DataState} = this.props;
         const {ClassLoading} = UIState;
         const {TheGradePreview} = DataState;
-
-
         return (
-            <Loading tip="加载中..." spinning={ClassLoading.show}  size="large">
-                <TitleBar title={match.params.GradeName}></TitleBar>
-                <ContentWrapper>
-                    <Search className="admclass-search"></Search>
-                    <Statistics classNum={DataState.TheGradePreview.Class} teacherNum={DataState.TheGradePreview.CourseTecher} studentNum={DataState.TheGradePreview.Student}></Statistics>
-                    <PartData type="class" Grade={match.params.GradeName} PartDataList={DataState.TheGradePreview.List}></PartData>
-                </ContentWrapper>
-            </Loading>
+            <div>
+                is
+            </div>
         );
     }
 }
@@ -46,4 +38,4 @@ const  mapStateToProps = (state) => {
         DataState
     }
 };
-export default connect(mapStateToProps)(ClassContent);
+export default connect(mapStateToProps)(StudentContent);
