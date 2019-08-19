@@ -14,12 +14,24 @@ class ClassContent extends Component{
     constructor(props) {
         super(props);
 
-        const {dispatch} = this.props;
+        const {dispatch} = props;
+
+        const {SchoolGradeClasses} = props.DataState;
+        //初始化内容区域数据
+        if (Object.keys(SchoolGradeClasses).length!==0){
+
+            dispatch(UpDataState.getAllGradePreview());
+
+        }else{
+
+            setTimeout(function () {
+                dispatch(UpDataState.getAllGradePreview());
+            },500);
+        }
 
         dispatch(UpDataState.getTheGradePreview());//获取数据
 
     }
-
 
     render() {
         const {UIState,DataState,match} = this.props;
@@ -29,11 +41,11 @@ class ClassContent extends Component{
 
         return (
             <Loading tip="加载中..." spinning={ClassLoading.show}  size="large">
-                <TitleBar title={match.params.GradeName}></TitleBar>
+                <TitleBar type="icon2" title={TheGradePreview.GradeName}></TitleBar>
                 <ContentWrapper>
                     <Search className="admclass-search"></Search>
                     <Statistics classNum={DataState.TheGradePreview.Class} teacherNum={DataState.TheGradePreview.CourseTecher} studentNum={DataState.TheGradePreview.Student}></Statistics>
-                    <PartData type="class" Grade={match.params.GradeName} PartDataList={DataState.TheGradePreview.List}></PartData>
+                    <PartData type="class" Grade={TheGradePreview.GradeName} PartDataList={DataState.TheGradePreview.List}></PartData>
                 </ContentWrapper>
             </Loading>
         );

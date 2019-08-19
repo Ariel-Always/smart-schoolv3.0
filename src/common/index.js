@@ -937,28 +937,35 @@ class DropDown extends React.Component {
                     </div>
                 </div>
         } else {
-            dropContainer = <ul className="dropdown_select_ul"
-                ref="dropdown_select_ul"
-                style={{ width: width ? width : 120, height: height ? height : 48 }}>
-                {//dropList是否存在？dropList:''
-                    dropList ?
-                        dropList.map((item, key) => {
-                            return <li key={key} className="dropdown_select_li"
-                                title={item.value}
-                                data-vaule={item.title}
-                                onClick={
-                                    this.onSimpleDropChange.bind(this, {
-                                        onChange: onChange,
-                                        value: item.value,
-                                        title: item.title
-                                    })
-                                }
-                            >{item.title}</li>
-                        })
-                        : ''
-                }
+            let ClientHeight;
+            if (dropList&&(dropList.length<(height/24))){
+                ClientHeight = dropList.length*24;
+            }else{
+                ClientHeight = height;
+            }
 
-            </ul>;
+            dropContainer =
+                                 <ul className="dropdown_select_ul" ref="dropdown_select_ul" style={{ width: width ? width : 120,overflow:"initial"}}>
+                                     <Scrollbars style={{width:width ? width : 120,height: ClientHeight ? ClientHeight:48 }}>
+                                        {//dropList是否存在？dropList:''
+                                            dropList ?
+                                            dropList.map((item, key) => {
+                                                    return <li key={key} className="dropdown_select_li"
+                                                        title={item.value}
+                                                        data-vaule={item.title}
+                                                        onClick={
+                                                            this.onSimpleDropChange.bind(this, {
+                                                                onChange: onChange,
+                                                                value: item.value,
+                                                                title: item.title
+                                                            })
+                                                        }
+                                                    >{item.title}</li>
+                                                })
+                                            : ''
+                                        }
+                                     </Scrollbars>
+                                 </ul>;
         }
         return (
             <div className="dropdown_container" {...reset}>
