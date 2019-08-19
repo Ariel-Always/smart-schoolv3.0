@@ -37,7 +37,7 @@ function postData(url, paramsObj, SecurityLevel = 1) {
         redirect: 'follow',//manual、*follow(自动重定向)、error，此项为重定向的相关配置
         // referrer: 'no-referrer',//该首部字段会告知服务器请求的原始资源的URI
         // 注意post时候参数的形式 
-        body: AESEncryptionBody(paramsObj,TESTKEY)//此处需要和headers里的"Content-Type"相对应
+        body: AESEncryptionBody(paramsObj,TESTKEY,SecurityLevel)//此处需要和headers里的"Content-Type"相对应
     })
 
     result.then(res => {//做提前处理
@@ -50,7 +50,7 @@ function postData(url, paramsObj, SecurityLevel = 1) {
     return result;
 }
 
-function getData(url, SecurityLevel = 1) {
+function getData(url, SecurityLevel = 1,) {
 
     let token = sessionStorage.getItem('token');
 
@@ -66,7 +66,7 @@ function getData(url, SecurityLevel = 1) {
     }
 
 
-    let result = fetch(AESEncryptionUrl(url,TESTKEY), {
+    let result = fetch(AESEncryptionUrl(url,TESTKEY,SecurityLevel), {
         method: 'get',//*post、get、put、delete，此项为请求方法相关的配置 
         mode: 'cors',//no-cors(跨域模式但服务器端不支持cors),*cors(跨域模式，需要服务器通过Access-control-Allow-Origin来
         //允许指定的源进行跨域),same-origin(同源)
