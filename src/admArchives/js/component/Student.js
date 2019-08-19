@@ -9,6 +9,7 @@ class Student extends React.Component {
         super(props);
         this.state = {
             //GradeArr:[{value:0,title:'全部年级'}]
+            secondDropList:[{value:0,title:'全部班级'}]
         }
     }
     componentWillReceiveProps(){
@@ -26,6 +27,26 @@ class Student extends React.Component {
             GradeArr:GradeArr
         })
 
+    }
+
+    StudentDropMenu = (e) => {
+        
+        let Classes = [{value:0,title:'全部班级'}];
+        let ClassArr = this.props.DataState.GradeClassMsg.returnData.AllClasses[e.value];
+        ClassArr.map((Class)=> {
+            Classes.push(Class);
+        })
+        //Classes.push(this.props.DataState.GradeClassMsg.returnData.AllClasses[e.value]);
+        //this.refs.dropMenuSecond.state.dropList = Classes;]
+        this.setState({
+            secondDropList:Classes
+        })
+        //console.log(this.refs.dropMenuSecond)
+
+    }
+
+    StudentDropMenuSecond = (e) =>{
+        console.log(e)
     }
 
     render() {
@@ -51,10 +72,20 @@ class Student extends React.Component {
                     <div className='Student-content'>
                         <div className='content-top'>
                             <DropDown 
+                            ref = 'dropMenuFirst'
+                            onChange = {this.StudentDropMenu}
                             width={120}
-                            height={28}
+                            height={72}
                             dropSelectd = {{value:0,title:'全部年级'}}
-                            dropList = {this.state.GradeArr}
+                            dropList = {DataState.GradeClassMsg.returnData?DataState.GradeClassMsg.returnData.grades:[{value:0,title:'全部年级'}]}
+                            ></DropDown>
+                            <DropDown 
+                            ref = 'dropMenuSecond'
+                            width={120}
+                            height={72}
+                            dropSelectd = {{value:0,title:'全部班级'}}
+                            dropList = {this.state.secondDropList}
+                            onChange = {this.StudentDropMenuSecond}
                             ></DropDown>
                         </div>
                     </div>

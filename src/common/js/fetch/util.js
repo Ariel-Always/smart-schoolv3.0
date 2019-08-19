@@ -7,25 +7,31 @@ import $ from 'jquery'
 //import { type } from 'os';
 
 //AES加密传输参数：post
-function AESEncryptionBody(paramsObj, CRYPTOJSKEY = COMMONKEY) {//加密所使用的的key，需要与服务器端的解密key相对应
-
+function AESEncryptionBody(paramsObj, CRYPTOJSKEY = COMMONKEY,SecurityLevel) {//加密所使用的的key，需要与服务器端的解密key相对应
+    let body = JSON.stringify(paramsObj);
     let plain = $.param(paramsObj);//json序列化
     // if (SecurityLevel === 4) {
     //     plain = getSign(paramsObj, CRYPTOJSKEY, randomString, 'post');
     // }
 
     // console.log(decrypt(encrypt(plain,CRYPTOJSKEY)))
-    let body = { p: encrypt(plain, CRYPTOJSKEY) }
-    return JSON.stringify(body);
+    if(SecurityLevel === 3 || SecurityLevel === 4){
+        body = JSON.stringify({ p: encrypt(plain, CRYPTOJSKEY) });
+    }
+    return body;
 }
 //AES加密传输参数：get
 function AESEncryptionUrl(url, CRYPTOJSKEY = COMMONKEY, SecurityLevel) {//加密所使用的的key，需要与服务器端的解密key相对应
-
+    let newUrl = url;
     let urlArray = url.split('?');
     let params = urlArray[1];
     let host = urlArray[0];
 
-    return host + '?p=' + encrypt(params, CRYPTOJSKEY);//参数加密处理
+    if(SecurityLevel === 3 || SecurityLevel === 4){
+        newUrl = host + '?p=' + encrypt(params, CRYPTOJSKEY);//参数加密处理
+    }
+
+    return newUrl;
 }
 
 //请求安全，根据安全级别SecurityLevel返回token+签名
