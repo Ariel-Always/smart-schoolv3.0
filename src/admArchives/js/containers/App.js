@@ -125,7 +125,9 @@ class App extends Component {
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
             if(route === '/Student'){
                 console.log('sds')
+                if(!this.props.DataState.GradeClassMsg.returnData)
                 dispatch(actions.UpDataState.getGradeClassMsg('/Archives' + handleRoute + '_DropDownMenu'));
+                dispatch(actions.UpDataState.getGradeStudentPreview('/Archives' + handleRoute + '?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
             }
         }
 
@@ -135,6 +137,7 @@ class App extends Component {
     handleMenu = () => {
         if (history.location.pathname === '/') {
             history.push('/All')
+            console.log(this.state)
         }
         let path = history.location.pathname.substr(1);
 

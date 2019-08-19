@@ -64,8 +64,67 @@ $image-url :"../images";
             position: relative;
             height: 28px;
 
-            .dropdown_wrapper{
+            .dropdown_wrapper:nth-of-type(2){
                 margin-left: 0;
+                margin-right: 3px;
+                
+            }
+            .dropdown_container{
+                float: left;
+            }
+
+            .search_container {
+                float: right;
+            }
+            
+        }
+        .content-render{
+
+            .table{
+
+                .name-key{
+                    font-size:14px;
+                    line-height: 23px;
+                    color: #999;
+                    margin: 0 3px;
+                }
+                .name-img{
+                    margin: 0 6px;
+                }
+
+                .name-UserName{
+                    text-decoration: underline;
+                    color: #333;
+                    font-size: 16px;
+                }
+                .UserID{
+                    font-size: 14px;
+                    color: #999;
+                }
+                .Grader{
+                    font-size: 14px;
+                    color: #999;
+                }
+                .GradeName{
+                    font-size: 14px;
+                    color: #333;
+                }
+                .ClassName{
+                    font-size: 14px;
+                    color: #666;
+                }
+                .ant-checkbox-gray .ant-checkbox {
+                    top: -3px;
+                }
+
+                .handle-btn{
+                    float: right;
+                    height: 24px;
+                    line-height: 24px;
+                    font-size:14px;
+                    padding: 0 14px;
+                    margin-right: 2px
+                }
             }
         }
     }

@@ -243,13 +243,9 @@ body{
       );
     }
   }
-}
+  /*default*/
 
-
-
-/*default*/
-
-.btn-orange-default {
+&.btn-orange-default {
   color: #ff8400;
   border: 1px #ff8400 solid;
   &:hover {
@@ -270,7 +266,7 @@ body{
   }
 }
 
-.btn-green-default {
+&.btn-green-default {
   color: #23ba00;
   border: 1px solid #23ba00;
   &:hover {
@@ -291,7 +287,7 @@ body{
   }
 }
 
-.btn-blue-default {
+&.btn-blue-default {
   color: #0099dd;
   border: 1px solid #0099dd;
   &:hover {
@@ -312,7 +308,7 @@ body{
   }
 }
 
-.btn-red-default {
+&.btn-red-default {
   color: #ff1b10;
   border: 1px solid #ff1b10;
   &:hover {
@@ -331,7 +327,7 @@ body{
   }
 }
 
-.btn-mazarine-default {
+&.btn-mazarine-default {
   color: #0051ae;
   border: 1px solid #0051ae;
   &:hover {
@@ -352,7 +348,7 @@ body{
   }
 }
 
-.btn-disabled-default {
+&.btn-disabled-default {
   color: #7a7a7a;
   border: 1px solid #7a7a7a;
   &:hover {
@@ -368,6 +364,11 @@ body{
     );
   }
 }
+
+}
+
+
+
 
 /*
 输入框

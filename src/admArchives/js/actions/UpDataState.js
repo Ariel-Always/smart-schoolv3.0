@@ -53,14 +53,14 @@ const getGradeStudentPreview = (url) =>{
     return (dispatch)=>{
         console.log(CONFIG.proxy+url);
         getData(CONFIG.proxy+url).then(res=>{
-            if(res.status === '401'){
-                console.log('错误码：'+ res.status)
+            if(res.Status === '401'){
+                console.log('错误码：'+ res.Status)
             }
             return res.json()}).then(json=>{
-            if(json.status === 400){
-                console.log(json.status)
-            }else if(json.status === 200){
-                dispatch({type:GET_GRADE_STUDENT_PREVIEW,data:json.data});
+            if(json.Status === 400){
+                console.log(json.Status)
+            }else if(json.Status === 200){
+                dispatch({type:GET_GRADE_STUDENT_PREVIEW,data:json.Data});
                 dispatch({ type: UpUIState.APP_LOADING_CLOSE });
             }
            
