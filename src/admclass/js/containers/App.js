@@ -6,7 +6,7 @@ import UpUIState from '../actions/UpUIState';
 import UpDataState from '../actions/UpDataState';
 import logo from '../../images/logo.png';
 import Banner from '../component/Banner';
-import ContentWrapper from './ContentWrapper';
+import ContentContainer from './ContentContainer';
 import {HashRouter as Router} from 'react-router-dom';
 
 
@@ -94,7 +94,7 @@ class App extends Component{
                                 </div>
                                     {/*右侧内容区域，Router变化区域*/}
                                  <div ref="frame-right-content">
-                                     <ContentWrapper></ContentWrapper>
+                                     <ContentContainer></ContentContainer>
                                 </div>
                         </Frame>
                     </Loading>

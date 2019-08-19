@@ -1,9 +1,13 @@
 @import "~compass-mixins/lib/animate";
+@import "~compass-mixins/lib/compass/css3";
 $image-url:'../images';
 //root
 #root{
   height:100%;
 }
+
+@import "title-bar";
+
 //loading
 .ant-spin-nested-loading{
   height:100%;
@@ -30,6 +34,15 @@ $image-url:'../images';
     color:#ffffff;
     line-height: 24px;
   }
+  &.addTeacher{
+    color: #ffffff;
+    background-color: #0099ff;
+    background-image: none;
+    @include border-radius(3px);
+    height:28px;
+    float: right;
+    @include box-shadow(none);
+  }
 }
 .frame-nav-content{
   .btn-blue{
@@ -40,25 +53,7 @@ $image-url:'../images';
     }
   }
 }
-//title
-.title-bar{
-  height: 36px;
-  margin-top: 22px;
-  padding: 0 32px 0 54px;
-  line-height: 36px;
-  background: url('#{$image-url}/title-icon1.png') no-repeat 32px center;
-  &.icon1{
-    background-image: url("#{$image-url}/title-icon1.png");
-  }
-  &.icon2{
-    background-image: url("#{$image-url}/title-icon2.png");
-  }
-}
-.title-word{
-  font-size:18px;
-  border-bottom:1px dashed #cccccc;
-  color: #333333;
-}
+
 //行政班总览
 .admclass-search{
   float:right;
@@ -242,5 +237,29 @@ $image-url:'../images';
     }
   }
 
+}
+
+//教师列表
+.admclass-teacher-wrapper{
+  margin-top:44px;
+  padding:0 6px;
+  &>div{
+    float: left;
+    width: 196px;
+    height:100px;
+    @include background-size(100%);
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-bottom: 20px;
+    &:not(:nth-child(4n+1)){
+      margin-left:18px;
+    }
+  }
+}
+.admclass-teacher-ganger{
+  background-image: url("#{$image-url}/teacher-tab-ganger.png");
+}
+.admclass-teacher-item{
+  background-image: url("#{$image-url}/teacher-tab.png");
 }
 
