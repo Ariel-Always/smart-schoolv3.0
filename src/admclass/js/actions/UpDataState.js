@@ -5,7 +5,6 @@ import 'whatwg-fetch';
 
 
 
-
 //操作常量
 //获取登录用户信息
 const GET_LOGIN_USER_INFO = 'GET_LOGIN_USER_INFO';
@@ -37,7 +36,9 @@ const  getPageInit = () => {
 
                     dispatch({type:GET_SHCOOL_GRADE_CLASSES,data:res.Data});
 
-                }else{
+                }else if (res.Status===400||res.Status===500) {
+
+                    dispatch({type:UpUIState.SHOW_ERROR_ALERT,title:res.Msg});
 
                     //Status不是200的情况
 
@@ -54,13 +55,26 @@ const getAllGradePreview = () => {
 
     return dispatch =>{
 
+        dispatch({type:UpUIState.GRADE_LOADING_SHOW});
+
         const AdmAllGradePreviewPromise =  getXuGetData('/AdmAllGradePreview');
 
         AdmAllGradePreviewPromise.then((res)=>{
 
-            dispatch({type:GET_ALL_GRADE_PREVIEW,data:res.Data});
+            if (res.Status===200){
 
-            dispatch({type:UpUIState.APP_LOADING_CLOSE});
+                dispatch({type:GET_ALL_GRADE_PREVIEW,data:res.Data});
+
+                dispatch({type:UpUIState.GRADE_LOADING_HIDE});
+
+                dispatch({type:UpUIState.APP_LOADING_CLOSE});
+
+            }else if (res.Status===400||res.Status===500){
+
+                dispatch({type:UpUIState.SHOW_ERROR_ALERT,title:res.Msg});
+                //Status不是200的情况
+
+            }
 
         });
 
@@ -69,10 +83,11 @@ const getAllGradePreview = () => {
 };
 
 //获取某一年纪的所有总览数据
-
 const getTheGradePreview = ()=> {
 
     return dispatch => {
+
+        dispatch({type:UpUIState.CLASS_LOADING_SHOW});
 
        let AdmTheGradePreviewPromise =  getXuGetData('/AdmTheGradePreview');
 
@@ -100,7 +115,7 @@ const getTheGradePreview = ()=> {
     try {
         let fetchAsync = '';
         try {
-            fetchAsync = await fetch(CONFIG.proxy+url);
+            fetchAsync = await getData(CONFIG.proxy+url);
         }
         catch (e) {
             return  e;

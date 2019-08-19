@@ -1,9 +1,9 @@
 import React,{Component} from 'react';
 class TitleBar extends Component{
     render() {
-        const {title} = this.props;
+        const {title,type} = this.props;
         return (
-            <div className="title-bar">
+            <div className={`title-bar ${type}`}>
                 <div className="title-word">{title}</div>
             </div>
         );

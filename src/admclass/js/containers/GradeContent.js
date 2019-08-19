@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import TitleBar from '../component/TitleBar';
-import {Search} from "../../../common";
+import {Loading, Search,DropDown} from "../../../common";
 import ContentWrapper from '../component/ContentWrapper';
 import Statistics from '../component/Statistics'
 import PartData from '../component/PartData';
@@ -16,7 +16,22 @@ class GradeContent extends Component{
 
         const {dispatch} = props;
 
-        dispatch(UpDataState.getAllGradePreview());
+        const {SchoolGradeClasses} = props.DataState;
+
+      //初始化内容区域的数据
+
+       if (Object.keys(SchoolGradeClasses).length!==0){
+
+           dispatch(UpDataState.getAllGradePreview());
+
+       }else{
+
+           setTimeout(function () {
+
+               dispatch(UpDataState.getAllGradePreview());
+
+           },500);
+       }
 
     }
 
@@ -24,15 +39,24 @@ class GradeContent extends Component{
 
         const {UIState,DataState} = this.props;
 
+        const {GradeLoading} = UIState;
+
         return (
-            <React.Fragment>
-                <TitleBar title="班级信息总览"></TitleBar>
+            <Loading tip="加载中..." spinning={GradeLoading.show}  size="large">
+
+                <TitleBar type="icon1" title="班级信息总览"></TitleBar>
+
                 <ContentWrapper>
+
                     <Search className="admclass-search"></Search>
+
                     <Statistics classNum={DataState.AllGradePreview.Class} teacherNum={DataState.AllGradePreview.CourseTecher} studentNum={DataState.AllGradePreview.Student}></Statistics>
+
                     <PartData type="grade" PartDataList={DataState.AllGradePreview.List}></PartData>
+
                 </ContentWrapper>
-            </React.Fragment>
+
+            </Loading>
         );
     }
 }

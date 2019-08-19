@@ -1,18 +1,13 @@
 import React,{Component} from 'react';
 import {Frame,Loading,Alert,LeftMenu} from "../../../common";
 import {connect} from 'react-redux';
-import {HashRouter as Router,Route,Switch} from 'react-router-dom';
-
 import '../../scss/index.scss';
 import UpUIState from '../actions/UpUIState';
 import UpDataState from '../actions/UpDataState';
 import logo from '../../images/logo.png';
 import Banner from '../component/Banner';
-import GradeContent from '../containers/GradeContent';
-import ClassContent from '../containers/ClassContent';
-import StudentContent from '../containers/StudentContent';
-
-import 'whatwg-fetch';
+import ContentWrapper from './ContentWrapper';
+import {HashRouter as Router} from 'react-router-dom';
 
 
 class App extends Component{
@@ -64,7 +59,7 @@ class App extends Component{
                 name:item.GradeName,
                 id:item.GradeID,
                 menu:"menu20",
-                link:`/${item.GradeID}/${item.GradeName}`,
+                link:`/${item.GradeID}`,
                 List:[]
             };
             if (item.Classes){
@@ -72,7 +67,7 @@ class App extends Component{
                     Data['List'].push({
                        name:i.ClassName,
                        id:i.ClassID,
-                       link:`/${item.GradeID}/${i.ClassID}/${i.ClassName}`
+                        link:`/${item.GradeID}/${i.ClassID}`
                     });
                 })
             }
@@ -81,10 +76,8 @@ class App extends Component{
 
 
         return (
-                <Router >
-
+                <Router>
                     <React.Fragment>
-
                     {/*loading包含Frame*/}
                     <Loading className="AppLoading" tip="加载中..." size="large" delay={200} spinning={UIState.AppLoading.show}>
 
@@ -97,15 +90,11 @@ class App extends Component{
                                 </div>
                                   {/*  左侧菜单*/}
                                  <div ref="frame-left-menu">
-                                    <LeftMenu Menu={Menu}></LeftMenu>
+                                    <LeftMenu Menu={Menu} Icon="pic3"></LeftMenu>
                                 </div>
                                     {/*右侧内容区域，Router变化区域*/}
                                  <div ref="frame-right-content">
-                                     <Switch>
-                                        <Route path="/" exact component={GradeContent}></Route>
-                                        <Route path="/:GradeId/:GradeName" exact component={ClassContent}></Route>
-                                        <Route path="/:GradeId/:ClassId/:ClassName" exact component={StudentContent}></Route>
-                                     </Switch>
+                                     <ContentWrapper></ContentWrapper>
                                 </div>
                         </Frame>
                     </Loading>
@@ -114,7 +103,6 @@ class App extends Component{
                     onOk={UIState.AppAlert.onOk} onCancel={UIState.AppAlert.onCancel} onClose={UIState.AppAlert.onClose}>
 
                     </Alert>
-
                 </React.Fragment>
                 </Router>
         );

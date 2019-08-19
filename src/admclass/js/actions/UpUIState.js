@@ -6,7 +6,10 @@ const APP_LOADING_SHOW = 'APP_LOADING_SHOW';
 //app层级的弹出层
 const SHOW_ERROR_ALERT = 'SHOW_ERROR_ALERT';
 const CLOSE_ERROR_ALERT = 'CLOSE_ERROR_ALERT';
-//点击某一年级的加载
+//班级总览的loading
+const GRADE_LOADING_SHOW = 'GRADE_LOADING_SHOW';
+const GRADE_LOADING_HIDE = 'GRADE_LOADING_HIDE';
+//某一年级的loaing
 const CLASS_LOADING_SHOW = 'CLASS_LOADING_SHOW';
 const CLASS_LOADING_HIDE = 'CLASS_LOADING_HIDE';
 
@@ -29,6 +32,8 @@ export default {
     CLOSE_ERROR_ALERT,
     CLASS_LOADING_SHOW,
     CLASS_LOADING_HIDE,
+    GRADE_LOADING_HIDE,
+    GRADE_LOADING_SHOW,
     showErrorAlert,
     hideErrorAlert
 }
