@@ -14,8 +14,10 @@ const  GET_ALL_GRADE_PREVIEW = 'GET_ALL_GRADE_PREVIEW';
 const GET_SHCOOL_GRADE_CLASSES = 'GET_SHCOOL_GRADE_CLASSES';
 //获取某一年级总览数据
 const  GET_THE_GRADE_PREVIEW = 'GET_THE_GRADE_PREVIEW';
-
-
+//获取某一班级的教师列表
+const GET_THE_CLASS_THEACHERS = 'GET_THE_CLASS_THEACHERS';
+//获取某一班级的学生列表
+const GET_THE_CLASS_STUDENTS = 'GET_THE_CLASS_STUDENTS';
 
 
 
@@ -57,7 +59,7 @@ const getAllGradePreview = () => {
 
         dispatch({type:UpUIState.GRADE_LOADING_SHOW});
 
-        const AdmAllGradePreviewPromise =  getXuGetData('/AdmAllGradePreview');
+        const AdmAllGradePreviewPromise =  getXuGetData('/AdmAllGradePreview?Token=Token&SchoolID=SchoolID');
 
         AdmAllGradePreviewPromise.then((res)=>{
 
@@ -89,7 +91,7 @@ const getTheGradePreview = ()=> {
 
         dispatch({type:UpUIState.CLASS_LOADING_SHOW});
 
-       let AdmTheGradePreviewPromise =  getXuGetData('/AdmTheGradePreview');
+       let AdmTheGradePreviewPromise =  getXuGetData('/AdmTheGradePreview?Token=Token&GradeID=GradeID&PageIndex=PageIndex&PageSize=9');
 
        AdmTheGradePreviewPromise.then((res)=>{
 
@@ -108,6 +110,32 @@ const getTheGradePreview = ()=> {
     }
 
 };
+//获取某一班级的数据
+const getTheClassPreview = () =>{
+    return dispatch => {
+
+        dispatch({type:UpUIState.STUDENT_LOADING_SHOW});
+
+        let getAmdClassTeachersPromise = getXuGetData('/AmdClassTeachers');
+
+        let getAmdClassStudentPromise = getXuGetData('/AmdClassStudents');
+
+        Promise.all([getAmdClassStudentPromise,getAmdClassTeachersPromise]).then((res) => {
+
+            dispatch({type:GET_THE_CLASS_STUDENTS,data:res[0].Data});
+
+            dispatch({type:GET_THE_CLASS_THEACHERS,data:res[1].Data});
+
+            dispatch({type:UpUIState.STUDENT_LOADING_HIDE});
+
+            dispatch({type:UpUIState.APP_LOADING_CLOSE});
+
+        });
+
+    }
+};
+
+
 
 
 //从徐工那边获取的数据以及数据格式
@@ -139,8 +167,11 @@ export default {
     getPageInit,
     getAllGradePreview,
     getTheGradePreview,
+    getTheClassPreview,
     GET_LOGIN_USER_INFO,
     GET_ALL_GRADE_PREVIEW,
     GET_SHCOOL_GRADE_CLASSES,
-    GET_THE_GRADE_PREVIEW
+    GET_THE_GRADE_PREVIEW,
+    GET_THE_CLASS_THEACHERS,
+    GET_THE_CLASS_STUDENTS
 }

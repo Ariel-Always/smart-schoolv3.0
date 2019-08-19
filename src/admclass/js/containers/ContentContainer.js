@@ -4,7 +4,7 @@ import ClassContent from "./ClassContent";
 import StudentContent from "./StudentContent";
 import {HashRouter as Router,withRouter,Route,Switch} from 'react-router-dom';
 
-class ContentWrapper extends Component{
+class ContentContainer extends Component{
     render() {
         return (
                 <div key={this.props.location.pathname}>
@@ -17,4 +17,4 @@ class ContentWrapper extends Component{
         );
     }
 }
-export default withRouter(ContentWrapper);
+export default withRouter(ContentContainer);

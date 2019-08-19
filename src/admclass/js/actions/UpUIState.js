@@ -12,7 +12,9 @@ const GRADE_LOADING_HIDE = 'GRADE_LOADING_HIDE';
 //某一年级的loaing
 const CLASS_LOADING_SHOW = 'CLASS_LOADING_SHOW';
 const CLASS_LOADING_HIDE = 'CLASS_LOADING_HIDE';
-
+//某一具体班级的loading
+const STUDENT_LOADING_HIDE = 'STUDENT_LOADING_HIDE';
+const STUDENT_LOADING_SHOW = 'STUDENT_LOADING_SHOW';
 
 //操作函数
 const showErrorAlert = (alertMsg)=> {
@@ -34,6 +36,8 @@ export default {
     CLASS_LOADING_HIDE,
     GRADE_LOADING_HIDE,
     GRADE_LOADING_SHOW,
+    STUDENT_LOADING_HIDE,
+    STUDENT_LOADING_SHOW,
     showErrorAlert,
     hideErrorAlert
 }
