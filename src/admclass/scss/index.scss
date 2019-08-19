@@ -1,6 +1,36 @@
 @import "~compass-mixins/lib/animate";
 @import "~compass-mixins/lib/compass/css3";
 $image-url:'../images';
+
+/*公共的mixin start*/
+@mixin textOverFlow() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@mixin flex{
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+@mixin justify-content($dir){
+  -ms-flex-pack: $dir;
+  justify-content: $dir;
+  -ms-flex-pack: $dir;
+}
+@mixin flex-direction($dir){
+  flex-direction:$dir;
+  -ms-flex-direction:$dir;
+}
+@mixin align-items($dir){
+  align-items: $dir;
+  -ms-flex-align: $dir;
+}
+/*公共的mixin end*/
+
+
 //root
 #root{
   height:100%;
@@ -245,21 +275,64 @@ $image-url:'../images';
   padding:0 6px;
   &>div{
     float: left;
+    position: relative;
     width: 196px;
     height:100px;
+    @include flex;
     @include background-size(100%);
     background-position: center;
     background-repeat: no-repeat;
     margin-bottom: 20px;
+    cursor: pointer;
     &:not(:nth-child(4n+1)){
       margin-left:18px;
     }
   }
 }
 .admclass-teacher-ganger{
+
   background-image: url("#{$image-url}/teacher-tab-ganger.png");
+  &:hover{
+    &:after{
+      position: absolute;
+      content: '';
+
+    }
+  }
 }
 .admclass-teacher-item{
   background-image: url("#{$image-url}/teacher-tab.png");
+}
+.admclass-teacher-photo{
+  width:50px;
+  height: 64px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  margin-left: 18px;
+  margin-top: 18px;
+}
+.admclass-teacher-info{
+  margin-left: 10px;
+  margin-top: 26px;
+  @include flex;
+  @include flex-direction(column);
+  @include justify-content(space-between);
+  height: 52px;
+}
+.admclass-teacher-name{
+  color: #333333;
+  font-size:14px;
+  font-weight: bold;
+  max-width:62px;
+  @include textOverFlow;
+}
+.admclass-teacher-id{
+  background: url("#{$image-url}/id-card.png") no-repeat left center;
+  padding-left:20px;
+  font-size:12px;
+  color: #999999;
+  max-width: 100px;
+  @include textOverFlow;
 }
 
