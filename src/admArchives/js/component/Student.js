@@ -1,9 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import { DropDown, Search, Table, Button ,CheckBox,CheckBoxGroup} from '../../../common/index'
+import { DropDown, Search, Table, Button, CheckBox, CheckBoxGroup,Modal } from '../../../common/index'
 import '../../../common/scss/_left_menu.scss'
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
 import '../../scss/Student.scss'
+import EditStudentModal from './EditStudentModal'
+import actions from '../actions';
 class Student extends React.Component {
     constructor(props) {
         super(props);
@@ -20,7 +22,7 @@ class Student extends React.Component {
                     render: arr => {
                         return (
                             <div className='name-content'>
-                                <CheckBox ref={'checkBox'+arr.key} checked={this.state.selectedAll} type='gray' onChange={this.onSelectChange}></CheckBox>
+                                <CheckBox  value={arr.key} onChange={this.onCheckChange}></CheckBox>
                                 <span onMouseEnter={this.onMouseEnterName} className='name-key'>{arr.key}</span>
                                 <img alt={arr.UserName} className='name-img' width='47' height='47' src={arr.PhotoPath}></img>
                                 <span className='name-UserName'>{arr.UserName}</span>
@@ -41,10 +43,10 @@ class Student extends React.Component {
                 },
                 {
                     title: '性别',
-                    dataIndex: 'Grader：',
-                    render: Grader => {
+                    dataIndex: 'Gender',
+                    render: Gender => {
                         return (
-                            <span className='Grader'>{Grader}</span>
+                            <span className='Gender'>{Gender}</span>
                         )
                     }
                 },
@@ -72,7 +74,7 @@ class Student extends React.Component {
                     render: () => {
                         return (
                             <div className='handle-content'>
-                                
+
                                 <Button color='blue' type='default' onClick={this.StudentChange} className='handle-btn'>查看变记录</Button>
                                 <Button color='blue' type='default' onClick={this.StudentEdit} className='handle-btn'>编辑</Button>
                             </div>
@@ -89,9 +91,12 @@ class Student extends React.Component {
                 ClassName: '一年1班',
                 Others: {}
             }],
-            pagination: {total:50},
+            pagination: { total: 50 },
             loading: false,
-            selectedAll:false,
+            selectedAll: false,
+            checkedList:[],
+            checkAll:false,
+            studentModalVisible:true,
 
         }
     }
@@ -113,9 +118,13 @@ class Student extends React.Component {
     }
 
     StudentDropMenu = (e) => {
+        const { dispatch } = this.props;
 
         let Classes = [{ value: 0, title: '全部班级' }];
-        let ClassArr = this.props.DataState.GradeClassMsg.returnData.AllClasses[e.value];
+        
+        //console.log(this.refs.dropMenuSecond)
+        if (e.value !== 0) {
+            let ClassArr = this.props.DataState.GradeClassMsg.returnData.AllClasses[e.value];
         ClassArr.map((Class) => {
             Classes.push(Class);
         })
@@ -124,12 +133,12 @@ class Student extends React.Component {
         this.setState({
             secondDropList: Classes,
         })
-        //console.log(this.refs.dropMenuSecond)
-        if (e.value !== 0) {
+            dispatch(actions.UpDataState.getGradeStudentPreview('/ArchivesStudent?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
             this.setState({
                 DropMenuShow: true
             })
         } else {
+            dispatch(actions.UpDataState.getGradeStudentPreview('/ArchivesStudent?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
             this.setState({
                 DropMenuShow: false
             })
@@ -138,7 +147,8 @@ class Student extends React.Component {
     }
 
     StudentDropMenuSecond = (e) => {
-        console.log(e)
+        console.log(e);
+        dispatch(actions.UpDataState.getGradeStudentPreview('/ArchivesStudent?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
     }
 
     StudentSearch = (e) => {
@@ -151,19 +161,54 @@ class Student extends React.Component {
     }
 
     StudentEdit = () => {
-
+        this.setState({
+            studentModalVisible:true
+        })
     }
 
     StudentChange = () => {
-
+        
     }
 
     onMouseEnterName = () => {
-
+        
+    }
+    OnCheckAllChange = (e) => {
+        console.log(e)
+        if(e.target.checked){
+            this.setState({
+                checkedList:this.props.DataState.GradeStudentPreview.keyList,
+                checkAll:e.target.checked
+            })
+        }else{
+            this.setState({
+                checkedList:[],
+                checkAll:e.target.checked
+            })
+        }
+    }
+    onCheckBoxGroupChange = (checkedList) => {
+        console.log(checkedList)
+        this.setState({
+            checkedList,
+            checkAll:checkedList.length===this.props.DataState.GradeStudentPreview.keyList?true:false
+        })
+    }
+    handleStudentModalOk = (e) => {
+        console.log(e)
+        this.setState({
+            studentModalVisible:false
+        })
+    }
+    handleStudentModalCancel = (e) => {
+        console.log(e)
+        this.setState({
+            studentModalVisible:false
+        })
     }
     render() {
         const { UIState, DataState } = this.props;
-        
+
         return (
             <div className='Student'>
                 <div className='Student-box'>
@@ -210,16 +255,34 @@ class Student extends React.Component {
                         </div>
                         <div className='content-render'>
                             <div>
-                                <Table
-                                    className='table'
-                                    columns={this.state.columns}
-                                    pagination={this.state.pagination}
-                                    loading={this.state.loading}
-                                    dataSource={DataState.GradeStudentPreview.newList} ></Table>
+                                <CheckBoxGroup style={{width:'100%'}} value = {this.state.checkedList}   onChange={this.onCheckBoxGroupChange.bind(this)}>
+                                    <Table
+                                        className='table'
+                                        columns={this.state.columns}
+                                        pagination={this.state.pagination}
+                                        loading={this.state.loading}
+                                        dataSource={DataState.GradeStudentPreview.newList} >
+
+                                        </Table>
+                                </CheckBoxGroup>
+                                <CheckBox onChange={this.OnCheckAllChange} checked={this.state.checkAll}>全选</CheckBox>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                {/* 模态框 */}
+                <Modal
+                ref='handleStudentMadal'
+                bodyStyle = {{padding:0}}
+                type='1'
+                title='编辑学生'
+                visible={this.state.studentModalVisible}
+                onOk = {this.handleStudentModalOk}
+                onCancel = {this.handleStudentModalCancel}
+                >
+                    <EditStudentModal></EditStudentModal>
+                </Modal>
             </div>
         )
     }

@@ -3,7 +3,7 @@ import React from 'react';
 import 'antd/dist/antd.min.css';
 import './index.scss'
 import './scss/_left_menu.scss';
-import {HashRouter as Router,NavLink,withRouter } from 'react-router-dom';
+import { HashRouter as Router, NavLink, withRouter } from 'react-router-dom';
 import './js/leftMenu';
 import {
     Radio as AntRadio, Checkbox as AntCheckBox, Table as AntTable,
@@ -432,10 +432,10 @@ class Modal extends React.Component {
                 centered={this.props.centered ? this.props.centered : true}
                 width={this.state.width}
                 footer={this.state.footer === null ? null : this.state.footer ? this.state.footer : [
-                    <Button type="primary" size="small" color="green" onClick={this.state.onOk}>
+                    <Button key='onOk' type="primary" size="small" color="green" onClick={this.state.onOk}>
                         确定
                            </Button>,
-                    <Button size="small" color="blue" onClick={this.state.onCancel}>
+                    <Button key='onCancel' size="small" color="blue" onClick={this.state.onCancel}>
                         关闭
                            </Button>,
 
@@ -622,9 +622,9 @@ class Search extends React.Component {
         }
     }//键盘enter事件
     render() {
-        const { width, select, placeHolder, selectOptions, onClickSearch, onCancelSearch,className} = this.props;
+        const { width, select, placeHolder, selectOptions, onClickSearch, onCancelSearch, className } = this.props;
         return (
-            <div className={`search_container ${className?className:''}`} style={{
+            <div className={`search_container ${className ? className : ''}`} style={{
                 width: width ? width : '',
                 borderColor: this.state.inputFocus ? '#5897ed' : '#bac7d9'
             }} >
@@ -815,7 +815,7 @@ class DropDown extends React.Component {
     outDropClick(e) {
         const { that, target, ulDom, spanDom } = e;
 
-        if(ulDom&&spanDom){ //在该界面上已有该组件才这样展示
+        if (ulDom && spanDom) { //在该界面上已有该组件才这样展示
             if ((!spanDom.contains(target)) && (!ulDom.contains(target))) {
                 that.setState({ dropListShow: false }, () => {
                     $(ulDom).hide();
@@ -942,34 +942,34 @@ class DropDown extends React.Component {
                 </div>
         } else {
             let ClientHeight;
-            if (dropList&&(dropList.length<(height/24))){
-                ClientHeight = dropList.length*24;
-            }else{
+            if (dropList && (dropList.length < (height / 24))) {
+                ClientHeight = dropList.length * 24;
+            } else {
                 ClientHeight = height;
             }
 
             dropContainer =
-                                 <ul className="dropdown_select_ul" ref="dropdown_select_ul" style={{ width: width ? width : 120,overflow:"initial"}}>
-                                     <Scrollbars style={{width:width ? width : 120,height: ClientHeight ? ClientHeight:48 }}>
-                                        {//dropList是否存在？dropList:''
-                                            dropList ?
-                                            dropList.map((item, key) => {
-                                                    return <li key={key} className="dropdown_select_li"
-                                                        title={item.value}
-                                                        data-vaule={item.title}
-                                                        onClick={
-                                                            this.onSimpleDropChange.bind(this, {
-                                                                onChange: onChange,
-                                                                value: item.value,
-                                                                title: item.title
-                                                            })
-                                                        }
-                                                    >{item.title}</li>
-                                                })
-                                            : ''
+                <ul className="dropdown_select_ul" ref="dropdown_select_ul" style={{ width: width ? width : 120, overflow: "initial" }}>
+                    <Scrollbars style={{ width: width ? width : 120, height: ClientHeight ? ClientHeight : 48 }}>
+                        {//dropList是否存在？dropList:''
+                            dropList ?
+                                dropList.map((item, key) => {
+                                    return <li key={key} className="dropdown_select_li"
+                                        title={item.value}
+                                        data-vaule={item.title}
+                                        onClick={
+                                            this.onSimpleDropChange.bind(this, {
+                                                onChange: onChange,
+                                                value: item.value,
+                                                title: item.title
+                                            })
                                         }
-                                     </Scrollbars>
-                                 </ul>;
+                                    >{item.title}</li>
+                                })
+                                : ''
+                        }
+                    </Scrollbars>
+                </ul>;
         }
         return (
             <div className="dropdown_container" {...reset}>
@@ -1377,33 +1377,33 @@ class Menu extends React.Component {
     }
 }
 
-class MenuLeft extends React.Component{
+class MenuLeft extends React.Component {
 
     render() {
         //传递的参数的数据
-        const {Menu,Icon} = this.props;
+        const { Menu, Icon } = this.props;
         //history.pathname路由
-        const  pathname = this.props.history.location.pathname;
+        const pathname = this.props.history.location.pathname;
 
         return (
             <Router>
                 <div className="frame_left_menu_pin">
 
-                    <div className={`frame_left_menu_pic ${Icon?Icon:'pic1'}`}></div>
+                    <div className={`frame_left_menu_pic ${Icon ? Icon : 'pic1'}`}></div>
 
                     <div id="frame_left_menu_container" className="frame_left_menu_container">
                         {
-                            Menu&&Menu.map(( item , key ) => {
+                            Menu && Menu.map((item, key) => {
                                 //如果有第二级别
                                 if (item.List) {
                                     //active状态的类名
-                                    let activeClass='';
+                                    let activeClass = '';
 
-                                    if( pathname === `${item.link}` ){
+                                    if (pathname === `${item.link}`) {
 
-                                        activeClass="active selected";
+                                        activeClass = "active selected";
 
-                                    }else if( pathname.indexOf(`${item.link}`)===0 ){
+                                    } else if (pathname.indexOf(`${item.link}`) === 0) {
 
                                         activeClass = 'selected';
 
@@ -1413,22 +1413,22 @@ class MenuLeft extends React.Component{
                                         {/* {第二级别块}*/}
                                         <div className={`frame_leftmenu_mainitem ${activeClass}`}>
 
-                                            <NavLink exact to={{pathname:item.link,state:{id:item.id,name:item.name}}} className={`frame_leftmenu_mainitem_name ${item.menu?item.menu:''}`}>{item.name}</NavLink>
+                                            <NavLink exact to={{ pathname: item.link, state: { id: item.id, name: item.name } }} className={`frame_leftmenu_mainitem_name ${item.menu ? item.menu : ''}`}>{item.name}</NavLink>
 
-                                            <span className={`frame_leftmenu_arrow ${activeClass==='selected'?'spread':''}`}></span>
+                                            <span className={`frame_leftmenu_arrow ${activeClass === 'selected' ? 'spread' : ''}`}></span>
 
                                         </div>
-                                        <div className="frame_leftmenu_nextgrade_container" style={{display:`${activeClass==='selected'?'block':'none'}`}}>
+                                        <div className="frame_leftmenu_nextgrade_container" style={{ display: `${activeClass === 'selected' ? 'block' : 'none'}` }}>
 
                                             <ul className="frame_leftmenu_onegrade_ul">
                                                 {
-                                                    item.List&&item.List.map((i,k)=>{
+                                                    item.List && item.List.map((i, k) => {
 
-                                                        return <li key={k} className={`clearfix ${pathname.indexOf(i.link)===0?'active':''}`}>
+                                                        return <li key={k} className={`clearfix ${pathname.indexOf(i.link) === 0 ? 'active' : ''}`}>
 
-                                                            <span className={`frame_leftmenu_point ${pathname.indexOf(i.link)===0?'active':''}`}></span>
+                                                            <span className={`frame_leftmenu_point ${pathname.indexOf(i.link) === 0 ? 'active' : ''}`}></span>
 
-                                                            <NavLink to={{pathname:i.link,state:{id:i.id,name:i.name}}} className={`frame_leftmenu_onegrade_name frame_ellipsis ${pathname.indexOf(i.link)===0?'active':''}`}>{i.name}</NavLink>
+                                                            <NavLink to={{ pathname: i.link, state: { id: i.id, name: i.name } }} className={`frame_leftmenu_onegrade_name frame_ellipsis ${pathname.indexOf(i.link) === 0 ? 'active' : ''}`}>{i.name}</NavLink>
 
                                                         </li>
                                                     })
@@ -1439,11 +1439,11 @@ class MenuLeft extends React.Component{
 
                                     </React.Fragment>
 
-                                }else {
+                                } else {
                                     //如果没有第二级直接返回，同时pathname和NavLink的参数相同处于活动状态
-                                    return <div key={key} className={`frame_leftmenu_mainitem no_child ${pathname === item.link?"active selected":''}`}>
+                                    return <div key={key} className={`frame_leftmenu_mainitem no_child ${pathname === item.link ? "active selected" : ''}`}>
 
-                                        <NavLink exact to={{pathname:item.link,state:{id:item.id,name:item.name}}} className={`frame_leftmenu_mainitem_name ${item.menu?item.menu:''}`}>{item.name}</NavLink>
+                                        <NavLink exact to={{ pathname: item.link, state: { id: item.id, name: item.name } }} className={`frame_leftmenu_mainitem_name ${item.menu ? item.menu : ''}`}>{item.name}</NavLink>
 
                                     </div>
                                 }
@@ -1463,7 +1463,7 @@ class MenuLeft extends React.Component{
 class Frame extends React.Component {
 
     LogOut() {
-        const {onLogOut} = this.props;
+        const { onLogOut } = this.props;
         if (onLogOut) {
             onLogOut()
         }
