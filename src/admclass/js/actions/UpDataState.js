@@ -118,7 +118,7 @@ const getTheGradePreview = ()=> {
 };
 //获取某一班级的数据
 const getTheClassPreview = () =>{
-    return dispatch => {
+    return (dispatch,nextState) => {
 
         dispatch({type:UpUIState.STUDENT_LOADING_SHOW});
 
@@ -132,6 +132,18 @@ const getTheClassPreview = () =>{
 
             dispatch({type:GET_THE_CLASS_THEACHERS,data:res[1].Data});
 
+            let {TheStudentList} = nextState().DataState;
+            //获取最新的学生列表信息，传递给待选项。
+            if (TheStudentList.List.length>0&&TheStudentList.Total>0){
+
+                let list = TheStudentList.List.map(item => item.UserID);
+
+                dispatch({type:INIT_STUDEUNT_PLAIN_OPTIONS,list:list});
+
+            }
+
+
+
             dispatch({type:UpUIState.STUDENT_LOADING_HIDE});
 
             dispatch({type:UpUIState.APP_LOADING_CLOSE});
@@ -141,6 +153,30 @@ const getTheClassPreview = () =>{
     }
 };
 
+//学生选择组件发生改变
+const changeStudentCheckList = (checkList) => {
+
+    return (dispatch,getState) => {
+
+        dispatch({type:STUDENTS_CHECK_LIST_CHANGE,list:checkList});
+
+        let {StudentsPlainOptions,StudentsCheckList} =  getState().DataState;
+
+        //判断是不是全选。
+
+        if (StudentsCheckList.length===StudentsPlainOptions.length){
+
+            dispatch({type:STUDENTS_CHECKED_ALL});
+
+        }else{
+
+            dispatch({type:STUDENTS_CHECKED_NONE});
+
+        }
+
+    }
+
+};
 
 
 
@@ -174,6 +210,7 @@ export default {
     getAllGradePreview,
     getTheGradePreview,
     getTheClassPreview,
+    changeStudentCheckList,
     GET_LOGIN_USER_INFO,
     GET_ALL_GRADE_PREVIEW,
     GET_SHCOOL_GRADE_CLASSES,

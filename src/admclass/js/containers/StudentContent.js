@@ -26,36 +26,23 @@ class StudentContent extends Component{
 
     }
 
-    onCheckChange(checked){
+    onCheckChange(checkList){
 
-        const {StudentsCheckList} = this.props.DataState;
+        const {dispatch,DataState} = this.props;
 
-        console.log(checked);
+        dispatch(UpDataState.changeStudentCheckList(checkList));
 
-
-    }
-
-    componentWillReceiveProps(nextProps){
-
-        const {StudentsPlainOptions,TheStudentList} = this.props.DataState;
-
-        if (StudentsPlainOptions.length===0){
-
-            let list =[];
-
-            //dispatch({type:UpDataState.INIT_STUDEUNT_PLAIN_OPTIONS,list:StudentsCheckList});
-
-        }
 
     }
+
 
     render() {
         const {UIState,DataState} = this.props;
 
         const {StudentLoading} = UIState;
 
-        const {TheTeachersList,TheStudentList,StudentsCheckList} = DataState;
-        console.log(TheStudentList);
+        const {TheTeachersList,TheStudentList,StudentsCheckList,StudentsCheckAll} = DataState;
+        /*console.log(TheStudentList);*/
         return (
             <Loading tip="加载中..." spinning={StudentLoading.show}  size="large">
 
@@ -75,11 +62,7 @@ class StudentContent extends Component{
 
                     <Search className="admclass-search-student"></Search>
 
-                    <CheckBoxGroup value={StudentsCheckList} onChange={this.onCheckChange.bind(this)}>
-
-                        <StudentTabWrapper CheckBox={true} StudentList={TheStudentList}></StudentTabWrapper>
-
-                    </CheckBoxGroup>
+                    <StudentTabWrapper CheckBox={true} CheckList={StudentsCheckList}  allChecked={StudentsCheckAll.checkAll} onCheckChange={this.onCheckChange.bind(this)} StudentList={TheStudentList}></StudentTabWrapper>
 
                 </ContentWrapper>
 

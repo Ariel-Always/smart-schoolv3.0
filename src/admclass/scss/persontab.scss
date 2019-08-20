@@ -2,7 +2,7 @@
 .person-tab-wrapper{
   margin:60px 0;
   background-color: #f5f5f5;
-  padding: 24px 30px;
+  padding: 24px 30px 42px 24px;
 
   .person-item-wrapper{
     position: relative;
@@ -105,5 +105,17 @@
     position: absolute;
     right: 8px;
     top:8px;
+  }
+}
+//全选
+.person-checkgroup-wrapper{
+  position: relative;
+  .ant-checkbox-wrapper{
+    position: static;
+  }
+  .person-adjust-btn{
+    width: 56px;
+    height: 28px;
+    @include border-radius(3px);
   }
 }

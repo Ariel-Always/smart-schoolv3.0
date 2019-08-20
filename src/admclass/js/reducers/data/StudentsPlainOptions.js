@@ -1,8 +1,8 @@
 import UpDataState from '../../actions/UpDataState';
-const StudentsPlainOptions = (state={plainOptions:[]},actions) => {
+const StudentsPlainOptions = (state=[],actions) => {
     switch (actions.type) {
         case UpDataState.INIT_STUDEUNT_PLAIN_OPTIONS:
-            return {...state,plainOptions:[...actions.list]};
+            return [...state,...actions.list];
         default:
             return state;
     }
