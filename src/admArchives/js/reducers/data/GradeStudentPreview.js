@@ -7,22 +7,23 @@ const GradeStudentPreview = (state={},actions)=>{
         case UpDataState.GET_GRADE_STUDENT_PREVIEW:
             let {Total,...list} = actions.data;
 
-            let newList = handleData(list);
-            console.log(newList)
-            return {...state,Total,newList};
+            let {newList,keyList }= handleData(list);
+            console.log(newList,keyList)
+            return {...state,Total,newList,keyList};
         default:
             return state;
     }
 } ;
 
 function handleData(data){
-    
-    let dataList = data.List.map((child,index) => {
+    let keyList = [];
+    let newList = data.List.map((child,index) => {
         let list = {}
-        list.UserName = {key:'0'+(index+1),PhotoPath:child.PhotoPath,UserName:child.UserName};
+        list.UserName = {key:(index+1) >= 10?(index+1):'0'+(index+1),PhotoPath:child.PhotoPath,UserName:child.UserName};
         list.UserID = child.UserID;
-        list.Grader = child.Grader;
-        list.key = 'table-'+(index+1);
+        list.Gender = child.Gender;
+        list.key = (index+1) >= 10?(index+1):'0'+(index+1);
+        keyList.push(list.key);
         list.GradeName = child.GradeName;
         list.ClassName = child.ClassName;
         
@@ -31,7 +32,7 @@ function handleData(data){
         return list
 
     })
-    return dataList;
+    return {newList,keyList};
 }
 
 export default  GradeStudentPreview;

@@ -1,0 +1,60 @@
+.EditStudentModal{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    .Left{
+        width: 25%;
+        border-right: 1px #333 solid;
+        border-top:1px #333 solid;
+        border-bottom:1px #333 solid;
+        float: left;
+        height: 100%;
+
+    }
+    .Right{
+        width: 75%;
+        border-top:1px #333 solid;
+        float: left;
+        height: 100%;
+        border-bottom:1px #333 solid;
+
+        .row{
+            position: relative;
+            width: 100%;
+            height: 50px;
+            .culonm-1{
+                width: 15%;
+                float: left;
+                line-height: 50px;
+                text-align: right;
+                font-size: 16px;
+                color: #333;
+                .must-icon{
+                    color: red;
+                    font-size: 16px;
+                    text-align: right;
+                    margin-right: 5px
+                }
+            }
+            .culonm-2{
+                float: left;
+                width: 85%;
+                height: 50px;
+                padding-left: 5px;
+                vertical-align: middle;
+
+                .UserID-text{
+                    line-height: 50px;
+                    text-align: left;
+                    font-size: 16px;
+                    color: #333;
+                }
+                .UserName-input{
+                    width: 300px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                }
+            }
+        }
+    }
+}
