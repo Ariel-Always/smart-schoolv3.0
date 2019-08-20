@@ -5,6 +5,9 @@ import SchoolGradeClasses from './data/SchoolGradeClasses';
 import TheGradePreview from "./data/TheGradePreview";
 import TheStudentList from "./data/TheStudentList";
 import TheTeachersList from './data/TheTeachersList';
+import StudentsCheckList from './data/StudentsCheckList';
+import StudentsCheckAll from './data/StudentsCheckAll';
+import StudentsPlainOptions from "./data/StudentsPlainOptions";
 const DataState=combineReducers(
     {
         LoginUser,
@@ -12,6 +15,9 @@ const DataState=combineReducers(
         SchoolGradeClasses,
         TheGradePreview,
         TheStudentList,
-        TheTeachersList
+        TheTeachersList,
+        StudentsCheckList,
+        StudentsCheckAll,
+        StudentsPlainOptions
     });
 export default DataState;

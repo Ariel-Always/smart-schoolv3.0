@@ -1,15 +1,18 @@
 import React,{Component} from 'react';
+import {CheckBoxGroup} from "../../../common";
 
 class TeacherTabWrapper extends Component{
+
     render() {
 
         const {Teachers} = this.props;
 
         return (
+            <CheckBoxGroup>
 
-            <div className="admclass-teacher-wrapper clearfix">
+                <div className="admclass-teacher-wrapper clearfix">
 
-                <div className="admclass-teacher-ganger">
+                     <div className="admclass-teacher-ganger clearfix">
 
                     <div className="admclass-teacher-photo" style={{backgroundImage:`url(${Teachers.Ganger&&Teachers.Ganger.PhotoPath})`}}></div>
 
@@ -33,66 +36,68 @@ class TeacherTabWrapper extends Component{
 
                 </div>
 
-                {
-                    Teachers.List&&Teachers.List.map((item,key) => {
+                        {
+                            Teachers.List&&Teachers.List.map((item,key) => {
 
-                        let projects = '';
-                        switch (item.SubjectName) {
-                            case '语文':
-                            case '物理':
-                                projects = 'physics';
-                                break;
-                            case '英语':
-                            case '生物':
-                                projects = 'english';
-                                break;
-                            case '数学':
-                            case '政治':
-                                projects = 'math';
-                                break;
-                            case '历史':
-                            case '地理':
-                                projects = 'history';
-                                break
-                            default:
-                                projects = 'other';
-                        }
+                                let projects = '';
+                                switch (item.SubjectName) {
+                                    case '语文':
+                                    case '物理':
+                                        projects = 'physics';
+                                        break;
+                                    case '英语':
+                                    case '生物':
+                                        projects = 'english';
+                                        break;
+                                    case '数学':
+                                    case '政治':
+                                        projects = 'math';
+                                        break;
+                                    case '历史':
+                                    case '地理':
+                                        projects = 'history';
+                                        break;
+                                    default:
+                                        projects = 'other';
+                                }
 
-                       return <div key={key} className="admclass-teacher-item">
+                               return <div key={key} className="admclass-teacher-item clearfix">
 
-                                   <div className="admclass-teacher-photo" style={{backgroundImage:`url(${item.PhotoPath})`}}></div>
+                                           <div className="admclass-teacher-photo" style={{backgroundImage:`url(${item.PhotoPath})`}}></div>
 
-                                   <div className="admclass-teacher-info">
+                                           <div className="admclass-teacher-info">
 
-                                       <div className="admclass-teacher-tab">
+                                               <div className="admclass-teacher-tab">
 
-                                           <div className="admclass-teacher-name" title={item.UserName}>{item.UserName}</div>
-                                           
-                                           <div className={`admclass-teacher-project ${projects}`}>{item.SubjectName}</div>
-                                       
+                                                   <div className="admclass-teacher-name" title={item.UserName}>{item.UserName}</div>
+
+                                                   <div className={`admclass-teacher-project ${projects}`}>{item.SubjectName}</div>
+
+                                               </div>
+
+                                               <div className="admclass-teacher-id" title={item.UserID}>{item.UserID}</div>
+
+                                           </div>
+
+                                           <div className="cooperate">
+
+                                               <div className="reset">更改</div>
+
+                                               <div className="line"></div>
+
+                                               <div className="delete">删除</div>
+
+                                           </div>
+
                                        </div>
 
-                                       <div className="admclass-teacher-id" title={item.UserID}>{item.UserID}</div>
+                            })
 
-                                   </div>
+                        }
 
-                                   <div className="cooperate">
+                    </div>
 
-                                       <div className="reset">更改</div>
-
-                                       <div className="line"></div>
-
-                                       <div className="delete">删除</div>
-
-                                   </div>
-
-                               </div>
-
-                    })
-
-                }
-
-            </div>
+            </CheckBoxGroup>
         );
     }
 }
