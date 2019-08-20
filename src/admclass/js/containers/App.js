@@ -79,31 +79,31 @@ class App extends Component{
                 <Router>
                     <React.Fragment>
                     {/*loading包含Frame*/}
-                    <Loading className="AppLoading" tip="加载中..." size="large" delay={200} spinning={UIState.AppLoading.show}>
+                        <Loading className="AppLoading" tip="加载中..." size="large" delay={200} spinning={UIState.AppLoading.show}>
 
-                        <Frame type="triangle" showLeftMenu={true} style={{display:`${UIState.AppLoading.show?'none':'block'}`}}
-                           userInfo={{name:DataState.LoginUser.UserName,image:DataState.LoginUser.PhotoPath}}
-                           module={{cnname:"行政班管理",enname:"Administration class management",image:logo}}>
-                                {/*banner*/}
-                                 <div ref="frame-time-barner">
-                                   <Banner></Banner>
-                                </div>
-                                  {/*  左侧菜单*/}
-                                 <div ref="frame-left-menu">
-                                    <LeftMenu Menu={Menu} Icon="pic3"></LeftMenu>
-                                </div>
-                                    {/*右侧内容区域，Router变化区域*/}
-                                 <div ref="frame-right-content">
-                                     <ContentContainer></ContentContainer>
-                                </div>
-                        </Frame>
-                    </Loading>
-                        {/*{提示弹出框组件}*/}
-                    <Alert  show={UIState.AppAlert.show} type={UIState.AppAlert.type} title={UIState.AppAlert.title}
-                    onOk={UIState.AppAlert.onOk} onCancel={UIState.AppAlert.onCancel} onClose={UIState.AppAlert.onClose}>
+                            <Frame type="triangle" showLeftMenu={true} style={{display:`${UIState.AppLoading.show?'none':'block'}`}}
+                               userInfo={{name:DataState.LoginUser.UserName,image:DataState.LoginUser.PhotoPath}}
+                               module={{cnname:"行政班管理",enname:"Administration class management",image:logo}}>
+                                    banner
+                                     <div ref="frame-time-barner">
+                                       <Banner></Banner>
+                                    </div>
+                                        {/*左侧菜单*/}
+                                     <div ref="frame-left-menu">
+                                        <LeftMenu Menu={Menu} Icon="pic3"></LeftMenu>
+                                    </div>
+                                        {/*右侧内容区域，Router变化区域*/}
+                                     <div ref="frame-right-content">
+                                         <ContentContainer></ContentContainer>
+                                    </div>
+                            </Frame>
+                        </Loading>
+                            {/*提示弹出框组件*/}
+                        <Alert  show={UIState.AppAlert.show} type={UIState.AppAlert.type} title={UIState.AppAlert.title}
+                        onOk={UIState.AppAlert.onOk} onCancel={UIState.AppAlert.onCancel} onClose={UIState.AppAlert.onClose}>
 
-                    </Alert>
-                </React.Fragment>
+                        </Alert>
+                    </React.Fragment>
                 </Router>
         );
     }

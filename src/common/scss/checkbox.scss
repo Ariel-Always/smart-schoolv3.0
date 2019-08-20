@@ -10,21 +10,7 @@ $grayColor:#758992;
       }
     }
   }
-  .ant-checkbox-inner{
-    width: 12px;
-    height: 12px;
-    border-color: $grayColor;
-    &:after{
-      width:8px;
-      height: 8px;
-      left:1px;
-      top:1px;
-      content:'';
-      @include transform(rotate(0deg));
-      border:0;
-      background-color:$grayColor;
-    }
-  }
+
   span:not(.ant-checkbox){
     display: inline-block;
     vertical-align: middle;
@@ -54,5 +40,20 @@ $grayColor:#758992;
   }
   .ant-checkbox-input:focus+.ant-checkbox-inner{
     border-color: $grayColor;
+  }
+  .ant-checkbox-inner{
+    width: 12px;
+    height: 12px;
+    border-color: $grayColor;
+    &:after{
+      width:8px;
+      height: 8px;
+      left:1px;
+      top:1px;
+      content:'';
+      @include transform(rotate(0deg));
+      border:0;
+      background-color:$grayColor;
+    }
   }
 }
