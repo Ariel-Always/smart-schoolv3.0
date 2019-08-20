@@ -6,7 +6,7 @@ class StudentTabWrapper extends Component{
 
     render() {
 
-        const {StudentList,CheckList,onCheckChange,allChecked} = this.props;
+        const {StudentList,CheckList,onCheckChange,allChecked,onChangeAll} = this.props;
 
         return (
 
@@ -67,7 +67,7 @@ class StudentTabWrapper extends Component{
 
                     <div className="person-checkgroup-wrapper">
 
-                        <CheckBox checked={allChecked}>全选</CheckBox>
+                        <CheckBox checked={allChecked} onChange={()=>{onChangeAll()}}>全选</CheckBox>
 
                         <Button size="small" className="person-adjust-btn" color="blue">调班</Button>
 

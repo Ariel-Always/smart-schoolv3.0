@@ -35,6 +35,28 @@ class StudentContent extends Component{
 
     }
 
+    onChangeAll(){
+
+        const {DataState,dispatch} = this.props;
+
+        const {StudentsCheckAll,StudentsPlainOptions} = DataState;
+        //判断是点击的取消全选还是进行全选
+        if (StudentsCheckAll.checkAll){
+
+            dispatch({type:UpDataState.STUDENTS_CHECKED_NONE});
+
+            dispatch({type:UpDataState.STUDENTS_CHECK_LIST_CHANGE,list:[]});
+
+        } else{
+
+            dispatch({type:UpDataState.STUDENTS_CHECKED_ALL});
+
+            dispatch({type:UpDataState.STUDENTS_CHECK_LIST_CHANGE,list:StudentsPlainOptions});
+
+        }
+
+    }
+
 
     render() {
         const {UIState,DataState} = this.props;
@@ -62,7 +84,7 @@ class StudentContent extends Component{
 
                     <Search className="admclass-search-student"></Search>
 
-                    <StudentTabWrapper CheckBox={true} CheckList={StudentsCheckList}  allChecked={StudentsCheckAll.checkAll} onCheckChange={this.onCheckChange.bind(this)} StudentList={TheStudentList}></StudentTabWrapper>
+                    <StudentTabWrapper CheckBox={true} CheckList={StudentsCheckList} onChangeAll={this.onChangeAll.bind(this)} allChecked={StudentsCheckAll.checkAll} onCheckChange={this.onCheckChange.bind(this)} StudentList={TheStudentList}></StudentTabWrapper>
 
                 </ContentWrapper>
 
