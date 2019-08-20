@@ -814,11 +814,15 @@ class DropDown extends React.Component {
 
     outDropClick(e) {
         const { that, target, ulDom, spanDom } = e;
-        if ((!spanDom.contains(target)) && (!ulDom.contains(target))) {
-            that.setState({ dropListShow: false }, () => {
-                $(ulDom).hide();
-            })
+
+        if(ulDom&&spanDom){ //在该界面上已有该组件才这样展示
+            if ((!spanDom.contains(target)) && (!ulDom.contains(target))) {
+                that.setState({ dropListShow: false }, () => {
+                    $(ulDom).hide();
+                })
+            }
         }
+
     }//当点击事件发生在下拉组件之外的时候
     onClickSearch(e) {
         const { mutipleOptions } = this.props;
