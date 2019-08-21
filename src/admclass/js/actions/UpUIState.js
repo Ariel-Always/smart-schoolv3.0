@@ -15,6 +15,11 @@ const CLASS_LOADING_HIDE = 'CLASS_LOADING_HIDE';
 //某一具体班级的loading
 const STUDENT_LOADING_HIDE = 'STUDENT_LOADING_HIDE';
 const STUDENT_LOADING_SHOW = 'STUDENT_LOADING_SHOW';
+//弹出一个添加班级的弹出层
+const  ADD_CLASS_MODAL_SHOW = 'ADD_CLASS_MODAL_SHOW';
+const  ADD_CLASS_MODAL_HIDE = 'ADD_CLASS_MODAL_HIDE';
+
+
 
 //操作函数
 const showErrorAlert = (alertMsg)=> {
@@ -38,6 +43,8 @@ export default {
     GRADE_LOADING_SHOW,
     STUDENT_LOADING_HIDE,
     STUDENT_LOADING_SHOW,
+    ADD_CLASS_MODAL_HIDE,
+    ADD_CLASS_MODAL_SHOW,
     showErrorAlert,
     hideErrorAlert
 }

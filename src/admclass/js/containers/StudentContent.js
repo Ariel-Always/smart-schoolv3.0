@@ -84,7 +84,7 @@ class StudentContent extends Component{
 
                     <Search className="admclass-search-student"></Search>
 
-                    <StudentTabWrapper CheckBox={true} CheckList={StudentsCheckList} onChangeAll={this.onChangeAll.bind(this)} allChecked={StudentsCheckAll.checkAll} onCheckChange={this.onCheckChange.bind(this)} StudentList={TheStudentList}></StudentTabWrapper>
+                    <StudentTabWrapper  CheckList={StudentsCheckList} onChangeAll={this.onChangeAll.bind(this)} allChecked={StudentsCheckAll.checkAll} onCheckChange={this.onCheckChange.bind(this)} StudentList={TheStudentList}></StudentTabWrapper>
 
                 </ContentWrapper>
 

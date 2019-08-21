@@ -12,7 +12,7 @@ class StudentTabWrapper extends Component{
 
                 <div className="person-tab-wrapper clearfix">
 
-                    <CheckBoxGroup value={CheckList} onChange={(e)=>{onCheckChange(e)}}>
+                    <CheckBoxGroup  value={CheckList} onChange={(e)=>{onCheckChange(e)}}>
 
                         {
                             StudentList.List&&StudentList.List.map((item,key) => {
@@ -32,7 +32,7 @@ class StudentTabWrapper extends Component{
                                     sex = 'none'
                             }
 
-                            return <div key={key} className={`person-item-wrapper ${isMonitor?'monitor':''}`}>
+                            return <div key={key} className={`person-item-wrapper ${isMonitor?'monitor':''}`} >
 
                                 <div className="person-item-content clearfix">
 
@@ -53,6 +53,12 @@ class StudentTabWrapper extends Component{
                                     </div>
 
                                     <CheckBox  value={item.UserID}></CheckBox>
+
+                                    <div className="cooperate">
+
+                                        <div>{isMonitor?'取消班长':'设为班长'}</div>
+
+                                    </div>
 
                                 </div>
 
