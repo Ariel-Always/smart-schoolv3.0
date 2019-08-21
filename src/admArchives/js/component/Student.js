@@ -1,9 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import { DropDown, Search, Table, Button, CheckBox, CheckBoxGroup, Modal } from '../../../common/index'
+import { DropDown, PagiNation, Search, Table, Button, CheckBox, CheckBoxGroup, Modal } from '../../../common/index'
 import '../../../common/scss/_left_menu.scss'
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
 import '../../scss/Student.scss'
+import history from '../containers/history'
 import EditStudentModal from './EditStudentModal'
 import IconLocation from '../../images/icon-location.png'
 import actions from '../actions';
@@ -25,7 +26,7 @@ class Student extends React.Component {
                         return (
                             <div className='name-content'>
                                 <CheckBox value={arr.key} onChange={this.onCheckChange}></CheckBox>
-                                <span onMouseEnter={this.onMouseEnterName} className='name-key'>{arr.key}</span>
+                                <span onMouseEnter={this.onMouseEnterName} className='name-key'>{(arr.key + 1) >= 10 ? (arr.key + 1) : '0' + (arr.key + 1)}</span>
                                 <img alt={arr.UserName} className='name-img' width='47' height='47' src={arr.PhotoPath}></img>
                                 <span className='name-UserName'>{arr.UserName}</span>
                             </div>
@@ -74,6 +75,7 @@ class Student extends React.Component {
                     title: '操作',
                     dataIndex: 'key',
                     render: (key) => {
+
                         return (
                             <div className='handle-content'>
                                 <Button color='blue' type='default' onClick={this.StudentChange.bind(this, key)} className='handle-btn'>查看变记录</Button>
@@ -100,7 +102,11 @@ class Student extends React.Component {
             studentModalVisible: false,
             userKey: 0,
             StudentChangeKey: 0,
-            StudentChangeMadalVisible: false
+            StudentChangeMadalVisible: false,
+            alertShow: false,
+            alertTitle: '提示信息',
+            alertQueryShow: false,
+            alertQueryTitle: '查询提示~'
 
         }
     }
@@ -119,6 +125,13 @@ class Student extends React.Component {
             GradeArr: GradeArr
         })
 
+    }
+    componentWillMount(){
+        
+        history.listen(() => {//路由监听
+            let route = history.location.pathname;
+            console.log(route)
+        })
     }
 
     StudentDropMenu = (e) => {
@@ -168,7 +181,7 @@ class Student extends React.Component {
         console.log(e, key)
         this.setState({
             studentModalVisible: true,
-            userKey: key
+            userKey: e
         })
     }
 
@@ -228,7 +241,58 @@ class Student extends React.Component {
             StudentChangeMadalVisible: false
         })
     }
-    
+
+    onDeleteAllClick = () => {
+        const { dispatch } = this.props;
+        console.log(this.state.checkedList)
+        if (this.state.checkedList.length === 0) {
+
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-warn',
+                title: "你还没有选择哦~",
+                ok: this.onAlertWarnOk.bind(this),
+                cancel: this.onAlertWarnClose.bind(this),
+                close: this.onAlertWarnClose.bind(this)
+            }));
+
+        } else {
+
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-query',
+                title: "确定删除？",
+                ok: this.onAlertQueryOk.bind(this),
+                cancel: this.onAlertQueryClose.bind(this),
+                close: this.onAlertQueryClose.bind(this)
+            }));
+        }
+    }
+    onAlertWarnClose = () => {
+        this.setState({
+            alertTitle: '警告提示~',
+            alertShow: false
+        })
+    }
+    onAlertWarnOk = () => {
+        this.setState({
+            alertTitle: '警告提示~',
+            alertShow: false
+        })
+    }
+    onAlertQueryClose = () => {
+        this.setState({
+            alertQueryTitle: '查询提示~',
+            alertQueryShow: false
+        })
+    }
+    onAlertQueryOk = () => {
+        this.setState({
+            alertQueryTitle: '查询提示~',
+            alertQueryShow: false
+        })
+    }
+    onPagiNationChange = (e) => {
+        console.log(e)
+    }
     render() {
         const { UIState, DataState } = this.props;
 
@@ -282,13 +346,23 @@ class Student extends React.Component {
                                     <Table
                                         className='table'
                                         columns={this.state.columns}
-                                        pagination={this.state.pagination}
+                                        pagination={false}
                                         loading={this.state.loading}
                                         dataSource={DataState.GradeStudentPreview.newList} >
 
                                     </Table>
                                 </CheckBoxGroup>
-                                <CheckBox onChange={this.OnCheckAllChange} checked={this.state.checkAll}>全选</CheckBox>
+                                <CheckBox className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
+                                    全选
+                                    <Button onClick={this.onDeleteAllClick} className='deleteAll' color='blue'>删除</Button>
+                                </CheckBox>
+                                <div className='pagination-box'>
+                                    <PagiNation 
+                                    showQuickJumper  
+                                    total={DataState.GradeStudentPreview.Total} 
+                                    onChange={this.onPagiNationChange}
+                                    ></PagiNation>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -325,6 +399,27 @@ class Student extends React.Component {
                         </div>
                     </div>
                 </Modal>
+                <Modal
+                    ref='StudentMsgMadal'
+                    bodyStyle={{ padding: 0 }}
+                    type='2'
+                    width={650}
+                    visible={this.state.StudentChangeMadalVisible}
+                    onOk={this.StudentChangeMadalOk}
+                    onCancel={this.StudentChangeMadalCancel}
+                >
+                    <div className='modal-studentChange'>
+                        <div className='content-top'>
+                            <img src={IconLocation} width='30' height='40' alt='icon-location' />
+                            <span className='top-text'>毛峰的档案变更记录</span>
+                        </div>
+                        <div className='content'>
+                            <StudentChangeRecord data={''}></StudentChangeRecord>
+                        </div>
+                    </div>
+                </Modal>
+                {/* 提示框 */}
+
             </div>
         )
     }

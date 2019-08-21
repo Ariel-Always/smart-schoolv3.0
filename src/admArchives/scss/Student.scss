@@ -83,6 +83,7 @@ $image-url :"../images";
         }
         .content-render{
             margin-top: 16px;
+            position: relative;
 
             .table{
 
@@ -130,6 +131,25 @@ $image-url :"../images";
                     margin-right: 2px
                 }
             }
+            .checkAll-box{
+                margin-top: 10px;
+                .deleteAll{
+                    color:#fff;
+                    width: 56px;
+                    line-height: 28px;
+                    height: 28px;
+                    padding: 0;
+                    text-align: center;
+                    margin-left: 8px;
+                    box-sizing: content-box;
+                }
+            }
+            .pagination-box{
+                margin-top: 10px;
+                float: right;
+                
+            }
+            
         }
     }
     }
