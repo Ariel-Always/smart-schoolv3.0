@@ -2,7 +2,7 @@
 $img_url:"#{$image_url}/alert";
 /*简单的弹出层*/
 .alert_tips_tab{    //位置垂直左右居中
-  position:absolute;
+  position:fixed;
   left: 50%;
   top: 50%;
   z-index: 10101;
@@ -48,7 +48,7 @@ $img_url:"#{$image_url}/alert";
 
 /*带按钮的弹出层*/
 .alert_dialog_tab{
-  position:absolute;
+  position:fixed;
   left: 50%;
   top: 50%;
   z-index: 10101;
@@ -185,7 +185,7 @@ $img_url:"#{$image_url}/alert";
 }
 //背景蒙层
 .alert_dialog_mask{
-  position:absolute;
+  position:fixed;
   width: 100%;
   height: 100%;
   z-index:9999;

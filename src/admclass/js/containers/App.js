@@ -7,7 +7,9 @@ import UpDataState from '../actions/UpDataState';
 import logo from '../../images/logo.png';
 import Banner from '../component/Banner';
 import ContentContainer from './ContentContainer';
+import AddClassModal from '../component/AddClassModal';
 import {HashRouter as Router} from 'react-router-dom';
+
 
 
 class App extends Component{
@@ -52,6 +54,18 @@ class App extends Component{
         const {dispatch} = this.props;
 
         dispatch({type:UpUIState.ADD_CLASS_MODAL_SHOW});
+
+    }
+
+    addClassDropChange(e){//添加班级的下拉选择产生变化
+
+        const {value}= e;
+
+        if (value===0){
+
+        }else{
+
+        }
 
     }
 
@@ -107,12 +121,22 @@ class App extends Component{
                             </Frame>
                         </Loading>
                             {/*提示弹出框组件*/}
-                        <Alert  show={UIState.AppAlert.show} type={UIState.AppAlert.type} title={UIState.AppAlert.title}
+                        <Alert  show={UIState.AppAlert.show}  type={UIState.AppAlert.type} title={UIState.AppAlert.title}
                         onOk={UIState.AppAlert.onOk} onCancel={UIState.AppAlert.onCancel} onClose={UIState.AppAlert.onClose}>
 
                         </Alert>
 
-                        <Modal type={1} title="添加班级" visible={UIState.AddClassModal.show} mask={true} maskClosable={true} width={540} maskClosable={false}></Modal>
+                        <Modal type={1} title="添加班级"
+                               visible={UIState.AddClassModal.show} mask={true}
+                               maskClosable={true} width={540}
+                               maskClosable={false} bodyStyle={{height:176}}
+                               className="addClassModal"
+                        >
+                            <div className="ModalContent">
+                                <AddClassModal grade={Grades} addClassDropChange={this.addClassDropChange.bind(this)}></AddClassModal>
+                            </div>
+
+                        </Modal>
 
                     </React.Fragment>
 

@@ -1,5 +1,5 @@
 import UpUIState from '../../actions/UpUIState';
-const  AddClassModal = (state={show:false},actions) => {
+const  AddClassModal = (state={show:false,inputDisabled:true},actions) => {
     switch (actions.type) {
         case UpUIState.ADD_CLASS_MODAL_SHOW:
             return {...state,show:true};
