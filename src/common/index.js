@@ -749,12 +749,20 @@ class DropDown extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            dropSelectd: '',
+            dropSelectd:props.dropSelectd?props.dropSelectd:'',
             dropListShow: false,
             range2ListShow: '',
             range2ListActive: '',
             searchOpen: false
         }
+    }
+
+    componentWillReceiveProps(nextProps){
+
+        const {dropSelectd} = nextProps;
+
+        this.setState({dropSelectd:dropSelectd});
+
     }
 
     onToggleDropList() {

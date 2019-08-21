@@ -4,24 +4,13 @@ import {Input} from "antd";
 
 class AddClassModal extends Component{
 
-    constructor(props) {
-        super(props);
-        this.state={
-            inputValue:''
-        }
-    }
-
-
-    inputChange(e){
-        console.log(e.target.value);
-
-       this.setState({inputValue:e.target.value});
-
-    }
-
     render() {
 
-        const {grade,addClassDropChange} =  this.props;
+        const {grade,addClassDropChange,
+            inputDisabled,inputValue,inputChange,
+            selectedValue,selectTips,selectTipsShow,
+            inputTips,inputTipsShow
+        } =  this.props;
 
         let gradeList = grade.map((item,key) => {
 
@@ -39,17 +28,22 @@ class AddClassModal extends Component{
 
                    <span className="props">选择年级:</span>
 
-                    <DropDown  dropSelectd={{title:"请选择年级",value:0}} onChange={(e)=>addClassDropChange(e)} dropList={gradeList} height={72} ></DropDown>
+                    <DropDown style={{zIndex:10}} width={150} dropSelectd={selectedValue} onChange={(e)=>addClassDropChange(e)} dropList={gradeList} height={72} ></DropDown>
+
+                    <span className="error-tips" style={{display:`${selectTipsShow?'inline-block':'none'}`}}>{selectTips}</span>
 
                </div>
 
                <div className="addclass-classname-wrapper">
 
-                    <div className="props">班级名称:</div>
+                    <span className="props">班级名称:</span>
 
-                   <div>
-                       <Input type="text" value={this.state.inputValue} placeholder="请输入班级名称" onChange={this.inputChange.bind(this)}/>
-                   </div>
+                    <Input type="text" value={inputValue}
+                           placeholder="请输入班级名称" onChange={(e)=>inputChange(e)}
+                           disabled={inputDisabled}
+                    />
+
+                   <div className="error-tips" style={{display:`${inputTipsShow?'block':'none'}`}}>{inputTips}</div>
 
                </div>
 
