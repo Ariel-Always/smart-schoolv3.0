@@ -60,7 +60,7 @@ $image-url:'../images';
 
 //教师列表
 .admclass-teacher-wrapper{
-  margin-top:44px;
+  margin-top:16px;
   padding:0 6px;
   &>div{
     float: left;
@@ -88,7 +88,7 @@ $image-url:'../images';
         padding-left:20px;
         float: left;
         cursor: pointer;
-        margin-top:3px;
+        margin-top:0;
         background-position:left center;
         background-repeat: no-repeat;
         font-size:14px;
@@ -256,4 +256,5 @@ $image-url:'../images';
 //人物卡片式列表（学生）
 @import "./persontab";
 
-
+//模态框
+@import "./modal";

@@ -4,12 +4,16 @@ import AppAlert from './ui/AppAlert';
 import ClassLoading from './ui/ClassLoading';
 import GradeLoading from './ui/GradeLoading';
 import StudentLoading from './ui/StudentLoading';
+import AddClassModal from  './ui/AddClassModal';
+
+
 const  UIState = combineReducers({
     AppLoading,
     AppAlert,
     ClassLoading,
     GradeLoading,
-    StudentLoading
+    StudentLoading,
+    AddClassModal
 });
 
 export default UIState;

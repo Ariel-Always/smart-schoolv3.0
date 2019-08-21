@@ -400,7 +400,7 @@ class Modal extends React.Component {
                 ModalStyle = 'Modal-1';
         }
         this.setState({
-            width: width,
+            width: this.props.width?this.props.width:width,
             ModalStyle: ModalStyle
         })
     }

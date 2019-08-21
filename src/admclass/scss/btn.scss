@@ -1,6 +1,9 @@
 //按钮
 .ant-btn{
-  &.btn-blue{
+  &.import-admteacher,
+  &.import-teacher,
+  &.import-class,
+  &.add-class{
     padding:0 15px;
     height:24px;
     border-radius: 14px;
@@ -21,6 +24,22 @@
     height:28px;
     float: right;
     @include box-shadow(none);
+    &:hover{
+      background-image: linear-gradient(90deg, #32ccff 0%, #3ab0ff 100%);
+      color: #fff;
+    }
+  }
+  &.person-adjust-btn{
+    color: #ffffff;
+    background-color: #0099ff;
+    background-image: none;
+    @include border-radius(3px);
+    height:28px;
+    @include box-shadow(none);
+    &:hover{
+      background-image: linear-gradient(90deg, #32ccff 0%, #3ab0ff 100%);
+      color: #fff;
+    }
   }
 }
 .frame-nav-content{

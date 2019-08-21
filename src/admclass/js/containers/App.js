@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Frame,Loading,Alert,LeftMenu} from "../../../common";
+import {Frame,Loading,Alert,LeftMenu,Modal} from "../../../common";
 import {connect} from 'react-redux';
 import '../../scss/index.scss';
 import UpUIState from '../actions/UpUIState';
@@ -47,6 +47,14 @@ class App extends Component{
         dispatch(UpUIState.hideErrorAlert());
     }
 
+    addClass(e){
+
+        const {dispatch} = this.props;
+
+        dispatch({type:UpUIState.ADD_CLASS_MODAL_SHOW});
+
+    }
+
     render() {
         const {UIState,DataState} = this.props;
         const {Grades=[]} = DataState.SchoolGradeClasses;//左侧菜单的年级和班级信息
@@ -86,7 +94,7 @@ class App extends Component{
                                module={{cnname:"行政班管理",enname:"Administration class management",image:logo}}>
                                     banner
                                      <div ref="frame-time-barner">
-                                       <Banner></Banner>
+                                       <Banner addClass={this.addClass.bind(this)}></Banner>
                                     </div>
                                         {/*左侧菜单*/}
                                      <div ref="frame-left-menu">
@@ -103,7 +111,11 @@ class App extends Component{
                         onOk={UIState.AppAlert.onOk} onCancel={UIState.AppAlert.onCancel} onClose={UIState.AppAlert.onClose}>
 
                         </Alert>
+
+                        <Modal type={1} title="添加班级" visible={UIState.AddClassModal.show} mask={true} maskClosable={true} width={540} maskClosable={false}></Modal>
+
                     </React.Fragment>
+
                 </Router>
         );
     }
