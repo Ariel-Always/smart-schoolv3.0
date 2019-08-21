@@ -22,7 +22,7 @@ function handleData(data){
         list.UserName = {key:(index+1) >= 10?(index+1):'0'+(index+1),PhotoPath:child.PhotoPath,UserName:child.UserName};
         list.UserID = child.UserID;
         list.Gender = child.Gender;
-        list.key = (index+1) >= 10?(index+1):'0'+(index+1);
+        list.key = index;
         keyList.push(list.key);
         list.GradeName = child.GradeName;
         list.ClassName = child.ClassName;
