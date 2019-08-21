@@ -178,7 +178,15 @@ const changeStudentCheckList = (checkList) => {
 
 };
 
+//添加班级
+const addClass = () =>{
+    return dispatch => {
+        //关闭的弹窗的时候重置一些操作
+        dispatch({type:UpUIState.ADD_CLASS_MODAL_HIDE});
 
+    }
+
+};
 
 //从徐工那边获取的数据以及数据格式
  const getXuGetData =  async (url) =>{
@@ -202,8 +210,12 @@ const changeStudentCheckList = (checkList) => {
 
     }
 };
+//从徐工那边调用post接口
+const postXuData = async (url,data) =>{
 
 
+
+};
 
 export default {
     getPageInit,
@@ -211,6 +223,7 @@ export default {
     getTheGradePreview,
     getTheClassPreview,
     changeStudentCheckList,
+    addClass,
     GET_LOGIN_USER_INFO,
     GET_ALL_GRADE_PREVIEW,
     GET_SHCOOL_GRADE_CLASSES,

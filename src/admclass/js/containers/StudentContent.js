@@ -1,11 +1,14 @@
 import React,{Component} from 'react';
 import TitleBar from '../component/TitleBar';
-import {Search,Button,Loading,CheckBoxGroup} from "../../../common";
+import {Search, Button, Loading, Modal} from "../../../common";
 import connect from "react-redux/es/connect/connect";
 import UpDataState from '../actions/UpDataState';
+import UpUIState from '../actions/UpUIState';
 import ContentWrapper from '../component/ContentWrapper';
 import TeacherTabWrapper from '../component/TeacherTabWrapper'
 import StudentTabWrapper from '../component/StudentTabWrapper';
+import AdjustClassModal from '../component/AdjustClassModal';
+
 
 
 class StudentContent extends Component{
@@ -56,6 +59,45 @@ class StudentContent extends Component{
         }
 
     }
+    //点击调班按钮
+    adjustBtnClick(e){
+
+        const {dispatch,DataState} = this.props;
+
+        const {StudentsCheckList} = DataState;
+
+        //判断是否有选中的项
+
+        if (StudentsCheckList.length===0){
+
+            dispatch({type:UpUIState.SHOW_ERROR_ALERT,
+                msg:{
+                type:"btn-warn",
+                title:"您还没有选中任何学生，请先选择学生！"
+            }})
+
+        }else{
+
+            //弹出弹窗
+            dispatch({type:UpUIState.ADJUST_CLASS_MODAL_SHOW});
+
+        }
+
+
+    }
+
+    //调班模态框点击OK事件
+    adjustClassOk(e){
+
+
+
+    }
+    //调班模态框点击Cancel事件
+    adjustClassCancel(e){
+
+
+
+    }
 
 
     render() {
@@ -84,9 +126,33 @@ class StudentContent extends Component{
 
                     <Search className="admclass-search-student"></Search>
 
-                    <StudentTabWrapper  CheckList={StudentsCheckList} onChangeAll={this.onChangeAll.bind(this)} allChecked={StudentsCheckAll.checkAll} onCheckChange={this.onCheckChange.bind(this)} StudentList={TheStudentList}></StudentTabWrapper>
+                    <StudentTabWrapper  CheckList={StudentsCheckList}
+                                        onChangeAll={this.onChangeAll.bind(this)}
+                                        allChecked={StudentsCheckAll.checkAll}
+                                        onCheckChange={this.onCheckChange.bind(this)}
+                                        StudentList={TheStudentList}
+                                        adjustBtnClick ={this.adjustBtnClick.bind(this)}
+                    ></StudentTabWrapper>
 
                 </ContentWrapper>
+
+                <Modal type={1} title="调班"
+                       visible={UIState.AdjustClassModal.show} mask={true}
+                       maskClosable={true} width={540}
+                       maskClosable={false} bodyStyle={{height:176}}
+                       className="addClassModal" onOk={this.adjustClassOk.bind(this)}
+                       onCancel={this.adjustClassCancel.bind(this)}>
+
+                    {/*弹出层内容区域*/}
+
+                    <div className="ModalContent">
+
+                        <AdjustClassModal></AdjustClassModal>
+
+                    </div>
+
+                </Modal>
+
 
             </Loading>
         );
