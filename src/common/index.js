@@ -400,7 +400,7 @@ class Modal extends React.Component {
                 ModalStyle = 'Modal-1';
         }
         this.setState({
-            width: this.props.width?this.props.width:width,
+            width: this.props.width ? this.props.width : width,
             ModalStyle: ModalStyle
         })
     }
@@ -749,7 +749,7 @@ class DropDown extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            dropSelectd:props.dropSelectd?props.dropSelectd:'',
+            dropSelectd: props.dropSelectd ? props.dropSelectd : '',
             dropListShow: false,
             range2ListShow: '',
             range2ListActive: '',
@@ -757,11 +757,11 @@ class DropDown extends React.Component {
         }
     }
 
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {
 
-        const {dropSelectd} = nextProps;
+        const { dropSelectd } = nextProps;
 
-        this.setState({dropSelectd:dropSelectd});
+        this.setState({ dropSelectd: dropSelectd });
 
     }
 
@@ -1589,6 +1589,77 @@ class Frame extends React.Component {
     }
 }
 
+class DetailsModal extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            type: props.type
+        }
+    }
+
+    render() {
+        const { type,data, children, ...params } = this.props;
+        if (type === 'student') {
+
+        }
+        return (
+            <AntdModal
+                bodyStyle={{ padding: 0 }}
+                width={400}
+                footer={null}
+                className='DetailsMsgModal'
+                {...params}
+            >
+                <div className='modal-top'>
+                    <img alt={data.userName} src={data.userImg} className='top-img'></img>
+                    <p className='top-userName'>{data.userName}<span style={{opacity:0.64,marginLeft:3+'px'}}>{(data.Gende==='男'?'♂':data.userName+data.Gende==='女'?'♀':'')}</span></p>
+                    <p className='top-userText'>{data.userText}</p>
+                </div>
+                <div className='modal-content'>
+                    <div className='content-box'> 
+                        <div className='row'>
+                            <span className='col-left'>
+                                {type==='student'?'学号':'工号'}
+                            </span>
+                            <span className='col-right'>{data.userID?data.userID:<span className='content-null'>未填写</span>}</span>
+                        </div>
+                        <div className='row' style={{marginBottom:20+'px'}}>
+                            <span className='col-left'>
+                                {type==='student'?'班级':'工班级号'}
+                            </span>
+                            <span className='col-right'>{data.userGrade&&data.userClass?(data.userGrade+' > '+data.userClass):<span className='content-null'>未填写</span>}</span>
+                        </div>
+                        <div className='row'>
+                            <span className='col-left'>
+                                {'身份证号码'}
+                            </span>
+                            <span className='col-right'>{data.userIDCard?data.userIDCard:<span className='content-null'>未填写</span>}</span>
+                        </div>
+                        <div className='row'>
+                            <span className='col-left'>
+                                {'联系电话'}
+                            </span>
+                            <span className='col-right'>{data.userPhone?data.userPhone:<span className='content-null'>未填写</span>}</span>
+                        </div>
+                        <div className='row'>
+                            <span className='col-left'>
+                                {'电子邮箱'}
+                            </span>
+                            <span className='col-right'>{data.userMail?data.userMail:<span className='content-null'>未填写</span>}</span>
+                        </div>
+                        <div className='row'>
+                            <span className='col-left'>
+                                {'家庭住址'}
+                            </span>
+                            <span className='col-right'>{data.userAddress?data.userAddress:<span className='content-null'>未填写</span>}</span>
+                        </div>
+                    </div>
+                </div>
+            </AntdModal>
+        )
+    }
+}
+
 const LeftMenu = withRouter(MenuLeft);
 
 export {
@@ -1608,5 +1679,6 @@ export {
     Loading,
     Alert,
     Frame,
-    LeftMenu
+    LeftMenu,
+    DetailsModal
 }

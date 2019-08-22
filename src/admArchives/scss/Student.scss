@@ -95,12 +95,14 @@ $image-url :"../images";
                 }
                 .name-img{
                     margin: 0 6px;
+                    cursor: pointer;
                 }
 
                 .name-UserName{
                     text-decoration: underline;
                     color: #333;
                     font-size: 16px;
+                    cursor: pointer;
                 }
                 .UserID{
                     font-size: 14px;
@@ -190,3 +192,4 @@ $image-url :"../images";
         }
     }
 }
+

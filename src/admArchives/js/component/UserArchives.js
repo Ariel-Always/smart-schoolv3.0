@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import logo from '../../images/admAriHeadImg-1.png'
 import { Frame, Menu, Loading, Alert } from "../../../common";
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
 import history from '../containers/history'
@@ -9,7 +10,8 @@ import Student from './Student'
 import Teacher from './Teacher'
 import Leader from './Leader'
 import $ from 'jquery'
-
+import '../../scss/index.scss'
+import { getData } from '../../../common/js/fetch'
 
 
 
@@ -29,8 +31,8 @@ class UserArchives extends React.Component {
                     title: '用户档案总览',
                     icon: 'menu10',
                     onTitleClick: this.handleClick,
-                    // active: true,
-                    // selected: true
+                    active: true,
+                    selected: true
                 },
                 {
                     key: 'Student',
@@ -52,6 +54,8 @@ class UserArchives extends React.Component {
                 }]
             }
         }
+        let route = history.location.pathname;
+        console.log(route);
     }
 
     componentWillMount() {
@@ -63,7 +67,7 @@ class UserArchives extends React.Component {
         history.listen(() => {//路由监听
             let route = history.location.pathname;
             // 获取接口数据
-            this.requestData(route)
+           
 
             $('.frame_leftmenu_mainitem').removeClass('selected active');
             $('.frame_leftmenu_mainitem').children('*').removeClass('active');
@@ -71,23 +75,14 @@ class UserArchives extends React.Component {
         })
     }
 
-    // 请求每个组件主要渲染的数据
-    requestData = (route) => {
-        const { dispatch } = this.props;
-        let handleRoute = route.split('/')[1];
-        if (route === '/')
-            dispatch(actions.UpDataState.getAllUserPreview('/ArchivesAll'));
-        else {
-            dispatch(actions.UpDataState.getAllUserPreview('/Archives' + handleRoute));
-        }
-    }
+    
     //操作左侧菜单，响应路由变化
     handleMenu = () => {
-        if (history.location.pathname === '/') {
-            history.push('/All')
+        if (history.location.pathname === '/UserArchives') {
+            history.push('/UserArchives/All')
         }
-        let path = history.location.pathname.substr(1);
-
+        let path = history.location.pathname.split('/')[2];
+        console.log(path)
         let param = this.state.MenuParams;
         let len = param.children.length;
 
@@ -106,7 +101,7 @@ class UserArchives extends React.Component {
     //左侧菜单每项的点击事件
     handleClick = (key) => {
         console.log(key)
-        history.push('/' + key);
+        history.push('/UserArchives/' + key);
     }
     //每个组件的下拉菜单的数据请求
     AllDropDownMenu = (route) => {
@@ -114,20 +109,32 @@ class UserArchives extends React.Component {
     }
 
     render() {
+        const { UIState, DataState } = this.props;
+
         return (
             <React.Fragment>
-                <div ref="frame-time-barner"><TimeBanner /></div>
-                <div ref="frame-left-menu">
-                    <Menu params={this.state.MenuParams}></Menu>
-                </div>
-                <div ref="frame-right-content">
-                    <Router >
-                        <Route path='/All' history={history} component={All}></Route>
-                        <Route path='/Student' history={history} component={Student}></Route>
-                        <Route path='/Teacher' history={history} component={Teacher}></Route>
-                        <Route path='/Leader' history={history} component={Leader}></Route>
-                    </Router>
-                </div>
+               <Frame userInfo={{
+                                name: DataState.LoginUser.UserName,
+                                image: DataState.LoginUser.PhotoPath
+                            }}
+
+                                module={{
+                                    cnname: "用户档案管理",
+                                    enname: "User profile management",
+                                    image: logo
+                                }}
+                                type="circle" showLeftMenu={true}>
+                                <div ref="frame-time-barner"><TimeBanner /></div>
+                                <div ref="frame-left-menu"><Menu params={this.state.MenuParams}></Menu></div>
+                                <div ref="frame-right-content">
+
+                                    <Route path='/UserArchives/All' exact history={history} component={All}></Route>
+                                    <Route path='/UserArchives/Student' exact history={history} component={Student}></Route>
+                                    <Route path='/UserArchives/Teacher' exact history={history} component={Teacher}></Route>
+                                    <Route path='/UserArchives/Leader' exact history={history} component={Leader}></Route>
+
+                                </div>
+                            </Frame>
             </React.Fragment>
         )
     }
