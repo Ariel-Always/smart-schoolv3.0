@@ -2,6 +2,7 @@
 $img_url:"#{$image_url}/alert";
 /*简单的弹出层*/
 .alert_tips_tab{    //位置垂直左右居中
+  display: none;
   position:fixed;
   left: 50%;
   top: 50%;
@@ -11,6 +12,10 @@ $img_url:"#{$image_url}/alert";
   background-repeat:no-repeat;
   background-size: 100% 100%;
   max-width:500px;
+  &.animation{
+    display: block;
+    @include animation(hide 2s 1s linear);
+  }
   .border{
     box-shadow: 0px 0px 16px 0px
     rgba(3, 0, 0, 0.16);
@@ -19,7 +24,7 @@ $img_url:"#{$image_url}/alert";
     line-height:30px;
     padding: 17px 54px 17px 82px;
     background-position:40px center;
-     background-size: 28px;
+    background-size: 28px;
     background-color:#ffffff;
     background-repeat: no-repeat;
   }
@@ -89,7 +94,7 @@ $img_url:"#{$image_url}/alert";
     background-repeat: no-repeat;
     background-position: center;
     &.btn-success{
-        background-image: url("#{$img_url}/success-big.png");
+      background-image: url("#{$img_url}/success-big.png");
     }
     &.btn-error{
       background-image: url("#{$img_url}/error-big.png");
@@ -192,4 +197,21 @@ $img_url:"#{$image_url}/alert";
   background-color:rgba(0,0,0,0.16);
   left:0;
   top:0;
+}
+@include keyframes('hide'){
+  0%{
+    opacity: 1;
+  }
+  25%{
+    opacity:0.85;
+  }
+  50%{
+    opacity: 0.65;
+  }
+  75%{
+    opacity: 0.35;
+  }
+  100%{
+    opacity: 0;
+  }
 }
