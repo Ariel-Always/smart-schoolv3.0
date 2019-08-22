@@ -11,6 +11,8 @@ import Teacher from './Teacher'
 import Leader from './Leader'
 import $ from 'jquery'
 import '../../scss/index.scss'
+import '../../scss/RegisterExamine.scss'
+
 import { getData } from '../../../common/js/fetch'
 
 
@@ -49,6 +51,7 @@ class RegisterExamine extends React.Component {
                     type="circle" showLeftMenu={false}
                     showBarner={false}>
                     <div ref="frame-right-content">
+                        <div className='content-top'></div>
                     </div>
                 </Frame>
             </React.Fragment>
