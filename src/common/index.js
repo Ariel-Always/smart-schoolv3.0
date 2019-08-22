@@ -1369,6 +1369,7 @@ class MenuLeft extends React.Component {
 
         return (
             <Router>
+
                 <div className="frame_left_menu_pin">
 
                     <div className={`frame_left_menu_pic ${Icon ? Icon : 'pic1'}`}></div>
@@ -1395,7 +1396,7 @@ class MenuLeft extends React.Component {
                                         {/* {第二级别块}*/}
                                         <div className={`frame_leftmenu_mainitem ${activeClass}`}>
 
-                                            <NavLink exact to={{ pathname: item.link, state: { id: item.id, name: item.name } }} className={`frame_leftmenu_mainitem_name ${item.menu ? item.menu : ''}`}>{item.name}</NavLink>
+                                            <NavLink exact to={{ pathname: item.link, params:{ id: item.id, name: item.name } }} className={`frame_leftmenu_mainitem_name ${item.menu ? item.menu : ''}`}>{item.name}</NavLink>
 
                                             <span className={`frame_leftmenu_arrow ${activeClass === 'selected' ? 'spread' : ''}`}></span>
 
@@ -1410,7 +1411,7 @@ class MenuLeft extends React.Component {
 
                                                             <span className={`frame_leftmenu_point ${pathname.indexOf(i.link) === 0 ? 'active' : ''}`}></span>
 
-                                                            <NavLink to={{ pathname: i.link, state: { id: i.id, name: i.name } }} className={`frame_leftmenu_onegrade_name frame_ellipsis ${pathname.indexOf(i.link) === 0 ? 'active' : ''}`}>{i.name}</NavLink>
+                                                            <NavLink to={{ pathname: i.link, params:{ id: i.id, name: i.name } }} className={`frame_leftmenu_onegrade_name frame_ellipsis ${pathname.indexOf(i.link) === 0 ? 'active' : ''}`}>{i.name}</NavLink>
 
                                                         </li>
                                                     })
@@ -1425,7 +1426,7 @@ class MenuLeft extends React.Component {
                                     //如果没有第二级直接返回，同时pathname和NavLink的参数相同处于活动状态
                                     return <div key={key} className={`frame_leftmenu_mainitem no_child ${pathname === item.link ? "active selected" : ''}`}>
 
-                                        <NavLink exact to={{ pathname: item.link, state: { id: item.id, name: item.name } }} className={`frame_leftmenu_mainitem_name ${item.menu ? item.menu : ''}`}>{item.name}</NavLink>
+                                        <NavLink exact to={{ pathname: item.link, params: { id: item.id, name: item.name } }} className={`frame_leftmenu_mainitem_name ${item.menu ? item.menu : ''}`}>{item.name}</NavLink>
 
                                     </div>
                                 }
@@ -1460,7 +1461,8 @@ class Frame extends React.Component {
         let leftMenu = '';
         let rightContent = '';
         let otherDom = '';
-        if (children) {
+        if (children&&(children instanceof Array)) {
+
             children.map((item) => {
                 switch (item.ref) {
                     case 'frame-time-barner':
@@ -1476,6 +1478,8 @@ class Frame extends React.Component {
                         otherDom = item;
                 }
             });
+        }else{
+            rightContent =children;
         }
 
         switch (type) {

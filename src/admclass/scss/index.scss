@@ -9,14 +9,12 @@ $image-url:'../images';
   white-space: nowrap;
 }
 @mixin flex{
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
+  display:-moz-flex;
+  display:-ms-flex;
+  display:-webkit-flex;
 }
 @mixin justify-content($dir){
-  -ms-flex-pack: $dir;
   justify-content: $dir;
   -ms-flex-pack: $dir;
 }
@@ -248,15 +246,18 @@ $image-url:'../images';
 //统计
 @import "./statistic";
 //统计tab
-@import "./partdata";
+@import "./part-data";
 //title-bar
 @import "./title-bar";
 //btn
 @import "./btn";
 //人物卡片式列表（学生）
-@import "./persontab";
+@import "./person-tab";
 
 //模态框
 @import "./modal";
 //添加班级的模态框
-@import "./addclassmodal";
+@import "./add-class-modal";
+
+//调班模态框
+@import "./adjust-class-modal";

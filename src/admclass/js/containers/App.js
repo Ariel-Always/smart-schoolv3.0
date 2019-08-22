@@ -8,7 +8,8 @@ import logo from '../../images/logo.png';
 import Banner from '../component/Banner';
 import ContentContainer from './ContentContainer';
 import AddClassModal from '../component/AddClassModal';
-import {HashRouter as Router} from 'react-router-dom';
+import {HashRouter as Router,Route,Switch} from 'react-router-dom';
+
 
 
 
@@ -214,27 +215,31 @@ class App extends Component{
                         <Loading className="AppLoading" tip="加载中..." size="large" delay={200} spinning={UIState.AppLoading.show}>
 
                             <Frame type="triangle" showLeftMenu={true} style={{display:`${UIState.AppLoading.show?'none':'block'}`}}
-                               userInfo={{name:DataState.LoginUser.UserName,image:DataState.LoginUser.PhotoPath}}
-                               module={{cnname:"行政班管理",enname:"Administration class management",image:logo}}>
-                                    {/*banner*/}
+                                   userInfo={{name:DataState.LoginUser.UserName,image:DataState.LoginUser.PhotoPath}}
+                                   module={{cnname:"行政班管理",enname:"Administration class management",image:logo}}>
+                                {/*banner*/}
+
+                                <div ref="frame-time-barner">
+
+                                    <Banner addClass={this.addClass.bind(this)}></Banner>
+
+                                </div>
 
 
-                                     <div ref="frame-time-barner">
-                                       <Banner addClass={this.addClass.bind(this)}></Banner>
-                                    </div>
+                                {/*左侧菜单*/}
 
+                                <div ref="frame-left-menu">
 
-                                        {/*左侧菜单*/}
+                                    <LeftMenu Menu={Menu} Icon="pic3"></LeftMenu>
 
-                                     <div ref="frame-left-menu">
-                                        <LeftMenu Menu={Menu} Icon="pic3"></LeftMenu>
-                                    </div>
+                                </div>
 
-                                        {/*右侧内容区域，Router变化区域*/}
-                                     <div ref="frame-right-content">
-                                         <ContentContainer></ContentContainer>
-                                    </div>
+                                {/*右侧内容区域，Router变化区域*/}
+                                <div ref="frame-right-content">
 
+                                    <ContentContainer></ContentContainer>
+
+                                </div>
 
                             </Frame>
 
@@ -252,7 +257,7 @@ class App extends Component{
                         <Modal type={1} title="添加班级"
                                visible={UIState.AddClassModal.show} mask={true}
                                maskClosable={true} width={540}
-                               maskClosable={false} bodyStyle={{height:176}}
+                               bodyStyle={{height:176}}
                                className="addClassModal" onOk={this.addClassOk.bind(this)}
                                onCancel={this.addClassCancel.bind(this)}>
 

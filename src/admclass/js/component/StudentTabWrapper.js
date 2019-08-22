@@ -52,7 +52,7 @@ class StudentTabWrapper extends Component{
 
                                     </div>
 
-                                    <CheckBox  value={item.UserID}></CheckBox>
+                                    <CheckBox  value={JSON.stringify({id:item.UserID,name:item.UserName})}></CheckBox>
 
                                     <div className="cooperate">
 

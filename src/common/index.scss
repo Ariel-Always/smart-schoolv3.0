@@ -21,14 +21,12 @@ $MenuSelect: linear-gradient(90deg,
   white-space: nowrap;
 }
 @mixin flex{
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
   display: flex;
+  display: -moz-flex;
+  display: -ms-flex;
+  display: -webkit-flex;
 }
 @mixin justify-content($dir){
-  -ms-flex-pack: $dir;
   justify-content: $dir;
   -ms-flex-pack: $dir;
 }

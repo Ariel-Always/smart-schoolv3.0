@@ -136,7 +136,7 @@ const getTheClassPreview = () =>{
             //获取最新的学生列表信息，传递给待选项。
             if (TheStudentList.List.length>0&&TheStudentList.Total>0){
 
-                let list = TheStudentList.List.map(item => item.UserID);
+                let list = TheStudentList.List.map(item =>{return JSON.stringify({id:item.UserID,name:item.UserName})});
 
                 dispatch({type:INIT_STUDEUNT_PLAIN_OPTIONS,list:list});
 

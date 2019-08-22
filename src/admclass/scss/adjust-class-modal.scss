@@ -1,0 +1,39 @@
+.adjustClassModal{
+  .ModalContent{
+    height: 100%;
+  }
+  .adjust-class-wrapper{
+    @include flex;
+    height: 100%;
+    @include flex-direction(column);
+    @include justify-content(center);
+    &>div{
+      margin-left:6px;
+    }
+  }
+  .props{
+    color: #999999;
+  }
+  .adjust-class-obj{
+
+  }
+  .adjust-class-select{
+    margin-top: 24px;
+  }
+  .total{
+    color: #999999;
+  }
+  .red{
+    color: #ff0000;
+  }
+  .objs{
+    color: #333333;
+    margin-left: 8px;
+  }
+  .ant-modal-body{
+    z-index:5;
+  }
+  .ant-modal-footer{
+    z-index:3;
+  }
+}

@@ -72,9 +72,10 @@ class StudentContent extends Component{
 
             dispatch({type:UpUIState.SHOW_ERROR_ALERT,
                 msg:{
-                type:"btn-success",
+                type:"btn-tips",
                 title:"您还没有选中任何学生，请先选择学生！",
-                    cancel:this.hide.bind(this)
+                cancel:this.hide.bind(this),
+                close:this.hide.bind(this)
             }})
 
         }else{
@@ -102,7 +103,25 @@ class StudentContent extends Component{
     //调班模态框点击Cancel事件
     adjustClassCancel(e){
 
+        const {dispatch} = this.props;
 
+        dispatch({type:UpUIState.ADJUST_CLASS_MODAL_HIDE});
+
+    }
+
+    //调班模态框年级选择改变
+
+    gradeSelectChange(e){
+        const {value} = e;
+        //如果选择的是请选择年级的话
+        if (value===0){
+
+        }
+    }
+
+
+    //调班模态框班级选择改变
+    classSelectChange(e){
 
     }
 
@@ -112,8 +131,8 @@ class StudentContent extends Component{
 
         const {StudentLoading} = UIState;
 
-        const {TheTeachersList,TheStudentList,StudentsCheckList,StudentsCheckAll} = DataState;
-        /*console.log(TheStudentList);*/
+        const {TheTeachersList,TheStudentList,SchoolGradeClasses,StudentsCheckList,StudentsCheckAll} = DataState;
+
         return (
             <Loading tip="加载中..." spinning={StudentLoading.show}  size="large">
 
@@ -138,23 +157,37 @@ class StudentContent extends Component{
                                         allChecked={StudentsCheckAll.checkAll}
                                         onCheckChange={this.onCheckChange.bind(this)}
                                         StudentList={TheStudentList}
-                                        adjustBtnClick ={this.adjustBtnClick.bind(this)}
-                    ></StudentTabWrapper>
+                                        adjustBtnClick ={this.adjustBtnClick.bind(this)}>
+                    </StudentTabWrapper>
 
                 </ContentWrapper>
 
+                {/*调班弹出窗*/}
+
                 <Modal type={1} title="调班"
-                       visible={UIState.AdjustClassModal.show} mask={true}
-                       maskClosable={true} width={540}
-                       maskClosable={false} bodyStyle={{height:176}}
-                       className="addClassModal" onOk={this.adjustClassOk.bind(this)}
+                       visible={UIState.AdjustClassModal.show}
+                       mask={true}
+                       maskClosable={true}
+                       width={540}
+                       bodyStyle={{height:236}}
+                       className="adjustClassModal"
+                       onOk={this.adjustClassOk.bind(this)}
                        onCancel={this.adjustClassCancel.bind(this)}>
 
                     {/*弹出层内容区域*/}
 
                     <div className="ModalContent">
 
-                        <AdjustClassModal></AdjustClassModal>
+                        <AdjustClassModal
+                            schoolClassList={SchoolGradeClasses.Grades}
+                            gradeSelecd={UIState.AdjustClassModal.gradeDropSelectd}
+                            classSelectd ={UIState.AdjustClassModal.classDropSelectd}
+                            checkList={StudentsCheckList}
+                            classDisabled={UIState.AdjustClassModal.classDisabled}
+                            classSelectChange={this.classSelectChange.bind(this)}
+                            gradeSelectChange={this.gradeSelectChange.bind(this)}>
+
+                        </AdjustClassModal>
 
                     </div>
 
