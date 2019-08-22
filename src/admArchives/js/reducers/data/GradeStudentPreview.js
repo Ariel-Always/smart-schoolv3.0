@@ -19,10 +19,10 @@ function handleData(data){
     let keyList = [];
     let newList = data.List.map((child,index) => {
         let list = {}
-        list.UserName = {key:(index+1) >= 10?(index+1):'0'+(index+1),PhotoPath:child.PhotoPath,UserName:child.UserName};
+        list.UserName = {key:index,PhotoPath:child.PhotoPath,UserName:child.UserName};
         list.UserID = child.UserID;
         list.Gender = child.Gender;
-        list.key = (index+1) >= 10?(index+1):'0'+(index+1);
+        list.key = index;
         keyList.push(list.key);
         list.GradeName = child.GradeName;
         list.ClassName = child.ClassName;

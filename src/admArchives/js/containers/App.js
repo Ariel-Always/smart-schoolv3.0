@@ -177,7 +177,7 @@ class App extends Component {
                         name: DataState.LoginUser.UserName,
                         image: DataState.LoginUser.PhotoPath
                     }}
-                        style={{ display: UIState.AppAlert.appAlert ? 'none' : 'block' }}
+                        
                         module={{
                             cnname: "用户档案管理",
                             enname: "User profile management",
@@ -196,9 +196,14 @@ class App extends Component {
                         </div>
                     </Frame>
                 </Loading>
-                <Alert show={UIState.AppAlert.appAlert} type={UIState.AppAlert.type} title={UIState.AppAlert.title}
-                    onOk={UIState.AppAlert.onOk} onCancel={UIState.AppAlert.onCancel} onClose={UIState.AppAlert.onClose}
+                <Alert show={UIState.AppAlert.appAlert} 
+                type={UIState.AppAlert.type} 
+                title={UIState.AppAlert.title}
+                    onOk={UIState.AppAlert.onOk} 
+                    onCancel={UIState.AppAlert.onCancel} 
+                    onClose={UIState.AppAlert.onClose}
                 ></Alert>
+                
             </React.Fragment>
 
         );
