@@ -4,11 +4,7 @@ import { DropDown, PagiNation, Search, Table, Button, CheckBox, CheckBoxGroup, M
 import '../../../common/scss/_left_menu.scss'
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
 import '../../scss/Teacher.scss'
-import history from '../containers/history'
-import EditTeacherModal from './EditTeacherModal'
-import IconLocation from '../../images/icon-location.png'
-import actions from '../actions';
-import StudentChangeRecord from './TeacherChangeRecord'
+
 
 class Teacher extends React.Component{
     constructor(props){

@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { Frame, Menu, Loading, Alert } from "../../../common";
 import { connect } from 'react-redux';
+import UserArchives from "../component/UserArchives";
+
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
 import history from './history'
+import RegisterExamine from "../component/RegisterExamine";
 import logo from '../../images/admAriHeadImg-1.png'
 import TimeBanner from '../component/TimeBanner'
 import All from '../component/All'
@@ -116,27 +119,32 @@ class App extends Component {
     // 请求每个组件主要渲染的数据
     requestData = (route) => {
         const { dispatch } = this.props;
-        let handleRoute = route.split('/')[1];
-        if (route === '/')
-            {dispatch(actions.UpDataState.getAllUserPreview('/ArchivesAll'));
-            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });}
-        else {
-            dispatch(actions.UpDataState.getAllUserPreview('/Archives' + handleRoute));
+        let handleRoute = route.split('/')[2];
+        if (route === '/' || route.split('/')[1] === 'UserArchives') {
+            dispatch(actions.UpDataState.getAllUserPreview('/ArchivesAll'));
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-            if(route === '/Student'){
-                console.log('sds')
-                if(!this.props.DataState.GradeClassMsg.returnData)
-                dispatch(actions.UpDataState.getGradeClassMsg('/Archives' + handleRoute + '_DropDownMenu'));
-                dispatch(actions.UpDataState.getGradeStudentPreview('/Archives' + handleRoute + '?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
+            if (handleRoute) {
+                dispatch(actions.UpDataState.getAllUserPreview('/Archives' + handleRoute));
+                dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+                if (route === '/UserArchives/Student') {
+                    console.log('sds')
+                    if (!this.props.DataState.GradeClassMsg.returnData)
+                        dispatch(actions.UpDataState.getGradeClassMsg('/Archives' + handleRoute + '_DropDownMenu'));
+                    dispatch(actions.UpDataState.getGradeStudentPreview('/Archives' + handleRoute + '?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
+                }
             }
+
+        }
+        else {
+
         }
 
 
     }
     //操作左侧菜单，响应路由变化
     handleMenu = () => {
-        if (history.location.pathname === '/') {
-            history.push('/All')
+        if (history.location.pathname === '/'||history.location.pathname === '/UserArchives') {
+            history.push('/UserArchives/All')
             console.log(this.state)
         }
         let path = history.location.pathname.substr(1);
@@ -173,38 +181,25 @@ class App extends Component {
         return (
             <React.Fragment>
                 <Loading tip="加载中..." size="large" spinning={UIState.AppLoading.appLoading}>
-                    <Frame userInfo={{
-                        name: DataState.LoginUser.UserName,
-                        image: DataState.LoginUser.PhotoPath
-                    }}
-                        
-                        module={{
-                            cnname: "用户档案管理",
-                            enname: "User profile management",
-                            image: logo
-                        }}
-                        type="circle" showLeftMenu={true}>
-                        <div ref="frame-time-barner"><TimeBanner /></div>
-                        <div ref="frame-left-menu"><Menu params={this.state.MenuParams}></Menu></div>
-                        <div ref="frame-right-content">
-                            <Router history={BrowserRouter}>
-                                <Route path='/All' history={history} component={All}></Route>
-                                <Route path='/Student' history={history} component={Student}></Route>
-                                <Route path='/Teacher' history={history} component={Teacher}></Route>
-                                <Route path='/Leader' history={history} component={Leader}></Route>
-                            </Router>
-                        </div>
-                    </Frame>
+
+
+
+                    <Router >
+
+                        <Route path='/UserArchives' component={UserArchives}></Route>
+                        <Route path='/RegisterExamine' exact component={RegisterExamine}></Route>
+                    </Router>
+
                 </Loading>
-                <Alert show={UIState.AppAlert.appAlert} 
-                type={UIState.AppAlert.type} 
-                title={UIState.AppAlert.title}
-                    onOk={UIState.AppAlert.onOk} 
-                    onCancel={UIState.AppAlert.onCancel} 
+                <Alert show={UIState.AppAlert.appAlert}
+                    type={UIState.AppAlert.type}
+                    title={UIState.AppAlert.title}
+                    onOk={UIState.AppAlert.onOk}
+                    onCancel={UIState.AppAlert.onCancel}
                     onClose={UIState.AppAlert.onClose}
                 ></Alert>
-                
-            </React.Fragment>
+
+            </React.Fragment >
 
         );
     }

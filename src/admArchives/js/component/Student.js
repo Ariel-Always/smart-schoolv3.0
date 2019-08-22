@@ -1,9 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import { DropDown, PagiNation, Search, Table, Button, CheckBox, CheckBoxGroup, Modal } from '../../../common/index'
+import { DetailsModal,DropDown, PagiNation, Search, Table, Button, CheckBox, CheckBoxGroup, Modal } from '../../../common/index'
 import '../../../common/scss/_left_menu.scss'
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
 import '../../scss/Student.scss'
+
 import history from '../containers/history'
 import EditStudentModal from './EditStudentModal'
 import IconLocation from '../../images/icon-location.png'
@@ -27,8 +28,8 @@ class Student extends React.Component {
                             <div className='name-content'>
                                 <CheckBox value={arr.key} onChange={this.onCheckChange}></CheckBox>
                                 <span onMouseEnter={this.onMouseEnterName} className='name-key'>{(arr.key + 1) >= 10 ? (arr.key + 1) : '0' + (arr.key + 1)}</span>
-                                <img alt={arr.UserName} className='name-img' width='47' height='47' src={arr.PhotoPath}></img>
-                                <span className='name-UserName'>{arr.UserName}</span>
+                                <img alt={arr.UserName} onClick={this.onUserNameClick} className='name-img' width='47' height='47' src={arr.PhotoPath}></img>
+                                <span className='name-UserName' onClick={this.onUserNameClick}>{arr.UserName}</span>
                             </div>
                         )
                     }
@@ -106,7 +107,8 @@ class Student extends React.Component {
             alertShow: false,
             alertTitle: '提示信息',
             alertQueryShow: false,
-            alertQueryTitle: '查询提示~'
+            alertQueryTitle: '查询提示~',
+            StudentDetailsMsgModalVisible:false
 
         }
     }
@@ -293,9 +295,39 @@ class Student extends React.Component {
     onPagiNationChange = (e) => {
         console.log(e)
     }
+    onUserNameClick = () => {
+        this.setState({
+            StudentDetailsMsgModalVisible: true,
+            
+        })
+    }
+    StudentDetailsMsgModalOk = () => {
+        this.setState({
+            StudentDetailsMsgModalVisible: false,
+            
+        })
+    }
+    StudentDetailsMsgModalCancel = () => {
+        this.setState({
+            StudentDetailsMsgModalVisible: false,
+            
+        })
+    }
     render() {
         const { UIState, DataState } = this.props;
-
+        const data = {
+            userName:'康欣',
+            userImg:'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
+            Gende:'男',
+            userText:'学如逆水行舟，不进则退',
+            userID:'20170025444',
+            userGrade:'一年级',
+            userClass:'1班',
+            userIDCard:'',
+            userPhone:'15626248624',
+            userMail:'1519406168@qq.com',
+            userAddress:'蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团'
+        };
         return (
             <div className='Student'>
                 <div className='Student-box'>
@@ -399,25 +431,19 @@ class Student extends React.Component {
                         </div>
                     </div>
                 </Modal>
-                <Modal
-                    ref='StudentMsgMadal'
-                    bodyStyle={{ padding: 0 }}
-                    type='2'
-                    width={650}
-                    visible={this.state.StudentChangeMadalVisible}
-                    onOk={this.StudentChangeMadalOk}
-                    onCancel={this.StudentChangeMadalCancel}
+                <DetailsModal
+                    ref='StudentDetailsMsgModal'
+                    visible={this.state.StudentDetailsMsgModalVisible}
+                    onOk={this.StudentDetailsMsgModalOk}
+                    onCancel={this.StudentDetailsMsgModalCancel}
+                    data={data}
+                    type='student'
                 >
-                    <div className='modal-studentChange'>
-                        <div className='content-top'>
-                            <img src={IconLocation} width='30' height='40' alt='icon-location' />
-                            <span className='top-text'>毛峰的档案变更记录</span>
-                        </div>
-                        <div className='content'>
-                            <StudentChangeRecord data={''}></StudentChangeRecord>
-                        </div>
+                    <div className='modal-top'>
+
                     </div>
-                </Modal>
+                    <div className='modal-content'></div>
+                </DetailsModal>
                 {/* 提示框 */}
 
             </div>
