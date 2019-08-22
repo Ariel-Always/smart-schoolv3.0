@@ -25,6 +25,9 @@ const STUDENTS_CHECK_LIST_CHANGE = 'STUDENTS_CHECK_LIST_CHANGE';
 //学生的全选和全不选
 const STUDENTS_CHECKED_ALL = 'STUDENTS_CHECKED_ALL';
 const STUDENTS_CHECKED_NONE = 'STUDENTS_CHECKED_NONE';
+//添加教师的弹窗
+const ADD_TEACHER_UPDATA_TEACHERLIST = 'ADD_TEACHER_UPDATA_TEACHERLIST';
+const ADD_TEACHER_UPDATA_SUBJECTS = 'ADD_TEACHER_UPDATA_SUBJECTS';
 
 
 //操作的执行
@@ -142,7 +145,9 @@ const getTheClassPreview = () =>{
 
             }
 
+            dispatch({type:STUDENTS_CHECK_LIST_CHANGE,list:[]});
 
+            dispatch({type:STUDENTS_CHECKED_NONE});
 
             dispatch({type:UpUIState.STUDENT_LOADING_HIDE});
 
@@ -187,6 +192,68 @@ const addClass = () =>{
     }
 
 };
+//调班
+const postAdjustClass = (data) => {
+
+  return dispatch => {
+
+      let adjustPostPromise = postXuData('/admAdjustClass',data);
+
+     adjustPostPromise.then((json)=>{
+
+         if (json.Status===200){
+             dispatch({type:UpUIState.ADJUST_CLASS_MODAL_HIDE});
+
+             dispatch({type:UpUIState.SHOW_ERROR_ALERT,msg:{
+                     type:'success',
+                     title:"调班成功！",
+                     hide:()=>{
+                         dispatch({type:UpUIState.CLOSE_ERROR_ALERT});
+                         dispatch(getTheClassPreview());
+                     }
+             }});
+
+
+         }else if (json.Status===400||json.Status===500){
+
+             dispatch({type:UpUIState.SHOW_ERROR_ALERT,msg:{
+                    type:'error',
+                     title:json.msg,
+                     onHide:()=>{dispatch({type:UpUIState.CLOSE_ERROR_ALERT})}
+                 }})
+
+         }
+
+     });
+
+  }
+
+};
+
+//添加教师弹框获取所有的教师和学科的数据
+const getAddTeacherData = () =>{
+
+    return dispatch =>{
+
+        let getSubjectPromise = getXuGetData('/admSubjects');
+
+        let getTeachersPromise = getXuGetData('/admTeachers');
+
+        Promise.all([getSubjectPromise,getTeachersPromise]).then(res=>{
+
+
+
+        }).catch( e=>{
+
+            console.log(e);
+
+        })
+
+    }
+
+}
+
+
 
 //从徐工那边获取的数据以及数据格式
  const getXuGetData =  async (url) =>{
@@ -211,9 +278,27 @@ const addClass = () =>{
     }
 };
 //从徐工那边调用post接口
-const postXuData = async (url,data) =>{
+const postXuData = async (url,data,level) =>{
 
+    try {
+        let fetchAsync = '';
+        try {
+            fetchAsync = await postData(CONFIG.proxy+url,data,level);
+        }
+        catch (e) {
+            return  e;
+        }
 
+        let json = await fetchAsync.json();
+
+        return  json;
+
+    }
+    catch (e) {
+
+        return e;
+
+    }
 
 };
 
@@ -224,6 +309,8 @@ export default {
     getTheClassPreview,
     changeStudentCheckList,
     addClass,
+    postAdjustClass,
+    getAddTeacherData,
     GET_LOGIN_USER_INFO,
     GET_ALL_GRADE_PREVIEW,
     GET_SHCOOL_GRADE_CLASSES,
@@ -233,5 +320,7 @@ export default {
     STUDENTS_CHECK_LIST_CHANGE,
     STUDENTS_CHECKED_ALL,
     STUDENTS_CHECKED_NONE,
-    INIT_STUDEUNT_PLAIN_OPTIONS
+    INIT_STUDEUNT_PLAIN_OPTIONS,
+    ADD_TEACHER_UPDATA_SUBJECTS,
+    ADD_TEACHER_UPDATA_TEACHERLIST
 }
