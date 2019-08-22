@@ -8,6 +8,7 @@ const AppAlert = (state={show:false,title:'',type:0},actions) => {
                 abstract:actions.msg.abstract,
                 onOk:actions.msg.ok,
                 onCancel:actions.msg.cancel,
+                onHide:actions.msg.hide,
                 onClose:actions.msg.close};
         case UpUIState.CLOSE_ERROR_ALERT:
             return {...state,show:false};

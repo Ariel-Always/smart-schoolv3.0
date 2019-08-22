@@ -72,8 +72,9 @@ class StudentContent extends Component{
 
             dispatch({type:UpUIState.SHOW_ERROR_ALERT,
                 msg:{
-                type:"btn-warn",
-                title:"您还没有选中任何学生，请先选择学生！"
+                type:"btn-success",
+                title:"您还没有选中任何学生，请先选择学生！",
+                    cancel:this.hide.bind(this)
             }})
 
         }else{
@@ -85,6 +86,12 @@ class StudentContent extends Component{
 
 
     }
+
+    hide(e){
+        const {dispatch} = this.props
+        dispatch({type:UpUIState.CLOSE_ERROR_ALERT});
+    }
+
 
     //调班模态框点击OK事件
     adjustClassOk(e){
