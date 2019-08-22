@@ -1018,7 +1018,7 @@ class DropDown extends React.Component {
  * */
 class Loading extends React.Component {
     render() {
-        const { type, size, tip, wrapperClassName, children, ...reset } = this.props;
+        const { type, size, tip, spinning, wrapperClassName, children, ...reset } = this.props;
 
         let Fragments = '';
 
@@ -1038,10 +1038,10 @@ class Loading extends React.Component {
                 </div>
             } else { //icon图标的loading
                 let antIcon = <Icon type={type} spin {...reset} />
-                Fragments = <Spin indicator={antIcon} size={size} tip={tip} wrapperClassName={wrapperClassName}>{children}</Spin>
+                Fragments = <Spin indicator={antIcon} spinning={spinning} size={size} tip={tip} wrapperClassName={wrapperClassName}>{children}</Spin>
             }
         } else { //默认loading
-            Fragments = <Spin {...reset} size={size} tip={tip} wrapperClassName={wrapperClassName}>{children}</Spin>
+            Fragments = <Spin {...reset} size={size} spinning={spinning} tip={tip} wrapperClassName={wrapperClassName}>{children}</Spin>
         }
         return (
             <React.Fragment>    {/*空标签*/}
