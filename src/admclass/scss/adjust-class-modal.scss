@@ -1,3 +1,4 @@
+
 .adjustClassModal{
   .ModalContent{
     height: 100%;
@@ -15,7 +16,7 @@
     color: #999999;
   }
   .adjust-class-obj{
-
+    margin-right:6px;
   }
   .adjust-class-select{
     margin-top: 24px;
@@ -35,5 +36,14 @@
   }
   .ant-modal-footer{
     z-index:3;
+  }
+  .error-tips{
+    position: absolute;
+    left:100px;
+    top:180px;
+    color: #ff0000;
+    padding-left: 17px;
+    background: url("#{$image-url}/error-tips.png") no-repeat left center;
+    margin-left: 8px;
   }
 }

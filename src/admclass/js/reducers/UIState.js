@@ -6,6 +6,7 @@ import GradeLoading from './ui/GradeLoading';
 import StudentLoading from './ui/StudentLoading';
 import AddClassModal from  './ui/AddClassModal';
 import AdjustClassModal from './ui/AdjustClassModal';
+import AddTeacherModal from "./ui/AddTeacherModal";
 
 
 const  UIState = combineReducers({
@@ -15,7 +16,8 @@ const  UIState = combineReducers({
     GradeLoading,
     StudentLoading,
     AddClassModal,
-    AdjustClassModal
+    AdjustClassModal,
+    AddTeacherModal
 });
 
 export default UIState;

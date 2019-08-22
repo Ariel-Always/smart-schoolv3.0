@@ -11,11 +11,14 @@ class AdjustClassModal extends Component{
             classSelectd,
             classDisabled,
             gradeSelectChange,
-            classSelectChange
+            classSelectChange,
+            classList,
+            errTips,
+            errTipsShow
         } = this.props;
 
         let stuList = checkList.map(item=>{return JSON.parse(item)});
-        console.log(schoolClassList);
+
         let gradeList = schoolClassList.map((item) => {
 
             return {value:item.GradeID,title:item.GradeName}
@@ -23,7 +26,9 @@ class AdjustClassModal extends Component{
         });
         gradeList.unshift({value:0,title:"请选择年级"});
 
-        console.log(gradeList);
+        let classDropList = classList.map(item =>{return {value:item.ClassID,title:item.ClassName}});
+
+        classDropList.unshift({value:0,title:"请选择班级"});
 
         return (
             <div className="adjust-class-wrapper">
@@ -49,11 +54,21 @@ class AdjustClassModal extends Component{
                     <span className="props">目标班级:</span>
 
                     <DropDown dropSelectd={gradeSelecd?gradeSelecd:''}
-                              dropList={gradeList} height={56} onChange={(e)=>gradeSelectChange(e)}></DropDown>
+                              dropList={gradeList} height={56}
+                              onChange={(e)=>gradeSelectChange(e)}
+                              style={{zIndex:5}}>
 
-                    <DropDown dropSelectd ={classSelectd?classSelectd:''} onChange={e=>classSelectChange(e)} disabled={classDisabled}></DropDown>
+                    </DropDown>
+
+                    <DropDown dropSelectd ={classSelectd?classSelectd:''}
+                              onChange={e=>classSelectChange(e)}
+                              disabled={classDisabled}
+                              dropList={classDropList}>
+
+                    </DropDown>
 
                 </div>
+                <div className="error-tips" style={{display:`${errTipsShow?'block':'none'}`}}>{errTips}</div>
 
             </div>
         );

@@ -8,6 +8,7 @@ import ContentWrapper from '../component/ContentWrapper';
 import TeacherTabWrapper from '../component/TeacherTabWrapper'
 import StudentTabWrapper from '../component/StudentTabWrapper';
 import AdjustClassModal from '../component/AdjustClassModal';
+import AddTeacherModal from '../component/AddTeacherModal';
 
 
 
@@ -67,7 +68,6 @@ class StudentContent extends Component{
         const {StudentsCheckList} = DataState;
 
         //判断是否有选中的项
-
         if (StudentsCheckList.length===0){
 
             dispatch({type:UpUIState.SHOW_ERROR_ALERT,
@@ -79,12 +79,9 @@ class StudentContent extends Component{
             }})
 
         }else{
-
             //弹出弹窗
             dispatch({type:UpUIState.ADJUST_CLASS_MODAL_SHOW});
-
         }
-
 
     }
 
@@ -97,7 +94,27 @@ class StudentContent extends Component{
     //调班模态框点击OK事件
     adjustClassOk(e){
 
+        const {dispatch,DataState} = this.props;
 
+        const {StudentsCheckList} = DataState;
+
+        const {AdjustClassModal} = this.props.UIState;
+
+        if (AdjustClassModal.gradeChecked.value===0){
+
+            dispatch({type:UpUIState.ADJUST_CLASS_ERROR_SHOW});
+
+        }else if (AdjustClassModal.classChecked.value===0){
+
+            dispatch({type:UpUIState.ADJUST_CLASS_ERROR_SHOW});
+
+        }else{
+
+            let stuIDList = StudentsCheckList.map((item) => { return JSON.parse(item).id});
+
+            dispatch(UpDataState.postAdjustClass({UserIDs:stuIDList.join(','),NewClassID:AdjustClassModal.classChecked.value}));
+
+        }
 
     }
     //调班模态框点击Cancel事件
@@ -112,18 +129,65 @@ class StudentContent extends Component{
     //调班模态框年级选择改变
 
     gradeSelectChange(e){
+        const {dispatch,DataState} = this.props;
+
+        const {Grades} = DataState.SchoolGradeClasses;
+
         const {value} = e;
+
         //如果选择的是请选择年级的话
+
+        dispatch({type:UpUIState.ADJUST_CLASS_ERROR_HIDE});
+
         if (value===0){
+
+            dispatch({type:UpUIState.ADJUST_CLASS_CLASSLIST_DISABLED});
+
+            dispatch({type:UpUIState.ADJUST_CLASS_CLASS_CHANGE,checked:{value:0,title:"请选择班级"}});
+
+            dispatch({type:UpUIState.ADJUST_CLASS_GRADE_CHANGE,checked:{value:0,title:"请选择年级"}});
+
+        }else{
+            //获取所选的值所在的年级
+            let gradeSelect = Grades.find((item)=>{return item.GradeID === value});
+            //根据URL得到本班级的classID
+            let ClassID = this.props.match.params.ClassId;
+            //获取除去本年级的班级数组
+            let classList =  gradeSelect.Classes.filter((item) => {return item.ClassID !== ClassID});
+
+            dispatch({type:UpUIState.ADJUST_CLASS_GRADE_CHANGE,checked:e});
+
+            dispatch({type:UpUIState.ADJUST_CLASS_CLASS_LIST_UPDATE,list:classList});
+
+            dispatch({type:UpUIState.ADJUST_CLASS_CLASSLIST_ABLED});
 
         }
     }
 
 
     //调班模态框班级选择改变
-    classSelectChange(e){
+    classSelectChange(e) {
+
+        const {dispatch} = this.props;
+
+        dispatch({type:UpUIState.ADJUST_CLASS_ERROR_HIDE});
+
+        dispatch({type:UpUIState.ADJUST_CLASS_CLASS_CHANGE,checked:e});
 
     }
+
+    //弹出添加教师的弹窗
+    addTeacherModalShow(){
+
+        const {dispatch} = this.props;
+
+        dispatch({type:UpUIState.ADD_TEACHER_MODAL_SHOW});
+
+        //初始化所有的教师和学科的数据
+        dispatch(UpDataState.getAddTeacherData())
+
+    }
+
 
 
     render() {
@@ -140,7 +204,7 @@ class StudentContent extends Component{
 
                 <ContentWrapper>
 
-                    <Button size="small" color="blue" className="addTeacher">添加任课教师</Button>
+                    <Button size="small" color="blue" className="addTeacher" onClick={this.addTeacherModalShow.bind(this)}>添加任课教师</Button>
 
                     <TeacherTabWrapper Teachers={TheTeachersList}></TeacherTabWrapper>
 
@@ -185,13 +249,33 @@ class StudentContent extends Component{
                             checkList={StudentsCheckList}
                             classDisabled={UIState.AdjustClassModal.classDisabled}
                             classSelectChange={this.classSelectChange.bind(this)}
-                            gradeSelectChange={this.gradeSelectChange.bind(this)}>
+                            gradeSelectChange={this.gradeSelectChange.bind(this)}
+                            classList={UIState.AdjustClassModal.classList}
+                            errTipsShow={UIState.AdjustClassModal.errTipsShow}
+                            errTips={UIState.AdjustClassModal.errTips}>
 
                         </AdjustClassModal>
 
                     </div>
 
                 </Modal>
+
+               {/* 更改任课教师的弹窗*/}
+
+               <Modal type={1} title="添加任课教师"
+                      visible={UIState.AddTeacherModal.show}
+                      mask={true} width={1000}
+                      bodyStyle={{height:536}}
+                      maskClosable={true}
+                      className="addTeacherModal">
+
+                   <AddTeacherModal
+                            loadingShow={UIState.AddTeacherModal.loadingShow}
+                   >
+
+                   </AddTeacherModal>
+
+               </Modal>
 
 
             </Loading>
