@@ -2,6 +2,7 @@ import React,{Component} from 'react';
 import {Modal} from "../../../common";
 import {DropDown,Loading,Button} from "../../../common";
 import {Input} from 'antd';
+import ScrollBar from 'react-custom-scrollbars';
 
 class AddTeacherModal extends Component{
 
@@ -15,7 +16,13 @@ class AddTeacherModal extends Component{
 
             subjects,
 
-            subjectsSelect
+            subjectsSelect,
+
+            itemClick,
+
+            closeShow,
+
+            newPickTeacher
 
         } = this.props;
 
@@ -31,7 +38,7 @@ class AddTeacherModal extends Component{
 
             <div className="add-teacher-wrapper clearfix">
 
-                {/*<Loading className="add-teacher-loading" type="loading" size="large" spinning={loadingShow}  tip="加载中...">*/}
+                <Loading className="add-teacher-loading" opacity={false} type="loading" size="large" spinning={loadingShow}  tip="加载中...">
 
                     <div className="left-wrapper">
 
@@ -45,7 +52,9 @@ class AddTeacherModal extends Component{
 
                                 dropList = {subjectsList}
 
-                                height = {96}>
+                                height = {96}
+
+                                style={{zIndex:5}}>
 
                             </DropDown>
 
@@ -56,13 +65,35 @@ class AddTeacherModal extends Component{
 
                             <Input type="text" className="search-input" placeholder="请输入教师姓名或工号搜索"/>
 
+                            <input type="button" className="search-close" style={{display:`${closeShow?'block':'none'}`}}/>
+
                             <Button color="blue" className="search-btn">搜索</Button>
 
                         </div>
 
                         <div className="teacher-list-wrapper">
 
+                            <ScrollBar style={{width:712,height:360,marginLeft:12}} autoHide autoHideTimeout={2000}>
 
+                            {
+
+                                teacherList.List&&teacherList.List.map((item,key) => {
+
+                                    return <div key={key} className="teacher-list-item" onClick={()=>{itemClick({id:item.UserID,photo:item.PhotoPath,name:item.UserName})}}>
+
+                                                <div className="teacher-photo" style={{backgroundImage:`url(${item.PhotoPath})`}}></div>
+
+                                                <div className="teacher-name" title={item.UserName}>{item.UserName}</div>
+
+                                                <div className="teacher-id" title={`[${item.UserID}]`}>[<span className="id-body">{item.UserID}</span>]</div>
+
+                                            </div>
+
+                                })
+
+                            }
+
+                            </ScrollBar>
 
                         </div>
 
@@ -70,11 +101,44 @@ class AddTeacherModal extends Component{
 
                     <div className="right-wrapper">
 
+                        <div className="origin-teacher-wrapper">
+
+                            <div className="orgin-teacher-title">原任课教师</div>
+
+                            <div className="origin-teacher-photo"></div>
+
+                            <div className="origin-teacher-name"></div>
+
+                            <div className="origin-teacher-id"></div>
+
+                        </div>
+
+                        <div className="present-teacher-wrapper">
+
+                            <div className="present-teacher-title">新任课教师</div>
+
+                            <div className="present-teacher-photo" style={{backgroundImage:`url(${newPickTeacher.photo})`}}></div>
+
+                            <div className="present-teacher-name" title={newPickTeacher.name?newPickTeacher.name:'未选择'} >{newPickTeacher.name?newPickTeacher.name:'未选择'}</div>
+
+                            {
+                                //如果没有选中教师的情况下：
+                                newPickTeacher.id?
+
+                                    <div className="present-teacher-id" title={`[${newPickTeacher.id?newPickTeacher.id:''}]`}>[<span className="id-body">{newPickTeacher.id?newPickTeacher.id:''}</span>]</div>
+
+                                    :''
+                            }
+
+
+
+                        </div>
+
                     </div>
 
-              {/*  </Loading>*/}
+                </Loading>
 
-              <Loading type="point" tip="加载中"></Loading>
+
 
             </div>
 

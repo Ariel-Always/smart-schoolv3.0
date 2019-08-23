@@ -199,6 +199,16 @@ class StudentContent extends Component{
 
     }
 
+    //点击选中某一个教师的事件
+    itemLick(info) {
+
+        const {dispatch} = this.props;
+
+        dispatch({type:UpDataState.ADD_TEACHER_UPDATE_NEW_TEACHER,data:info});
+
+    }
+
+
 
 
     render() {
@@ -318,7 +328,18 @@ class StudentContent extends Component{
 
                             teacherList = {UIState.AddTeacherModal.teacherList}
 
-                            subjectsSelect = {UIState.AddTeacherModal.subjectsSelect}>
+                            subjectsSelect = {UIState.AddTeacherModal.subjectsSelect}
+
+                            itemClick={this.itemLick.bind(this)}
+
+                            closeShow={UIState.AddTeacherModal.closeShow}
+
+                            newPickTeacher = {{
+                                id:UIState.AddTeacherModal.newPickTeacher.id,
+                                name:UIState.AddTeacherModal.newPickTeacher.name,
+                                photo:UIState.AddTeacherModal.newPickTeacher.photo
+                            }}
+                   >
 
                    </AddTeacherModal>
 
