@@ -11,7 +11,11 @@ const  AddTeacherModal = (state={
 
     subjects:[],
 
-    subjectsSelect:{value:'all',title:"全部教师"}
+    subjectsSelect:{value:'all',title:"全部教师"},
+
+    colseShow:false,
+
+    newPickTeacher:{id:'',name:'',photo:''}
 
     },actions) =>{
 
@@ -29,7 +33,10 @@ const  AddTeacherModal = (state={
 
                 subjects:[],
 
-                subjectsSelect:{value:'all',title:"全部教师"}
+                subjectsSelect:{value:'all',title:"全部教师"},
+
+                colseShow:false
+
             };
 
         case UpUIState.ADD_TEACHER_MODAL_HIDE:
@@ -47,6 +54,18 @@ const  AddTeacherModal = (state={
         case UpDataState.ADD_TEACHER_UPDATA_SUBJECTS:
 
             return {...state,subjects:actions.list};
+
+        case UpDataState.ADD_TEACHER_CLOSE_SHOW:
+
+            return {...state,closeShow:true};
+
+        case UpDataState.ADD_TEACHER_CLOSE_HIDE:
+
+            return {...state,closeShow:false};
+
+        case UpDataState.ADD_TEACHER_UPDATE_NEW_TEACHER:
+
+            return  {...state,newPickTeacher:actions.data};
 
         default:
 
