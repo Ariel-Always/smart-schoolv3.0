@@ -652,6 +652,14 @@ textarea.ant-input {
         width: 100%;
         min-height: 30px;
         //overflow: hidden;
+        &.row-adress{
+          height: 40px;
+          margin-top: 5px;
+
+          span{
+            line-height: 20px;
+          }
+        }
         .col-left{
           float: left;
           width: 30%;
@@ -676,6 +684,33 @@ textarea.ant-input {
           }
         }
       }
+    }
+  }
+}
+
+.DetailsMsgModal{
+  .ant-modal-footer {
+    border: none;
+    position: relative;
+    height: 70px;
+}
+  .antdModal-btn-footer{
+    
+    width: 112px;
+    height: 36px;
+    color:#fff;
+    text-align: center;
+    border: none;
+
+    &.left{
+      position: absolute;
+      left: 50%;
+      margin-left: -120px;
+    }
+    &.right{
+      position: absolute;
+      right: 50%;
+      margin-right: -120px;
     }
   }
 }

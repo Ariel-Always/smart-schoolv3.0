@@ -216,7 +216,7 @@ class Student extends React.Component {
         console.log(checkedList)
         this.setState({
             checkedList,
-            checkAll: checkedList.length === this.props.DataState.GradeStudentPreview.keyList ? true : false
+            checkAll: checkedList === this.props.DataState.GradeStudentPreview.keyList ? true : false
         })
     }
     handleStudentModalOk = (e) => {
