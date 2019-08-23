@@ -241,7 +241,11 @@ const getAddTeacherData = () =>{
 
         Promise.all([getSubjectPromise,getTeachersPromise]).then(res=>{
 
+            dispatch({type:ADD_TEACHER_UPDATA_SUBJECTS,list:res[0].Data.SubjectList});
 
+            dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:res[1].Data});
+
+            //dispatch({type:UpUIState.ADD_TEACHER_LOADING_HIDE});
 
         }).catch( e=>{
 

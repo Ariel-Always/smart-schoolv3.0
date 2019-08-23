@@ -13,7 +13,9 @@ import AddTeacherModal from '../component/AddTeacherModal';
 
 
 class StudentContent extends Component{
+
     constructor(props) {
+
         super(props);
 
         const {dispatch,DataState} = this.props;
@@ -21,11 +23,17 @@ class StudentContent extends Component{
         const {SchoolGradeClasses} = DataState;
 
         if (Object.keys(SchoolGradeClasses).length!==0){
+
             dispatch(UpDataState.getTheClassPreview());//获取数据
+
         }else{
+
             setTimeout(()=>{
+
                 dispatch(UpDataState.getTheClassPreview());//获取数据
+
             },500)
+
         }
 
     }
@@ -35,7 +43,6 @@ class StudentContent extends Component{
         const {dispatch,DataState} = this.props;
 
         dispatch(UpDataState.changeStudentCheckList(checkList));
-
 
     }
 
@@ -86,8 +93,11 @@ class StudentContent extends Component{
     }
 
     hide(e){
-        const {dispatch} = this.props
+
+        const {dispatch} = this.props;
+
         dispatch({type:UpUIState.CLOSE_ERROR_ALERT});
+
     }
 
 
@@ -129,6 +139,7 @@ class StudentContent extends Component{
     //调班模态框年级选择改变
 
     gradeSelectChange(e){
+
         const {dispatch,DataState} = this.props;
 
         const {Grades} = DataState.SchoolGradeClasses;
@@ -198,7 +209,7 @@ class StudentContent extends Component{
         const {TheTeachersList,TheStudentList,SchoolGradeClasses,StudentsCheckList,StudentsCheckAll} = DataState;
 
         return (
-            <Loading tip="加载中..." spinning={StudentLoading.show}  size="large">
+            <Loading tip="加载中..."  spinning={StudentLoading.show}  size="large">
 
                 <TitleBar type="icon2" title="一年级 > 1班教师名单" abstract={`(${TheTeachersList.Total}人)`}></TitleBar>
 
@@ -216,12 +227,19 @@ class StudentContent extends Component{
 
                     <Search className="admclass-search-student"></Search>
 
-                    <StudentTabWrapper  CheckList={StudentsCheckList}
-                                        onChangeAll={this.onChangeAll.bind(this)}
-                                        allChecked={StudentsCheckAll.checkAll}
-                                        onCheckChange={this.onCheckChange.bind(this)}
-                                        StudentList={TheStudentList}
-                                        adjustBtnClick ={this.adjustBtnClick.bind(this)}>
+                    <StudentTabWrapper
+                        CheckList={StudentsCheckList}
+
+                        onChangeAll={this.onChangeAll.bind(this)}
+
+                        allChecked={StudentsCheckAll.checkAll}
+
+                        onCheckChange={this.onCheckChange.bind(this)}
+
+                        StudentList={TheStudentList}
+
+                        adjustBtnClick ={this.adjustBtnClick.bind(this)}>
+
                     </StudentTabWrapper>
 
                 </ContentWrapper>
@@ -229,13 +247,21 @@ class StudentContent extends Component{
                 {/*调班弹出窗*/}
 
                 <Modal type={1} title="调班"
+
                        visible={UIState.AdjustClassModal.show}
+
                        mask={true}
+
                        maskClosable={true}
+
                        width={540}
+
                        bodyStyle={{height:236}}
+
                        className="adjustClassModal"
+
                        onOk={this.adjustClassOk.bind(this)}
+
                        onCancel={this.adjustClassCancel.bind(this)}>
 
                     {/*弹出层内容区域*/}
@@ -243,15 +269,25 @@ class StudentContent extends Component{
                     <div className="ModalContent">
 
                         <AdjustClassModal
+
                             schoolClassList={SchoolGradeClasses.Grades}
+
                             gradeSelecd={UIState.AdjustClassModal.gradeDropSelectd}
+
                             classSelectd ={UIState.AdjustClassModal.classDropSelectd}
+
                             checkList={StudentsCheckList}
+
                             classDisabled={UIState.AdjustClassModal.classDisabled}
+
                             classSelectChange={this.classSelectChange.bind(this)}
+
                             gradeSelectChange={this.gradeSelectChange.bind(this)}
+
                             classList={UIState.AdjustClassModal.classList}
+
                             errTipsShow={UIState.AdjustClassModal.errTipsShow}
+
                             errTips={UIState.AdjustClassModal.errTips}>
 
                         </AdjustClassModal>
@@ -263,15 +299,26 @@ class StudentContent extends Component{
                {/* 更改任课教师的弹窗*/}
 
                <Modal type={1} title="添加任课教师"
+
                       visible={UIState.AddTeacherModal.show}
+
                       mask={true} width={1000}
+
                       bodyStyle={{height:536}}
+
                       maskClosable={true}
+
                       className="addTeacherModal">
 
                    <AddTeacherModal
+
                             loadingShow={UIState.AddTeacherModal.loadingShow}
-                   >
+
+                            subjects={UIState.AddTeacherModal.subjects}
+
+                            teacherList = {UIState.AddTeacherModal.teacherList}
+
+                            subjectsSelect = {UIState.AddTeacherModal.subjectsSelect}>
 
                    </AddTeacherModal>
 
@@ -282,11 +329,17 @@ class StudentContent extends Component{
         );
     }
 }
+
 const  mapStateToProps = (state) => {
+
     let {UIState,DataState} = state;
+
     return {
+
         UIState,
+
         DataState
+
     }
 };
 export default connect(mapStateToProps)(StudentContent);

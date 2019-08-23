@@ -1,20 +1,37 @@
 import React,{Component} from 'react';
 import {Modal} from "../../../common";
-import {DropDown,Loading} from "../../../common";
+import {DropDown,Loading,Button} from "../../../common";
+import {Input} from 'antd';
 
 class AddTeacherModal extends Component{
+
     render() {
 
         const {
-            loadingShow
+
+            loadingShow,
+
+            teacherList,
+
+            subjects,
+
+            subjectsSelect
+
         } = this.props;
+
+
+        let subjectsList = subjects.map((item) => {
+
+            return {value:item.SubjectID,title:item.SubjectName};
+
+        });
 
 
         return (
 
             <div className="add-teacher-wrapper clearfix">
 
-                <Loading className="add-teacher-loading" size="large" spin={loadingShow} type="loading" tip="加载中...">
+                {/*<Loading className="add-teacher-loading" type="loading" size="large" spinning={loadingShow}  tip="加载中...">*/}
 
                     <div className="left-wrapper">
 
@@ -22,7 +39,30 @@ class AddTeacherModal extends Component{
 
                             <span className="props">所教学科:</span>
 
-                            <DropDown></DropDown>
+                            <DropDown
+
+                                dropSelectd={subjectsSelect}
+
+                                dropList = {subjectsList}
+
+                                height = {96}>
+
+                            </DropDown>
+
+                        </div>
+                        <div className="add-teacher-search">
+
+                            <span className="props">关键词:</span>
+
+                            <Input type="text" className="search-input" placeholder="请输入教师姓名或工号搜索"/>
+
+                            <Button color="blue" className="search-btn">搜索</Button>
+
+                        </div>
+
+                        <div className="teacher-list-wrapper">
+
+
 
                         </div>
 
@@ -32,7 +72,9 @@ class AddTeacherModal extends Component{
 
                     </div>
 
-                </Loading>
+              {/*  </Loading>*/}
+
+              <Loading type="point" tip="加载中"></Loading>
 
             </div>
 
