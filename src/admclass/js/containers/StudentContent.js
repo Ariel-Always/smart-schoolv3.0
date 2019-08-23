@@ -209,7 +209,7 @@ class StudentContent extends Component{
         const {TheTeachersList,TheStudentList,SchoolGradeClasses,StudentsCheckList,StudentsCheckAll} = DataState;
 
         return (
-            <Loading tip="加载中..." spinning={StudentLoading.show}  size="large">
+            <Loading tip="加载中..."  spinning={StudentLoading.show}  size="large">
 
                 <TitleBar type="icon2" title="一年级 > 1班教师名单" abstract={`(${TheTeachersList.Total}人)`}></TitleBar>
 

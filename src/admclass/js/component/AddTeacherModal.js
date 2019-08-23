@@ -31,7 +31,7 @@ class AddTeacherModal extends Component{
 
             <div className="add-teacher-wrapper clearfix">
 
-                <Loading className="add-teacher-loading" size="large" spinning={loadingShow} type="loading" tip="加载中...">
+                {/*<Loading className="add-teacher-loading" type="loading" size="large" spinning={loadingShow}  tip="加载中...">*/}
 
                     <div className="left-wrapper">
 
@@ -72,7 +72,9 @@ class AddTeacherModal extends Component{
 
                     </div>
 
-                </Loading>
+              {/*  </Loading>*/}
+
+              <Loading type="point" tip="加载中"></Loading>
 
             </div>
 

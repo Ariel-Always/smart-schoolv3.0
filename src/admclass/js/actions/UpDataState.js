@@ -245,7 +245,7 @@ const getAddTeacherData = () =>{
 
             dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:res[1].Data});
 
-            dispatch({type:UpUIState.ADD_TEACHER_LOADING_HIDE});
+            //dispatch({type:UpUIState.ADD_TEACHER_LOADING_HIDE});
 
         }).catch( e=>{
 

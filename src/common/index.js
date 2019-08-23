@@ -1018,30 +1018,52 @@ class DropDown extends React.Component {
  * */
 class Loading extends React.Component {
     render() {
-        const { type, size, tip, spinning, wrapperClassName, children, ...reset } = this.props;
+        const { type, size, tip,opacity,spinning, wrapperClassName, children, ...reset } = this.props;
 
         let Fragments = '';
+
+        let opacityClass = '';
+
+        if (opacity){
+            //透明度为true意味透明
+            if (opacity === true){
+
+                opacityClass = 'ant-spin-transparent'
+
+            }
+
+        }else{
+
+            if (opacity===false){
+                //透明度为false意味不透明
+                opacityClass = 'ant-spin-opaque'
+
+            }
+
+        }
+
 
         if (type) {
             if (type === 'point') {   //自己写的loading
 
-                Fragments = <div className="loading_mask">
-                    <div className="loading_point_container">
-                        <div className="point_container">
-                            <span className="point1 point"></span>
-                            <span className="point2 point"></span>
-                            <span className="point3 point"></span>
-                            <span className="point4 point"></span>
-                        </div>
-                        <div className="point_loading_text">{tip}</div>
-                    </div>
-                </div>
+                Fragments = <div className={`loading_mask ${opacityClass}`}>
+                                <div className="loading_point_container">
+                                    <div className="point_container">
+                                        <span className="point1 point"></span>
+                                        <span className="point2 point"></span>
+                                        <span className="point3 point"></span>
+                                        <span className="point4 point"></span>
+                                    </div>
+                                    <div className="point_loading_text">{tip}</div>
+                                </div>
+
+                            </div>
             } else { //icon图标的loading
                 let antIcon = <Icon type={type} spin {...reset} />
-                Fragments = <Spin indicator={antIcon} spinning={spinning} size={size} tip={tip} wrapperClassName={wrapperClassName}>{children}</Spin>
+                Fragments = <Spin indicator={antIcon} spinning={spinning} size={size} tip={tip} wrapperClassName={`${wrapperClassName?wrapperClassName:''} ${opacityClass}`}>{children}</Spin>
             }
         } else { //默认loading
-            Fragments = <Spin {...reset} size={size} spinning={spinning} tip={tip} wrapperClassName={wrapperClassName}>{children}</Spin>
+            Fragments = <Spin {...reset} size={size} spinning={spinning}  tip={tip} wrapperClassName={`${wrapperClassName?wrapperClassName:''} ${opacityClass}`}>{children}</Spin>
         }
         return (
             <React.Fragment>    {/*空标签*/}
