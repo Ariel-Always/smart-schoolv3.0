@@ -339,7 +339,12 @@ class StudentContent extends Component{
                                 name:UIState.AddTeacherModal.newPickTeacher.name,
                                 photo:UIState.AddTeacherModal.newPickTeacher.photo
                             }}
-                   >
+
+                            originTeacherShow = {UIState.AddTeacherModal.originTeacherShow}
+
+                            originTeacherInfo = {UIState.AddTeacherModal.originTeacherInfo}
+
+                            newTeacherTitle = {UIState.AddTeacherModal.newTeacherTitle}>
 
                    </AddTeacherModal>
 

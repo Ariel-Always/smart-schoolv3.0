@@ -22,7 +22,13 @@ class AddTeacherModal extends Component{
 
             closeShow,
 
-            newPickTeacher
+            newPickTeacher,
+
+            originTeacherShow,
+
+            originTeacherInfo,
+
+            newTeacherTitle
 
         } = this.props;
 
@@ -101,25 +107,33 @@ class AddTeacherModal extends Component{
 
                     <div className="right-wrapper">
 
-                        <div className="origin-teacher-wrapper">
+                        {
 
-                            <div className="orgin-teacher-title">原任课教师</div>
+                            originTeacherShow?
 
-                            <div className="origin-teacher-photo"></div>
+                                <div className="origin-teacher-wrapper">
 
-                            <div className="origin-teacher-name"></div>
+                                    <div className="orgin-teacher-title">原任课教师</div>
 
-                            <div className="origin-teacher-id"></div>
+                                    <div className="origin-teacher-photo" style={{backgroundImage:`url(${originTeacherInfo.photo})`}}></div>
 
-                        </div>
+                                    <div className="origin-teacher-name" title={originTeacherInfo.name}>{originTeacherInfo.name}</div>
+
+                                    <div className="origin-teacher-id" title={`[${originTeacherInfo.id}]`}>[<span className="id-body">{originTeacherInfo.id}</span>]</div>
+
+                                </div>
+
+                                :''
+
+                        }
 
                         <div className="present-teacher-wrapper">
 
-                            <div className="present-teacher-title">新任课教师</div>
+                            <div className={`present-teacher-title ${originTeacherShow?'':'no-origin'}`}>{newTeacherTitle}</div>
 
                             <div className="present-teacher-photo" style={{backgroundImage:`url(${newPickTeacher.photo})`}}></div>
 
-                            <div className="present-teacher-name" title={newPickTeacher.name?newPickTeacher.name:'未选择'} >{newPickTeacher.name?newPickTeacher.name:'未选择'}</div>
+                            <div className={`present-teacher-name ${newPickTeacher.id?'':'no-picked'}`} title={newPickTeacher.name?newPickTeacher.name:'未选择'} >{newPickTeacher.name?newPickTeacher.name:'未选择'}</div>
 
                             {
                                 //如果没有选中教师的情况下：
@@ -129,8 +143,6 @@ class AddTeacherModal extends Component{
 
                                     :''
                             }
-
-
 
                         </div>
 
