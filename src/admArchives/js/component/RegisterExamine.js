@@ -29,14 +29,39 @@ class RegisterExamine extends React.Component {
             DropMenuShow: false,
             columns: [
                 {
+                    title: '',
+                    dataIndex: 'key',
+                    key: 'key',
+                    render: key => {
+                        return (
+                            <div className='registerTime-content'>
+                                <CheckBox value={key} onChange={this.onCheckChange}></CheckBox>
+                                <span className='key-content'>{key >= 10 ? key : '0' + key}</span>
+                            </div>
+                        )
+                    }
+                }, {
+                    title: '注册时间',
+                    dataIndex: 'UserRegisterTime',
+                    key: 'UserRegisterTime',
+                    sorter: (a, b) => a.name.length - b.name.length,
+                    render: time => {
+                        return (
+                            <div className='registerTime-content'>
+
+                                <span className='registerTime'>{time}</span>
+                            </div>
+                        )
+                    }
+                },
+                {
                     title: '姓名',
                     dataIndex: 'UserName',
+                    key: 'UserName',
                     sorter: (a, b) => a.name.length - b.name.length,
                     render: arr => {
                         return (
                             <div className='name-content'>
-                                <CheckBox value={arr.key} onChange={this.onCheckChange}></CheckBox>
-                                <span onMouseEnter={this.onMouseEnterName} className='name-key'>{(arr.key + 1) >= 10 ? (arr.key + 1) : '0' + (arr.key + 1)}</span>
                                 <img alt={arr.UserName} onClick={this.onUserNameClick} className='name-img' width='47' height='47' src={arr.PhotoPath}></img>
                                 <span className='name-UserName' onClick={this.onUserNameClick}>{arr.UserName}</span>
                             </div>
@@ -47,6 +72,7 @@ class RegisterExamine extends React.Component {
                 {
                     title: '学号',
                     dataIndex: 'UserID',
+                    key: 'UserID',
                     sorter: (a, b) => a.age - b.age,
                     render: UserID => {
                         return (
@@ -57,6 +83,7 @@ class RegisterExamine extends React.Component {
                 {
                     title: '性别',
                     dataIndex: 'Gender',
+                    key: 'Gender',
                     render: Gender => {
                         return (
                             <span className='Gender'>{Gender}</span>
@@ -66,6 +93,7 @@ class RegisterExamine extends React.Component {
                 {
                     title: '年级',
                     dataIndex: 'GradeName',
+                    key: 'GradeName',
                     render: GradeName => {
                         return (
                             <span className='GradeName'>{GradeName}</span>
@@ -75,6 +103,7 @@ class RegisterExamine extends React.Component {
                 {
                     title: '班级',
                     dataIndex: 'ClassName',
+                    key: 'ClassName',
                     render: ClassName => {
                         return (
                             <span className='ClassName'>{ClassName}</span>
@@ -83,13 +112,14 @@ class RegisterExamine extends React.Component {
                 },
                 {
                     title: '操作',
-                    dataIndex: 'key',
-                    render: (key) => {
+                    dataIndex: 'Others',
+                    key: 'Others',
+                    render: (Others) => {
 
                         return (
                             <div className='handle-content'>
-                                <Button color='blue' type='default' onClick={this.onExamineClick.bind(this, key)} className='handle-btn'>审核</Button>
-                                
+                                <Button color='blue' type='default' disabled={Others.isExamined} onClick={this.onExamineClick.bind(this, Others)} className={`handle-btn `}>{Others.isExamined ? '已审核' : '审核'}</Button>
+
                             </div>
                         )
                     }
@@ -97,17 +127,202 @@ class RegisterExamine extends React.Component {
             ],
             data: [{
                 key: 1,
+                UserRegisterTime: '2019-01-01 12:24',
                 UserName: { key: '01', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
                 UserID: 'S00001',
-                Grader: '男',
+                Gender: '男',
                 GradeName: '一年级',
-                ClassName: '一年1班',
-                Others: {}
-            }],
+                ClassName: '1班',
+                Others: {
+                    key: 1,
+                    userRegisterTime: '2019-01-01',
+                    UserName: { key: '01', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
+                    UserID: 'S00001',
+                    Grader: '男',
+                    GradeName: '一年级',
+                    ClassName: '1班',
+                    isExamined: false,
+                }
+            },
+            {
+                key: 2,
+                UserRegisterTime: '2019-01-01 12:24',
+                UserName: { key: '02', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
+                UserID: 'S00001',
+                Gender: '男',
+                GradeName: '一年级',
+                ClassName: '1班',
+                Others: {
+                    key: 2,
+                    userRegisterTime: '2019-01-01',
+                    UserName: { key: '02', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
+                    UserID: 'S00001',
+                    Grader: '男',
+                    GradeName: '一年级',
+                    ClassName: '1班',
+                    isExamined: false,
+                }
+            },
+            {
+                key: 3,
+                UserRegisterTime: '2019-01-01 12:24',
+                UserName: { key: '03', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
+                UserID: 'S00001',
+                Gender: '男',
+                GradeName: '一年级',
+                ClassName: '1班',
+                Others: {
+                    key: 3,
+                    userRegisterTime: '2019-01-01',
+                    UserName: { key: '03', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
+                    UserID: 'S00001',
+                    Grader: '男',
+                    GradeName: '一年级',
+                    ClassName: '1班',
+                    isExamined: false,
+                }
+            },
+            {
+                key: 4,
+                UserRegisterTime: '2019-01-01 12:24',
+                UserName: { key: '04', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
+                UserID: 'S00001',
+                Gender: '男',
+                GradeName: '一年级',
+                ClassName: '1班',
+                Others: {
+                    key: 4,
+                    userRegisterTime: '2019-01-01',
+                    UserName: { key: '04', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
+                    UserID: 'S00001',
+                    Grader: '男',
+                    GradeName: '一年级',
+                    ClassName: '1班',
+                    isExamined: false,
+                }
+            },
+            {
+                key: 5,
+                UserRegisterTime: '2019-01-01 12:24',
+                UserName: { key: '05', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
+                UserID: 'S00001',
+                Gender: '男',
+                GradeName: '一年级',
+                ClassName: '1班',
+                Others: {
+                    key: 5,
+                    userRegisterTime: '2019-01-01',
+                    UserName: { key: '05', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
+                    UserID: 'S00001',
+                    Grader: '男',
+                    GradeName: '一年级',
+                    ClassName: '1班',
+                    isExamined: false,
+                }
+            },
+            {
+                key: 6,
+                UserRegisterTime: '2019-01-01 12:24',
+                UserName: { key: '06', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
+                UserID: 'S00001',
+                Gender: '男',
+                GradeName: '一年级',
+                ClassName: '1班',
+                Others: {
+                    key: 6,
+                    userRegisterTime: '2019-01-01',
+                    UserName: { key: '06', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
+                    UserID: 'S00001',
+                    Grader: '男',
+                    GradeName: '一年级',
+                    ClassName: '1班',
+                    isExamined: false,
+                }
+            },
+            {
+                key: 7,
+                UserRegisterTime: '2019-01-01 12:24',
+                UserName: { key: '07', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
+                UserID: 'S00001',
+                Gender: '男',
+                GradeName: '一年级',
+                ClassName: '1班',
+                Others: {
+                    key: 7,
+                    userRegisterTime: '2019-01-01',
+                    UserName: { key: '07', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
+                    UserID: 'S00001',
+                    Grader: '男',
+                    GradeName: '一年级',
+                    ClassName: '1班',
+                    isExamined: false,
+                }
+            },
+            {
+                key: 8,
+                UserRegisterTime: '2019-01-01 12:24',
+                UserName: { key: '08', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
+                UserID: 'S00001',
+                Gender: '男',
+                GradeName: '一年级',
+                ClassName: '1班',
+                Others: {
+                    key: 8,
+                    userRegisterTime: '2019-01-01',
+                    UserName: { key: '08', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
+                    UserID: 'S00001',
+                    Grader: '男',
+                    GradeName: '一年级',
+                    ClassName: '1班',
+                    isExamined: false,
+                }
+            },
+            {
+                key: 9,
+                UserRegisterTime: '2019-01-01 12:24',
+                UserName: { key: '09', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
+                UserID: 'S00001',
+                Gender: '男',
+                GradeName: '一年级',
+                ClassName: '1班',
+                Others: {
+                    key: 9,
+                    userRegisterTime: '2019-01-01',
+                    UserName: { key: '09', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
+                    UserID: 'S00001',
+                    Grader: '男',
+                    GradeName: '一年级',
+                    ClassName: '1班',
+                    isExamined: false,
+                }
+            },
+            {
+                key: 10,
+                UserRegisterTime: '2019-01-01 12:24',
+                UserName: { key: '10', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
+                UserID: 'S00001',
+                Gender: '男',
+                GradeName: '一年级',
+                ClassName: '1班',
+                Others: {
+                    key: 10,
+                    userRegisterTime: '2019-01-01',
+                    UserName: { key: '10', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
+                    UserID: 'S00001',
+                    Grader: '男',
+                    GradeName: '一年级',
+                    ClassName: '1班',
+                    isExamined: false,
+                }
+            },
+
+            ],
+            keyList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             loading: false,
             selectedAll: false,
             checkedList: [],
             checkAll: false,
+            UserExamineModalVisible: false
         }
         let route = history.location.pathname;
         console.log(route);
@@ -163,10 +378,10 @@ class RegisterExamine extends React.Component {
     }
 
     OnCheckAllChange = (e) => {
-        console.log(e)
+        console.log(e.target.checked,this.state.keyList)
         if (e.target.checked) {
             this.setState({
-                checkedList: this.props.DataState.GradeStudentPreview.keyList,
+                checkedList: this.state.keyList,
                 checkAll: e.target.checked
             })
         } else {
@@ -180,29 +395,73 @@ class RegisterExamine extends React.Component {
         console.log(checkedList)
         this.setState({
             checkedList,
-            checkAll: checkedList.length === this.props.DataState.GradeStudentPreview.keyList ? true : false
+            checkAll: checkedList === this.state.keyList ? true : false
         })
     }
-    onExamineClick = (key) => {
+    onExamineClick = (Others) => {
+        console.log(Others);
+        let arr = this.state.data;
+        //arr[Others.key-1].Others[isExamined] = !arr[Others.key-1].Others[isExamined];
+        this.setState({
+            UserExamineModalVisible: true,
 
+        })
     }
     onPagiNationChange = (e) => {
         console.log(e)
     }
+    UserExamineMadalOk = (e) => {
+        console.log(e)
+        this.setState({
+            UserExamineModalVisible: false,
+            loading: true
+        })
+        setTimeout(() => {
+            this.setState({
+                loading: false
+            })
+        }, 3000)
+    }
+    UserExamineMadalCancel = (e) => {
+        console.log(e)
+        this.setState({
+            UserExamineModalVisible: false
+        })
+    }
+    onUserNameClick = (e) => {
+        this.setState({
+            UserExamineModalVisible: true,
+
+        })
+    }
+    onAgreeAll = (e) => {
+        console.log(this.state.checkedList)
+        let checkedList = this.state.checkedList;
+        if(checkedList.length){
+
+        }else{
+            
+        }
+    }
+    RefuseAll = (e) => {
+        console.log(this.state.checkedList)
+    }
     render() {
         const { UIState, DataState } = this.props;
         const data = {
-            userName:'康欣',
-            userImg:'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
-            Gende:'男',
-            userText:'学如逆水行舟，不进则退',
-            userID:'20170025444',
-            userGrade:'一年级',
-            userClass:'1班',
-            userIDCard:'',
-            userPhone:'15626248624',
-            userMail:'1519406168@qq.com',
-            userAddress:'蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团'
+            userName: '康欣',
+            userImg: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
+            Gende: '男',
+            userText: '学如逆水行舟，不进则退',
+            userID: '20170025444',
+            userGrade: '一年级',
+            userClass: '1班',
+            userIDCard: '',
+            userPhone: '15626248624',
+            userMail: '1519406168@qq.com',
+            userAddress: '蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团',
+            userRegisterTime: '2019-01-01 12:24',
+            userRegisterIP: '190.163.252.198'
         };
         return (
             <React.Fragment>
@@ -254,45 +513,45 @@ class RegisterExamine extends React.Component {
                                 ></Search>
                             </div>
                             <div className='content-render'>
-                            
-                                <CheckBoxGroup style={{ width: '100%' }} value={this.state.checkedList} onChange={this.onCheckBoxGroupChange.bind(this)}>
-                                    <Table
-                                        className='table'
-                                        columns={this.state.columns}
-                                        pagination={false}
-                                        loading={this.state.loading}
-                                        dataSource={this.state.data} >
+                                <Loading tip='loading...' spinning={this.state.loading}>
+                                    <CheckBoxGroup style={{ width: '100%' }} value={this.state.checkedList} onChange={this.onCheckBoxGroupChange.bind(this)}>
+                                        <Table
+                                            className='table'
+                                            columns={this.state.columns}
+                                            pagination={false}
+                                            loading={this.state.loading}
+                                            dataSource={this.state.data} >
 
-                                    </Table>
-                                </CheckBoxGroup>
+                                        </Table>
+                                    </CheckBoxGroup>
+                                </Loading>
                                 <CheckBox className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
                                     全选
-                                    <Button onClick={this.onDeleteAllClick} className='deleteAll' color='blue'>删除</Button>
+
+                                    <Button key='agree' className='agreeAll' color='blue' onClick={this.onAgreeAll.bind(this)}>通过</Button>
+                                    <Button key='refuse' className='refuseAll' color='red' onClick={this.RefuseAll.bind(this)}>不通过</Button>
                                 </CheckBox>
                                 <div className='pagination-box'>
-                                    <PagiNation 
-                                    showQuickJumper  
-                                    total={50} 
-                                    onChange={this.onPagiNationChange}
+                                    <PagiNation
+                                        showQuickJumper
+                                        total={50}
+                                        onChange={this.onPagiNationChange}
                                     ></PagiNation>
                                 </div>
-                            
-                        </div>
+
+                            </div>
                         </div>
                     </div>
                 </Frame>
                 <DetailsModal
                     ref='StudentDetailsMsgModal'
-                    visible={this.state.StudentDetailsMsgModalVisible}
-                    onOk={this.StudentDetailsMsgModalOk}
-                    onCancel={this.StudentDetailsMsgModalCancel}
+                    visible={this.state.UserExamineModalVisible}
+                    onOk={this.UserExamineMadalOk}
+                    onCancel={this.UserExamineMadalCancel}
                     data={data}
-                    type='student'
+                    type='examine'
                 >
-                    <div className='modal-top'>
 
-                    </div>
-                    <div className='modal-content'></div>
                 </DetailsModal>
             </React.Fragment>
         )

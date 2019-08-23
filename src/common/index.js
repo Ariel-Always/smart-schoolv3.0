@@ -1593,7 +1593,8 @@ class DetailsModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            type: props.type
+            type: props.type,
+            examineFooter:''
         }
     }
 
@@ -1606,7 +1607,10 @@ class DetailsModal extends React.Component {
             <AntdModal
                 bodyStyle={{ padding: 0 }}
                 width={400}
-                footer={null}
+                footer={type==='examine'?[
+                    <Button key='agree' className='antdModal-btn-footer left' color='blue'  onClick={params.onOk.bind(this,data)}>通过</Button>,
+                    <Button key='refuse' className='antdModal-btn-footer right' color='red'  onClick={params.onCancel.bind(this,data)}>不通过</Button>
+                ]:null}
                 className='DetailsMsgModal'
                 {...params}
             >
@@ -1647,11 +1651,23 @@ class DetailsModal extends React.Component {
                             </span>
                             <span className='col-right'>{data.userMail?data.userMail:<span className='content-null'>未填写</span>}</span>
                         </div>
-                        <div className='row'>
+                        <div className='row row-adress'>
                             <span className='col-left'>
                                 {'家庭住址'}
                             </span>
                             <span className='col-right'>{data.userAddress?data.userAddress:<span className='content-null'>未填写</span>}</span>
+                        </div>
+                        <div className='row'  style={{marginTop:20+'px',display:type==='examine'?'block':'none'}}>
+                            <span className='col-left'>
+                                {'注册时间'}
+                            </span>
+                            <span className='col-right'>{data.userRegisterTime?data.userRegisterTime:<span className='content-null'>未填写</span>}</span>
+                        </div>
+                        <div className='row'>
+                            <span className='col-left' style={{marginBottom:20+'px',display:type==='examine'?'block':'none'}}>
+                                {'注册IP'}
+                            </span>
+                            <span className='col-right'>{data.userRegisterIP?data.userRegisterIP:<span className='content-null'>未填写</span>}</span>
                         </div>
                     </div>
                 </div>
