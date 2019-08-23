@@ -63,6 +63,10 @@ class App extends Component {
                 history.push('/UserArchives/All')
                 console.log(this.state)
             }
+            if (history.location.pathname === '/RegisterExamine' ) {
+                history.push('/RegisterExamine/RegisterWillExamine')
+                console.log(this.state)
+            }
         })
     }
     componentWillUpdate() {
@@ -147,7 +151,7 @@ class App extends Component {
                     <Router >
 
                         <Route path='/UserArchives' component={UserArchives}></Route>
-                        <Route path='/RegisterExamine' exact component={RegisterExamine}></Route>
+                        <Route path='/RegisterExamine'  component={RegisterExamine}></Route>
                     </Router>
 
                 </Loading>

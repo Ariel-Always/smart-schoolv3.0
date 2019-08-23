@@ -20,14 +20,28 @@ class Student extends React.Component {
             selectedRowKeys: [],
             columns: [
                 {
+                    title: '',
+                    dataIndex: 'key',
+                    key: 'key',
+                    align:'left',
+                    render: key => {
+                        return (
+                            <div className='registerTime-content'>
+                                <CheckBox value={key} onChange={this.onCheckChange}></CheckBox>
+                                <span className='key-content'>{key+1 >= 10 ? key+1 : '0' + (key+1)}</span>
+                            </div>
+                        )
+                    }
+                }, 
+                {
                     title: '姓名',
+                    align:'right',
                     dataIndex: 'UserName',
                     sorter: (a, b) => a.name.length - b.name.length,
                     render: arr => {
                         return (
                             <div className='name-content'>
-                                <CheckBox value={arr.key} onChange={this.onCheckChange}></CheckBox>
-                                <span onMouseEnter={this.onMouseEnterName} className='name-key'>{(arr.key + 1) >= 10 ? (arr.key + 1) : '0' + (arr.key + 1)}</span>
+                               
                                 <img alt={arr.UserName} onClick={this.onUserNameClick} className='name-img' width='47' height='47' src={arr.PhotoPath}></img>
                                 <span className='name-UserName' onClick={this.onUserNameClick}>{arr.UserName}</span>
                             </div>
@@ -37,6 +51,7 @@ class Student extends React.Component {
                 },
                 {
                     title: '学号',
+                    align:'center',
                     dataIndex: 'UserID',
                     sorter: (a, b) => a.age - b.age,
                     render: UserID => {
@@ -47,6 +62,7 @@ class Student extends React.Component {
                 },
                 {
                     title: '性别',
+                    align:'center',
                     dataIndex: 'Gender',
                     render: Gender => {
                         return (
@@ -56,6 +72,7 @@ class Student extends React.Component {
                 },
                 {
                     title: '年级',
+                    align:'center',
                     dataIndex: 'GradeName',
                     render: GradeName => {
                         return (
@@ -65,6 +82,7 @@ class Student extends React.Component {
                 },
                 {
                     title: '班级',
+                    align:'center',
                     dataIndex: 'ClassName',
                     render: ClassName => {
                         return (
@@ -74,6 +92,7 @@ class Student extends React.Component {
                 },
                 {
                     title: '操作',
+                    align:'center',
                     dataIndex: 'key',
                     render: (key) => {
 
@@ -269,28 +288,20 @@ class Student extends React.Component {
         }
     }
     onAlertWarnClose = () => {
-        this.setState({
-            alertTitle: '警告提示~',
-            alertShow: false
-        })
+        const {dispatch} = this.props;
+        dispatch(actions.UpUIState.hideErrorAlert());
     }
     onAlertWarnOk = () => {
-        this.setState({
-            alertTitle: '警告提示~',
-            alertShow: false
-        })
+        const {dispatch} = this.props;
+        dispatch(actions.UpUIState.hideErrorAlert());
     }
     onAlertQueryClose = () => {
-        this.setState({
-            alertQueryTitle: '查询提示~',
-            alertQueryShow: false
-        })
+        const {dispatch} = this.props;
+        dispatch(actions.UpUIState.hideErrorAlert());
     }
     onAlertQueryOk = () => {
-        this.setState({
-            alertQueryTitle: '查询提示~',
-            alertQueryShow: false
-        })
+        const {dispatch} = this.props;
+        dispatch(actions.UpUIState.hideErrorAlert());
     }
     onPagiNationChange = (e) => {
         console.log(e)
@@ -336,9 +347,9 @@ class Student extends React.Component {
                             <span className='tips menu39 '>用户档案总览</span>
                         </span>
                         <div className='top-nav'>
-                            <Link className='link' to='/GraduteArchives' replace>查看毕业生档案</Link>
+                            <Link className='link'  to='/GraduteArchives' replace>查看毕业生档案</Link>
                             <span className='divide'>|</span>
-                            <Link className='link' to='/RegisterExamine' replace>学生注册审核</Link>
+                            <Link className='link' target='_blank' to='/RegisterExamine' replace>学生注册审核</Link>
                             <span className='divide'>|</span>
                             <Link className='link' to='/AddStudent' replace>添加学生</Link>
                             <span className='divide'>|</span>

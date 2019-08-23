@@ -86,7 +86,12 @@ $image-url :"../images";
             position: relative;
 
             .table{
-
+                .key-content{
+                    font-size:14px;
+                    line-height: 23px;
+                    color: #999;
+                    margin: 0 3px;
+                }
                 .name-key{
                     font-size:14px;
                     line-height: 23px;
