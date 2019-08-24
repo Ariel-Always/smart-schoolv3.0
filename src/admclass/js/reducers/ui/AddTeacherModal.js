@@ -21,7 +21,17 @@ const  AddTeacherModal = (state={
 
     originTeacherInfo:{id:'',name:'',photo:''},
 
-    newTeacherTitle:"任课教师"
+    newTeacherTitle:"任课教师",
+
+    modalTitle:"添加任课教师",
+    //type 是指的是添加任课教师（1）还是更改任课教师（2）还是添加班主任（3）还是更改班主任（4）
+    type:1,
+
+    teacherLoadingShow:false,
+
+    inputContent:'',
+
+    emptyShow:false
 
     },actions) =>{
 
@@ -37,17 +47,25 @@ const  AddTeacherModal = (state={
 
                 teacherList:[],
 
-                subjects:[],
-
                 subjectsSelect:{value:'all',title:"全部教师"},
 
                 colseShow:false,
 
-                originTeacherShow:false,
+                originTeacherShow:(actions.options&&actions.options.originTeacherShow)?actions.options.originTeacherShow:false,
 
-                originTeacherInfo:{id:'',name:'',photo:''},
+                originTeacherInfo:(actions.options&&actions.options.originTeacherInfo)?actions.options.originTeacherInfo:{},
 
-                newTeacherTitle:"任课教师"
+                newTeacherTitle:(actions.options&&actions.options.newTeacherTitle)?actions.options.newTeacherTitle:'任课教师',
+
+                modalTitle:(actions.options&&actions.options.modalTitle)?actions.options.modalTitle:'添加任课教师',
+
+                newPickTeacher:(actions.options&&actions.options.newPickTeacher)?actions.options.newPickTeacher:{id:'',name:'未选择',photo:'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg'},
+
+                type:(actions.options&&actions.options.type)?actions.options.type:1,
+
+                inputContent:'',
+
+                emptyShow:false
 
             };
 
@@ -94,6 +112,30 @@ const  AddTeacherModal = (state={
         case UpDataState.ADD_TEACHER_NEW_TEACHER_TITLE:
 
             return {...state,newTeacherTitle:actions.title};
+
+        case UpUIState.ADD_TEACHER_LIST_LOADING_SHOW:
+
+            return {...state,teacherLoadingShow:true};
+
+        case UpUIState.ADD_TEACHER_LIST_LOADING_HIDE:
+
+            return {...state,teacherLoadingShow:false};
+
+        case UpUIState.ADD_TEACHER_SUBJECTS_SELECT_CHANGE:
+
+            return {...state,subjectsSelect:actions.data};
+
+        case UpUIState.ADD_TEACHER_INPUT_CHANGE:
+
+            return {...state,inputContent:actions.data};
+
+        case UpUIState.ADD_TEACHER_EMPTY_SHOW:
+
+            return {...state,emptyShow:true};
+
+        case UpUIState.ADD_TEACHER_EMPTY_HIDE:
+
+            return {...state,emptyShow:false};
 
         default:
 

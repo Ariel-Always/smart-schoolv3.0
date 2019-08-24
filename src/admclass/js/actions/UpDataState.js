@@ -208,6 +208,7 @@ const postAdjustClass = (data) => {
      adjustPostPromise.then((json)=>{
 
          if (json.Status===200){
+
              dispatch({type:UpUIState.ADJUST_CLASS_MODAL_HIDE});
 
              dispatch({type:UpUIState.SHOW_ERROR_ALERT,msg:{
@@ -237,31 +238,163 @@ const postAdjustClass = (data) => {
 };
 
 //添加教师弹框获取所有的教师和学科的数据
-const getAddTeacherData = () =>{
+const getAddTeacherData = (opts) =>{
 
-    return dispatch =>{
+    return (dispatch,getState) => {
 
-        let getSubjectPromise = getXuGetData('/admSubjects');
 
-        let getTeachersPromise = getXuGetData('/admTeachers');
+        if (opts.type===1||opts.type===3) {//如果类型是添加
 
-        Promise.all([getSubjectPromise,getTeachersPromise]).then(res=>{
 
-            dispatch({type:ADD_TEACHER_UPDATA_SUBJECTS,list:res[0].Data.SubjectList});
+        }else{//如果类型是更新，需要获取到已选择的教师的ID
 
-            dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:res[1].Data});
+            console.log(getState().UIState.AddTeacherModal.originTeacherInfo.id);
 
-            dispatch({type:UpUIState.ADD_TEACHER_LOADING_HIDE});
+        }
 
-        }).catch( e=>{
+        //查看是否已经有获取过的学科数据了如果有的话就不请求后台学科数据
+        if(getState().UIState.AddTeacherModal.subjects.length>0){
 
-            console.log(e);
+            let getTeachersPromise = getXuGetData('/admTeachers');
 
-        })
+            getTeachersPromise.then(json=>{
+
+                dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:json.Data});
+
+                dispatch({type:UpUIState.ADD_TEACHER_LOADING_HIDE});
+
+            }).catch((e) => {
+
+                console.log(e);
+
+            })
+
+        }else{//如果没有学科数据的情况下，则学科数据和教师数据一块请求
+
+            let getSubjectPromise = getXuGetData('/admSubjects');
+
+            let getTeachersPromise = getXuGetData('/admTeachers');
+
+            Promise.all([getSubjectPromise,getTeachersPromise]).then(res=>{
+
+                dispatch({type:ADD_TEACHER_UPDATA_SUBJECTS,list:res[0].Data.SubjectList});
+
+                dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:res[1].Data});
+
+                dispatch({type:UpUIState.ADD_TEACHER_LOADING_HIDE});
+
+            }).catch( e=>{
+
+                console.log(e);
+
+            })
+
+        }
+
 
     }
 
 };
+
+//教师弹窗选择的学科发生改变
+
+const teacherModalSelectChange = (selectData,type) => {
+
+    return dispatch => {
+
+        dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_SHOW});
+
+        if (type ===1||type===3){ //如果type是1或者3类型的代表新增不需要将已有教师ID排除
+
+
+        }else{
+
+            console.log(getState().UIState.AddTeacherModal.originTeacherInfo.id);
+
+        }
+
+        if (selectData.value!=='all'){//选择的是某一门学科
+
+
+
+        }
+
+        let postTeacherListPromise = getXuGetData('/admTeachers');
+
+        postTeacherListPromise.then(json => {
+
+            if (json.Status===200){  //成功之后
+
+                dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:json.Data});
+
+                dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
+
+            }else{
+
+
+
+            }
+
+        });
+
+    }
+
+};
+
+//教师弹窗点击搜索按钮
+const  teacherSearchBtnClick = () => {
+
+  return (dispatch,getState) => {
+      //展示loading
+      dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_SHOW});
+
+      let state = getState().UIState.AddTeacherModal;
+
+      if (state.type===1||state.type===3){//不需要排除教师ID
+
+
+
+      }else{
+
+
+
+      }
+
+      if (state.subjectsSelect!=='all'){ //如果是某一门学科的情况下
+
+
+
+      }else{
+
+
+      }
+
+
+      let postTeacherListPromise = getXuGetData('/admTeachers');
+
+      postTeacherListPromise.then(json => {
+
+          if (json.Status===200){  //成功之后
+
+              dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:json.Data});
+
+              dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
+
+          }else{
+
+
+
+          }
+
+      });
+
+
+  }
+
+};
+
+
+
 
 
 
@@ -321,6 +454,8 @@ export default {
     addClass,
     postAdjustClass,
     getAddTeacherData,
+    teacherModalSelectChange,
+    teacherSearchBtnClick,
     GET_LOGIN_USER_INFO,
     GET_ALL_GRADE_PREVIEW,
     GET_SHCOOL_GRADE_CLASSES,

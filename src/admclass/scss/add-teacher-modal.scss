@@ -97,6 +97,12 @@
 
     }
 
+    &.active{
+
+      background-color: #dddddd;
+
+    }
+
   }
   .teacher-photo{
 
@@ -277,5 +283,12 @@
 
   }
 
+  //空数据
+
+  .emptyBox{
+
+    padding-top: 98px;
+
+  }
 
 }
