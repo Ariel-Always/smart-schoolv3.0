@@ -1622,6 +1622,7 @@ class DetailsModal extends React.Component {
 
     render() {
         const { type,data, children, ...params } = this.props;
+        console.log(params)
         if (type === 'student') {
 
         }
@@ -1630,8 +1631,8 @@ class DetailsModal extends React.Component {
                 bodyStyle={{ padding: 0 }}
                 width={400}
                 footer={type==='examine'?[
-                    <Button key='agree' className='antdModal-btn-footer left' color='blue'  onClick={params.onOk.bind(this,data)}>通过</Button>,
-                    <Button key='refuse' className='antdModal-btn-footer right' color='red'  onClick={params.onCancel.bind(this,data)}>不通过</Button>
+                    <Button key='agree' className='antdModal-btn-footer left' color='blue'  onClick={params.onOk?params.onOk.bind(this,data):''}>通过</Button>,
+                    <Button key='refuse' className='antdModal-btn-footer right' color='red'  onClick={params.onCancel?params.onCancel.bind(this,data):''}>不通过</Button>
                 ]:null}
                 className='DetailsMsgModal'
                 {...params}

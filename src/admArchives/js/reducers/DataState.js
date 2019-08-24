@@ -4,7 +4,8 @@ import AllUserPreview from './data/AllUserPreview';
 import SchoolLeaderPreview from './data/SchoolLeaderPreview'
 import SubjectTeacherPreview from './data/SubjectTeacherPreview'
 import GradeStudentPreview from './data/GradeStudentPreview'
-import GradeClassMsg from './data/GradeClassMsg'
+import GradeClassMsg from './data/GradeClassMsg';
+import SubjectTeacherMsg from './data/SubjectTeacherMsg';
 const DataState=combineReducers(
     {
         LoginUser,
@@ -12,6 +13,7 @@ const DataState=combineReducers(
         SchoolLeaderPreview,
         SubjectTeacherPreview,
         GradeStudentPreview,
-        GradeClassMsg
+        GradeClassMsg,
+        SubjectTeacherMsg
     });
 export default DataState;

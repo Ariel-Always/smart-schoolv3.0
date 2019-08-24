@@ -108,9 +108,9 @@ class App extends Component {
                     dispatch(actions.UpDataState.getGradeStudentPreview('/ArchivesStudent?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
                 }
                 if (route === '/UserArchives/Teacher') {
-                    console.log('Teacher')
-                    if (!this.props.DataState.GradeClassMsg.returnData)
-                        dispatch(actions.UpDataState.getGradeClassMsg('/ArchivesStudent_DropDownMenu'));
+                    console.log('Teacher：'+this.props.DataState.SubjectTeacherMsg.SubjectList)
+                    if (!this.props.DataState.SubjectTeacherMsg.SubjectList)
+                        dispatch(actions.UpDataState.getSubjectTeacherMsg('/ArchivesTeacher_DropDownMenu'));
                     dispatch(actions.UpDataState.getSubjectTeacherPreview('/ArchivesTeacher?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
                 }
             }

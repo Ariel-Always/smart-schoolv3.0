@@ -18,6 +18,8 @@ const  GET_SUBJECT_TEACHER_PREVIEW = 'GET_SUBJECT_TEACHER_PREVIEW';
 const  GET_SCHOOL_LEADER_PREVIEW = 'GET_SCHOOL_LEADER_PREVIEW';
 //获取年级班级信息
 const  GET_GRADE_CLASS_MSG = 'GET_GRADE_CLASS_MSG';
+//获取学科信息
+const GET_SUBJECT_TEACHER_MSG = 'GET_SUBJECT_TEACHER_MSG';
 
 //操作的执行
 //获取登录用户信息
@@ -80,6 +82,7 @@ const getSubjectTeacherPreview = (url) =>{
             if(json.Status === 400){
                 console.log(json.Status)
             }else if(json.Status === 200){
+                console.log(json.Data)
                 dispatch({type:GET_SCHOOL_LEADER_PREVIEW,data:json.Data});
                 dispatch({ type: UpUIState.APP_LOADING_CLOSE });
             }
@@ -124,6 +127,25 @@ const getGradeClassMsg = (url) =>{
         });
     }
 }
+//获取学科信息
+const getSubjectTeacherMsg = (url) =>{
+    return (dispatch)=>{
+        console.log(CONFIG.proxy+url);
+        getData(CONFIG.proxy+url).then(res=>{
+            if(res.Status === '401'){
+                console.log('错误码：'+ res.status)
+            }
+            return res.json()}).then(json=>{
+            if(json.Status === 400){
+                console.log(json.Status)
+            }else if(json.Status === 200){
+                console.log('ddd')
+                dispatch({type:GET_SUBJECT_TEACHER_MSG,data:json.Data});
+            }
+           
+        });
+    }
+}
 
 
 export default {
@@ -134,9 +156,11 @@ export default {
     getSubjectTeacherPreview,
     getGradeStudentPreview,
     getSchoolLeaderPreview,
+    getSubjectTeacherMsg,
     GET_GRADE_STUDENT_PREVIEW,
     GET_SUBJECT_TEACHER_PREVIEW,
     GET_SCHOOL_LEADER_PREVIEW,
     getGradeClassMsg,
-    GET_GRADE_CLASS_MSG
+    GET_GRADE_CLASS_MSG,
+    GET_SUBJECT_TEACHER_MSG
 }

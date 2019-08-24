@@ -500,6 +500,18 @@ class RegisterWillExamine extends React.Component {
         const { dispatch } = this.props;
         dispatch(actions.UpUIState.hideErrorAlert());
     }
+    UserExamineMadalCancel = () => {
+        this.setState({
+            UserExamineModalVisible: false,
+
+        })
+    }
+    UserExamineMadalOk = () => {
+        this.setState({
+            UserExamineModalVisible: false,
+
+        })
+    }
 
     render() {
         const { UIState, DataState } = this.props;
@@ -581,9 +593,10 @@ class RegisterWillExamine extends React.Component {
                 <DetailsModal
                     ref='StudentDetailsMsgModal'
                     visible={this.state.UserExamineModalVisible}
-                    onOk={this.UserExamineMadalOk}
+                    onOk = {this.UserExamineMadalOk}
                     onCancel={this.UserExamineMadalCancel}
                     data={data}
+                    
                     type='examine'
                 >
 

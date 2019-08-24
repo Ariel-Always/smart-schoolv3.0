@@ -152,19 +152,19 @@ class Teacher extends React.Component{
         }
     }
     componentWillReceiveProps() {
-        let Grades = this.props.DataState.GradeClassMsg.Grades ? this.props.DataState.GradeClassMsg.Grades : [];
-        let len = Grades.lenght;
-        console.log(Grades)
-        let GradeArr = [{ value: 0, title: '全部年级' }];
+        // let Grades = this.props.DataState.GradeClassMsg.Grades ? this.props.DataState.GradeClassMsg.Grades : [];
+        // let len = Grades.lenght;
+        // console.log(Grades)
+        // let GradeArr = [{ value: 0, title: '全部年级' }];
 
-        for (let i = 0; i < len; i++) {
-            let Grade = { value: Grades[i].GradeID, title: Grades[i].GradeName }
-            GradeArr.push(Grade)
-        }
+        // for (let i = 0; i < len; i++) {
+        //     let Grade = { value: Grades[i].GradeID, title: Grades[i].GradeName }
+        //     GradeArr.push(Grade)
+        // }
 
-        this.setState({
-            GradeArr: GradeArr
-        })
+        // this.setState({
+        //     GradeArr: GradeArr
+        // })
 
     }
     componentWillMount(){
@@ -175,36 +175,13 @@ class Teacher extends React.Component{
     TeacherDropMenu = (e) => {
         const { dispatch } = this.props;
 
-        let Classes = [{ value: 0, title: '全部班级' }];
+        
 
-        //console.log(this.refs.dropMenuSecond)
-        if (e.value !== 0) {
-            let ClassArr = this.props.DataState.GradeClassMsg.returnData.AllClasses[e.value];
-            ClassArr.map((Class) => {
-                Classes.push(Class);
-            })
-            //Classes.push(this.props.DataState.GradeClassMsg.returnData.AllClasses[e.value]);
-            //this.refs.dropMenuSecond.state.dropList = Classes;]
-            this.setState({
-                secondDropList: Classes,
-            })
-            dispatch(actions.UpDataState.getSubjectTeacherPreview('/ArchivesTeacher?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
-            this.setState({
-                DropMenuShow: true
-            })
-        } else {
-            dispatch(actions.UpDataState.getSubjectTeacherPreview('/ArchivesTeacher?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
-            this.setState({
-                DropMenuShow: false
-            })
-        }
-
-    }
-
-    TeacherDropMenuSecond = (e) => {
-        console.log(e);
         dispatch(actions.UpDataState.getSubjectTeacherPreview('/ArchivesTeacher?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
+
     }
+
+    
 
     TeacherSearch = (e) => {
         console.log(e)
@@ -238,7 +215,7 @@ class Teacher extends React.Component{
         console.log(e)
         if (e.target.checked) {
             this.setState({
-                checkedList: this.props.DataState.GradeTeacherPreview.keyList,
+                checkedList: this.props.DataState.SubjectTeacherPreview.keyList,
                 checkAll: e.target.checked
             })
         } else {
@@ -252,7 +229,7 @@ class Teacher extends React.Component{
         console.log(checkedList)
         this.setState({
             checkedList,
-            checkAll: checkedList === this.props.DataState.GradeTeacherPreview.keyList ? true : false
+            checkAll: checkedList === this.props.DataState.SubjectTeacherPreview.keyList ? true : false
         })
     }
     handleTeacherModalOk = (e) => {
@@ -364,13 +341,10 @@ class Teacher extends React.Component{
                             <span className='tips menu39 '>用户档案总览</span>
                         </span>
                         <div className='top-nav'>
-                            <Link className='link'  to='/GraduteArchives' replace>查看毕业生档案</Link>
+                            
+                            <Link className='link' to='/AddTeacher' replace>添加教师</Link>
                             <span className='divide'>|</span>
-                            <Link className='link' target='_blank' to='/RegisterExamine' replace>学生注册审核</Link>
-                            <span className='divide'>|</span>
-                            <Link className='link' to='/AddTeacher' replace>添加学生</Link>
-                            <span className='divide'>|</span>
-                            <Link className='link' to='/ImportTeacher' replace>导入学生</Link>
+                            <Link className='link' to='/ImportTeacher' replace>导入教师</Link>
                         </div>
                     </div>
                     <hr className='Teacher-hr' />
@@ -382,19 +356,10 @@ class Teacher extends React.Component{
                                 width={120}
                                 height={72}
 
-                                dropSelectd={{ value: 0, title: '全部年级' }}
-                                dropList={DataState.GradeClassMsg.returnData ? DataState.GradeClassMsg.returnData.grades : [{ value: 0, title: '全部年级' }]}
+                                dropSelectd={DataState.SubjectTeacherMsg.returnData ? DataState.SubjectTeacherMsg.returnData.SubjectList[0] : { value: 'all', title: '全部教师' }}
+                                dropList={DataState.SubjectTeacherMsg.returnData ? DataState.SubjectTeacherMsg.returnData.SubjectList : [{ value: 'all', title: '全部教师' }]}
                             ></DropDown>
-                            <DropDown
-                                ref='dropMenuSecond'
-                                width={120}
-                                height={72}
-
-                                style={{ display: this.state.DropMenuShow ? 'block' : 'none' }}
-                                dropSelectd={{ value: 0, title: '全部班级' }}
-                                dropList={this.state.secondDropList}
-                                onChange={this.TeacherDropMenuSecond}
-                            ></DropDown>
+                            
                             <Search placeHolder='搜索'
                                 onClickSearch={this.TeacherSearch}
                                 height={30}
@@ -408,7 +373,7 @@ class Teacher extends React.Component{
                                         columns={this.state.columns}
                                         pagination={false}
                                         loading={this.state.loading}
-                                        dataSource={DataState.GradeTeacherPreview.newList} >
+                                        dataSource={DataState.SubjectTeacherPreview.newList} >
 
                                     </Table>
                                 </CheckBoxGroup>
@@ -419,7 +384,7 @@ class Teacher extends React.Component{
                                 <div className='pagination-box'>
                                     <PagiNation 
                                     showQuickJumper  
-                                    total={DataState.GradeTeacherPreview.Total} 
+                                    total={DataState.SubjectTeacherPreview.Total} 
                                     onChange={this.onPagiNationChange}
                                     ></PagiNation>
                                 </div>
