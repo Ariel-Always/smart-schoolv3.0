@@ -1043,8 +1043,12 @@ class Loading extends React.Component {
 
         }else{
 
-            if (opacity===false){
+            if (opacity===undefined){
                 //透明度为false意味不透明
+                opacityClass = '';
+
+            }else{
+
                 opacityClass = 'ant-spin-opaque'
 
             }

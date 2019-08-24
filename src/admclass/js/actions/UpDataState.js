@@ -298,9 +298,11 @@ const getAddTeacherData = (opts) =>{
 
 //教师弹窗选择的学科发生改变
 
-const teacherModalSelectChange = (selectData,type) => {
+const teacherModalSelectChange = (selectData) => {
 
-    return dispatch => {
+    return (dispatch,getState) => {
+
+        const {type,inputContent} = getState().UIState.AddTeacherModal;
 
         dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_SHOW});
 
@@ -348,6 +350,8 @@ const  teacherSearchBtnClick = () => {
       //展示loading
       dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_SHOW});
 
+      dispatch({type:UpUIState.ADD_TEACHER_CLOSE_SHOW});
+
       let state = getState().UIState.AddTeacherModal;
 
       if (state.type===1||state.type===3){//不需要排除教师ID
@@ -367,8 +371,8 @@ const  teacherSearchBtnClick = () => {
       }else{
 
 
-      }
 
+      }
 
       let postTeacherListPromise = getXuGetData('/admTeachers');
 
@@ -390,6 +394,43 @@ const  teacherSearchBtnClick = () => {
 
 
   }
+
+};
+
+//教师弹窗点击取消搜索
+const teacherSearchClose = () => {
+
+    return (dispatch,getState) => {
+
+        dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_SHOW});
+
+        let subjectsSelect = getState().UIState.AddTeacherModal;
+
+        if (subjectsSelect.value!=='all'){
+
+
+
+        }
+
+        let postTeacherListPromise = getXuGetData('/admTeachers');
+
+        postTeacherListPromise.then(json => {
+
+            if (json.Status===200){
+
+                dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:json.Data});
+
+                dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
+
+            }else{
+
+
+
+            }
+
+        });
+
+    }
 
 };
 
@@ -456,6 +497,7 @@ export default {
     getAddTeacherData,
     teacherModalSelectChange,
     teacherSearchBtnClick,
+    teacherSearchClose,
     GET_LOGIN_USER_INFO,
     GET_ALL_GRADE_PREVIEW,
     GET_SHCOOL_GRADE_CLASSES,

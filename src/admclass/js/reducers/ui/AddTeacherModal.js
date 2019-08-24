@@ -137,6 +137,14 @@ const  AddTeacherModal = (state={
 
             return {...state,emptyShow:false};
 
+        case UpUIState.ADD_TEACHER_CLOSE_SHOW:
+
+            return {...state,closeShow:true};
+
+        case UpUIState.ADD_TEACHER_CLOSE_HIDE:
+
+            return {...state,closeShow:false};
+
         default:
 
             return state;

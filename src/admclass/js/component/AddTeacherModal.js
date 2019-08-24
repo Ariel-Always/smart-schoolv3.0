@@ -40,7 +40,9 @@ class AddTeacherModal extends Component{
 
             searchBtnClick,
 
-            emptyShow
+            emptyShow,
+
+            searchClose
 
         } = this.props;
         console.log(emptyShow);
@@ -85,7 +87,7 @@ class AddTeacherModal extends Component{
 
                             <Input type="text" className="search-input" placeholder="请输入教师姓名或工号搜索" onChange={(e) => inputContentChange(e)} value={inputContent}/>
 
-                            <input type="button" className="search-close" style={{display:`${closeShow?'block':'none'}`}}/>
+                            <input type="button" className="search-close" onClick={() => searchClose()} style={{display:`${closeShow?'block':'none'}`}}/>
 
                             <Button color="blue" className="search-btn" onClick={(e) => searchBtnClick(e)}>搜索</Button>
 

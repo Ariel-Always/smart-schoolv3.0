@@ -231,11 +231,9 @@ class StudentContent extends Component{
 
         const {dispatch} = this.props;
 
-        const {type} = this.props.UIState.AddTeacherModal;
-
         dispatch({type:UpUIState.ADD_TEACHER_SUBJECTS_SELECT_CHANGE,data:e});
 
-        dispatch(UpDataState.teacherModalSelectChange(e,type))
+        dispatch(UpDataState.teacherModalSelectChange(e))
 
     }
 
@@ -279,6 +277,18 @@ class StudentContent extends Component{
 
            });
         }
+
+    }
+
+    teacherSearchClose(e){
+
+        const {dispatch,UIState} = this.props;
+
+        dispatch({type:UpUIState.ADD_TEACHER_CLOSE_HIDE});
+
+        dispatch({type:UpUIState.ADD_TEACHER_INPUT_CHANGE,data:''});
+
+        dispatch(UpDataState.teacherSearchClose());
 
     }
 
@@ -394,7 +404,7 @@ class StudentContent extends Component{
 
                       onCancel={this.teacherModalHide.bind(this)}
 
-                      okText = "取消">
+                      cancelText = "取消">
 
                    <AddTeacherModal
 
@@ -432,7 +442,9 @@ class StudentContent extends Component{
 
                             searchBtnClick = {this.teacherSearchBtnClick.bind(this)}
 
-                            emptyShow = {UIState.AddTeacherModal.emptyShow}>
+                            emptyShow = {UIState.AddTeacherModal.emptyShow}
+
+                            searchClose = {this.teacherSearchClose.bind(this)}>
 
                    </AddTeacherModal>
 
