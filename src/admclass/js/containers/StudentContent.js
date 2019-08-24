@@ -259,6 +259,8 @@ class StudentContent extends Component{
 
             dispatch(UpDataState.teacherSearchBtnClick());
 
+            dispatch({type:UpUIState.ADD_TEACHER_EMPTY_SHOW});
+
         }else{//如果等于空的时候弹框警告
 
            dispatch({type:UpUIState.SHOW_ERROR_ALERT,

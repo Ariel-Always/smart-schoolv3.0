@@ -340,7 +340,7 @@ class Empty extends React.Component {
 
     render() {
         return (
-            <div className={`emptyBox ${this.state.className}`} style={this.state.Style}>
+            <div className={`emptyBox ${this.state.className}`} style={this.state.style}>
                 <i style={this.state.imageStyle} className={`empty ${this.state.className_1}`}></i>
                 <span className={`initTitle ${this.state.titleStyle}`}>{this.state.title}</span>
             </div>
