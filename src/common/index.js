@@ -294,6 +294,15 @@ class Empty extends React.Component {
         }
     }
 
+    componentWillReceiveProps(nextProps){
+
+        const {style} = nextProps;
+
+        this.setState({style:style});
+
+    }
+
+
     selectType = (type) => {
         let className_1 = 'tips-error-1';
         switch (type) {

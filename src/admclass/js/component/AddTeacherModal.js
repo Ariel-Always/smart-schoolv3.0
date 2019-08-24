@@ -117,9 +117,9 @@ class AddTeacherModal extends Component{
 
                             </ScrollBar>
 
-                                <div className="empty-wrapper" style={{display:`${emptyShow?"block":"none"}`}}>
+                                <div className="empty-wrapper" style={{display:`${emptyShow?"block":"none"}`}} >
 
-                                    <Empty type="4"    title="空空如也"></Empty>
+                                    <Empty type="4"  title="空空如也"></Empty>
 
                                 </div>
 
