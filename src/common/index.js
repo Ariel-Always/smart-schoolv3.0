@@ -433,10 +433,10 @@ class Modal extends React.Component {
                        width={this.state.width}
                        footer={this.state.footer === null ? null : this.state.footer ? this.state.footer : [
                            <Button key='onOk' type="primary" size="small" color="green" onClick={this.state.onOk}>
-                               确定
+                               {this.props.okText?this.props.okText:'确定'}
                            </Button>,
                            <Button key='onCancel' size="small" color="blue" onClick={this.state.onCancel}>
-                               关闭
+                               {this.props.cancelText?this.props.cancelText:'关闭'}
                            </Button>,
 
                        ]}
@@ -1685,8 +1685,8 @@ class DetailsModal extends React.Component {
                             </span>
                             <span className='col-right'>{data.userRegisterTime?data.userRegisterTime:<span className='content-null'>未填写</span>}</span>
                         </div>
-                        <div className='row'>
-                            <span className='col-left' style={{marginBottom:20+'px',display:type==='examine'?'block':'none'}}>
+                        <div className='row' style={{marginBottom:20+'px',display:type==='examine'?'block':'none'}}>
+                            <span className='col-left' >
                                 {'注册IP'}
                             </span>
                             <span className='col-right'>{data.userRegisterIP?data.userRegisterIP:<span className='content-null'>未填写</span>}</span>

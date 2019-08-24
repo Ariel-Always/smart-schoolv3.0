@@ -1,12 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux';
 import { DetailsModal,DropDown, PagiNation, Search, Table, Button, CheckBox, CheckBoxGroup, Modal } from '../../../common/index'
-import '../../../common/scss/_left_menu.scss'
-import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
+//import '../../../common/scss/_left_menu.scss'
+import {  Link, } from 'react-router-dom';
 import '../../scss/Student.scss'
 
 import history from '../containers/history'
-import EditStudentModal from './EditStudentModal'
+import EditModal from './EditModal'
 import IconLocation from '../../images/icon-location.png'
 import actions from '../actions';
 import StudentChangeRecord from './StudentChangeRecord'
@@ -34,15 +34,29 @@ class Student extends React.Component {
                     }
                 }, 
                 {
-                    title: '姓名',
+                    title: '',
                     align:'right',
+                    key: 'UserImg',
+                    width: 60,
+                    dataIndex: 'UserName',
+                    render: arr => {
+                        return (
+                            <div className='name-content'>        
+                                <img alt={arr.UserName} onClick={this.onUserNameClick} className='name-img' width='47' height='47' src={arr.PhotoPath}></img>
+                            </div>
+                        )
+                    }
+
+                },
+                {
+                    title: '姓名',
+                    align:'left',
+                    key: 'UserName',
                     dataIndex: 'UserName',
                     sorter: (a, b) => a.name.length - b.name.length,
                     render: arr => {
                         return (
                             <div className='name-content'>
-                               
-                                <img alt={arr.UserName} onClick={this.onUserNameClick} className='name-img' width='47' height='47' src={arr.PhotoPath}></img>
                                 <span className='name-UserName' onClick={this.onUserNameClick}>{arr.UserName}</span>
                             </div>
                         )
@@ -53,6 +67,7 @@ class Student extends React.Component {
                     title: '学号',
                     align:'center',
                     dataIndex: 'UserID',
+                    key: 'UserID',
                     sorter: (a, b) => a.age - b.age,
                     render: UserID => {
                         return (
@@ -64,6 +79,7 @@ class Student extends React.Component {
                     title: '性别',
                     align:'center',
                     dataIndex: 'Gender',
+                    key: 'Gender',
                     render: Gender => {
                         return (
                             <span className='Gender'>{Gender}</span>
@@ -73,6 +89,7 @@ class Student extends React.Component {
                 {
                     title: '年级',
                     align:'center',
+                    key: 'GradeName',
                     dataIndex: 'GradeName',
                     render: GradeName => {
                         return (
@@ -83,6 +100,7 @@ class Student extends React.Component {
                 {
                     title: '班级',
                     align:'center',
+                    key: 'ClassName',
                     dataIndex: 'ClassName',
                     render: ClassName => {
                         return (
@@ -93,6 +111,7 @@ class Student extends React.Component {
                 {
                     title: '操作',
                     align:'center',
+                    key: 'handle',
                     dataIndex: 'key',
                     render: (key) => {
 
@@ -149,10 +168,7 @@ class Student extends React.Component {
     }
     componentWillMount(){
         
-        history.listen(() => {//路由监听
-            let route = history.location.pathname;
-            console.log(route)
-        })
+       
     }
 
     StudentDropMenu = (e) => {
@@ -420,8 +436,9 @@ class Student extends React.Component {
                     visible={this.state.studentModalVisible}
                     onOk={this.handleStudentModalOk}
                     onCancel={this.handleStudentModalCancel}
+                    
                 >
-                    <EditStudentModal userKey={this.state.userKey}></EditStudentModal>
+                    <EditModal userKey={this.state.userKey}></EditModal>
                 </Modal>
                 <Modal
                     ref='StudentChangeMadal'
