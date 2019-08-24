@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import '../../scss/EditStudentModal.scss'
+import '../../scss/EditModal.scss'
 import { Input } from 'antd'
 import { Radio, RadioGroup, DropDown } from '../../../common/index'
 
-class EditStudentModal extends React.Component {
+class EditModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -39,50 +39,50 @@ class EditStudentModal extends React.Component {
         })
     }
     
-    onEditStudentNameChange = (e) => {
+    onEditNameChange = (e) => {
         console.log(e.target.value)
         this.setState({
             defaultUserName:e.target.value
         })
 
     }
-    onEditStudentGendeChange = (e) => {
+    onEditGendeChange = (e) => {
         console.log(e)
         this.setState({
             GendeChange:e
         })
     }
-    onEditStudentGradeChange = (e) => {
+    onEditGradeChange = (e) => {
         console.log(e)
         this.setState({
            GradeChange:e
         })
     }
-    onEditStudentClassChange = (e) => {
+    onEditClassChange = (e) => {
         console.log(e)
         this.setState({
             ClassChange:e
         })
     }
-    onEditStudentIDCardChange = (e) => {
+    onEditIDCardChange = (e) => {
         console.log(e.target.value)
         this.setState({
             IDCardChange:e.target.value
         })
     }
-    onEditStudentPhoneChange = (e) => {
+    onEditPhoneChange = (e) => {
         console.log(e.target.value)
         this.setState({
             PhoneChange:e.target.value
         })
     }
-    onEditStudentMailChange = (e) => {
+    onEditMailChange = (e) => {
         console.log(e.target.value)
         this.setState({
             MailChange:e.target.value
         })
     }
-    onEditStudentAddressChange = (e) => {
+    onEditAddressChange = (e) => {
         console.log(e.target.value)
         this.setState({
             AddressChange:e.target.value
@@ -92,7 +92,7 @@ class EditStudentModal extends React.Component {
         const { UIState, DataState } = this.props;
         
         return (
-            <div className='EditStudentModal'>
+            <div className='EditModal'>
                 <div className='Left'></div>
                 <div className='Right'>
                     <div className="row">
@@ -111,9 +111,9 @@ class EditStudentModal extends React.Component {
                             <Input className='UserName-input'
 
                                 type='text'
-                                name='EditStudentName'
+                                name='EditName'
                                 value={this.state.defaultUserName}
-                                onChange={this.onEditStudentNameChange} />
+                                onChange={this.onEditNameChange} />
                         </div>
                     </div>
                     <div className="row">
@@ -122,7 +122,7 @@ class EditStudentModal extends React.Component {
                         </span>
                         <div className='culonm-2'>
                             {/* <RadioGroup name='GendeSelect'
-                            value = {DataState.GradeStudentPreview.newList?DataState.GradeStudentPreview.newList[this.state.UserKey].Gender:''}
+                            value = {DataState.GradePreview.newList?DataState.GradePreview.newList[this.state.UserKey].Gender:''}
                             onChange = {this.onGendeChange}
                             className='Gende-Radio'
                             >
@@ -149,7 +149,7 @@ class EditStudentModal extends React.Component {
                                 ]}
                                 width={120}
                                 height={72}
-                                onChange = {this.onEditStudentGendeChange}
+                                onChange = {this.onEditGendeChange}
                             >
                                 
                             </DropDown>
@@ -180,7 +180,7 @@ class EditStudentModal extends React.Component {
                                 ]}
                                 width={200}
                                 height={72}
-                                onChange = {this.onEditStudentGradeChange}
+                                onChange = {this.onEditGradeChange}
                             >
 
                             </DropDown>
@@ -211,7 +211,7 @@ class EditStudentModal extends React.Component {
                                 ]}
                                 width={200}
                                 height={72}
-                                onChange = {this.onEditStudentClassChange}
+                                onChange = {this.onEditClassChange}
                             >
 
                             </DropDown>
@@ -226,8 +226,8 @@ class EditStudentModal extends React.Component {
                                 className='input'
                                 value={this.state.IDCardChange}
                                 type='text'
-                                name='EditStudentIDCard'
-                                onChange={this.onEditStudentIDCardChange}
+                                name='EditIDCard'
+                                onChange={this.onEditIDCardChange}
                             ></Input>
                         </div>
                     </div>
@@ -240,8 +240,8 @@ class EditStudentModal extends React.Component {
                                 className='input'
                                 value={this.state.PhoneChange}
                                 type='text'
-                                name='EditStudentPhone'
-                                onChange={this.onEditStudentPhoneChange}
+                                name='EditPhone'
+                                onChange={this.onEditPhoneChange}
                             ></Input>
                         </div>
                     </div>
@@ -253,9 +253,9 @@ class EditStudentModal extends React.Component {
                             <Input
                                 className='input'
                                 type='text'
-                                name='EditStudentMail'
+                                name='EditMail'
                                 value = {this.state.MailChange}
-                                onChange={this.onEditStudentMailChange}
+                                onChange={this.onEditMailChange}
                             ></Input>
                         </div>
                     </div>
@@ -268,9 +268,9 @@ class EditStudentModal extends React.Component {
                                 className='inputarea'
                                 rows='2'
                                 cols='30'
-                                name='EditStudentAddress'
+                                name='EditAddress'
                                 value={this.state.AddressChange}
-                                onChange={this.onEditStudentAddressChange}
+                                onChange={this.onEditAddressChange}
                             ></Input.TextArea>
                         </div>
                     </div>
@@ -286,4 +286,4 @@ const mapStateToProps = (state) => {
         DataState
     }
 };
-export default connect(mapStateToProps)(EditStudentModal);
+export default connect(mapStateToProps)(EditModal);

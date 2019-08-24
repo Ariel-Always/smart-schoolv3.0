@@ -44,15 +44,31 @@ class RegisterDidExamine extends React.Component {
                     }
                 },
                 {
-                    title: '姓名',
-                    align: 'center',
+                    title: '',
+                    align: 'right',
                     dataIndex: 'UserName',
-                    key: 'UserName',
-                    sorter: true,
+                    key: 'UserImg',
+                    width: 60,
                     render: arr => {
                         return (
                             <div className='name-content'>
                                 <img alt={arr.UserName} onClick={this.onUserNameClick} className='name-img' width='47' height='47' src={arr.PhotoPath}></img>
+                                
+                            </div>
+                        )
+                    }
+
+                },
+                {
+                    title: '姓名',
+                    align: 'left',
+                    dataIndex: 'UserName',
+                    key: 'UserName',
+                    sorter: (a, b) => a.name.length - b.name.length,
+                    render: arr => {
+                        return (
+                            <div className='name-content'>
+                                
                                 <span className='name-UserName' onClick={this.onUserNameClick}>{arr.UserName}</span>
                             </div>
                         )
