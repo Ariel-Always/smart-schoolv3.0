@@ -172,7 +172,7 @@
 
 .ant-spin-opaque{
 
-  .ant-spin-blur{
+  &>.ant-spin-blur{
 
     &:after{
 
@@ -186,7 +186,7 @@
 
 .ant-spin-transparent{
 
-  .ant-spin-blur{
+  &>.ant-spin-blur{
 
     opacity:1;
 

@@ -187,15 +187,33 @@ class StudentContent extends Component{
 
     }
 
-    //弹出添加教师的弹窗
-    addTeacherModalShow(){
+    //关闭教师弹窗
+    teacherModalHide(e){
 
         const {dispatch} = this.props;
 
-        dispatch({type:UpUIState.ADD_TEACHER_MODAL_SHOW});
+        dispatch({type:UpUIState.ADD_TEACHER_MODAL_HIDE});
 
-        //初始化所有的教师和学科的数据
-        dispatch(UpDataState.getAddTeacherData())
+    }
+
+    //弹出添加教师的弹窗
+    addTeacherModalShow(opt){
+
+        const {dispatch} = this.props;
+
+        switch (opt.type) {
+            case 1:
+                dispatch({type:UpUIState.ADD_TEACHER_MODAL_SHOW});
+                //初始化所有的教师和学科的数据
+                dispatch(UpDataState.getAddTeacherData({type:1}));
+
+                break;
+
+            default:
+
+                dispatch({type:UpUIState.ADD_TEACHER_MODAL_SHOW});
+
+        }
 
     }
 
@@ -208,7 +226,71 @@ class StudentContent extends Component{
 
     }
 
+    //选择下拉后的事件
+    teacherModalDropChange(e){
 
+        const {dispatch} = this.props;
+
+        dispatch({type:UpUIState.ADD_TEACHER_SUBJECTS_SELECT_CHANGE,data:e});
+
+        dispatch(UpDataState.teacherModalSelectChange(e))
+
+    }
+
+    //教师弹窗输入框值变化
+    teacherModalInputContentChange(e){
+
+        const {dispatch} = this.props;
+
+        dispatch({type:UpUIState.ADD_TEACHER_INPUT_CHANGE,data:e.target.value});
+
+    }
+
+    //教师弹窗点击搜索按钮
+    teacherSearchBtnClick(e){
+
+        const {dispatch,UIState} = this.props;
+
+        const {inputContent} = UIState.AddTeacherModal;
+
+        if (inputContent!==''){//输入的列表中不等于空
+
+            dispatch(UpDataState.teacherSearchBtnClick());
+
+        }else{//如果等于空的时候弹框警告
+
+           dispatch({type:UpUIState.SHOW_ERROR_ALERT,
+
+               msg:{
+
+                type:"btn-warn",
+
+                title:"请输入搜索的内容！",
+
+                ok:()=>{dispatch({type:UpUIState.CLOSE_ERROR_ALERT})},
+
+                cancel:()=>{dispatch({type:UpUIState.CLOSE_ERROR_ALERT})},
+
+                close:()=>{dispatch({type:UpUIState.CLOSE_ERROR_ALERT})}
+
+               }
+
+           });
+        }
+
+    }
+
+    teacherSearchClose(e){
+
+        const {dispatch,UIState} = this.props;
+
+        dispatch({type:UpUIState.ADD_TEACHER_CLOSE_HIDE});
+
+        dispatch({type:UpUIState.ADD_TEACHER_INPUT_CHANGE,data:''});
+
+        dispatch(UpDataState.teacherSearchClose());
+
+    }
 
 
     render() {
@@ -220,19 +302,19 @@ class StudentContent extends Component{
 
         return (
             <Loading tip="加载中..."  spinning={StudentLoading.show}  size="large">
-
+                {/*第一个标题*/}
                 <TitleBar type="icon2" title="一年级 > 1班教师名单" abstract={`(${TheTeachersList.Total}人)`}></TitleBar>
-
+               {/* 教师内容区域*/}
                 <ContentWrapper>
 
-                    <Button size="small" color="blue" className="addTeacher" onClick={this.addTeacherModalShow.bind(this)}>添加任课教师</Button>
+                    <Button size="small" color="blue" className="addTeacher" onClick={this.addTeacherModalShow.bind(this,{type:1})}>添加任课教师</Button>
 
                     <TeacherTabWrapper Teachers={TheTeachersList}></TeacherTabWrapper>
 
                 </ContentWrapper>
-
+               {/* 学生标题头部*/}
                 <TitleBar type="icon2" title="一年级 > 1班学生名单" abstract={`（${TheStudentList.Total}人）`}></TitleBar>
-
+                {/*学生内容区域*/}
                 <ContentWrapper>
 
                     <Search className="admclass-search-student"></Search>
@@ -306,9 +388,9 @@ class StudentContent extends Component{
 
                 </Modal>
 
-               {/* 更改任课教师的弹窗*/}
+               {/* 教师的弹窗（添加任课教师1、更改任课教师2、添加班主任3、更改班主任4）*/}
 
-               <Modal type={1} title="添加任课教师"
+               <Modal type={1} title={UIState.AddTeacherModal.modalTitle}
 
                       visible={UIState.AddTeacherModal.show}
 
@@ -318,7 +400,11 @@ class StudentContent extends Component{
 
                       maskClosable={true}
 
-                      className="addTeacherModal">
+                      className="addTeacherModal"
+
+                      onCancel={this.teacherModalHide.bind(this)}
+
+                      cancelText = "取消">
 
                    <AddTeacherModal
 
@@ -344,7 +430,21 @@ class StudentContent extends Component{
 
                             originTeacherInfo = {UIState.AddTeacherModal.originTeacherInfo}
 
-                            newTeacherTitle = {UIState.AddTeacherModal.newTeacherTitle}>
+                            newTeacherTitle = {UIState.AddTeacherModal.newTeacherTitle}
+
+                            teacherModalDropChange = {this.teacherModalDropChange.bind(this)}
+
+                            teacherLoadingShow = {UIState.AddTeacherModal.teacherLoadingShow}
+
+                            inputContent = {UIState.AddTeacherModal.inputContent}
+
+                            inputContentChange = {this.teacherModalInputContentChange.bind(this)}
+
+                            searchBtnClick = {this.teacherSearchBtnClick.bind(this)}
+
+                            emptyShow = {UIState.AddTeacherModal.emptyShow}
+
+                            searchClose = {this.teacherSearchClose.bind(this)}>
 
                    </AddTeacherModal>
 

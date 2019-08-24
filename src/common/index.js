@@ -294,6 +294,15 @@ class Empty extends React.Component {
         }
     }
 
+    componentWillReceiveProps(nextProps){
+
+        const {style} = nextProps;
+
+        this.setState({style:style});
+
+    }
+
+
     selectType = (type) => {
         let className_1 = 'tips-error-1';
         switch (type) {
@@ -340,7 +349,7 @@ class Empty extends React.Component {
 
     render() {
         return (
-            <div className={`emptyBox ${this.state.className}`} style={this.state.Style}>
+            <div className={`emptyBox ${this.state.className}`} style={this.state.style}>
                 <i style={this.state.imageStyle} className={`empty ${this.state.className_1}`}></i>
                 <span className={`initTitle ${this.state.titleStyle}`}>{this.state.title}</span>
             </div>
@@ -1034,8 +1043,12 @@ class Loading extends React.Component {
 
         }else{
 
-            if (opacity===false){
+            if (opacity===undefined){
                 //透明度为false意味不透明
+                opacityClass = '';
+
+            }else{
+
                 opacityClass = 'ant-spin-opaque'
 
             }
