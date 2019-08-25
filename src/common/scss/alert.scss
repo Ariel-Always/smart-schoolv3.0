@@ -14,10 +14,10 @@ $img_url:"#{$image_url}/alert";
   max-width:500px;
   &.animation{
     display: block;
-    @include animation(hide 2s 1s linear);
+    @include animation(hide 1s 1s linear);
   }
   .border{
-    box-shadow: 0px 0px 16px 0px
+    box-shadow: 0 0 16px 0
     rgba(3, 0, 0, 0.16);
   }
   .alert_tab_content{ //内容区域
@@ -61,9 +61,9 @@ $img_url:"#{$image_url}/alert";
   min-width: 400px;
   max-width: 500px;
   background-color: #ffffff;
-  padding:0px;
+  padding:0;
   .border{
-    box-shadow: 0px 0px 16px 0px
+    box-shadow: 0 0 16px 0
     rgba(3, 0, 0, 0.16);
   }
   /*关闭按钮*/

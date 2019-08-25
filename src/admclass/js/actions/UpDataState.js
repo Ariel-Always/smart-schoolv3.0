@@ -433,6 +433,139 @@ const teacherSearchClose = () => {
     }
 
 };
+//更改班主任
+const updateGenger = (classInfo) =>{
+
+    return (dispatch,getState) => {
+
+        const newTeacherId = getState().UIState.AddTeacherModal.newPickTeacher.value;
+
+        const classId = classInfo.ClassID;
+
+        const type = getState().UIState.AddTeacherModal.type;
+
+        let tips = '';
+
+        switch (type) {
+
+            case 3:
+
+                tips = '添加班主任成功';
+
+                break;
+
+            case 4:
+
+                tips = '更改班主任成功！';
+
+                break;
+
+            default:
+
+                tips = '';
+
+        }
+
+        dispatch({type:UpUIState.ADD_TEACHER_MODAL_HIDE});
+
+        let updateGengerPromise = postXuData('/admUpdateGenger');
+
+        updateGengerPromise.then((json) => {
+
+           if (json.Status === 200){
+
+               dispatch({
+
+                   type:UpUIState.SHOW_ERROR_ALERT,
+
+                   msg:{
+
+                       type:"success",
+
+                       title:tips,
+
+                       hide:() => {dispatch({type:UpUIState.CLOSE_ERROR_ALERT});dispatch()}
+
+                   }
+
+               });
+
+           }
+
+        });
+
+
+    }
+
+};
+
+//更改任课教师
+const updateTeacher = (classInfo) => {
+
+    return (dispatch,getState) => {
+
+        const newTeacherId = getState().UIState.AddTeacherModal.newPickTeacher.value;
+
+        const classId = classInfo.ClassID;
+
+        const subjectId = getState().UIState.AddTeacherModal.subjectsSelect.value;
+
+        const type = getState().UIState.AddTeacherModal.type;
+
+        let tips = '';
+
+        switch (type) {
+
+            case 1:
+
+                tips = '添加任课教师成功';
+
+                break;
+
+            case 2:
+
+                tips = '更改任课教师成功！';
+
+                break;
+
+            default:
+
+                tips = '';
+
+        }
+
+        dispatch({type:UpUIState.ADD_TEACHER_MODAL_HIDE});
+
+        let updateTeacherPromise = postXuData('/admUpdateTeacher');
+
+        updateTeacherPromise.then((json) => {
+
+            if (json.Status === 200){
+
+                dispatch({
+
+                    type:UpUIState.SHOW_ERROR_ALERT,
+
+                    msg:{
+
+                        type:"success",
+
+                        title:tips,
+
+                        hide:() => {dispatch({type:UpUIState.CLOSE_ERROR_ALERT});dispatch(getTheClassPreview())}
+
+                    }
+
+                });
+
+            }
+
+        });
+
+
+    }
+
+};
 
 
 
@@ -498,6 +631,8 @@ export default {
     teacherModalSelectChange,
     teacherSearchBtnClick,
     teacherSearchClose,
+    updateGenger,
+    updateTeacher,
     GET_LOGIN_USER_INFO,
     GET_ALL_GRADE_PREVIEW,
     GET_SHCOOL_GRADE_CLASSES,

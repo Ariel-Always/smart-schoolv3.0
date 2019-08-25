@@ -385,6 +385,7 @@ class Modal extends React.Component {
         }
     }
 
+
     selectType(type) {
         let width = 810;
         let ModalStyle = 'Modal-1';
@@ -418,8 +419,14 @@ class Modal extends React.Component {
         this.selectType(this.props.type)
     }
 
-    componentWillReceiveProps() {
-        this.selectType(this.props.type)
+    componentWillReceiveProps(nextProps) {
+
+        const {title} = nextProps;
+
+        this.selectType(this.props.type);
+
+        this.setState({title:title});
+
     }
 
     render() {
@@ -1116,13 +1123,17 @@ class Alert extends React.Component {
     }
 
     componentDidUpdate(){
+
         const {show,type,onHide} = this.props;
 
         if (show){
+
             if (type==='success'||type==='error'||type==='tips'){
 
                 if (onHide){
-                    setTimeout(onHide,2500);
+
+                    setTimeout(onHide,1800);
+
                 }
             }
         }

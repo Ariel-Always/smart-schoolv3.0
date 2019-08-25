@@ -78,11 +78,17 @@ class StudentContent extends Component{
         if (StudentsCheckList.length===0){
 
             dispatch({type:UpUIState.SHOW_ERROR_ALERT,
+
                 msg:{
+
                 type:"btn-tips",
+
                 title:"您还没有选中任何学生，请先选择学生！",
+
                 cancel:this.hide.bind(this),
+
                 close:this.hide.bind(this)
+
             }})
 
         }else{
@@ -202,10 +208,65 @@ class StudentContent extends Component{
         const {dispatch} = this.props;
 
         switch (opt.type) {
+
             case 1:
                 dispatch({type:UpUIState.ADD_TEACHER_MODAL_SHOW});
                 //初始化所有的教师和学科的数据
                 dispatch(UpDataState.getAddTeacherData({type:1}));
+
+                break;
+
+            case 2:
+
+                dispatch({type:UpUIState.ADD_TEACHER_MODAL_SHOW,options:{
+
+                        originTeacherShow:true,
+
+                        originTeacherInfo:opt.originTeacherInfo,
+
+                        newTeacherTitle:"新任课教师",
+
+                        modalTitle:"更改任课教师",
+
+                        type:2
+
+                    }});
+                //初始化所有的教师和学科的数据
+                dispatch(UpDataState.getAddTeacherData({type:2}));
+
+                break;
+
+            case 3:
+
+                dispatch({type:UpUIState.ADD_TEACHER_MODAL_SHOW,options:{
+
+                        modalTitle:"添加班主任",
+
+                        type:3
+
+                    }});
+                //初始化所有的教师和学科的数据
+                dispatch(UpDataState.getAddTeacherData({type:3}));
+
+                break;
+
+            case 4:
+
+                dispatch({type:UpUIState.ADD_TEACHER_MODAL_SHOW,options:{
+
+                        originTeacherShow:true,
+
+                        originTeacherInfo:opt.originTeacherInfo,
+
+                        newTeacherTitle:"新班主任",
+
+                        modalTitle:"更改班主任",
+
+                        type:4
+
+                    }});
+                //初始化所有的教师和学科的数据
+                dispatch(UpDataState.getAddTeacherData({type:4}));
 
                 break;
 
@@ -291,6 +352,58 @@ class StudentContent extends Component{
         dispatch(UpDataState.teacherSearchClose());
 
     }
+    //点击OK的时候
+    teacherModalOk(e){
+
+        const {dispatch,UIState,match} =this.props;
+
+        const {AddTeacherModal} = UIState;
+
+        //先判断是否选中一个新的教师
+
+        if (AddTeacherModal.newPickTeacher.id){
+
+            if (AddTeacherModal.type===3||AddTeacherModal.type===4){ //是修改的班主任
+
+                dispatch(UpDataState.updateGenger({ClassID:match.params.ClassID}));
+
+            }else{//是修改的任课教师
+
+                dispatch(UpDataState.updateTeacher({ClassID:match.params.ClassID}));
+
+            }
+
+        }else{
+
+            dispatch({
+
+                type:UpUIState.SHOW_ERROR_ALERT,
+
+                msg:{
+
+                    type:"btn-warn",
+
+                    title:"请选中一个教师！",
+
+                    ok:()=>{dispatch({type:UpUIState.CLOSE_ERROR_ALERT})},
+
+                    cancel:()=>{dispatch({type:UpUIState.CLOSE_ERROR_ALERT})},
+
+                    close:()=>{dispatch({type:UpUIState.CLOSE_ERROR_ALERT})}
+
+                }
+
+            })
+
+        }
+
+
+
+
+
+    }
+
+
 
 
     render() {
@@ -309,7 +422,7 @@ class StudentContent extends Component{
 
                     <Button size="small" color="blue" className="addTeacher" onClick={this.addTeacherModalShow.bind(this,{type:1})}>添加任课教师</Button>
 
-                    <TeacherTabWrapper Teachers={TheTeachersList}></TeacherTabWrapper>
+                    <TeacherTabWrapper addTeacherModalShow={this.addTeacherModalShow.bind(this)} Teachers={TheTeachersList}></TeacherTabWrapper>
 
                 </ContentWrapper>
                {/* 学生标题头部*/}
@@ -404,7 +517,9 @@ class StudentContent extends Component{
 
                       onCancel={this.teacherModalHide.bind(this)}
 
-                      cancelText = "取消">
+                      cancelText = "取消"
+
+                      onOk = {this.teacherModalOk.bind(this)}>
 
                    <AddTeacherModal
 

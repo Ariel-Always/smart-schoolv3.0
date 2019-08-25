@@ -113,9 +113,15 @@ $image-url:'../images';
       }
 
       &.ganger{
-        .reset{
-          margin-left: 40px;
+
+        .no-set{
+
+          .reset{
+            margin-left: 40px;
+          }
+
         }
+
       }
     }
     &:hover{

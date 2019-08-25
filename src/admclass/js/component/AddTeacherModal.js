@@ -45,7 +45,7 @@ class AddTeacherModal extends Component{
             searchClose
 
         } = this.props;
-        console.log(emptyShow);
+
 
         let subjectsList = subjects.map((item) => {
 
