@@ -99,19 +99,23 @@ class App extends Component {
             dispatch(actions.UpDataState.getAllUserPreview('/ArchivesAll'));
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
             if (handleRoute) {
-                dispatch(actions.UpDataState.getAllUserPreview('/Archives' + handleRoute));
+                //dispatch(actions.UpDataState.getAllUserPreview('/Archives' + handleRoute));
                 dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-                if (route === '/UserArchives/Student') {
+                if (handleRoute === 'Student') {
                     console.log('Student')
                     if (!this.props.DataState.GradeClassMsg.returnData)
                         dispatch(actions.UpDataState.getGradeClassMsg('/ArchivesStudent_DropDownMenu'));
                     dispatch(actions.UpDataState.getGradeStudentPreview('/ArchivesStudent?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
-                }
-                if (route === '/UserArchives/Teacher') {
-                    console.log('Teacher：'+this.props.DataState.SubjectTeacherMsg.SubjectList)
-                    if (!this.props.DataState.SubjectTeacherMsg.SubjectList)
+                }else if (handleRoute === 'Teacher') {
+                    console.log('Teacher：'+this.props.DataState.SubjectTeacherMsg.returnData)
+                    if (!this.props.DataState.SubjectTeacherMsg.returnData)
                         dispatch(actions.UpDataState.getSubjectTeacherMsg('/ArchivesTeacher_DropDownMenu'));
                     dispatch(actions.UpDataState.getSubjectTeacherPreview('/ArchivesTeacher?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
+                }else if (handleRoute === 'All') {
+                   
+                }else{
+                    history.push('/UserArchives/All')
+                    console.log(handleRoute)
                 }
             }
 
@@ -121,6 +125,11 @@ class App extends Component {
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
             if (!this.props.DataState.GradeClassMsg.returnData)
                 dispatch(actions.UpDataState.getGradeClassMsg('/ArchivesStudent_DropDownMenu'));
+            if(route.split('/')[2] !== 'RegisterWillExamine' && route.split('/')[2] !== 'RegisterDidExamine'){
+                history.push('/RegisterExamine/RegisterWillExamine')
+            }
+        }else{
+            history.push('/UserArchives/All')
         }
 
 

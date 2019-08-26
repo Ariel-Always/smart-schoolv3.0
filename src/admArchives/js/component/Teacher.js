@@ -39,11 +39,11 @@ class Teacher extends React.Component{
                     align:'right',
                     key: 'UserImg',
                     width: 60,
-                    dataIndex: 'UserName',
+                    dataIndex: 'UserImgs',
                     render: arr => {
                         return (
                             <div className='name-content'>        
-                                <img alt={arr.UserName} onClick={this.onUserNameClick} className='name-img' width='47' height='47' src={arr.PhotoPath}></img>
+                                <img alt={arr.UserName} onClick={this.onUserNameClick.bind(this,arr.key)} className='name-img' width='47' height='47' src={arr.UserImg}></img>
                             </div>
                         )
                     }
@@ -54,22 +54,22 @@ class Teacher extends React.Component{
                     align:'left',
                     key: 'UserName',
                     dataIndex: 'UserName',
-                    sorter: (a, b) => a.name.length - b.name.length,
+                    sorter: true,
                     render: arr => {
                         return (
                             <div className='name-content'>
-                                <span className='name-UserName' onClick={this.onUserNameClick}>{arr.UserName}</span>
+                                <span className='name-UserName' onClick={this.onUserNameClick.bind(this,arr.key)}>{arr.UserName}</span>
                             </div>
                         )
                     }
 
                 },
                 {
-                    title: '学号',
+                    title: '工号',
                     align:'center',
                     dataIndex: 'UserID',
                     key: 'UserID',
-                    sorter: (a, b) => a.age - b.age,
+                    sorter: true,
                     render: UserID => {
                         return (
                             <span className='UserID'>{UserID}</span>
@@ -88,38 +88,38 @@ class Teacher extends React.Component{
                     }
                 },
                 {
-                    title: '年级',
+                    title: '所在学科',
                     align:'center',
-                    key: 'GradeName',
-                    dataIndex: 'GradeName',
-                    render: GradeName => {
+                    key: 'SubjectNames',
+                    dataIndex: 'SubjectNames',
+                    render: arr => {
                         return (
-                            <span className='GradeName'>{GradeName}</span>
+                            <span className='SubjectName'>{arr.showTwo}</span>
                         )
                     }
                 },
                 {
-                    title: '班级',
+                    title: '职称',
                     align:'center',
-                    key: 'ClassName',
-                    dataIndex: 'ClassName',
-                    render: ClassName => {
+                    key: 'Titles',
+                    dataIndex: 'Titles',
+                    render: Titles => {
                         return (
-                            <span className='ClassName'>{ClassName}</span>
+                            <span className='Title'>{Titles.TitleName}</span>
                         )
                     }
                 },
                 {
                     title: '操作',
                     align:'center',
-                    key: 'handle',
-                    dataIndex: 'key',
-                    render: (key) => {
+                    key: 'handleMsg',
+                    dataIndex: 'handleMsg',
+                    render: (handleMsg) => {
 
                         return (
                             <div className='handle-content'>
-                                <Button color='blue' type='default' onClick={this.TeacherChange.bind(this, key)} className='handle-btn'>查看变记录</Button>
-                                <Button color='blue' type='default' onClick={this.TeacherEdit.bind(this, key)} className='handle-btn'>编辑</Button>
+                                <Button color='blue' type='default' onClick={this.TeacherChange.bind(this, handleMsg)} className='handle-btn'>查看变记录</Button>
+                                <Button color='blue' type='default' onClick={this.TeacherEdit.bind(this, handleMsg)} className='handle-btn'>编辑</Button>
                             </div>
                         )
                     }
@@ -147,7 +147,8 @@ class Teacher extends React.Component{
             alertTitle: '提示信息',
             alertQueryShow: false,
             alertQueryTitle: '查询提示~',
-            TeacherDetailsMsgModalVisible:false
+            TeacherDetailsMsgModalVisible:false,
+            addTeacherModalVisible:false
 
         }
     }
@@ -200,11 +201,11 @@ class Teacher extends React.Component{
         })
     }
 
-    TeacherChange = (e, key) => {
-        console.log(e, key)
+    TeacherChange = (e, handleMsg) => {
+        console.log(e, handleMsg.key)
         this.setState({
             TeacherChangeMadalVisible: true,
-            TeacherChangeKey: key
+            TeacherChangeKey: handleMsg.key
         })
     }
 
@@ -242,6 +243,18 @@ class Teacher extends React.Component{
         console.log(e)
         this.setState({
             TeacherModalVisible: false
+        })
+    }
+    handleAddTeacherModalOk = (e) => {
+        console.log(e)
+        this.setState({
+            addTeacherModalVisible: false
+        })
+    }
+    handleAddTeacherModalCancel = (e) => {
+        console.log(e)
+        this.setState({
+            addTeacherModalVisible: false
         })
     }
     TeacherChangeMadalOk = (e) => {
@@ -300,7 +313,8 @@ class Teacher extends React.Component{
     onPagiNationChange = (e) => {
         console.log(e)
     }
-    onUserNameClick = () => {
+    onUserNameClick = (key) => {
+        console.log(key)
         this.setState({
             TeacherDetailsMsgModalVisible: true,
             
@@ -316,6 +330,13 @@ class Teacher extends React.Component{
         this.setState({
             TeacherDetailsMsgModalVisible: false,
             
+        })
+    }
+    onAddTeacher = (e, ) => {
+        console.log(e)
+        this.setState({
+            addTeacherModalVisible: true,
+            userKey: 'add'
         })
     }
     render() {
@@ -342,7 +363,7 @@ class Teacher extends React.Component{
                         </span>
                         <div className='top-nav'>
                             
-                            <Link className='link' to='/AddTeacher' replace>添加教师</Link>
+                            <span className='link' style={{cursor:'pointer'}}  onClick={this.onAddTeacher}>添加教师</span>
                             <span className='divide'>|</span>
                             <Link className='link' to='/ImportTeacher' replace>导入教师</Link>
                         </div>
@@ -372,7 +393,7 @@ class Teacher extends React.Component{
                                         className='table'
                                         columns={this.state.columns}
                                         pagination={false}
-                                        loading={this.state.loading}
+                                        loading={{delay:500,spinning:DataState.SubjectTeacherPreview?DataState.SubjectTeacherPreview.loading:true}}
                                         dataSource={DataState.SubjectTeacherPreview.newList} >
 
                                     </Table>
@@ -398,12 +419,23 @@ class Teacher extends React.Component{
                     ref='handleTeacherMadal'
                     bodyStyle={{ padding: 0 }}
                     type='1'
-                    title='编辑学生'
+                    title={'编辑教师'}
                     visible={this.state.TeacherModalVisible}
                     onOk={this.handleTeacherModalOk}
                     onCancel={this.handleTeacherModalCancel}
                 >
-                    <EditModal userKey={this.state.userKey}></EditModal>
+                    <EditModal type='teacher' userKey={this.state.userKey}></EditModal>
+                </Modal>
+                <Modal
+                    ref='handleTeacherMadal'
+                    bodyStyle={{ padding: 0 }}
+                    type='1'
+                    title={'添加教师'}
+                    visible={this.state.addTeacherModalVisible}
+                    onOk={this.handleAddTeacherModalOk}
+                    onCancel={this.handleAddTeacherModalCancel}
+                >
+                    <EditModal type='teacher' userKey={this.state.userKey}></EditModal>
                 </Modal>
                 <Modal
                     ref='TeacherChangeMadal'

@@ -34,6 +34,34 @@ class RegisterExamine extends React.Component {
 
     }
 
+    componentWillMount(){
+        console.log(history);
+        let pathname = history.location.pathname;
+            console.log(pathname.split('/')[2])
+            if(pathname.split('/')[2]==='RegisterDidExamine'){
+                this.setState({
+                    handleClick:false
+                })
+            }else if(pathname.split('/')[2]==='RegisterWillExamine'){
+                this.setState({
+                    handleClick:true
+                })
+            }
+        history.listen(() => {//路由监听
+            let pathname = history.location.pathname;
+            console.log(pathname.split('/')[2])
+            if(pathname.split('/')[2]==='RegisterDidExamine'){
+                this.setState({
+                    handleClick:false
+                })
+            }else if(pathname.split('/')[2]==='RegisterWillExamine'){
+                this.setState({
+                    handleClick:true
+                })
+            }
+        })
+    }
+
     UserExamineMadalOk = (e) => {
         console.log(e)
         this.setState({
@@ -53,16 +81,16 @@ class RegisterExamine extends React.Component {
         })
     }
 
-    onExaminedClick = () => {
-        this.setState({
-            handleClick: false
-        })
-    }
-    onExaminingClick = () => {
-        this.setState({
-            handleClick: true
-        })
-    }
+    // onExaminedClick = () => {
+    //     this.setState({
+    //         handleClick: false
+    //     })
+    // }
+    // onExaminingClick = () => {
+    //     this.setState({
+    //         handleClick: true
+    //     })
+    // }
 
     render() {
         const { UIState, DataState } = this.props;

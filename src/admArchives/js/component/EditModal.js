@@ -1,8 +1,9 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import { connect } from 'react-redux';
 import '../../scss/EditModal.scss'
 import { Input } from 'antd'
-import { Radio, RadioGroup, DropDown } from '../../../common/index'
+import { Radio, RadioGroup, DropDown,CheckBox,CheckBoxGroup } from '../../../common/index'
 
 class EditModal extends React.Component {
     constructor(props) {
@@ -11,6 +12,7 @@ class EditModal extends React.Component {
             Gende: '',
             UserName: '',
             UserKey: props.userKey,
+            type:props.type
             
 
         }
@@ -18,27 +20,78 @@ class EditModal extends React.Component {
     componentWillMount(){
         const {  DataState } = this.props;
         console.log("dsd")
-        this.setState({
-            defaultUserName:DataState.GradeStudentPreview.newList ? DataState.GradeStudentPreview.newList[this.state.UserKey].UserName.UserName : '',
-            GendeChange:{
-                value: 0,
-                title: '保密'
-            },
-            GradeChange:{
-                value: 0,
-                title: '一年级'
-            },
-            ClassChange:{
-                value: 0,
-                title: '1班'
-            },
-            IDCardChange:'',
-            PhoneChange:'',
-            MailChange:'',
-            AddressChange:''
-        })
+        if(this.state.type === 'student'){
+            this.setState({
+                defaultUserName:DataState.GradeStudentPreview.newList ? DataState.GradeStudentPreview.newList[this.state.UserKey].UserName.UserName : '',
+                GendeChange:{
+                    value: 0,
+                    title: '请选择性别'
+                },
+                GradeChange:{
+                    value: 0,
+                    title: '请选择年级'
+                },
+                ClassChange:{
+                    value: 0,
+                    title: '请选择班级'
+                },
+                UserIDChange:'',
+                IDCardChange:'',
+                PhoneChange:'',
+                MailChange:'',
+                AddressChange:''
+            })
+        }else if(this.state.type === 'teacher'){
+            this.setState({
+                defaultUserName:DataState.GradeStudentPreview.newList ? DataState.GradeStudentPreview.newList[this.state.UserKey].UserName.UserName : '',
+                GendeChange:{
+                    value: 0,
+                    title: '请选择性别'
+                },
+                TitleChange:{
+                    value: 0,
+                    title: '请选择职称'
+                },
+                checkedList:[],
+                plainOptions:['语文','数学','外语','物理','化学','生物','历史','思想政治','地理','音乐','美术','信息技术'],
+                SubjectChange:[],
+                UserIDChange:'',
+                IDCardChange:'',
+                PhoneChange:'',
+                MailChange:'',
+                AddressChange:''
+            })
+        }else{
+            this.setState({
+                defaultUserName:DataState.GradeStudentPreview.newList ? DataState.GradeStudentPreview.newList[this.state.UserKey].UserName.UserName : '',
+                GendeChange:{
+                    value: 1,
+                    title: '男'
+                },
+                GradeChange:{
+                    value: 2,
+                    title: '二年级'
+                },
+                ClassChange:{
+                    value: 2,
+                    title: '2班'
+                },
+                UserIDChange:'',
+                IDCardChange:'',
+                PhoneChange:'',
+                MailChange:'',
+                AddressChange:''
+            })
+        }
+        
     }
-    
+    onEditNameChange = (e) => {
+        console.log(e.target.value)
+        this.setState({
+            UserIDChange:e.target.value
+        })
+
+    }
     onEditNameChange = (e) => {
         console.log(e.target.value)
         this.setState({
@@ -88,6 +141,7 @@ class EditModal extends React.Component {
             AddressChange:e.target.value
         })
     }
+     
     render() {
         const { UIState, DataState } = this.props;
         
@@ -97,10 +151,15 @@ class EditModal extends React.Component {
                 <div className='Right'>
                     <div className="row">
                         <span className='culonm-1'>
-                            学号：
+                            {this.state.type==='student'?'学号：':this.state.type==='teacher'?'工号：':'学号：'}
                         </span>
                         <div className='culonm-2'>
-                            <span className='UserID-text'>{DataState.GradeStudentPreview.newList ? DataState.GradeStudentPreview.newList[this.state.UserKey].UserID : ''}</span>
+                            <span style={{display:this.state.UserKey !== 'add'?'block':'none'}} className='UserID-text'>{DataState.GradeStudentPreview.newList ? DataState.GradeStudentPreview.newList[this.state.UserKey].UserID : ''}</span>
+                            <Input style={{display:this.state.UserKey === 'add'?'block':'none'}} className='UserName-input'
+                                type='text'
+                                name='EditID'
+                                value={this.state.UserIDChange}
+                                onChange={this.onEditIDChange} />
                         </div>
                     </div>
                     <div className="row">
@@ -132,12 +191,12 @@ class EditModal extends React.Component {
                             </RadioGroup> */}
                             <DropDown
                                 style={{ zIndex: 3 }}
-                                dropSelectd={this.state.GendeChange}
+                                dropSelectd={this.state.UserKey !== 'add'?this.state.GendeChange:{
+                                    value: 0,
+                                    title: '请选择性别'
+                                }}
                                 dropList={[
-                                    {
-                                        value: 0,
-                                        title: '保密'
-                                    },
+                                    
                                     {
                                         value: 1,
                                         title: '男'
@@ -145,6 +204,9 @@ class EditModal extends React.Component {
                                     {
                                         value: 2,
                                         title: '女'
+                                    },{
+                                        value: 3,
+                                        title: '保密'
                                     }
                                 ]}
                                 width={120}
@@ -155,7 +217,7 @@ class EditModal extends React.Component {
                             </DropDown>
                         </div>
                     </div>
-                    <div className="row">
+                    <div className="row" style={{display:this.state.type==='student'||!this.state.type?'block':'none'}}>
                         <span className='culonm-1'>
                             <span className='must-icon'>*</span>年级：
                         </span>
@@ -163,18 +225,21 @@ class EditModal extends React.Component {
 
                             <DropDown
                                 style={{ zIndex: 2 }}
-                                dropSelectd={this.state.GradeChange}
+                                dropSelectd={this.state.UserKey !== 'add'?this.state.GradeChange:{
+                                    value: 0,
+                                    title: '请选择年级'
+                                }}
                                 dropList={[
                                     {
-                                        value: 0,
+                                        value: 1,
                                         title: '一年级'
                                     },
                                     {
-                                        value: 1,
+                                        value: 2,
                                         title: '二年级'
                                     },
                                     {
-                                        value: 2,
+                                        value: 3,
                                         title: '三年级'
                                     }
                                 ]}
@@ -186,7 +251,38 @@ class EditModal extends React.Component {
                             </DropDown>
                         </div>
                     </div>
-                    <div className="row">
+                    <div className="row" style={{display:this.state.type==='teacher'?'block':'none'}}>
+                        <span className='culonm-1'>
+                            <span className='must-icon'>*</span>职称：
+                        </span>
+                        <div className='culonm-2'>
+
+                            <DropDown
+                                style={{ zIndex: 2 }}
+                                dropSelectd={this.state.UserKey !== 'add'?this.state.TitleChange:{
+                                    value: 0,
+                                    title: '请选择职称'
+                                }}
+                                dropList={[
+                                    
+                                    {
+                                        value: 1,
+                                        title: '一级教师'
+                                    },
+                                    {
+                                        value: 2,
+                                        title: '二级教师'
+                                    }
+                                ]}
+                                width={200}
+                                height={72}
+                                onChange = {this.onEditTitleChange}
+                            >
+
+                            </DropDown>
+                        </div>
+                    </div>
+                    <div className="row" style={{display:this.state.type!=='teacher'?'block':'none'}}>
                         <span className='culonm-1'>
                             <span className='must-icon'>*</span>班级：
                         </span>
@@ -194,19 +290,18 @@ class EditModal extends React.Component {
 
                             <DropDown
                                 style={{ zIndex: 1 }}
-                                dropSelectd={this.state.ClassChange}
+                                dropSelectd={this.state.UserKey !== 'add'?this.state.ClassChange:{
+                                    value: 0,
+                                    title: '请选择班级'
+                                }}
                                 dropList={[
                                     {
-                                        value: 0,
+                                        value: 1,
                                         title: '1班'
                                     },
                                     {
-                                        value: 1,
-                                        title: '2班'
-                                    },
-                                    {
                                         value: 2,
-                                        title: '3班'
+                                        title: '2班'
                                     }
                                 ]}
                                 width={200}
@@ -215,6 +310,16 @@ class EditModal extends React.Component {
                             >
 
                             </DropDown>
+                        </div>
+                    </div>
+                    <div className="row" style={{display:this.state.type==='teacher'?'block':'none'}}>
+                        <span className='culonm-1'>
+                            <span className='must-icon'>*</span>所教学科：
+                        </span>
+                        <div className='culonm-2'>
+                            <CheckBoxGroup className={'checkedBoxGroupMap'} value={this.state.UserKey === 'add'?this.state.checkedList:[]}>
+                                <MapPlainOptions plainOptions={this.state.plainOptions}></MapPlainOptions>
+                            </CheckBoxGroup>
                         </div>
                     </div>
                     <div className="row">
@@ -278,6 +383,32 @@ class EditModal extends React.Component {
             </div>
         )
     }
+}
+
+class MapPlainOptions extends React.Component {
+    constructor(props){
+        super(props);
+        this.state={
+
+        }
+    }
+    componentWillMount(){
+        let map = this.props.plainOptions.map((opt,index) => {
+            return (
+                <CheckBox className={'checkedBoxMap'} key={index} value={opt}>{opt}</CheckBox>
+            )
+        })
+        console.log(map)
+        this.setState({
+            map:map
+        })
+    }
+   render(){
+    return (
+        <div>{this.state.map}</div>
+    );
+   }
+    
 }
 const mapStateToProps = (state) => {
     let { UIState, DataState } = state;

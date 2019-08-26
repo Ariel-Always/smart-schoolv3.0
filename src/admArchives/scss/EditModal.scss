@@ -77,6 +77,18 @@
                     line-height: 28px;
                     transform: translateY(-16px);
                 }
+                .checkedBoxGroupMap{
+
+                    width: 450px;
+                    height: 90px;
+                    
+                    .checkedBoxMap{
+                        width: 90px;
+                        height: 28px;
+                        line-height: 28px;
+                    }
+                }
+                
             }
         }
     }
