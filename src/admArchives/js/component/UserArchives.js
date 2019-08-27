@@ -54,8 +54,7 @@ class UserArchives extends React.Component {
                 }]
             }
         }
-        let route = history.location.pathname;
-        console.log(route);
+        
     }
 
     componentWillMount() {

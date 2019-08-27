@@ -146,7 +146,8 @@ class Student extends React.Component {
             alertTitle: '提示信息',
             alertQueryShow: false,
             alertQueryTitle: '查询提示~',
-            StudentDetailsMsgModalVisible:false
+            StudentDetailsMsgModalVisible:false,
+            addStudentModalVisible:false
 
         }
     }
@@ -340,6 +341,25 @@ class Student extends React.Component {
             
         })
     }
+    onAddStudent = (e, ) => {
+        console.log(e)
+        this.setState({
+            addStudentModalVisible: true,
+            userKey: 'add'
+        })
+    }
+    handleAddStudentModalOk = (e) => {
+        console.log(e)
+        this.setState({
+            addStudentModalVisible: false
+        })
+    }
+    handleAddStudentModalCancel = (e) => {
+        console.log(e)
+        this.setState({
+            addStudentModalVisible: false
+        })
+    }
     render() {
         const { UIState, DataState } = this.props;
         const data = {
@@ -367,7 +387,7 @@ class Student extends React.Component {
                             <span className='divide'>|</span>
                             <Link className='link' target='_blank' to='/RegisterExamine' replace>学生注册审核</Link>
                             <span className='divide'>|</span>
-                            <Link className='link' to='/AddStudent' replace>添加学生</Link>
+                            <span className='link' style={{cursor:'pointer'}}  onClick={this.onAddStudent}>添加学生</span>
                             <span className='divide'>|</span>
                             <Link className='link' to='/ImportStudent' replace>导入学生</Link>
                         </div>
@@ -458,6 +478,17 @@ class Student extends React.Component {
                             <StudentChangeRecord data={''}></StudentChangeRecord>
                         </div>
                     </div>
+                </Modal>
+                <Modal
+                    ref='handleTeacherMadal'
+                    bodyStyle={{ padding: 0 }}
+                    type='1'
+                    title={'添加学生'}
+                    visible={this.state.addStudentModalVisible}
+                    onOk={this.handleAddStudentModalOk}
+                    onCancel={this.handleAddStudentModalCancel}
+                >
+                    <EditModal type='student' userKey={this.state.userKey}></EditModal>
                 </Modal>
                 <DetailsModal
                     ref='StudentDetailsMsgModal'

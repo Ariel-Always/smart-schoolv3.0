@@ -193,11 +193,11 @@ class Teacher extends React.Component{
         //this.setState({ selectedRowKeys });
     }
 
-    TeacherEdit = (e, key) => {
-        console.log(e, key)
+    TeacherEdit = (e) => {
+        console.log(e.key)
         this.setState({
             TeacherModalVisible: true,
-            userKey: e
+            userKey: e.key
         })
     }
 

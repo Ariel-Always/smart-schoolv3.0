@@ -8,7 +8,7 @@ import './js/leftMenu';
 import {
     Radio as AntRadio, Checkbox as AntCheckBox, Table as AntTable,
     Pagination as AntPagination, Button as AntdButton, Input as AntdInput,
-    Modal as AntdModal, Icon, ConfigProvider, Spin
+    Modal as AntdModal, Icon, ConfigProvider, Spin,Tooltip
 } from 'antd';
 import { Scrollbars } from 'react-custom-scrollbars';
 import zhCN from 'antd/es/locale/zh_CN';
@@ -1723,6 +1723,24 @@ class DetailsModal extends React.Component {
     }
 }
 
+// 文字气泡提示
+
+class Tips extends React.Component{
+    constructor(props){
+        super(props);
+        this.state ={
+
+        }
+    }
+    render(){
+        const {placement ='rightTop',children,...params} = this.props;
+
+        return(
+            <Tooltip placement={placement} className='Tooltips-red' {...params}>{children}</Tooltip>
+        )
+    }
+}
+
 const LeftMenu = withRouter(MenuLeft);
 
 export {
@@ -1743,5 +1761,6 @@ export {
     Alert,
     Frame,
     LeftMenu,
-    DetailsModal
+    DetailsModal,
+    Tips
 }
