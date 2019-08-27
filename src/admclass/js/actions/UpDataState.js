@@ -484,7 +484,7 @@ const updateGenger = (classInfo) =>{
 
                        title:tips,
 
-                       hide:() => {dispatch({type:UpUIState.CLOSE_ERROR_ALERT});dispatch()}
+                       hide:() => {dispatch({type:UpUIState.CLOSE_ERROR_ALERT});dispatch(getTheClassPreview())}
 
                    }
 

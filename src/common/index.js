@@ -1487,6 +1487,73 @@ class MenuLeft extends React.Component {
     }
 }
 
+class MenuLeftNoLink extends React.Component{
+
+    render() {
+        //menu和icon图标
+        const { Menu, Icon , menuClick } = this.props;
+
+        return (
+            <div className="frame_left_menu_pin">
+
+                <div className={`frame_left_menu_pic ${Icon ? Icon : 'pic1'}`}></div>
+
+                <div id="frame_left_menu_container" className="frame_left_menu_container">
+                    {
+                        Menu && Menu.map((item, key) => {
+                            //如果有第二级别
+                            if (item.List) {
+                                //active状态的类名
+
+                                return <React.Fragment key={key}>
+                                    {/* {第二级别块}*/}
+                                    <div className={`frame_leftmenu_mainitem`}>
+
+                                        <span  className={`frame_leftmenu_mainitem_name ${item.menu ? item.menu : ''}`} onClick={()=>{menuClick({ident:item.ident,id:item.id,name:item.name})}}>{item.name}</span>
+
+                                        <span className={`frame_leftmenu_arrow`}></span>
+
+                                    </div>
+                                    <div className="frame_leftmenu_nextgrade_container" style={{display:"none"}}>
+
+                                        <ul className="frame_leftmenu_onegrade_ul">
+                                            {
+                                                item.List && item.List.map((i, k) => {
+
+                                                    return <li key={k} className={`clearfix`}>
+
+                                                        <span className={`frame_leftmenu_point`}></span>
+
+                                                        <span  className={`frame_leftmenu_onegrade_name frame_ellipsis`} onClick={()=>{menuClick({ident:i.ident,id:i.id,preId:item.id,preName:item.name,name:i.name})}}>{i.name}</span>
+
+                                                    </li>
+                                                })
+                                            }
+                                        </ul>
+
+                                    </div>
+
+                                </React.Fragment>
+
+                            } else {
+                                //如果没有第二级直接返回，同时pathname和NavLink的参数相同处于活动状态
+                                return <div key={key} className={`frame_leftmenu_mainitem no_child ${item.default?'active selected':''}`}>
+
+                                    <span  className={`frame_leftmenu_mainitem_name ${item.menu ? item.menu : ''}`} onClick={()=>{menuClick({ident:item.ident,id:item.id,name:item.name})}}>{item.name}</span>
+
+                                </div>
+                            }
+                        })
+                    }
+                </div>
+
+            </div>
+        );
+    }
+
+}
+
+
 
 /*界面框架*/
 class Frame extends React.Component {
@@ -1743,5 +1810,6 @@ export {
     Alert,
     Frame,
     LeftMenu,
-    DetailsModal
+    DetailsModal,
+    MenuLeftNoLink
 }
