@@ -1,0 +1,71 @@
+@import "~compass-mixins/lib/animate";
+@import "~compass-mixins/lib/compass/css3";
+$image-url:'../images';
+
+/*公共的mixin start*/
+@mixin textOverFlow() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@mixin flex{
+  display: flex;
+  display:-moz-flex;
+  display:-ms-flex;
+  display:-webkit-flex;
+}
+@mixin justify-content($dir){
+  justify-content: $dir;
+  -ms-flex-pack: $dir;
+}
+@mixin flex-direction($dir){
+  flex-direction:$dir;
+  -ms-flex-direction:$dir;
+}
+@mixin align-items($dir){
+  align-items: $dir;
+  -ms-flex-align: $dir;
+}
+/*公共的mixin end*/
+
+
+//root
+#root{
+  height:100%;
+}
+
+
+//loading
+.ant-spin-nested-loading{
+  height:100%;
+}
+
+.frame-block-wrapper{
+
+  padding-left: 102px;
+
+  background-position: 32px 28px;
+
+}
+
+.frame-content-rightside{
+
+  position: relative;
+
+  border: 1px solid #05e3f8;
+
+  @include border-radius(0 0 12px 12px);
+
+  margin-top:42px;
+
+}
+
+//学段tab
+@import "./period-tab";
+
+//左上角标签链接
+@import "./router-tab";
+
+
+//泡泡型链接标签
+@import "./change-tab";

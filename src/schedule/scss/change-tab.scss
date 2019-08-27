@@ -1,0 +1,73 @@
+.schedule-change-tab{
+
+    @include flex;
+
+    height: 92px;
+
+    text-align: center;
+
+    @include justify-content(center);
+
+    @include align-items(center);
+
+}
+.schedule-change-tab-item{
+
+  position: relative;
+
+  width: 128px;
+
+  height: 36px;
+
+  line-height: 36px;
+
+  font-size: 16px;
+
+  background:url("#{$image-url}/change-tab.png") no-repeat center;
+
+  &:not(:first-child){
+
+    margin-left:24px;
+
+  }
+
+
+  &.active{
+
+    background-image:url("#{$image-url}/change-tab-active.png");
+
+    color: #ffffff;
+
+    @include text-shadow(0px 2px 3px #000000);
+
+    &:after{
+
+      position: absolute;
+
+      width:0;
+
+      height: 0;
+
+      bottom:-14px;
+
+      left: calc(50% - 7px);
+
+      content:'';
+
+      border-style: solid;
+
+      border-width: 7px;
+
+      border-color:#0bb6ff transparent transparent transparent;
+
+    }
+
+  }
+
+  &:not(.active):hover{
+
+    opacity: 0.8;
+
+  }
+
+}
