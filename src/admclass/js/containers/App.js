@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Frame,Loading,Alert,LeftMenu,Modal} from "../../../common";
+import {Frame,Loading,Alert,LeftMenu,Modal,MenuLeftNoLink} from "../../../common";
 import {connect} from 'react-redux';
 import '../../scss/index.scss';
 import UpUIState from '../actions/UpUIState';
@@ -171,19 +171,54 @@ class App extends Component{
 
     }
 
-
-
     UserComm_CheckGroupName(strInput) {
         //用户群名称检测（学校、年级、班级、教师组、专家组）
         return /^[0-9a-zA-Z()（）\u4E00-\u9FA5\uF900-\uFA2D-]{1,20}$/.test(strInput);
 
     }
 
+    //点击左侧的菜单
+
+    menuClick(e){
+        console.log(e);
+        const {ident,id,name,preName,preId} = e;
+
+       const {dispatch} = this.props;
+
+       switch (ident) {
+
+           case 'stu':
+
+               dispatch({type:UpUIState.CHANGE_STU_ACTIVE,info:{id:id,name:name}});
+
+               break;
+
+           case 'grade':
+
+               dispatch({type:UpUIState.CHANGE_GRADE_ACTIVE,info:{id:id,name:name}});
+
+               break;
+
+           case 'class':
+
+               dispatch({type:UpUIState.CHANGE_CLASS_ACTIVE,info:{id:id,name:name,preName:preName,preId:preId}});
+
+               break;
+
+           default:
+
+               dispatch({type:UpUIState.CHANGE_STU_ACTIVE});
+       }
+
+    }
+
 
     render() {
         const {UIState,DataState} = this.props;
+
         const {Grades=[]} = DataState.SchoolGradeClasses;//左侧菜单的年级和班级信息
-        let Menu =[{name:"班级信息总览",link:"/",menu:"menu10",id:"all"}];
+
+        let Menu =[{name:"班级信息总览",link:"/",menu:"menu10",ident:"stu",id:"all",default:true}];
 
         //遍历年级和班级将menu填充
         Grades.map((item,key)=>{
@@ -193,6 +228,7 @@ class App extends Component{
                 id:item.GradeID,
                 menu:"menu20",
                 link:`/${item.GradeID}`,
+                ident:"grade",
                 List:[]
             };
             if (item.Classes){
@@ -200,6 +236,7 @@ class App extends Component{
                     Data['List'].push({
                        name:i.ClassName,
                        id:i.ClassID,
+                       ident:"class",
                         link:`/${item.GradeID}/${i.ClassID}`
                     });
                 })
@@ -209,7 +246,7 @@ class App extends Component{
 
 
         return (
-                <Router>
+
                     <React.Fragment>
                     {/*loading包含Frame*/}
                         <Loading className="AppLoading" tip="加载中..." size="large" delay={200} spinning={UIState.AppLoading.show}>
@@ -230,7 +267,9 @@ class App extends Component{
 
                                 <div ref="frame-left-menu">
 
-                                    <LeftMenu Menu={Menu} Icon="pic3"></LeftMenu>
+                                   {/* <LeftMenu Menu={Menu} Icon="pic3"></LeftMenu>*/}
+
+                                    <MenuLeftNoLink Menu={Menu} menuClick={this.menuClick.bind(this)} Icon="pic3"></MenuLeftNoLink>
 
                                 </div>
 
@@ -284,7 +323,7 @@ class App extends Component{
 
                     </React.Fragment>
 
-                </Router>
+
         );
     }
 }

@@ -18,6 +18,12 @@ class StudentContent extends Component{
 
         super(props);
 
+        this.state={
+
+            info:props.info
+
+        };
+
         const {dispatch,DataState} = this.props;
 
         const {SchoolGradeClasses} = DataState;
@@ -211,8 +217,6 @@ class StudentContent extends Component{
 
             case 1:
                 dispatch({type:UpUIState.ADD_TEACHER_MODAL_SHOW});
-                //初始化所有的教师和学科的数据
-                dispatch(UpDataState.getAddTeacherData({type:1}));
 
                 break;
 
@@ -231,8 +235,6 @@ class StudentContent extends Component{
                         type:2
 
                     }});
-                //初始化所有的教师和学科的数据
-                dispatch(UpDataState.getAddTeacherData({type:2}));
 
                 break;
 
@@ -245,8 +247,6 @@ class StudentContent extends Component{
                         type:3
 
                     }});
-                //初始化所有的教师和学科的数据
-                dispatch(UpDataState.getAddTeacherData({type:3}));
 
                 break;
 
@@ -265,8 +265,6 @@ class StudentContent extends Component{
                         type:4
 
                     }});
-                //初始化所有的教师和学科的数据
-                dispatch(UpDataState.getAddTeacherData({type:4}));
 
                 break;
 
@@ -275,6 +273,8 @@ class StudentContent extends Component{
                 dispatch({type:UpUIState.ADD_TEACHER_MODAL_SHOW});
 
         }
+        //初始化所有的教师和学科的数据
+        dispatch(UpDataState.getAddTeacherData({type:opt.type}));
 
     }
 
@@ -365,11 +365,11 @@ class StudentContent extends Component{
 
             if (AddTeacherModal.type===3||AddTeacherModal.type===4){ //是修改的班主任
 
-                dispatch(UpDataState.updateGenger({ClassID:match.params.ClassID}));
+                dispatch(UpDataState.updateGenger({ClassID:UIState.ComponentChange.classInfo.id}));
 
             }else{//是修改的任课教师
 
-                dispatch(UpDataState.updateTeacher({ClassID:match.params.ClassID}));
+                dispatch(UpDataState.updateTeacher({ClassID:UIState.ComponentChange.classInfo.id}));
 
             }
 
@@ -397,17 +397,11 @@ class StudentContent extends Component{
 
         }
 
-
-
-
-
     }
 
 
-
-
     render() {
-        const {UIState,DataState} = this.props;
+        const {UIState,DataState,info} = this.props;
 
         const {StudentLoading} = UIState;
 
@@ -416,7 +410,7 @@ class StudentContent extends Component{
         return (
             <Loading tip="加载中..."  spinning={StudentLoading.show}  size="large">
                 {/*第一个标题*/}
-                <TitleBar type="icon2" title="一年级 > 1班教师名单" abstract={`(${TheTeachersList.Total}人)`}></TitleBar>
+                <TitleBar type="icon2" title={`${info.preName} > ${info.name} 教师名单`} abstract={`(${TheTeachersList.Total}人)`}></TitleBar>
                {/* 教师内容区域*/}
                 <ContentWrapper>
 
@@ -426,7 +420,7 @@ class StudentContent extends Component{
 
                 </ContentWrapper>
                {/* 学生标题头部*/}
-                <TitleBar type="icon2" title="一年级 > 1班学生名单" abstract={`（${TheStudentList.Total}人）`}></TitleBar>
+                <TitleBar type="icon2" title={`${info.preName} > ${info.name}学生名单`} abstract={`（${TheStudentList.Total}人）`}></TitleBar>
                 {/*学生内容区域*/}
                 <ContentWrapper>
 

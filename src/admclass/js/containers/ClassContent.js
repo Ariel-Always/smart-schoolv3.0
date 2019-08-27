@@ -25,8 +25,11 @@ class ClassContent extends Component{
         }else{
 
             setTimeout(function () {
+
                 dispatch(UpDataState.getAllGradePreview());
+
             },500);
+
         }
 
         dispatch(UpDataState.getTheGradePreview());//获取数据
@@ -34,14 +37,14 @@ class ClassContent extends Component{
     }
 
     render() {
-        const {UIState,DataState,match} = this.props;
+        const {UIState,DataState,match,info} = this.props;
         const {ClassLoading} = UIState;
         const {TheGradePreview} = DataState;
 
 
         return (
             <Loading tip="加载中..." spinning={ClassLoading.show}  size="large">
-                <TitleBar type="icon2" title={TheGradePreview.GradeName}></TitleBar>
+                <TitleBar type="icon2" title={info.name}></TitleBar>
                 <ContentWrapper>
                     <Search className="admclass-search"></Search>
                     <Statistics classNum={DataState.TheGradePreview.Class} teacherNum={DataState.TheGradePreview.CourseTecher} studentNum={DataState.TheGradePreview.Student}></Statistics>
