@@ -10,12 +10,11 @@ $dropHoverBorder:#5897ed;//下拉组件鼠标悬停后的边框色
 $dropHoverBg:#e8edf5;//下拉组件鼠标悬停后的背景色
 $dropDisabled:#bfbfbf;//下拉组件禁用主题色
 $image_url:"./images/";
-<<<<<<< Updated upstream
+
 $MenuSelect: linear-gradient(90deg,
         #ff4200 0%,
         #ffab3d 100%); /*菜单栏栏目选中状态*/
-=======
->>>>>>> Stashed changes
+
 /*公共变量 end*/
 /*公共minix start*/
 @mixin textOverFlow() {
@@ -24,23 +23,12 @@ $MenuSelect: linear-gradient(90deg,
   white-space: nowrap;
 }
 @mixin flex{
-<<<<<<< Updated upstream
   display: flex;
   display: -moz-flex;
   display: -ms-flex;
   display: -webkit-flex;
 }
 @mixin justify-content($dir){
-=======
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-}
-@mixin justify-content($dir){
-  -ms-flex-pack: $dir;
->>>>>>> Stashed changes
   justify-content: $dir;
   -ms-flex-pack: $dir;
 }
@@ -764,11 +752,4 @@ textarea.ant-input {
 @import "./scss/checkbox";
 //界面框架
 @import "./scss/frame";
-=======
-@import "./scss/pagination";
-@import "./scss/pagination";
-@import "./scss/search";
-@import "./scss/dropdown";
-@import "./scss/loading";
-@import "./scss/alert";
->>>>>>> Stashed changes
+
