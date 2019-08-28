@@ -380,7 +380,7 @@ class Student extends React.Component {
                 <div className='Student-box'>
                     <div className='Student-top'>
                         <span className='top-tips'>
-                            <span className='tips menu39 '>用户档案总览</span>
+                            <span className='tips menu39 '>学生档案管理</span>
                         </span>
                         <div className='top-nav'>
                             <Link className='link'  to='/GraduteArchives' replace>查看毕业生档案</Link>

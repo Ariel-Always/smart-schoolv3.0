@@ -9,7 +9,7 @@ import history from './history'
 import logo from '../../images/admAccoHeadImg-1.png'
 //import TimeBanner from '../component/TimeBanner'
 
-// import Student from '../component/Student'
+import Student from '../component/Student'
 // import Teacher from '../component/Teacher'
 // import Leader from '../component/Leader'
 import '../../scss/index.scss'
@@ -83,13 +83,14 @@ class App extends Component {
         let route = history.location.pathname;
         // 获取接口数据
         //this.requestData(route)
-
+       
+            this.handleMenu()
         history.listen(() => {//路由监听
             let route = history.location.pathname;
+            console.log(route)
             // 获取接口数据
             // this.requestData(route)
-            $('.frame_leftmenu_mainitem').removeClass('selected active');
-            $('.frame_leftmenu_mainitem').children('*').removeClass('active');
+           
             this.handleMenu()
 
             // if (history.location.pathname === '/' || history.location.pathname === '/UserAccount') {
@@ -127,49 +128,39 @@ class App extends Component {
     requestData = (route) => {
         const { dispatch } = this.props;
         let pathArr = route.split('/');
-        let handleRoute = pathArr[2];
-        if (route === '/' || route.split('/')[1] === 'UserArchives') {
-            dispatch(actions.UpDataState.getAllUserPreview('/ArchivesAll'));
-            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-            if (handleRoute) {
-                //dispatch(actions.UpDataState.getAllUserPreview('/Archives' + handleRoute));
-                dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-                if (handleRoute === 'Student') {
-                    console.log('Student')
-                    if (!this.props.DataState.GradeClassMsg.returnData)
-                        dispatch(actions.UpDataState.getGradeClassMsg('/ArchivesStudent_DropDownMenu'));
-                    dispatch(actions.UpDataState.getGradeStudentPreview('/ArchivesStudent?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
-                } else if (handleRoute === 'Teacher') {
-                    console.log('Teacher：' + this.props.DataState.SubjectTeacherMsg.returnData)
-                    if (!this.props.DataState.SubjectTeacherMsg.returnData)
-                        dispatch(actions.UpDataState.getSubjectTeacherMsg('/ArchivesTeacher_DropDownMenu'));
-                    dispatch(actions.UpDataState.getSubjectTeacherPreview('/ArchivesTeacher?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
-                } else if (handleRoute === 'All') {
+        let handleRoute = pathArr[1];
+        console.log(route)
+        if (route === '/' ) {
+            //dispatch(actions.UpDataState.getAllUserPreview('/ArchivesAll'));
+            //dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+            
 
-                } else {
-                    history.push('/UserArchives/All')
-                    console.log(handleRoute)
-                }
-            }
-
-        }
-        else if (route.split('/')[1] === 'RegisterExamine') {
-            //dispatch(actions.UpDataState.getAllUserPreview('/RegisterExamine'));
+        }else if (handleRoute ==='Student') {
+            //dispatch(actions.UpDataState.getAllUserPreview('/Archives' + handleRoute));
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-            if (!this.props.DataState.GradeClassMsg.returnData)
-                dispatch(actions.UpDataState.getGradeClassMsg('/ArchivesStudent_DropDownMenu'));
-            if (route.split('/')[2] !== 'RegisterWillExamine' && route.split('/')[2] !== 'RegisterDidExamine') {
-                history.push('/RegisterExamine/RegisterWillExamine')
-            }
+
+                console.log('Student')
+                if (!this.props.DataState.GradeClassMsg.returnData)
+                    dispatch(actions.UpDataState.getGradeClassMsg('/AccountStudent_DropDownMenu'));
+                dispatch(actions.UpDataState.getGradeStudentPreview('/AccountStudent?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
+             
+        }else if (handleRoute === 'Teacher') {
+            console.log('Teacher：' + this.props.DataState.SubjectTeacherMsg.returnData)
+            if (!this.props.DataState.SubjectTeacherMsg.returnData)
+                dispatch(actions.UpDataState.getSubjectTeacherMsg('/ArchivesTeacher_DropDownMenu'));
+            dispatch(actions.UpDataState.getSubjectTeacherPreview('/ArchivesTeacher?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
+        } else if (handleRoute === 'All') {
+
         } else {
-            history.push('/UserArchives/All')
+            history.push('/')
         }
 
 
     }
     //操作左侧菜单，响应路由变化
     handleMenu = () => {
-
+        $('.frame_leftmenu_mainitem').removeClass('selected active');
+        $('.frame_leftmenu_mainitem').children('*').removeClass('active');
         let path = history.location.pathname.split('/')[1];
         console.log(path)
         let param = this.state.MenuParams;
@@ -180,11 +171,12 @@ class App extends Component {
             if (path === param.children[i].key) {
                 param.children[i]['active'] = true;
                 param.children[i]['selected'] = true;
-                this.setState({
-                    MenuParams: param
-                })
+                
             }
         }
+        this.setState({
+            MenuParams: param
+        })
     }
     //左侧菜单每项的点击事件
     handleClick = (key) => {
@@ -215,14 +207,14 @@ class App extends Component {
                             enname: "User Account Management",
                             image: logo
                         }}
-                        type="triangle" showLeftMenu={true}>
+                        type="triangle" showBarner={false} showLeftMenu={true}>
                         {/* <div ref="frame-time-barner"><TimeBanner /></div> */}
                         <div ref="frame-left-menu"><Menu params={this.state.MenuParams}></Menu></div>
                         <div ref="frame-right-content">
                             <Router >
-                                <Route path='/' history={history} component={Introduce}></Route>
-                                {/* <Route path='/UserArchives/Student' exact history={history} component={Student}></Route>
-                                    <Route path='/UserArchives/Teacher' exact history={history} component={Teacher}></Route>
+                                <Route path='/' history={history} exact component={Introduce}></Route>
+                                <Route path='/Student'  history={history} component={Student}></Route>
+                                    {/* <Route path='/UserArchives/Teacher' exact history={history} component={Teacher}></Route>
                                     <Route path='/UserArchives/Leader' exact history={history} component={Leader}></Route>
                                     <Route path='/UserArchives/Admin' exact history={history} component={Admin}></Route> */}
                             </Router>
@@ -234,6 +226,7 @@ class App extends Component {
                 </Loading>
                 <Alert show={UIState.AppAlert.appAlert}
                     type={UIState.AppAlert.type}
+                    abstract={UIState.AppAlert.littleTitle}
                     title={UIState.AppAlert.title}
                     onOk={UIState.AppAlert.onOk}
                     onCancel={UIState.AppAlert.onCancel}

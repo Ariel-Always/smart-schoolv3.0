@@ -359,7 +359,7 @@ class Teacher extends React.Component{
                 <div className='Teacher-box'>
                     <div className='Teacher-top'>
                         <span className='top-tips'>
-                            <span className='tips menu39 '>用户档案总览</span>
+                            <span className='tips menu39 '>教师档案管理</span>
                         </span>
                         <div className='top-nav'>
                             

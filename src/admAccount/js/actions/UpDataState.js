@@ -21,6 +21,9 @@ const  GET_GRADE_CLASS_MSG = 'GET_GRADE_CLASS_MSG';
 //获取学科信息
 const GET_SUBJECT_TEACHER_MSG = 'GET_SUBJECT_TEACHER_MSG';
 
+//改变input值
+const CHANGE_INPUT_VALUE = 'CHANGE_INPUT_VALUE';
+
 //操作的执行
 //获取登录用户信息
 const  getLoginUser = (url) => {
@@ -146,10 +149,15 @@ const getSubjectTeacherMsg = (url) =>{
         });
     }
 }
+//获取Input值
+const getChangeInputValue = (value) =>{
+    return {type:CHANGE_INPUT_VALUE,value:value};
+}
 
 
 export default {
     getLoginUser,
+    getChangeInputValue,
     getAllUserPreview,
     GET_LOGIN_USER_INFO,
     GET_ALL_USER_PREVIEW,
@@ -162,5 +170,6 @@ export default {
     GET_SCHOOL_LEADER_PREVIEW,
     getGradeClassMsg,
     GET_GRADE_CLASS_MSG,
-    GET_SUBJECT_TEACHER_MSG
+    GET_SUBJECT_TEACHER_MSG,
+    CHANGE_INPUT_VALUE
 }

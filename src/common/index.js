@@ -1829,9 +1829,6 @@ export {
     Frame,
     LeftMenu,
     DetailsModal,
-<<<<<<< HEAD
-    Tips
-=======
+    Tips,
     MenuLeftNoLink
->>>>>>> b688295502a845659a3013073ac4ae52f1751a3f
 }
