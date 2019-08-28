@@ -68,23 +68,48 @@ class Subject extends Component{
             <div className="subject-teacher-subject-content">
 
                 <DropDown
+
                     dropSelectd={SubjectCourseGradeClassRoom.ItemSubjectSelect}
+
                     dropList={dropList}
+
                     style={{zIndex:5}}
+
                     height={108}>
 
                 </DropDown>
 
                 <TermPick
+
                     ItemTermName={PeriodWeekTerm.ItemTerm?PeriodWeekTerm.ItemTerm.TermName:''}
+
                     NowWeek={SubjectCourseGradeClassRoom.ItemWeekPicked?SubjectCourseGradeClassRoom.ItemWeekPicked:{}}
+
                     ItemWeek ={ItemWeek}>
 
                 </TermPick>
 
                 <div className="double-single-table-wrapper">
 
-                    <Scrollbars style={{width:1148,height:748}} renderTrackHorizontal={()=>{ return <div id="123"></div>}}>
+                    <Scrollbars
+
+                        style={{width:1148}}
+
+                        autoHeight={true}
+
+                        autoHeightMax={748}
+
+                        renderTrackHorizontal={()=>{
+
+                            return <div className="scrollbar-horizo​​ntal" style={{position:"absolute",bottom:0,width:"100%",left:0,height:4,borderRadius:2}}></div>
+                        }}
+
+                       /* renderThumbHorizontal={()=>{
+
+                            //return <div className="thumb-horizo​​ntal" style={{height:4,borderRadius:2}}></div>
+
+                        }}*/
+                    >
 
                     <DoubleSingleTable
                         ItemClassHourCount={SubjectCourseGradeClassRoom.ItemClassHourCount}
