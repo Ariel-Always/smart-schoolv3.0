@@ -10,9 +10,11 @@ $dropHoverBorder:#5897ed;//下拉组件鼠标悬停后的边框色
 $dropHoverBg:#e8edf5;//下拉组件鼠标悬停后的背景色
 $dropDisabled:#bfbfbf;//下拉组件禁用主题色
 $image_url:"./images/";
+
 $MenuSelect: linear-gradient(90deg,
         #ff4200 0%,
         #ffab3d 100%); /*菜单栏栏目选中状态*/
+
 /*公共变量 end*/
 /*公共minix start*/
 @mixin textOverFlow() {
@@ -749,3 +751,4 @@ textarea.ant-input {
 @import "./scss/checkbox";
 //界面框架
 @import "./scss/frame";
+

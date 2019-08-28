@@ -286,8 +286,7 @@ class App extends Component{
                             {/*提示弹出框组件*/}
                         <Alert  show={UIState.AppAlert.show}  type={UIState.AppAlert.type} title={UIState.AppAlert.title}
                         onOk={UIState.AppAlert.onOk} onCancel={UIState.AppAlert.onCancel} onClose={UIState.AppAlert.onClose}
-                        onHide = {UIState.AppAlert.onHide}
-                        >
+                        onHide = {UIState.AppAlert.onHide }>
 
                         </Alert>
 
