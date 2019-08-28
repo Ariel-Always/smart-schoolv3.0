@@ -709,7 +709,9 @@ class Search extends React.Component {
                                                                    this.state.selectdValue ? this.state.selectdValue.value
                                                                        : selectOptions.selectdValue.value)
                                                                : null,
+
                                                            value: ''
+
                                                        }
                                                    );
                                                }
@@ -1032,6 +1034,7 @@ class DropDown extends React.Component {
 /*
  * 加载中 start
  * */
+
 class Loading extends React.Component {
     render() {
         const { type, size, tip,opacity,spinning, wrapperClassName, children, ...reset } = this.props;
@@ -1089,6 +1092,7 @@ class Loading extends React.Component {
             <React.Fragment>    {/*空标签*/}
                 {Fragments}
             </React.Fragment>
+
         );
     }
 }
@@ -1098,6 +1102,7 @@ class Loading extends React.Component {
 /*
  * 弹出框 start
  * */
+
 class Alert extends React.Component {
 
     //关闭按钮
@@ -1144,6 +1149,7 @@ class Alert extends React.Component {
         const { type, title, abstract, okTitle, cancelTitle, show } = this.props;
         let maskShow, cancelShow, okShow = false;
         let okContent, cancelContent = '';
+
         switch (type) {
             case "btn-success":
             case "btn-error":
@@ -1177,6 +1183,7 @@ class Alert extends React.Component {
         return (
             <React.Fragment>
                 {
+
                     maskShow ?
                         <React.Fragment>
                             <div className="alert_dialog_mask" style={{ display: `${show ? 'block' : 'none'}` }}></div>
@@ -1829,9 +1836,6 @@ export {
     Frame,
     LeftMenu,
     DetailsModal,
-<<<<<<< HEAD
-    Tips
-=======
+    Tips,
     MenuLeftNoLink
->>>>>>> b688295502a845659a3013073ac4ae52f1751a3f
 }
