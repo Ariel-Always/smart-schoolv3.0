@@ -7,7 +7,7 @@ import ManagerComponent from './Manager';
 import TeacherComponent from './Teacher';
 import StudentComponent from './Student';
 import LoginUserActions from '../actions/LoginUserActions';
-import PeriodWeekTermActions from '../actions/Manager/PeriodWeekTermActions';
+import PeriodWeekTermActions from '../actions/PeriodWeekTermActions';
 
 import '../../scss/index.scss';
 
@@ -25,11 +25,15 @@ class App extends Component{
 
         dispatch(LoginUserActions.getUserInfo());
 
+        dispatch(PeriodWeekTermActions.getPeriodWeekTerm());
+
     }
 
     periodChange(key) {
 
         const {dispatch} = this.props;
+
+
 
         dispatch({type:PeriodWeekTermActions.PERIOD_VALUE_CHANGE,key:key});
 
@@ -41,7 +45,7 @@ class App extends Component{
 
         const {state} = this.props;
 
-        const { LoginUser,AppLoading,ModuleSetting,Manager  } = state;
+        const { LoginUser,AppLoading,ModuleSetting,Manager,PeriodWeekTerm  } = state;
 
         return (
 
@@ -69,9 +73,9 @@ class App extends Component{
 
                                     {
 
-                                        Manager.PeriodWeekTerm.ItemPeriod&&Manager.PeriodWeekTerm.ItemPeriod.map((item,key) => {
+                                        PeriodWeekTerm.ItemPeriod&&PeriodWeekTerm.ItemPeriod.map((item,key) => {
 
-                                            return <div key={key} onClick={this.periodChange.bind(this,key)} className={`schedule-period-item ${Manager.PeriodWeekTerm.defaultPeriodIndex===key?'active':''}`}>
+                                            return <div key={key} onClick={this.periodChange.bind(this,key)} className={`schedule-period-item ${PeriodWeekTerm.defaultPeriodIndex===key?'active':''}`}>
 
                                                         {item.PeriodName}
 
@@ -91,11 +95,11 @@ class App extends Component{
 
                                     <Switch>
 
-                                        <Route path="/manager"  component={ManagerComponent}></Route>
+                                        <Route path="/manager/*"  component={ManagerComponent}></Route>
 
-                                        <Route path="/teacher"  component={TeacherComponent}></Route>
+                                        <Route path="/teacher/*"  component={TeacherComponent}></Route>
 
-                                        <Route path="/student"  component={StudentComponent}></Route>
+                                        <Route path="/student/*"  component={StudentComponent}></Route>
 
                                         {
 

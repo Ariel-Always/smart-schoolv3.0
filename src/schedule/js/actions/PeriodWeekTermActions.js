@@ -1,5 +1,5 @@
-import Method from '../Method';
-//学段actions
+import Method from './Method';
+//学段，学期，周actions
 const UPDATE_PERIOD_TERM_WEEK = 'UPDATE_PERIOD_TERM_WEEK';
 
 const PERIOD_VALUE_CHANGE = 'PERIOD_CHANGE';
@@ -11,7 +11,7 @@ const getPeriodWeekTerm = () => {
         let getPeriodPromise = Method.getGetData('/schedulePeriod');
 
         getPeriodPromise.then(json => {
-            console.log(json);
+
             dispatch({type:UPDATE_PERIOD_TERM_WEEK,data:json.Data});
 
         });

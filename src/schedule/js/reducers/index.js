@@ -8,6 +8,8 @@ import ModuleSetting from "./ModuleSetting";
 
 import Manager from './Manager/index';
 
+import PeriodWeekTerm from "./PeriodWeekTerm";
+
 
 export let initialState = {};
 
@@ -19,7 +21,9 @@ let rootReducers = combineReducers({
 
     ModuleSetting,
 
-    Manager
+    Manager,
+
+    PeriodWeekTerm
 
 });
 

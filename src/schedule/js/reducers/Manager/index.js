@@ -1,11 +1,12 @@
 import { combineReducers } from 'redux';
 
-import PeriodWeekTerm from './PeriodWeekTerm'
+import SubjectCourseGradeClassRoom from "./SubjectCourseGradeClassRoom";
+
 //管理员角色的reduce
 
 const Index = combineReducers({
 
-    PeriodWeekTerm
+    SubjectCourseGradeClassRoom
 
 });
 

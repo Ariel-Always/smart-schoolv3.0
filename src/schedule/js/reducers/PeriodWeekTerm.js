@@ -1,4 +1,4 @@
-import PeriodWeekTermActions from '../../actions/Manager/PeriodWeekTermActions';
+import PeriodWeekTermActions from '../actions/PeriodWeekTermActions';
 //学期周期学段reducer
 
 const PeriodWeekTerm = (state={defaultPeriodIndex:0},actions) => {
