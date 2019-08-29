@@ -3,15 +3,15 @@ import { connect } from 'react-redux';
 import { Alert,DetailsModal, DropDown, PagiNation, Search, Table, Button, CheckBox, CheckBoxGroup, Modal } from '../../../common/index'
 //import '../../../common/scss/_left_menu.scss'
 import { Link, } from 'react-router-dom';
-import '../../scss/Student.scss'
+import '../../scss/Teacher.scss'
 import { Tooltip,  Input } from 'antd'
 import TipsContact from './TipsContact'
 import history from '../containers/history'
 //import EditModal from './EditModal'
 //import IconLocation from '../../images/icon-location.png'
 import actions from '../actions';
-//import StudentChangeRecord from './StudentChangeRecord'
-class Student extends React.Component {
+//import TeacherChangeRecord from './TeacherChangeRecord'
+class Teacher extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -112,7 +112,7 @@ class Student extends React.Component {
                 Others: {}
             }],
 
-            StudentAccountData: [{
+            TeacherAccountData: [{
                 key: 0,
                 Name: {
                     Name: '张心仪',
@@ -348,19 +348,21 @@ class Student extends React.Component {
             selectedAll: false,
             checkedList: [],
             checkAll: false,
-            studentModalVisible: false,
+            TeacherModalVisible: false,
             userKey: 0,
-            StudentChangeKey: 0,
+            TeacherChangeKey: 0,
             ChangePwdMadalVisible: false,
             alertShow: false,
             alertTitle: '提示信息',
             alertQueryShow: false,
             alertQueryTitle: '查询提示~',
-            StudentDetailsMsgModalVisible: false,
-            addStudentModalVisible: false,
+            TeacherDetailsMsgModalVisible: false,
+            addTeacherModalVisible: false,
             defaultPwd:888888,
             onClickKey:0,
-            userMsgKey:0
+            userMsgKey:0,
+            keyList:[0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+
 
         }
     }
@@ -388,42 +390,14 @@ class Student extends React.Component {
     }
     
 
-
-    StudentDropMenu = (e) => {
+    TeacherDropMenu = (e) => {
         const { dispatch } = this.props;
-
-        let Classes = [{ value: 0, title: '全部班级' }];
-
-        //console.log(this.refs.dropMenuSecond)
-        if (e.value !== 0) {
-            let ClassArr = this.props.DataState.GradeClassMsg.returnData.AllClasses[e.value];
-            ClassArr.map((Class) => {
-                Classes.push(Class);
-            })
-            //Classes.push(this.props.DataState.GradeClassMsg.returnData.AllClasses[e.value]);
-            //this.refs.dropMenuSecond.state.dropList = Classes;]
-            this.setState({
-                secondDropList: Classes,
-            })
-            dispatch(actions.UpDataState.getGradeStudentPreview('/ArchivesStudent?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
-            this.setState({
-                DropMenuShow: true
-            })
-        } else {
-            dispatch(actions.UpDataState.getGradeStudentPreview('/ArchivesStudent?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
-            this.setState({
-                DropMenuShow: false
-            })
-        }
-
+        dispatch(actions.UpDataState.getSubjectTeacherPreview('/ArchivesTeacher?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
     }
 
-    StudentDropMenuSecond = (e) => {
-        console.log(e);
-        dispatch(actions.UpDataState.getGradeStudentPreview('/ArchivesStudent?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
-    }
+   
 
-    StudentSearch = (e) => {
+    TeacherSearch = (e) => {
         console.log(e)
     }
 
@@ -435,15 +409,15 @@ class Student extends React.Component {
     onUserContactClick = (UserContact) => {
         console.log(UserContact)
         // this.setState({
-        //     StudentChangeMadalVisible: true,
-        //     StudentChangeKey: key
+        //     TeacherChangeMadalVisible: true,
+        //     TeacherChangeKey: key
         // })
     }
     // onChangePwdClick = (e, key) => {
     //     console.log(e, key)
     //     this.setState({
-    //         StudentChangeMadalVisible: true,
-    //         StudentChangeKey: key
+    //         TeacherChangeMadalVisible: true,
+    //         TeacherChangeKey: key
     //     })
     // }
 
@@ -454,7 +428,7 @@ class Student extends React.Component {
         console.log(e)
         if (e.target.checked) {
             this.setState({
-                checkedList: this.props.DataState.GradeStudentPreview.keyList,
+                checkedList: this.state.keyList,
                 checkAll: e.target.checked
             })
         } else {
@@ -468,19 +442,19 @@ class Student extends React.Component {
         console.log(checkedList)
         this.setState({
             checkedList,
-            checkAll: checkedList === this.props.DataState.GradeStudentPreview.keyList ? true : false
+            checkAll: checkedList === this.state.keyList ? true : false
         })
     }
-    handleStudentModalOk = (e) => {
+    handleTeacherModalOk = (e) => {
         console.log(e)
         this.setState({
-            studentModalVisible: false
+            TeacherModalVisible: false
         })
     }
-    handleStudentModalCancel = (e) => {
+    handleTeacherModalCancel = (e) => {
         console.log(e)
         this.setState({
-            studentModalVisible: false
+            TeacherModalVisible: false
         })
     }
     ChangePwdMadalOk = (e) => {
@@ -522,7 +496,7 @@ class Student extends React.Component {
     }
     onChangePwdClick = (key) => {
         const { dispatch,DataState } = this.props;
-        let data = this.state.StudentAccountData;
+        let data = this.state.TeacherAccountData;
         let pwd = 888888;
         this.setState({
             ChangePwdMadalVisible:true,
@@ -567,50 +541,50 @@ class Student extends React.Component {
     onAlertQueryOk = (pwd) => {
         const { dispatch } = this.props;
         dispatch(actions.UpUIState.hideErrorAlert());
+        console.log(pwd);
         this.setState({
             checkedList: [],
             checkAll: false
         })
-        console.log(pwd);
     }
     onPagiNationChange = (e) => {
         console.log(e)
     }
     onUserNameClick = (key) => {
         this.setState({
-            StudentDetailsMsgModalVisible: true,
+            TeacherDetailsMsgModalVisible: true,
             userMsgKey:key
         })
     }
-    StudentDetailsMsgModalOk = () => {
+    TeacherDetailsMsgModalOk = () => {
         this.setState({
-            StudentDetailsMsgModalVisible: false,
+            TeacherDetailsMsgModalVisible: false,
 
         })
     }
-    StudentDetailsMsgModalCancel = () => {
+    TeacherDetailsMsgModalCancel = () => {
         this.setState({
-            StudentDetailsMsgModalVisible: false,
+            TeacherDetailsMsgModalVisible: false,
 
         })
     }
-    onAddStudent = (e, ) => {
+    onAddTeacher = (e, ) => {
         console.log(e)
         this.setState({
-            addStudentModalVisible: true,
+            addTeacherModalVisible: true,
             userKey: 'add'
         })
     }
-    handleAddStudentModalOk = (e) => {
+    handleAddTeacherModalOk = (e) => {
         console.log(e)
         this.setState({
-            addStudentModalVisible: false
+            addTeacherModalVisible: false
         })
     }
-    handleAddStudentModalCancel = (e) => {
+    handleAddTeacherModalCancel = (e) => {
         console.log(e)
         this.setState({
-            addStudentModalVisible: false
+            addTeacherModalVisible: false
         })
     }
     render() {
@@ -629,46 +603,37 @@ class Student extends React.Component {
             userAddress: '蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团'
         };
         return (
-            <div className='Student'>
-                <div className='Student-box'>
-                    <div className='Student-top'>
+            <div className='Teacher'>
+                <div className='Teacher-box'>
+                    <div className='Teacher-top'>
                         <span className='top-tips'>
-                            <span className='tips menu39 '>学生账号管理</span>
+                            <span className='tips menu33 '>教师账号管理</span>
                         </span>
                         {/* <div className='top-nav'>
                             <Link className='link'  to='/GraduteArchives' replace>查看毕业生档案</Link>
                             <span className='divide'>|</span>
                             <Link className='link' target='_blank' to='/RegisterExamine' replace>学生注册审核</Link>
                             <span className='divide'>|</span>
-                            <span className='link' style={{cursor:'pointer'}}  onClick={this.onAddStudent}>添加学生</span>
+                            <span className='link' style={{cursor:'pointer'}}  onClick={this.onAddTeacher}>添加学生</span>
                             <span className='divide'>|</span>
-                            <Link className='link' to='/ImportStudent' replace>导入学生</Link>
+                            <Link className='link' to='/ImportTeacher' replace>导入学生</Link>
                         </div> */}
                     </div>
-                    <hr className='Student-hr' />
-                    <div className='Student-content'>
+                    <hr className='Teacher-hr' />
+                    <div className='Teacher-content'>
                         <div className='content-top'>
                             <DropDown
                                 ref='dropMenuFirst'
-                                onChange={this.StudentDropMenu}
+                                onChange={this.TeacherDropMenu}
                                 width={120}
                                 height={72}
 
-                                dropSelectd={{ value: 0, title: '全部年级' }}
-                                dropList={DataState.GradeClassMsg.returnData ? DataState.GradeClassMsg.returnData.grades : [{ value: 0, title: '全部年级' }]}
+                                dropSelectd={{ value: 0, title: '全部学科' }}
+                                dropList={DataState.SubjectTeacherMsg.returnData ? DataState.SubjectTeacherMsg.returnData.SubjectList : [{ value: 0, title: '全部年级' }]}
                             ></DropDown>
-                            <DropDown
-                                ref='dropMenuSecond'
-                                width={120}
-                                height={72}
-
-                                style={{ display: this.state.DropMenuShow ? 'block' : 'none' }}
-                                dropSelectd={{ value: 0, title: '全部班级' }}
-                                dropList={this.state.secondDropList}
-                                onChange={this.StudentDropMenuSecond}
-                            ></DropDown>
+                           
                             <Search placeHolder='请输入关键字搜索...'
-                                onClickSearch={this.StudentSearch}
+                                onClickSearch={this.TeacherSearch}
                                 height={30}
                             ></Search>
                         </div>
@@ -680,7 +645,7 @@ class Student extends React.Component {
                                         columns={this.state.columns}
                                         pagination={false}
                                         loading={this.state.loading}
-                                        dataSource={this.state.StudentAccountData} >
+                                        dataSource={this.state.TeacherAccountData} >
 
                                     </Table>
                                 </CheckBoxGroup>
@@ -691,7 +656,7 @@ class Student extends React.Component {
                                 <div className='pagination-box'>
                                     <PagiNation
                                         showQuickJumper
-                                        total={DataState.GradeStudentPreview.Total}
+                                        total={this.state.pagination.total}
                                         onChange={this.onPagiNationChange}
                                     ></PagiNation>
                                 </div>
@@ -702,33 +667,33 @@ class Student extends React.Component {
 
                 {/* 模态框 */}
                 {/* <Modal
-                    ref='handleStudentMadal'
+                    ref='handleTeacherMadal'
                     bodyStyle={{ padding: 0 }}
                     type='1'
                     title='编辑学生'
-                    visible={this.state.studentModalVisible}
-                    onOk={this.handleStudentModalOk}
-                    onCancel={this.handleStudentModalCancel}
+                    visible={this.state.TeacherModalVisible}
+                    onOk={this.handleTeacherModalOk}
+                    onCancel={this.handleTeacherModalCancel}
                     
                 >
                     <EditModal userKey={this.state.userKey}></EditModal>
                 </Modal> */}
                 {/* <Modal
-                    ref='StudentChangeMadal'
+                    ref='TeacherChangeMadal'
                     bodyStyle={{ padding: 0 }}
                     type='2'
                     width={650}
-                    visible={this.state.StudentChangeMadalVisible}
-                    onOk={this.StudentChangeMadalOk}
-                    onCancel={this.StudentChangeMadalCancel}
+                    visible={this.state.TeacherChangeMadalVisible}
+                    onOk={this.TeacherChangeMadalOk}
+                    onCancel={this.TeacherChangeMadalCancel}
                 >
-                    <div className='modal-studentChange'>
+                    <div className='modal-TeacherChange'>
                         <div className='content-top'>
                             <img src={IconLocation} width='30' height='40' alt='icon-location' />
                             <span className='top-text'>毛峰的档案变更记录</span>
                         </div>
                         <div className='content'>
-                            <StudentChangeRecord data={''}></StudentChangeRecord>
+                            <TeacherChangeRecord data={''}></TeacherChangeRecord>
                         </div>
                     </div>
                 </Modal>
@@ -737,19 +702,19 @@ class Student extends React.Component {
                     bodyStyle={{ padding: 0 }}
                     type='1'
                     title={'添加学生'}
-                    visible={this.state.addStudentModalVisible}
-                    onOk={this.handleAddStudentModalOk}
-                    onCancel={this.handleAddStudentModalCancel}
+                    visible={this.state.addTeacherModalVisible}
+                    onOk={this.handleAddTeacherModalOk}
+                    onCancel={this.handleAddTeacherModalCancel}
                 >
-                    <EditModal type='student' userKey={this.state.userKey}></EditModal>
+                    <EditModal type='Teacher' userKey={this.state.userKey}></EditModal>
                 </Modal> */}
                 <DetailsModal
-                    ref='StudentDetailsMsgModal'
-                    visible={this.state.StudentDetailsMsgModalVisible}
-                    onOk={this.StudentDetailsMsgModalOk}
-                    onCancel={this.StudentDetailsMsgModalCancel}
+                    ref='TeacherDetailsMsgModal'
+                    visible={this.state.TeacherDetailsMsgModalVisible}
+                    onOk={this.TeacherDetailsMsgModalOk}
+                    onCancel={this.TeacherDetailsMsgModalCancel}
                     data={data}
-                    type='student'
+                    type='Teacher'
                 >
                     <div className='modal-top'>
 
@@ -773,7 +738,7 @@ class Student extends React.Component {
                 <Alert show={this.state.ChangePwdMadalVisible}
                     type={'btn-query'}
                     abstract={<div className='alert-pwd'><span className='alert-pwd-tips'>新密码：</span><Input size='small' onChange={this.onPwdchange.bind(this)} style={{width:120+'px'}} value={this.state.defaultPwd}></Input></div>}
-                    title={<p className='alert-Title'>确定重置<span className='alert-Title-name'>{this.state.StudentAccountData[this.state.onClickKey].Name.Name}</span><span className='alert-Title-id'>({this.state.StudentAccountData[this.state.onClickKey].Name.UserID})</span> 的密码？</p>}
+                    title={<p className='alert-Title'>确定重置<span className='alert-Title-name'>{this.state.TeacherAccountData[this.state.onClickKey].Name.Name}</span><span className='alert-Title-id'>({this.state.TeacherAccountData[this.state.onClickKey].Name.UserID})</span> 的密码？</p>}
                     onOk={this.onPwdchangeOk}
                     onCancel={this.onPwdchangeClose}
                     onClose={this.onPwdchangeClose}
@@ -790,4 +755,4 @@ const mapStateToProps = (state) => {
         DataState
     }
 };
-export default connect(mapStateToProps)(Student)
+export default connect(mapStateToProps)(Teacher)

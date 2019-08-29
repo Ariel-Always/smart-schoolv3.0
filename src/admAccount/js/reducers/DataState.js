@@ -6,7 +6,7 @@ import LoginUser from './data/LoginUser';
 import GradeStudentPreview from './data/GradeStudentPreview'
 import GradeClassMsg from './data/GradeClassMsg';
 import ChangeInputValue from './data/ChangeInputValue'
-// import SubjectTeacherMsg from './data/SubjectTeacherMsg';
+import SubjectTeacherMsg from './data/SubjectTeacherMsg';
 const DataState=combineReducers(
     {
         LoginUser,
@@ -15,7 +15,7 @@ const DataState=combineReducers(
         // SubjectTeacherPreview,
         GradeStudentPreview,
         GradeClassMsg,
-        ChangeInputValue
-        // SubjectTeacherMsg
+        ChangeInputValue,
+        SubjectTeacherMsg
     });
 export default DataState;

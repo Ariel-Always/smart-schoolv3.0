@@ -10,8 +10,9 @@ import logo from '../../images/admAccoHeadImg-1.png'
 //import TimeBanner from '../component/TimeBanner'
 
 import Student from '../component/Student'
-// import Teacher from '../component/Teacher'
-// import Leader from '../component/Leader'
+import Teacher from '../component/Teacher'
+import Leader from '../component/Leader'
+import Admin from '../component/Admin'
 import '../../scss/index.scss'
 import $ from 'jquery'
 import { getData } from '../../../common/js/fetch'
@@ -132,7 +133,7 @@ class App extends Component {
         console.log(route)
         if (route === '/' ) {
             //dispatch(actions.UpDataState.getAllUserPreview('/ArchivesAll'));
-            //dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
             
 
         }else if (handleRoute ==='Student') {
@@ -145,12 +146,17 @@ class App extends Component {
                 dispatch(actions.UpDataState.getGradeStudentPreview('/AccountStudent?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
              
         }else if (handleRoute === 'Teacher') {
-            console.log('Teacher：' + this.props.DataState.SubjectTeacherMsg.returnData)
+            console.log('Teacher：' )
+            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
             if (!this.props.DataState.SubjectTeacherMsg.returnData)
                 dispatch(actions.UpDataState.getSubjectTeacherMsg('/ArchivesTeacher_DropDownMenu'));
             dispatch(actions.UpDataState.getSubjectTeacherPreview('/ArchivesTeacher?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
-        } else if (handleRoute === 'All') {
-
+        } else if (handleRoute === 'Leader') {
+            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+        }  else if (handleRoute === 'Leader') {
+            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+        }else if (handleRoute === 'Admin') {
+            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
         } else {
             history.push('/')
         }
@@ -214,9 +220,9 @@ class App extends Component {
                             <Router >
                                 <Route path='/' history={history} exact component={Introduce}></Route>
                                 <Route path='/Student'  history={history} component={Student}></Route>
-                                    {/* <Route path='/UserArchives/Teacher' exact history={history} component={Teacher}></Route>
-                                    <Route path='/UserArchives/Leader' exact history={history} component={Leader}></Route>
-                                    <Route path='/UserArchives/Admin' exact history={history} component={Admin}></Route> */}
+                                    <Route path='/Teacher' exact history={history} component={Teacher}></Route>
+                                    <Route path='/Leader' exact history={history} component={Leader}></Route>
+                                    <Route path='/Admin' exact history={history} component={Admin}></Route>
                             </Router>
                         </div>
                     </Frame>
