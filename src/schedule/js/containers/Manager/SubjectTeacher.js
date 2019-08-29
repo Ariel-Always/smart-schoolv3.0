@@ -4,9 +4,12 @@ import ChangeTab from '../../component/ChangeTab';
 
 import {HashRouter as Router,Route,Switch} from 'react-router-dom';
 
-import Subject from '../../containers/Manager/Subject';
+import Subject from './Subject';
 
-import { DropDown } from "../../../../common";
+import Teacher from './Teacher'
+
+import {connect} from 'react-redux';
+
 
 class SubjectTeacher extends Component{
 
@@ -16,7 +19,7 @@ class SubjectTeacher extends Component{
 
                 {link:"/manager/subject-teacher/subject",name:"学科总课表"},
 
-                {link:"/manager/subject-teacher/classroom",name:"教室课表"}
+                {link:"/manager/subject-teacher/teacher",name:"教师课表"}
 
             ];
 
@@ -30,7 +33,9 @@ class SubjectTeacher extends Component{
 
                     <Switch>
 
-                        <Route path="/manager/subject-teacher/subject" component={Subject}></Route>
+                        <Route path="/manager/subject-teacher/subject"  component={Subject}></Route>
+
+                        <Route path="/manager/subject-teacher/teacher"  component={Teacher}></Route>
 
                     </Switch>
 
@@ -44,4 +49,12 @@ class SubjectTeacher extends Component{
 
 }
 
-export default SubjectTeacher;
+const mapStateToProps = (state) =>{
+
+    return{
+        state
+    }
+
+};
+
+export default connect(mapStateToProps)(SubjectTeacher);

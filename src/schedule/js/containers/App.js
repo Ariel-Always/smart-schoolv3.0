@@ -53,7 +53,7 @@ class App extends Component{
 
                <DocumentTitle title={ModuleSetting.moduleCnName}>
 
-                   <Loading opacity={false} spinning={false} size="large" tip="加载中...">
+                   <Loading opacity={false} spinning={AppLoading.show} size="large" tip="加载中...">
 
                         <Frame
                             module={{

@@ -1,3 +1,4 @@
+//学科总课表部分
 .subject-teacher-subject-content{
 
   margin: 0 30px;
@@ -30,4 +31,20 @@
     margin-top:24px;
 
   }
+}
+
+.subject-teacher-teacher-content{
+
+  margin-right: 24px;
+
+  border-top: 1px dashed #cccccc;
+
+  .term-pick-wrapper{
+
+    float: right;
+
+    margin-top: 32px;
+
+  }
+
 }

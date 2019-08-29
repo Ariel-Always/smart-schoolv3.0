@@ -5,7 +5,7 @@ import {DropDown} from "../../../common";
 class TermPick extends Component{
     render() {
 
-        const {ItemTermName,ItemWeek,NowWeek} = this.props;
+        const {ItemTermName,ItemWeek,NowWeekNo,weekPickEvent,weekNextEvent,weekPrevEvent} = this.props;
 
         let prevDisabled = '';
 
@@ -13,7 +13,7 @@ class TermPick extends Component{
 
         if (ItemWeek.length>0){
 
-           switch (NowWeek.value) {
+           switch (NowWeekNo) {
 
                case ItemWeek[0].value:
 
@@ -46,15 +46,15 @@ class TermPick extends Component{
 
             <div className="term-pick-wrapper clearfix">
 
-                <button className={`prev ${prevDisabled}`}>&lt;&nbsp;上一周</button>
+                <button className={`prev ${prevDisabled}`}  onClick={prevDisabled?()=>{}:()=>{weekPrevEvent()}}>&lt;&nbsp;上一周</button>
 
                 <div className="term-title">
 
-                    {ItemTermName?ItemTermName:''}第<DropDown dropSelectd={NowWeek} dropList={ItemWeek} width={68} height={108}></DropDown>周
+                    {ItemTermName?ItemTermName:''}第<DropDown dropSelectd={{title:NowWeekNo,value:NowWeekNo}} onChange={(e)=>{weekPickEvent(e)}} dropList={ItemWeek} width={68} height={108} style={{zIndex:10}}></DropDown>周
 
                 </div>
 
-                <button className={`next ${nextDisabled}`}>下一周&nbsp;&gt;</button>
+                <button className={`next ${nextDisabled}`} onClick={nextDisabled?()=>{}:()=>{weekNextEvent()}}>下一周&nbsp;&gt;</button>
 
             </div>
 

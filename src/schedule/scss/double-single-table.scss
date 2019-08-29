@@ -1,12 +1,6 @@
 .double-single-table-wrapper{
-
+  //头部
   .col{
-
-    width: 128px;
-
-    background-image: linear-gradient(#d6f7ff, #d6f7ff), linear-gradient(#ffffff, #ffffff);
-
-    background-blend-mode: normal, normal;
 
     border: solid 1px #96d4e3;
 
@@ -14,16 +8,129 @@
 
   .col0{
 
-    width: 136px;
+    background-color:#d6f7ff;
 
-    height: 110px;
+    border: solid 1px #96d4e3;
 
-    background-image: linear-gradient(#d6f7ff, #d6f7ff), linear-gradient(#ffffff, #ffffff);
+    text-align: center;
 
-    background-blend-mode: normal,normal;
+    color: #00728f;
+
+    font-size: 16px;
+
+  }
+
+  .week{
+
+    background-color:#d6f7ff;
+
+    border: solid 1px #96d4e3;
+
+    text-align: center;
+
+    font-size: 16px;
+
+    color: #00728f;
+
+    font-weight: bold;
+
+  }
+
+ .course-time{
+
+    background-color: #d6f7ff;
+
+    border: solid 1px #96d4e3;
+
+ }
+
+  .course-time-div{
+
+    @include flex;
+
+    @include flex-direction(column);
+
+    @include justify-content(center);
+
+    &.empty{
+
+      text-align: center;
+
+      color: #999999;
+
+    }
+
+  }
+
+  .class-hour,
+  .class-hour-time{
+
+    text-align: center;
+
+    color: #00728f;
+
+  }
+
+  .class-hour{
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+  }
+
+  .class-hour-time{
+
+    font-size: 14px;
+
+  };
+
+  .common-col{
 
     border: solid 1px #96d4e3;
 
   }
 
+  .course-title{
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    color: #333333;
+
+    padding-left:14px;
+
+    max-width: 90%;
+
+    @include textOverFlow;
+
+    &.disabled{
+
+      color: #999999;
+
+    }
+
+  }
+
+  .course-abstract{
+
+    font-size: 14px;
+
+    color:#999999;
+
+    padding-left:14px;
+
+    max-width: 90%;
+
+    @include textOverFlow;
+
+  }
+  .course-teacher{
+
+    padding:0 10px;
+
+    @include textOverFlow;
+
+  }
 }
