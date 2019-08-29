@@ -1,8 +1,10 @@
 import React,{Component} from 'react';
 
-import {DropDown} from "../../../../common";
+import {DropDown,Loading} from "../../../../common";
 
-import SCGCRActions from '../../actions/Manager/SCGCRActions';
+import STSAction from '../../actions/Manager/SubjectTeacherScheduleActions';
+
+import ManagerIndexActions from '../../actions/Manager/ManagerIndexActions';
 
 import TermPick from '../../component/TermPick';
 
@@ -20,16 +22,94 @@ class Subject extends Component{
 
         const {PeriodWeekTerm,dispatch} = this.props;
 
-        dispatch(SCGCRActions.getSCGCData());
+        dispatch(ManagerIndexActions.STTPageInit());
 
     }
+    //选择不同的学科
+    subjectChange(e){
+
+        const {dispatch} = this.props;
+
+        let data = {};
+
+        if (e.value!==0){
+
+            data = {value:e.value,title:e.title};
+
+        }
+
+        dispatch({type:STSAction.STS_SUBJECT_CHANGE,data:data});
+
+        this.refs.scrollBars.scrollTop(0);
+
+        dispatch(ManagerIndexActions.STTPageUpdate());
+
+    }
+
+    //选择某一周次
+    weekPickEvent(e){
+
+        const {dispatch} = this.props;
+
+        dispatch({type:STSAction.STS_NOW_WEEK_CHANGE,data:e.value});
+
+        this.refs.scrollBars.scrollTop(0);
+
+        dispatch(ManagerIndexActions.STTPageUpdate());
+
+    }
+
+    //选择下一周次
+    weekNextEvent(){
+
+        const {dispatch,Manager} = this.props;
+
+        const {NowWeekNo} = Manager.SubjectTeacherSchedule;
+
+        dispatch({type:STSAction.STS_NOW_WEEK_CHANGE,data:(NowWeekNo+1)});
+
+        this.refs.scrollBars.scrollTop(0);
+
+        dispatch(ManagerIndexActions.STTPageUpdate());
+
+    }
+
+    //选择上一周次
+    weekPrevEvent(){
+
+        const {dispatch,Manager} = this.props;
+
+        const {NowWeekNo} = Manager.SubjectTeacherSchedule;
+
+        dispatch({type:STSAction.STS_NOW_WEEK_CHANGE,data:(NowWeekNo-1)});
+
+        this.refs.scrollBars.scrollTop(0);
+
+        dispatch(ManagerIndexActions.STTPageUpdate());
+
+    }
+    //滚动到底部
+
+    scrollToBottom(e){
+
+        if (e.top===1){
+
+            const {dispatch} = this.props;
+
+            dispatch(ManagerIndexActions.STTPageUpdate({nextPage:true}));
+
+        }
+
+    }
+
+
 
 
     render() {
 
         const {Manager,PeriodWeekTerm} = this.props;
 
-        const {SubjectCourseGradeClassRoom} = Manager;
+        const {SubjectCourseGradeClassRoom,SubjectTeacherSchedule} = Manager;
 
         let dropList = [];
         //封装获取到的学科列表
@@ -69,13 +149,15 @@ class Subject extends Component{
 
                 <DropDown
 
-                    dropSelectd={SubjectCourseGradeClassRoom.ItemSubjectSelect}
+                    dropSelectd={SubjectTeacherSchedule.ItemSubjectSelect}
 
                     dropList={dropList}
 
                     style={{zIndex:5}}
 
-                    height={108}>
+                    height={108}
+
+                    onChange={this.subjectChange.bind(this)}>
 
                 </DropDown>
 
@@ -83,15 +165,25 @@ class Subject extends Component{
 
                     ItemTermName={PeriodWeekTerm.ItemTerm?PeriodWeekTerm.ItemTerm.TermName:''}
 
-                    NowWeek={SubjectCourseGradeClassRoom.ItemWeekPicked?SubjectCourseGradeClassRoom.ItemWeekPicked:{}}
+                    NowWeekNo={SubjectTeacherSchedule.NowWeekNo}
 
-                    ItemWeek ={ItemWeek}>
+                    ItemWeek ={ItemWeek}
+
+                    weekPickEvent = {this.weekPickEvent.bind(this)}
+
+                    weekNextEvent = {this.weekNextEvent.bind(this)}
+
+                    weekPrevEvent = {this.weekPrevEvent.bind(this)}>
 
                 </TermPick>
 
                 <div className="double-single-table-wrapper">
 
-                    <Scrollbars
+                    <Loading spinning={SubjectTeacherSchedule.loadingShow} tip="正在为您查找，请稍后...">
+
+                        <Scrollbars
+
+                         ref="scrollBars"
 
                         style={{width:1148}}
 
@@ -102,24 +194,30 @@ class Subject extends Component{
                         renderTrackHorizontal={()=>{
 
                             return <div className="scrollbar-horizo​​ntal" style={{position:"absolute",bottom:0,width:"100%",left:0,height:4,borderRadius:2}}></div>
+
                         }}
 
-                       /* renderThumbHorizontal={()=>{
+                        onScrollFrame={this.scrollToBottom.bind(this)}>
 
-                            //return <div className="thumb-horizo​​ntal" style={{height:4,borderRadius:2}}></div>
 
-                        }}*/
-                    >
 
-                    <DoubleSingleTable
+                             <DoubleSingleTable
                         ItemClassHourCount={SubjectCourseGradeClassRoom.ItemClassHourCount}
                         ItemClassHour={SubjectCourseGradeClassRoom.ItemClassHour}
                         ItemWeek = {PeriodWeekTerm.ItemWeek}
-                        NowWeekNo={PeriodWeekTerm.NowWeekNo}>
+                        NowWeekNo={PeriodWeekTerm.NowWeekNo}
+                        leftColWidth={136}
+                        commonColWidth={128}
+                        rowOneHeight={46}
+                        rowTowHeight={64}
+                        commonRowHeight={90}
+                        schedule={SubjectTeacherSchedule.schedule}>
 
                     </DoubleSingleTable>
 
                     </Scrollbars>
+
+                    </Loading>
 
                 </div>
 
