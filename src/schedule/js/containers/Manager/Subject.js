@@ -22,7 +22,7 @@ class Subject extends Component{
 
         const {PeriodWeekTerm,dispatch} = this.props;
 
-        dispatch(ManagerIndexActions.STTPageInit());
+        dispatch(ManagerIndexActions.STSPageInit());
 
     }
     //选择不同的学科
@@ -42,7 +42,7 @@ class Subject extends Component{
 
         this.refs.scrollBars.scrollTop(0);
 
-        dispatch(ManagerIndexActions.STTPageUpdate());
+        dispatch(ManagerIndexActions.STSPageUpdate());
 
     }
 
@@ -55,7 +55,7 @@ class Subject extends Component{
 
         this.refs.scrollBars.scrollTop(0);
 
-        dispatch(ManagerIndexActions.STTPageUpdate());
+        dispatch(ManagerIndexActions.STSPageUpdate());
 
     }
 
@@ -70,7 +70,7 @@ class Subject extends Component{
 
         this.refs.scrollBars.scrollTop(0);
 
-        dispatch(ManagerIndexActions.STTPageUpdate());
+        dispatch(ManagerIndexActions.STSPageUpdate());
 
     }
 
@@ -85,7 +85,7 @@ class Subject extends Component{
 
         this.refs.scrollBars.scrollTop(0);
 
-        dispatch(ManagerIndexActions.STTPageUpdate());
+        dispatch(ManagerIndexActions.STSPageUpdate());
 
     }
     //滚动到底部
@@ -96,7 +96,7 @@ class Subject extends Component{
 
             const {dispatch} = this.props;
 
-            dispatch(ManagerIndexActions.STTPageUpdate({nextPage:true}));
+            dispatch(ManagerIndexActions.STSPageUpdate({nextPage:true}));
 
         }
 
@@ -201,7 +201,7 @@ class Subject extends Component{
 
 
 
-                             <DoubleSingleTable
+                        <DoubleSingleTable
                         ItemClassHourCount={SubjectCourseGradeClassRoom.ItemClassHourCount}
                         ItemClassHour={SubjectCourseGradeClassRoom.ItemClassHour}
                         ItemWeek = {PeriodWeekTerm.ItemWeek}

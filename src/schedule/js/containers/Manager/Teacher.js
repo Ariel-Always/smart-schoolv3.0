@@ -5,21 +5,25 @@ import AppLoadingActions from "../../actions/AppLoadingActions"
 import {connect} from 'react-redux';
 
 import TermPick from  '../../component/TermPick';
-import SubjectTeacherTeacherSchedule from "../../reducers/Manager/SubjectTeacherTeacherSchedule";
-import STSAction from "../../actions/Manager/SubjectTeacherScheduleActions";
+
+import LeftMenu from '../../component/LeftMenu';
+
+import SingleDoubleTable from '../../component/SingleDoubleTable';
+
 import ManagerIndexActions from "../../actions/Manager/ManagerIndexActions";
+
+import DoubleSingleTable from "../../component/DoubleSingleTable";
 
 
 class Teacher extends Component{
+
     constructor(props) {
 
         super(props);
 
         const {dispatch} = props;
 
-        dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
-
-
+        dispatch(ManagerIndexActions.STTPageInit());
 
     }
 
@@ -66,7 +70,7 @@ class Teacher extends Component{
 
         const { PeriodWeekTerm ,Manager} = this.props;
 
-        const {SubjectTeacherTeacherSchedule} = Manager;
+        const {SubjectTeacherTeacherSchedule,SubjectCourseGradeClassRoom} = Manager;
 
         let ItemWeek = [];
         //封装获取到的周次
@@ -100,7 +104,26 @@ class Teacher extends Component{
 
                 </TermPick>
 
-                
+                <LeftMenu
+                    title="教师列表"
+                    type="person"
+                    pickList={SubjectTeacherTeacherSchedule.teacherList}>
+
+                </LeftMenu>
+
+                <SingleDoubleTable
+                    topHeight = {64}
+                    commonHeight = {90}
+                    commonWidth={106}
+                    leftOneWidth ={32}
+                    leftTwoWidth = {110}
+                    ItemClassHourCount={SubjectCourseGradeClassRoom.ItemClassHourCount}
+                    ItemClassHour={SubjectCourseGradeClassRoom.ItemClassHour}
+                    ItemWeek = {PeriodWeekTerm.ItemWeek}
+                    NowWeekNo={PeriodWeekTerm.NowWeekNo}
+                    schedule={SubjectTeacherTeacherSchedule.schedule}>
+
+                </SingleDoubleTable>
 
             </div>
 
