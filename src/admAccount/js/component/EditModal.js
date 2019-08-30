@@ -10,104 +10,92 @@ class EditModal extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            Gende: '',
-            UserName: '',
+            defaultUserName: '',
+            UserIDChange: '',
             UserKey: props.userKey,
             type: props.type,
             UserIDTipsVisible: false,
             UserIDTipsTitle: '由1-24位字母与数字组成',
             UserNameTipsVisible: false,
             UserNameTipsTitle: '姓名由1-20位的汉字、字母、数字、下划线、空格组成（首尾不允许空格）',
-            GradeTipsVisible: false,
-            GradeTipsTitle: '请选择年级',
-            TitleTipsVisible: false,
-            TitleTipsTitle: '请选择职称',
-            ClassTipsVisible: false,
-            ClassTipsTitle: '请选择班级',
+            data: props.data,
+            PowerList: props.PowerList,
+            checkAll: [],
+            indeterminate: [],
+            checkedList: [],
+            checkedListArr:[],
+            plainOptionsArr:[]
         }
     }
     componentWillMount() {
         const { DataState } = this.props;
         console.log(this.state.UserKey)
-        if (this.state.type === 'student') {
+
+        if (this.state.UserKey === 'change') {
             this.setState({
-                defaultUserName: this.state.UserKey === 'add' ? '' : DataState.GradeStudentPreview.newList ? DataState.GradeStudentPreview.newList[this.state.UserKey].UserName.UserName : '',
-                GendeChange: this.state.UserKey === 'add' ? {
-                    value: 0,
-                    title: '请选择性别'
-                } : {
-                        value: 3,
-                        title: '保密'
-                    },
-                GradeChange: this.state.UserKey === 'add' ? {
-                    value: 0,
-                    title: '请选择年级'
-                } : {
-                        value: 1,
-                        title: '一年级'
-                    },
-                ClassChange: this.state.UserKey === 'add' ? {
-                    value: 0,
-                    title: '请选择班级'
-                } : {
-                        value: 1,
-                        title: '1班'
-                    },
-                UserIDChange: '',
-                IDCardChange: '',
-                PhoneChange: '',
-                MailChange: '',
-                AddressChange: ''
-            })
-        } else if (this.state.type === 'teacher') {
-            this.setState({
-                defaultUserName: this.state.UserKey === 'add' ? '' : DataState.SubjectTeacherPreview.newList ? DataState.SubjectTeacherPreview.newList[this.state.UserKey].UserName.UserName : '',
-                GendeChange: this.state.UserKey === 'add' ? {
-                    value: 0,
-                    title: '请选择性别'
-                } : {
-                        value: 3,
-                        title: '保密'
-                    },
-                TitleChange: this.state.UserKey === 'add' ? {
-                    value: 0,
-                    title: '请选择职称'
-                } : {
-                        value: 1,
-                        title: '一级教师'
-                    },
-                checkedList: this.state.UserKey === 'add' ? [] : ['数学', '外语', '物理'],
-                plainOptions: ['语文', '数学', '外语', '物理', '化学', '生物', '历史', '思想政治', '地理', '音乐', '美术', '信息技术'],
-                SubjectChange: '',
-                UserIDChange: '',
-                IDCardChange: '',
-                PhoneChange: '',
-                MailChange: '',
-                AddressChange: ''
-            })
-        } else {
-            this.setState({
-                defaultUserName: DataState.GradeStudentPreview.newList ? DataState.GradeStudentPreview.newList[this.state.UserKey].UserName.UserName : '',
-                GendeChange: {
-                    value: 1,
-                    title: '男'
-                },
-                GradeChange: {
-                    value: 2,
-                    title: '二年级'
-                },
-                ClassChange: {
-                    value: 2,
-                    title: '2班'
-                },
-                UserIDChange: '',
-                IDCardChange: '',
-                PhoneChange: '',
-                MailChange: '',
-                AddressChange: ''
+                UserIDChange: this.state.data.Name.UserID,
+                defaultUserName: this.state.data.Name.Name
             })
         }
+        // const PowerList = this.state.PowerList.map((power, index) => {
+        //     let checkAll = this.state.checkAll;
+        //     let indeterminate = this.state.indeterminate;
+        //     let plainOptions = [];
+        //     let plainOptionsArr = this.state.plainOptionsArr;
+        //     let checkedList = [];
+        //     let checkedListArr = this.state.checkedListArr;
+        //     this.state.PowerList[index].PowerChild.map((child, index) => {
+        //         plainOptions[index] = child.value;
+                
+        //     })
+            
+        //     plainOptionsArr[index] = plainOptions;
+        //     console.log(plainOptionsArr,index)
+        //     indeterminate[index] = true;
+        //     checkAll[index] = this.state.data.Power.Powers[index].PowerChild.length !== 0 ? true : false
 
+        //     this.state.data.Power.Powers[index].PowerChild.map((child, key) => {
+        //         checkedList[key] = child.value;
+        //     })
+        //     checkedListArr[index] = checkedList;
+        //     this.setState({
+        //         checkAll: checkAll,
+        //         indeterminate: indeterminate,
+        //         checkedListArr: checkedListArr,
+        //         plainOptionsArr:plainOptionsArr
+        //     })
+        //     return (
+        //         <div key={this.state.PowerList[index].value}>
+        //             <CheckBox
+        //                 indeterminate={this.state.indeterminate[index]}
+        //                 onChange={this.onCheckAllChange.bind(this, index)}
+        //                 checked={this.state.checkAll[index]}
+        //             >
+        //                 {power.PowerName}
+        //                 <span className='checkTips'>[已选择<span style={{ color: 'red' }}>{this.state.data.Power.Powers[index].PowerChild.length}</span>项]</span>
+        //             </CheckBox>
+        //             <CheckBoxGroup
+                        
+        //                 value={this.state.checkedListArr[index]}
+        //                 onChange={this.onCheckChange.bind(this,index)}
+        //             >
+        //                 {this.state.PowerList[index].PowerChild.map((child, index) => {
+                            
+        //                     return(
+        //                         <CheckBox 
+        //                         value={child.value}
+        //                         key = {child.value}
+        //                         >{child.PowerChildName}</CheckBox>
+        //                     )
+        //                 })}
+        //             </CheckBoxGroup>
+        //         </div>
+        //     )
+        // })
+
+        // this.setState({
+        //     PowerList: PowerList
+        // })
     }
     onEditIDChange = (e) => {
 
@@ -150,69 +138,55 @@ class EditModal extends React.Component {
             })
         }
     }
-    onEditGendeChange = (e) => {
-        console.log(e)
+
+
+    // 新
+    onCheckAllChange = (index,e) => {
+        console.log(e,index);
+        let checkedListArr = this.state.checkedListArr;
+        let indeterminate = this.state.indeterminate;
+        let checkAll = this.state.checkAll;
+        checkedListArr[index] = e.target.checked ? this.state.plainOptionsArr[index] : [];
+        indeterminate[index] = false;
+        checkAll[index] = e.target.checked
         this.setState({
-            GendeChange: e
-        })
+            checkedListArr: checkedListArr,
+            indeterminate: indeterminate,
+            checkAll: checkAll,
+          });
     }
-    onEditGradeChange = (e) => {
-        console.log(e)
+    onCheckChange = (index,value,e) => {
+        console.log(index,value,this.state.plainOptionsArr[index],this.state.checkedListArr)
+        let checkedListArr = this.state.checkedListArr;
+        let indeterminate = this.state.indeterminate;
+        let checkAll = this.state.checkAll;
+        checkedListArr[index] = value;
+        indeterminate[index] = this.state.plainOptionsArr[index].length===value.length||value===[]?false:true;
+        checkAll[index] = this.state.plainOptionsArr[index].length===value.length
         this.setState({
-            GradeChange: e
-        })
+            checkedListArr: checkedListArr,
+            indeterminate: indeterminate,
+            checkAll: checkAll,
+          });
     }
-    onEditClassChange = (e) => {
-        console.log(e)
-        this.setState({
-            ClassChange: e
-        })
-    }
-    onEditIDCardChange = (e) => {
-        console.log(e.target.value)
-        this.setState({
-            IDCardChange: e.target.value
-        })
-    }
-    onEditPhoneChange = (e) => {
-        console.log(e.target.value)
-        this.setState({
-            PhoneChange: e.target.value
-        })
-    }
-    onEditMailChange = (e) => {
-        console.log(e.target.value)
-        this.setState({
-            MailChange: e.target.value
-        })
-    }
-    onEditAddressChange = (e) => {
-        console.log(e.target.value)
-        this.setState({
-            AddressChange: e.target.value
-        })
-    }
-    changeCheckBox = (checkedList) => {
-        console.log(checkedList)
-        this.setState({
-            checkedList: checkedList
-        })
-    }
+
+
+
     render() {
         const { UIState, DataState } = this.props;
 
         return (
-            <div className='EditModal'>
+            <div className='EditModal_Admin'>
                 <div className='Left'></div>
                 <div className='Right'>
-                    <div className="row clearfix" style={{ marginTop: this.state.type === 'student' || !this.state.type ? 18 + 'px' : 5 + 'px' }}>
+                    <div className="row clearfix" style={{ marginTop: 18 + 'px' }}>
                         <span className='culonm-1'>
-                            {this.state.type === 'student' ? '学号：' : this.state.type === 'teacher' ? '工号：' : '学号：'}
+                            {'工号：'}
                         </span>
                         <div className='culonm-2'>
-                            <span style={{ display: this.state.UserKey !== 'add' ? 'block' : 'none' }} className='UserID-text'>{this.state.UserKey !== 'add' ? DataState.GradeStudentPreview.newList ? DataState.GradeStudentPreview.newList[this.state.UserKey].UserID : '' : ''}</span>
-                            <Tips getPopupContainer={() => document.getElementById('123')} visible={this.state.UserIDTipsVisible} title={(this.state.type === 'student' ? '学号' : this.state.type === 'teacher' ? '工号' : '学号') + this.state.UserIDTipsTitle} >
-                                <Input maxLength={24} id="123" style={{ display: this.state.UserKey === 'add' ? 'block' : 'none' }} className='UserName-input'
+
+                            <Tips className='tips-edit' getPopupContainer={() => document.getElementById('123')} visible={this.state.UserIDTipsVisible} title={'工号' + this.state.UserIDTipsTitle} >
+                                <Input maxLength={24} id="123" style={{ display: 'block' }} className='UserName-input'
                                     type='text'
                                     name='EditID'
                                     value={this.state.UserIDChange}
@@ -222,7 +196,7 @@ class EditModal extends React.Component {
                     </div>
                     <div className="row clearfix">
                         <span className='culonm-1'>
-                            <span className='must-icon'>*</span>姓名：
+                            账号名称：
                         </span>
                         <div className='culonm-2'>
                             <Tips visible={this.state.UserNameTipsVisible} title={this.state.UserNameTipsTitle} >
@@ -237,197 +211,65 @@ class EditModal extends React.Component {
                     </div>
                     <div className="row clearfix">
                         <span className='culonm-1'>
-                            <span className='must-icon'>*</span>性别：
+                            权限分配：
                         </span>
-                        <div className='culonm-2'>
-                            {/* <RadioGroup name='GendeSelect'
-                            value = {DataState.GradePreview.newList?DataState.GradePreview.newList[this.state.UserKey].Gender:''}
-                            onChange = {this.onGendeChange}
-                            className='Gende-Radio'
-                            >
-                                <Radio value='男'>男</Radio>
-                                <Radio value='女'>女</Radio>
-                                <Radio value='保密'>保密</Radio>
-                            </RadioGroup> */}
-                            <DropDown
-                                style={{ zIndex: 3 }}
-                                dropSelectd={this.state.GendeChange}
-                                dropList={[
-                                    {
-                                        value: 1,
-                                        title: '男'
-                                    },
-                                    {
-                                        value: 2,
-                                        title: '女'
-                                    }, {
-                                        value: 3,
-                                        title: '保密'
-                                    }
-                                ]}
-                                width={120}
-                                height={72}
-                                onChange={this.onEditGendeChange}
-                            >
+                        <div className='culonm-2 culonm-3'>
+                            {this.state.PowerList.map((power, index) => {
+            let checkAll = this.state.checkAll;
+            let indeterminate = this.state.indeterminate;
+            let plainOptions = [];
+            let plainOptionsArr = this.state.plainOptionsArr;
+            let checkedList = [];
+            let checkedListArr = this.state.checkedListArr;
+            console.log(power)
+            power.PowerChild.map((child, index) => {
+                plainOptions[index] = child.value;
+                
+            })
+            
+            plainOptionsArr[index] = plainOptions;
+            console.log(plainOptionsArr,index)
+            indeterminate[index] = true;
+            checkAll[index] = this.state.data.Power.Powers[index].PowerChild.length !== 0 ? true : false
 
-                            </DropDown>
-                        </div>
-                    </div>
-                    <div className="row clearfix" style={{ display: this.state.type === 'student' || !this.state.type ? 'block' : 'none' }}>
-                        <span className='culonm-1'>
-                            <span className='must-icon'>*</span>年级：
-                        </span>
-                        <div className='culonm-2'>
-                            
-                                <DropDown
-                                    style={{ zIndex: 2 }}
-                                    dropSelectd={this.state.GradeChange}
-                                    dropList={[
-                                        {
-                                            value: 1,
-                                            title: '一年级'
-                                        },
-                                        {
-                                            value: 2,
-                                            title: '二年级'
-                                        },
-                                        {
-                                            value: 3,
-                                            title: '三年级'
-                                        }
-                                    ]}
-                                    width={200}
-                                    height={72}
-                                    onChange={this.onEditGradeChange}
-                                >
-
-                                </DropDown>
-                            
-                        </div>
-                    </div>
-                    <div className="row clearfix" style={{ display: this.state.type === 'teacher' ? 'block' : 'none' }}>
-                        <span className='culonm-1'>
-                            <span className='must-icon'>*</span>职称：
-                        </span>
-                        <div className='culonm-2'>
-                            
-
-                                <DropDown
-                                    style={{ zIndex: 2 }}
-                                    dropSelectd={this.state.UserKey !== 'add' ? this.state.TitleChange : {
-                                        value: 0,
-                                        title: '请选择职称'
-                                    }}
-                                    dropList={[
-                                        {
-                                            value: 1,
-                                            title: '一级教师'
-                                        },
-                                        {
-                                            value: 2,
-                                            title: '二级教师'
-                                        }
-                                    ]}
-                                    width={200}
-                                    height={72}
-                                    onChange={this.onEditTitleChange}
-                                >
-
-                                </DropDown>
-                            
-                        </div>
-                    </div>
-                    <div className="row clearfix" style={{ display: this.state.type !== 'teacher' ? 'block' : 'none' }}>
-                        <span className='culonm-1'>
-                            <span className='must-icon'>*</span>班级：
-                        </span>
-                        <div className='culonm-2'>
-                                <DropDown
-                                    style={{ zIndex: 1 }}
-                                    dropSelectd={this.state.ClassChange}
-                                    dropList={[
-
-                                        {
-                                            value: 1,
-                                            title: '1班'
-                                        },
-                                        {
-                                            value: 2,
-                                            title: '2班'
-                                        }
-                                    ]}
-                                    width={200}
-                                    height={72}
-                                    onChange={this.onEditClassChange}
-                                >
-                                </DropDown>
-                        </div>
-                    </div>
-                    <div className="row clearfix row-subject" style={{ display: this.state.type === 'teacher' ? 'block' : 'none' }}>
-                        <span className='culonm-1'>
-                            <span className='must-icon'>*</span>所教学科：
-                        </span>
-                        <div className='culonm-2'>
-                            <CheckBoxGroup onChange={this.changeCheckBox} className={'checkedBoxGroupMap'} value={this.state.checkedList}>
-                                <MapPlainOptions plainOptions={this.state.plainOptions}></MapPlainOptions>
-                            </CheckBoxGroup>
-                        </div>
-                    </div>
-                    <div className="row clearfix">
-                        <span className='culonm-1'>
-                            身份证号码：
-                        </span>
-                        <div className='culonm-2'>
-                            <Input
-                                className='input'
-                                value={this.state.IDCardChange}
-                                type='text'
-                                name='EditIDCard'
-                                onChange={this.onEditIDCardChange}
-                            ></Input>
-                        </div>
-                    </div>
-                    <div className="row clearfix">
-                        <span className='culonm-1'>
-                            联系电话：
-                        </span>
-                        <div className='culonm-2'>
-                            <Input
-                                className='input'
-                                value={this.state.PhoneChange}
-                                type='text'
-                                name='EditPhone'
-                                onChange={this.onEditPhoneChange}
-                            ></Input>
-                        </div>
-                    </div>
-                    <div className="row clearfix">
-                        <span className='culonm-1'>
-                            电子邮箱：
-                        </span>
-                        <div className='culonm-2'>
-                            <Input
-                                className='input'
-                                type='text'
-                                name='EditMail'
-                                value={this.state.MailChange}
-                                onChange={this.onEditMailChange}
-                            ></Input>
-                        </div>
-                    </div>
-                    <div className="row clearfix">
-                        <span className='culonm-1'>
-                            家庭住址：
-                        </span>
-                        <div className='culonm-2'>
-                            <Input.TextArea
-                                className='inputarea'
-                                rows='2'
-                                cols='30'
-                                name='EditAddress'
-                                value={this.state.AddressChange}
-                                onChange={this.onEditAddressChange}
-                            ></Input.TextArea>
+            this.state.data.Power.Powers[index].PowerChild.map((child, key) => {
+                checkedList[key] = child.value;
+            })
+            checkedListArr[index] = checkedList;
+            this.setState({
+                checkAll: checkAll,
+                indeterminate: indeterminate,
+                checkedListArr: checkedListArr,
+                plainOptionsArr:plainOptionsArr
+            })
+            return (
+                <div key={this.state.PowerList[index].value}>
+                    <CheckBox
+                        indeterminate={this.state.indeterminate[index]}
+                        onChange={this.onCheckAllChange.bind(this, index)}
+                        checked={this.state.checkAll[index]}
+                    >
+                        {power.PowerName}
+                        <span className='checkTips'>[已选择<span style={{ color: 'red' }}>{this.state.data.Power.Powers[index].PowerChild.length}</span>项]</span>
+                    </CheckBox>
+                    <CheckBoxGroup
+                        
+                        value={this.state.checkedListArr[index]}
+                        onChange={this.onCheckChange.bind(this,index)}
+                    >
+                        {this.state.PowerList[index].PowerChild.map((child, index) => {
+                            console.log(child.PowerChildName)
+                            return(
+                                <CheckBox 
+                                value={child.value}
+                                key = {child.value}
+                                >{child.PowerChildName}</CheckBox>
+                            )
+                        })}
+                    </CheckBoxGroup>
+                </div>
+            )
+        })}
                         </div>
                     </div>
                 </div>

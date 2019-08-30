@@ -1,4 +1,4 @@
-.EditModal{
+.EditModal_Admin{
     position: relative;
     width: 100%;
     height: 100%;
@@ -98,6 +98,16 @@
                     }
                 }
                 
+            }
+
+            .culonm-3{
+                height: auto;
+
+                .checkTips{
+                    font-size: 14px;
+	                line-height: 16px;
+	                color: #666666;
+                }
             }
         }
     }
