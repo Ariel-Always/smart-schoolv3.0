@@ -1,0 +1,98 @@
+.single-double-table{
+
+    th,td{
+
+      border: solid 1px #96d4e3;
+
+    }
+
+    th{
+
+      background-color:#d6f7ff;
+      
+      .week{
+
+        font-size: 16px;
+
+        color: #00728f;
+
+        font-weight: bold;
+
+        text-align: center;
+        
+      }
+
+      .date{
+
+        font-size: 14px;
+
+        color: #00728f;
+
+        text-align: center;
+
+      }
+
+    }
+
+    .noon{
+
+      background-color: #d6f7ff;
+
+    }
+
+    .course-time{
+
+      background-color: #d6f7ff;
+
+    }
+
+    .course-time-title{
+
+      color: #00728f;
+
+      font-size: 16px;
+
+      font-weight: bold;
+
+      text-align: center;
+
+    }
+
+    .course-time-time{
+
+      font-size: 14px;
+
+      color: #00728f;
+
+      text-align: center;
+
+    }
+
+
+  .scheduleDiv{
+
+    text-align: center;
+
+    color: #999999;
+    
+    &.empty{
+
+      font-size:16px;
+      
+    }
+
+  }
+
+  .noon{
+
+    font-size: 16px;
+
+    color: #00728f;
+
+    font-weight: bold;
+
+    text-align: center;
+    
+  }
+
+}

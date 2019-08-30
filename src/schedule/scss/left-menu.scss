@@ -1,0 +1,187 @@
+.left-menu-wrapper{
+
+  @include box-shadow(5px 0 5px 0 rgba(0, 0, 0, 0.08));
+
+  @include border-radius(0 0 0 12px);
+
+  width: 236px;
+
+  .left-menu-title{
+
+    height:42px;
+
+    background-color: #d6f7ff;
+
+    line-height: 42px;
+
+    color: #0e7b96;
+
+    text-align: center;
+
+  }
+
+  .search_container{
+
+    margin-left: 16px;
+
+    margin-top: 10px;
+
+  }
+
+  .cat-wrapper{
+
+      padding-left:24px;
+
+      line-height:1;
+
+      position: relative;
+
+  }
+
+  .cat-children-wrapper{
+
+    display: none;
+
+  }
+
+  .cat-name{
+
+    display: inline-block;
+
+    max-width:172px;
+
+    @include textOverFlow;
+
+    line-height:22px;
+
+    position: relative;
+
+    padding-left: 12px;
+    
+    cursor: pointer;
+    
+    &:hover{
+
+      color: #8a400f;
+      
+    }
+
+    &:after{
+
+      position: absolute;
+
+      content: '';
+
+      width:0;
+
+      height:0;
+
+      left:2px;
+
+      top: 7px;
+
+      border-width:4px;
+
+      border-style: solid;
+
+      border-color:transparent transparent transparent #cccccc;
+
+    }
+
+    &.picked{
+
+      &:after{
+
+        top:10px;
+
+        left:0;
+
+        border-color:#666666 transparent transparent transparent;
+
+      }
+
+    }
+
+  }
+
+  .cat-item{
+
+    line-height:1;
+
+    &.active{
+
+      background-color:rgba(238,136,15,0.1);
+
+      .cat-children-name{
+
+        color: #8a400f;
+
+     }
+
+    }
+
+  }
+
+  .cat-children-name{
+
+    display: inline-block;
+
+    line-height: 28px;
+
+    margin-left:64px;
+
+    padding-left: 24px;
+
+    max-width: 116px;
+
+    @include textOverFlow;
+
+    color:#333333;
+
+    cursor: pointer;
+
+    background-repeat:no-repeat;
+
+    background-position: left center;
+
+  }
+
+  .pick-wrapper{
+
+    margin-top:18px;
+
+    &.person{
+
+      .cat-item{
+
+        &.active{
+
+          .cat-children-name{
+
+            background-image:url("#{$image-url}/left-menu-person-active.png");
+
+          }
+
+        }
+
+      }
+
+      .cat-children-name{
+
+        background-image:url("#{$image-url}/left-menu-person.png");
+
+        &:hover{
+
+          background-image:url("#{$image-url}/left-menu-person-active.png");
+
+          color: #8a400f;
+
+        }
+
+      }
+
+    }
+
+  }
+
+}
