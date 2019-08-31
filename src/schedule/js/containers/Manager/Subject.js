@@ -42,7 +42,7 @@ class Subject extends Component{
 
         this.refs.scrollBars.scrollTop(0);
 
-        dispatch(ManagerIndexActions.STSPageUpdate());
+        dispatch(STSAction.STSPageUpdate());
 
     }
 
@@ -55,7 +55,7 @@ class Subject extends Component{
 
         this.refs.scrollBars.scrollTop(0);
 
-        dispatch(ManagerIndexActions.STSPageUpdate());
+        dispatch(STSAction.STSPageUpdate());
 
     }
 
@@ -70,7 +70,7 @@ class Subject extends Component{
 
         this.refs.scrollBars.scrollTop(0);
 
-        dispatch(ManagerIndexActions.STSPageUpdate());
+        dispatch(STSAction.STSPageUpdate());
 
     }
 
@@ -85,7 +85,7 @@ class Subject extends Component{
 
         this.refs.scrollBars.scrollTop(0);
 
-        dispatch(ManagerIndexActions.STSPageUpdate());
+        dispatch(STSAction.STSPageUpdate());
 
     }
     //滚动到底部
@@ -96,7 +96,7 @@ class Subject extends Component{
 
             const {dispatch} = this.props;
 
-            dispatch(ManagerIndexActions.STSPageUpdate({nextPage:true}));
+            dispatch(STSAction.STSPageUpdate({nextPage:true}));
 
         }
 
