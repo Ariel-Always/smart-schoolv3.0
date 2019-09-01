@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 
 import $ from 'jquery';
 
-import {Search} from "../../../common";
+import {Search,Loading} from "../../../common";
 
 class LeftMenu extends Component{
 
@@ -51,10 +51,21 @@ class LeftMenu extends Component{
 
     }
 
+    //点击搜索的选项
+    onPickSearch(pickInfo){
+
+        const {pickClick} = this.props;
+
+        this.setState({searchActive:pickInfo.catChildrenId});
+
+        pickClick(pickInfo);
+
+    }
+
 
     render() {
 
-        const { title,type,pickList,pickClick,searchClick,cancelSearch,searchShow,searchResult } = this.props;
+        const { title,type,pickList,pickClick,searchClick,cancelSearch,searchShow,searchResult,leftMenuSearchLoading } = this.props;
 
         return (
 
@@ -68,7 +79,10 @@ class LeftMenu extends Component{
 
                     searchShow?
 
-                        <div className={`left-menu-search-wrapper ${type}`}>
+                        <Loading tip="加载中..." spinning={leftMenuSearchLoading}>
+
+
+                            <div className={`left-menu-search-wrapper ${type}`}>
 
                             {
 
@@ -76,7 +90,7 @@ class LeftMenu extends Component{
 
                                     return <div key={key} className={`cat-item ${item.id===this.state.searchActive?'active':''}`} data-id={item.id}>
 
-                                                <span className="cat-children-name" title={item.name} onClick={this.onPick.bind(this,{catChildrenId:item.id,catChildrenName:item.name})}>
+                                                <span className="cat-children-name" title={item.name} onClick={this.onPickSearch.bind(this,{catChildrenId:item.id,catChildrenName:item.name})}>
 
                                                     {item.name}
 
@@ -90,6 +104,7 @@ class LeftMenu extends Component{
 
                         </div>
 
+                        </Loading>
                     :
 
                         <div className={`pick-wrapper ${type}`}>

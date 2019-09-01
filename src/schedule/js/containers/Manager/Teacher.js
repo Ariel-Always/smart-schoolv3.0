@@ -95,7 +95,7 @@ class Teacher extends Component{
 
         const {dispatch} = this.props;
 
-        dispatch(STTActions.STTTeacherSearch(e.value));
+        dispatch({type:STTActions.SEARCH_TEACHER_RESULT_HIDE});
 
     }
 
@@ -130,7 +130,8 @@ class Teacher extends Component{
                     searchClick={this.searchClick.bind(this)}
                     cancelSearch={this.cancelSearch.bind(this)}
                     searchShow={SubjectTeacherTeacherSchedule.searchWrapperShow}
-                    searchResult={SubjectTeacherTeacherSchedule.searchResult}>
+                    searchResult={SubjectTeacherTeacherSchedule.searchResult}
+                    leftMenuSearchLoading={SubjectTeacherTeacherSchedule.searchLoadingShow}>
 
                 </LeftMenu>
 

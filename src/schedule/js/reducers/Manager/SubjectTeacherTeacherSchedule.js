@@ -20,7 +20,9 @@ const SubjectTeacherTeacherSchedule = (state={
 
     searchWrapperShow:false,
 
-    searchResult:[]
+    searchResult:[],
+
+    searchLoadingShow:false
 
 },actions) => {
 
@@ -45,6 +47,18 @@ const SubjectTeacherTeacherSchedule = (state={
         case STTActions.SEARCH_TEACHER_RESULT_SHOW:
 
             return {...state,searchWrapperShow:true};
+
+        case STTActions.SEARCH_TEACHER_RESULT_HIDE:
+
+            return {...state,searchWrapperShow:false};
+
+        case STTActions.SEARCH_LOADING_SHOW:
+
+            return {...state,searchLoadingShow:true};
+
+        case STTActions.SEARCH_LOADING_HIDE:
+
+            return {...state,searchLoadingShow:false};
 
         case STTActions.SCHEDULE_LOADING_HIDE:
 

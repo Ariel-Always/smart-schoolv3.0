@@ -14,6 +14,13 @@ const  SEARCH_TEACHER_RESULT_UPDATE = 'SEARCH_TEACHER_RESULT_UPDATE';
 
 const SEARCH_TEACHER_RESULT_SHOW = 'SEARCH_TEACHER_RESULT_SHOW';
 
+const SEARCH_TEACHER_RESULT_HIDE = 'SEARCH_TEACHER_RESULT_HIDE';
+
+const SEARCH_LOADING_SHOW = 'SEARCH_LOADING_SHOW';
+
+const SEARCH_LOADING_HIDE = 'SEARCH_LOADING_HIDE';
+
+
 //学科教师总表教师课表，教师更改
 const STTTeacherUpdate = (pickInfo) => {
 
@@ -64,9 +71,9 @@ const STTTeacherUpdate = (pickInfo) => {
 
                 });
 
-                dispatch({type:STTActions.STT_SCHEDULE_CHANGE,data:{ScheduleCount,schedule,pickTeacher:pickInfo.catChildrenName,pickTeacherID:pickInfo.catChildrenId}});
+                dispatch({type:STT_SCHEDULE_CHANGE,data:{ScheduleCount,schedule,pickTeacher:pickInfo.catChildrenName,pickTeacherID:pickInfo.catChildrenId}});
 
-                dispatch({type:STTActions.SCHEDULE_LOADING_HIDE});
+                dispatch({type:SCHEDULE_LOADING_HIDE});
 
             }else {
 
@@ -90,9 +97,9 @@ const STTWeekUpdate = () => {
         //当没有选择教师的时候就不请求后台接口。
         if (pickTeacher === ''){
 
-            dispatch({type:STTActions.STT_SCHEDULE_CHANGE,data:{schedule:[]}});
+            dispatch({type:STT_SCHEDULE_CHANGE,data:{schedule:[]}});
 
-            dispatch({type:STTActions.SCHEDULE_LOADING_HIDE});
+            dispatch({type:SCHEDULE_LOADING_HIDE});
 
         }else{
 
@@ -139,9 +146,9 @@ const STTWeekUpdate = () => {
 
                     });
 
-                    dispatch({type:STTActions.STT_SCHEDULE_CHANGE,data:{ScheduleCount,schedule}});
+                    dispatch({type:STT_SCHEDULE_CHANGE,data:{ScheduleCount,schedule}});
 
-                    dispatch({type:STTActions.SCHEDULE_LOADING_HIDE});
+                    dispatch({type:SCHEDULE_LOADING_HIDE});
 
                 }else {
 
@@ -161,6 +168,10 @@ const STTWeekUpdate = () => {
 const STTTeacherSearch = (val) => {
 
     return (dispatch,getState) => {
+
+        dispatch({type:SEARCH_LOADING_SHOW});
+
+        dispatch({type:SEARCH_TEACHER_RESULT_SHOW});
 
         let { LoginUser,Manager,PeriodWeekTerm } = getState();
 
@@ -192,7 +203,7 @@ const STTTeacherSearch = (val) => {
 
                 dispatch({type:SEARCH_TEACHER_RESULT_UPDATE,data:result})
 
-                dispatch({type:SEARCH_TEACHER_RESULT_SHOW});
+                dispatch({type:SEARCH_LOADING_HIDE});
 
            }else{
 
@@ -221,6 +232,12 @@ export default {
     SEARCH_TEACHER_RESULT_UPDATE,
 
     SEARCH_TEACHER_RESULT_SHOW,
+
+    SEARCH_TEACHER_RESULT_HIDE,
+
+    SEARCH_LOADING_HIDE,
+
+    SEARCH_LOADING_SHOW,
 
     STTTeacherUpdate,
 
