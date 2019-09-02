@@ -21,7 +21,7 @@ class SingleDoubleTable extends Component{
 
         let ths =[];
         //查询该周的日期
-        if (ItemWeek){
+        if (ItemWeek&&NowWeekNo){
 
             let NowWeekInfo = ItemWeek.filter((item) => {
 
@@ -193,10 +193,52 @@ class SingleDoubleTable extends Component{
 
                         let tds = [];
 
-                        //将内容区域铺满
+                        //将内容区域铺满（如果有课表填充课表，没有就填充--）
                         if (schedule.length>0){
+                            //从周一开始判断
+                            for (let i =1; i <= 7; i++){
 
+                                let hasCourse = false;
 
+                                schedule.map((it,ky) => {
+
+                                    if (((it.WeekDay+1) === i)&&(it.ClassHourNO===item.ClassHourNO)){
+
+                                        tds.push(<td key={`${i}${ky}`} className={`shedule${i}`} style={{height:commonHeight}}>
+
+                                            <div className="scheduleDiv" style={{width:commonWidth}}>
+
+                                                <div className={`title ${it.ScheduleType===1?'':'active'}`} title={it.title} data-id={it.titleID}>{it.title}</div>
+
+                                                <div className="second-title" title={it.secondTitle} data-id={it.secondTitleID}>{it.secondTitle}</div>
+
+                                                <div className="third-title" title={it.thirdTitle} data-id={it.thirdTitleID}>{it.thirdTitle}</div>
+
+                                            </div>
+
+                                    </td>)
+
+                                        hasCourse = true;
+
+                                    }else{
+
+                                       return;
+
+                                    }
+
+                                });
+                                //如果当天的该节课没有课程。添加空。
+                                if (!hasCourse){
+
+                                    tds.push(<td key={i} className={`shedule${i}`} style={{height:commonHeight}}>
+
+                                        <div className="scheduleDiv empty" style={{width:commonWidth,lineHeight:`${commonHeight}px`}}>--</div>
+
+                                    </td>)
+
+                                }
+
+                            }
 
                         }else{
 
@@ -204,7 +246,7 @@ class SingleDoubleTable extends Component{
 
                                 tds.push(<td key={i} className={`shedule${i}`} style={{height:commonHeight}}>
 
-                                            <div className="scheduleDiv empty" style={{width:commonWidth}}>--</div>
+                                            <div className="scheduleDiv empty" style={{width:commonWidth,lineHeight:`${commonHeight}px`}}>--</div>
 
                                         </td>)
 

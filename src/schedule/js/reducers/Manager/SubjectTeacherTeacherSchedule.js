@@ -4,19 +4,33 @@ const SubjectTeacherTeacherSchedule = (state={
 
     schedule:[],
 
+    ScheduleCount:0,
+
     NowWeekNo:0,
 
     loadingShow:true,
 
-    teacherList:[]
+    teacherList:[],
+
+    pickTeacher:'',
+
+    pickTeacherID:'',
+
+    ScheduleLoadingShow:true,
+
+    searchWrapperShow:false,
+
+    searchResult:[],
+
+    searchLoadingShow:false
 
 },actions) => {
 
     switch (actions.type) {
 
-      /* case STSActions.SUBJECT_TEACHER_SCHEDULE_INIT:
+        case STTActions.STT_SCHEDULE_CHANGE:
 
-            return {...state,schedule:actions.data};*/
+            return {...state,...actions.data};
 
         case STTActions.STT_NOW_WEEK_CHANGE:
 
@@ -26,17 +40,33 @@ const SubjectTeacherTeacherSchedule = (state={
 
             return {...state,teacherList:actions.data};
 
-     /*   case STSActions.SUBJECT_TEACHER_SCHEDULE_UPDATE:
+        case STTActions.SEARCH_TEACHER_RESULT_UPDATE:
 
-            return {...state,schedule:actions.data};
+            return {...state,searchResult:actions.data};
 
-        case STSActions.LOADING_HIDE:
+        case STTActions.SEARCH_TEACHER_RESULT_SHOW:
 
-            return {...state,loadingShow:false};
+            return {...state,searchWrapperShow:true};
 
-        case STSActions.LOADING_SHOW:
+        case STTActions.SEARCH_TEACHER_RESULT_HIDE:
 
-            return {...state,loadingShow:true};*/
+            return {...state,searchWrapperShow:false};
+
+        case STTActions.SEARCH_LOADING_SHOW:
+
+            return {...state,searchLoadingShow:true};
+
+        case STTActions.SEARCH_LOADING_HIDE:
+
+            return {...state,searchLoadingShow:false};
+
+        case STTActions.SCHEDULE_LOADING_HIDE:
+
+            return {...state,ScheduleLoadingShow:false};
+
+        case STTActions.SCHEDULE_LOADING_SHOW:
+
+            return {...state,ScheduleLoadingShow:true};
 
         default:
 

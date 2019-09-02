@@ -110,7 +110,7 @@
 
     &.active{
 
-      background-color:rgba(238,136,15,0.1);
+      background-color:rgba(238,136,15,0.2);
 
       .cat-children-name{
 
@@ -181,6 +181,84 @@
       }
 
     }
+
+  }
+
+  .left-menu-search-wrapper{
+
+      margin-top: 20px;
+
+
+    .cat-item{
+
+      &.active{
+
+        background-color: rgba(238, 136, 15,0.2);
+
+      }
+
+    }
+
+    .cat-children-name{
+
+      display: inline-block;
+
+      line-height: 28px;
+
+      margin-left: 24px;
+
+      padding-left: 24px;
+
+      max-width: 116px;
+
+      overflow: hidden;
+
+      text-overflow: ellipsis;
+
+      white-space: nowrap;
+
+      color: #333333;
+
+      cursor: pointer;
+
+      background-repeat: no-repeat;
+
+      background-position: left center;
+
+      &:hover{
+
+        color:#8a400f;
+
+      }
+
+    }
+
+
+
+
+    &.person{
+
+
+      .cat-children-name{
+
+        background-image: url("#{$image-url}/left-menu-person.png");
+
+        &:hover{
+
+          background-image: url("#{$image-url}/left-menu-person-active.png");
+
+        }
+
+      }
+
+    }
+
+  }
+
+
+  .ant-spin-nested-loading{
+
+    height: 30%;
 
   }
 

@@ -63,4 +63,50 @@
 
   }
 
+  .pick-teacher-wrapper{
+
+    float: left;
+
+    margin-top: 36px;
+
+    margin-left: 44px;
+
+    .teacher-name{
+
+      display: inline-block;
+
+      max-width: 108px;
+
+      @include textOverFlow;
+
+      vertical-align: top;
+
+      font-weight: bold;
+
+      font-size: 14px;
+
+      color: #333333;
+
+    }
+
+    .course-count{
+
+      color: #999999;
+
+    }
+
+    .count{
+
+      color: #ff0000;
+
+    }
+
+  }
+
+  .term-pick-wrapper+.ant-spin-nested-loading{
+
+    float: right;
+
+  }
+
 }

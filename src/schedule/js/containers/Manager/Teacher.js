@@ -1,18 +1,18 @@
 import React,{Component} from 'react';
 
-import AppLoadingActions from "../../actions/AppLoadingActions"
-
 import {connect} from 'react-redux';
 
 import TermPick from  '../../component/TermPick';
 
 import LeftMenu from '../../component/LeftMenu';
 
+import { Loading } from "../../../../common";
+
 import SingleDoubleTable from '../../component/SingleDoubleTable';
 
 import ManagerIndexActions from "../../actions/Manager/ManagerIndexActions";
 
-import DoubleSingleTable from "../../component/DoubleSingleTable";
+import STTActions from '../../actions/Manager/SubjectTeacherTeacherActions';
 
 
 class Teacher extends Component{
@@ -32,9 +32,11 @@ class Teacher extends Component{
 
         const {dispatch} = this.props;
 
-        //dispatch({type:STSAction.STS_NOW_WEEK_CHANGE,data:e.value});
+        dispatch({type:STTActions.STT_NOW_WEEK_CHANGE,data:e.value});
 
-       // dispatch(ManagerIndexActions.STTPageUpdate());
+        dispatch({type:STTActions.SCHEDULE_LOADING_SHOW});
+
+        dispatch(STTActions.STTWeekUpdate());
 
     }
 
@@ -43,11 +45,13 @@ class Teacher extends Component{
 
         const {dispatch,Manager} = this.props;
 
-        const {NowWeekNo} = Manager.SubjectTeacherSchedule;
+        const {NowWeekNo} = Manager.SubjectTeacherTeacherSchedule;
 
-        //dispatch({type:STSAction.STS_NOW_WEEK_CHANGE,data:(NowWeekNo+1)});
+        dispatch({type:STTActions.STT_NOW_WEEK_CHANGE,data:(NowWeekNo+1)});
 
-        //dispatch(ManagerIndexActions.STTPageUpdate());
+        dispatch({type:STTActions.SCHEDULE_LOADING_SHOW});
+
+        dispatch(STTActions.STTWeekUpdate());
 
     }
 
@@ -56,14 +60,44 @@ class Teacher extends Component{
 
         const {dispatch,Manager} = this.props;
 
-        const {NowWeekNo} = Manager.SubjectTeacherSchedule;
+        const {NowWeekNo} = Manager.SubjectTeacherTeacherSchedule;
 
-       /* dispatch({type:STSAction.STS_NOW_WEEK_CHANGE,data:(NowWeekNo-1)});
+        dispatch({type:STTActions.STT_NOW_WEEK_CHANGE,data:(NowWeekNo-1)});
 
-        dispatch(ManagerIndexActions.STTPageUpdate());*/
+        dispatch({type:STTActions.SCHEDULE_LOADING_SHOW});
+
+        dispatch(STTActions.STTWeekUpdate());
+
+    }
+    //左侧菜单选取某一个教师
+    menuPickClick(pickInfo){
+
+       const {dispatch} = this.props;
+
+       dispatch({type:STTActions.SCHEDULE_LOADING_SHOW});
+
+       dispatch(STTActions.STTTeacherUpdate(pickInfo));
 
     }
 
+    //点击搜索事件
+
+    searchClick(e){
+
+        const {dispatch} = this.props;
+
+        dispatch(STTActions.STTTeacherSearch(e.value));
+
+    }
+
+    //取消搜索事件
+    cancelSearch(e){
+
+        const {dispatch} = this.props;
+
+        dispatch({type:STTActions.SEARCH_TEACHER_RESULT_HIDE});
+
+    }
 
 
     render() {
@@ -88,6 +122,35 @@ class Teacher extends Component{
 
             <div className="subject-teacher-teacher-content clearfix">
 
+                <LeftMenu
+                    title="教师列表"
+                    type="person"
+                    pickList={SubjectTeacherTeacherSchedule.teacherList}
+                    pickClick={this.menuPickClick.bind(this)}
+                    searchClick={this.searchClick.bind(this)}
+                    cancelSearch={this.cancelSearch.bind(this)}
+                    searchShow={SubjectTeacherTeacherSchedule.searchWrapperShow}
+                    searchResult={SubjectTeacherTeacherSchedule.searchResult}
+                    leftMenuSearchLoading={SubjectTeacherTeacherSchedule.searchLoadingShow}>
+
+                </LeftMenu>
+
+                {
+
+                    SubjectTeacherTeacherSchedule.pickTeacher===''?
+
+                    '':
+
+                        <div className="pick-teacher-wrapper">
+
+                                <span className="teacher-name">{SubjectTeacherTeacherSchedule.pickTeacher}</span>
+
+                            <span className="course-count"> (本周共<span className="count">{SubjectTeacherTeacherSchedule.ScheduleCount}</span>节课)</span>
+
+                        </div>
+
+                }
+
                 <TermPick
 
                     ItemWeek={ItemWeek}
@@ -104,14 +167,9 @@ class Teacher extends Component{
 
                 </TermPick>
 
-                <LeftMenu
-                    title="教师列表"
-                    type="person"
-                    pickList={SubjectTeacherTeacherSchedule.teacherList}>
+                <Loading tip="请稍后..." spinning={SubjectTeacherTeacherSchedule.ScheduleLoadingShow}>
 
-                </LeftMenu>
-
-                <SingleDoubleTable
+                    <SingleDoubleTable
                     topHeight = {64}
                     commonHeight = {90}
                     commonWidth={106}
@@ -120,10 +178,12 @@ class Teacher extends Component{
                     ItemClassHourCount={SubjectCourseGradeClassRoom.ItemClassHourCount}
                     ItemClassHour={SubjectCourseGradeClassRoom.ItemClassHour}
                     ItemWeek = {PeriodWeekTerm.ItemWeek}
-                    NowWeekNo={PeriodWeekTerm.NowWeekNo}
+                    NowWeekNo={SubjectTeacherTeacherSchedule.NowWeekNo}
                     schedule={SubjectTeacherTeacherSchedule.schedule}>
 
                 </SingleDoubleTable>
+
+                </Loading>
 
             </div>
 

@@ -71,13 +71,23 @@
 
   .scheduleDiv{
 
-    text-align: center;
+    text-align: left;
 
     color: #999999;
+
+    height: 100%;
+
+    @include flex;
+
+    @include flex-direction(column);
+
+    @include justify-content(center);
     
     &.empty{
 
       font-size:16px;
+
+      padding:0 20px 0 10px;
       
     }
 
@@ -93,6 +103,39 @@
 
     text-align: center;
     
+  }
+
+  .title{
+
+    font-size: 16px;
+
+    color: #999999;
+
+    font-weight: bold;
+
+    padding:0 20px 0 10px;
+
+    @include textOverFlow;
+
+    &.active{
+
+      color: #333333;
+
+    }
+
+  }
+
+  .second-title,
+  .third-title{
+
+    color: #999999;
+
+    font-size: 14px;
+
+    padding:0 20px 0 10px;
+
+    @include textOverFlow;
+
   }
 
 }
