@@ -69,6 +69,12 @@
 
     }
 
+    &.mine{
+
+      background-image: url("#{$image-url}/mine.png");
+
+    }
+
   }
 
   
@@ -108,6 +114,12 @@
       &.classroom{
 
         background-image: url("#{$image-url}/classroom-active.png");
+
+      }
+
+      &.mine{
+
+        background-image: url("#{$image-url}/mine-active.png");
 
       }
 

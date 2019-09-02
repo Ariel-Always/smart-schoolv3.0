@@ -67,6 +67,14 @@ const ModuleSetting = (state={
 
             };
 
+        case ModuleSettingActions.TIME_BARNER_HIDE:
+
+            return {...state,timeBar:false};
+
+        case ModuleSettingActions.TIME_BARNER_SHOW:
+
+            return {...state,timeBar:true};
+
         default:
 
             return state;

@@ -44,23 +44,47 @@ const STSPageInit = () => {
 
                     let teacherObj = {
 
-                        TeacherID:item.TeacherID,
+                        id:item.TeacherID,
 
-                        TeacherName:item.TeacherName
+                        name:item.TeacherName
 
                     };
 
-                    let courseList = json.ItemSchedule.filter((i) => {
+                    let list = json.ItemSchedule.map((i) => {
 
                         if (i.TeacherID === item.TeacherID){
 
-                            return i;
+                            return {
+
+                                type:i.ScheduleType,
+
+                                title:(i.ClassName!==''?i.ClassName:CourseClassName),
+
+                                titleID:(i.ClassName!==''?i.ClassID:CourseClassID),
+
+                                secondTitle:i.SubjectName,
+
+                                secondTitleID:i.SubjectID,
+
+                                thirdTitle:i.ClassRoomName,
+
+                                thirdTitleID:i.ClassRoomID,
+
+                                WeekDay:i.WeekDay,
+
+                                ClassHourNO:i.ClassHourNO
+
+                            };
+
+                        }else {
+
+                            return ;
 
                         }
 
-                    });
+                    }).filter(i => {return i!==undefined});
 
-                    teacherObj['courseList'] = courseList;
+                    teacherObj['list'] = list;
 
                     return teacherObj;
 
@@ -112,25 +136,49 @@ const STSPageInit = () => {
 
                             let teacherObj = {
 
-                                TeacherID:item.TeacherID,
+                                id:item.TeacherID,
 
-                                TeacherName:item.TeacherName
+                                name:item.TeacherName
 
                             };
 
-                          let courseList = json.ItemSchedule.filter((i) => {
+                            let list = json.ItemSchedule.map((i) => {
 
                                 if (i.TeacherID === item.TeacherID){
 
-                                    return i;
+                                    return {
+
+                                        type:i.ScheduleType,
+
+                                        title:(i.ClassName!==''?i.ClassName:CourseClassName),
+
+                                        titleID:(i.ClassName!==''?i.ClassID:CourseClassID),
+
+                                        secondTitle:i.SubjectName,
+
+                                        secondTitleID:i.SubjectID,
+
+                                        thirdTitle:i.ClassRoomName,
+
+                                        thirdTitleID:i.ClassRoomID,
+
+                                        WeekDay:i.WeekDay,
+
+                                        ClassHourNO:i.ClassHourNO
+
+                                    };
+
+                                }else {
+
+                                    return ;
 
                                 }
 
-                          });
+                            }).filter(i => {return i!==undefined});
 
-                          teacherObj['courseList'] = courseList;
+                            teacherObj['list'] = list;
 
-                          return teacherObj;
+                            return teacherObj;
 
                         });
 

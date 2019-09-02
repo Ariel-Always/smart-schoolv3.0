@@ -1,16 +1,18 @@
-import CONFIG from "../../../common/js/config";
+import Method from './Method';
 
 import ModuleSettingActions from "./ModuleSettingActions";
+
+import PeriodWeekTermActions from "./PeriodWeekTermActions";
 
 const UPDATE_LOGIN_USER = 'UPDATE_LOGIN_USER';
 
 
 //获取登录信息
-const getUserInfo = () => {
+/*const getUserInfo = () => {
 
     return ( dispatch,getState ) => {
 
-        fetch(`${CONFIG.proxy}/Login?method=GetUserInfo`).then(res => res.json()).then(json => {
+        Method.getGetData(`/Login?method=GetUserInfo`).then(json => {
 
             switch (json.UserType) {
 
@@ -40,19 +42,17 @@ const getUserInfo = () => {
 
             dispatch({type:UPDATE_LOGIN_USER,data:json.data.result});
 
-
-
         });
 
     }
 
-};
+};*/
 
 
 
 export default {
 
-    getUserInfo,
+/*    getUserInfo,*/
 
     UPDATE_LOGIN_USER
 

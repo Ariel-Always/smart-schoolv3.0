@@ -144,7 +144,7 @@ class DoubleSingleTable extends Component{
 
                                     let tdContent = '';
 
-                                    item.courseList.map((itm,k) => {
+                                    item.list.map((itm,k) => {
 
                                         if ((itm.WeekDay+1) === i&&itm.ClassHourNO === j){
 
@@ -154,11 +154,11 @@ class DoubleSingleTable extends Component{
 
                                                             <div className="course-time-div" style={{height:"100%",width:commonColWidth}}>
 
-                                                                <div className={`course-title ${itm.ScheduleType===1?'disabled':''}`} title={itm.ClassName!==''?itm.ClassName:itm.CourseClassName}>{itm.ClassName!==''?itm.ClassName:itm.CourseClassName}</div>
+                                                                <div className={`course-title ${itm.type === 1?'disabled':''}`} data-id={itm.titleID} title={itm.title}>{itm.title}</div>
 
-                                                                <div className="course-abstract" title={itm.SubjectName}>{itm.SubjectName}</div>
+                                                                <div className="course-abstract" data-id={itm.secondTitleID} title={itm.secondTitle}>{itm.secondTitle}</div>
 
-                                                                <div className="course-abstract" title={itm.ClassRoomName}>{itm.ClassRoomName}</div>
+                                                                <div className="course-abstract" data-id={itm.thirdTitleID} title={itm.thirdTitle}>{itm.thirdTitle}</div>
 
                                                             </div>
 
@@ -192,7 +192,7 @@ class DoubleSingleTable extends Component{
 
                                         <td className="col0" style={{height:commonRowHeight}}>
 
-                                            <div className="course-teacher" style={{width:leftColWidth,height:commonRowHeight,lineHeight:`${commonRowHeight}px`}} title={item.TeacherName}>{item.TeacherName}</div>
+                                            <div className="course-teacher" style={{width:leftColWidth,height:commonRowHeight,lineHeight:`${commonRowHeight}px`}} data-id={item.id} title={item.name}>{item.name}</div>
 
                                         </td>
 

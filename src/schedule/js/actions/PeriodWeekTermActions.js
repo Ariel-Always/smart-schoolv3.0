@@ -4,9 +4,11 @@ const UPDATE_PERIOD_TERM_WEEK = 'UPDATE_PERIOD_TERM_WEEK';
 
 const PERIOD_VALUE_CHANGE = 'PERIOD_CHANGE';
 
-const getPeriodWeekTerm = () => {
+/*const getPeriodWeekTerm = () => {
 
     return dispatch => {
+
+
 
         let getPeriodPromise = Method.getGetData('/schedulePeriod');
 
@@ -18,7 +20,7 @@ const getPeriodWeekTerm = () => {
 
     }
 
-};
+};*/
 
 export default {
 
@@ -26,7 +28,7 @@ export default {
 
     PERIOD_VALUE_CHANGE,
 
-    getPeriodWeekTerm
+  /*  getPeriodWeekTerm*/
 
 };
 

@@ -65,7 +65,7 @@ class LeftMenu extends Component{
 
     render() {
 
-        const { title,type,pickList,pickClick,searchClick,cancelSearch,searchShow,searchResult,leftMenuSearchLoading } = this.props;
+        const { title,type,pickList,pickClick,searchClick,cancelSearch,searchShow,searchResult,leftMenuSearchLoading,searchTitleShow,searchTitle } = this.props;
 
         return (
 
@@ -81,6 +81,15 @@ class LeftMenu extends Component{
 
                         <Loading tip="加载中..." spinning={leftMenuSearchLoading}>
 
+                            {
+
+                                searchTitleShow?
+
+                                    <div className="peronal-title">{searchTitle}</div>
+
+                                    :''
+
+                            }
 
                             <div className={`left-menu-search-wrapper ${type}`}>
 

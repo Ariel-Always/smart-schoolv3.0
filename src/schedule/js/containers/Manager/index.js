@@ -14,15 +14,6 @@ import SubjectTeacher from './SubjectTeacher';
 
 class Index extends Component{
 
-    constructor(props) {
-
-        super(props);
-
-        const {dispatch} = props;
-
-    }
-
-
     render() {
 
         const HeaderLinkList = [
