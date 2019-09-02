@@ -13,17 +13,17 @@
 
   }
 
-  .dropdown_container{
+  &>.dropdown_container{
 
     vertical-align:top;
+
+    float: left;
 
   }
 
   .term-pick-wrapper{
 
-    display: inline-block;
-
-    margin-left: 160px;
+    margin: 0 auto;
 
   }
   .double-single-table-wrapper{

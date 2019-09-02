@@ -1,8 +1,8 @@
 import React,{Component} from 'react';
 
-import {HashRouter as Router,NavLink} from 'react-router-dom';
+import {HashRouter as Router, NavLink,withRouter} from 'react-router-dom';
 
-class Modal extends Component{
+class ChangeTab extends Component{
 
     render() {
 
@@ -25,4 +25,4 @@ class Modal extends Component{
         );
     }
 }
-export default Modal;
+export default withRouter(ChangeTab);

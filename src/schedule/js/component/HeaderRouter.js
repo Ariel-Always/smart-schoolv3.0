@@ -1,8 +1,9 @@
 import React,{Component} from 'react';
 
-import {HashRouter as Router, NavLink} from "react-router-dom";
+import {HashRouter as Router,withRouter,NavLink} from "react-router-dom";
 
 class HeaderRouter extends Component{
+
     render() {
 
         const {HeaderLinkList} =this.props;
@@ -32,4 +33,4 @@ class HeaderRouter extends Component{
         );
     }
 }
-export default HeaderRouter;
+export default  withRouter(HeaderRouter);

@@ -8,6 +8,8 @@ import ModuleSetting from "./ModuleSetting";
 
 import Manager from './Manager/index';
 
+import Teacher from './Teacher/index';
+
 import PeriodWeekTerm from "./PeriodWeekTerm";
 
 
@@ -22,6 +24,8 @@ let rootReducers = combineReducers({
     ModuleSetting,
 
     Manager,
+
+    Teacher,
 
     PeriodWeekTerm
 

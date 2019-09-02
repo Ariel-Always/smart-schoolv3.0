@@ -6,7 +6,7 @@ import DocumentTitle from 'react-document-title';
 import ManagerComponent from './Manager';
 import TeacherComponent from './Teacher';
 import StudentComponent from './Student';
-import LoginUserActions from '../actions/LoginUserActions';
+import ModuleCommonActions from '../actions/ModuleCommonActions';
 import PeriodWeekTermActions from '../actions/PeriodWeekTermActions';
 
 import '../../scss/index.scss';
@@ -22,18 +22,14 @@ class App extends Component{
         super(props);
 
         const {dispatch} = props;
-
-        dispatch(LoginUserActions.getUserInfo());
-
-        dispatch(PeriodWeekTermActions.getPeriodWeekTerm());
+        //获取公共的信息
+        dispatch(ModuleCommonActions.getCommonInfo());
 
     }
 
     periodChange(key) {
 
         const {dispatch} = this.props;
-
-
 
         dispatch({type:PeriodWeekTermActions.PERIOD_VALUE_CHANGE,key:key});
 
@@ -73,7 +69,7 @@ class App extends Component{
 
                                     {
 
-                                        PeriodWeekTerm.ItemPeriod&&PeriodWeekTerm.ItemPeriod.map((item,key) => {
+                                        (PeriodWeekTerm.ItemPeriod&&PeriodWeekTerm.ItemPeriod.length>1)&&PeriodWeekTerm.ItemPeriod.map((item,key) => {
 
                                             return <div key={key} onClick={this.periodChange.bind(this,key)} className={`schedule-period-item ${PeriodWeekTerm.defaultPeriodIndex===key?'active':''}`}>
 
@@ -115,7 +111,7 @@ class App extends Component{
 
                                             LoginUser&&LoginUser.UserType===1?
 
-                                                <Redirect path="/*" to={{pathname:"/teacher/subject-teacher"}}></Redirect>
+                                                <Redirect path="/*" to={{pathname:"/teacher/subject-teacher/subject"}}></Redirect>
 
                                                 :''
 
