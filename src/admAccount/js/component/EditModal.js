@@ -18,83 +18,278 @@ class EditModal extends React.Component {
             UserIDTipsTitle: '由1-24位字母与数字组成',
             UserNameTipsVisible: false,
             UserNameTipsTitle: '姓名由1-20位的汉字、字母、数字、下划线、空格组成（首尾不允许空格）',
-            data: props.data,
+            data: props.userKey === 'change' ? props.data : [],
             PowerList: props.PowerList,
             checkAll: [],
             indeterminate: [],
             checkedList: [],
-            checkedListArr:[],
-            plainOptionsArr:[]
+            checkedListArr: [],
+            plainOptionsArr: [],
+            PowerChildLen: props.userKey === 'change' ? props.data.Power.Powers.map((child, index) => {
+                return child.PowerChild.length
+            }) : props.PowerList.map((child, index) => 0)
         }
     }
     componentWillMount() {
         const { DataState } = this.props;
-        console.log(this.state.UserKey)
+        console.log(this.state.data)
 
         if (this.state.UserKey === 'change') {
             this.setState({
                 UserIDChange: this.state.data.Name.UserID,
                 defaultUserName: this.state.data.Name.Name
             })
+            this.state.PowerList.map((power, index) => {
+                let checkAll = this.state.checkAll;
+                let indeterminate = this.state.indeterminate;
+                let plainOptions = [];
+                let plainOptionsArr = this.state.plainOptionsArr;
+                let checkedList = [];
+                let checkedListArr = this.state.checkedListArr;
+                this.state.PowerList[index].PowerChild.map((child, index) => {
+                    plainOptions[index] = child.value;
+
+                })
+
+                plainOptionsArr[index] = plainOptions;
+                console.log(plainOptionsArr, index)
+
+                checkAll[index] = this.state.data.Power.Powers[index].PowerChild.length !== 0 ? true : false
+
+                this.state.data.Power.Powers[index].PowerChild.map((child, key) => {
+                    checkedList[key] = child.value;
+                })
+                indeterminate[index] = this.state.plainOptionsArr[index].length === checkedList.length || checkedList === [] ? false : true;;
+                checkedListArr[index] = checkedList;
+                this.setState({
+                    checkAll: checkAll,
+                    indeterminate: indeterminate,
+                    checkedListArr: checkedListArr,
+                    plainOptionsArr: plainOptionsArr
+                })
+                // return (
+                //     <div key={this.state.PowerList[index].value}>
+                //         <CheckBox
+                //             indeterminate={this.state.indeterminate[index]}
+                //             onChange={this.onCheckAllChange.bind(this, index)}
+                //             checked={this.state.checkAll[index]}
+                //         >
+                //             {power.PowerName}
+                //             <span className='checkTips'>[已选择<span style={{ color: 'red' }}>{this.state.data.Power.Powers[index].PowerChild.length}</span>项]</span>
+                //         </CheckBox>
+                //         <CheckBoxGroup
+
+                //             value={this.state.checkedListArr[index]}
+                //             onChange={this.onCheckChange.bind(this,index)}
+                //         >
+                //             {this.state.PowerList[index].PowerChild.map((child, index) => {
+
+                //                 return(
+                //                     <CheckBox 
+                //                     value={child.value}
+                //                     key = {child.value}
+                //                     >{child.PowerChildName}</CheckBox>
+                //                 )
+                //             })}
+                //         </CheckBoxGroup>
+                //     </div>
+                // )
+            })
+        } else if (this.state.UserKey === 'add') {
+
+            this.state.PowerList.map((power, index) => {
+                let checkAll = this.state.checkAll;
+                let indeterminate = this.state.indeterminate;
+                let plainOptions = [];
+                let plainOptionsArr = this.state.plainOptionsArr;
+                let checkedList = [];
+                let checkedListArr = this.state.checkedListArr;
+                this.state.PowerList[index].PowerChild.map((child, index) => {
+                    plainOptions[index] = child.value;
+
+                })
+
+                plainOptionsArr[index] = plainOptions;
+                console.log(plainOptionsArr, index)
+
+                checkAll[index] = false;
+
+                checkedList = []
+                indeterminate[index] = false;
+                checkedListArr[index] = checkedList;
+                this.setState({
+                    checkAll: checkAll,
+                    indeterminate: indeterminate,
+                    checkedListArr: checkedListArr,
+                    plainOptionsArr: plainOptionsArr
+                })
+                // return (
+                //     <div key={this.state.PowerList[index].value}>
+                //         <CheckBox
+                //             indeterminate={this.state.indeterminate[index]}
+                //             onChange={this.onCheckAllChange.bind(this, index)}
+                //             checked={this.state.checkAll[index]}
+                //         >
+                //             {power.PowerName}
+                //             <span className='checkTips'>[已选择<span style={{ color: 'red' }}>{this.state.data.Power.Powers[index].PowerChild.length}</span>项]</span>
+                //         </CheckBox>
+                //         <CheckBoxGroup
+
+                //             value={this.state.checkedListArr[index]}
+                //             onChange={this.onCheckChange.bind(this,index)}
+                //         >
+                //             {this.state.PowerList[index].PowerChild.map((child, index) => {
+
+                //                 return(
+                //                     <CheckBox 
+                //                     value={child.value}
+                //                     key = {child.value}
+                //                     >{child.PowerChildName}</CheckBox>
+                //                 )
+                //             })}
+                //         </CheckBoxGroup>
+                //     </div>
+                // )
+            })
+
+
         }
-        const PowerList = this.state.PowerList.map((power, index) => {
-            let checkAll = this.state.checkAll;
-            let indeterminate = this.state.indeterminate;
-            let plainOptions = [];
-            let plainOptionsArr = this.state.plainOptionsArr;
-            let checkedList = [];
-            let checkedListArr = this.state.checkedListArr;
-            this.state.PowerList[index].PowerChild.map((child, index) => {
-                plainOptions[index] = child.value;
-                
-            })
-            
-            plainOptionsArr[index] = plainOptions;
-            console.log(plainOptionsArr,index)
-            
-            checkAll[index] = this.state.data.Power.Powers[index].PowerChild.length !== 0 ? true : false
-
-            this.state.data.Power.Powers[index].PowerChild.map((child, key) => {
-                checkedList[key] = child.value;
-            })
-            indeterminate[index] =  this.state.plainOptionsArr[index].length===checkedList.length||checkedList===[]?false:true;;
-            checkedListArr[index] = checkedList;
+    }
+    componentWillReceiveProps() {
+        //const { DataState } = this.props;
+        console.log(this.props.data)
+        let checkedListArr = [];
+        let PowerChildLen = [];
+        let indeterminate = [];
+        let checkAll = [];
+        let plainOptionsArr = [];
+        if (this.state.UserKey === 'change') {
             this.setState({
-                checkAll: checkAll,
-                indeterminate: indeterminate,
-                checkedListArr: checkedListArr,
-                plainOptionsArr:plainOptionsArr
+                UserIDChange: this.props.data.Name.UserID,
+                defaultUserName: this.props.data.Name.Name
             })
-            // return (
-            //     <div key={this.state.PowerList[index].value}>
-            //         <CheckBox
-            //             indeterminate={this.state.indeterminate[index]}
-            //             onChange={this.onCheckAllChange.bind(this, index)}
-            //             checked={this.state.checkAll[index]}
-            //         >
-            //             {power.PowerName}
-            //             <span className='checkTips'>[已选择<span style={{ color: 'red' }}>{this.state.data.Power.Powers[index].PowerChild.length}</span>项]</span>
-            //         </CheckBox>
-            //         <CheckBoxGroup
-                        
-            //             value={this.state.checkedListArr[index]}
-            //             onChange={this.onCheckChange.bind(this,index)}
-            //         >
-            //             {this.state.PowerList[index].PowerChild.map((child, index) => {
-                            
-            //                 return(
-            //                     <CheckBox 
-            //                     value={child.value}
-            //                     key = {child.value}
-            //                     >{child.PowerChildName}</CheckBox>
-            //                 )
-            //             })}
-            //         </CheckBoxGroup>
-            //     </div>
-            // )
-        })
+            this.state.PowerList.map((power, index) => {
+                
+                
+                let plainOptions = [];
+                
+                let checkedList = [];
+                
+                
+                this.state.PowerList[index].PowerChild.map((child, index) => {
+                    plainOptions[index] = child.value;
 
-        
+                })
+
+                plainOptionsArr[index] = plainOptions;
+                console.log(plainOptionsArr, index)
+
+                checkAll[index] = this.props.data.Power.Powers[index].PowerChild.length !== 0 ? true : false
+
+                this.props.data.Power.Powers[index].PowerChild.map((child, key) => {
+                    checkedList[key] = child.value;
+                })
+                
+                PowerChildLen[index] = checkedList ? checkedList.length : 0;
+                indeterminate[index] = this.state.plainOptionsArr[index].length === checkedList.length || checkedList === [] ? false : true;;
+                checkedListArr[index] = checkedList;
+                console.log(checkedListArr)
+                this.setState({
+                    checkAll: checkAll,
+                    indeterminate: indeterminate,
+                    checkedListArr: checkedListArr,
+                    plainOptionsArr: plainOptionsArr,
+                    PowerChildLen: PowerChildLen
+                })
+                // return (
+                //     <div key={this.state.PowerList[index].value}>
+                //         <CheckBox
+                //             indeterminate={this.state.indeterminate[index]}
+                //             onChange={this.onCheckAllChange.bind(this, index)}
+                //             checked={this.state.checkAll[index]}
+                //         >
+                //             {power.PowerName}
+                //             <span className='checkTips'>[已选择<span style={{ color: 'red' }}>{this.state.data.Power.Powers[index].PowerChild.length}</span>项]</span>
+                //         </CheckBox>
+                //         <CheckBoxGroup
+
+                //             value={this.state.checkedListArr[index]}
+                //             onChange={this.onCheckChange.bind(this,index)}
+                //         >
+                //             {this.state.PowerList[index].PowerChild.map((child, index) => {
+
+                //                 return(
+                //                     <CheckBox 
+                //                     value={child.value}
+                //                     key = {child.value}
+                //                     >{child.PowerChildName}</CheckBox>
+                //                 )
+                //             })}
+                //         </CheckBoxGroup>
+                //     </div>
+                // )
+            })
+        } else if (this.state.UserKey === 'add') {
+
+            let checkAll = [];
+            let indeterminate = [];
+            
+            let plainOptionsArr = [];
+            
+            this.state.PowerList.map((power, index) => {
+                let plainOptions = [];
+                let checkedList = [];
+                let checkedListArr = this.state.checkedListArr;
+                this.state.PowerList[index].PowerChild.map((child, index) => {
+                    plainOptions[index] = child.value;
+
+                })
+
+                plainOptionsArr[index] = plainOptions;
+                console.log(plainOptionsArr, index)
+
+                checkAll[index] = false;
+
+                checkedList = []
+                indeterminate[index] = false;
+                checkedListArr[index] = checkedList;
+                this.setState({
+                    checkAll: checkAll,
+                    indeterminate: indeterminate,
+                    checkedListArr: checkedListArr,
+                    plainOptionsArr: plainOptionsArr
+                })
+                // return (
+                //     <div key={this.state.PowerList[index].value}>
+                //         <CheckBox
+                //             indeterminate={this.state.indeterminate[index]}
+                //             onChange={this.onCheckAllChange.bind(this, index)}
+                //             checked={this.state.checkAll[index]}
+                //         >
+                //             {power.PowerName}
+                //             <span className='checkTips'>[已选择<span style={{ color: 'red' }}>{this.state.data.Power.Powers[index].PowerChild.length}</span>项]</span>
+                //         </CheckBox>
+                //         <CheckBoxGroup
+
+                //             value={this.state.checkedListArr[index]}
+                //             onChange={this.onCheckChange.bind(this,index)}
+                //         >
+                //             {this.state.PowerList[index].PowerChild.map((child, index) => {
+
+                //                 return(
+                //                     <CheckBox 
+                //                     value={child.value}
+                //                     key = {child.value}
+                //                     >{child.PowerChildName}</CheckBox>
+                //                 )
+                //             })}
+                //         </CheckBoxGroup>
+                //     </div>
+                // )
+            })
+
+
+        }
     }
     onEditIDChange = (e) => {
 
@@ -140,35 +335,40 @@ class EditModal extends React.Component {
 
 
     // 新
-    onCheckAllChange = (index,e) => {
-        console.log(e,index);
+    onCheckAllChange = (index, e) => {
+        console.log(e, index);
         let checkedListArr = this.state.checkedListArr;
         let indeterminate = this.state.indeterminate;
         let checkAll = this.state.checkAll;
+        let PowerChildLen = this.state.PowerChildLen;
         checkedListArr[index] = e.target.checked ? this.state.plainOptionsArr[index] : [];
         indeterminate[index] = false;
-        checkAll[index] = e.target.checked
+        checkAll[index] = e.target.checked;
+        PowerChildLen[index] = e.target.checked ? this.state.plainOptionsArr[index].length : 0;
         this.setState({
             checkedListArr: checkedListArr,
             indeterminate: indeterminate,
             checkAll: checkAll,
-          });
+            PowerChildLen: PowerChildLen
+        });
     }
-    onCheckChange = (index,value,e) => {
-        console.log(index,value,this.state.plainOptionsArr[index],this.state.checkedListArr)
+    onCheckChange = (index, value, e) => {
+        console.log(index, value, this.state.plainOptionsArr[index], this.state.checkedListArr, this.state.PowerChildLen)
         let checkedListArr = this.state.checkedListArr;
         let indeterminate = this.state.indeterminate;
         let checkAll = this.state.checkAll;
-        
+        let PowerChildLen = this.state.PowerChildLen;
         checkedListArr[index] = value;
-        indeterminate[index] = (this.state.plainOptionsArr[index].length!==value.length&&value.length!==0)?true:false;
-        checkAll[index] = this.state.plainOptionsArr[index].length===value.length?true:false;
-        console.log(checkedListArr,indeterminate,checkAll)
+        indeterminate[index] = (this.state.plainOptionsArr[index].length !== value.length && value.length !== 0) ? true : false;
+        checkAll[index] = this.state.plainOptionsArr[index].length === value.length ? true : false;
+        PowerChildLen[index] = value.length;
+        console.log(checkedListArr, indeterminate, checkAll)
         this.setState({
             checkedListArr: checkedListArr,
             indeterminate: indeterminate,
             checkAll: checkAll,
-          });
+            PowerChildLen: PowerChildLen
+        });
     }
 
 
@@ -216,61 +416,64 @@ class EditModal extends React.Component {
                         </span>
                         <div className='culonm-2 culonm-3'>
                             {this.state.PowerList.map((power, index) => {
-            // let checkAll = this.state.checkAll;
-            // let indeterminate = this.state.indeterminate;
-            // let plainOptions = [];
-            // let plainOptionsArr = this.state.plainOptionsArr;
-            // let checkedList = [];
-            // let checkedListArr = this.state.checkedListArr;
-            // console.log(power)
-            // power.PowerChild.map((child, index) => {
-            //     plainOptions[index] = child.value;
-                
-            // })
-            
-            // plainOptionsArr[index] = plainOptions;
-            // console.log(plainOptionsArr,index)
-            // indeterminate[index] = true;
-            // checkAll[index] = this.state.data.Power.Powers[index].PowerChild.length !== 0 ? true : false
+                                // let checkAll = this.state.checkAll;
+                                // let indeterminate = this.state.indeterminate;
+                                // let plainOptions = [];
+                                // let plainOptionsArr = this.state.plainOptionsArr;
+                                // let checkedList = [];
+                                // let checkedListArr = this.state.checkedListArr;
+                                // console.log(power)
+                                // power.PowerChild.map((child, index) => {
+                                //     plainOptions[index] = child.value;
 
-            // this.state.data.Power.Powers[index].PowerChild.map((child, key) => {
-            //     checkedList[key] = child.value;
-            // })
-            // checkedListArr[index] = checkedList;
-            // this.setState({
-            //     checkAll: checkAll,
-            //     indeterminate: indeterminate,
-            //     checkedListArr: checkedListArr,
-            //     plainOptionsArr:plainOptionsArr
-            // })
-            return (
-                <div key={this.state.PowerList[index].value}>
-                    <CheckBox
-                        indeterminate={this.state.indeterminate[index]}
-                        onChange={this.onCheckAllChange.bind(this, index)}
-                        checked={this.state.checkAll[index]}
-                    >
-                        {power.PowerName}
-                        <span className='checkTips'>[已选择<span style={{ color: 'red' }}>{this.state.data.Power.Powers[index].PowerChild.length}</span>项]</span>
-                    </CheckBox>
-                    <CheckBoxGroup
-                        
-                        value={this.state.checkedListArr[index]}
-                        onChange={this.onCheckChange.bind(this,index)}
-                    >
-                        {this.state.PowerList[index].PowerChild.map((child, index) => {
-                            
-                            return(
-                                <CheckBox 
-                                value={child.value}
-                                key = {child.value}
-                                >{child.PowerChildName}</CheckBox>
-                            )
-                        })}
-                    </CheckBoxGroup>
-                </div>
-            )
-        })}
+                                // })
+
+                                // plainOptionsArr[index] = plainOptions;
+                                // console.log(plainOptionsArr,index)
+                                // indeterminate[index] = true;
+                                // checkAll[index] = this.state.data.Power.Powers[index].PowerChild.length !== 0 ? true : false
+
+                                // this.state.data.Power.Powers[index].PowerChild.map((child, key) => {
+                                //     checkedList[key] = child.value;
+                                // })
+                                // checkedListArr[index] = checkedList;
+                                // this.setState({
+                                //     checkAll: checkAll,
+                                //     indeterminate: indeterminate,
+                                //     checkedListArr: checkedListArr,
+                                //     plainOptionsArr:plainOptionsArr
+                                // })
+                                return (
+                                    <div key={this.state.PowerList[index].value}>
+                                        <CheckBox
+                                            className='checkBoxTips'
+                                            indeterminate={this.state.indeterminate[index]}
+                                            onChange={this.onCheckAllChange.bind(this, index)}
+                                            checked={this.state.checkAll[index]}
+                                        >
+                                            {power.PowerName}
+                                            <span className='checkTips'>[已选择<span style={{ color: 'red' }}>{this.state.PowerChildLen[index]}</span>项]</span>
+                                        </CheckBox>
+                                        <CheckBoxGroup
+
+                                            value={this.state.checkedListArr[index]}
+                                            onChange={this.onCheckChange.bind(this, index)}
+                                        >
+                                            {this.state.PowerList[index].PowerChild.map((child, index) => {
+
+                                                return (
+                                                    <CheckBox
+                                                        className='checkChild'
+                                                        value={child.value}
+                                                        key={child.value}
+                                                    >{child.PowerChildName}</CheckBox>
+                                                )
+                                            })}
+                                        </CheckBoxGroup>
+                                        <hr style={{display:this.state.PowerList.length===index+1?'none':'block'}} className='editModal-hr'/>
+                                    </div>
+                                )
+                            })}
                         </div>
                     </div>
                 </div>

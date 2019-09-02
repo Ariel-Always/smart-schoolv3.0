@@ -4,7 +4,7 @@ import { Alert, DetailsModal, DropDown, PagiNation, Search, Table, Button, Check
 //import '../../../common/scss/_left_menu.scss'
 import { Link, } from 'react-router-dom';
 import '../../scss/Admin.scss'
-import { Tooltip, Input } from 'antd'
+import { Tooltip, Input,Modal as AntdModal } from 'antd'
 import TipsContact from './TipsContact'
 import TipsPower from './TipsPower'
 import history from '../containers/history'
@@ -53,7 +53,7 @@ class Admin extends React.Component {
                 },
                 {
                     title: '用户名',
-                    align: 'right',
+                    align: 'center',
                     dataIndex: 'UserName',
                     key: 'UserName',
                     sorter: true,
@@ -98,8 +98,8 @@ class Admin extends React.Component {
 
                         return (
                             <div className='handle-content'>
-                                <Button color='blue' type='default' onClick={this.onHandleClick.bind(this, key)} className='handle-btn'>编辑</Button>
                                 <Button color='blue' type='default' onClick={this.onChangePwdClick.bind(this, key)} className='handle-btn'>重置密码</Button>
+                                <Button color='blue' type='default' onClick={this.onHandleClick.bind(this, key)} className='handle-btn'>编辑</Button>
 
                             </div>
                         )
@@ -1181,7 +1181,8 @@ class Admin extends React.Component {
             onClickKey: 0,
             userMsgKey: 0,
             keyList: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-
+            destroyOnCloce:true,
+            changeAdminModalVisible:false
 
 
         }
@@ -1290,7 +1291,7 @@ class Admin extends React.Component {
         })
     }
 
-    onChangePwdAllClick = () => {
+    onDeleteAllClick = () => {
         const { dispatch } = this.props;
         console.log(this.state.checkedList)
         if (this.state.checkedList.length === 0) {
@@ -1307,7 +1308,7 @@ class Admin extends React.Component {
 
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-query',
-                title: "确定批量重置密码？",
+                title: "确定删除？",
                 ok: this.onAlertQueryOk.bind(this, 888888),
                 cancel: this.onAlertQueryClose.bind(this),
                 close: this.onAlertQueryClose.bind(this)
@@ -1327,29 +1328,18 @@ class Admin extends React.Component {
 
     }
     onHandleClick = (key) => {
+        console.log(this.state.AdminAccountData[key])
         this.setState({
             AdminChangeKey:key,
-            addAdminModalVisible:true
+            changeAdminModalVisible:true,
+            userKey: 'change'
         })
     }
-    onPwdchangeOk = (pwd) => {
-        console.log(pwd);
+    onAddAdmin = (e, ) => {
+        console.log(e)
         this.setState({
-            ChangePwdMadalVisible: false,
-            defaultPwd: 888888
-        })
-    }
-    onPwdchangeClose = () => {
-        this.setState({
-            ChangePwdMadalVisible: false,
-            defaultPwd: 888888
-        })
-    }
-    onPwdchange = (e) => {
-        const { dispatch } = this.props;
-        console.log(e.target.value)
-        this.setState({
-            defaultPwd: e.target.value
+            addAdminModalVisible: true,
+            userKey: 'add'
         })
     }
     onAlertWarnClose = () => {
@@ -1394,25 +1384,57 @@ class Admin extends React.Component {
 
         })
     }
-    onAddAdmin = (e, ) => {
-        console.log(e)
-        this.setState({
-            addAdminModalVisible: true,
-            userKey: 'add'
-        })
-    }
+    
     handleAddAdminModalOk = (e) => {
         console.log(e)
         this.setState({
             addAdminModalVisible: false
         })
+       
     }
     handleAddAdminModalCancel = (e) => {
         console.log(e)
         this.setState({
             addAdminModalVisible: false
         })
+        
     }
+    handleChangeAdminModalOk = (e) => {
+        console.log(e)
+        this.setState({
+            changeAdminModalVisible: false
+        })
+        
+    }
+    handleChangeAdminModalCancel = (e) => {
+        console.log(e)
+        this.setState({
+            changeAdminModalVisible: false
+        })
+       
+    }
+
+    onPwdchangeOk = (pwd) => {
+        console.log(pwd);
+        this.setState({
+            ChangePwdMadalVisible:false,
+            defaultPwd:888888
+         })
+    }
+    onPwdchangeClose = () => {
+         this.setState({
+            ChangePwdMadalVisible:false,
+            defaultPwd:888888
+         })
+    }
+    onPwdchange = (e) => {
+        const {dispatch} = this.props;
+        console.log(e.target.value)
+        this.setState({
+            defaultPwd:e.target.value
+        })
+    }
+
 
     onPowerClick = (Power) => {
         console.log(Power)
@@ -1468,7 +1490,7 @@ class Admin extends React.Component {
                                 </CheckBoxGroup>
                                 <CheckBox className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
                                     全选
-                                    <Button onClick={this.onChangePwdAllClick} className='changePwdAll' color='blue'>批量重置密码</Button>
+                                    <Button onClick={this.onDeleteAllClick} className='deleteAll' color='red'>删除</Button>
                                 </CheckBox>
                                 <div className='pagination-box'>
                                     <PagiNation
@@ -1518,10 +1540,23 @@ class Admin extends React.Component {
                     ref='handleAdminMadal'
                     bodyStyle={{ padding: 0 }}
                     type='1'
-                    title={'添加学生'}
+                    title={this.state.userKey==='add'?'添加学生':'编辑学生'}
                     visible={this.state.addAdminModalVisible}
                     onOk={this.handleAddAdminModalOk}
                     onCancel={this.handleAddAdminModalCancel}
+                    
+                >
+                    <EditModal type='Admin' userKey={this.state.userKey} data = {this.state.AdminAccountData[this.state.AdminChangeKey]} PowerList = {this.state.PowerList}></EditModal>
+                </Modal>
+                <Modal
+                    ref='handleAdminMadal'
+                    bodyStyle={{ padding: 0 }}
+                    type='1'
+                    title={this.state.userKey==='add'?'添加学生':'编辑学生'}
+                    visible={this.state.changeAdminModalVisible}
+                    onOk={this.handleChangeAdminModalOk}
+                    onCancel={this.handleChangeAdminModalCancel}
+                    
                 >
                     <EditModal type='Admin' userKey={this.state.userKey} data = {this.state.AdminAccountData[this.state.AdminChangeKey]} PowerList = {this.state.PowerList}></EditModal>
                 </Modal>

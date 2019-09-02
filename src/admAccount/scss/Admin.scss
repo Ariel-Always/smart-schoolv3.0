@@ -190,7 +190,7 @@ $image-url :"../images";
                 }
 
                 .handle-btn{
-                    float: right;
+                    //float: right;
                     height: 24px;
                     line-height: 24px;
                     font-size:14px;
@@ -209,6 +209,7 @@ $image-url :"../images";
                     text-align: center;
                     margin-left: 8px;
                     box-sizing: content-box;
+                    border:none;
                 }
                 .changePwdAll{
                     color:#fff;
