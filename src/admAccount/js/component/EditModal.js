@@ -37,65 +37,64 @@ class EditModal extends React.Component {
                 defaultUserName: this.state.data.Name.Name
             })
         }
-        // const PowerList = this.state.PowerList.map((power, index) => {
-        //     let checkAll = this.state.checkAll;
-        //     let indeterminate = this.state.indeterminate;
-        //     let plainOptions = [];
-        //     let plainOptionsArr = this.state.plainOptionsArr;
-        //     let checkedList = [];
-        //     let checkedListArr = this.state.checkedListArr;
-        //     this.state.PowerList[index].PowerChild.map((child, index) => {
-        //         plainOptions[index] = child.value;
+        const PowerList = this.state.PowerList.map((power, index) => {
+            let checkAll = this.state.checkAll;
+            let indeterminate = this.state.indeterminate;
+            let plainOptions = [];
+            let plainOptionsArr = this.state.plainOptionsArr;
+            let checkedList = [];
+            let checkedListArr = this.state.checkedListArr;
+            this.state.PowerList[index].PowerChild.map((child, index) => {
+                plainOptions[index] = child.value;
                 
-        //     })
+            })
             
-        //     plainOptionsArr[index] = plainOptions;
-        //     console.log(plainOptionsArr,index)
-        //     indeterminate[index] = true;
-        //     checkAll[index] = this.state.data.Power.Powers[index].PowerChild.length !== 0 ? true : false
+            plainOptionsArr[index] = plainOptions;
+            console.log(plainOptionsArr,index)
+            
+            checkAll[index] = this.state.data.Power.Powers[index].PowerChild.length !== 0 ? true : false
 
-        //     this.state.data.Power.Powers[index].PowerChild.map((child, key) => {
-        //         checkedList[key] = child.value;
-        //     })
-        //     checkedListArr[index] = checkedList;
-        //     this.setState({
-        //         checkAll: checkAll,
-        //         indeterminate: indeterminate,
-        //         checkedListArr: checkedListArr,
-        //         plainOptionsArr:plainOptionsArr
-        //     })
-        //     return (
-        //         <div key={this.state.PowerList[index].value}>
-        //             <CheckBox
-        //                 indeterminate={this.state.indeterminate[index]}
-        //                 onChange={this.onCheckAllChange.bind(this, index)}
-        //                 checked={this.state.checkAll[index]}
-        //             >
-        //                 {power.PowerName}
-        //                 <span className='checkTips'>[已选择<span style={{ color: 'red' }}>{this.state.data.Power.Powers[index].PowerChild.length}</span>项]</span>
-        //             </CheckBox>
-        //             <CheckBoxGroup
+            this.state.data.Power.Powers[index].PowerChild.map((child, key) => {
+                checkedList[key] = child.value;
+            })
+            indeterminate[index] =  this.state.plainOptionsArr[index].length===checkedList.length||checkedList===[]?false:true;;
+            checkedListArr[index] = checkedList;
+            this.setState({
+                checkAll: checkAll,
+                indeterminate: indeterminate,
+                checkedListArr: checkedListArr,
+                plainOptionsArr:plainOptionsArr
+            })
+            // return (
+            //     <div key={this.state.PowerList[index].value}>
+            //         <CheckBox
+            //             indeterminate={this.state.indeterminate[index]}
+            //             onChange={this.onCheckAllChange.bind(this, index)}
+            //             checked={this.state.checkAll[index]}
+            //         >
+            //             {power.PowerName}
+            //             <span className='checkTips'>[已选择<span style={{ color: 'red' }}>{this.state.data.Power.Powers[index].PowerChild.length}</span>项]</span>
+            //         </CheckBox>
+            //         <CheckBoxGroup
                         
-        //                 value={this.state.checkedListArr[index]}
-        //                 onChange={this.onCheckChange.bind(this,index)}
-        //             >
-        //                 {this.state.PowerList[index].PowerChild.map((child, index) => {
+            //             value={this.state.checkedListArr[index]}
+            //             onChange={this.onCheckChange.bind(this,index)}
+            //         >
+            //             {this.state.PowerList[index].PowerChild.map((child, index) => {
                             
-        //                     return(
-        //                         <CheckBox 
-        //                         value={child.value}
-        //                         key = {child.value}
-        //                         >{child.PowerChildName}</CheckBox>
-        //                     )
-        //                 })}
-        //             </CheckBoxGroup>
-        //         </div>
-        //     )
-        // })
+            //                 return(
+            //                     <CheckBox 
+            //                     value={child.value}
+            //                     key = {child.value}
+            //                     >{child.PowerChildName}</CheckBox>
+            //                 )
+            //             })}
+            //         </CheckBoxGroup>
+            //     </div>
+            // )
+        })
 
-        // this.setState({
-        //     PowerList: PowerList
-        // })
+        
     }
     onEditIDChange = (e) => {
 
@@ -160,9 +159,11 @@ class EditModal extends React.Component {
         let checkedListArr = this.state.checkedListArr;
         let indeterminate = this.state.indeterminate;
         let checkAll = this.state.checkAll;
+        
         checkedListArr[index] = value;
-        indeterminate[index] = this.state.plainOptionsArr[index].length===value.length||value===[]?false:true;
-        checkAll[index] = this.state.plainOptionsArr[index].length===value.length
+        indeterminate[index] = (this.state.plainOptionsArr[index].length!==value.length&&value.length!==0)?true:false;
+        checkAll[index] = this.state.plainOptionsArr[index].length===value.length?true:false;
+        console.log(checkedListArr,indeterminate,checkAll)
         this.setState({
             checkedListArr: checkedListArr,
             indeterminate: indeterminate,
@@ -215,33 +216,33 @@ class EditModal extends React.Component {
                         </span>
                         <div className='culonm-2 culonm-3'>
                             {this.state.PowerList.map((power, index) => {
-            let checkAll = this.state.checkAll;
-            let indeterminate = this.state.indeterminate;
-            let plainOptions = [];
-            let plainOptionsArr = this.state.plainOptionsArr;
-            let checkedList = [];
-            let checkedListArr = this.state.checkedListArr;
-            console.log(power)
-            power.PowerChild.map((child, index) => {
-                plainOptions[index] = child.value;
+            // let checkAll = this.state.checkAll;
+            // let indeterminate = this.state.indeterminate;
+            // let plainOptions = [];
+            // let plainOptionsArr = this.state.plainOptionsArr;
+            // let checkedList = [];
+            // let checkedListArr = this.state.checkedListArr;
+            // console.log(power)
+            // power.PowerChild.map((child, index) => {
+            //     plainOptions[index] = child.value;
                 
-            })
+            // })
             
-            plainOptionsArr[index] = plainOptions;
-            console.log(plainOptionsArr,index)
-            indeterminate[index] = true;
-            checkAll[index] = this.state.data.Power.Powers[index].PowerChild.length !== 0 ? true : false
+            // plainOptionsArr[index] = plainOptions;
+            // console.log(plainOptionsArr,index)
+            // indeterminate[index] = true;
+            // checkAll[index] = this.state.data.Power.Powers[index].PowerChild.length !== 0 ? true : false
 
-            this.state.data.Power.Powers[index].PowerChild.map((child, key) => {
-                checkedList[key] = child.value;
-            })
-            checkedListArr[index] = checkedList;
-            this.setState({
-                checkAll: checkAll,
-                indeterminate: indeterminate,
-                checkedListArr: checkedListArr,
-                plainOptionsArr:plainOptionsArr
-            })
+            // this.state.data.Power.Powers[index].PowerChild.map((child, key) => {
+            //     checkedList[key] = child.value;
+            // })
+            // checkedListArr[index] = checkedList;
+            // this.setState({
+            //     checkAll: checkAll,
+            //     indeterminate: indeterminate,
+            //     checkedListArr: checkedListArr,
+            //     plainOptionsArr:plainOptionsArr
+            // })
             return (
                 <div key={this.state.PowerList[index].value}>
                     <CheckBox
@@ -258,7 +259,7 @@ class EditModal extends React.Component {
                         onChange={this.onCheckChange.bind(this,index)}
                     >
                         {this.state.PowerList[index].PowerChild.map((child, index) => {
-                            console.log(child.PowerChildName)
+                            
                             return(
                                 <CheckBox 
                                 value={child.value}
