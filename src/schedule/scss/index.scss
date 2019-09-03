@@ -60,6 +60,24 @@ $image-url:'../images';
 
 }
 
+.ant-modal-footer{
+
+  .Button{
+
+    background-blend-mode: normal, normal;
+
+    border-radius: 2px;
+
+    color: #ffffff;
+
+    border:0;
+
+    outline:none;
+
+  }
+
+}
+
 //学段tab
 @import "./period-tab";
 
@@ -84,3 +102,15 @@ $image-url:'../images';
 
 //left-menu的样式
 @import "./left-menu";
+
+//教师个人课表样式
+
+@import "./teacher-mine";
+
+//调整课表的按钮
+
+@import "./adjust-shedule-btns";
+
+//添加临时课程的弹窗
+
+@import "./add-schedule-modal";

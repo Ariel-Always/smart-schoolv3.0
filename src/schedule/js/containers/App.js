@@ -1,13 +1,19 @@
 import React,{Component} from 'react';
-import {Frame,Loading,Alert,LeftMenu,Modal} from "../../../common";
-import {connect} from 'react-redux';
+import {Frame,Loading,Alert} from "../../../common";
+import { connect } from 'react-redux';
 import {HashRouter as Router,Route,Switch,withRouter,Redirect} from 'react-router-dom';
 import DocumentTitle from 'react-document-title';
 import ManagerComponent from './Manager';
 import TeacherComponent from './Teacher';
 import StudentComponent from './Student';
+import AdjustBtnsWrapper from '../component/Manager/AdjustBtnsWrapper';
+import AdjustScheduleModal from './Manager/AdjustScheduleModal';
 import ModuleCommonActions from '../actions/ModuleCommonActions';
 import PeriodWeekTermActions from '../actions/PeriodWeekTermActions';
+import AdjustBtnsActions from '../actions/Manager/AdjustBtnsActions';
+import ASMAction from  '../actions/Manager/AddScheduleModalActions';
+
+
 
 import '../../scss/index.scss';
 
@@ -34,7 +40,43 @@ class App extends Component{
         dispatch({type:PeriodWeekTermActions.PERIOD_VALUE_CHANGE,key:key});
 
     }
+    //将隐藏的adjustWrapper弹出或隐藏
+    adjustBtnsToggle(e){
 
+        const { dispatch,state } = this.props;
+
+        const { AdjustBtns } = state.Manager;
+
+        dispatch({type:AdjustBtnsActions.ADJUST_BTNS_TOGGLE});
+
+    }
+    //点击其他地方的时候隐藏弹出的btns
+    clickOthers(e){
+
+        const {dispatch} = this.props;
+
+        if ((!document.getElementById('adjust-schedule').contains(e.target))&&(!document.getElementById('adjust-list-wrapper').contains(e.target))){
+
+            dispatch({type:AdjustBtnsActions.ADJUST_BTNS_HIDE});
+
+        }
+
+    }
+    //弹出添加临时课程弹窗
+    adjustScheduleModalShow(){
+
+        const {dispatch} = this.props;
+
+        dispatch({type:ASMAction.ADD_SCHEDULE_MODAL_SHOW});
+
+    }
+
+
+    componentDidMount(){
+
+        addEventListener('click',this.clickOthers.bind(this));
+
+    }
 
 
     render() {
@@ -42,6 +84,8 @@ class App extends Component{
         const {state} = this.props;
 
         const { LoginUser,AppLoading,ModuleSetting,Manager,PeriodWeekTerm  } = state;
+
+        const { AdjustBtns } = Manager;
 
         return (
 
@@ -82,6 +126,22 @@ class App extends Component{
                                     }
 
                                 </div>
+
+                                {
+
+                                    LoginUser.UserType === 0?
+
+                                        <AdjustBtnsWrapper
+
+                                            adjustBtnsToggle={this.adjustBtnsToggle.bind(this)}
+
+                                            adjustBtns={AdjustBtns}
+
+                                            adjustScheduleModalShow={this.adjustScheduleModalShow.bind(this)}></AdjustBtnsWrapper>
+
+                                        :''
+
+                                }
 
                             </div>
 
@@ -137,6 +197,8 @@ class App extends Component{
                    </Loading>
 
                </DocumentTitle>
+
+               <AdjustScheduleModal></AdjustScheduleModal>
 
            </React.Fragment>
         );

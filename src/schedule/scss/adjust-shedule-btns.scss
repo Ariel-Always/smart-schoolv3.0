@@ -1,0 +1,157 @@
+.adjust-schedule-wrapper{
+
+  float: right;
+
+  position:relative;
+
+  &>span{
+
+    margin-left: 32px;
+
+    padding-left:18px;
+
+    background-position: left center;
+
+    background-repeat: no-repeat;
+
+    color: #0099ff;
+
+    cursor: pointer;
+
+  }
+
+  .schedule-setting{
+
+    background-image:url("#{$image-url}/schedule-setting.png");
+
+  }
+
+  .import-schedule{
+
+    background-image:url("#{$image-url}/import-schedule.png");
+
+  }
+
+  .adjust-schedule{
+
+    background-image:url("#{$image-url}/adjust-schedule.png");
+
+  }
+
+  .see-adjust-log{
+
+    background-image:url("#{$image-url}/schedule-log.png");
+
+  }
+
+  .adjust-list-wrapper{
+
+    position: absolute;
+
+    z-index: 5;
+
+    background-color: #ffffff;
+
+    @include box-shadow(0 0 6px 0 rgba(0, 0, 0, 0.2));
+
+    right: 56px;
+
+    top: 46px;
+
+    &>div{
+
+      width: 190px;
+
+      height: 48px;
+
+      cursor: pointer;
+
+      &>span{
+
+        display: inline-block;
+
+        margin-left: 22px;
+
+        max-width: 128px;
+
+        @include textOverFlow;
+
+        padding-left:22px;
+
+        background-repeat: no-repeat;
+
+        background-position: left center;
+
+      }
+
+      &:hover{
+
+        background-color: #e5f0f3;
+
+      }
+
+    }
+
+    .add-schedule{
+
+      span{
+
+        background-image: url("#{$image-url}/add.png");
+
+      }
+
+    }
+
+    .adjust-by-teacher{
+
+      span{
+
+        background-image: url("#{$image-url}/teacher.png");
+
+      }
+
+    }
+
+    .adjust-by-time{
+
+      span{
+
+        background-image: url("#{$image-url}/time.png");
+
+      }
+
+    }
+
+    .adjust-by-classroom{
+
+      span{
+
+        background-image: url("#{$image-url}/home.png");
+
+      }
+
+    }
+
+    .stop-schedule{
+
+      span{
+
+        background-image: url("#{$image-url}/ban.png");
+
+      }
+
+    }
+
+    .delete-schedule{
+
+      span{
+
+        background-image: url("#{$image-url}/del.png");
+
+      }
+
+    }
+
+  }
+
+}

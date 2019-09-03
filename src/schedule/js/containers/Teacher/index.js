@@ -6,6 +6,8 @@ import {HashRouter as Router,Route,Switch,Redirect} from  'react-router-dom';
 
 import HeaderRouter from '../../component/HeaderRouter';
 
+import TeacherPersonalSchedule from './TeacherPersonalSchedule'
+
 import SubjectTeacher from './SubjectTeacher';
 
 
@@ -38,6 +40,8 @@ class Index extends Component{
                     <Switch>
 
                         <Route path="/teacher/subject-teacher/*" component={SubjectTeacher}></Route>
+
+                        <Route path="/teacher/mine" component={TeacherPersonalSchedule}></Route>
 
                         <Redirect path="/teacher/subject-teacher*" to={{pathname:"/teacher/subject-teacher/subject"}}></Redirect>
 

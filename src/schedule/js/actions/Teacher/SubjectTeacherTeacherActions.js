@@ -38,7 +38,7 @@ const STTTeacherUpdate = (pickInfo) => {
 
         let UserID = pickInfo.catChildrenId;
 
-        let UserType = 1;
+        let UserType = LoginUser.UserType;
 
         let NowWeekNo = Manager.SubjectTeacherTeacherSchedule.NowWeekNo;
 

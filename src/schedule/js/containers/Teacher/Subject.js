@@ -106,7 +106,7 @@ class Subject extends Component{
 
             <div className="subject-teacher-subject-content">
 
-                <DropDown
+                {/*<DropDown
 
                     dropSelectd={SubjectTeacherSubjectSchedule.ItemSubjectSelect}
 
@@ -118,7 +118,7 @@ class Subject extends Component{
 
                     onChange={this.subjectChange.bind(this)}>
 
-                </DropDown>
+                </DropDown>*/}
 
                 <TermPick
 
