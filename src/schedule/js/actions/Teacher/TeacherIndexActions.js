@@ -9,6 +9,8 @@ import AppLoadingActions from "../AppLoadingActions";
 
 import STTActions from "../Teacher/SubjectTeacherTeacherActions";
 
+import TPActions from "./TeacherPersonalActions";
+
 
 //学科教师总表学科总课表界面初始化
 const STSPageInit = () => {
@@ -437,12 +439,135 @@ const STTPageInit = () => {
 
 };
 
+//获取教师的个人课表
+
+const TeacherPersonalInit = () => {
+
+    return (dispatch,getState) => {
+
+
+        let {PeriodWeekTerm,LoginUser} = getState();
+        //如果前面获取的周次、学段信息已获得
+        if (PeriodWeekTerm&&PeriodWeekTerm.ItemPeriod&&LoginUser.SchoolID){
+
+            let SchoolID = LoginUser.SchoolID;//需要的参数后期加入
+
+            let UserID = LoginUser.UserID;
+
+            let UserType = LoginUser.UserType;
+
+            let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;//所需的参数
+
+            let getSCGCPromise = Method.getGetData(`/scheduleSubjectGrade-teacher?SchoolID=${SchoolID}&PeriodID=${PeriodID}&UserID=${UserID}&UserType=${UserType}`);
+
+            let teacherSchedulePromise = Method.getGetData(`/scheduleSubjectTeacherTeacherSchedule?UserID=${UserID}&UserType=${UserType}&SchoolID=${SchoolID}&NowWeekNo=${NowWeekNo}`);
+
+            Promise.all([getSCGCPromise,teacherSchedulePromise]).then(res => {
+
+
+                let NowWeekNo = PeriodWeekTerm.NowWeekNo;
+
+                //将课程、学期、等等放到redux中
+
+                dispatch({type:SCGCRActions.SCGCR_INFO_INIT,data:res[0].Data});
+
+                dispatch({type:STTActions.TP_NOW_WEEK_CHANGE,data:NowWeekNo});
+
+                dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
+
+            });
+
+        }else{//如果前面获取的周次、学段信息没获得，等待获得。
+
+            let  PeriodWeekTermInterVal =  setInterval(()=>{
+
+                const {PeriodWeekTerm,LoginUser} = getState();
+
+                if (PeriodWeekTerm&&PeriodWeekTerm.ItemPeriod){
+
+                    clearInterval(PeriodWeekTermInterVal);
+
+                    //异步获取到周次、学段信息等
+
+                    let SchoolID = LoginUser.SchoolID;//需要的参数后期加入
+
+                    let UserID = LoginUser.UserID;
+
+                    let UserType = LoginUser.UserType;
+
+                    let NowWeekNo = PeriodWeekTerm.NowWeekNo;
+
+                    let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;//所需的参数
+
+                    let getSCGCPromise = Method.getGetData(`/scheduleSubjectGrade-teacher?SchoolID=${SchoolID}&PeriodID=${PeriodID}&UserID=${UserID}&UserType=${UserType}`);
+
+                    let teacherSchedulePromise = Method.getGetData(`/scheduleSubjectTeacherTeacherSchedule?UserID=${UserID}&UserType=${UserType}&SchoolID=${SchoolID}&NowWeekNo=${NowWeekNo}`);
+
+                    Promise.all([getSCGCPromise,teacherSchedulePromise]).then(res => {
+
+
+                        let NowWeekNo = PeriodWeekTerm.NowWeekNo;
+
+                        //将课程、学期、等等放到redux中
+
+                        let schedule =  res[1].Data.ItemSchedule.map((item) => {
+
+                            return {
+
+                                title:item.SubjectName,
+
+                                titleID:item.SubjectID,
+
+                                secondTitle:(item.ClassName===''?item.CourseClassName:item.ClassName),
+
+                                secondTitleID:(item.ClassName===''?item.CourseClassID:item.ClassID),
+
+                                thirdTitle:item.ClassRoomName,
+
+                                thirdTitleID:item.ClassRoomID,
+
+                                WeekDay:item.WeekDay,
+
+                                ClassHourNO:item.ClassHourNO,
+
+                                ScheduleType:item.ScheduleType
+
+                            }
+
+
+                        });
+
+                        let NowDate = res[1].Data.NowDate;
+
+                        dispatch({type:SCGCRActions.SCGCR_INFO_INIT,data:res[0].Data});
+
+                        dispatch({type:TPActions.TP_SCHEDULE_CHANGE,data:{schedule,NowDate}});
+
+                        dispatch({type:TPActions.TP_SCHEDULE_LOADING_HIDE});
+
+                        dispatch({type:TPActions.TP_NOW_WEEK_CHANGE,data:NowWeekNo});
+
+                        dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
+
+                });
+
+            }
+
+            },50)
+
+        }
+
+    }
+
+};
 
 
 export default {
 
     STSPageInit,
 
-    STTPageInit
+    STTPageInit,
+
+    TeacherPersonalInit
 
 }

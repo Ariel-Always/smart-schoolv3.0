@@ -19,7 +19,7 @@ const STSPageUpdate = (opt) => {
 
     return (dispatch,getState) => {
 
-        dispatch({type:STSActions.LOADING_SHOW});
+        dispatch({type:LOADING_SHOW});
 
         const {PeriodWeekTerm,LoginUser,Manager} = getState();
         //获取需要传递的参数
@@ -53,23 +53,47 @@ const STSPageUpdate = (opt) => {
 
                 let teacherObj = {
 
-                    TeacherID:item.TeacherID,
+                    id:item.TeacherID,
 
-                    TeacherName:item.TeacherName
+                    name:item.TeacherName
 
                 };
 
-                let courseList = json.Data.ItemSchedule.filter((i) => {
+                let list = json.Data.ItemSchedule.map((i) => {
 
                     if (i.TeacherID === item.TeacherID){
 
-                        return i;
+                        return {
+
+                            type:i.ScheduleType,
+
+                            title:(i.ClassName!==''?i.ClassName:CourseClassName),
+
+                            titleID:(i.ClassName!==''?i.ClassID:CourseClassID),
+
+                            secondTitle:i.SubjectName,
+
+                            secondTitleID:i.SubjectID,
+
+                            thirdTitle:i.ClassRoomName,
+
+                            thirdTitleID:i.ClassRoomID,
+
+                            WeekDay:i.WeekDay,
+
+                            ClassHourNO:i.ClassHourNO
+
+                        };
+
+                    }else{
+
+                        return;
 
                     }
 
-                });
+                }).filter(i => {return i!==undefined});
 
-                teacherObj['courseList'] = courseList;
+                teacherObj['list'] = list;
 
                 return teacherObj;
 
@@ -79,17 +103,17 @@ const STSPageUpdate = (opt) => {
 
                 schedule.push(...SubjectTeacherSchedule);
 
-                dispatch({type:STSActions.SUBJECT_TEACHER_SCHEDULE_UPDATE,data:schedule});
+                dispatch({type:SUBJECT_TEACHER_SCHEDULE_UPDATE,data:schedule});
 
-                dispatch({type:STSActions.STS_PAGE_ADD});
+                dispatch({type:STS_PAGE_ADD});
 
             }else{
 
-                dispatch({type:STSActions.SUBJECT_TEACHER_SCHEDULE_UPDATE,data:SubjectTeacherSchedule});
+                dispatch({type:SUBJECT_TEACHER_SCHEDULE_UPDATE,data:SubjectTeacherSchedule});
 
             }
 
-            dispatch({type:STSActions.LOADING_HIDE});
+            dispatch({type:LOADING_HIDE});
 
         });
 

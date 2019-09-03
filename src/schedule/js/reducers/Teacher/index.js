@@ -6,13 +6,17 @@ import SubjectCourseGradeClassRoom from './SubjectCourseGradeClassRoom';
 
 import SubjectTeacherTeacherSchedule from './SubjectTeacherTeacherSchedule';
 
+import PersonalSchedule from "./PersonalSchedule";
+
 const Teacher = combineReducers({
 
     SubjectTeacherSubjectSchedule,
 
     SubjectCourseGradeClassRoom,
 
-    SubjectTeacherTeacherSchedule
+    SubjectTeacherTeacherSchedule,
+
+    PersonalSchedule
 
 });
 

@@ -6,6 +6,10 @@ import SubjectTeacherSchedule from './SubjectTeacherSchedule';
 
 import SubjectTeacherTeacherSchedule from "./SubjectTeacherTeacherSchedule";
 
+import AdjustBtns from "./AdjustBtns";
+
+import AddScheduleModal from "./AddScheduleModal";
+
 //管理员角色的reduce
 
 const Index = combineReducers({
@@ -14,7 +18,11 @@ const Index = combineReducers({
 
     SubjectTeacherSchedule,
 
-    SubjectTeacherTeacherSchedule
+    SubjectTeacherTeacherSchedule,
+
+    AdjustBtns,
+
+    AddScheduleModal
 
 });
 

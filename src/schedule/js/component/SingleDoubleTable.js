@@ -15,11 +15,13 @@ class SingleDoubleTable extends Component{
 
     render() {
 
-        const { commonHeight,topHeight,ItemClassHourCount,ItemClassHour,ItemWeek,NowWeekNo,commonWidth,leftOneWidth,leftTwoWidth,schedule } = this.props;
+        const { commonHeight,topHeight,ItemClassHourCount,ItemClassHour,ItemWeek,NowWeekNo,commonWidth,leftOneWidth,leftTwoWidth,schedule,NowDate } = this.props;
         //根据课程
         let courseTotal = 0;
 
         let ths =[];
+        //查找到当天是周几
+        let weekDay = '';
         //查询该周的日期
         if (ItemWeek&&NowWeekNo){
 
@@ -101,7 +103,13 @@ class SingleDoubleTable extends Component{
 
                }
 
-               let th = <th key={i} style={{height:topHeight}}>
+               if (dateTime === NowDate){
+
+                   weekDay = i;
+
+               }
+
+               let th = <th key={i} style={{height:topHeight}} className={`${dateTime===NowDate?'active':''}`}>
 
                             <div className={`week week${i}`} style={{width:commonWidth}}>{week}</div>
 
@@ -206,7 +214,7 @@ class SingleDoubleTable extends Component{
 
                                         tds.push(<td key={`${i}${ky}`} className={`shedule${i}`} style={{height:commonHeight}}>
 
-                                            <div className="scheduleDiv" style={{width:commonWidth}}>
+                                            <div className={`scheduleDiv ${i === weekDay?'active':''}`} style={{width:commonWidth}}>
 
                                                 <div className={`title ${it.ScheduleType===1?'':'active'}`} title={it.title} data-id={it.titleID}>{it.title}</div>
 
@@ -232,7 +240,7 @@ class SingleDoubleTable extends Component{
 
                                     tds.push(<td key={i} className={`shedule${i}`} style={{height:commonHeight}}>
 
-                                        <div className="scheduleDiv empty" style={{width:commonWidth,lineHeight:`${commonHeight}px`}}>--</div>
+                                        <div className={`scheduleDiv empty ${i === weekDay?'active':''}`} style={{width:commonWidth,lineHeight:`${commonHeight}px`}}>--</div>
 
                                     </td>)
 
