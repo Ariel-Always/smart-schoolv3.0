@@ -46,12 +46,12 @@ class App extends Component {
 
 
     componentWillMount() {
-      
+
         let route = history.location.pathname;
         // 获取接口数据
-        
 
-       
+
+
         history.listen(() => {//路由监听
             let route = history.location.pathname;
             console.log(route)
@@ -88,30 +88,10 @@ class App extends Component {
         if (route === '/') {
             //dispatch(actions.UpDataState.getAllUserPreview('/ArchivesAll'));
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-
-
-        } else if (handleRoute === 'Student') {
-            //dispatch(actions.UpDataState.getAllUserPreview('/Archives' + handleRoute));
-            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-
-            console.log('Student')
-            if (!this.props.DataState.GradeClassMsg.returnData)
-                dispatch(actions.UpDataState.getGradeClassMsg('/AccountStudent_DropDownMenu'));
-            dispatch(actions.UpDataState.getGradeStudentPreview('/AccountStudent?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
-
-        } else if (handleRoute === 'Teacher') {
-            console.log('Teacher：')
-            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-            if (!this.props.DataState.SubjectTeacherMsg.returnData)
-                dispatch(actions.UpDataState.getSubjectTeacherMsg('/ArchivesTeacher_DropDownMenu'));
-            dispatch(actions.UpDataState.getSubjectTeacherPreview('/ArchivesTeacher?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
-        } else if (handleRoute === 'Leader') {
-            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-        } else if (handleRoute === 'Leader') {
-            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-        } else if (handleRoute === 'Admin') {
-            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-        } else {
+            if (!this.props.DataState.PeriodMsd)
+                dispatch(actions.UpDataState.getPeriodMsg('/AdmSubject_DropDownMenu?schoolID=sss'));
+            dispatch(actions.UpDataState.getSubjectMsg('/AdmSubject?schoolID=schoolID&periodID=periodID&pageSize=10&pageIndex=0&PageSize=10'));
+        }  else {
             history.push('/')
         }
 
