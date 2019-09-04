@@ -94,7 +94,19 @@ const AddScheduleModal = (state={
 
                 classHourErrorShow:false,
 
-                classRoomErrorShow:false
+                classRoomErrorShow:false,
+
+                classSearchList:[],
+
+                teacherSearchList:[],
+
+                classRoomSearchList:[],
+
+                classSearchLoadingShow:true,
+
+                teacherSearchLoadingShow:true,
+
+                classRoomSearchLoadingShow:true
 
             };
 
@@ -237,6 +249,18 @@ const AddScheduleModal = (state={
         case ASMActions.ADD_SCHEDULE_MODAL_TEACHER_SEARCH_LOADING_SHOW:
 
             return {...state,teacherSearchLoadingShow:true};
+
+        case ASMActions.ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LIST_UPDATE:
+
+            return {...state,classRoomSearchList:actions.data};
+
+        case ASMActions.ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LOADING_HIDE:
+
+            return {...state,classRoomSearchLoadingShow:false};
+
+        case ASMActions.ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LOADING_SHOW:
+
+            return {...state,classRoomSearchLoadingShow:true};
 
         default:
 

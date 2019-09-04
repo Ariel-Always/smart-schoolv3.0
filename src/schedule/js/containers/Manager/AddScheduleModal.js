@@ -8,7 +8,7 @@ import ASMActions from '../../actions/Manager/AddScheduleModalActions'
 
 import { Tooltip } from 'antd';
 
-class AdjustScheduleModal extends Component{
+class AddScheduleModal extends Component{
 
     //学科选项改变
     subjectChange(e){
@@ -136,6 +136,28 @@ class AdjustScheduleModal extends Component{
 
         }
 
+        if (
+
+            (Object.keys(AddScheduleModal.checkedSubject).length > 0)&&
+
+            (Object.keys(AddScheduleModal.checkedClass).length > 0)&&
+
+            (Object.keys(AddScheduleModal.checkedTeacher).length > 0)&&
+
+            (Object.keys(AddScheduleModal.checkedWeek).length > 0)&&
+
+            (Object.keys(AddScheduleModal.checkedDate).length > 0)&&
+
+            (Object.keys(AddScheduleModal.checkedClassHour).length>0)&&
+
+            (Object.keys(AddScheduleModal.checkedClassRoom).length > 0)
+
+        ){
+
+            dispatch(ASMActions.commitInfo())
+
+        }
+
     }
 
     //点击取消交互
@@ -157,6 +179,19 @@ class AdjustScheduleModal extends Component{
         dispatch(ASMActions.classSearch(value));
 
     }
+
+    //点击教师搜索
+
+    classRoomSearchClick(e){
+
+        const { dispatch } = this.props;
+
+        const {value} = e;
+
+        dispatch(ASMActions.classRoomSearch(value));
+
+    }
+
 
     //点击教师
     teacherSearchClick(e){
@@ -353,7 +388,11 @@ class AdjustScheduleModal extends Component{
                                         mutipleOptions={{
                                             range:2,
                                             dropMultipleList:AddScheduleModal.classRoom,
-                                            dropMultipleChange:this.classRoomChange.bind(this)
+                                            dropMultipleChange:this.classRoomChange.bind(this),
+                                            dropClickSearch:this.classRoomSearchClick.bind(this),
+                                            searchList:AddScheduleModal.classRoomSearchList,
+                                            searchPlaceholder:"请输入教师工号或者教师姓名进行搜索...",
+                                            searchLoadingShow:AddScheduleModal.classRoomSearchLoadingShow
                                         }}
                                         style={{zIndex:6}}>
 
@@ -395,4 +434,4 @@ const mapStateToState = (state) => {
 
 };
 
-export default connect(mapStateToState)(AdjustScheduleModal);
+export default connect(mapStateToState)(AddScheduleModal);

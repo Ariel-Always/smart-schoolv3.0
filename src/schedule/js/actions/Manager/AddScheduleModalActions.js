@@ -2,6 +2,8 @@ import Method from  '../Method';
 
 import React from 'react';
 
+
+
 const ADD_SCHEDULE_MODAL_SHOW = 'ADJUST_SCHEDULE_MODAL_SHOW';
 
 const ADD_SCHEDULE_MODAL_HIDE = 'ADJUST_SCHEDULE_MODAL_HIDE';
@@ -78,6 +80,13 @@ const ADD_SCHEDULE_MODAL_TEACHER_SEARCH_LOADING_SHOW = 'ADD_SCHEDULE_MODAL_TEACH
 const ADD_SCHEDULE_MODAL_TEACHER_SEARCH_LOADING_HIDE = 'ADD_SCHEDULE_MODAL_TEACHER_SEARCH_LOADING_HIDE';
 
 const ADD_SCHEDULE_MODAL_TEACHER_SEARCH_LIST_UPDATE = 'ADD_SCHEDULE_MODAL_TEACHER_SEARCH_LIST_UPDATE';
+
+const ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LOADING_SHOW = 'ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LOADING_SHOW';
+
+const ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LOADING_HIDE = 'ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LOADING_HIDE';
+
+const ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LIST_UPDATE = 'ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LIST_UPDATE';
+
 
 //初始化弹窗信息的方法
 const InfoInit = () => {
@@ -352,13 +361,15 @@ const InfoInit = () => {
 
 
 //点击班级搜索
-const classSearch = () => {
+const classSearch = (key) => {
 
-  return dispatch => {
+  return (dispatch,getState) => {
+
+        let SchoolID = getState().LoginUser;
 
         dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_LOADING_SHOW});
 
-        let searchClassPromise = Method.getGetData('/scheduleSearchClass');
+        let searchClassPromise = Method.getGetData(`/scheduleSearchClass?SchoolID=${SchoolID}&key=${key}`);
 
         searchClassPromise.then(json => {
 
@@ -393,13 +404,15 @@ const classSearch = () => {
 };
 
 //点击教师搜索
-const teacherSearch = () => {
+const teacherSearch = (key) => {
 
-    return dispatch => {
+    return (dispatch,getState) => {
+
+        let SchoolID = getState().LoginUser;
 
         dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_LOADING_SHOW});
 
-        let searchTeacherPromise = Method.getGetData('/scheduleSubjectTeacherTeacher');
+        let searchTeacherPromise = Method.getGetData(`/scheduleSubjectTeacherTeacher?SchoolID=${SchoolID}&key=${key}`);
 
         searchTeacherPromise.then(json => {
 
@@ -428,6 +441,108 @@ const teacherSearch = () => {
             }
 
         });
+
+    }
+
+};
+
+//点击教室搜索
+
+const classRoomSearch = (key) => {
+
+    return (dispatch,getState) => {
+
+        let SchoolID = getState().LoginUser;
+
+        dispatch({type:ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LOADING_SHOW});
+
+        let searchClassRoomPromise = Method.getGetData(`/scheduleSearchClassRoom?SchoolID=${SchoolID}&key=${key}`);
+
+        searchClassRoomPromise.then(json => {
+
+            if (json.Status === 200){
+
+                let classRoomSearchList = json.Data.map(item => {
+
+                    return{
+
+                        id:item.ClassRoomID,
+
+                        name:item.ClassRoomName
+
+                    };
+
+                });
+
+                dispatch({type:ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LIST_UPDATE,data:classRoomSearchList});
+
+                dispatch({type:ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LOADING_HIDE});
+
+            }else{
+
+                alert(json.Msg);
+
+            }
+
+        });
+
+    }
+
+};
+
+
+//提交添加内容弹窗
+
+const commitInfo = () => {
+
+
+    return (dispatch,getState) => {
+
+        let { AddScheduleModal } = getState().Manager;
+
+        let SubjectID = AddScheduleModal.checkedSubject.value;
+
+        let SubjectName = AddScheduleModal.checkedSubject.title;
+
+        let WeekNO = AddScheduleModal.checkedWeek.value;
+
+        let WeekDay =  AddScheduleModal.checkedDate.value;
+
+        let ClassHourNO = AddScheduleModal.checkedClassHour.value;
+
+        let TeacherID = AddScheduleModal.checkedTeacher.value;
+
+        let TeacherName = AddScheduleModal.checkedTeacher.title;
+
+        let ClassID = AddScheduleModal.checkedClass.value;
+
+        let ClassName = AddScheduleModal.checkedClass.title;
+
+        let ClassRoomID = AddScheduleModal.checkedClassRoom.value;
+
+        let ClassRoomName = AddScheduleModal.checkedClassRoom.title;
+
+
+        let addSchedulePromise = Method.getGetData(`/scheduleAddSchedule?SubjectID=${SubjectID}
+        &SubjectName=${SubjectName}&WeekNO=${WeekNO}&WeekDay=${WeekDay}&ClassHourNO=${ClassHourNO}
+        &TeacherID=${TeacherID}&TeacherName=${TeacherName}&ClassID=${ClassID}
+        &ClassName=${ClassName}&ClassRoomID=${ClassRoomID}&ClassRoomName=${ClassRoomName}
+        `);
+
+        addSchedulePromise.then((json) => {
+
+            if (json.Status === 200){
+
+                dispatch({type:ADD_SCHEDULE_MODAL_HIDE});
+
+            }else{
+
+                alert(json.Msg);
+
+            }
+
+        });
+
 
     }
 
@@ -508,10 +623,20 @@ ADD_SCHEDULE_MODAL_CLASSROOM_ERROR_HIDE,
 
 ADD_SCHEDULE_MODAL_TEACHER_SEARCH_LIST_UPDATE,
 
+    ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LOADING_SHOW,
+
+ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LOADING_HIDE,
+
+ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LIST_UPDATE,
+
   InfoInit,
 
     classSearch,
 
-    teacherSearch
+    teacherSearch,
+
+    classRoomSearch,
+
+    commitInfo
 
 }
