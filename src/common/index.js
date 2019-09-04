@@ -804,14 +804,14 @@ class DropDown extends React.Component {
         this.setState({ //点击选项之后
             dropListShow: false,
             dropSelectd: {
-                value: `${preName ? preName : ''}${name}${showId ? `[${id}]` : ''}`,
-                title: `${preName ? preName : ''}${name}${showId ? `[${id}]` : ''}`
+                value: `${name}${showId ? `[${id}]` : ''}`,
+                title: `${name}${showId ? `[${id}]` : ''}`
             },
             range2ListActive: `${k1}${k2}`
         }, () => {
             $(this.refs.dropdown_select_ul).hide();//隐藏下拉框
             if (onChange) {
-                onChange({ value: `${preName ? `${preName}-` : ''}${name}`, id: id });//调用外部传入的行数
+                onChange({ value:name, id: id });//调用外部传入的行数
             }
         });
     }//二级下拉改变下拉的时候调用
@@ -878,7 +878,7 @@ class DropDown extends React.Component {
 
     render() {
         const {
-            title, width, height, disabled, dropSelectd, dropList, onChange, type,
+            title, width, height, disabled, dropSelectd, dropList, onChange, type,className,
             mutipleOptions, ...reset
         } = this.props;
         let dropContainer = '';
@@ -892,10 +892,14 @@ class DropDown extends React.Component {
         let dropMultipleList = '';
         //判断等级渲染相对应的元素
         if (this.state.searchOpen) { //如果开启搜索的话
+
             dropMultipleList =
                 <ul className="dropdown_list_ul3 clearfix" style={{ display: "block" }}>
+
+                    <Loading tip="加载中..." spinning={mutipleOptions.searchLoadingShow}>
+
                     {mutipleOptions.searchList.map((item, ks) => {
-                        return <li key={ks} className="dropdown_item3_li"
+                        return <li key={ks} className={`dropdown_item3_li`}
                                    onClick={this.onMultipleRang2DropChange.bind(this, {
                                        name: item.name,
                                        id: item.id,
@@ -909,10 +913,13 @@ class DropDown extends React.Component {
                             }
                         </li>
                     })}
+
+                    </Loading>
+
                 </ul>
 
         } else if (mutipleOptions && mutipleOptions.range === 2) { //如果range的等级为2
-            dropMultipleList = mutipleOptions.dropMultipleList.map((item1, k1) => {//遍历第一个数组
+            dropMultipleList = mutipleOptions.dropMultipleList&&mutipleOptions.dropMultipleList.map((item1, k1) => {//遍历第一个数组
                 return <li key={k1} className="dropdown_list_item1">
                     <div
                         className={`dropdown_item1_name ${this.state.range2ListShow === k1 ? 'slide' : ''}`} //判断是否是活动状态
@@ -947,6 +954,7 @@ class DropDown extends React.Component {
         }
 
         if (type && type === 'multiple') {
+
             dropContainer =
                 <div ref="dropdown_select_ul" className="dropdown_select_ul"
                      style={{ width: selectUlWidth, height: selectUlHeight }}>
@@ -966,6 +974,8 @@ class DropDown extends React.Component {
                         </Scrollbars>
                     </div>
                 </div>
+
+
         } else {
             let ClientHeight;
             if (dropList && (dropList.length < (height / 24))) {
@@ -981,8 +991,8 @@ class DropDown extends React.Component {
                             dropList ?
                                 dropList.map((item, key) => {
                                     return <li key={key} className="dropdown_select_li"
-                                               title={item.value}
-                                               data-vaule={item.title}
+                                               title={item.title}
+                                               data-vaule={item.value}
                                                onClick={
                                                    this.onSimpleDropChange.bind(this, {
                                                        onChange: onChange,
@@ -998,7 +1008,7 @@ class DropDown extends React.Component {
                 </ul>;
         }
         return (
-            <div className="dropdown_container" {...reset}>
+            <div className={`dropdown_container ${className?className:''}`} {...reset}>
                 <span className="dropdown_title_span">{title}</span>
                 <span className="dropdown_wrapper" style={{ width: width ? width : 120 }}>
                     <span ref='dropdown_default_span' className={`dropdown_default_span ${disabled ? 'disabled' : ''}`}

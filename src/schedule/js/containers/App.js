@@ -15,6 +15,7 @@ import ASMAction from  '../actions/Manager/AddScheduleModalActions';
 
 
 
+
 import '../../scss/index.scss';
 
 
@@ -68,6 +69,8 @@ class App extends Component{
         const {dispatch} = this.props;
 
         dispatch({type:ASMAction.ADD_SCHEDULE_MODAL_SHOW});
+
+        dispatch(ASMAction.InfoInit());
 
     }
 
