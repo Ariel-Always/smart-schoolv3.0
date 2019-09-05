@@ -10,6 +10,8 @@ import AdjustBtns from "./AdjustBtns";
 
 import AddScheduleModal from "./AddScheduleModal";
 
+import AdjustByTimeModal from './AdjustByTimeModal'
+
 //管理员角色的reduce
 
 const Index = combineReducers({
@@ -22,7 +24,9 @@ const Index = combineReducers({
 
     AdjustBtns,
 
-    AddScheduleModal
+    AddScheduleModal,
+
+    AdjustByTimeModal
 
 });
 

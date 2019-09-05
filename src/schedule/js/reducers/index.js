@@ -12,6 +12,8 @@ import Teacher from './Teacher/index';
 
 import PeriodWeekTerm from "./PeriodWeekTerm";
 
+import AppAlert from './AppAlert';
+
 export let initialState = {};
 
 let rootReducers = combineReducers({
@@ -26,7 +28,9 @@ let rootReducers = combineReducers({
 
     Teacher,
 
-    PeriodWeekTerm
+    PeriodWeekTerm,
+
+    AppAlert
 
 });
 

@@ -4,7 +4,7 @@ class AdjustBtnsWrapper extends Component{
 
     render() {
 
-        const { adjustBtnsToggle,adjustBtns,adjustScheduleModalShow } = this.props;
+        const { adjustBtnsToggle,adjustBtns,addScheduleModalShow,adjustByTimeModalShow } = this.props;
 
         return (
 
@@ -20,11 +20,11 @@ class AdjustBtnsWrapper extends Component{
 
                 <div className="adjust-list-wrapper" id="adjust-list-wrapper" style={{display:`${adjustBtns.adjustBtnsShow?'block':'none'}`}}>
 
-                            <div className="add-schedule" onClick={()=>{adjustScheduleModalShow();}}><span>添加临时课程</span></div>
+                            <div className="add-schedule" onClick={()=>{addScheduleModalShow();}}><span>添加临时课程</span></div>
 
                             <div className="adjust-by-teacher"><span>按老师调整</span></div>
 
-                            <div className="adjust-by-time"><span>按时间调整</span></div>
+                            <div className="adjust-by-time" onClick={()=>{adjustByTimeModalShow();}}><span>按时间调整</span></div>
 
                             <div className="adjust-by-classroom"><span>按教室调整</span></div>
 
