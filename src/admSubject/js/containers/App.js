@@ -90,8 +90,9 @@ class App extends Component {
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
             if (!this.props.DataState.PeriodMsd)
                 dispatch(actions.UpDataState.getPeriodMsg('/AdmSubject_DropDownMenu?schoolID=sss'));
-            dispatch(actions.UpDataState.getSubjectMsg('/AdmSubject?schoolID=schoolID&periodID=periodID&pageSize=10&pageIndex=0&PageSize=10'));
-        }  else {
+            dispatch(actions.UpDataState.getSubjectMsg('/AdmSubject?schoolID=schoolID&periodID=null&pageSize=8&pageIndex=1'));
+            
+        } else {
             history.push('/')
         }
 
@@ -134,6 +135,7 @@ class App extends Component {
                     abstract={UIState.AppAlert.littleTitle}
                     title={UIState.AppAlert.title}
                     onOk={UIState.AppAlert.onOk}
+                    onHide={UIState.AppAlert.onHide}
                     onCancel={UIState.AppAlert.onCancel}
                     onClose={UIState.AppAlert.onClose}
                 ></Alert>

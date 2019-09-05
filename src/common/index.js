@@ -1719,11 +1719,26 @@ class DetailsModal extends React.Component {
     }
 
     render() {
-        const { type,data, children, ...params } = this.props;
+        let { type,data, children, ...params } = this.props;
         console.log(params)
         if (type === 'student') {
 
         }
+        // if(data){
+        //     data = {
+        //         userName: null,
+        //         userImg: null,
+        //         Gende: null,
+        //         userText: null,
+        //         userID: null,
+        //         userGrade: null,
+        //         userClass: null,
+        //         userIDCard: null,
+        //         userPhone: null,
+        //         userMail: null,
+        //         userAddress: null
+        //     };
+        // }
         return (
             <AntdModal
                 bodyStyle={{ padding: 0 }}
