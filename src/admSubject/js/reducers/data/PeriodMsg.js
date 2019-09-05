@@ -15,7 +15,8 @@ function handleData (data = []){
     let newData = data.map((child,index) => {
         return {
             value:child.PeriodID,
-            title:child.PeriodName
+            title:child.PeriodName,
+            Grades:child.Grades
         }
     })
     let returnData = initData.concat(newData);
