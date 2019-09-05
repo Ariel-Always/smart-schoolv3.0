@@ -10,6 +10,12 @@ const ADJUST_BY_TIME_LOADING_SHOW = 'ADJUST_BY_TIME_LOADING_SHOW';
 
 const ADJUST_BY_TIME_INFO_UPDATE = 'ADJUST_BY_TIME_INFO_UPDATE';
 
+const ADJUST_BY_TIME_PERIOD_GRADE_CHECKED = 'ADJUST_BY_TIME_PERIOD_GRADE_CHECKED';
+
+const ADJUST_BY_TIME_NEW_CLASSHOUR_CHECKED = 'ADJUST_BY_TIME_NEW_CLASSHOUR_CHECKED';
+
+const ADJUST_BY_TIME_OLD_CLASSHOUR_CHECKED = 'ADJUST_BY_TIME_OLD_CLASSHOUR_CHECKED';
+
 //初始化弹窗信息
 const InfoInit = () => {
 
@@ -135,8 +141,6 @@ const InfoInit = () => {
 
             });
 
-            console.log(morning);
-
             if (morning.list.length > 0){
 
                 oldClassHours.push(morning);
@@ -155,9 +159,70 @@ const InfoInit = () => {
 
             }
 
-            newClassHours = oldClassHours.map(item => item);
+            newClassHours = [...oldClassHours];
 
-            dispatch({type:ADJUST_BY_TIME_INFO_UPDATE,data:{periodGrades,newClassHours,oldClassHours,periodGradesPlainOpts,periodGradesCheckedList}});
+            let oldClassHourPlainOpts = oldClassHours.map(item => {
+
+                let list = [];
+
+               item.list.map(i => {
+
+                   list.push(i.no);
+
+               });
+
+               return {
+
+                   type:item.type,
+
+                   list
+
+               }
+
+            });
+
+            let newClassHourPlainOpts = [...oldClassHourPlainOpts];
+
+            let oldClassHourCheckedList = oldClassHours.map(item => {
+
+                let list = [];
+
+
+                return {
+
+                    type:item.type,
+
+                    checked:false,
+
+                    list
+
+                }
+
+            });
+
+            let newClassHourCheckedList = [...oldClassHourCheckedList];
+
+            dispatch({type:ADJUST_BY_TIME_INFO_UPDATE,data:{
+
+                    periodGrades,
+
+                    periodGradesPlainOpts,
+
+                    periodGradesCheckedList,
+
+                    oldClassHours,
+
+                    oldClassHourPlainOpts,
+
+                    oldClassHourCheckedList,
+
+                    newClassHours,
+
+                    newClassHourPlainOpts,
+
+                    newClassHourCheckedList
+
+            }});
 
             dispatch({type:ADJUST_BY_TIME_LOADING_HIDE});
 
@@ -167,7 +232,7 @@ const InfoInit = () => {
 
 };
 
-//点击选中
+//点击年级选中
 const periodChecked = (opts) => {
 
     return (dispatch,getState) => {
@@ -305,7 +370,299 @@ const periodChecked = (opts) => {
 
         }
 
-        dispatch({type:ADJUST_BY_TIME_INFO_UPDATE,data:{periodGradesCheckedList:checkedList}});
+        dispatch({type:ADJUST_BY_TIME_PERIOD_GRADE_CHECKED,data:{periodGradesCheckedList:checkedList}});
+
+    }
+
+};
+
+
+//点击旧课时选中
+
+const oldClassHourChecked = (opts) => {
+
+    return (dispatch,getState) => {
+
+        console.log(opts);
+
+        const { oldClassHourCheckedList,oldClassHourPlainOpts } = getState().Manager.AdjustByTimeModal;
+
+        let checkedList = [];
+
+        if (opts.type === 'noon'){
+
+            checkedList = oldClassHourCheckedList.map((item) => {
+
+                if (item.type === opts.id){
+                    //判断状态如果是已选改为未选
+                    if (item.checked){
+
+                        return{
+
+                            type:item.type,
+
+                            checked:false,
+
+                            list:[]
+
+                        }
+
+                    }else{//如果是未选改为已选
+
+                        let list = [];
+
+                        oldClassHourPlainOpts.map(i => {
+
+                            if (i.type === item.type){
+
+                                list = i.list;
+
+                            }
+
+                        });
+
+                        return {
+
+                            type:item.type,
+
+                            checked:true,
+
+                            list
+
+                        }
+
+                    }
+
+                }else{
+
+                    return item;
+
+                }
+
+            });
+
+        }else{
+
+            checkedList = oldClassHourCheckedList.map(item => {
+
+                if (item.type === opts.pid){
+
+                    //如果已经选中，去除选中的状态
+                    if (item.list.includes(opts.id)){
+
+                        item.list.remove(opts.id);
+
+                        return {
+
+                            type:item.type,
+
+                            checked:false,
+
+                            list:item.list
+
+                        }
+
+                    }else{//没有选中。先选中然后判断上一层的状态
+
+                        item.list.push(opts.id);
+
+                        let plainOptions = [];
+
+                        oldClassHourPlainOpts.map(i => {
+
+                            if (i.type === item.type){
+
+                                plainOptions = i.list;
+
+                            }
+
+                        });
+
+                        //判断是否是需要置为全选
+                        if(item.list.length === plainOptions.length){//需要全选
+
+                            return{
+
+                                type:item.type,
+
+                                checked:true,
+
+                                list:item.list
+
+                            }
+
+                        }else{//不需要全选
+
+                            return{
+
+                                type:item.type,
+
+                                checked:false,
+
+                                list:item.list
+
+                            }
+
+                        }
+
+                    }
+
+                }else{
+
+                    return item;
+
+                }
+
+            });
+
+        }
+
+        dispatch({type:ADJUST_BY_TIME_OLD_CLASSHOUR_CHECKED,data:{oldClassHourCheckedList:checkedList}});
+
+    }
+
+};
+
+
+const newClassHourChecked = (opts) => {
+
+    return (dispatch,getState) => {
+
+        console.log(opts);
+
+        const { newClassHourCheckedList,newClassHourPlainOpts } = getState().Manager.AdjustByTimeModal;
+
+        let checkedList = [];
+
+        if (opts.type === 'noon'){
+
+            checkedList = newClassHourCheckedList.map((item) => {
+
+                if (item.type === opts.id){
+                    //判断状态如果是已选改为未选
+                    if (item.checked){
+
+                        return{
+
+                            type:item.type,
+
+                            checked:false,
+
+                            list:[]
+
+                        }
+
+                    }else{//如果是未选改为已选
+
+                        let list = [];
+
+                        newClassHourPlainOpts.map(i => {
+
+                            if (i.type === item.type){
+
+                                list = i.list;
+
+                            }
+
+                        });
+
+                        return {
+
+                            type:item.type,
+
+                            checked:true,
+
+                            list
+
+                        }
+
+                    }
+
+                }else{
+
+                    return item;
+
+                }
+
+            });
+
+        }else{
+
+            checkedList = newClassHourCheckedList.map(item => {
+
+                if (item.type === opts.pid){
+
+                    //如果已经选中，去除选中的状态
+                    if (item.list.includes(opts.id)){
+
+                        item.list.remove(opts.id);
+
+                        return {
+
+                            type:item.type,
+
+                            checked:false,
+
+                            list:item.list
+
+                        }
+
+                    }else{//没有选中。先选中然后判断上一层的状态
+
+                        item.list.push(opts.id);
+
+                        let plainOptions = [];
+
+                        newClassHourPlainOpts.map(i => {
+
+                            if (i.type === item.type){
+
+                                plainOptions = i.list;
+
+                            }
+
+                        });
+
+                        //判断是否是需要置为全选
+                        if(item.list.length === plainOptions.length){//需要全选
+
+                            return{
+
+                                type:item.type,
+
+                                checked:true,
+
+                                list:item.list
+
+                            }
+
+                        }else{//不需要全选
+
+                            return{
+
+                                type:item.type,
+
+                                checked:false,
+
+                                list:item.list
+
+                            }
+
+                        }
+
+                    }
+
+                }else{
+
+                    return item;
+
+                }
+
+            });
+
+        }
+
+        dispatch({type:ADJUST_BY_TIME_NEW_CLASSHOUR_CHECKED,data:{newClassHourCheckedList:checkedList}});
 
     }
 
@@ -349,8 +706,18 @@ export default {
 
     ADJUST_BY_TIME_INFO_UPDATE,
 
+    ADJUST_BY_TIME_PERIOD_GRADE_CHECKED,
+
+    ADJUST_BY_TIME_OLD_CLASSHOUR_CHECKED,
+
+    ADJUST_BY_TIME_NEW_CLASSHOUR_CHECKED,
+
     InfoInit,
 
-    periodChecked
+    periodChecked,
+
+    oldClassHourChecked,
+
+    newClassHourChecked
 
 }
