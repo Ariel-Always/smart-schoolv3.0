@@ -1,12 +1,12 @@
 import React from 'react';
-import '../../scss/ChangeSubject.scss'
+import '../../scss/SetSubjectTeacher.scss'
 import { connect } from 'react-redux'
 import { Input } from 'antd'
 import { CheckBox, CheckBoxGroup, Loading, DropDown } from '../../../common'
 import { defaultGrades } from '../containers/config'
 import actions from '../actions';
 
-class ChangeSubject extends React.Component {
+class SetSubjectTeacher extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -225,10 +225,10 @@ class ChangeSubject extends React.Component {
         return (
             <Loading size="large" spinning={UIState.AppLoading.modalLoading}>
 
-                <div className='chageSubject'>
+                <div className='SetSubjectTeacher'>
                     <div className='row clearfix'>
                         <span className='culonm-1'>学科名称：</span>
-                        <span style={{ display: this.state.type === 'change' ? 'block' : 'none' }} className='culonm-2'><span className='subjectName'>{this.state.type === 'change' ?DataState.ChangeSubjectMsg.SubjectName:'错误'}</span></span>
+                        <span className='culonm-2'><span className='subjectName'>{DataState.ChangeSubjectMsg.SubjectName}</span></span>
                         <div className='culonm-2 dropMenuBox' style={{ display: this.state.type === 'add' ? 'block' : 'none' }}>
                             <DropDown
                                 ref='dropMenuSubject'
@@ -245,51 +245,48 @@ class ChangeSubject extends React.Component {
 
                     </div>
                     <div className='row clearfix'>
-                        <span className='culonm-1'>开课年级：</span>
+                        <span className='culonm-1'>小学教研组长：</span>
                         <div className='culonm-2 culonm-3'>{
-                            DataState.PeriodMsg.value.map((child, index) => {
-
-                                if (index === 0)
-                                    return;
-                                let GradesArr = child.Grades.split(',');
-
-                                let selectGrades = DataState.ChangeSubjectMsg.GlobalGradeIDs.split(',');
-                                let checkGroup = true;
-                                let mySelect = [];
-                                //let selectGrade = this.state.selectGrade;
-                                GradesArr.map((child2, index) => {
-                                    selectGrades.map((child3, index2) => {
-                                        if (child2 === child3)
-                                            mySelect.push(child3);
-                                    })
-                                })
-                                if (mySelect.length === 0)
-                                    checkGroup = false;
-
-                                // selectGrade.push(mySelect)
-                                // this.setState({
-                                //     selectGrade:selectGrade
-                                // })
-                                return (
-                                    <div className='checkBoxGroup' key={index}>
-                                        <CheckBox className='checkAll' onChange={this.onCheckBoxChange.bind(this, index)} checked={checkGroup}>{child.title}</CheckBox>
-                                        <CheckBoxGroup onChange={this.onCheckBoxGroupChange.bind(this, index)} value={mySelect}>
-                                            {GradesArr.map((child2, index) => {
-                                                return (
-                                                    <div key={index} className='checkBox'>
-                                                        <div className='newCheckBoxStyle'>
-                                                            <CheckBox value={child2}></CheckBox>
-                                                        </div>
-                                                        <span className='checkBox-tips'>{defaultGrades[child2]}</span>
-                                                    </div>
-                                                )
-
-                                            })}
-                                        </CheckBoxGroup>
-                                    </div>
-
-                                )
-                            })
+                           <DropDown
+                           ref='dropMenuSubject'
+                           style={{zIndex:2}}
+                           className ={'DropMenu'}
+                           onChange={this.dropMenuSubject.bind(this)}
+                           width={120}
+                           height={96}
+                           dropSelectd={this.state.dropSelected}
+                           dropList={DataState.SubjectMsg.addSubjectMsg ? DataState.SubjectMsg.addSubjectMsg : [{ value: 0, title: '自定义',GlabalGrades:[] }]}
+                       ></DropDown>
+                        }</div>
+                    </div>
+                    <div className='row clearfix'>
+                        <span className='culonm-1'>初中教研组长：</span>
+                        <div className='culonm-2 culonm-3'>{
+                           <DropDown
+                           ref='dropMenuSubject'
+                           style={{zIndex:2}}
+                           className ={'DropMenu'}
+                           onChange={this.dropMenuSubject.bind(this)}
+                           width={120}
+                           height={96}
+                           dropSelectd={this.state.dropSelected}
+                           dropList={DataState.SubjectMsg.addSubjectMsg ? DataState.SubjectMsg.addSubjectMsg : [{ value: 0, title: '自定义',GlabalGrades:[] }]}
+                       ></DropDown>
+                        }</div>
+                    </div>
+                    <div className='row clearfix'>
+                        <span className='culonm-1'>高中教研组长：</span>
+                        <div className='culonm-2 culonm-3'>{
+                           <DropDown
+                           ref='dropMenuSubject'
+                           style={{zIndex:2}}
+                           className ={'DropMenu'}
+                           onChange={this.dropMenuSubject.bind(this)}
+                           width={120}
+                           height={96}
+                           dropSelectd={this.state.dropSelected}
+                           dropList={DataState.SubjectMsg.addSubjectMsg ? DataState.SubjectMsg.addSubjectMsg : [{ value: 0, title: '自定义',GlabalGrades:[] }]}
+                       ></DropDown>
                         }</div>
                     </div>
                 </div>
@@ -304,4 +301,4 @@ const mapStateToProps = (state) => {
         DataState
     }
 };
-export default connect(mapStateToProps)(ChangeSubject)
+export default connect(mapStateToProps)(SetSubjectTeacher)

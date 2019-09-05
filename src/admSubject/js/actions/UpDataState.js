@@ -20,6 +20,12 @@ const GET_PERIOD_MSG = 'GET_PERIOD_MSG';
 const GET_TEACHER_MSG = 'GET_TEACHER_MSG'
 // 编辑弹窗信息
 const CHANGE_SUBJECT_MODAL_MSG = 'CHANGE_SUBJECT_MODAL_MSG'
+const HANDLE_SUBJECT_MODAL_MSG = 'HANDLE_SUBJECT_MODAL_MSG'
+const ADD_SUBJECT_MODAL_MSG = 'ADD_SUBJECT_MODAL_MSG'
+const HANDLE_SUBJECT_NAME_MODAL_MSG = 'HANDLE_SUBJECT_NAME_MODAL_MSG'
+const GET_SUBJECT_MODAL_MSG = 'GET_SUBJECT_MODAL_MSG'
+
+
 
 
 //操作的执行
@@ -66,7 +72,7 @@ const getSubjectMsg = (url) => {
 //获取学校教师信息
 const getTeacherMsg = (url) => {
     return (dispatch) => {
-        getData(CONFIG.proxy + url).then(res => {
+        getData(CONFIG.Xproxy + url).then(res => {
 
             return res.json()
         }).then(json => {
@@ -88,8 +94,41 @@ const changeSubjectModalMsg = (data) => {
         type: CHANGE_SUBJECT_MODAL_MSG,
         data: data
     }
-
 };
+const handleSubjectModalMsg = (data) => {
+    return {
+        type: HANDLE_SUBJECT_MODAL_MSG,
+        data: data
+    }
+};
+const addSubjectModalMsg = (data) => {
+    return {
+        type: ADD_SUBJECT_MODAL_MSG,
+        data: data
+    }
+};
+const handleSubjectNameModalMsg = (data) => {
+    return {
+        type: HANDLE_SUBJECT_NAME_MODAL_MSG,
+        data: data
+    }
+};
+
+const getSubjectModalMsg = (url) => {
+    return (dispatch) => {
+        getData(CONFIG.proxy + url).then(res => {
+            return res.json()
+        }).then(json => {
+            if (json.Status === 400) {
+                console.log('错误码：' + json.Status)
+            } else if (json.Status === 200) {
+                console.log(json.Data)
+                dispatch({ type: GET_SUBJECT_MODAL_MSG, data: json.Data });
+                
+            }
+        });
+    }
+}
 
 
 export default {
@@ -102,6 +141,14 @@ export default {
     getTeacherMsg,
     GET_TEACHER_MSG,
     changeSubjectModalMsg,
-    CHANGE_SUBJECT_MODAL_MSG
+    CHANGE_SUBJECT_MODAL_MSG,
+    handleSubjectModalMsg,
+    HANDLE_SUBJECT_MODAL_MSG,
+    addSubjectModalMsg,
+    ADD_SUBJECT_MODAL_MSG,
+    handleSubjectNameModalMsg,
+    HANDLE_SUBJECT_NAME_MODAL_MSG,
+    getSubjectModalMsg,
+    GET_SUBJECT_MODAL_MSG
 
 }

@@ -6,7 +6,7 @@ const TeacherMsg = (state = '', actions) => {
     switch (actions.type) {
         case UpDataState.GET_TEACHER_MSG:
             
-            let newData = handleData(actions.data.Data)
+            let newData = handleData(actions.data)
             
             return { data:newData };
         default:

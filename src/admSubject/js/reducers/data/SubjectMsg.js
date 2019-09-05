@@ -17,12 +17,42 @@ const SubjectMsg = (state = '', actions) => {
             let { SubjectItem, ...data } = actions.data;
             let oldData = actions.data;
             let newData = handleData(SubjectItem)
-            
-            return { ...data, SubjectItem: newData,oldData:oldData };
+
+            return Object.assign({}, state, { ...data, SubjectItem: newData, oldData: oldData });
+        case UpDataState.GET_SUBJECT_MODAL_MSG:
+           let addSubjectMsg = handleAddSubjectMsg(actions.data.ItemSubject)
+
+            return Object.assign({}, state, { addSubjectMsg:addSubjectMsg});
         default:
             return state;
     }
 };
+function handleAddSubjectMsg(data){
+    let initData = [{ value: 0, title: '自定义',GlabalGrades:'' }]
+    let endData = data.map((child,index) => {
+        let value = child.SubjectID;
+        let title = child.SubjectName;
+
+        //let GlabalGrades = handleAllGrades(child.GlabalGrades);
+        return {
+            value:value ,
+            title:title ,
+            GlabalGrades:child.GlabalGrades ,
+        }
+    })
+    let newData = initData.concat(endData)
+    return newData;
+}
+function handleAllGrades(grade) {
+    let endGrade = '';
+    let gradeArr1 = grade.split(',');
+    if (!gradeArr1.length)
+        return '';
+    let gradeArr2 = gradeArr1.map((child, index) => {
+        return child.split('-')[0];
+    })
+    return gradeArr2
+}
 function handleData(data) {
 
     let newData = data.map((child, index) => {
@@ -74,7 +104,7 @@ function handleSubjectName(Subject) {
     return {
         SubjectImg: SubjectLogo,
         SubjectName: Subject.SubjectName,
-        SubjectID:Subject.SubjectID
+        SubjectID: Subject.SubjectID
     }
 }
 function handleTeacher(teacher) {
@@ -90,16 +120,16 @@ function handleTeacher(teacher) {
             TeacherName = childArr[2];
         }
         return {
-            Grade:Grade,
-            TeacherID:TeacherID,
-            TeacherName:TeacherName
+            Grade: Grade,
+            TeacherID: TeacherID,
+            TeacherName: TeacherName
         }
     })
     return allTeacherArr;
 }
 function handleGrade(grade) {
-    if(grade === '')
-    return '';
+    if (grade === '')
+        return '';
     let GradeArr = grade.split(',');
     let sort = [];
     let Grades = [];
@@ -111,19 +141,19 @@ function handleGrade(grade) {
         Grades.push(childArr[1])
     })
     sort.map((child, index) => {
-        if (sort.length===1 || (index !== sort.length-1 && Number(child)  !== sort[index + 1]-1))
-            
-                isSeries = false;
+        if (sort.length === 1 || (index !== sort.length - 1 && Number(child) !== sort[index + 1] - 1))
+
+            isSeries = false;
     })
 
-    if(isSeries && Grades.length !== 0){
-        returnGrade = Grades[0] + '~' + Grades[Grades.length-1];
-    }else if(!isSeries &&Grades.length !== 0){
-        Grades.map((child,index) => {
-            if(index !== Grades.length - 1)
-            returnGrade += child + ',';
+    if (isSeries && Grades.length !== 0) {
+        returnGrade = Grades[0] + '~' + Grades[Grades.length - 1];
+    } else if (!isSeries && Grades.length !== 0) {
+        Grades.map((child, index) => {
+            if (index !== Grades.length - 1)
+                returnGrade += child + ',';
             else
-            returnGrade += child;
+                returnGrade += child;
         })
     }
     return returnGrade;

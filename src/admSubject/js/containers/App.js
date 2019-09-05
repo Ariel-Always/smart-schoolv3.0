@@ -91,6 +91,8 @@ class App extends Component {
             if (!this.props.DataState.PeriodMsd)
                 dispatch(actions.UpDataState.getPeriodMsg('/AdmSubject_DropDownMenu?schoolID=sss'));
             dispatch(actions.UpDataState.getSubjectMsg('/AdmSubject?schoolID=schoolID&periodID=null&pageSize=8&pageIndex=1'));
+            if(!this.props.DataState.SubjectMsg.addSubjectMsg)
+            dispatch(actions.UpDataState.getSubjectModalMsg('/AddSubject_DropDownMenu?schoolID=schoolID'));
             
         } else {
             history.push('/')
