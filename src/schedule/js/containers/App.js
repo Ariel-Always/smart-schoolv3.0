@@ -8,10 +8,12 @@ import TeacherComponent from './Teacher';
 import StudentComponent from './Student';
 import AdjustBtnsWrapper from '../component/Manager/AdjustBtnsWrapper';
 import AddScheduleModal from './Manager/AddScheduleModal';
+import AdjustByTimeModal from  './Manager/AdjustByTimeModal'
 import ModuleCommonActions from '../actions/ModuleCommonActions';
 import PeriodWeekTermActions from '../actions/PeriodWeekTermActions';
 import AdjustBtnsActions from '../actions/Manager/AdjustBtnsActions';
 import ASMAction from  '../actions/Manager/AddScheduleModalActions';
+import ABTMActions from '../actions/Manager/AdjustByTimeModalActions';
 
 
 
@@ -64,13 +66,23 @@ class App extends Component{
 
     }
     //弹出添加临时课程弹窗
-    adjustScheduleModalShow(){
+    addScheduleModalShow(){
 
         const {dispatch} = this.props;
 
         dispatch({type:ASMAction.ADD_SCHEDULE_MODAL_SHOW});
 
         dispatch(ASMAction.InfoInit());
+
+    }
+    //按时间调整弹窗
+    adjustByTimeModalShow(){
+
+        const {dispatch} = this.props;
+
+        dispatch({type:ABTMActions.ADJUST_BY_TIME_SHOW});
+
+        dispatch(ABTMActions.InfoInit());
 
     }
 
@@ -86,7 +98,7 @@ class App extends Component{
 
         const {state} = this.props;
 
-        const { LoginUser,AppLoading,ModuleSetting,Manager,PeriodWeekTerm  } = state;
+        const { LoginUser,AppLoading,ModuleSetting,Manager,PeriodWeekTerm,AppAlert } = state;
 
         const { AdjustBtns } = Manager;
 
@@ -140,7 +152,11 @@ class App extends Component{
 
                                             adjustBtns={AdjustBtns}
 
-                                            adjustScheduleModalShow={this.adjustScheduleModalShow.bind(this)}></AdjustBtnsWrapper>
+                                            addScheduleModalShow={this.addScheduleModalShow.bind(this)}
+
+                                            adjustByTimeModalShow = {this.adjustByTimeModalShow.bind(this)}>
+
+                                        </AdjustBtnsWrapper>
 
                                         :''
 
@@ -202,6 +218,20 @@ class App extends Component{
                </DocumentTitle>
 
                <AddScheduleModal></AddScheduleModal>
+
+               <AdjustByTimeModal></AdjustByTimeModal>
+
+               <Alert type={AppAlert.type}
+                      title={AppAlert.title}
+                      abstract={AppAlert.abstract}
+                      show={AppAlert.show}
+                      onClose={AppAlert.close}
+                      onOk={AppAlert.ok}
+                      onHide={AppAlert.hide}
+                      okTitle={AppAlert.okTitle}
+                      cancelTitle={AppAlert.cancelTitle}>
+
+               </Alert>
 
            </React.Fragment>
         );

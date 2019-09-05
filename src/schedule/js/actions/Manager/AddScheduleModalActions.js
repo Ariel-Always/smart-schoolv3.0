@@ -2,6 +2,8 @@ import Method from  '../Method';
 
 import React from 'react';
 
+import AppAlertActions from '../../actions/AppAlertActions'
+
 
 
 const ADD_SCHEDULE_MODAL_SHOW = 'ADJUST_SCHEDULE_MODAL_SHOW';
@@ -535,6 +537,16 @@ const commitInfo = () => {
 
                 dispatch({type:ADD_SCHEDULE_MODAL_HIDE});
 
+                dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                    type:"success",
+
+                    title:"添加临时课程成功！ ",
+
+                    hide: successCommit(dispatch)
+
+                    }});
+
             }else{
 
                 alert(json.Msg);
@@ -545,6 +557,12 @@ const commitInfo = () => {
 
 
     }
+
+};
+
+const successCommit = (dispatch) => {
+
+  return () => dispatch({type:AppAlertActions.APP_ALERT_HIDE});
 
 };
 

@@ -114,3 +114,7 @@ $image-url:'../images';
 //添加临时课程的弹窗
 
 @import "./add-schedule-modal";
+
+//按时间时间调整课程弹窗
+
+@import "./adjust-by-time-modal";
