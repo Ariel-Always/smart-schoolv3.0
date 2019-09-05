@@ -149,6 +149,17 @@
           background-color:#FFF8F2;
           margin:0 auto;
           display:none;
+
+          .ant-spin-nested-loading{
+
+            position: absolute;
+
+            width: 100%;
+
+            min-height: 200px;
+
+          }
+
         } //第三级列表
         .dropdown_item3_li{ //第三级列表title
           float: left;

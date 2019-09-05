@@ -14,9 +14,37 @@
 
   }
 
-  tr{
+  .modalTable>tbody>tr{
 
     height: 44px;
+
+  }
+  .dropdown_container{
+
+    position: fixed;
+
+    margin-top: -14px;
+
+    &.date{
+
+      margin-left: 160px;
+
+    }
+
+    &.classHour{
+
+      margin-left: 320px;
+
+    }
+
+    .nowWeek,
+    .classHourType{
+
+      color: #999999;
+
+      font-size: 12px;
+
+    }
 
   }
 

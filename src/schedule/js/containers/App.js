@@ -7,11 +7,12 @@ import ManagerComponent from './Manager';
 import TeacherComponent from './Teacher';
 import StudentComponent from './Student';
 import AdjustBtnsWrapper from '../component/Manager/AdjustBtnsWrapper';
-import AdjustScheduleModal from './Manager/AdjustScheduleModal';
+import AddScheduleModal from './Manager/AddScheduleModal';
 import ModuleCommonActions from '../actions/ModuleCommonActions';
 import PeriodWeekTermActions from '../actions/PeriodWeekTermActions';
 import AdjustBtnsActions from '../actions/Manager/AdjustBtnsActions';
 import ASMAction from  '../actions/Manager/AddScheduleModalActions';
+
 
 
 
@@ -68,6 +69,8 @@ class App extends Component{
         const {dispatch} = this.props;
 
         dispatch({type:ASMAction.ADD_SCHEDULE_MODAL_SHOW});
+
+        dispatch(ASMAction.InfoInit());
 
     }
 
@@ -198,7 +201,7 @@ class App extends Component{
 
                </DocumentTitle>
 
-               <AdjustScheduleModal></AdjustScheduleModal>
+               <AddScheduleModal></AddScheduleModal>
 
            </React.Fragment>
         );
