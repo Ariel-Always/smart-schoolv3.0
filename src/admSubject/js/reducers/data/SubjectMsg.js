@@ -10,12 +10,15 @@ import Maths from '../../../images/Math.png';
 import Chinese from '../../../images/Chinese.png';
 import Others from '../../../images/Others.png';
 
+
 const SubjectMsg = (state = '', actions) => {
     switch (actions.type) {
         case UpDataState.GET_SUBJECT_MSG:
             let { SubjectItem, ...data } = actions.data;
+            let oldData = actions.data;
             let newData = handleData(SubjectItem)
-            return { ...data, SubjectItem: newData };
+            
+            return { ...data, SubjectItem: newData,oldData:oldData };
         default:
             return state;
     }
@@ -23,7 +26,6 @@ const SubjectMsg = (state = '', actions) => {
 function handleData(data) {
 
     let newData = data.map((child, index) => {
-        console.log(child)
         let SubjectName = handleSubjectName(child)
         // {
         //     SubjectID:child.SubjectID,
@@ -49,7 +51,6 @@ function handleData(data) {
 
 function handleSubjectName(Subject) {
     let SubjectLogo = Others;
-    console.log(Subject)
     if (Subject.IsDefault) {
         if (Subject.SubjectID === 'ENGLISH')
             SubjectLogo = English;
@@ -72,7 +73,8 @@ function handleSubjectName(Subject) {
     }
     return {
         SubjectImg: SubjectLogo,
-        SubjectName: Subject.SubjectName
+        SubjectName: Subject.SubjectName,
+        SubjectID:Subject.SubjectID
     }
 }
 function handleTeacher(teacher) {
@@ -109,8 +111,9 @@ function handleGrade(grade) {
         Grades.push(childArr[1])
     })
     sort.map((child, index) => {
-        if (index !== sort.length-1 && child !== sort[index + 1])
-            isSeries = false;
+        if (sort.length===1 || (index !== sort.length-1 && Number(child)  !== sort[index + 1]-1))
+            
+                isSeries = false;
     })
 
     if(isSeries && Grades.length !== 0){
