@@ -859,7 +859,6 @@ class DropDown extends React.Component {
                 if (mutipleOptions && mutipleOptions.dropClickSearch) {
                     mutipleOptions.dropClickSearch(e);
                 }
-                //$(this.refs[`dropdown_list_ul3_${this.state.range2ListShow}`]).toggle();
 
         } else {
             if (mutipleOptions && mutipleOptions.dropClickSearch) {

@@ -4,7 +4,13 @@ class AdjustBtnsWrapper extends Component{
 
     render() {
 
-        const { adjustBtnsToggle,adjustBtns,addScheduleModalShow,adjustByTimeModalShow } = this.props;
+        const {
+
+            adjustBtnsToggle,adjustBtns,addScheduleModalShow,
+
+            adjustByTimeModalShow,stopSchedule
+
+        } = this.props;
 
         return (
 
@@ -28,7 +34,7 @@ class AdjustBtnsWrapper extends Component{
 
                             <div className="adjust-by-classroom"><span>按教室调整</span></div>
 
-                            <div className="stop-schedule"><span>按教室调整</span></div>
+                            <div className="stop-schedule" onClick={()=>{stopSchedule();}}><span>停课</span></div>
 
                             <div className="delete-schedule"><span>删除课程</span></div>
 

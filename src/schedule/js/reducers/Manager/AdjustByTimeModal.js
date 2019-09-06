@@ -72,9 +72,9 @@ const AdjustByTimeModal = (state={
 
                 newClassHourCheckedList:[],
 
-                newDate:null,
+                newDate:'',
 
-                oldDate:null,
+                oldDate:'',
 
                 oldWeekDay:'',
 
