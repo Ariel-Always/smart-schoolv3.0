@@ -25,7 +25,9 @@ const ADD_SUBJECT_MODAL_MSG = 'ADD_SUBJECT_MODAL_MSG'
 const HANDLE_SUBJECT_NAME_MODAL_MSG = 'HANDLE_SUBJECT_NAME_MODAL_MSG'
 const GET_SUBJECT_MODAL_MSG = 'GET_SUBJECT_MODAL_MSG'
 
-
+//设置教研组长
+const SET_SUBJECT_TEACHER_MSG = 'SET_SUBJECT_TEACHER_MSG'
+const GET_SUBJECT_TEACHER_MSG = 'GET_SUBJECT_TEACHER_MSG'
 
 
 //操作的执行
@@ -131,6 +133,35 @@ const getSubjectModalMsg = (url) => {
 }
 
 
+//设置教研组长
+const getSubjectTeacherMsg = (url,grades,allGrades = []) => {
+    return (dispatch) => {
+        getData(CONFIG.proxy + url).then(res => {
+        dispatch({ type: actions.UpUIState.SEARCH_LOADING_CLOSE });
+
+            return res.json()
+        }).then(json => {
+            if (json.Status === 400) {
+                console.log('错误码：' + json.Status)
+            } else if (json.Status === 200) {
+                console.log(json.Data)
+                if(grades==='All'){
+                    allGrades.map((child,index) => {
+                        dispatch({ type: SET_SUBJECT_TEACHER_MSG, data: {Teacher:json.Data,grades:child} });
+                    })
+                }else
+                dispatch({ type: SET_SUBJECT_TEACHER_MSG, data: {Teacher:json.Data,grades:grades} });
+                
+            }
+        });
+    }
+}
+const setSubjectTeacherMsg = (data) => {
+    return {
+        type: GET_SUBJECT_TEACHER_MSG,
+        data: data
+    }
+};
 export default {
     getLoginUser,
     GET_LOGIN_USER_INFO,
@@ -149,6 +180,10 @@ export default {
     handleSubjectNameModalMsg,
     HANDLE_SUBJECT_NAME_MODAL_MSG,
     getSubjectModalMsg,
-    GET_SUBJECT_MODAL_MSG
+    GET_SUBJECT_MODAL_MSG,
+    getSubjectTeacherMsg,
+    SET_SUBJECT_TEACHER_MSG,
+    setSubjectTeacherMsg,
+    GET_SUBJECT_TEACHER_MSG
 
 }
