@@ -770,8 +770,7 @@ class DropDown extends React.Component {
             dropSelectd: props.dropSelectd ? props.dropSelectd : '',
             dropListShow: false,
             range2ListShow: '',
-            range2ListActive: '',
-            searchOpen: false
+            range2ListActive: ''
         }
     }
 
@@ -784,10 +783,15 @@ class DropDown extends React.Component {
     }
 
     onToggleDropList() {
+
         this.setState({ dropListShow: !this.state.dropListShow }, () => {
+
             $(this.refs.dropdown_select_ul).slideToggle('fast');
+
         });
+
     }//展示或者隐藏下拉列表
+
     onSimpleDropChange(e) {
         const { onChange, value, title } = e;
         this.setState({ dropListShow: false, dropSelectd: { value, title } }, () => {
@@ -800,14 +804,14 @@ class DropDown extends React.Component {
 
     //改变下拉选项的时候调用
     onMultipleRang2DropChange(e) {
-        const { id, name, preName, showId, onChange, k1, k2 } = e;
+        const { id, name,onChange } = e;
         this.setState({ //点击选项之后
             dropListShow: false,
             dropSelectd: {
-                value: `${name}${showId ? `[${id}]` : ''}`,
-                title: `${name}${showId ? `[${id}]` : ''}`
+                value: id,
+                title: name
             },
-            range2ListActive: `${k1}${k2}`
+            range2ListActive:id
         }, () => {
             $(this.refs.dropdown_select_ul).hide();//隐藏下拉框
             if (onChange) {
@@ -815,20 +819,18 @@ class DropDown extends React.Component {
             }
         });
     }//二级下拉改变下拉的时候调用
+
+
     onRange2ListShow(k1) {
         if (this.state.range2ListShow === k1) {
-            this.setState({ range2ListShow: '' }, () => {
-                $(this.refs[`dropdown_list_ul3_${k1}`]).slideToggle();
-            });
+            this.setState({ range2ListShow: '' });
         } else {
-            $(this.refs[`dropdown_list_ul3_${this.state.range2ListShow}`]).slideToggle();
-
-            this.setState({ range2ListShow: k1 }, () => {
-                $(this.refs[`dropdown_list_ul3_${k1}`]).slideToggle();
-            })
+            this.setState({ range2ListShow: k1 });
         }
 
     }//在二级的时候展开下拉
+
+
     componentDidMount() {
         document.addEventListener('click', (e) => this.outDropClick({
             that: this,
@@ -853,12 +855,12 @@ class DropDown extends React.Component {
     onClickSearch(e) {
         const { mutipleOptions } = this.props;
         if (e.value) {
-            this.setState({ searchOpen: true }, () => {
+
                 if (mutipleOptions && mutipleOptions.dropClickSearch) {
                     mutipleOptions.dropClickSearch(e);
                 }
-                $(this.refs[`dropdown_list_ul3_${this.state.range2ListShow}`]).toggle();
-            });
+                //$(this.refs[`dropdown_list_ul3_${this.state.range2ListShow}`]).toggle();
+
         } else {
             if (mutipleOptions && mutipleOptions.dropClickSearch) {
                 mutipleOptions.dropClickSearch(e);
@@ -868,49 +870,59 @@ class DropDown extends React.Component {
     }//点击搜索之后
     onCancelSearch(e) {
         const { mutipleOptions } = this.props;
-        this.setState({ searchOpen: false }, () => {
+
             if (mutipleOptions && mutipleOptions.dropCancelSearch) {
                 mutipleOptions.dropCancelSearch();
             }
-            $(this.refs[`dropdown_list_ul3_${this.state.range2ListShow}`]).toggle();
-        })
+
+
     }
 
     render() {
         const {
+
             title, width, height, disabled, dropSelectd, dropList, onChange, type,className,
-            mutipleOptions, ...reset
+
+            mutipleOptions,dropLoadingShow, ...reset
+
         } = this.props;
+
+
         let dropContainer = '';
+
         let selectUlWidth = (mutipleOptions && mutipleOptions.width ? mutipleOptions.width : 540);
+
         let selectUlHeight = (mutipleOptions && mutipleOptions.height ? mutipleOptions.height : 280);
+
         let searchWidth = (mutipleOptions && mutipleOptions.searchWidth ? mutipleOptions.searchWidth : 320);
+
         let scrollWrapperWidth = (mutipleOptions && mutipleOptions.width ? (mutipleOptions.width - 20) : 520);
+
         let scrollWrapperHeight = (mutipleOptions && mutipleOptions.height ? (mutipleOptions.height - 72) : 228);
-        let showId = (mutipleOptions && mutipleOptions.dropIdShow) ? mutipleOptions.dropIdShow : false;
+
+        let searchOpen = mutipleOptions&&mutipleOptions.searchOpen?mutipleOptions.searchOpen:false;
+
         //所需的参数
         let dropMultipleList = '';
+
         //判断等级渲染相对应的元素
-        if (this.state.searchOpen) { //如果开启搜索的话
+        if (searchOpen) { //如果开启搜索的话
 
             dropMultipleList =
+
                 <ul className="dropdown_list_ul3 clearfix" style={{ display: "block" }}>
 
-                    <Loading tip="加载中..." spinning={mutipleOptions.searchLoadingShow}>
+                    <Loading tip="加载中..." spinning={mutipleOptions&&mutipleOptions.searchLoadingShow?mutipleOptions.searchLoadingShow:false}>
 
                     {mutipleOptions.searchList.map((item, ks) => {
-                        return <li key={ks} className={`dropdown_item3_li`}
+                        return <li key={ks} className={`dropdown_item3_li ${item.id === this.state.range2ListActive?'active':''}`}
                                    onClick={this.onMultipleRang2DropChange.bind(this, {
                                        name: item.name,
                                        id: item.id,
-                                       showId,
                                        onChange: mutipleOptions.dropMultipleChange
                                    })}//绑定点击事件
-                                   title={`${item.name}${showId ? `[${item.id}]` : ''}`}>
+                                   title={item.name}>
                             <span className="dropdown_item3_name">{item.name}</span>
-                            {
-                                showId ? <span className="dropdown_item3_id">{`[${item.id}]`}</span> : ''
-                            }
                         </li>
                     })}
 
@@ -924,30 +936,25 @@ class DropDown extends React.Component {
                     <div
                         className={`dropdown_item1_name ${this.state.range2ListShow === k1 ? 'slide' : ''}`} //判断是否是活动状态
                         title={item1.name} onClick={this.onRange2ListShow.bind(this, k1)}>{item1.name}</div>
-                    <ul ref={`dropdown_list_ul3_${k1}`} className={`dropdown_list_ul3 clearfix`}>
+                    <ul ref={`dropdown_list_ul3_${k1}`} className={`dropdown_list_ul3 clearfix`} style={{display:`${this.state.range2ListShow === k1?'block':'none'}`}}>
                         {//遍历第二个数组
                             item1.list.map((item2, k2) => {
                                 return <li key={k2}
-                                           className={`dropdown_item3_li ${this.state.range2ListActive === `${k1}${k2}` ? 'active' : ''}`} //判断是否是active
-                                           title={`${item2.name}${showId ? `[${item2.id}]` : ''}`}
+                                           className={`dropdown_item3_li ${this.state.range2ListActive === item2.id ? 'active' : ''}`} //判断是否是active
+                                           title={item2.name}
                                            onClick={this.onMultipleRang2DropChange.bind(this, {
                                                name: item2.name,
                                                id: item2.id,
-                                               preName: item1.name,
-                                               showId,
-                                               k1, k2,
                                                onChange: mutipleOptions.dropMultipleChange
                                            })}//绑定点击事件
                                 >
                                     <span className="dropdown_item3_name">{item2.name}</span>
-                                    {
-                                        showId ? <span className="dropdown_item3_id">{`[${item2.id}]`}</span> : ''
-                                    }
                                 </li>
                             })
                         }
                     </ul>
                 </li>
+
             });
         } else if (mutipleOptions && mutipleOptions.range === 3) {
             //等待后期扩展使用
@@ -968,9 +975,17 @@ class DropDown extends React.Component {
                             ></Search>
                         </div>
                         <Scrollbars style={{ width: scrollWrapperWidth, height: scrollWrapperHeight }}>
-                            <ul className="dropdown_list_ul">
-                                {dropMultipleList}
+
+                            <Loading spinning={mutipleOptions&&mutipleOptions.dropLoadingShow?mutipleOptions.dropLoadingShow:false}>
+
+                                <ul className="dropdown_list_ul">
+
+                                    {dropMultipleList}
+
                             </ul>
+
+                            </Loading>
+
                         </Scrollbars>
                     </div>
                 </div>
@@ -986,7 +1001,10 @@ class DropDown extends React.Component {
 
             dropContainer =
                 <ul className="dropdown_select_ul" ref="dropdown_select_ul" style={{ width: width ? width : 120, overflow: "initial" }}>
-                    <Scrollbars style={{ width: width ? width : 120, height: ClientHeight ? ClientHeight : 48 }}>
+
+                    <Loading spinning={dropLoadingShow?dropLoadingShow:false}>
+
+                        <Scrollbars style={{ width: width ? width : 120, height: ClientHeight ? ClientHeight : 48 }}>
                         {//dropList是否存在？dropList:''
                             dropList ?
                                 dropList.map((item, key) => {
@@ -1005,6 +1023,9 @@ class DropDown extends React.Component {
                                 : ''
                         }
                     </Scrollbars>
+
+                    </Loading>
+
                 </ul>;
         }
         return (

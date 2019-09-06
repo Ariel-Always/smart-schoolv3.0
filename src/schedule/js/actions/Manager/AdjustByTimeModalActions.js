@@ -1,5 +1,7 @@
 import Method from '../Method';
 
+import AppAlertActions from '../../actions/AppAlertActions';
+
 const ADJUST_BY_TIME_SHOW = 'ADJUST_BY_TIME_SHOW';
 
 const ADJUST_BY_TIME_HIDE = 'ADJUST_BY_TIME_HIDE';
@@ -15,6 +17,22 @@ const ADJUST_BY_TIME_PERIOD_GRADE_CHECKED = 'ADJUST_BY_TIME_PERIOD_GRADE_CHECKED
 const ADJUST_BY_TIME_NEW_CLASSHOUR_CHECKED = 'ADJUST_BY_TIME_NEW_CLASSHOUR_CHECKED';
 
 const ADJUST_BY_TIME_OLD_CLASSHOUR_CHECKED = 'ADJUST_BY_TIME_OLD_CLASSHOUR_CHECKED';
+
+const ADJUST_BY_TIME_OLD_DATE_UPDATE = 'ADJUST_BY_TIME_OLD_DATE_UPDATE';
+
+const ADJUST_BY_TIME_NEW_DATE_UPDATE = 'ADJUST_BY_TIME_NEW_DATE_UPDATE';
+
+const ADJUST_BY_TIME_NEW_WEEK_DATE_UPDATE = 'ADJUST_BY_TIME_NEW_WEEK_DATE_UPDATE';
+
+const ADJUST_BY_TIME_OLD_WEEK_DATE_UPDATE = 'ADJUST_BY_TIME_OLD_WEEK_DATE_UPDATE';
+
+const ADJUST_BY_TIME_OLD_WEEK_DATE_LOADING_SHOW = 'ADJUST_BY_TIME_OLD_WEEK_DATE_LOADING_SHOW';
+
+const ADJUST_BY_TIME_OLD_WEEK_DATE_LOADING_HIDE = 'ADJUST_BY_TIME_OLD_WEEK_DATE_LOADING_HIDE';
+
+const ADJUST_BY_TIME_NEW_WEEK_DATE_LOADING_HIDE = 'ADJUST_BY_TIME_NEW_WEEK_DATE_LOADING_HIDE';
+
+const ADJUST_BY_TIME_NEW_WEEK_DATE_LOADING_SHOW = 'ADJUST_BY_TIME_NEW_WEEK_DATE_LOADING_SHOW';
 
 //初始化弹窗信息
 const InfoInit = () => {
@@ -115,8 +133,6 @@ const InfoInit = () => {
 
             let oldClassHours = [];
 
-            let newClassHours = [];
-
             let morning = {type:1,name:"上午",list:[]};
 
             let afternoon = {type:2,name:"下午",list:[]};
@@ -159,7 +175,7 @@ const InfoInit = () => {
 
             }
 
-            newClassHours = [...oldClassHours];
+            let newClassHours = JSON.parse(JSON.stringify(oldClassHours));
 
             let oldClassHourPlainOpts = oldClassHours.map(item => {
 
@@ -181,12 +197,9 @@ const InfoInit = () => {
 
             });
 
-            let newClassHourPlainOpts = [...oldClassHourPlainOpts];
-
             let oldClassHourCheckedList = oldClassHours.map(item => {
 
                 let list = [];
-
 
                 return {
 
@@ -200,7 +213,9 @@ const InfoInit = () => {
 
             });
 
-            let newClassHourCheckedList = [...oldClassHourCheckedList];
+            let newClassHourPlainOpts = JSON.parse(JSON.stringify(oldClassHourPlainOpts));
+
+            let newClassHourCheckedList = JSON.parse(JSON.stringify(oldClassHourCheckedList));
 
             dispatch({type:ADJUST_BY_TIME_INFO_UPDATE,data:{
 
@@ -378,14 +393,13 @@ const periodChecked = (opts) => {
 
 
 //点击旧课时选中
-
 const oldClassHourChecked = (opts) => {
 
     return (dispatch,getState) => {
 
         console.log(opts);
 
-        const { oldClassHourCheckedList,oldClassHourPlainOpts } = getState().Manager.AdjustByTimeModal;
+        const { oldClassHourCheckedList,oldClassHourPlainOpts,newClassHourCheckedList } = getState().Manager.AdjustByTimeModal;
 
         let checkedList = [];
 
@@ -515,20 +529,23 @@ const oldClassHourChecked = (opts) => {
 
             });
 
+
+
         }
+        console.log(newClassHourCheckedList,oldClassHourCheckedList);
 
         dispatch({type:ADJUST_BY_TIME_OLD_CLASSHOUR_CHECKED,data:{oldClassHourCheckedList:checkedList}});
+
+        console.log(newClassHourCheckedList);
 
     }
 
 };
 
-
+//点击新课时选中
 const newClassHourChecked = (opts) => {
 
     return (dispatch,getState) => {
-
-        console.log(opts);
 
         const { newClassHourCheckedList,newClassHourPlainOpts } = getState().Manager.AdjustByTimeModal;
 
@@ -668,6 +685,535 @@ const newClassHourChecked = (opts) => {
 
 };
 
+
+//旧日期变更
+const oldDateUpdate = (date) => {
+
+    return dispatch => {
+
+        dispatch({type:ADJUST_BY_TIME_OLD_DATE_UPDATE,data:date});
+
+        if (date === ''){
+
+            dispatch({type:ADJUST_BY_TIME_OLD_WEEK_DATE_UPDATE,data:{weekDay:'',weekNo:''}});
+
+        }else{
+
+            dispatch({type:ADJUST_BY_TIME_OLD_WEEK_DATE_LOADING_SHOW});
+
+            let oldDatePromise = Method.getGetData('/scheduleDateUpdate');
+
+            oldDatePromise.then(json => {
+
+                if (json.Status === 200){
+
+                    console.log(json.Data);
+
+                    const { WeekNO,WeekDay } = json.Data;
+
+                    let weekDay = '';
+
+                    switch (WeekDay) {
+
+                        case 0:
+
+                            weekDay = '星期一';
+
+                            break;
+
+                        case 1:
+
+                            weekDay = '星期二';
+
+                            break;
+
+                        case 2:
+
+                            weekDay = '星期三';
+
+                            break;
+
+                        case 3:
+
+                            weekDay = '星期四';
+
+                            break;
+
+                        case 4:
+
+                            weekDay = '星期五';
+
+                            break;
+
+                        case 5:
+
+                            weekDay = '星期六';
+
+                            break;
+
+                        case 6:
+
+                            weekDay = '星期日';
+
+                            break;
+
+                        default:
+
+                            weekDay = '星期一';
+
+                    }
+
+                    dispatch({type:ADJUST_BY_TIME_OLD_WEEK_DATE_UPDATE,data:{weekDay:weekDay,weekNo:WeekNO}});
+
+                    dispatch({type:ADJUST_BY_TIME_OLD_WEEK_DATE_LOADING_HIDE});
+
+                }else{
+
+                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                            type:"btn-error",
+
+                            title:json.Msg,
+
+                            ok:hideAlert(dispatch),
+
+                            cancel:hideAlert(dispatch),
+
+                            close:hideAlert(dispatch)
+
+                        }})
+
+                }
+
+            })
+
+        }
+
+    }
+
+};
+
+//新的日期变更
+const newDateUpdate = (date) => {
+
+    return dispatch => {
+
+        dispatch({type:ADJUST_BY_TIME_NEW_DATE_UPDATE,data:date});
+
+        if (date === ''){
+
+            dispatch({type:ADJUST_BY_TIME_NEW_WEEK_DATE_UPDATE,data:{weekDay:'',weekNo:''}});
+
+        }else{
+
+            dispatch({type:ADJUST_BY_TIME_NEW_WEEK_DATE_LOADING_SHOW});
+
+            let newDatePromise = Method.getGetData('/scheduleDateUpdate');
+
+            newDatePromise.then(json => {
+
+                if (json.Status === 200){
+
+                    console.log(json.Data);
+
+                    const { WeekNO,WeekDay } = json.Data;
+
+                    let weekDay = '';
+
+                    switch (WeekDay) {
+
+                        case 0:
+
+                            weekDay = '星期一';
+
+                            break;
+
+                        case 1:
+
+                            weekDay = '星期二';
+
+                            break;
+
+                        case 2:
+
+                            weekDay = '星期三';
+
+                            break;
+
+                        case 3:
+
+                            weekDay = '星期四';
+
+                            break;
+
+                        case 4:
+
+                            weekDay = '星期五';
+
+                            break;
+
+                        case 5:
+
+                            weekDay = '星期六';
+
+                            break;
+
+                        case 6:
+
+                            weekDay = '星期日';
+
+                            break;
+
+                        default:
+
+                            weekDay = '星期一';
+
+                    }
+
+                    dispatch({type:ADJUST_BY_TIME_NEW_WEEK_DATE_UPDATE,data:{weekDay:weekDay,weekNo:WeekNO}});
+
+                    dispatch({type:ADJUST_BY_TIME_NEW_WEEK_DATE_LOADING_HIDE});
+
+                }else{
+
+                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                            type:"btn-error",
+
+                            title:json.Msg,
+
+                            ok:hideAlert(dispatch),
+
+                            cancel:hideAlert(dispatch),
+
+                            close:hideAlert(dispatch)
+
+                        }})
+
+                }
+
+            })
+
+        }
+
+    }
+
+};
+
+
+
+
+//提交弹窗内容
+
+const commitInfo = () => {
+
+    return (dispatch,getState) => {
+
+        dispatch({type:ADJUST_BY_TIME_LOADING_SHOW});
+
+        const { oldDate,newDate,periodGradesCheckedList,oldClassHourCheckedList,newClassHourCheckedList } = getState().Manager.AdjustByTimeModal;
+
+        //判断是否全部都已经选择完毕
+        let gradeChecked = false;
+
+        periodGradesCheckedList.map(item => {
+
+            if (item.checked){
+
+                gradeChecked = true;
+
+            }else {
+
+                if (item.list.length > 0){
+
+                    gradeChecked = true
+
+                }
+
+            }
+
+
+
+        });
+
+        let oldClassHourChecked = false;
+
+        oldClassHourCheckedList.map(item => {
+
+            if (item.checked){
+
+                oldClassHourChecked = true;
+
+            }else {
+
+                if (item.list.length > 0){
+
+                    oldClassHourChecked = true
+
+                }
+
+            }
+
+        });
+
+        let newClassHourChecked = false;
+
+        newClassHourCheckedList.map(item => {
+
+            if (item.checked){
+
+                newClassHourChecked = true;
+
+            }else {
+
+                if (item.list.length > 0){
+
+                    newClassHourChecked = true
+
+                }
+
+            }
+
+
+
+        });
+
+        let oldClassHourCheckedLength = 0;
+
+        oldClassHourCheckedList.map(item => {
+
+            oldClassHourCheckedLength = oldClassHourCheckedLength + item.list.length;
+
+        });
+
+        let newClassHourCheckedLength = 0;
+
+        newClassHourCheckedList.map(item => {
+
+            newClassHourCheckedLength = newClassHourCheckedLength + item.list.length;
+
+        });
+
+        if (!gradeChecked){
+
+            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                    type:"btn-warn",
+
+                    title:"请选择需要调整的年级！",
+
+                    ok:hideAlert(dispatch),
+
+                    cancel:hideAlert(dispatch),
+
+                    close:hideAlert(dispatch)
+
+                }})
+
+            dispatch({type:ADJUST_BY_TIME_LOADING_HIDE});
+
+        }
+
+        if (!oldClassHourChecked){
+
+            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                    type:"btn-warn",
+
+                    title:"请选择调整前课时！",
+
+                    ok:hideAlert(dispatch),
+
+                    cancel:hideAlert(dispatch),
+
+                    close:hideAlert(dispatch)
+
+                }})
+
+            dispatch({type:ADJUST_BY_TIME_LOADING_HIDE});
+
+        }
+
+        if (!newClassHourChecked){
+
+            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                    type:"btn-warn",
+
+                    title:"请选择调整后课时！",
+
+                    ok:hideAlert(dispatch),
+
+                    cancel:hideAlert(dispatch),
+
+                    close:hideAlert(dispatch)
+
+                }})
+
+            dispatch({type:ADJUST_BY_TIME_LOADING_HIDE});
+
+        }
+
+        if (oldDate === ''){
+
+            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                    type:"btn-warn",
+
+                    title:"请选择调整前日期！",
+
+                    ok:hideAlert(dispatch),
+
+                    cancel:hideAlert(dispatch),
+
+                    close:hideAlert(dispatch)
+
+                }});
+
+            dispatch({type:ADJUST_BY_TIME_LOADING_HIDE});
+
+        }
+
+        if (newDate === ''){
+
+            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                    type:"btn-warn",
+
+                    title:"请选择调整后日期！",
+
+                    ok:hideAlert(dispatch),
+
+                    cancel:hideAlert(dispatch),
+
+                    close:hideAlert(dispatch)
+
+                }});
+
+            dispatch({type:ADJUST_BY_TIME_LOADING_HIDE});
+
+        }
+
+        if (oldClassHourCheckedLength !== newClassHourCheckedLength){
+
+            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                    type:"btn-warn",
+
+                    title:"调整前课时和调整后课时数量不一致！",
+
+                    ok:hideAlert(dispatch),
+
+                    cancel:hideAlert(dispatch),
+
+                    close:hideAlert(dispatch)
+
+                }});
+
+            dispatch({type:ADJUST_BY_TIME_LOADING_HIDE});
+
+        }
+
+
+        if (gradeChecked&&oldClassHourChecked&&newClassHourChecked&&newDate&&oldDate&&(oldClassHourCheckedLength === newClassHourCheckedLength)){
+
+            let ClassDate1 = oldDate;
+
+            let ClassDate2 = newDate;
+
+            let ClassHours1 = oldClassHourCheckedList.map(item => {
+
+                if (item.list.length > 0){
+
+                    return item.list;
+
+                }else{
+
+                    return;
+
+                }
+
+            }).filter(i => i!==undefined).join(',');
+
+            let ClassHours2 = newClassHourCheckedList.map(item => {
+
+                if (item.list.length > 0){
+
+                    return item.list;
+
+                }else{
+
+                    return;
+
+                }
+
+            }).filter(i => i!==undefined).join(',');
+
+            let Grades = periodGradesCheckedList.map(item => {
+
+                if (item.list.length > 0){
+
+                    return item.list;
+
+                }else{
+
+                    return;
+
+                }
+
+            }).filter(i => i!==undefined).join(',');
+
+            let commitPromise = Method.getPostData('/scheduleAdjusrtTimeCommit',{ClassDate1,ClassDate2,ClassHours1,ClassHours2,Grades});
+
+            commitPromise.then(res => {
+
+               if (res.Status === 200){
+
+                   dispatch({type:ADJUST_BY_TIME_HIDE});
+
+                   dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                           type:"success",
+
+                           title:"调整成功！",
+
+                           hide:hideAlert(dispatch)
+
+                       }});
+
+               }else{
+
+                   dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                           type:"btn-error",
+
+                           title:res.Msg?res.Msg:'错误',
+
+                           ok:hideAlert(dispatch),
+
+                           cancel:hideAlert(dispatch),
+
+                           close:hideAlert(dispatch)
+
+                       }});
+
+               }
+
+            });
+
+        }
+
+    }
+
+};
+
+const hideAlert = (dispatch) => {
+
+   return  () =>dispatch({type:AppAlertActions.APP_ALERT_HIDE});
+
+};
+
+
 //自定义的数组去除方法
 Array.prototype.indexOf = function(val) {
 
@@ -712,12 +1258,34 @@ export default {
 
     ADJUST_BY_TIME_NEW_CLASSHOUR_CHECKED,
 
+    ADJUST_BY_TIME_NEW_DATE_UPDATE,
+
+    ADJUST_BY_TIME_OLD_DATE_UPDATE,
+
+    ADJUST_BY_TIME_NEW_WEEK_DATE_UPDATE,
+
+    ADJUST_BY_TIME_OLD_WEEK_DATE_UPDATE,
+
+    ADJUST_BY_TIME_NEW_WEEK_DATE_LOADING_SHOW,
+
+    ADJUST_BY_TIME_NEW_WEEK_DATE_LOADING_HIDE,
+
+    ADJUST_BY_TIME_OLD_WEEK_DATE_LOADING_HIDE,
+
+    ADJUST_BY_TIME_OLD_WEEK_DATE_LOADING_SHOW,
+
     InfoInit,
 
     periodChecked,
 
     oldClassHourChecked,
 
-    newClassHourChecked
+    newClassHourChecked,
+
+    oldDateUpdate,
+
+    newDateUpdate,
+
+    commitInfo
 
 }

@@ -89,6 +89,9 @@ const ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LOADING_HIDE = 'ADD_SCHEDULE_MODAL_CLA
 
 const ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LIST_UPDATE = 'ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LIST_UPDATE';
 
+const ADD_SCHEDULE_MODAL_CLASS_SEARCH_OPEN = 'ADD_SCHEDULE_MODAL_CLASS_SEARCH_OPEN';
+
+const ADD_SCHEDULE_MODAL_CLASS_SEARCH_CLOSE = 'ADD_SCHEDULE_MODAL_CLASS_SEARCH_CLOSE';
 
 //初始化弹窗信息的方法
 const InfoInit = () => {
@@ -369,6 +372,8 @@ const classSearch = (key) => {
 
         let SchoolID = getState().LoginUser;
 
+        dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_OPEN});
+
         dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_LOADING_SHOW});
 
         let searchClassPromise = Method.getGetData(`/scheduleSearchClass?SchoolID=${SchoolID}&key=${key}`);
@@ -402,6 +407,17 @@ const classSearch = (key) => {
         });
 
   }
+
+};
+
+//班级搜索关闭
+const classSearchClose = () => {
+
+    return dispatch =>{
+
+        dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_CLOSE});
+
+    }
 
 };
 
@@ -647,9 +663,15 @@ ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LOADING_HIDE,
 
 ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LIST_UPDATE,
 
+    ADD_SCHEDULE_MODAL_CLASS_SEARCH_OPEN,
+
+    ADD_SCHEDULE_MODAL_CLASS_SEARCH_CLOSE,
+
   InfoInit,
 
     classSearch,
+
+    classSearchClose,
 
     teacherSearch,
 

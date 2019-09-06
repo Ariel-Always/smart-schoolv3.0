@@ -180,6 +180,16 @@ class AddScheduleModal extends Component{
 
     }
 
+    //取消班级搜索
+    classSearchClose(){
+
+        const {dispatch} = this.props;
+
+        dispatch(ASMActions.classSearchClose());
+
+    }
+
+
     //点击教师搜索
 
     classRoomSearchClick(e){
@@ -266,13 +276,16 @@ class AddScheduleModal extends Component{
                                         width={150}
                                         type="multiple"
                                         dropSelectd={AddScheduleModal.checkedClass?AddScheduleModal.checkedClass:{value:"none",title:"请选择班级"}}
+
                                         mutipleOptions={{
                                             range:2,
                                             dropMultipleList:AddScheduleModal.gradeClass,
                                             dropMultipleChange:this.classChange.bind(this),
                                             dropClickSearch:this.classSearchClick.bind(this),
+                                            dropCancelSearch:this.classSearchClose.bind(this),
                                             searchList:AddScheduleModal.classSearchList,
-                                            searchPlaceholder:"请输入教师工号或者教师姓名进行搜索...",
+                                            searchPlaceholder:"请输入班级名称进行搜索...",
+                                            searchOpen:AddScheduleModal.classSearchOpen,
                                             searchLoadingShow:AddScheduleModal.classSearchLoadingShow
                                         }}
                                         style={{zIndex:9}}>
