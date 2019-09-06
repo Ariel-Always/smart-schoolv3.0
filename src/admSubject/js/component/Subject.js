@@ -7,7 +7,7 @@ import CONFIG from '../../../common/js/config';
 import ChangeSubject from './ChangeSubject.js'
 import SetSubjectTeacher from './SetSubjectTeacher.js'
 
-import { Search, DropDown, Button, Table, DetailsModal, PagiNation ,Modal} from '../../../common'
+import { Search, DropDown, Button, Table, DetailsModal, PagiNation, Modal } from '../../../common'
 class Subject extends React.Component {
     constructor(props) {
         super(props);
@@ -103,15 +103,15 @@ class Subject extends React.Component {
 
     //编辑学科
     onHandleClick = (key) => {
-        const {dispatch,DataState} = this.props;
+        const { dispatch, DataState } = this.props;
         dispatch(actions.UpDataState.changeSubjectModalMsg(DataState.SubjectMsg.oldData.SubjectItem[key]))
         dispatch(actions.UpUIState.changeSubjectModalOpen())
     }
 
     //添加学科
     onAddSubjectClick = () => {
-        const {dispatch,DataState} = this.props;
-        if(!DataState.ChangeSubjectMsg){
+        const { dispatch, DataState } = this.props;
+        if (!DataState.ChangeSubjectMsg) {
             return;
         }
         dispatch(actions.UpDataState.addSubjectModalMsg([]))
@@ -152,7 +152,7 @@ class Subject extends React.Component {
         dispatch(actions.UpUIState.showErrorAlert({
             type: 'btn-warn',
             title: "你确定删除吗？",
-            ok: this.onAlertWarnOk.bind(this,key),
+            ok: this.onAlertWarnOk.bind(this, key),
             cancel: this.onAlertWarnClose.bind(this),
             close: this.onAlertWarnClose.bind(this)
         }));
@@ -166,7 +166,7 @@ class Subject extends React.Component {
 
 
     onAlertWarnOk = (key) => {
-        const { dispatch ,DataState, UIState} = this.props;
+        const { dispatch, DataState, UIState } = this.props;
         let url = '/DeleteSubject';
         let userMsg = DataState.LoginUser;
         console.log(userMsg)
@@ -176,11 +176,12 @@ class Subject extends React.Component {
             subjectID: DataState.SubjectMsg.SubjectItem[key].SubjectName.SubjectID,
             userID: userMsg.UserID,
             userType: userMsg.UserType
-        }).then(res=>{
-            return res.json()}).then(json=>{
-            if(json.Status === 400){
-                console.log('错误码：'+json.Status)
-            }else if(json.Status === 200){
+        }).then(res => {
+            return res.json()
+        }).then(json => {
+            if (json.Status === 400) {
+                console.log('错误码：' + json.Status)
+            } else if (json.Status === 200) {
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
                     title: "成功",
@@ -188,77 +189,20 @@ class Subject extends React.Component {
                 }));
             }
         })
-        
+
     }
 
     onAlertWarnHide = () => {
-        const {dispatch} = this.props;
+        const { dispatch } = this.props;
         dispatch(actions.UpUIState.hideErrorAlert())
 
     }
     //编辑弹窗操作
     changeSubjectModalOk = () => {
         let url = '/HandleSubject';
-        const {dispatch,DataState} = this.props;
+        const { dispatch, DataState } = this.props;
         let userMsg = DataState.LoginUser;
-        if(DataState.ChangeSubjectMsg.GlobalGradeIDs.length === 0){
-            dispatch(actions.UpUIState.showErrorAlert({
-                type: 'btn-error',
-                title: "开课年级没有选择哦~",
-                ok: this.onAppAlertOK.bind(this),
-                cancel: this.onAppAlertCancel.bind(this),
-                close: this.onAppAlertClose.bind(this)
-            }));
-            return;
-        }
-        dispatch({ type: actions.UpUIState.MODAL_LOADING_OPEN});
-        postData(CONFIG.proxy + url, {
-            schoolID: 'schoolID',
-            subjectID: DataState.ChangeSubjectMsg.SubjectID,
-            GlobalGradeIDs: DataState.ChangeSubjectMsg.GlobalGradeIDs,
-            userID: userMsg.UserID,
-            userType: userMsg.UserType
-        },3).then(res=>{
-            dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
-            return res.json()}).then(json=>{
-            if(json.Status === 400){
-                dispatch(actions.UpUIState.showErrorAlert({
-                    type: 'error',
-                    title: "失败",
-                    onHide: this.onAlertWarnHide.bind(this)
-                }));
-                console.log('错误码：'+json.Status)
-            }else if(json.Status === 200){
-                dispatch(actions.UpUIState.changeSubjectModalClose())
-                dispatch(actions.UpUIState.showErrorAlert({
-                    type: 'success',
-                    title: "成功",
-                    onHide: this.onAlertWarnHide.bind(this)
-                }));
-            }
-        })
-        
-    }
-    changeSubjectModalCancel = () => {
-        const {dispatch,DataState} = this.props;
-        dispatch(actions.UpUIState.changeSubjectModalClose())
-    }
-    //添加弹窗操作
-    AddSubjectModalOk = () => {
-        const {dispatch,DataState} = this.props;
-        let url = '/AddSubject';
-        let userMsg = DataState.LoginUser;
-        if(!DataState.ChangeSubjectMsg.SubjectName){
-            dispatch(actions.UpUIState.showErrorAlert({
-                type: 'btn-error',
-                title: "学科名称没有选择哦~",
-                ok: this.onAppAlertOK.bind(this),
-                cancel: this.onAppAlertCancel.bind(this),
-                close: this.onAppAlertClose.bind(this)
-            }));
-            return;
-        }
-        if(DataState.ChangeSubjectMsg.GlobalGradeIDs.length === 0){
+        if (DataState.ChangeSubjectMsg.GlobalGradeIDs.length === 0) {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-error',
                 title: "开课年级没有选择哦~",
@@ -275,17 +219,76 @@ class Subject extends React.Component {
             GlobalGradeIDs: DataState.ChangeSubjectMsg.GlobalGradeIDs,
             userID: userMsg.UserID,
             userType: userMsg.UserType
-        },3).then(res=>{
+        }, 3).then(res => {
             dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
-            return res.json()}).then(json=>{
-            if(json.Status === 400){
+            return res.json()
+        }).then(json => {
+            if (json.Status === 400) {
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'error',
                     title: "失败",
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
-                console.log('错误码：'+json.Status)
-            }else if(json.Status === 200){
+                console.log('错误码：' + json.Status)
+            } else if (json.Status === 200) {
+                dispatch(actions.UpUIState.changeSubjectModalClose())
+                dispatch(actions.UpUIState.showErrorAlert({
+                    type: 'success',
+                    title: "成功",
+                    onHide: this.onAlertWarnHide.bind(this)
+                }));
+            }
+        })
+
+    }
+    changeSubjectModalCancel = () => {
+        const { dispatch, DataState } = this.props;
+        dispatch(actions.UpUIState.changeSubjectModalClose())
+    }
+    //添加弹窗操作
+    AddSubjectModalOk = () => {
+        const { dispatch, DataState } = this.props;
+        let url = '/AddSubject';
+        let userMsg = DataState.LoginUser;
+        if (!DataState.ChangeSubjectMsg.SubjectName) {
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-error',
+                title: "学科名称没有选择哦~",
+                ok: this.onAppAlertOK.bind(this),
+                cancel: this.onAppAlertCancel.bind(this),
+                close: this.onAppAlertClose.bind(this)
+            }));
+            return;
+        }
+        if (DataState.ChangeSubjectMsg.GlobalGradeIDs.length === 0) {
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-error',
+                title: "开课年级没有选择哦~",
+                ok: this.onAppAlertOK.bind(this),
+                cancel: this.onAppAlertCancel.bind(this),
+                close: this.onAppAlertClose.bind(this)
+            }));
+            return;
+        }
+        dispatch({ type: actions.UpUIState.MODAL_LOADING_OPEN });
+        postData(CONFIG.proxy + url, {
+            schoolID: 'schoolID',
+            subjectID: DataState.ChangeSubjectMsg.SubjectID,
+            GlobalGradeIDs: DataState.ChangeSubjectMsg.GlobalGradeIDs,
+            userID: userMsg.UserID,
+            userType: userMsg.UserType
+        }, 3).then(res => {
+            dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
+            return res.json()
+        }).then(json => {
+            if (json.Status === 400) {
+                dispatch(actions.UpUIState.showErrorAlert({
+                    type: 'error',
+                    title: "失败",
+                    onHide: this.onAlertWarnHide.bind(this)
+                }));
+                console.log('错误码：' + json.Status)
+            } else if (json.Status === 200) {
                 dispatch(actions.UpUIState.addSubjectModalClose())
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
@@ -294,10 +297,10 @@ class Subject extends React.Component {
                 }));
             }
         })
-        
+
     }
     AddSubjectModalCancel = () => {
-        const {dispatch,DataState} = this.props;
+        const { dispatch, DataState } = this.props;
         dispatch(actions.UpUIState.addSubjectModalClose())
     }
 
@@ -305,7 +308,7 @@ class Subject extends React.Component {
     onAppAlertOK() {
         const { dispatch } = this.props;
         dispatch(actions.UpUIState.hideErrorAlert());
-        
+
     }
     onAppAlertCancel() {
         const { dispatch } = this.props;
@@ -318,13 +321,14 @@ class Subject extends React.Component {
 
     //设置学科教研组长
     onSetTeacherClick = (key) => {
-        const {dispatch,DataState} = this.props;
-
+        const { dispatch, DataState } = this.props;
+        let subjectTeacherMsg = DataState.SubjectMsg.oldData.SubjectItem[key];
+        dispatch(actions.UpDataState.setSubjectTeacherMsg(subjectTeacherMsg))
         dispatch(actions.UpUIState.setSubjectTeacherModalOpen())
     }
 
     SetSubjectTeacherModalOk = () => {
-        const {dispatch,DataState} = this.props;
+        const { dispatch, DataState } = this.props;
         let url = '/AddSubject';
         let userMsg = DataState.LoginUser;
         // if(!DataState.ChangeSubjectMsg.SubjectName){
@@ -349,22 +353,21 @@ class Subject extends React.Component {
         // }
         dispatch({ type: actions.UpUIState.MODAL_LOADING_OPEN });
         postData(CONFIG.proxy + url, {
-            schoolID: 'schoolID',
-            subjectID: DataState.ChangeSubjectMsg.SubjectID,
-            GlobalGradeIDs: DataState.ChangeSubjectMsg.GlobalGradeIDs,
-            userID: userMsg.UserID,
-            userType: userMsg.UserType
-        },3).then(res=>{
+            schoolID: DataState.LoginUser.SchoolID,
+            subjectID: DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.SubjectID,
+            teacher:DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.Teachers
+        }, 3).then(res => {
             dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
-            return res.json()}).then(json=>{
-            if(json.Status === 400){
+            return res.json()
+        }).then(json => {
+            if (json.Status === 400) {
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'error',
                     title: "失败",
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
-                console.log('错误码：'+json.Status)
-            }else if(json.Status === 200){
+                console.log('错误码：' + json.Status)
+            } else if (json.Status === 200) {
                 dispatch(actions.UpUIState.setSubjectTeacherModalClose())
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
@@ -373,10 +376,10 @@ class Subject extends React.Component {
                 }));
             }
         })
-        
+
     }
     SetSubjectTeacherModalCancel = () => {
-        const {dispatch,DataState} = this.props;
+        const { dispatch, DataState } = this.props;
         dispatch(actions.UpUIState.setSubjectTeacherModalClose())
     }
     render() {
@@ -467,7 +470,14 @@ class Subject extends React.Component {
                     onOk={this.SetSubjectTeacherModalOk}
                     onCancel={this.SetSubjectTeacherModalCancel}
                 >
-                    <SetSubjectTeacher ></SetSubjectTeacher>
+                    {
+
+                        UIState.SetSubjectTeacher.setSubjectTeacherModalShow ?
+                            <SetSubjectTeacher ></SetSubjectTeacher> : ''
+
+                    }
+
+
                 </Modal>
             </React.Fragment>
         )
