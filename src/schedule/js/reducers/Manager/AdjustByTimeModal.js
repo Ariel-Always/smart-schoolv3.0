@@ -14,7 +14,15 @@ const AdjustByTimeModal = (state={
 
     periodGradesPlainOpts:[],
 
-    periodGradesCheckedList:[]
+    periodGradesCheckedList:[],
+
+    oldClassHourPlainOpts:[],
+
+    oldClassHourCheckedList:[],
+
+    newClassHourPlainOpts:[],
+
+    newClassHourCheckedList:[]
 
 }, actions) => {
 
@@ -39,6 +47,18 @@ const AdjustByTimeModal = (state={
         case ABTMActions.ADJUST_BY_TIME_LOADING_HIDE:
 
             return {...state,loadingShow:false};
+
+        case ABTMActions.ADJUST_BY_TIME_PERIOD_GRADE_CHECKED:
+
+            return {...state,periodGradesCheckedList:actions.data.periodGradesCheckedList};
+
+        case ABTMActions.ADJUST_BY_TIME_OLD_CLASSHOUR_CHECKED:
+
+            return {...state,oldClassHourCheckedList:actions.data.oldClassHourCheckedList};
+
+        case ABTMActions.ADJUST_BY_TIME_NEW_CLASSHOUR_CHECKED:
+
+            return {...state,newClassHourCheckedList:actions.data.newClassHourCheckedList};
 
         default:
 

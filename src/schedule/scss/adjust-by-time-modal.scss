@@ -175,9 +175,8 @@
 
   }
 
-  .adjust-old-wrapper{
-
-    display: inline-block;
+  .adjust-old-wrapper,
+  .adjust-new-wrapper{
 
     width: 450px;
 
@@ -187,7 +186,20 @@
 
   }
 
-  .adjust-old-title{
+  .adjust-old-wrapper{
+
+    float: left;
+
+  }
+
+  .adjust-new-wrapper{
+
+    float: right;
+
+  }
+
+  .adjust-old-title,
+  .adjust-new-title{
 
     margin-top:16px;
 

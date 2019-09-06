@@ -541,7 +541,7 @@ const commitInfo = () => {
 
                     type:"success",
 
-                    title:"添加临时课程成功！ ",
+                    title:"添加临时课程成功！",
 
                     hide: successCommit(dispatch)
 

@@ -31,7 +31,25 @@ class AdjustByTimeModal extends Component{
 
     }
 
+    //当旧的课时被选中的时候
 
+    oldClassHourChecked(opts){
+
+        const { dispatch } = this.props;
+
+        dispatch(ABTMActions.oldClassHourChecked(opts));
+
+    }
+
+    //当新的课时被选中的时候
+
+    newClassHourChecked(opts){
+
+        const { dispatch } = this.props;
+
+        dispatch(ABTMActions.newClassHourChecked(opts));
+
+    }
 
 
 
@@ -40,7 +58,21 @@ class AdjustByTimeModal extends Component{
 
         const { AdjustByTimeModal } = this.props;
 
-        const { periodClassHours,periodGrades,periodGradesCheckedList,oldClassHours,newClassHours } = AdjustByTimeModal;
+        const {
+
+            periodGrades,
+
+            periodGradesCheckedList,
+
+            oldClassHours,
+
+            newClassHours,
+
+            oldClassHourCheckedList,
+
+            newClassHourCheckedList
+
+        } = AdjustByTimeModal;
 
         return (
 
@@ -146,85 +178,188 @@ class AdjustByTimeModal extends Component{
 
                         </div>
 
-                        <div className="adjust-old-wrapper">
+                        <div className="class-hour-pick-wrapper clearfix">
 
-                            <div className="adjust-old-title">时间:</div>
+                            <div className="adjust-old-wrapper">
 
-                            <ConfigProvider locale={zhCN}>
+                                <div className="adjust-old-title">时间:</div>
 
-                               {/* <DatePicker className="date-pick"  suffixIcon={img}></DatePicker>*/}
+                                <ConfigProvider locale={zhCN}>
 
-                               <DatePicker className="date-pick"></DatePicker>
+                                    {/* <DatePicker className="date-pick"  suffixIcon={img}></DatePicker>*/}
 
-                               <span className="date-picked-time"></span>
+                                    <DatePicker className="date-pick"></DatePicker>
 
-                                <div className="class-hour-wrapper">
+                                    <span className="date-picked-time"></span>
 
-                                    {
+                                    <div className="class-hour-wrapper">
 
-                                        oldClassHours.map(item => {
+                                        {
 
-                                            return  <div className="class-hour-item clearfix">
+                                            oldClassHours.map((item,key) => {
 
-                                                        <div className="noon">
 
-                                                            <div className="check-item">
+                                                let noonChecked = false;
 
-                                                                {item.name}
 
-                                                            </div>
+                                                oldClassHourCheckedList.map(itm => {
+
+                                                   if (itm.type === item.type){
+
+                                                       if (itm.checked){
+
+                                                           noonChecked = true;
+
+                                                       }
+
+                                                   }
+
+                                                });
+
+
+                                                return  <div key={key} className="class-hour-item clearfix">
+
+                                                    <div className="noon">
+
+                                                        <div className={`check-item ${noonChecked?'active':''}`} onClick={this.oldClassHourChecked.bind(this,{type:'noon',id:item.type})}>
+
+                                                            {item.name}
 
                                                         </div>
 
-                                                        {
+                                                    </div>
 
-                                                            item.list.map(i => {
+                                                    {
 
-                                                                return <div className="check-item">
+                                                        item.list.map((i,k) => {
 
-                                                                            {i.name}
+                                                            let itemChecked = false;
 
-                                                                        </div>
+                                                            oldClassHourCheckedList.map(it => {
 
-                                                            })
+                                                               if (it.type === item.type){
+
+                                                                   if (it.list.includes(i.no)){
+
+                                                                       itemChecked = true;
+
+                                                                   }
+
+                                                               }
+
+                                                            });
+
+                                                            return <div key={k} className={`check-item ${itemChecked?'active':''}`} onClick={this.oldClassHourChecked.bind(this,{type:'item',pid:item.type,id:i.no})}>
+
+                                                                        {i.name}
+
+                                                                    </div>
+
+                                                        })
+
+                                                    }
+
+                                                </div>
+
+                                            })
+
+                                        }
+
+                                    </div>
+
+                                </ConfigProvider>
+
+                            </div>
+
+                            <div className="adjust-new-wrapper">
+
+                                <div className="adjust-new-title">新的时间:</div>
+
+                                <ConfigProvider locale={zhCN}>
+
+                                    <DatePicker className="date-pick"></DatePicker>
+
+                                    <span className="date-picked-time"></span>
+
+                                    <div className="class-hour-wrapper">
+
+                                        {
+
+                                            newClassHours.map((item,key) => {
+
+
+                                                let noonChecked = false;
+
+
+                                                newClassHourCheckedList.map(itm => {
+
+                                                    if (itm.type === item.type){
+
+                                                        if (itm.checked){
+
+                                                            noonChecked = true;
 
                                                         }
 
+                                                    }
+
+                                                });
+
+
+                                                return  <div key={key} className="class-hour-item clearfix">
+
+                                                    <div className="noon">
+
+                                                        <div className={`check-item ${noonChecked?'active':''}`} onClick={this.newClassHourChecked.bind(this,{type:'noon',id:item.type})}>
+
+                                                            {item.name}
+
+                                                        </div>
+
                                                     </div>
 
-                                        })
+                                                    {
 
-                                    }
+                                                        item.list.map((i,k) => {
 
-                                    {/*<div className="class-hour-item clearfix">
+                                                            let itemChecked = false;
 
-                                          <div className="noon">
+                                                            newClassHourCheckedList.map(it => {
 
-                                              <div className="check-item">
+                                                                if (it.type === item.type){
 
-                                                  上午
+                                                                    if (it.list.includes(i.no)){
 
-                                              </div>
+                                                                        itemChecked = true;
 
-                                          </div>
+                                                                    }
 
-                                        <div className="check-item">
+                                                                }
 
-                                            上午
+                                                            });
 
-                                        </div>
+                                                            return <div key={k} className={`check-item ${itemChecked?'active':''}`} onClick={this.newClassHourChecked.bind(this,{type:'item',pid:item.type,id:i.no})}>
 
-                                        <div className="check-item">
+                                                                        {i.name}
 
-                                            上午
+                                                                    </div>
 
-                                        </div>
+                                                        })
 
-                                    </div>*/}
+                                                    }
 
-                                </div>
+                                                </div>
 
-                            </ConfigProvider>
+                                            })
+
+                                        }
+
+
+                                    </div>
+
+                                </ConfigProvider>
+
+                            </div>
 
                         </div>
 
