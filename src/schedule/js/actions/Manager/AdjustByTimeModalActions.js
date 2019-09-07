@@ -314,7 +314,6 @@ const periodChecked = (opts) => {
 
                if (item.id === opts.pid){
 
-                   console.log(opts,item.list);
                     //如果已经选中，去除选中的状态
                     if (item.list.includes(opts.id)){
 
@@ -1003,7 +1002,7 @@ const commitInfo = () => {
 
                     close:hideAlert(dispatch)
 
-                }})
+                }});
 
             dispatch({type:ADJUST_BY_TIME_LOADING_HIDE});
 

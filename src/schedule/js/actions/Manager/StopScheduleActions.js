@@ -46,8 +46,6 @@ const dateChange = (date) => {
 
                     if (json.Status === 200){
 
-                        console.log(json.Data);
-
                         const { WeekNO,WeekDay } = json.Data;
 
                         let weekDay = '';
