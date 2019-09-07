@@ -15,7 +15,9 @@ import AdjustBtnsActions from '../actions/Manager/AdjustBtnsActions';
 import ASMAction from  '../actions/Manager/AddScheduleModalActions';
 import ABTMActions from '../actions/Manager/AdjustByTimeModalActions';
 import StopScheduleActions from '../actions/Manager/StopScheduleActions'
+import DelScheduleActions from '../actions/Manager/DelScheduleActions';
 import StopScheduleModal from './Manager/StopScheduleModal';
+import DelScheduleModal from './Manager/DelScheduleModal';
 
 import '../../scss/index.scss';
 
@@ -96,6 +98,17 @@ class App extends Component{
 
     }
 
+    //删除课程弹窗
+    delScheduleShow(){
+
+        const {dispatch} = this.props;
+
+        dispatch({type:DelScheduleActions.DEL_SCHEDULE_SHOW});
+
+        dispatch(DelScheduleActions.InfoInit());
+
+    }
+
 
     componentDidMount(){
 
@@ -166,7 +179,9 @@ class App extends Component{
 
                                             adjustByTimeModalShow = {this.adjustByTimeModalShow.bind(this)}
 
-                                            stopSchedule={this.stopScheduleShow.bind(this)}>
+                                            stopScheduleShow={this.stopScheduleShow.bind(this)}
+
+                                            delScheduleShow = {this.delScheduleShow.bind(this)}>
 
                                         </AdjustBtnsWrapper>
 
@@ -235,11 +250,14 @@ class App extends Component{
 
                <StopScheduleModal></StopScheduleModal>
 
+               <DelScheduleModal></DelScheduleModal>
+
                <Alert type={AppAlert.type}
                       title={AppAlert.title}
                       abstract={AppAlert.abstract}
                       show={AppAlert.show}
                       onClose={AppAlert.close}
+                      onCancel={AppAlert.cancel}
                       onOk={AppAlert.ok}
                       onHide={AppAlert.hide}
                       okTitle={AppAlert.okTitle}

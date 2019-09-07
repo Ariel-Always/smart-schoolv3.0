@@ -397,9 +397,7 @@ const oldClassHourChecked = (opts) => {
 
     return (dispatch,getState) => {
 
-        console.log(opts);
-
-        const { oldClassHourCheckedList,oldClassHourPlainOpts,newClassHourCheckedList } = getState().Manager.AdjustByTimeModal;
+        const { oldClassHourCheckedList,oldClassHourPlainOpts } = getState().Manager.AdjustByTimeModal;
 
         let checkedList = [];
 
@@ -532,11 +530,8 @@ const oldClassHourChecked = (opts) => {
 
 
         }
-        console.log(newClassHourCheckedList,oldClassHourCheckedList);
 
         dispatch({type:ADJUST_BY_TIME_OLD_CLASSHOUR_CHECKED,data:{oldClassHourCheckedList:checkedList}});
-
-        console.log(newClassHourCheckedList);
 
     }
 
@@ -1219,7 +1214,7 @@ Array.prototype.indexOf = function(val) {
 
     for (var i = 0; i < this.length; i++) {
 
-        if (this[i] == val) return i;
+        if (this[i] === val) return i;
 
     }
 

@@ -22,7 +22,7 @@ moment.locale('zh-cn');
 
 class AdjustByTimeModal extends Component{
 
-    //当学段被选中的情况下
+    //当学段年级被选中的情况下
     periodChecked(opts) {
 
         const { dispatch } = this.props;
@@ -237,7 +237,6 @@ class AdjustByTimeModal extends Component{
 
                                 <ConfigProvider locale={zhCN}>
 
-                                    {/* <DatePicker className="date-pick"  suffixIcon={img}></DatePicker>*/}
 
                                     <DatePicker className="date-pick" value={oldDate?moment((oldDate),'YYYY-MM-DD'):null} onChange={this.oldDateChange.bind(this)}></DatePicker>
 
