@@ -904,6 +904,7 @@ class DropDown extends React.Component {
         //所需的参数
         let dropMultipleList = '';
 
+
         //判断等级渲染相对应的元素
         if (searchOpen) { //如果开启搜索的话
 
@@ -930,6 +931,8 @@ class DropDown extends React.Component {
                 </ul>
 
         } else if (mutipleOptions && mutipleOptions.range === 2) { //如果range的等级为2
+
+
             dropMultipleList = mutipleOptions.dropMultipleList&&mutipleOptions.dropMultipleList.map((item1, k1) => {//遍历第一个数组
                 return <li key={k1} className="dropdown_list_item1">
                     <div
@@ -955,6 +958,8 @@ class DropDown extends React.Component {
                 </li>
 
             });
+
+
         } else if (mutipleOptions && mutipleOptions.range === 3) {
             //等待后期扩展使用
         }

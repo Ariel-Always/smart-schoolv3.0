@@ -5,10 +5,12 @@ const  Mock  = require('mockjs');
 console.log(Mock);
 //模拟的登录用户的接口
 
-Mock.mock('/Login','get',{
-    "error": 0,
-    "data": {
-        "result": {
+Mock.mock('http://localhost:3000/mock/Login','get',() => {
+
+    return {
+        "error": 0,
+        "data": {
+            "result": {
                 "UserID": Mock.Random.guid(),
                 "UserName": "王先之",
                 "Gender": Mock.Random.pick(['男', '女', '保密']),
@@ -23,6 +25,8 @@ Mock.mock('/Login','get',{
 
 
         }
+    };
+
 });
 
 

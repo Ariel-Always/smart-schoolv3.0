@@ -1,0 +1,124 @@
+.adjust-by-teacher-modal{
+
+  .modal-wrapper{
+
+    position: absolute;
+
+    width: 840px;
+
+    height:330px;
+
+    left:0;
+
+    top:0;
+
+    overflow-y:auto;
+
+
+  }
+
+  .ant-tabs-bar{
+
+    margin-bottom:0;
+
+  }
+
+  .ant-tabs-tab{
+
+    position:relative;
+
+    width:168px;
+
+    text-align: center;
+
+    color: #596675;
+
+    @include border-radius(0px !important);
+
+    border:0!important;
+
+    &:not(.ant-tabs-tab-active){
+
+      background-color:#e8eff7!important;
+
+    }
+
+    &:after{
+
+      position:absolute;
+
+      content: '';
+
+      width: 1px ;
+
+      height:18px;
+
+      background-color:#bfd0e3;
+
+      left:0;
+
+      top: 50%;
+
+      @include transform(translateY(-50%));
+
+    }
+
+    &.ant-tabs-tab-active,
+    &.ant-tabs-tab-active + .ant-tabs-tab{
+
+      &:after{
+
+        width:0;
+
+      }
+
+    }
+
+  }
+
+  .dropdown_container{
+
+    position: fixed;
+
+    margin-top: -2px;
+
+  }
+
+    //找人代课
+  .replace-schedule-wrapper{
+
+    padding:30px 40px;
+
+    &>div{
+
+      margin:12px 0;
+
+    }
+
+    .props{
+
+      float: left;
+
+      font-size: 16px;
+
+      color: #666666;
+
+      width: 78px;
+
+      text-align: right;
+
+      margin-right: 20px;
+
+      white-space: nowrap;
+
+    }
+
+    .teacher-wrapper{
+
+
+    }
+
+  }
+
+}
+
