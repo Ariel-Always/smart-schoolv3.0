@@ -1,12 +1,14 @@
 import {getData,postData} from "../../../common/js/fetch";
 
-import CONFIG from  '../../../common/js/config';
+/*import CONFIG from  '../../../common/js/config';*/
 //获取数据以及封装数据格式
 const getGetData =  async (url) =>{
     try {
         let fetchAsync = '';
         try {
-            fetchAsync = await getData(CONFIG.proxy+url);
+            /*fetchAsync = await getData(CONFIG.proxy+url);*/
+
+            fetchAsync = await getData(url);
         }
         catch (e) {
             return  e;
@@ -29,7 +31,8 @@ const getPostData = async (url,data,level) =>{
     try {
         let fetchAsync = '';
         try {
-            fetchAsync = await postData(CONFIG.proxy+url,data,level);
+            /*fetchAsync = await postData(CONFIG.proxy+url,data,level);*/
+            fetchAsync = await postData(url,data,level);
         }
         catch (e) {
             return  e;
