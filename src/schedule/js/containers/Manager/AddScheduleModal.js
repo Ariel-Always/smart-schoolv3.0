@@ -180,8 +180,17 @@ class AddScheduleModal extends Component{
 
     }
 
-    //点击教师搜索
+    //取消班级搜索
+    classSearchClose(){
 
+        const {dispatch} = this.props;
+
+        dispatch(ASMActions.classSearchClose());
+
+    }
+
+
+    //点击教室搜索
     classRoomSearchClick(e){
 
         const { dispatch } = this.props;
@@ -192,6 +201,14 @@ class AddScheduleModal extends Component{
 
     }
 
+    //取消教室搜索
+    classRoomSearchClose(){
+
+        const {dispatch} = this.props;
+
+        dispatch(ASMActions.classRoomSearchClose());
+
+    }
 
     //点击教师
     teacherSearchClick(e){
@@ -201,6 +218,15 @@ class AddScheduleModal extends Component{
         const {value} = e;
 
         dispatch(ASMActions.teacherSearch(value));
+
+    }
+
+    //教师取消搜索
+    teacherSearchClose(){
+
+        const {dispatch} = this.props;
+
+        dispatch(ASMActions.teacherSearchClose());
 
     }
 
@@ -266,13 +292,16 @@ class AddScheduleModal extends Component{
                                         width={150}
                                         type="multiple"
                                         dropSelectd={AddScheduleModal.checkedClass?AddScheduleModal.checkedClass:{value:"none",title:"请选择班级"}}
+
                                         mutipleOptions={{
                                             range:2,
                                             dropMultipleList:AddScheduleModal.gradeClass,
                                             dropMultipleChange:this.classChange.bind(this),
                                             dropClickSearch:this.classSearchClick.bind(this),
+                                            dropCancelSearch:this.classSearchClose.bind(this),
                                             searchList:AddScheduleModal.classSearchList,
-                                            searchPlaceholder:"请输入教师工号或者教师姓名进行搜索...",
+                                            searchPlaceholder:"请输入班级名称进行搜索...",
+                                            searchOpen:AddScheduleModal.classSearchOpen,
                                             searchLoadingShow:AddScheduleModal.classSearchLoadingShow
                                         }}
                                         style={{zIndex:9}}>
@@ -302,7 +331,10 @@ class AddScheduleModal extends Component{
                                             dropMultipleList:AddScheduleModal.teachers,
                                             dropMultipleChange:this.teacherChange.bind(this),
                                             dropClickSearch:this.teacherSearchClick.bind(this),
+
                                             searchList:AddScheduleModal.teacherSearchList,
+                                            dropCancelSearch:this.teacherSearchClose.bind(this),
+                                            searchOpen:AddScheduleModal.teacherSearchOpen,
                                             searchPlaceholder:"请输入教师工号或者教师姓名进行搜索...",
                                             searchLoadingShow:AddScheduleModal.teacherSearchLoadingShow
                                         }}
@@ -391,8 +423,10 @@ class AddScheduleModal extends Component{
                                             dropMultipleChange:this.classRoomChange.bind(this),
                                             dropClickSearch:this.classRoomSearchClick.bind(this),
                                             searchList:AddScheduleModal.classRoomSearchList,
-                                            searchPlaceholder:"请输入教师工号或者教师姓名进行搜索...",
-                                            searchLoadingShow:AddScheduleModal.classRoomSearchLoadingShow
+                                            searchPlaceholder:"请输入教室名称进行搜索...",
+                                            searchLoadingShow:AddScheduleModal.classRoomSearchLoadingShow,
+                                            dropCancelSearch:this.classRoomSearchClose.bind(this),
+                                            searchOpen:AddScheduleModal.classRoomSearchOpen,
                                         }}
                                         style={{zIndex:6}}>
 
@@ -407,8 +441,6 @@ class AddScheduleModal extends Component{
                         </tbody>
 
                     </table>
-
-
 
                     </Loading>
 

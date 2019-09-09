@@ -14,9 +14,10 @@ import PeriodWeekTermActions from '../actions/PeriodWeekTermActions';
 import AdjustBtnsActions from '../actions/Manager/AdjustBtnsActions';
 import ASMAction from  '../actions/Manager/AddScheduleModalActions';
 import ABTMActions from '../actions/Manager/AdjustByTimeModalActions';
-
-
-
+import StopScheduleActions from '../actions/Manager/StopScheduleActions'
+import DelScheduleActions from '../actions/Manager/DelScheduleActions';
+import StopScheduleModal from './Manager/StopScheduleModal';
+import DelScheduleModal from './Manager/DelScheduleModal';
 
 import '../../scss/index.scss';
 
@@ -83,6 +84,28 @@ class App extends Component{
         dispatch({type:ABTMActions.ADJUST_BY_TIME_SHOW});
 
         dispatch(ABTMActions.InfoInit());
+
+    }
+
+    //停课弹窗
+    stopScheduleShow(){
+
+        const {dispatch} = this.props;
+
+        dispatch({type:StopScheduleActions.STOP_SCHEDULE_SHOW});
+
+        dispatch(StopScheduleActions.InfoInit());
+
+    }
+
+    //删除课程弹窗
+    delScheduleShow(){
+
+        const {dispatch} = this.props;
+
+        dispatch({type:DelScheduleActions.DEL_SCHEDULE_SHOW});
+
+        dispatch(DelScheduleActions.InfoInit());
 
     }
 
@@ -154,7 +177,11 @@ class App extends Component{
 
                                             addScheduleModalShow={this.addScheduleModalShow.bind(this)}
 
-                                            adjustByTimeModalShow = {this.adjustByTimeModalShow.bind(this)}>
+                                            adjustByTimeModalShow = {this.adjustByTimeModalShow.bind(this)}
+
+                                            stopScheduleShow={this.stopScheduleShow.bind(this)}
+
+                                            delScheduleShow = {this.delScheduleShow.bind(this)}>
 
                                         </AdjustBtnsWrapper>
 
@@ -221,11 +248,16 @@ class App extends Component{
 
                <AdjustByTimeModal></AdjustByTimeModal>
 
+               <StopScheduleModal></StopScheduleModal>
+
+               <DelScheduleModal></DelScheduleModal>
+
                <Alert type={AppAlert.type}
                       title={AppAlert.title}
                       abstract={AppAlert.abstract}
                       show={AppAlert.show}
                       onClose={AppAlert.close}
+                      onCancel={AppAlert.cancel}
                       onOk={AppAlert.ok}
                       onHide={AppAlert.hide}
                       okTitle={AppAlert.okTitle}

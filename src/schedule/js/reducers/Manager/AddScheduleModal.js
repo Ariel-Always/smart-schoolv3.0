@@ -48,7 +48,13 @@ const AddScheduleModal = (state={
 
     teacherSearchLoadingShow:true,
 
-    classRoomSearchLoadingShow:true
+    classRoomSearchLoadingShow:true,
+
+    classSearchOpen:false,
+
+    teacherSearchOpen:false,
+
+    classRoomSearchOpen:false
 
 }, actions) => {
 
@@ -106,7 +112,13 @@ const AddScheduleModal = (state={
 
                 teacherSearchLoadingShow:true,
 
-                classRoomSearchLoadingShow:true
+                classRoomSearchLoadingShow:true,
+
+                classSearchOpen:false,
+
+                teacherSearchOpen:false,
+
+                classRoomSearchOpen:false
 
             };
 
@@ -261,6 +273,30 @@ const AddScheduleModal = (state={
         case ASMActions.ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LOADING_SHOW:
 
             return {...state,classRoomSearchLoadingShow:true};
+
+        case ASMActions.ADD_SCHEDULE_MODAL_CLASS_SEARCH_OPEN:
+
+            return {...state,classSearchOpen:true};
+
+        case ASMActions.ADD_SCHEDULE_MODAL_CLASS_SEARCH_CLOSE:
+
+            return {...state,classSearchOpen:false};
+
+        case ASMActions.ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_OPEN:
+
+            return {...state,classRoomSearchOpen:true};
+
+        case ASMActions.ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_CLOSE:
+
+            return {...state,classRoomSearchOpen:false};
+
+        case ASMActions.ADD_SCHEDULE_MODAL_TEACHER_SEARCH_OPEN:
+
+            return {...state,teacherSearchOpen:true};
+
+        case ASMActions.ADD_SCHEDULE_MODAL_TEACHER_SEARCH_CLOSE:
+
+            return {...state,teacherSearchOpen:false};
 
         default:
 

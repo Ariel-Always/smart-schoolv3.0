@@ -118,3 +118,9 @@ $image-url:'../images';
 //按时间时间调整课程弹窗
 
 @import "./adjust-by-time-modal";
+
+//停课弹窗
+@import "./stop-schedule-modal";
+
+//删除课程弹窗
+@import "del-schedule-modal";

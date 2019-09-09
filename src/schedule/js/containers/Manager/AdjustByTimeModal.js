@@ -22,7 +22,7 @@ moment.locale('zh-cn');
 
 class AdjustByTimeModal extends Component{
 
-    //当学段被选中的情况下
+    //当学段年级被选中的情况下
     periodChecked(opts) {
 
         const { dispatch } = this.props;
@@ -51,7 +51,41 @@ class AdjustByTimeModal extends Component{
 
     }
 
+    //旧的日期发生变化
+    oldDateChange(date,dateString){
 
+        const { dispatch } = this.props;
+
+        dispatch(ABTMActions.oldDateUpdate(dateString));
+
+    }
+
+    //新的日期发生变化
+    newDateChange(date,dateString){
+
+        const { dispatch } = this.props;
+
+        dispatch(ABTMActions.newDateUpdate(dateString));
+
+    }
+
+    //弹窗点击关闭
+    AlertHide(){
+
+        const {dispatch} = this.props;
+
+        dispatch({type:ABTMActions.ADJUST_BY_TIME_HIDE});
+
+    }
+    //弹窗点击确定
+
+    AlertOk(){
+
+        const {dispatch} = this.props;
+
+        dispatch(ABTMActions.commitInfo());
+
+    }
 
 
     render() {
@@ -70,7 +104,23 @@ class AdjustByTimeModal extends Component{
 
             oldClassHourCheckedList,
 
-            newClassHourCheckedList
+            newClassHourCheckedList,
+
+            oldWeekNo,
+
+            oldWeekDay,
+
+            newWeekNo,
+
+            newWeekDay,
+
+            oldDate,
+
+            newDate,
+
+            oldDateLoadingShow,
+
+            newDateLoadingShow
 
         } = AdjustByTimeModal;
 
@@ -84,19 +134,20 @@ class AdjustByTimeModal extends Component{
                    bodyStyle={{height:380}}
                    mask={true}
                    cancelText="取消"
+                   onCancel={this.AlertHide.bind(this)}
                    footer={[
 
                             <span key="footer-tips" className="footer-tips">注:调整上课时间后，上课节次的数量与顺序须与调整前一致。</span>,
 
-                            <Button key='agree' color='green' >确定</Button>,
+                            <Button key='agree' color='green' onClick={this.AlertOk.bind(this)}>确定</Button>,
 
-                            <Button key='refuse' color='blue' >取消</Button>
+                            <Button key='refuse' color='blue' onClick={this.AlertHide.bind(this)}>取消</Button>
 
                    ]}>
 
                 <div className="ModalContent">
 
-                    <Loading spinning={AdjustByTimeModal.loadingShow} tip="加载中...">
+                    <Loading opacity={false} spinning={AdjustByTimeModal.loadingShow} tip="加载中...">
 
                         <div className="grade-selected-wrapper clearfix">
 
@@ -186,11 +237,22 @@ class AdjustByTimeModal extends Component{
 
                                 <ConfigProvider locale={zhCN}>
 
-                                    {/* <DatePicker className="date-pick"  suffixIcon={img}></DatePicker>*/}
 
-                                    <DatePicker className="date-pick"></DatePicker>
+                                    <DatePicker className="date-pick" value={oldDate?moment((oldDate),'YYYY-MM-DD'):null} onChange={this.oldDateChange.bind(this)}></DatePicker>
 
-                                    <span className="date-picked-time"></span>
+                                    <Loading spinning={oldDateLoadingShow} type="loading">
+
+                                        {
+
+                                            oldWeekNo?
+
+                                                    <span className="date-picked-time">(第{oldWeekNo}周 {oldWeekDay})</span>
+
+                                                :''
+
+                                        }
+
+                                    </Loading>
 
                                     <div className="class-hour-wrapper">
 
@@ -277,9 +339,21 @@ class AdjustByTimeModal extends Component{
 
                                 <ConfigProvider locale={zhCN}>
 
-                                    <DatePicker className="date-pick"></DatePicker>
+                                    <DatePicker className="date-pick" value={newDate?moment((newDate),'YYYY-MM-DD'):null} onChange={this.newDateChange.bind(this)}></DatePicker>
 
-                                    <span className="date-picked-time"></span>
+                                    <Loading spinning={newDateLoadingShow} type="loading">
+
+                                        {
+
+                                            newWeekNo?
+
+                                                    <span className="date-picked-time">(第{newWeekNo}周 {newWeekDay})</span>
+
+                                                :''
+
+                                        }
+
+                                    </Loading>
 
                                     <div className="class-hour-wrapper">
 
@@ -360,6 +434,8 @@ class AdjustByTimeModal extends Component{
                                 </ConfigProvider>
 
                             </div>
+
+                            <div className="arr-wrapper"></div>
 
                         </div>
 

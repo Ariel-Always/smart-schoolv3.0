@@ -89,6 +89,17 @@ const ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LOADING_HIDE = 'ADD_SCHEDULE_MODAL_CLA
 
 const ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LIST_UPDATE = 'ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LIST_UPDATE';
 
+const ADD_SCHEDULE_MODAL_CLASS_SEARCH_OPEN = 'ADD_SCHEDULE_MODAL_CLASS_SEARCH_OPEN';
+
+const ADD_SCHEDULE_MODAL_CLASS_SEARCH_CLOSE = 'ADD_SCHEDULE_MODAL_CLASS_SEARCH_CLOSE';
+
+const ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_OPEN = 'ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_OPEN';
+
+const ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_CLOSE = 'ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_CLOSE';
+
+const ADD_SCHEDULE_MODAL_TEACHER_SEARCH_OPEN = 'ADD_SCHEDULE_MODAL_TEACHER_SEARCH_OPEN';
+
+const ADD_SCHEDULE_MODAL_TEACHER_SEARCH_CLOSE = 'ADD_SCHEDULE_MODAL_TEACHER_SEARCH_CLOSE';
 
 //初始化弹窗信息的方法
 const InfoInit = () => {
@@ -367,7 +378,11 @@ const classSearch = (key) => {
 
   return (dispatch,getState) => {
 
+      if (key !== ''){
+
         let SchoolID = getState().LoginUser;
+
+        dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_OPEN});
 
         dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_LOADING_SHOW});
 
@@ -377,7 +392,7 @@ const classSearch = (key) => {
 
             if (json.Status === 200){
 
-               let classSearchList = json.Data.map(item => {
+                let classSearchList = json.Data.map(item => {
 
                     return{
 
@@ -387,21 +402,62 @@ const classSearch = (key) => {
 
                     };
 
-               });
+                });
 
-               dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_LIST_UPDATE,data:classSearchList});
+                dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_LIST_UPDATE,data:classSearchList});
 
                 dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_LOADING_HIDE});
 
             }else{
 
-                alert(json.Msg);
+                dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                        type:"btn-warn",
+
+                        title:json.Msg,
+
+                        ok:alertHide(dispatch),
+
+                        close:alertHide(dispatch),
+
+                        cancel:alertHide(dispatch)
+
+                    }});
 
             }
 
         });
 
+        }else{
+
+            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                    type:"btn-warn",
+
+                    title:"搜索的内容不能为空！",
+
+                    ok:alertHide(dispatch),
+
+                    close:alertHide(dispatch),
+
+                    cancel:alertHide(dispatch)
+
+                }});
+
+        }
+
   }
+
+};
+
+//班级搜索关闭
+const classSearchClose = () => {
+
+    return dispatch =>{
+
+        dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_CLOSE});
+
+    }
 
 };
 
@@ -410,39 +466,84 @@ const teacherSearch = (key) => {
 
     return (dispatch,getState) => {
 
-        let SchoolID = getState().LoginUser;
+        if (key !== ''){
 
-        dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_LOADING_SHOW});
+            let SchoolID = getState().LoginUser;
 
-        let searchTeacherPromise = Method.getGetData(`/scheduleSubjectTeacherTeacher?SchoolID=${SchoolID}&key=${key}`);
+            dispatch({type:ADD_SCHEDULE_MODAL_TEACHER_SEARCH_OPEN});
 
-        searchTeacherPromise.then(json => {
+            dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_LOADING_SHOW});
 
-            if (json.Status === 200){
+            let searchTeacherPromise = Method.getGetData(`/scheduleSubjectTeacherTeacher?SchoolID=${SchoolID}&key=${key}`);
 
-                let teacherSearchList = json.Data.map(item => {
+            searchTeacherPromise.then(json => {
 
-                    return{
+                if (json.Status === 200){
 
-                        id:item.Teacher,
+                    let teacherSearchList = json.Data.map(item => {
 
-                        name:item.TeacherName
+                        return{
 
-                    };
+                            id:item.Teacher,
 
-                });
+                            name:item.TeacherName
 
-                dispatch({type:ADD_SCHEDULE_MODAL_TEACHER_SEARCH_LIST_UPDATE,data:teacherSearchList});
+                        };
 
-                dispatch({type:ADD_SCHEDULE_MODAL_TEACHER_SEARCH_LOADING_HIDE});
+                    });
 
-            }else{
+                    dispatch({type:ADD_SCHEDULE_MODAL_TEACHER_SEARCH_LIST_UPDATE,data:teacherSearchList});
 
-                alert(json.Msg);
+                    dispatch({type:ADD_SCHEDULE_MODAL_TEACHER_SEARCH_LOADING_HIDE});
 
-            }
+                }else{
 
-        });
+                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                            type:"btn-warn",
+
+                            title:json.Msg,
+
+                            ok:alertHide(dispatch),
+
+                            close:alertHide(dispatch),
+
+                            cancel:alertHide(dispatch)
+
+                        }});
+
+                }
+
+            });
+
+        }else{
+
+            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                    type:"btn-warn",
+
+                    title:"搜索的内容不能为空！",
+
+                    ok:alertHide(dispatch),
+
+                    close:alertHide(dispatch),
+
+                    cancel:alertHide(dispatch)
+
+                }});
+
+        }
+
+    }
+
+};
+
+//教师搜索关闭
+const teacherSearchClose = () => {
+
+    return dispatch =>{
+
+        dispatch({type:ADD_SCHEDULE_MODAL_TEACHER_SEARCH_CLOSE});
 
     }
 
@@ -454,39 +555,84 @@ const classRoomSearch = (key) => {
 
     return (dispatch,getState) => {
 
-        let SchoolID = getState().LoginUser;
+        if(key !== ''){
 
-        dispatch({type:ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LOADING_SHOW});
+            let SchoolID = getState().LoginUser;
 
-        let searchClassRoomPromise = Method.getGetData(`/scheduleSearchClassRoom?SchoolID=${SchoolID}&key=${key}`);
+            dispatch({type:ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_OPEN});
 
-        searchClassRoomPromise.then(json => {
+            dispatch({type:ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LOADING_SHOW});
 
-            if (json.Status === 200){
+            let searchClassRoomPromise = Method.getGetData(`/scheduleSearchClassRoom?SchoolID=${SchoolID}&key=${key}`);
 
-                let classRoomSearchList = json.Data.map(item => {
+            searchClassRoomPromise.then(json => {
 
-                    return{
+                if (json.Status === 200){
 
-                        id:item.ClassRoomID,
+                    let classRoomSearchList = json.Data.map(item => {
 
-                        name:item.ClassRoomName
+                        return{
 
-                    };
+                            id:item.ClassRoomID,
 
-                });
+                            name:item.ClassRoomName
 
-                dispatch({type:ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LIST_UPDATE,data:classRoomSearchList});
+                        };
 
-                dispatch({type:ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LOADING_HIDE});
+                    });
 
-            }else{
+                    dispatch({type:ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LIST_UPDATE,data:classRoomSearchList});
 
-                alert(json.Msg);
+                    dispatch({type:ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LOADING_HIDE});
 
-            }
+                }else{
 
-        });
+                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                            type:"btn-warn",
+
+                            title:json.Msg,
+
+                            ok:alertHide(dispatch),
+
+                            close:alertHide(dispatch),
+
+                            cancel:alertHide(dispatch)
+
+                        }});
+
+                }
+
+            });
+
+        }else{
+
+            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                    type:"btn-warn",
+
+                    title:"搜索的内容不能为空！",
+
+                    ok:alertHide(dispatch),
+
+                    close:alertHide(dispatch),
+
+                    cancel:alertHide(dispatch)
+
+                }});
+
+        }
+
+    }
+
+};
+
+//教室搜索关闭
+const classRoomSearchClose = () => {
+
+    return dispatch =>{
+
+        dispatch({type:ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_CLOSE});
 
     }
 
@@ -497,14 +643,13 @@ const classRoomSearch = (key) => {
 
 const commitInfo = () => {
 
-
     return (dispatch,getState) => {
+
+        dispatch({type:ADD_SHEDULE_MODAL_LOADING_SHOW});
 
         let { AddScheduleModal } = getState().Manager;
 
         let SubjectID = AddScheduleModal.checkedSubject.value;
-
-        let SubjectName = AddScheduleModal.checkedSubject.title;
 
         let WeekNO = AddScheduleModal.checkedWeek.value;
 
@@ -514,22 +659,15 @@ const commitInfo = () => {
 
         let TeacherID = AddScheduleModal.checkedTeacher.value;
 
-        let TeacherName = AddScheduleModal.checkedTeacher.title;
-
         let ClassID = AddScheduleModal.checkedClass.value;
-
-        let ClassName = AddScheduleModal.checkedClass.title;
 
         let ClassRoomID = AddScheduleModal.checkedClassRoom.value;
 
-        let ClassRoomName = AddScheduleModal.checkedClassRoom.title;
+        let addSchedulePromise = Method.getPostData('/scheduleAddSchedule',{
 
+            SubjectID, WeekNO, WeekDay, ClassHourNO, TeacherID, ClassID,ClassRoomID
 
-        let addSchedulePromise = Method.getGetData(`/scheduleAddSchedule?SubjectID=${SubjectID}
-        &SubjectName=${SubjectName}&WeekNO=${WeekNO}&WeekDay=${WeekDay}&ClassHourNO=${ClassHourNO}
-        &TeacherID=${TeacherID}&TeacherName=${TeacherName}&ClassID=${ClassID}
-        &ClassName=${ClassName}&ClassRoomID=${ClassRoomID}&ClassRoomName=${ClassRoomName}
-        `);
+        });
 
         addSchedulePromise.then((json) => {
 
@@ -543,14 +681,25 @@ const commitInfo = () => {
 
                     title:"添加临时课程成功！",
 
-                    hide: successCommit(dispatch)
+                    hide: alertHide(dispatch)
 
                     }});
 
             }else{
 
-                alert(json.Msg);
+                dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
 
+                        type:"btn-warn",
+
+                        title:jso.Msg,
+
+                        ok:alertHide(dispatch),
+
+                        close:alertHide(dispatch),
+
+                        cancel:alertHide(dispatch)
+
+                    }});
             }
 
         });
@@ -560,7 +709,7 @@ const commitInfo = () => {
 
 };
 
-const successCommit = (dispatch) => {
+const alertHide = (dispatch) => {
 
   return () => dispatch({type:AppAlertActions.APP_ALERT_HIDE});
 
@@ -647,13 +796,31 @@ ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LOADING_HIDE,
 
 ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LIST_UPDATE,
 
+    ADD_SCHEDULE_MODAL_CLASS_SEARCH_OPEN,
+
+    ADD_SCHEDULE_MODAL_CLASS_SEARCH_CLOSE,
+
+    ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_OPEN,
+
+    ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_CLOSE,
+
+    ADD_SCHEDULE_MODAL_TEACHER_SEARCH_OPEN,
+
+    ADD_SCHEDULE_MODAL_TEACHER_SEARCH_CLOSE,
+
   InfoInit,
 
     classSearch,
 
+    classSearchClose,
+
     teacherSearch,
 
+    teacherSearchClose,
+
     classRoomSearch,
+
+    classRoomSearchClose,
 
     commitInfo
 

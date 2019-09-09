@@ -184,6 +184,12 @@
 
     margin-top: 16px;
 
+    .ant-spin-nested-loading{
+
+      display: inline-block;
+
+    }
+
   }
 
   .adjust-old-wrapper{
@@ -227,6 +233,12 @@
 
   }
 
+  .class-hour-pick-wrapper{
+
+    position: relative;
+
+  }
+
   .class-hour-wrapper{
 
     margin:10px 24px 16px 24px;
@@ -258,6 +270,46 @@
       }
 
     }
+
+  }
+
+  .arr-wrapper{
+
+    position: absolute;
+
+    width: 32px;
+
+    height: 32px;
+
+    @include border-radius(50%);
+
+    color: #ffffff;
+
+    background-color: #1ba7fe;
+
+    font-size:16px;
+
+    background-image: url("#{$image-url}/arr.png");
+
+    background-position: center;
+
+    background-repeat: no-repeat;
+
+    left:50%;
+
+    top:50%;
+
+    @include transform(translate(-50%));
+
+  }
+
+  .date-picked-time{
+
+    margin-left: 10px;
+
+    font-size: 12px;
+
+    color: #999999;
 
   }
 
