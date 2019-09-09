@@ -20,6 +20,16 @@ class ReplaceSchedule extends Component{
 
     }
 
+    //教师选择
+    teacherDropChange(info){
+
+        const { dispatch } = this.props;
+
+        dispatch(ABTActions.teacherDropChange(info));
+
+    }
+
+
 
     render() {
 
@@ -52,7 +62,7 @@ class ReplaceSchedule extends Component{
                             mutipleOptions={{
                                 range:2,
                                 dropMultipleList:teacherOptions.dropList,
-                                //dropMultipleChange:this.classChange.bind(this),
+                                dropMultipleChange:this.teacherDropChange.bind(this),
                                 //dropClickSearch:this.classSearchClick.bind(this),
                                 //dropCancelSearch:this.classSearchClose.bind(this),
                                 searchList:teacherOptions.dropList,

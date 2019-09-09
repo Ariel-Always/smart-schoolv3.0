@@ -251,7 +251,7 @@ const replaceScheduleInit = () => {
 
                             name:i.TeacherName,
 
-                            id:i.TeacherID
+                            id:i.Teacher
 
                         }
 
@@ -285,6 +285,20 @@ const replaceScheduleInit = () => {
 
 };
 
+//教师选择
+
+const teacherDropChange = () => {
+
+
+    return ( dispatch,getState ) => {
+
+
+
+    }
+
+};
+
+
 
 export default {
 
@@ -298,6 +312,8 @@ export default {
 
     REPLACE_SHCEDULE_TEACHER_LIST_UPDATE,
 
-    replaceScheduleInit
+    replaceScheduleInit,
+
+    teacherDropChange
 
 };
