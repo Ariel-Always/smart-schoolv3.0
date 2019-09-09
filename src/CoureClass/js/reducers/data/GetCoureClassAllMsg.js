@@ -1,0 +1,107 @@
+import UpDataState from '../../actions/UpDataState';
+const GetCoureClassAllMsg = (state = {}, actions) => {
+    switch (actions.type) {
+        case UpDataState.GET_COURE_CLASS_ALL_MSG:
+            let data = handleData(actions.data, actions.func)
+            return Object.assign({}, state, { ...data });
+        case UpDataState.SET_COURE_CLASS_ALL_MSG:
+            console.log(state)
+            let setData = setNewData(state.MenuParams, actions.data, actions.subjectID)
+            return Object.assign({}, state, { MenuParams: setData });
+        default:
+            return state;
+    }
+};
+function setNewData(MenuParams, key, subjectID) {
+    const { MenuBox, children } = MenuParams;
+    let params = [];
+    console.log(children,key,subjectID)
+    //去active和selected为false
+    params = children.map((child, index) => {
+        let myChild = [];
+        const { children, ...Params } = child;
+        if (Params.key === key) {
+            Params.active = true;
+            Params.selected = false;
+        } else {
+            Params.active = false;
+            Params.selected = false;
+
+        }
+        if (children)
+            myChild = children.map((value) => {
+                if (value.key === key) {
+                    value.active = true;
+                    value.selected = true;
+                    if (subjectID === Params.key) {
+                        Params.active = false;
+                        Params.selected = true;
+                    }
+                } else {
+                    value.active = false;
+                    value.selected = false;
+                }
+                return value
+
+            })
+        return { children: myChild, ...Params };
+
+    })
+    return {
+        children: params, MenuBox: MenuBox
+    }
+
+}
+function handleData(data, func) {
+    let oldData = data;
+    const { ItemSubject, ...newData } = data;
+    //处理为左侧菜单数组
+    let children = [{
+        key: 'all',
+        title: '教学班级信息总览',
+        type: 'All',
+        icon: 'menu10',
+        active: true,
+        celected: true,
+        onTitleClick: () => { func('all', 'All') }
+    }];
+    let newItem = ItemSubject.map((child, index) => {
+        let ID = child.GradeIDs.split(',');
+        let name = child.GradesNames.split(',');
+        let Grades = {};
+        let menu = {
+            key: child.SubjectID,
+            type: 'Subject',
+            title: child.SubjectName + '教学班',
+            icon: 'menu20',
+            onTitleClick: () => { func(child.SubjectID, 'Subject') }
+        };
+        let childMenu = [];
+        ID.map((id, key) => {
+            Grades[id] = name[key];
+            childMenu.push({
+                key: id,
+                title: name[key],
+                type: 'Class',
+                onTitleClick: () => { func(id, "Class", child.SubjectID) }
+            })
+        })
+        menu['children'] = childMenu
+        children.push(menu)
+        const { GradeIDs, GradesNames, ...item } = child;
+        return { ...item, Grades: Grades };
+    })
+
+    let MenuParams = {
+        MenuBox: {
+            display: true,
+            width: 240,
+            MenuBoxTopPic: 'pic3'
+        },
+        children: children,
+        initParams: ''
+    };
+
+    return { newData: { ...newData, ItemSubject: newItem }, oldData: oldData, MenuParams: MenuParams };
+}
+export default GetCoureClassAllMsg;

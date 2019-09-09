@@ -12,9 +12,10 @@ class TimeBanner extends React.Component {
     }
 
     render() {
+        const { UIState, DataState } = this.props;
         return (
             <React.Fragment>
-                <span className='timeBanner_tips'>当前共有{}条更新记录<a to='#' target='_blank' className='tips_handle'>查看详情</a></span>
+                <span className='timeBanner_tips'>当前共有{DataState.GetCoureClassAllMsg.newData?DataState.GetCoureClassAllMsg.newData.LastLogCount:0}条更新记录<a to='#' target='_blank' className='tips_handle'>查看详情</a></span>
                 <div className='handle-content'>
                     <Button className='content content-button' height='24' type='primary' color='blue' value='添加教学班' shape='round'/>
                     <Button className='content content-button' height='24' type='primary' color='blue' value='导入教学班' shape='round'/>
@@ -25,5 +26,11 @@ class TimeBanner extends React.Component {
         )
     }
 }
-
-export default TimeBanner
+const mapStateToProps = (state) => {
+    let { UIState, DataState } = state;
+    return {
+        UIState,
+        DataState
+    }
+};
+export default connect(mapStateToProps)(TimeBanner);

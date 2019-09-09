@@ -161,8 +161,6 @@ class App extends Component {
             <React.Fragment>
                 <Loading tip="加载中..." size="large" spinning={UIState.AppLoading.appLoading}>
 
-
-
                     <Router >
 
                         <Route path='/UserArchives' component={UserArchives}></Route>

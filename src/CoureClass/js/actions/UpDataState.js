@@ -3,6 +3,7 @@ import UpUIState from './UpUIState';
 import CONFIG from '../../../common/js/config';
 import 'whatwg-fetch';
 import actions from './index'
+import Mock from 'mockjs'
 
 
 
@@ -10,180 +11,185 @@ import actions from './index'
 //操作常量
 //获取登录用户信息
 const GET_LOGIN_USER_INFO = 'GET_LOGIN_USER_INFO';
+//获取教学班总览信息
+const GET_COURE_CLASS_ALL_MSG = 'GET_COURE_CLASS_ALL_MSG';
+//设置教学班菜单
+const SET_COURE_CLASS_ALL_MSG = 'SET_COURE_CLASS_ALL_MSG'
 
-
-// 获取学校学科信息
-const GET_SUBJECT_MSG = 'GET_SUBJECT_MSG';
-// 获取学校学段信息
-const GET_PERIOD_MSG = 'GET_PERIOD_MSG';
-// 弹窗获取学校教师信息
-const GET_TEACHER_MSG = 'GET_TEACHER_MSG'
-// 编辑弹窗信息
-const CHANGE_SUBJECT_MODAL_MSG = 'CHANGE_SUBJECT_MODAL_MSG'
-const HANDLE_SUBJECT_MODAL_MSG = 'HANDLE_SUBJECT_MODAL_MSG'
-const ADD_SUBJECT_MODAL_MSG = 'ADD_SUBJECT_MODAL_MSG'
-const HANDLE_SUBJECT_NAME_MODAL_MSG = 'HANDLE_SUBJECT_NAME_MODAL_MSG'
-const GET_SUBJECT_MODAL_MSG = 'GET_SUBJECT_MODAL_MSG'
-
-//设置教研组长
-const SET_SUBJECT_TEACHER_MSG = 'SET_SUBJECT_TEACHER_MSG'
-const GET_SUBJECT_TEACHER_MSG = 'GET_SUBJECT_TEACHER_MSG'
 
 
 //操作的执行
 //获取登录用户信息
 const getLoginUser = (url) => {
     return (dispatch) => {
-        getData(CONFIG.proxy + url).then(res => res.json()).then(json => {
-            dispatch({ type: GET_LOGIN_USER_INFO, data: json.data.result });
-        });
+        let data = {
+            "UserID": Mock.Random.guid(),
+            "UserName": "王先之",
+            "Gender": Mock.Random.pick(['男', '女', '保密']),
+            "UserType": 0,
+            "UserClass": Mock.Random.pick([1, 2]),
+            "PhotoPath": "http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg",
+            "ShortName": "王先之",
+            "Sign": "我要我的滋味！",
+            "SchoolID": Mock.Random.natural(),
+            "SchoolName": "广州蓝鸽中学"
+        }
+        dispatch({ type: GET_LOGIN_USER_INFO, data: data });
+
+        // getData(CONFIG.proxy + url).then(res => res.json()).then(json => {
+        //     dispatch({ type: GET_LOGIN_USER_INFO, data: json.data.result });
+        // });
     }
 };
 //获取学校学段信息
-const getPeriodMsg = (url) => {
-    return (dispatch) => {
-        getData(CONFIG.proxy + url).then(res => {
+const getCoureClassAllMsg = (url,func) => {
 
-            return res.json()
-        }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
-                dispatch({ type: GET_PERIOD_MSG, data: json.Data });
+
+    return (dispatch) => {
+        let data =
+        {
+            "CourseClassCount": 3,
+            "TeacherCount": 12,
+            "SubjectCount": 1,
+            "LastLogCount": 10,
+            "ItemSubject": [{
+                "SubjectID": "ENGLISH",
+                "SubjectName": "英语",
+                "CourseClassCount": 11,
+                "TeacherCount": 8,
+                "StudentCount": 440,
+                "GradeIDs": "Class1,Class2,Class3,Class4,Class5,Class6,Class7,Class8,Class9,Class10,Class11,Class12",
+                "GradesNames": "一年级,二年级,三年级,四年级,五年级,六年级,七年级,八年级,九年级,高一,高二,高三"
+            },
+            {
+                "SubjectID": "CHINESE",
+                "SubjectName": "语文",
+                "CourseClassCount": 11,
+                "TeacherCount": 8,
+                "StudentCount": 440,
+                "GradeIDs": "Class1,Class2,Class3,Class4,Class5,Class6,Class7,Class8,Class9,Class10,Class11,Class12",
+                "GradesNames": "一年级,二年级,三年级,四年级,五年级,六年级,七年级,八年级,九年级,高一,高二,高三"
+            },
+            {
+                "SubjectID": "MATHS",
+                "SubjectName": "数学",
+                "CourseClassCount": 11,
+                "TeacherCount": 8,
+                "StudentCount": 440,
+                "GradeIDs": "Class1,Class2,Class3,Class4,Class5,Class6,Class7,Class8,Class9,Class10,Class11,Class12",
+                "GradesNames": "一年级,二年级,三年级,四年级,五年级,六年级,七年级,八年级,九年级,高一,高二,高三"
+            },
+            {
+                "SubjectID": "GEOGRAPHY",
+                "SubjectName": "地理",
+                "CourseClassCount": 11,
+                "TeacherCount": 8,
+                "StudentCount": 440,
+                "GradeIDs": "Class1,Class2,Class3,Class4,Class5,Class6,Class7,Class8,Class9,Class10,Class11,Class12",
+                "GradesNames": "一年级,二年级,三年级,四年级,五年级,六年级,七年级,八年级,九年级,高一,高二,高三"
+            },
+            {
+                "SubjectID": "HISTORY",
+                "SubjectName": "历史",
+                "CourseClassCount": 11,
+                "TeacherCount": 8,
+                "StudentCount": 440,
+                "GradeIDs": "Class1,Class2,Class3,Class4,Class5,Class6,Class7,Class8,Class9,Class10,Class11,Class12",
+                "GradesNames": "一年级,二年级,三年级,四年级,五年级,六年级,七年级,八年级,九年级,高一,高二,高三"
+            },
+            {
+                "SubjectID": "POLITICS",
+                "SubjectName": "政治",
+                "CourseClassCount": 11,
+                "TeacherCount": 8,
+                "StudentCount": 440,
+                "GradeIDs": "Class1,Class2,Class3,Class4,Class5,Class6,Class7,Class8,Class9,Class10,Class11,Class12",
+                "GradesNames": "一年级,二年级,三年级,四年级,五年级,六年级,七年级,八年级,九年级,高一,高二,高三"
+            },
+            {
+                "SubjectID": "PHYSICS",
+                "SubjectName": "物理",
+                "CourseClassCount": 11,
+                "TeacherCount": 8,
+                "StudentCount": 440,
+                "GradeIDs": "Class1,Class2,Class3,Class4,Class5,Class6,Class7,Class8,Class9,Class10,Class11,Class12",
+                "GradesNames": "一年级,二年级,三年级,四年级,五年级,六年级,七年级,八年级,九年级,高一,高二,高三"
+            },
+            {
+                "SubjectID": "BIOLOGY",
+                "SubjectName": "生物",
+                "CourseClassCount": 11,
+                "TeacherCount": 8,
+                "StudentCount": 440,
+                "GradeIDs": "Class1,Class2,Class3,Class4,Class5,Class6,Class7,Class8,Class9,Class10,Class11,Class12",
+                "GradesNames": "一年级,二年级,三年级,四年级,五年级,六年级,七年级,八年级,九年级,高一,高二,高三"
+            },
+            {
+                "SubjectID": "CHEMISTRY",
+                "SubjectName": "化学",
+                "CourseClassCount": 11,
+                "TeacherCount": 8,
+                "StudentCount": 440,
+                "GradeIDs": "Class1,Class2,Class3,Class4,Class5,Class6,Class7,Class8,Class9,Class10,Class11,Class12",
+                "GradesNames": "一年级,二年级,三年级,四年级,五年级,六年级,七年级,八年级,九年级,高一,高二,高三"
             }
-        });
+            ]
+        }
+        dispatch({ type: GET_COURE_CLASS_ALL_MSG, data: data,func:func });
+
+        // getData(CONFIG.proxy + url).then(res => {
+
+        //     return res.json()
+        // }).then(json => {
+        //     if (json.Status === 400) {
+        //         console.log('错误码：' + json.Status)
+        //     } else if (json.Status === 200) {
+        //         dispatch({ type: GET_COURE_CLASS_ALL_MSG, data: json.Data });
+        //     }
+        // });
     }
 }
-//获取学科信息
-const getSubjectMsg = (url) => {
-    return (dispatch) => {
 
-        dispatch({ type: actions.UpUIState.SUBJECT_TABLE_LOADING_OPEN });
-        getData(CONFIG.proxy + url).then(res => {
-            dispatch({ type: actions.UpUIState.SUBJECT_TABLE_LOADING_CLOSE });
-            return res.json()
-        }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
-                dispatch({ type: GET_SUBJECT_MSG, data: json.Data });
-            }
-        });
-    }
-}
-//获取学校教师信息
-const getTeacherMsg = (url) => {
-    return (dispatch) => {
-        getData(CONFIG.Xproxy + url).then(res => {
 
-            return res.json()
-        }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
-                console.log(json.Data)
-
-                dispatch({ type: GET_TEACHER_MSG, data: json.Data });
-                dispatch({ type: actions.UpUIState.SUBJECT_DETAILS_MODAL_OPEN });
-            }
-        });
-    }
-}
-
-// 编辑弹窗信息
-const changeSubjectModalMsg = (data) => {
+//设置教学班菜单
+const setCoureClassAllMsg = (data,subjectID = null) => {
     return {
-        type: CHANGE_SUBJECT_MODAL_MSG,
-        data: data
-    }
-};
-const handleSubjectModalMsg = (data) => {
-    return {
-        type: HANDLE_SUBJECT_MODAL_MSG,
-        data: data
-    }
-};
-const addSubjectModalMsg = (data) => {
-    return {
-        type: ADD_SUBJECT_MODAL_MSG,
-        data: data
-    }
-};
-const handleSubjectNameModalMsg = (data) => {
-    return {
-        type: HANDLE_SUBJECT_NAME_MODAL_MSG,
-        data: data
+        type: SET_COURE_CLASS_ALL_MSG,
+        data: data,
+        subjectID:subjectID
     }
 };
 
-const getSubjectModalMsg = (url) => {
-    return (dispatch) => {
-        getData(CONFIG.proxy + url).then(res => {
-            return res.json()
-        }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
-                console.log(json.Data)
-                dispatch({ type: GET_SUBJECT_MODAL_MSG, data: json.Data });
-                
-            }
-        });
-    }
-}
+// //设置教研组长
+// const getSubjectTeacherMsg = (url,grades,allGrades = []) => {
+//     return (dispatch) => {
+//         getData(CONFIG.proxy + url).then(res => {
+//         dispatch({ type: actions.UpUIState.SEARCH_LOADING_CLOSE });
 
+//             return res.json()
+//         }).then(json => {
+//             if (json.Status === 400) {
+//                 console.log('错误码：' + json.Status)
+//             } else if (json.Status === 200) {
+//                 console.log(json.Data)
+//                 if(grades==='All'){
+//                     allGrades.map((child,index) => {
+//                         dispatch({ type: SET_SUBJECT_TEACHER_MSG, data: {Teacher:json.Data,grades:child} });
+//                     })
+//                 }else
+//                 dispatch({ type: SET_SUBJECT_TEACHER_MSG, data: {Teacher:json.Data,grades:grades} });
 
-//设置教研组长
-const getSubjectTeacherMsg = (url,grades,allGrades = []) => {
-    return (dispatch) => {
-        getData(CONFIG.proxy + url).then(res => {
-        dispatch({ type: actions.UpUIState.SEARCH_LOADING_CLOSE });
+//             }
+//         });
+//     }
+// }
 
-            return res.json()
-        }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
-                console.log(json.Data)
-                if(grades==='All'){
-                    allGrades.map((child,index) => {
-                        dispatch({ type: SET_SUBJECT_TEACHER_MSG, data: {Teacher:json.Data,grades:child} });
-                    })
-                }else
-                dispatch({ type: SET_SUBJECT_TEACHER_MSG, data: {Teacher:json.Data,grades:grades} });
-                
-            }
-        });
-    }
-}
-const setSubjectTeacherMsg = (data) => {
-    return {
-        type: GET_SUBJECT_TEACHER_MSG,
-        data: data
-    }
-};
 export default {
     getLoginUser,
     GET_LOGIN_USER_INFO,
-    getSubjectMsg,
-    GET_SUBJECT_MSG,
-    getPeriodMsg,
-    GET_PERIOD_MSG,
-    getTeacherMsg,
-    GET_TEACHER_MSG,
-    changeSubjectModalMsg,
-    CHANGE_SUBJECT_MODAL_MSG,
-    handleSubjectModalMsg,
-    HANDLE_SUBJECT_MODAL_MSG,
-    addSubjectModalMsg,
-    ADD_SUBJECT_MODAL_MSG,
-    handleSubjectNameModalMsg,
-    HANDLE_SUBJECT_NAME_MODAL_MSG,
-    getSubjectModalMsg,
-    GET_SUBJECT_MODAL_MSG,
-    getSubjectTeacherMsg,
-    SET_SUBJECT_TEACHER_MSG,
-    setSubjectTeacherMsg,
-    GET_SUBJECT_TEACHER_MSG
+    getCoureClassAllMsg,
+    GET_COURE_CLASS_ALL_MSG,
+    SET_COURE_CLASS_ALL_MSG,
+    setCoureClassAllMsg
 
 }

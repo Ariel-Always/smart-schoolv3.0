@@ -7,7 +7,11 @@ import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-d
 import history from './history'
 
 import logo from '../../images/image-MyClass.png'
-//import TimeBanner from '../component/TimeBanner'
+import All from '../component/All'
+import Subject from '../component/Subject'
+import Search from '../component/Search'
+import Class from '../component/Class'
+
 
 //import Subject from '../component/Subject'
 import '../../scss/index.scss'
@@ -22,12 +26,13 @@ class App extends Component {
         super(props);
         const { dispatch } = props;
         this.state = {
-
+            MenuParams:{}
         }
         let route = history.location.pathname;
         //判断token是否存在
         if (sessionStorage.getItem('token')) {
             dispatch(actions.UpDataState.getLoginUser('/Login?method=GetUserInfo'));
+            dispatch(actions.UpDataState.getCoureClassAllMsg('/CoureClass_All?schoolID=sss', this.MenuClcik));            
             this.requestData(route);
 
         } else {
@@ -64,7 +69,12 @@ class App extends Component {
     componentDidUpdate() {
 
     }
-
+    componentWillReceiveProps(nextProps) {
+        
+        this.setState({
+            MenuParams:nextProps.DataState.GetCoureClassAllMsg.MenuParams
+        })
+    }
 
     onAppAlertOK() {
         const { dispatch } = this.props;
@@ -84,28 +94,54 @@ class App extends Component {
         const { dispatch } = this.props;
         let pathArr = route.split('/');
         let handleRoute = pathArr[1];
-        console.log(route)
-        if (route === '/') {
-            //dispatch(actions.UpDataState.getAllUserPreview('/ArchivesAll'));
+        let routeID = pathArr[2];
+        let subjectID = pathArr[3];
+        let classID = pathArr[4];
+        console.log(route,routeID,subjectID)
+        dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+        if (route === '/'||handleRoute==='All') {
+            
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-            // if (!this.props.DataState.PeriodMsd)
-            //     dispatch(actions.UpDataState.getPeriodMsg('/AdmSubject_DropDownMenu?schoolID=sss'));
-            // dispatch(actions.UpDataState.getSubjectMsg('/AdmSubject?schoolID=schoolID&periodID=null&pageSize=8&pageIndex=1'));
-            // if(!this.props.DataState.SubjectMsg.addSubjectMsg)
-            // dispatch(actions.UpDataState.getSubjectModalMsg('/AddSubject_DropDownMenu?schoolID=schoolID'));
+            dispatch(actions.UpDataState.setCoureClassAllMsg('all'));
 
-        } else {
+        } else if (handleRoute === 'Subject'&&subjectID==='all') {
+            
+            dispatch(actions.UpDataState.setCoureClassAllMsg(routeID));
+
+        } else if (handleRoute === 'Subject'&&subjectID==='Class') {
+            dispatch(actions.UpDataState.setCoureClassAllMsg(classID,routeID));
+            
+
+        } else if (handleRoute === 'Search') {
+            dispatch(actions.UpDataState.setCoureClassAllMsg(routeID));
+            
+
+        } else{
             history.push('/')
         }
 
 
     }
 
+    MenuClcik = (id,type,sub = null) => {
+        console.log(id,type)
+        if(type==='All'){
+            history.push('/All')
+        }else if(type==='Subject'){
+            history.push('/Subject/'+id+'/all')
+        }else if(type==='Class'){
+            history.push('/Subject/'+ sub +'/Class/'+id)
+        }else if(type==='Search'){
+            history.push('/Search/'+id)
+        }
+        //history.push('/'+id)
+    }
+
 
 
     render() {
         const { UIState, DataState } = this.props;
-
+        console.log(DataState.GetCoureClassAllMsg.MenuParams)
         return (
             <React.Fragment>
                 <Loading tip="加载中..." size="large" spinning={UIState.AppLoading.appLoading}>
@@ -126,15 +162,20 @@ class App extends Component {
                             <TimeBanner />
                         </div>
 
-                        <div ref="frame-right-content">
-                            {/* <Menu
-                                params={this.state.MenuParams}
+                        <div ref="frame-left-menu">
+                            <Menu
+                                params={DataState.GetCoureClassAllMsg.MenuParams}
                             >
 
-                            </Menu> */}
+                            </Menu>
                         </div>
                         <div ref="frame-right-content">
-
+                            <Router>
+                                <Route path='/All' exact component={All}></Route>
+                                <Route path='/Subject/:subjectID/all' component={Subject}></Route>
+                                <Route path='/Subject/:subjectID/Class/:classID' component={Class}></Route>
+                                <Route path='/Search' component={Search}></Route>
+                            </Router>
                             {/* <Route path='/UserArchives/All' exact history={history} component={All}></Route>
                             <Route path='/UserArchives/Student' exact history={history} component={Student}></Route>
                             <Route path='/UserArchives/Teacher' exact history={history} component={Teacher}></Route>

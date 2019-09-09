@@ -1305,6 +1305,10 @@ class Menu extends React.Component {
 
     /*参数解构*/
     paramsDeconstruction(props) {
+        
+        if(!props.params)
+        return ;
+        
         const { initParams, ...reset } = props.params;
         let { children, MenuBox } = { ...reset };
         let layer = 1;
@@ -1344,7 +1348,7 @@ class Menu extends React.Component {
                                 </span>
                                 <span className="frame_leftmenu_arrow" ></span>
                             </div>
-                            <div className="frame_leftmenu_nextgrade_container" style={{ display: 'none' }}>
+                            <div className="frame_leftmenu_nextgrade_container" style={{ display: object.selected ? 'block' :'none' }}>
 
                                 {this.objectDeconstruction(children, myLayer + 1)}
 
@@ -1386,13 +1390,13 @@ class Menu extends React.Component {
                     )
                 } else if (myLayer === 2) {
                     return (
-                        <li className="clearfix"
+                        <li className={`clearfix ${object.active ? 'active' : ''} ${object.selected ? 'selected' : ''} `}
                             key={object.key}
                         >
-                            <span className="frame_leftmenu_point">
+                            <span className={`frame_leftmenu_point ${object.active ? 'active' : ''} ${object.selected ? 'selected' : ''} `}>
                             </span>
                             <span
-                                className="frame_leftmenu_onegrade_name frame_ellipsis"
+                                className={`frame_leftmenu_onegrade_name frame_ellipsis ${object.active ? 'active' : ''} ${object.selected ? 'selected' : ''} `}
                                 onClick={() => object.onTitleClick(object.key)}
 
                             >
@@ -1449,9 +1453,9 @@ class Menu extends React.Component {
     componentWillMount() {
         this.paramsDeconstruction(this.props)
     }
-    componentWillReceiveProps() {
-
-        this.paramsDeconstruction(this.props)//props有变化时执行
+    componentWillReceiveProps(nextProps) {
+        
+        this.paramsDeconstruction(nextProps)//props有变化时执行
 
 
     }
