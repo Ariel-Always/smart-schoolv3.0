@@ -8,7 +8,7 @@ import './js/leftMenu';
 import {
     Radio as AntRadio, Checkbox as AntCheckBox, Table as AntTable,
     Pagination as AntPagination, Button as AntdButton, Input as AntdInput,
-    Modal as AntdModal, Icon, ConfigProvider, Spin,Tooltip
+    Modal as AntdModal, Icon, ConfigProvider, Spin, Tooltip
 } from 'antd';
 import { Scrollbars } from 'react-custom-scrollbars';
 import zhCN from 'antd/es/locale/zh_CN';
@@ -133,9 +133,36 @@ class Button extends React.Component {
         }
 
 
+
     }
 
+    handleHeight = (height) => {
+        return {
+            height: height + 'px',
+            lineHeight: height + 'px'
+        }
+    }
+    handleWidth = (width) => {
+        return {
+            width: width + 'px'
+        }
+    }
 
+    handleStyle = () => {
+        let style = this.state.style ? this.state.style : {};
+        if (this.props.height) {
+            style = Object.assign({}, style, this.handleHeight(this.props.height))
+        }
+        if (this.props.width) {
+
+            style = Object.assign({}, style, this.handleWidth(this.props.width))
+
+
+
+        }
+        console.log(style)
+        return {style};
+    }
     render() {
         return (
             <ConfigProvider locale={zhCN}>
@@ -294,11 +321,11 @@ class Empty extends React.Component {
         }
     }
 
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {
 
-        const {style} = nextProps;
+        const { style } = nextProps;
 
-        this.setState({style:style});
+        this.setState({ style: style });
 
     }
 
@@ -421,11 +448,11 @@ class Modal extends React.Component {
 
     componentWillReceiveProps(nextProps) {
 
-        const {title} = nextProps;
+        const { title } = nextProps;
 
         this.selectType(this.props.type);
 
-        this.setState({title:title});
+        this.setState({ title: title });
 
     }
 
@@ -433,29 +460,29 @@ class Modal extends React.Component {
 
         return (
             <AntdModal onOk={this.state.onOk}
-                       onCancel={this.state.onCancel}
-                       title={this.state.title}
-                       className={`initModel ${this.state.ModalStyle} ${this.state.className}`}
-                       style={this.state.style}
-                       okText={this.state.okText}
-                       maskClosable={this.state.maskClosable}
-                       mask={this.state.mask}
-                       maskStyle={this.props.maskStyle}
-                       closable={this.state.closable}
-                       bodyStyle={this.state.bodyStyle}
-                       afterClose={this.state.afterClose}
-                       visible={this.props.visible}
-                       centered={this.props.centered ? this.props.centered : true}
-                       width={this.state.width}
-                       footer={this.state.footer === null ? null : this.state.footer ? this.state.footer : [
-                           <Button key='onOk' type="primary" size="small" color="green" onClick={this.state.onOk}>
-                               {this.props.okText?this.props.okText:'确定'}
-                           </Button>,
-                           <Button key='onCancel' size="small" color="blue" onClick={this.state.onCancel}>
-                               {this.props.cancelText?this.props.cancelText:'关闭'}
-                           </Button>,
+                onCancel={this.state.onCancel}
+                title={this.state.title}
+                className={`initModel ${this.state.ModalStyle} ${this.state.className}`}
+                style={this.state.style}
+                okText={this.state.okText}
+                maskClosable={this.state.maskClosable}
+                mask={this.state.mask}
+                maskStyle={this.props.maskStyle}
+                closable={this.state.closable}
+                bodyStyle={this.state.bodyStyle}
+                afterClose={this.state.afterClose}
+                visible={this.props.visible}
+                centered={this.props.centered ? this.props.centered : true}
+                width={this.state.width}
+                footer={this.state.footer === null ? null : this.state.footer ? this.state.footer : [
+                    <Button key='onOk' type="primary" size="small" color="green" onClick={this.state.onOk}>
+                        {this.props.okText ? this.props.okText : '确定'}
+                    </Button>,
+                    <Button key='onCancel' size="small" color="blue" onClick={this.state.onCancel}>
+                        {this.props.cancelText ? this.props.cancelText : '关闭'}
+                    </Button>,
 
-                       ]}
+                ]}
             >
                 {this.props.children}
             </AntdModal>
@@ -616,8 +643,8 @@ class Search extends React.Component {
                     if (onClickSearch) {
                         return onClickSearch({
                             selectdValue: select ? (
-                                    this.state.selectdValue ? this.state.selectdValue.value
-                                        : selectOptions.selectdValue.value)
+                                this.state.selectdValue ? this.state.selectdValue.value
+                                    : selectOptions.selectdValue.value)
                                 : null,
                             value: this.refs.search_text_input.value
                         })
@@ -627,8 +654,8 @@ class Search extends React.Component {
                 if (onClickSearch) {
                     return onClickSearch({
                         selectdValue: select ? (
-                                this.state.selectdValue ? this.state.selectdValue.value
-                                    : selectOptions.selectdValue.value)
+                            this.state.selectdValue ? this.state.selectdValue.value
+                                : selectOptions.selectdValue.value)
                             : null,
                         value: this.refs.search_text_input.value
                     })
@@ -646,111 +673,111 @@ class Search extends React.Component {
             }} >
                 <table className="search_wrapper_table">
                     <tbody>
-                    <tr>
-                        {//控制下拉部分的宽度
-                            select ?
-                                <td style={{ width: (selectOptions && selectOptions.width) ? selectOptions.width : '86px' }}>
-                                    <div className="search_select_wrapper">
+                        <tr>
+                            {//控制下拉部分的宽度
+                                select ?
+                                    <td style={{ width: (selectOptions && selectOptions.width) ? selectOptions.width : '86px' }}>
+                                        <div className="search_select_wrapper">
                                             <span className="search_select_span" ref='search_select_span'
-                                                  onClick={this.toggleSelectd.bind(this)}
-                                                  style={{ width: (selectOptions && selectOptions.width) ? (selectOptions.width - 14) : '' }}>
+                                                onClick={this.toggleSelectd.bind(this)}
+                                                style={{ width: (selectOptions && selectOptions.width) ? (selectOptions.width - 14) : '' }}>
                                                 <span
                                                     className={`search_select_icon ${this.state.selectShow === true ? 'search_slide_icon' : ''}`}></span>
                                                 {// 判断是否有state的选中值（this.state.selectdValue）?使用state.selectdValue值：(判断是否有外界传值)?使用外界传值:''
                                                     this.state.selectdValue ?
                                                         <span className="search_select_text"
-                                                              data-value={this.state.selectdValue.value}
-                                                              title={this.state.selectdValue.title}>{this.state.selectdValue.title}</span>
+                                                            data-value={this.state.selectdValue.value}
+                                                            title={this.state.selectdValue.title}>{this.state.selectdValue.title}</span>
                                                         :
                                                         ((selectOptions && selectOptions.selectdValue) ?
-                                                                <span className="search_select_text"
-                                                                      data-value={selectOptions.selectdValue.value}
-                                                                      title={selectOptions.selectdValue.title}>{selectOptions.selectdValue.title}</span>
-                                                                : ''
+                                                            <span className="search_select_text"
+                                                                data-value={selectOptions.selectdValue.value}
+                                                                title={selectOptions.selectdValue.title}>{selectOptions.selectdValue.title}</span>
+                                                            : ''
                                                         )
                                                 }
 
                                             </span>
-                                        <ul className='search_select_ul' ref='search_select_ul'>
-                                            {
-                                                //选项列表 (是否外界传值)？：使用外界值：''
-                                                (selectOptions && selectOptions.selectList) ?
-                                                    selectOptions.selectList.map((item, k) => {
-                                                        return <li key={k} onClick={this.changeSelect.bind(this, {
-                                                            value: item.value,
-                                                            title: item.title
-                                                        })} className="search_select_li" data-value={item.value}
-                                                                   title={item.title}>{item.title}</li>
-                                                    })
-                                                    : ''
+                                            <ul className='search_select_ul' ref='search_select_ul'>
+                                                {
+                                                    //选项列表 (是否外界传值)？：使用外界值：''
+                                                    (selectOptions && selectOptions.selectList) ?
+                                                        selectOptions.selectList.map((item, k) => {
+                                                            return <li key={k} onClick={this.changeSelect.bind(this, {
+                                                                value: item.value,
+                                                                title: item.title
+                                                            })} className="search_select_li" data-value={item.value}
+                                                                title={item.title}>{item.title}</li>
+                                                        })
+                                                        : ''
+                                                }
+
+                                            </ul>
+                                            <span className="search_select_gap"></span>
+                                        </div>
+                                    </td> : null}
+                            <td className="search_left_td">
+                                <input ref='search_text_input'
+                                    className="search_text_input"
+                                    type="text" placeholder={placeHolder ? placeHolder : '输入关键词快速搜索'}
+                                    onFocus={this.onInputFocus.bind(this)}
+                                    onBlur={this.onInputBlur.bind(this)}
+                                    onKeyPress={this.handleEnterKey.bind(this)}
+                                />
+                                <input className="search_cancel_input" type="button"
+                                    onClick={
+                                        () => {
+                                            this.setState({ cancleShow: false }, () => {
+                                                this.refs.search_text_input.value = '';
+                                                if (onCancelSearch) {
+                                                    onCancelSearch(
+                                                        {
+                                                            selectdValue: select ? (
+                                                                this.state.selectdValue ? this.state.selectdValue.value
+                                                                    : selectOptions.selectdValue.value)
+                                                                : null,
+
+                                                            value: ''
+
+                                                        }
+                                                    );
+                                                }
+                                            })
+                                        }
+                                    }
+                                    style={{ display: this.state.cancleShow === true ? 'block' : 'none' }} />
+                            </td>
+                            <td className="search_right_td">
+                                <input className="search_btn_input" type="button"
+                                    onClick={
+                                        () => {
+                                            if (this.refs.search_text_input.value) {
+                                                this.setState({ cancleShow: true }, () => {
+                                                    if (onClickSearch) {
+                                                        onClickSearch({
+                                                            selectdValue: select ? (
+                                                                this.state.selectdValue ? this.state.selectdValue.value
+                                                                    : selectOptions.selectdValue.value)
+                                                                : null,
+                                                            value: this.refs.search_text_input.value
+                                                        });
+                                                    }
+                                                });
+                                            } else {
+                                                if (onClickSearch) {
+                                                    onClickSearch({
+                                                        selectdValue: select ? (
+                                                            this.state.selectdValue ? this.state.selectdValue.value
+                                                                : selectOptions.selectdValue.value)
+                                                            : null,
+                                                        value: this.refs.search_text_input.value
+                                                    });
+                                                }
                                             }
-
-                                        </ul>
-                                        <span className="search_select_gap"></span>
-                                    </div>
-                                </td> : null}
-                        <td className="search_left_td">
-                            <input ref='search_text_input'
-                                   className="search_text_input"
-                                   type="text" placeholder={placeHolder ? placeHolder : '输入关键词快速搜索'}
-                                   onFocus={this.onInputFocus.bind(this)}
-                                   onBlur={this.onInputBlur.bind(this)}
-                                   onKeyPress={this.handleEnterKey.bind(this)}
-                            />
-                            <input className="search_cancel_input" type="button"
-                                   onClick={
-                                       () => {
-                                           this.setState({ cancleShow: false }, () => {
-                                               this.refs.search_text_input.value = '';
-                                               if (onCancelSearch) {
-                                                   onCancelSearch(
-                                                       {
-                                                           selectdValue: select ? (
-                                                                   this.state.selectdValue ? this.state.selectdValue.value
-                                                                       : selectOptions.selectdValue.value)
-                                                               : null,
-
-                                                           value: ''
-
-                                                       }
-                                                   );
-                                               }
-                                           })
-                                       }
-                                   }
-                                   style={{ display: this.state.cancleShow === true ? 'block' : 'none' }} />
-                        </td>
-                        <td className="search_right_td">
-                            <input className="search_btn_input" type="button"
-                                   onClick={
-                                       () => {
-                                           if (this.refs.search_text_input.value) {
-                                               this.setState({ cancleShow: true }, () => {
-                                                   if (onClickSearch) {
-                                                       onClickSearch({
-                                                           selectdValue: select ? (
-                                                                   this.state.selectdValue ? this.state.selectdValue.value
-                                                                       : selectOptions.selectdValue.value)
-                                                               : null,
-                                                           value: this.refs.search_text_input.value
-                                                       });
-                                                   }
-                                               });
-                                           } else {
-                                               if (onClickSearch) {
-                                                   onClickSearch({
-                                                       selectdValue: select ? (
-                                                               this.state.selectdValue ? this.state.selectdValue.value
-                                                                   : selectOptions.selectdValue.value)
-                                                           : null,
-                                                       value: this.refs.search_text_input.value
-                                                   });
-                                               }
-                                           }
-                                       }
-                                   } />
-                        </td>
-                    </tr>
+                                        }
+                                    } />
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -804,18 +831,18 @@ class DropDown extends React.Component {
 
     //改变下拉选项的时候调用
     onMultipleRang2DropChange(e) {
-        const { id, name,onChange } = e;
+        const { id, name, onChange } = e;
         this.setState({ //点击选项之后
             dropListShow: false,
             dropSelectd: {
                 value: id,
                 title: name
             },
-            range2ListActive:id
+            range2ListActive: id
         }, () => {
             $(this.refs.dropdown_select_ul).hide();//隐藏下拉框
             if (onChange) {
-                onChange({ value:name, id: id });//调用外部传入的行数
+                onChange({ value: name, id: id });//调用外部传入的行数
             }
         });
     }//二级下拉改变下拉的时候调用
@@ -856,9 +883,9 @@ class DropDown extends React.Component {
         const { mutipleOptions } = this.props;
         if (e.value) {
 
-                if (mutipleOptions && mutipleOptions.dropClickSearch) {
-                    mutipleOptions.dropClickSearch(e);
-                }
+            if (mutipleOptions && mutipleOptions.dropClickSearch) {
+                mutipleOptions.dropClickSearch(e);
+            }
 
         } else {
             if (mutipleOptions && mutipleOptions.dropClickSearch) {
@@ -870,9 +897,9 @@ class DropDown extends React.Component {
     onCancelSearch(e) {
         const { mutipleOptions } = this.props;
 
-            if (mutipleOptions && mutipleOptions.dropCancelSearch) {
-                mutipleOptions.dropCancelSearch();
-            }
+        if (mutipleOptions && mutipleOptions.dropCancelSearch) {
+            mutipleOptions.dropCancelSearch();
+        }
 
 
     }
@@ -880,9 +907,9 @@ class DropDown extends React.Component {
     render() {
         const {
 
-            title, width, height, disabled, dropSelectd, dropList, onChange, type,className,
+            title, width, height, disabled, dropSelectd, dropList, onChange, type, className,
 
-            mutipleOptions,dropLoadingShow, ...reset
+            mutipleOptions, dropLoadingShow, ...reset
 
         } = this.props;
 
@@ -899,7 +926,7 @@ class DropDown extends React.Component {
 
         let scrollWrapperHeight = (mutipleOptions && mutipleOptions.height ? (mutipleOptions.height - 72) : 228);
 
-        let searchOpen = mutipleOptions&&mutipleOptions.searchOpen?mutipleOptions.searchOpen:false;
+        let searchOpen = mutipleOptions && mutipleOptions.searchOpen ? mutipleOptions.searchOpen : false;
 
         //所需的参数
         let dropMultipleList = '';
@@ -911,41 +938,41 @@ class DropDown extends React.Component {
 
                 <ul className="dropdown_list_ul3 clearfix" style={{ display: "block" }}>
 
-                    <Loading tip="加载中..." spinning={mutipleOptions&&mutipleOptions.searchLoadingShow?mutipleOptions.searchLoadingShow:false}>
+                    <Loading tip="加载中..." spinning={mutipleOptions && mutipleOptions.searchLoadingShow ? mutipleOptions.searchLoadingShow : false}>
 
-                    {mutipleOptions.searchList.map((item, ks) => {
-                        return <li key={ks} className={`dropdown_item3_li ${item.id === this.state.range2ListActive?'active':''}`}
-                                   onClick={this.onMultipleRang2DropChange.bind(this, {
-                                       name: item.name,
-                                       id: item.id,
-                                       onChange: mutipleOptions.dropMultipleChange
-                                   })}//绑定点击事件
-                                   title={item.name}>
-                            <span className="dropdown_item3_name">{item.name}</span>
-                        </li>
-                    })}
+                        {mutipleOptions.searchList.map((item, ks) => {
+                            return <li key={ks} className={`dropdown_item3_li ${item.id === this.state.range2ListActive ? 'active' : ''}`}
+                                onClick={this.onMultipleRang2DropChange.bind(this, {
+                                    name: item.name,
+                                    id: item.id,
+                                    onChange: mutipleOptions.dropMultipleChange
+                                })}//绑定点击事件
+                                title={item.name}>
+                                <span className="dropdown_item3_name">{item.name}</span>
+                            </li>
+                        })}
 
                     </Loading>
 
                 </ul>
 
         } else if (mutipleOptions && mutipleOptions.range === 2) { //如果range的等级为2
-            dropMultipleList = mutipleOptions.dropMultipleList&&mutipleOptions.dropMultipleList.map((item1, k1) => {//遍历第一个数组
+            dropMultipleList = mutipleOptions.dropMultipleList && mutipleOptions.dropMultipleList.map((item1, k1) => {//遍历第一个数组
                 return <li key={k1} className="dropdown_list_item1">
                     <div
                         className={`dropdown_item1_name ${this.state.range2ListShow === k1 ? 'slide' : ''}`} //判断是否是活动状态
                         title={item1.name} onClick={this.onRange2ListShow.bind(this, k1)}>{item1.name}</div>
-                    <ul ref={`dropdown_list_ul3_${k1}`} className={`dropdown_list_ul3 clearfix`} style={{display:`${this.state.range2ListShow === k1?'block':'none'}`}}>
+                    <ul ref={`dropdown_list_ul3_${k1}`} className={`dropdown_list_ul3 clearfix`} style={{ display: `${this.state.range2ListShow === k1 ? 'block' : 'none'}` }}>
                         {//遍历第二个数组
                             item1.list.map((item2, k2) => {
                                 return <li key={k2}
-                                           className={`dropdown_item3_li ${this.state.range2ListActive === item2.id ? 'active' : ''}`} //判断是否是active
-                                           title={item2.name}
-                                           onClick={this.onMultipleRang2DropChange.bind(this, {
-                                               name: item2.name,
-                                               id: item2.id,
-                                               onChange: mutipleOptions.dropMultipleChange
-                                           })}//绑定点击事件
+                                    className={`dropdown_item3_li ${this.state.range2ListActive === item2.id ? 'active' : ''}`} //判断是否是active
+                                    title={item2.name}
+                                    onClick={this.onMultipleRang2DropChange.bind(this, {
+                                        name: item2.name,
+                                        id: item2.id,
+                                        onChange: mutipleOptions.dropMultipleChange
+                                    })}//绑定点击事件
                                 >
                                     <span className="dropdown_item3_name">{item2.name}</span>
                                 </li>
@@ -963,7 +990,7 @@ class DropDown extends React.Component {
 
             dropContainer =
                 <div ref="dropdown_select_ul" className="dropdown_select_ul"
-                     style={{ width: selectUlWidth, height: selectUlHeight }}>
+                    style={{ width: selectUlWidth, height: selectUlHeight }}>
                     <div className="dropdown_multiple_container">
                         <div className="dropdown_search_wrapper">
                             <Search
@@ -975,13 +1002,13 @@ class DropDown extends React.Component {
                         </div>
                         <Scrollbars style={{ width: scrollWrapperWidth, height: scrollWrapperHeight }}>
 
-                            <Loading spinning={mutipleOptions&&mutipleOptions.dropLoadingShow?mutipleOptions.dropLoadingShow:false}>
+                            <Loading spinning={mutipleOptions && mutipleOptions.dropLoadingShow ? mutipleOptions.dropLoadingShow : false}>
 
                                 <ul className="dropdown_list_ul">
 
                                     {dropMultipleList}
 
-                            </ul>
+                                </ul>
 
                             </Loading>
 
@@ -1001,51 +1028,51 @@ class DropDown extends React.Component {
             dropContainer =
                 <ul className="dropdown_select_ul" ref="dropdown_select_ul" style={{ width: width ? width : 120, overflow: "initial" }}>
 
-                    <Loading spinning={dropLoadingShow?dropLoadingShow:false}>
+                    <Loading spinning={dropLoadingShow ? dropLoadingShow : false}>
 
                         <Scrollbars style={{ width: width ? width : 120, height: ClientHeight ? ClientHeight : 48 }}>
-                        {//dropList是否存在？dropList:''
-                            dropList ?
-                                dropList.map((item, key) => {
-                                    return <li key={key} className="dropdown_select_li"
-                                               title={item.title}
-                                               data-vaule={item.value}
-                                               onClick={
-                                                   this.onSimpleDropChange.bind(this, {
-                                                       onChange: onChange,
-                                                       value: item.value,
-                                                       title: item.title
-                                                   })
-                                               }
-                                    >{item.title}</li>
-                                })
-                                : ''
-                        }
-                    </Scrollbars>
+                            {//dropList是否存在？dropList:''
+                                dropList ?
+                                    dropList.map((item, key) => {
+                                        return <li key={key} className="dropdown_select_li"
+                                            title={item.title}
+                                            data-vaule={item.value}
+                                            onClick={
+                                                this.onSimpleDropChange.bind(this, {
+                                                    onChange: onChange,
+                                                    value: item.value,
+                                                    title: item.title
+                                                })
+                                            }
+                                        >{item.title}</li>
+                                    })
+                                    : ''
+                            }
+                        </Scrollbars>
 
                     </Loading>
 
                 </ul>;
         }
         return (
-            <div className={`dropdown_container ${className?className:''}`} {...reset}>
+            <div className={`dropdown_container ${className ? className : ''}`} {...reset}>
                 <span className="dropdown_title_span">{title}</span>
                 <span className="dropdown_wrapper" style={{ width: width ? width : 120 }}>
                     <span ref='dropdown_default_span' className={`dropdown_default_span ${disabled ? 'disabled' : ''}`}
-                          onClick={ //点击展示和隐藏下拉列表
-                              disabled ?
-                                  () => {
-                                  } : this.onToggleDropList.bind(this)
-                          }
-                          style={{ width: width ? width : 120 }}>
+                        onClick={ //点击展示和隐藏下拉列表
+                            disabled ?
+                                () => {
+                                } : this.onToggleDropList.bind(this)
+                        }
+                        style={{ width: width ? width : 120 }}>
                         <span className={`dropdown_icon_span ${this.state.dropListShow ? 'slide' : ''}`}></span>
                         {   //判断this.state.dropSelectd?this.state.dropSelectd:(判断外界传入的dropSelectd？外界传入的dropSelectd:'')
                             this.state.dropSelectd ?
                                 <span data-value={this.state.dropSelectd.value} className="dropdown_text_span"
-                                      title={this.state.dropSelectd.title}>{this.state.dropSelectd.title}</span>
+                                    title={this.state.dropSelectd.title}>{this.state.dropSelectd.title}</span>
                                 : (dropSelectd ?
                                     <span data-value={dropSelectd.value} className="dropdown_text_span"
-                                          title={dropSelectd.title}>{dropSelectd.title}</span>
+                                        title={dropSelectd.title}>{dropSelectd.title}</span>
                                     : ''
                                 )
                         }
@@ -1067,27 +1094,27 @@ class DropDown extends React.Component {
 
 class Loading extends React.Component {
     render() {
-        const { type, size, tip,opacity,spinning, wrapperClassName, children, ...reset } = this.props;
+        const { type, size, tip, opacity, spinning, wrapperClassName, children, ...reset } = this.props;
 
         let Fragments = '';
 
         let opacityClass = '';
 
-        if (opacity){
+        if (opacity) {
             //透明度为true意味透明
-            if (opacity === true){
+            if (opacity === true) {
 
                 opacityClass = 'ant-spin-transparent'
 
             }
 
-        }else{
+        } else {
 
-            if (opacity===undefined){
+            if (opacity === undefined) {
                 //透明度为false意味不透明
                 opacityClass = '';
 
-            }else{
+            } else {
 
                 opacityClass = 'ant-spin-opaque'
 
@@ -1100,23 +1127,23 @@ class Loading extends React.Component {
             if (type === 'point') {   //自己写的loading
 
                 Fragments = <div className={`loading_mask ${opacityClass}`}>
-                                <div className="loading_point_container">
-                                    <div className="point_container">
-                                        <span className="point1 point"></span>
-                                        <span className="point2 point"></span>
-                                        <span className="point3 point"></span>
-                                        <span className="point4 point"></span>
-                                    </div>
-                                    <div className="point_loading_text">{tip}</div>
-                                </div>
+                    <div className="loading_point_container">
+                        <div className="point_container">
+                            <span className="point1 point"></span>
+                            <span className="point2 point"></span>
+                            <span className="point3 point"></span>
+                            <span className="point4 point"></span>
+                        </div>
+                        <div className="point_loading_text">{tip}</div>
+                    </div>
 
-                            </div>
+                </div>
             } else { //icon图标的loading
                 let antIcon = <Icon type={type} spin {...reset} />
-                Fragments = <Spin indicator={antIcon} spinning={spinning} size={size} tip={tip} wrapperClassName={`${wrapperClassName?wrapperClassName:''} ${opacityClass}`}>{children}</Spin>
+                Fragments = <Spin indicator={antIcon} spinning={spinning} size={size} tip={tip} wrapperClassName={`${wrapperClassName ? wrapperClassName : ''} ${opacityClass}`}>{children}</Spin>
             }
         } else { //默认loading
-            Fragments = <Spin {...reset} size={size} spinning={spinning}  tip={tip} wrapperClassName={`${wrapperClassName?wrapperClassName:''} ${opacityClass}`}>{children}</Spin>
+            Fragments = <Spin {...reset} size={size} spinning={spinning} tip={tip} wrapperClassName={`${wrapperClassName ? wrapperClassName : ''} ${opacityClass}`}>{children}</Spin>
         }
         return (
             <React.Fragment>    {/*空标签*/}
@@ -1137,37 +1164,37 @@ class Alert extends React.Component {
 
     //关闭按钮
     closeAlert(e) {
-       const { onClose } = this.props;
-       if(onClose){
-           onClose();
-       }
+        const { onClose } = this.props;
+        if (onClose) {
+            onClose();
+        }
     }
     //点击ok
     ok(e) {
-      const { onOk } = this.props;
-      if (onOk){
-          onOk();
-      }
+        const { onOk } = this.props;
+        if (onOk) {
+            onOk();
+        }
     }
     //点击cancel按钮
     cancel(e) {
-      const { onCancel } = this.props;
-      if(onCancel){
-          onCancel();
-      }
+        const { onCancel } = this.props;
+        if (onCancel) {
+            onCancel();
+        }
     }
 
-    componentDidUpdate(){
+    componentDidUpdate() {
 
-        const {show,type,onHide} = this.props;
+        const { show, type, onHide } = this.props;
 
-        if (show){
+        if (show) {
 
-            if (type==='success'||type==='error'||type==='tips'){
+            if (type === 'success' || type === 'error' || type === 'tips') {
 
-                if (onHide){
+                if (onHide) {
 
-                    setTimeout(onHide,1800);
+                    setTimeout(onHide, 1800);
 
                 }
             }
@@ -1251,7 +1278,7 @@ class Alert extends React.Component {
                             </div>
                         </React.Fragment>
                         :
-                        <div className={`alert_tips_tab ${show?'animation':''}`} ref="alert_tips_tab">
+                        <div className={`alert_tips_tab ${show ? 'animation' : ''}`} ref="alert_tips_tab">
                             <div className="border">
                                 <div className={`alert_tab_content ${type}`}>{title}</div>
                             </div>
@@ -1433,7 +1460,7 @@ class Menu extends React.Component {
         return (
 
             <div className={`MenuBox`}
-                 style={{ width: this.state.MenuBoxWidth, display: this.state.MenuBoxShow }}
+                style={{ width: this.state.MenuBoxWidth, display: this.state.MenuBoxShow }}
             >
                 <div className={`MenuBox_top ${this.state.MenuBoxTopPic}`}></div>
                 <div id="frame_left_menu_container" className="frame_left_menu_container">{this.state.menuDom}</div>
@@ -1479,7 +1506,7 @@ class MenuLeft extends React.Component {
                                         {/* {第二级别块}*/}
                                         <div className={`frame_leftmenu_mainitem ${activeClass}`}>
 
-                                            <NavLink exact to={{ pathname: item.link, params:{ id: item.id, name: item.name } }} className={`frame_leftmenu_mainitem_name ${item.menu ? item.menu : ''}`}>{item.name}</NavLink>
+                                            <NavLink exact to={{ pathname: item.link, params: { id: item.id, name: item.name } }} className={`frame_leftmenu_mainitem_name ${item.menu ? item.menu : ''}`}>{item.name}</NavLink>
 
                                             <span className={`frame_leftmenu_arrow ${activeClass === 'selected' ? 'spread' : ''}`}></span>
 
@@ -1494,7 +1521,7 @@ class MenuLeft extends React.Component {
 
                                                             <span className={`frame_leftmenu_point ${pathname.indexOf(i.link) === 0 ? 'active' : ''}`}></span>
 
-                                                            <NavLink to={{ pathname: i.link, params:{ id: i.id, name: i.name } }} className={`frame_leftmenu_onegrade_name frame_ellipsis ${pathname.indexOf(i.link) === 0 ? 'active' : ''}`}>{i.name}</NavLink>
+                                                            <NavLink to={{ pathname: i.link, params: { id: i.id, name: i.name } }} className={`frame_leftmenu_onegrade_name frame_ellipsis ${pathname.indexOf(i.link) === 0 ? 'active' : ''}`}>{i.name}</NavLink>
 
                                                         </li>
                                                     })
@@ -1524,11 +1551,11 @@ class MenuLeft extends React.Component {
     }
 }
 
-class MenuLeftNoLink extends React.Component{
+class MenuLeftNoLink extends React.Component {
 
     render() {
         //menu和icon图标
-        const { Menu, Icon , menuClick } = this.props;
+        const { Menu, Icon, menuClick } = this.props;
 
         return (
             <div className="frame_left_menu_pin">
@@ -1546,12 +1573,12 @@ class MenuLeftNoLink extends React.Component{
                                     {/* {第二级别块}*/}
                                     <div className={`frame_leftmenu_mainitem`}>
 
-                                        <span  className={`frame_leftmenu_mainitem_name ${item.menu ? item.menu : ''}`} onClick={()=>{menuClick({ident:item.ident,id:item.id,name:item.name})}}>{item.name}</span>
+                                        <span className={`frame_leftmenu_mainitem_name ${item.menu ? item.menu : ''}`} onClick={() => { menuClick({ ident: item.ident, id: item.id, name: item.name }) }}>{item.name}</span>
 
                                         <span className={`frame_leftmenu_arrow`}></span>
 
                                     </div>
-                                    <div className="frame_leftmenu_nextgrade_container" style={{display:"none"}}>
+                                    <div className="frame_leftmenu_nextgrade_container" style={{ display: "none" }}>
 
                                         <ul className="frame_leftmenu_onegrade_ul">
                                             {
@@ -1561,7 +1588,7 @@ class MenuLeftNoLink extends React.Component{
 
                                                         <span className={`frame_leftmenu_point`}></span>
 
-                                                        <span  className={`frame_leftmenu_onegrade_name frame_ellipsis`} onClick={()=>{menuClick({ident:i.ident,id:i.id,preId:item.id,preName:item.name,name:i.name})}}>{i.name}</span>
+                                                        <span className={`frame_leftmenu_onegrade_name frame_ellipsis`} onClick={() => { menuClick({ ident: i.ident, id: i.id, preId: item.id, preName: item.name, name: i.name }) }}>{i.name}</span>
 
                                                     </li>
                                                 })
@@ -1574,9 +1601,9 @@ class MenuLeftNoLink extends React.Component{
 
                             } else {
                                 //如果没有第二级直接返回，同时pathname和NavLink的参数相同处于活动状态
-                                return <div key={key} className={`frame_leftmenu_mainitem no_child ${item.default?'active selected':''}`}>
+                                return <div key={key} className={`frame_leftmenu_mainitem no_child ${item.default ? 'active selected' : ''}`}>
 
-                                    <span  className={`frame_leftmenu_mainitem_name ${item.menu ? item.menu : ''}`} onClick={()=>{menuClick({ident:item.ident,id:item.id,name:item.name})}}>{item.name}</span>
+                                    <span className={`frame_leftmenu_mainitem_name ${item.menu ? item.menu : ''}`} onClick={() => { menuClick({ ident: item.ident, id: item.id, name: item.name }) }}>{item.name}</span>
 
                                 </div>
                             }
@@ -1611,7 +1638,7 @@ class Frame extends React.Component {
         let leftMenu = '';
         let rightContent = '';
         let otherDom = '';
-        if (children&&(children instanceof Array)) {
+        if (children && (children instanceof Array)) {
 
             children.map((item) => {
                 switch (item.ref) {
@@ -1628,8 +1655,8 @@ class Frame extends React.Component {
                         otherDom = item;
                 }
             });
-        }else{
-            rightContent =children;
+        } else {
+            rightContent = children;
         }
 
         switch (type) {
@@ -1744,12 +1771,12 @@ class DetailsModal extends React.Component {
         super(props);
         this.state = {
             type: props.type,
-            examineFooter:''
+            examineFooter: ''
         }
     }
 
     render() {
-        let { type,data, children, ...params } = this.props;
+        let { type, data, children, ...params } = this.props;
         console.log(params)
         if (type === 'student') {
 
@@ -1773,67 +1800,67 @@ class DetailsModal extends React.Component {
             <AntdModal
                 bodyStyle={{ padding: 0 }}
                 width={400}
-                footer={type==='examine'?[
-                    <Button key='agree' className='antdModal-btn-footer left' color='blue'  onClick={params.onOk?params.onOk.bind(this,data):''}>通过</Button>,
-                    <Button key='refuse' className='antdModal-btn-footer right' color='red'  onClick={params.onCancel?params.onCancel.bind(this,data):''}>不通过</Button>
-                ]:null}
+                footer={type === 'examine' ? [
+                    <Button key='agree' className='antdModal-btn-footer left' color='blue' onClick={params.onOk ? params.onOk.bind(this, data) : ''}>通过</Button>,
+                    <Button key='refuse' className='antdModal-btn-footer right' color='red' onClick={params.onCancel ? params.onCancel.bind(this, data) : ''}>不通过</Button>
+                ] : null}
                 className='DetailsMsgModal'
                 {...params}
             >
                 <div className='modal-top'>
                     <img alt={data.userName} src={data.userImg} className='top-img'></img>
-                    <p className='top-userName'>{data.userName}<span style={{opacity:0.64,marginLeft:3+'px'}}>{(data.Gende==='男'?'♂':data.userName+data.Gende==='女'?'♀':'')}</span></p>
+                    <p className='top-userName'>{data.userName}<span style={{ opacity: 0.64, marginLeft: 3 + 'px' }}>{(data.Gende === '男' ? '♂' : data.userName + data.Gende === '女' ? '♀' : '')}</span></p>
                     <p className='top-userText'>{data.userText}</p>
                 </div>
                 <div className='modal-content'>
-                    <div className='content-box'> 
+                    <div className='content-box'>
                         <div className='row'>
                             <span className='col-left'>
-                                {type==='student'?'学号':'工号'}
+                                {type === 'student' ? '学号' : '工号'}
                             </span>
-                            <span className='col-right'>{data.userID?data.userID:<span className='content-null'>未填写</span>}</span>
+                            <span className='col-right'>{data.userID ? data.userID : <span className='content-null'>未填写</span>}</span>
                         </div>
-                        <div className='row' style={{marginBottom:20+'px'}}>
+                        <div className='row' style={{ marginBottom: 20 + 'px' }}>
                             <span className='col-left'>
-                                {type==='student'?'班级':'工班级号'}
+                                {type === 'student' ? '班级' : '工班级号'}
                             </span>
-                            <span className='col-right'>{data.userGrade&&data.userClass?(data.userGrade+' > '+data.userClass):<span className='content-null'>未填写</span>}</span>
+                            <span className='col-right'>{data.userGrade && data.userClass ? (data.userGrade + ' > ' + data.userClass) : <span className='content-null'>未填写</span>}</span>
                         </div>
                         <div className='row'>
                             <span className='col-left'>
                                 {'身份证号码'}
                             </span>
-                            <span className='col-right'>{data.userIDCard?data.userIDCard:<span className='content-null'>未填写</span>}</span>
+                            <span className='col-right'>{data.userIDCard ? data.userIDCard : <span className='content-null'>未填写</span>}</span>
                         </div>
                         <div className='row'>
                             <span className='col-left'>
                                 {'联系电话'}
                             </span>
-                            <span className='col-right'>{data.userPhone?data.userPhone:<span className='content-null'>未填写</span>}</span>
+                            <span className='col-right'>{data.userPhone ? data.userPhone : <span className='content-null'>未填写</span>}</span>
                         </div>
                         <div className='row'>
                             <span className='col-left'>
                                 {'电子邮箱'}
                             </span>
-                            <span className='col-right'>{data.userMail?data.userMail:<span className='content-null'>未填写</span>}</span>
+                            <span className='col-right'>{data.userMail ? data.userMail : <span className='content-null'>未填写</span>}</span>
                         </div>
                         <div className='row row-adress'>
                             <span className='col-left'>
                                 {'家庭住址'}
                             </span>
-                            <span className='col-right'>{data.userAddress?data.userAddress:<span className='content-null'>未填写</span>}</span>
+                            <span className='col-right'>{data.userAddress ? data.userAddress : <span className='content-null'>未填写</span>}</span>
                         </div>
-                        <div className='row'  style={{marginTop:20+'px',display:type==='examine'?'block':'none'}}>
+                        <div className='row' style={{ marginTop: 20 + 'px', display: type === 'examine' ? 'block' : 'none' }}>
                             <span className='col-left'>
                                 {'注册时间'}
                             </span>
-                            <span className='col-right'>{data.userRegisterTime?data.userRegisterTime:<span className='content-null'>未填写</span>}</span>
+                            <span className='col-right'>{data.userRegisterTime ? data.userRegisterTime : <span className='content-null'>未填写</span>}</span>
                         </div>
-                        <div className='row' style={{marginBottom:20+'px',display:type==='examine'?'block':'none'}}>
+                        <div className='row' style={{ marginBottom: 20 + 'px', display: type === 'examine' ? 'block' : 'none' }}>
                             <span className='col-left' >
                                 {'注册IP'}
                             </span>
-                            <span className='col-right'>{data.userRegisterIP?data.userRegisterIP:<span className='content-null'>未填写</span>}</span>
+                            <span className='col-right'>{data.userRegisterIP ? data.userRegisterIP : <span className='content-null'>未填写</span>}</span>
                         </div>
                     </div>
                 </div>
@@ -1844,17 +1871,17 @@ class DetailsModal extends React.Component {
 
 // 文字气泡提示
 
-class Tips extends React.Component{
-    constructor(props){
+class Tips extends React.Component {
+    constructor(props) {
         super(props);
-        this.state ={
+        this.state = {
 
         }
     }
-    render(){
-        const {placement ='rightTop',children,...params} = this.props;
+    render() {
+        const { placement = 'rightTop', children, ...params } = this.props;
 
-        return(
+        return (
             <Tooltip placement={placement} className='Tooltips-red' {...params}>{children}</Tooltip>
         )
     }

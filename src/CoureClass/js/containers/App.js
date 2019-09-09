@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Frame, Menu, Loading, Alert ,LeftMenu} from "../../../common";
+import { Frame, Menu, Loading, Alert, LeftMenu } from "../../../common";
 import { connect } from 'react-redux';
-
+import TimeBanner from '../component/TimeBanner'
 
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
 import history from './history'
 
-import logo from '../../images/SubjectLogo.png'
+import logo from '../../images/image-MyClass.png'
 //import TimeBanner from '../component/TimeBanner'
 
 //import Subject from '../component/Subject'
@@ -93,7 +93,7 @@ class App extends Component {
             // dispatch(actions.UpDataState.getSubjectMsg('/AdmSubject?schoolID=schoolID&periodID=null&pageSize=8&pageIndex=1'));
             // if(!this.props.DataState.SubjectMsg.addSubjectMsg)
             // dispatch(actions.UpDataState.getSubjectModalMsg('/AddSubject_DropDownMenu?schoolID=schoolID'));
-            
+
         } else {
             history.push('/')
         }
@@ -122,14 +122,24 @@ class App extends Component {
                             image: logo
                         }}
                         type="triangle" showBarner={true} showLeftMenu={true}>
-                        <div ref="frame-time-barner"></div>
+                        <div ref="frame-time-barner">
+                            <TimeBanner />
+                        </div>
 
                         <div ref="frame-right-content">
-                            <Menu
-                            params={this.state.MenuParams}
+                            {/* <Menu
+                                params={this.state.MenuParams}
                             >
 
-                            </Menu>
+                            </Menu> */}
+                        </div>
+                        <div ref="frame-right-content">
+
+                            {/* <Route path='/UserArchives/All' exact history={history} component={All}></Route>
+                            <Route path='/UserArchives/Student' exact history={history} component={Student}></Route>
+                            <Route path='/UserArchives/Teacher' exact history={history} component={Teacher}></Route>
+                            <Route path='/UserArchives/Leader' exact history={history} component={Leader}></Route> */}
+
                         </div>
                     </Frame>
 
