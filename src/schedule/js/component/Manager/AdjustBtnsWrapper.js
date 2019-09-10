@@ -8,7 +8,9 @@ class AdjustBtnsWrapper extends Component{
 
             adjustBtnsToggle,adjustBtns,addScheduleModalShow,
 
-            adjustByTimeModalShow,stopScheduleShow,delScheduleShow
+            adjustByTimeModalShow,stopScheduleShow,delScheduleShow,
+
+            adjustByTeacherShow
 
         } = this.props;
 
@@ -28,7 +30,7 @@ class AdjustBtnsWrapper extends Component{
 
                             <div className="add-schedule" onClick={()=>{addScheduleModalShow();}}><span>添加临时课程</span></div>
 
-                            <div className="adjust-by-teacher"><span>按老师调整</span></div>
+                            <div className="adjust-by-teacher" onClick={()=>adjustByTeacherShow()}><span>按老师调整</span></div>
 
                             <div className="adjust-by-time" onClick={()=>{adjustByTimeModalShow();}}><span>按时间调整</span></div>
 

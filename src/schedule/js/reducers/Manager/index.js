@@ -16,6 +16,9 @@ import StopScheduleModal from  './StopScheduleModal';
 
 import DelScheduleModal from  './DelScheduleModal';
 
+
+import AdjustByTeacherModal from "./AdjustByTeacherModal";
+
 //管理员角色的reduce
 
 const Index = combineReducers({
@@ -34,7 +37,9 @@ const Index = combineReducers({
 
     StopScheduleModal,
 
-    DelScheduleModal
+    DelScheduleModal,
+
+    AdjustByTeacherModal
 
 });
 

@@ -931,6 +931,7 @@ class DropDown extends React.Component {
         //所需的参数
         let dropMultipleList = '';
 
+
         //判断等级渲染相对应的元素
         if (searchOpen) { //如果开启搜索的话
 
@@ -957,7 +958,13 @@ class DropDown extends React.Component {
                 </ul>
 
         } else if (mutipleOptions && mutipleOptions.range === 2) { //如果range的等级为2
+<<<<<<< HEAD
             dropMultipleList = mutipleOptions.dropMultipleList && mutipleOptions.dropMultipleList.map((item1, k1) => {//遍历第一个数组
+=======
+
+
+            dropMultipleList = mutipleOptions.dropMultipleList&&mutipleOptions.dropMultipleList.map((item1, k1) => {//遍历第一个数组
+>>>>>>> 8c9cada51dd863d2f1951bf3759bafff3484c5f1
                 return <li key={k1} className="dropdown_list_item1">
                     <div
                         className={`dropdown_item1_name ${this.state.range2ListShow === k1 ? 'slide' : ''}`} //判断是否是活动状态
@@ -982,6 +989,8 @@ class DropDown extends React.Component {
                 </li>
 
             });
+
+
         } else if (mutipleOptions && mutipleOptions.range === 3) {
             //等待后期扩展使用
         }

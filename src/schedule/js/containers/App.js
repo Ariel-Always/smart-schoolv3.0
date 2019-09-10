@@ -18,6 +18,8 @@ import StopScheduleActions from '../actions/Manager/StopScheduleActions'
 import DelScheduleActions from '../actions/Manager/DelScheduleActions';
 import StopScheduleModal from './Manager/StopScheduleModal';
 import DelScheduleModal from './Manager/DelScheduleModal';
+import ABTActions from '../actions/Manager/AdjustByTeacherActions';
+import AdjustByTeacherModal from './Manager/AdjustByTeacherModal';
 
 import '../../scss/index.scss';
 
@@ -109,6 +111,16 @@ class App extends Component{
 
     }
 
+    //弹出调整教师弹窗
+
+    adjustByTeacherShow(){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:ABTActions.ADJUST_BY_TEACHER_SHOW});
+
+    }
+
 
     componentDidMount(){
 
@@ -181,7 +193,9 @@ class App extends Component{
 
                                             stopScheduleShow={this.stopScheduleShow.bind(this)}
 
-                                            delScheduleShow = {this.delScheduleShow.bind(this)}>
+                                            delScheduleShow = {this.delScheduleShow.bind(this)}
+
+                                            adjustByTeacherShow = {this.adjustByTeacherShow.bind(this)}>
 
                                         </AdjustBtnsWrapper>
 
@@ -251,6 +265,8 @@ class App extends Component{
                <StopScheduleModal></StopScheduleModal>
 
                <DelScheduleModal></DelScheduleModal>
+
+               <AdjustByTeacherModal></AdjustByTeacherModal>
 
                <Alert type={AppAlert.type}
                       title={AppAlert.title}
