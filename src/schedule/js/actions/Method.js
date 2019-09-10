@@ -1,6 +1,7 @@
 import {getData,postData} from "../../../common/js/fetch";
-const api = 'http://localhost:3002/api';
-//import CONFIG from  '../../../common/js/config';
+
+const api = 'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev';
+
 //获取数据以及封装数据格式
 const getGetData =  async (url) =>{
     try {

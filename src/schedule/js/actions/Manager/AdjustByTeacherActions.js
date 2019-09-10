@@ -2,6 +2,8 @@ import Method from '../Method';
 
 import Mock from 'mockjs';
 
+import AppAlertActions from '../AppAlertActions';
+
 const ADJUST_BY_TEACHER_SHOW = 'ADJUST_BY_TEACHER_SHOW';
 
 const ADJUST_BY_TEACHER_HIDE = 'ADJUST_BY_TEACHER_HIDE';
@@ -11,6 +13,54 @@ const REPLACE_SHCEDULE_LOADING_SHOW = 'REPLACE_SHCEDULE_LOADING_SHOW';
 const REPLACE_SHCEDULE_LOADING_HIDE = 'REPLACE_SHCEDULE_LOADING_HIDE';
 
 const REPLACE_SHCEDULE_TEACHER_LIST_UPDATE = 'REPLACE_SHCEDULE_TEACHER_LIST_UPDATE';
+
+const REPLACE_SHCEDULE_TEACHER_SSUBJECT_DROP_SHOW = 'REPLACE_SHCEDULE_TEACHER_SSUBJECT_DROP_SHOW';
+
+const REPLACE_SHCEDULE_TEACHER_SSUBJECT_DROP_HIDE = 'REPLACE_SHCEDULE_TEACHER_SSUBJECT_DROP_HIDE';
+
+const REPLACE_SHCEDULE_CLASS_LIST_UPDATE = 'REPLACE_SHCEDULE_CLASS_LIST_UPDATE';
+
+const REPLACE_SHCEDULE_TEACHER_DROP_CHANGE = 'REPLACE_SHCEDULE_TEACHER_DROP_CHANGE';
+
+const REPLACE_SHCEDULE_TEACHER_SEARCH_OPEN = 'REPLACE_SHCEDULE_TEACHER_SEARCH_OPEN';
+
+const REPLACE_SHCEDULE_TEACHER_SEARCH_CLOSE = 'REPLACE_SHCEDULE_TEACHER_SEARCH_CLOSE';
+
+const REPLACE_SHCEDULE_TEACHER_SEARCH_LOADING_SHOW = 'REPLACE_SHCEDULE_TEACHER_SEARCH_LOADING_SHOW';
+
+const REPLACE_SHCEDULE_TEACHER_SEARCH_LIST_UPDATE = 'REPLACE_SHCEDULE_TEACHER_SEARCH_LIST_UPDATE';
+
+const REPLACE_SHCEDULE_TEACHER_SEARCH_LOADING_HIDE = 'REPLACE_SHCEDULE_TEACHER_SEARCH_LOADING_HIDE';
+
+
+
+
+
+const REPLACE_SHCEDULE_REPLACE_TEACHER_LIST_UPDATE = 'REPLACE_SHCEDULE_REPLACE_TEACHER_LIST_UPDATE';
+
+const REPLACE_SHCEDULE_REPLACE_TEACHER_DROP_CHANGE = 'REPLACE_SHCEDULE_REPLACE_TEACHER_DROP_CHANGE';
+
+const REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_OPEN = 'REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_OPEN';
+
+const REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_CLOSE = 'REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_CLOSE';
+
+const REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LOADING_SHOW = 'REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LOADING_SHOW';
+
+const REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LIST_UPDATE = 'REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LIST_UPDATE';
+
+const REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LOADING_HIDE = 'REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LOADING_HIDE';
+
+const REPLACE_SHCEDULE_CLASS_CHECKED = 'REPLACE_SHCEDULE_CLASS_CHECKED';
+
+const REPLACE_SHCEDULE_RADIO_CHANGE = 'REPLACE_SHCEDULE_RADIO_CHANGE';
+
+const REPLACE_SHCEDULE_MONTHS_LIST_UPDATE = 'REPLACE_SHCEDULE_MONTHS_LIST_UPDATE';
+
+const REPLACE_SHCEDULE_MONTHS_CHECKED = 'REPLACE_SHCEDULE_MONTHS_CHECKED';
+
+const REPLACE_SHCEDULE_WEEK_LIST_UPDATE = 'REPLACE_SHCEDULE_WEEK_LIST_UPDATE';
+
+const REPLACE_SHCEDULE_WEEK_CHECKED = 'REPLACE_SHCEDULE_WEEK_CHECKED';
 
 
 
@@ -25,221 +75,7 @@ const replaceScheduleInit = () => {
 
         let getTeacherPromise = Method.getGetData('/scheduleSubjectTeacherTeacher');
 
-        //Promise([getAllGradePromise,getTeacherPromise]).then(res => {
-
-           let res = [{
-               "Status": 200,
-               "Msg": "success",
-               "Data": {
-                   "ItemClassHourCount": [{
-                       "ClassHourType": 1,
-                       "CountType": 4
-                   }, {
-                       "ClassHourType": 2,
-                       "CountType": 4
-                   }],
-                   "ItemClassHour": [{
-                       "OrderNO": 1,
-                       "ClassHourNO": 1,
-                       "ClassHourType": 1,
-                       "StartTime": "08:30",
-                       "EndTime": "09:10",
-                       "ClassHourName": "第一节"
-                   },
-                       {
-                           "OrderNO": 2,
-                           "ClassHourNO": 2,
-                           "ClassHourType": 1,
-                           "StartTime": "09:20",
-                           "EndTime": "10:00",
-                           "ClassHourName": "第二节"
-                       },
-                       {
-                           "OrderNO": 3,
-                           "ClassHourNO": 3,
-                           "ClassHourType": 1,
-                           "StartTime": "10:20",
-                           "EndTime": "11:00",
-                           "ClassHourName": "第三节"
-                       },
-                       {
-                           "OrderNO": 4,
-                           "ClassHourNO": 4,
-                           "ClassHourType": 1,
-                           "StartTime": "11:10",
-                           "EndTime": "11:50",
-                           "ClassHourName": "第四节"
-                       },
-                       {
-                           "OrderNO": 5,
-                           "ClassHourNO": 5,
-                           "ClassHourType": 2,
-                           "StartTime": "14:00",
-                           "EndTime": "14:40",
-                           "ClassHourName": "第五节"
-                       },
-                       {
-                           "OrderNO": 6,
-                           "ClassHourNO": 6,
-                           "ClassHourType": 2,
-                           "StartTime": "14:50",
-                           "EndTime": "15:30",
-                           "ClassHourName": "第六节"
-                       },
-                       {
-                           "OrderNO": 7,
-                           "ClassHourNO": 7,
-                           "ClassHourType": 2,
-                           "StartTime": "15:40",
-                           "EndTime": "16:20",
-                           "ClassHourName": "第七节"
-                       },
-                       {
-                           "OrderNO": 8,
-                           "ClassHourNO": 8,
-                           "ClassHourType": 2,
-                           "StartTime": "16:30",
-                           "EndTime": "17:10",
-                           "ClassHourName": "第八节"
-                       }
-
-                   ],
-                   "ItemGrade": [{
-                       "GradeID": "jkkj4554",
-                       "GradeName": "一年级"
-                   },
-                       {
-                           "GradeID": "jkkj4555",
-                           "GradeName": "二年级"
-                       },
-                       {
-                           "GradeID": "jkkj4556",
-                           "GradeName": "三年级"
-                       },
-                       {
-                           "GradeID": "jkkj4557",
-                           "GradeName": "四年级"
-                       },
-                       {
-                           "GradeID": "jkkj4558",
-                           "GradeName": "五年级"
-                       }
-                   ],
-
-                   "ItemClassRoomType": [{
-                       "ClassRoomTypeID": "f455fa",
-                       "ClassRoomName": "多媒体电教室"
-                   },
-                       {
-                           "ClassRoomTypeID": "f455fb",
-                           "ClassRoomName": "多媒体语音教室"
-                       },
-                       {
-                           "ClassRoomTypeID": "f455fc",
-                           "ClassRoomName": "云网络教室"
-                       }, {
-                           "ClassRoomTypeID": "f455fd",
-                           "ClassRoomName": "普通PC电脑室"
-                       }
-                   ],
-                   "ItemSubject": [{
-                       "SubjectID": "jkhjh41",
-                       "SubjectName": "英语"
-                   },
-                       {
-                           "SubjectID": "jkhjh42",
-                           "SubjectName": "数学"
-                       },
-                       {
-                           "SubjectID": "jkhjh43",
-                           "SubjectName": "语文"
-                       },
-                       {
-                           "SubjectID": "jkhjh44",
-                           "SubjectName": "政治"
-                       },
-                       {
-                           "SubjectID": "jkhjh45",
-                           "SubjectName": "历史"
-                       },
-                       {
-                           "SubjectID": "jkhjh46",
-                           "SubjectName": "地理"
-                       },
-                       {
-                           "SubjectID": "jkhjh47",
-                           "SubjectName": "物理"
-                       }
-
-                   ]
-               }
-           },{
-               "Status": 200,
-               "Msg": "success",
-               "Data": [{
-                   "SubjectID": "jkhjh41",
-                   "Teacher": "T0001",
-                   "TeacherName": Mock.Random.cname()
-               },
-                   {
-                       "SubjectID": "jkhjh41",
-                       "Teacher": "T0002",
-                       "TeacherName": Mock.Random.cname()
-                   },
-                   {
-                       "SubjectID": "jkhjh41",
-                       "Teacher": "T0003",
-                       "TeacherName": Mock.Random.cname()
-                   },
-                   {
-                       "SubjectID": "jkhjh41",
-                       "Teacher": "T0004",
-                       "TeacherName": Mock.Random.cname()
-                   },
-                   {
-                       "SubjectID": "jkhjh41",
-                       "Teacher": "T0005",
-                       "TeacherName": Mock.Random.cname()
-                   },
-                   {
-                       "SubjectID": "jkhjh42",
-                       "Teacher": "T0006",
-                       "TeacherName": Mock.Random.cname()
-                   },
-
-                   {
-                       "SubjectID": "jkhjh42",
-                       "Teacher": "T0007",
-                       "TeacherName": Mock.Random.cname()
-                   },
-                   {
-                       "SubjectID": "jkhjh42",
-                       "Teacher": "T0008",
-                       "TeacherName": Mock.Random.cname()
-                   },
-                   {
-                       "SubjectID": "jkhjh46",
-                       "Teacher": "T0009",
-                       "TeacherName": Mock.Random.cname()
-                   },
-                   {
-                       "SubjectID": "jkhjh46",
-                       "Teacher": "T00010",
-                       "TeacherName": Mock.Random.cname()
-                   },
-                   {
-                       "SubjectID": "jkhjh46",
-                       "Teacher": "T00011",
-                       "TeacherName": Mock.Random.cname()
-                   },
-                   {
-                       "SubjectID": "jkhjh46",
-                       "Teacher": "T00012",
-                       "TeacherName": Mock.Random.cname()
-                   }
-
-               ]
-           }];
+        Promise.all([getAllGradePromise,getTeacherPromise]).then(res => {
 
            let teacherList = res[0].Data.ItemSubject.map(item => {
 
@@ -275,29 +111,491 @@ const replaceScheduleInit = () => {
 
            });
 
-           console.log(teacherList);
-
            dispatch({type:REPLACE_SHCEDULE_TEACHER_LIST_UPDATE,data:teacherList});
 
-        //});
+            dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_LIST_UPDATE,data:teacherList});
+
+        });
 
     };
 
 };
 
 //教师选择
-
-const teacherDropChange = () => {
+const teacherDropChange = (info) => {
 
 
     return ( dispatch,getState ) => {
 
+        dispatch({type:REPLACE_SHCEDULE_TEACHER_DROP_CHANGE,data:{value:info.id,title:info.value}});
 
+        let teacherInfoPromise = Method.getGetData('/scheduleReplaceTeacherSelectd');
+
+        teacherInfoPromise.then(json => {
+
+            if (json.Status === 200){
+
+                if (json.Data.ItemSubject.length > 1){
+
+                    let  list = json.Data.ItemSubject.map(item => {
+
+                        return {
+
+                            value:item.SubjectID,
+
+                            title:item.SubjectName
+
+                        }
+
+                    });
+
+                    let classList = json.Data.ItemClass.map(item => {
+
+                        if (item.SubjectID === list[0].value){
+
+                            return {
+
+                                id:item.ClassID,
+
+                                name:item.ClasstName
+
+                            }
+
+                        }else{
+
+                            return;
+
+                        }
+
+                    }).filter(i => i!==undefined);
+
+                    dispatch({type:REPLACE_SHCEDULE_CLASS_LIST_UPDATE,data:classList});
+
+                    dispatch({type:REPLACE_SHCEDULE_TEACHER_SSUBJECT_DROP_SHOW,data:{
+
+                            dropSelectd:{value:list[0].value,title:list[0].title},
+
+                            dropList:list
+
+                        }});
+
+                }else{
+
+                    let  subject =  json.Data.ItemSubject[0];
+
+                    let subjectObj = { id:subject.SubjectID,name:subject.SubjectName };
+
+                    let classList = json.Data.ItemClass.map(item => {
+
+                        return {
+
+                            id:item.ClassID,
+
+                            name:item.ClasstName
+
+                        }
+
+                    });
+
+                    dispatch({type:REPLACE_SHCEDULE_CLASS_LIST_UPDATE,data:classList});
+
+                    dispatch({type:REPLACE_SHCEDULE_TEACHER_SSUBJECT_DROP_HIDE,data:{
+
+                            id:subjectObj.id,
+
+                            name:subjectObj.name
+
+                        }});
+
+                }
+
+            }else{
+
+                dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                        type:"btn-error",
+
+                        title:json.Msg,
+
+                        ok:hideAlert(dispatch),
+
+                        close:hideAlert(dispatch),
+
+                        cancel:hideAlert(dispatch)
+
+                    }});
+
+            }
+
+        });
 
     }
 
 };
 
+//教师搜索
+const teacherClickSearch = (key) => {
+
+    return (dispatch,getState) => {
+
+        if (key !== ''){
+
+            let SchoolID = getState().LoginUser;
+
+            dispatch({type:REPLACE_SHCEDULE_TEACHER_SEARCH_OPEN});
+
+            dispatch({type:REPLACE_SHCEDULE_TEACHER_SEARCH_LOADING_SHOW});
+
+            let searchTeacherPromise = Method.getGetData(`/scheduleSubjectTeacherTeacher?SchoolID=${SchoolID}&key=${key}`);
+
+            searchTeacherPromise.then(json => {
+
+                if (json.Status === 200){
+
+                    let teacherSearchList = json.Data.map(item => {
+
+                        return{
+
+                            id:item.Teacher,
+
+                            name:item.TeacherName
+
+                        };
+
+                    });
+
+                    dispatch({type:REPLACE_SHCEDULE_TEACHER_SEARCH_LIST_UPDATE,data:teacherSearchList});
+
+                    dispatch({type:REPLACE_SHCEDULE_TEACHER_SEARCH_LOADING_HIDE});
+
+                }else{
+
+                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                            type:"btn-warn",
+
+                            title:json.Msg,
+
+                            ok:hideAlert(dispatch),
+
+                            close:hideAlert(dispatch),
+
+                            cancel:hideAlert(dispatch)
+
+                        }});
+
+                }
+
+            });
+
+        }else{
+
+            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                    type:"btn-warn",
+
+                    title:"搜索的内容不能为空！",
+
+                    ok:hideAlert(dispatch),
+
+                    close:hideAlert(dispatch),
+
+                    cancel:hideAlert(dispatch)
+
+                }});
+
+        }
+
+    };
+
+};
+
+//取消教师的搜索
+const teacherSearchClose = () => {
+
+    return dispatch => {
+
+        dispatch({type:REPLACE_SHCEDULE_TEACHER_SEARCH_CLOSE})
+
+    }
+
+};
+
+
+//教师选择
+const replaceTeacherDropChange = (info) => {
+
+
+    return ( dispatch,getState ) => {
+
+        dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_DROP_CHANGE,data:{value:info.id,title:info.value}});
+
+    }
+
+};
+
+//教师搜索
+const replaceTeacherClickSearch = (key) => {
+
+    return (dispatch,getState) => {
+
+        if (key !== ''){
+
+            let SchoolID = getState().LoginUser;
+
+            dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_OPEN});
+
+            dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LOADING_SHOW});
+
+            let searchTeacherPromise = Method.getGetData(`/scheduleSubjectTeacherTeacher?SchoolID=${SchoolID}&key=${key}`);
+
+            searchTeacherPromise.then(json => {
+
+                if (json.Status === 200){
+
+                    let teacherSearchList = json.Data.map(item => {
+
+                        return{
+
+                            id:item.Teacher,
+
+                            name:item.TeacherName
+
+                        };
+
+                    });
+
+                    dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LIST_UPDATE,data:teacherSearchList});
+
+                    dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LOADING_HIDE});
+
+                }else{
+
+                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                            type:"btn-warn",
+
+                            title:json.Msg,
+
+                            ok:hideAlert(dispatch),
+
+                            close:hideAlert(dispatch),
+
+                            cancel:hideAlert(dispatch)
+
+                        }});
+
+                }
+
+            });
+
+        }else{
+
+            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                    type:"btn-warn",
+
+                    title:"搜索的内容不能为空！",
+
+                    ok:hideAlert(dispatch),
+
+                    close:hideAlert(dispatch),
+
+                    cancel:hideAlert(dispatch)
+
+                }});
+
+        }
+
+    };
+
+};
+
+//取消教师的搜索.
+const replaceTeacherSearchClose = (key) => {
+
+    return dispatch => {
+
+        dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_CLOSE})
+
+    }
+
+};
+
+//点击班级
+const classChecked = (id) => {
+
+  return ( dispatch,getState ) => {
+
+      let { classCheckedList } = getState().Manager.AdjustByTeacherModal.replaceSchedule;
+
+      let checked = false;
+
+      classCheckedList.map(item => {
+
+         if (item === id){
+
+             checked = true;
+
+             return;
+
+         }
+
+      });
+
+      if (checked){
+
+            classCheckedList.remove(id);
+
+      }else{
+
+          classCheckedList.push(id);
+
+      }
+
+      dispatch({type:REPLACE_SHCEDULE_CLASS_CHECKED,data:classCheckedList});
+
+  }
+
+};
+//radio变化
+const radioChange = (id) => {
+
+    return dispatch => {
+
+      dispatch({type:REPLACE_SHCEDULE_RADIO_CHANGE,data:id});
+
+        let getMWC = Method.getGetData('/scheduleUnEndMonths');
+
+        getMWC.then(json => {
+
+            if (json.StatusCode === 200){
+
+                if (id === 'month') {
+
+                    const {ItemMoth} = json.Data;
+
+                    let list = ItemMoth.map(item => {
+
+                        return {
+
+                            id: item.MonthID,
+
+                            name: item.MonthName
+
+                        }
+
+                    });
+
+                    dispatch({type: REPLACE_SHCEDULE_MONTHS_LIST_UPDATE, data: list});
+                }
+
+                if (id === 'week'){
+
+                    const { ItemWeek } = json.Data;
+
+                    let  list = ItemWeek.map(item => item.WeekNO);
+
+                    console.log(list);
+
+                    dispatch({type:REPLACE_SHCEDULE_WEEK_LIST_UPDATE,data:list});
+
+                }
+
+            }else{
+
+                dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                        type:"btn-warn",
+
+                        title:json.Msg,
+
+                        ok:hideAlert(dispatch),
+
+                        close:hideAlert(dispatch),
+
+                        cancel:hideAlert(dispatch)
+
+                    }});
+
+            }
+
+        });
+
+    };
+
+};
+//月份变化
+const monthChecked = (id) => {
+
+    return (dispatch,getState) => {
+
+        let {monthsCheckedList} = getState().Manager.AdjustByTeacherModal.replaceSchedule;
+
+        if (monthsCheckedList.includes(id)){
+
+            monthsCheckedList.remove(id);
+
+        }else{
+
+            monthsCheckedList.push(id);
+
+        }
+
+        dispatch({type:REPLACE_SHCEDULE_MONTHS_CHECKED,data:monthsCheckedList});
+
+    }
+
+};
+//周次变化
+const weekChecked = (id) => {
+
+    return (dispatch,getState) => {
+
+        let {weeksCheckedList} = getState().Manager.AdjustByTeacherModal.replaceSchedule;
+
+        if (weeksCheckedList.includes(id)){
+
+            weeksCheckedList.remove(id);
+
+        }else{
+
+            weeksCheckedList.push(id);
+
+        }
+
+        dispatch({type:REPLACE_SHCEDULE_MONTHS_CHECKED,data:weeksCheckedList});
+
+    }
+
+};
+
+
+
+
+
+
+
+
+const hideAlert = (dispatch) => {
+
+    return () => {dispatch({type:AppAlertActions.APP_ALERT_HIDE})};
+
+};
+
+Array.prototype.indexOf = function(val) {
+    for (var i = 0; i < this.length; i++) {
+        if (this[i] == val) return i;
+    }
+    return -1;
+};
+
+Array.prototype.remove = function(val) {
+    var index = this.indexOf(val);
+    if (index > -1) {
+        this.splice(index, 1);
+    }
+};
 
 
 export default {
@@ -312,8 +610,70 @@ export default {
 
     REPLACE_SHCEDULE_TEACHER_LIST_UPDATE,
 
+    REPLACE_SHCEDULE_TEACHER_SSUBJECT_DROP_SHOW,
+
+    REPLACE_SHCEDULE_TEACHER_SSUBJECT_DROP_HIDE,
+
+    REPLACE_SHCEDULE_CLASS_LIST_UPDATE,
+
+    REPLACE_SHCEDULE_TEACHER_DROP_CHANGE,
+
+    REPLACE_SHCEDULE_TEACHER_SEARCH_OPEN,
+
+    REPLACE_SHCEDULE_TEACHER_SEARCH_LOADING_SHOW,
+
+    REPLACE_SHCEDULE_TEACHER_SEARCH_LIST_UPDATE,
+
+    REPLACE_SHCEDULE_TEACHER_SEARCH_LOADING_HIDE,
+
+    REPLACE_SHCEDULE_REPLACE_TEACHER_DROP_CHANGE,
+
+    REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_OPEN,
+
+    REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LOADING_SHOW,
+
+    REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LIST_UPDATE,
+
+    REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LOADING_HIDE,
+
+    REPLACE_SHCEDULE_REPLACE_TEACHER_LIST_UPDATE,
+
+    REPLACE_SHCEDULE_TEACHER_SEARCH_CLOSE,
+
+    REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_CLOSE,
+
+    REPLACE_SHCEDULE_CLASS_CHECKED,
+
+    REPLACE_SHCEDULE_RADIO_CHANGE,
+
+    REPLACE_SHCEDULE_MONTHS_LIST_UPDATE,
+
+    REPLACE_SHCEDULE_MONTHS_CHECKED,
+
+    REPLACE_SHCEDULE_WEEK_LIST_UPDATE,
+
+    REPLACE_SHCEDULE_WEEK_CHECKED,
+
     replaceScheduleInit,
 
-    teacherDropChange
+    teacherDropChange,
+
+    teacherClickSearch,
+
+    replaceTeacherDropChange,
+
+    replaceTeacherClickSearch,
+
+    teacherSearchClose,
+
+    replaceTeacherSearchClose,
+
+    classChecked,
+
+    radioChange,
+
+    monthChecked,
+
+    weekChecked
 
 };

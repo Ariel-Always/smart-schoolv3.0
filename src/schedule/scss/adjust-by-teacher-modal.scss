@@ -1,18 +1,24 @@
 .adjust-by-teacher-modal{
 
+  color: #333333;
+
+  .ant-modal-body{
+
+    min-height:330px;
+
+    height: auto;
+
+  }
+
   .modal-wrapper{
 
-    position: absolute;
+    float: left;
 
     width: 840px;
 
-    height:330px;
+   margin-left: -36px;
 
-    left:0;
-
-    top:0;
-
-    overflow-y:auto;
+    margin-top: -24px;
 
 
   }
@@ -84,14 +90,102 @@
 
   }
 
+  .check-item{
+
+    float: left;
+
+    position: relative;
+
+    font-size: 14px;
+
+    height: 28px;
+
+    line-height: 28px;
+
+    border: solid 1px #bac7d9;
+
+    padding:0 4px;
+
+    text-align: center;
+
+    @include textOverFlow;
+
+    cursor: pointer;
+
+    color: #79879b;
+
+    font-size: 14px;
+
+    &.active{
+
+      border-color: #2ba500;
+
+      background-color:#e9ffe9;
+
+      color: #2ab500;
+
+      &:before{
+
+        position: absolute;
+
+        content: '';
+
+        width:0;
+
+        height: 0;
+
+        right: -10px;
+
+        top: -10px;
+
+        border-color:transparent transparent #2ba500 transparent;
+
+        border-style: solid;
+
+        border-width:10px;
+
+        @include transform(rotate(45deg));
+
+      }
+
+      &:after{
+
+        position: absolute;
+
+        right:3px;
+
+        top:3px;
+
+        width: 4px;
+
+        height:6px;
+
+        content: '';
+
+        display: table;
+
+        border:1px solid #fff;
+
+        border-top: 0;
+
+        border-left: 0;
+
+        transform: rotate(45deg) scale(1) translate(-50%, -50%);
+
+      }
+
+    }
+
+  }
+
     //找人代课
   .replace-schedule-wrapper{
 
-    padding:30px 40px;
+    padding:30px 0 0 40px;
 
     &>div{
 
-      margin:12px 0;
+      margin:16px 0;
 
     }
 
@@ -113,8 +207,155 @@
 
     }
 
-    .teacher-wrapper{
+    .subject-name{
 
+      margin-left:8px;
+
+    }
+
+    .class-pick-wrapper{
+
+      float: left;
+
+      margin-left: 8px;
+
+      max-width:640px;
+
+    }
+
+    .class-item{
+
+      width:90px;
+
+      margin-left: 20px;
+
+      &:nth-child(6n+1){
+
+        margin-left:0;
+
+      }
+
+    }
+
+    .class-wrapper{
+
+      height:28px;
+
+    }
+
+    .radio-item{
+
+      padding-left: 20px;
+
+      margin-left: 30px;
+
+     background: url("#{$image-url}/radio.png") no-repeat left center;
+
+      cursor: pointer;
+
+      &:first-child{
+
+        margin-left:8px;
+
+      }
+
+     &.active{
+
+       background-image: url('#{$image-url}/radio-checked.png');
+
+     }
+
+    }
+
+    .byMonth{
+
+      width:672px;
+
+      .trangle{
+
+        left:90px;
+
+      }
+
+    }
+
+    .byWeek{
+
+      width: 672px;
+
+      .trangle{
+
+        left:196px;
+
+      }
+
+    }
+
+    .dateline-pick-wrapper{
+
+      position: relative;
+
+      padding: 22px;
+
+      background-color: #f8f8f8;
+
+      border: 1px solid #d3d3c3;
+
+      margin-left: 104px;
+
+    }
+
+    .month-item{
+
+      width: 60px;
+
+      margin-left: 30px;
+
+      margin-bottom:10px;
+
+      &:nth-child(8n+1){
+
+        margin-left: 0;
+
+      }
+
+    }
+
+    .week-item{
+
+      width: 60px;
+
+      margin-left: 30px;
+
+      margin-bottom:10px;
+
+      &:nth-child(8n+1){
+
+        margin-left: 0;
+
+      }
+
+    }
+
+    .trangle{
+
+        position: absolute;
+
+        width: 16px;
+
+        height: 16px;
+
+        border-style: solid;
+
+        border-color:#d3d3d3 #d3d3d3 transparent transparent;
+
+        border-width: 1px;
+
+        top: -8px;
+
+      background-color: #f8f8f8;
+
+      @include transform(rotate(-45deg));
 
     }
 

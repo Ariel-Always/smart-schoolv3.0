@@ -29,7 +29,6 @@ class AdjustByTeacherModal extends Component{
                    type={1}
                    visible={show}
                    width={840}
-                   bodyStyle={{height:330}}
                    mask={true}
                    cancelText="取消">
 
