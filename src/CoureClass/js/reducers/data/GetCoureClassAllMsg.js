@@ -67,6 +67,8 @@ function handleData(data, func) {
     let classID = pathArr[4];
     let AllActive = false;
     let AllSelect = false;
+    //学科ID：{name：学科名，年级ID：年级名}
+    let Subjects = {};
 
     if (route === '/' || handleRoute === 'All') {
         AllActive = true;
@@ -94,7 +96,7 @@ function handleData(data, func) {
             icon: 'menu20',
             onTitleClick: () => { func(child.SubjectID, 'Subject') }
         };
-
+        Subjects[child.SubjectID] = {subjectName:child.SubjectName};
         if (handleRoute === 'Subject' && subjectID === 'all' && child.SubjectID === routeID ){
             //menu['selected'] = true;
             menu['active'] = true;
@@ -102,6 +104,7 @@ function handleData(data, func) {
         let childMenu = [];
         ID.map((id, key) => {
             Grades[id] = name[key];
+            Subjects[child.SubjectID][id] = name[key];
             if(handleRoute === 'Subject' && subjectID === 'Class'&& child.SubjectID === routeID && classID ===id){
                 childMenu.push({
                     key: id,
@@ -112,7 +115,7 @@ function handleData(data, func) {
                     onTitleClick: () => { func(id, "Class", child.SubjectID) }
                 }) 
                 menu['selected'] = true;
-            }
+            }else 
             childMenu.push({
                 key: id,
                 title: name[key],
@@ -136,6 +139,6 @@ function handleData(data, func) {
         initParams: ''
     };
 
-    return { newData: { ...newData, ItemSubject: newItem }, oldData: oldData, MenuParams: MenuParams };
+    return {Subjects:Subjects, newData: { ...newData, ItemSubject: newItem }, oldData: oldData, MenuParams: MenuParams };
 }
 export default GetCoureClassAllMsg;

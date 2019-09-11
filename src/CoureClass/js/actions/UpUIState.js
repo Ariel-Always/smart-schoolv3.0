@@ -32,6 +32,12 @@ const SEARCH_LOADING_CLOSE = 'SEARCH_LOADING_CLOSE'
 //右侧内容区loading
 const RIGHT_LOADING_CLOSE =  'RIGHT_LOADING_CLOSE';
 const RIGHT_LOADING_OPEN =  'RIGHT_LOADING_OPEN';
+//Table的loading
+const TABLE_LOADING_CLOSE =  'TABLE_LOADING_CLOSE';
+const TABLE_LOADING_OPEN =  'TABLE_LOADING_OPEN';
+//Table的loading
+const COURSE_CLASS_DETAILS_MODAL_CLOSE =  'COURSE_CLASS_DETAILS_MODAL_CLOSE';
+const COURSE_CLASS_DETAILS_MODAL_OPEN =  'COURSE_CLASS_DETAILS_MODAL_OPEN';
 
 //操作
 const showErrorAlert = (alertMsg)=> {
@@ -75,7 +81,13 @@ const setSubjectTeacherModalOpen = () => {
 const setSubjectTeacherModalClose = () => {
     return {type:ADD_SUBJECT_TEACHER_MODAL_CLOSE};
 }
-
+//教学班详情
+const CourseClassDetailsModalOpen = () => {
+    return {type:COURSE_CLASS_DETAILS_MODAL_OPEN};
+}
+const CourseClassDetailsModalClose = () => {
+    return {type:COURSE_CLASS_DETAILS_MODAL_CLOSE};
+}
 export default {
     APP_LOADING_CLOSE,
     APP_LOADING_OPEN,
@@ -113,5 +125,11 @@ export default {
     SEARCH_LOADING_CLOSE,
 
     RIGHT_LOADING_OPEN,
-    RIGHT_LOADING_CLOSE
+    RIGHT_LOADING_CLOSE,
+    TABLE_LOADING_OPEN,
+    TABLE_LOADING_CLOSE,
+    COURSE_CLASS_DETAILS_MODAL_OPEN,
+    COURSE_CLASS_DETAILS_MODAL_CLOSE,
+    CourseClassDetailsModalOpen,
+    CourseClassDetailsModalClose
 }

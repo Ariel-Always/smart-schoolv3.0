@@ -1,5 +1,5 @@
 import UpUIState from '../../actions/UpUIState';
-const AppLoading = (state = { appLoading: true, rightLoading: false, modalLoading: false, searchLoading: false }, actions) => {
+const AppLoading = (state = { appLoading: true, rightLoading: false, TableLoading: false, modalLoading: false, searchLoading: false }, actions) => {
     switch (actions.type) {
         case UpUIState.APP_LOADING_OPEN:
             return Object.assign({}, state, { appLoading: true });
@@ -9,6 +9,10 @@ const AppLoading = (state = { appLoading: true, rightLoading: false, modalLoadin
             return Object.assign({}, state, { rightLoading: true });
         case UpUIState.RIGHT_LOADING_CLOSE:
             return Object.assign({}, state, { rightLoading: false });
+        case UpUIState.TABLE_LOADING_OPEN:
+            return Object.assign({}, state, { TableLoading: true });
+        case UpUIState.TABLE_LOADING_CLOSE:
+            return Object.assign({}, state, { TableLoading: false });
         case UpUIState.MODAL_LOADING_OPEN:
             return Object.assign({}, state, { modalLoading: true });
         case UpUIState.MODAL_LOADING_CLOSE:

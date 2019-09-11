@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Frame, Menu, Loading, Alert, LeftMenu } from "../../../common";
+import { Frame, Menu, Loading, Alert, LeftMenu ,Modal} from "../../../common";
 import { connect } from 'react-redux';
 import TimeBanner from '../component/TimeBanner'
 
@@ -120,6 +120,9 @@ class App extends Component {
             dispatch(actions.UpDataState.setCoureClassAllMsg(routeID));
 
         } else if (handleRoute === 'Subject' && subjectID === 'Class') {
+            dispatch(actions.UpDataState.getSubjectAllMsg('/CoureClass_Subject?schoolID=sss', routeID));
+            dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss', routeID,classID));
+
             if (!DataState.GetCoureClassAllMsg.MenuParams)
                 return;
             dispatch(actions.UpDataState.setCoureClassAllMsg(classID, routeID));
@@ -216,6 +219,16 @@ class App extends Component {
                     onClose={UIState.AppAlert.onClose}
                 ></Alert>
 
+                {/* 模态框 */}
+                <Modal ref='CourseClassDetailsMadal'
+                    bodyStyle={{ padding: 0 }}
+                    type='1'
+                    title={'教学班详情'}
+                    visible={UIState.SetCourseClassDetailsModalShow.setCourseClassDetailsMadalShow}
+                    onOk={this.SetSubjectTeacherModalOk}
+                    onCancel={this.SetSubjectTeacherModalCancel}>
+
+                </Modal>
             </React.Fragment >
 
         );

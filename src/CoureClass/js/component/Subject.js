@@ -20,9 +20,10 @@ class Subject extends React.Component{
         let handleRoute = pathArr[1];
         let routeID = pathArr[2];
         let item = DataState.GetSubjectAllMsg.hasOwnProperty(routeID)?DataState.GetSubjectAllMsg[routeID].Item:[];
+        //let subject = DataState.GetSubjectAllMsg.hasOwnProperty(routeID)?DataState.GetSubjectAllMsg[routeID].Item:[];
         let showCardBox = item.map((child,index) => {
             return (
-                <ShowCard type='class' params = {child} key={index}></ShowCard>
+                <ShowCard type='class' params = {child} subject={routeID} key={index+'-'+routeID}></ShowCard>
             )
         })
 
@@ -55,8 +56,8 @@ class Subject extends React.Component{
                             <span className='all-tips'>任课教师数量</span>
                         </div>
                         <div className='all All-subject'>
-                            <span className='all-num teacher-num'>{DataState.GetSubjectAllMsg.hasOwnProperty(routeID)?DataState.GetSubjectAllMsg[routeID].SubjectCount:''}</span>
-                            <span className='all-tips'>走班学科数量</span>
+                            <span className='all-num teacher-num'>{DataState.GetSubjectAllMsg.hasOwnProperty(routeID)?DataState.GetSubjectAllMsg[routeID].StudentCount:''}</span>
+                            <span className='all-tips'>学生人数</span>
                         </div>
                     </div>
                     <div className='content-subject-box'>

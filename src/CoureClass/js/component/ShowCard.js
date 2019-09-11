@@ -16,7 +16,7 @@ class ShowCard extends React.Component {
         if (this.props.type === 'subject') {
             To = '/Subject/' + this.props.params.SubjectID + '/all';
         } else if (this.props.type === 'class') {
-            To = '/Subject/' + this.props.params.SubjectID;
+            To = '/Subject/' + this.props.subject + '/Class/' + this.props.params.GradeID;
         }
 
         return (
@@ -28,7 +28,7 @@ class ShowCard extends React.Component {
 
                     <div className='box-main'>
                         <div className='main-content'>
-                            <p className='content-tips'>{this.props.params.SubjectName + (this.props.type === 'subject' ? '教学班' : '')}</p>
+                            <p className='content-tips'>{this.props.type === 'subject' ? this.props.params.SubjectName + '教学班' : this.props.params.GradetName}</p>
                             <hr className='content-hr' />
                             <div className='content-details'>
                                 <div className='details-row clearfix'>
