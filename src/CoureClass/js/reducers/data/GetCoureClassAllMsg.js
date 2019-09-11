@@ -1,4 +1,6 @@
 import UpDataState from '../../actions/UpDataState';
+import history from '../../containers/history'
+
 const GetCoureClassAllMsg = (state = {}, actions) => {
     switch (actions.type) {
         case UpDataState.GET_COURE_CLASS_ALL_MSG:
@@ -15,7 +17,7 @@ const GetCoureClassAllMsg = (state = {}, actions) => {
 function setNewData(MenuParams, key, subjectID) {
     const { MenuBox, children } = MenuParams;
     let params = [];
-    console.log(children,key,subjectID)
+    console.log(children, key, subjectID)
     //去active和selected为false
     params = children.map((child, index) => {
         let myChild = [];
@@ -44,6 +46,9 @@ function setNewData(MenuParams, key, subjectID) {
                 return value
 
             })
+        if (child.type === 'All') {
+            return { ...Params };
+        }
         return { children: myChild, ...Params };
 
     })
@@ -54,6 +59,19 @@ function setNewData(MenuParams, key, subjectID) {
 }
 function handleData(data, func) {
     let oldData = data;
+    let route = history.location.pathname;
+    let pathArr = route.split('/');
+    let handleRoute = pathArr[1];
+    let routeID = pathArr[2];
+    let subjectID = pathArr[3];
+    let classID = pathArr[4];
+    let AllActive = false;
+    let AllSelect = false;
+
+    if (route === '/' || handleRoute === 'All') {
+        AllActive = true;
+        AllSelect = true;
+    } 
     const { ItemSubject, ...newData } = data;
     //处理为左侧菜单数组
     let children = [{
@@ -61,8 +79,8 @@ function handleData(data, func) {
         title: '教学班级信息总览',
         type: 'All',
         icon: 'menu10',
-        active: true,
-        celected: true,
+        active: AllActive,
+        selected: AllSelect,
         onTitleClick: () => { func('all', 'All') }
     }];
     let newItem = ItemSubject.map((child, index) => {
@@ -76,9 +94,25 @@ function handleData(data, func) {
             icon: 'menu20',
             onTitleClick: () => { func(child.SubjectID, 'Subject') }
         };
+
+        if (handleRoute === 'Subject' && subjectID === 'all' && child.SubjectID === routeID ){
+            //menu['selected'] = true;
+            menu['active'] = true;
+        }
         let childMenu = [];
         ID.map((id, key) => {
             Grades[id] = name[key];
+            if(handleRoute === 'Subject' && subjectID === 'Class'&& child.SubjectID === routeID && classID ===id){
+                childMenu.push({
+                    key: id,
+                    title: name[key],
+                    type: 'Class',
+                    selected:true,
+                    active:true,
+                    onTitleClick: () => { func(id, "Class", child.SubjectID) }
+                }) 
+                menu['selected'] = true;
+            }
             childMenu.push({
                 key: id,
                 title: name[key],

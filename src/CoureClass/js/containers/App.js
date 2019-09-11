@@ -26,13 +26,13 @@ class App extends Component {
         super(props);
         const { dispatch } = props;
         this.state = {
-            MenuParams:{}
+            MenuParams: {}
         }
         let route = history.location.pathname;
         //判断token是否存在
         if (sessionStorage.getItem('token')) {
             dispatch(actions.UpDataState.getLoginUser('/Login?method=GetUserInfo'));
-            dispatch(actions.UpDataState.getCoureClassAllMsg('/CoureClass_All?schoolID=sss', this.MenuClcik));            
+            dispatch(actions.UpDataState.getCoureClassAllMsg('/CoureClass_All?schoolID=sss', this.MenuClcik));
             this.requestData(route);
 
         } else {
@@ -56,23 +56,25 @@ class App extends Component {
         // 获取接口数据
 
 
-
         history.listen(() => {//路由监听
             let route = history.location.pathname;
-            console.log(route)
+            //this.requestData(route);
+            this.requestData(route);
 
         })
+
+
     }
     componentWillUpdate() {
-
+        //this.requestData(route);
     }
     componentDidUpdate() {
 
     }
     componentWillReceiveProps(nextProps) {
-        
+
         this.setState({
-            MenuParams:nextProps.DataState.GetCoureClassAllMsg.MenuParams
+            MenuParams: nextProps.DataState.GetCoureClassAllMsg.MenuParams
         })
     }
 
@@ -91,48 +93,61 @@ class App extends Component {
     }
     // 请求每个组件主要渲染的数据
     requestData = (route) => {
-        const { dispatch } = this.props;
+
+        const { dispatch, DataState } = this.props;
         let pathArr = route.split('/');
         let handleRoute = pathArr[1];
         let routeID = pathArr[2];
         let subjectID = pathArr[3];
         let classID = pathArr[4];
-        console.log(route,routeID,subjectID)
+        console.log(route, routeID, subjectID)
         dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-        if (route === '/'||handleRoute==='All') {
-            
+        if (route === '/' || handleRoute === 'All') {
+
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+            if (!DataState.GetCoureClassAllMsg.MenuParams)
+                return;
             dispatch(actions.UpDataState.setCoureClassAllMsg('all'));
 
-        } else if (handleRoute === 'Subject'&&subjectID==='all') {
-            
+        } else if (handleRoute === 'Subject' && subjectID === 'all') {
+
+
+            dispatch({ type: actions.UpUIState.RIGHT_LOADING_OPEN });
+            //if (DataState.getSubjectAllMsg[routeID] === undefined)
+                dispatch(actions.UpDataState.getSubjectAllMsg('/CoureClass_Subject?schoolID=sss', routeID));
+            if (!DataState.GetCoureClassAllMsg.MenuParams)
+                return;
             dispatch(actions.UpDataState.setCoureClassAllMsg(routeID));
 
-        } else if (handleRoute === 'Subject'&&subjectID==='Class') {
-            dispatch(actions.UpDataState.setCoureClassAllMsg(classID,routeID));
-            
+        } else if (handleRoute === 'Subject' && subjectID === 'Class') {
+            if (!DataState.GetCoureClassAllMsg.MenuParams)
+                return;
+            dispatch(actions.UpDataState.setCoureClassAllMsg(classID, routeID));
+
 
         } else if (handleRoute === 'Search') {
+            if (!DataState.GetCoureClassAllMsg.MenuParams)
+                return;
             dispatch(actions.UpDataState.setCoureClassAllMsg(routeID));
-            
 
-        } else{
+
+        } else {
             history.push('/')
         }
 
 
     }
 
-    MenuClcik = (id,type,sub = null) => {
-        console.log(id,type)
-        if(type==='All'){
+    MenuClcik = (id, type, sub = null) => {
+        console.log(id, type)
+        if (type === 'All') {
             history.push('/All')
-        }else if(type==='Subject'){
-            history.push('/Subject/'+id+'/all')
-        }else if(type==='Class'){
-            history.push('/Subject/'+ sub +'/Class/'+id)
-        }else if(type==='Search'){
-            history.push('/Search/'+id)
+        } else if (type === 'Subject') {
+            history.push('/Subject/' + id + '/all')
+        } else if (type === 'Class') {
+            history.push('/Subject/' + sub + '/Class/' + id)
+        } else if (type === 'Search') {
+            history.push('/Search/' + id)
         }
         //history.push('/'+id)
     }
@@ -169,19 +184,23 @@ class App extends Component {
 
                             </Menu>
                         </div>
+
                         <div ref="frame-right-content">
-                            <Router>
-                                <Route path='/All' exact component={All}></Route>
-                                <Route path='/Subject/:subjectID/all' component={Subject}></Route>
-                                <Route path='/Subject/:subjectID/Class/:classID' component={Class}></Route>
-                                <Route path='/Search' component={Search}></Route>
-                            </Router>
-                            {/* <Route path='/UserArchives/All' exact history={history} component={All}></Route>
+                            <Loading tip="加载中..." size="large" spinning={UIState.AppLoading.rightLoading}>
+                                <Router>
+                                    <Route path='/All' exact component={All}></Route>
+                                    <Route path='/Subject/:subjectID/all' component={Subject}></Route>
+                                    <Route path='/Subject/:subjectID/Class/:classID' component={Class}></Route>
+                                    <Route path='/Search' component={Search}></Route>
+                                </Router>
+
+                                {/* <Route path='/UserArchives/All' exact history={history} component={All}></Route>
                             <Route path='/UserArchives/Student' exact history={history} component={Student}></Route>
                             <Route path='/UserArchives/Teacher' exact history={history} component={Teacher}></Route>
                             <Route path='/UserArchives/Leader' exact history={history} component={Leader}></Route> */}
-
+                            </Loading>
                         </div>
+
                     </Frame>
 
 

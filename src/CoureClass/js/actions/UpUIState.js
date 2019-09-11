@@ -29,6 +29,9 @@ const ADD_SUBJECT_TEACHER_MODAL_CLOSE = 'ADD_SUBJECT_TEACHER_MODAL_CLOSE'
 const SEARCH_LOADING_OPEN = 'SEARCH_LOADING_OPEN'
 const SEARCH_LOADING_CLOSE = 'SEARCH_LOADING_CLOSE'
 
+//右侧内容区loading
+const RIGHT_LOADING_CLOSE =  'RIGHT_LOADING_CLOSE';
+const RIGHT_LOADING_OPEN =  'RIGHT_LOADING_OPEN';
 
 //操作
 const showErrorAlert = (alertMsg)=> {
@@ -107,5 +110,8 @@ export default {
     setSubjectTeacherModalOpen,
     setSubjectTeacherModalClose,
     SEARCH_LOADING_OPEN,
-    SEARCH_LOADING_CLOSE
+    SEARCH_LOADING_CLOSE,
+
+    RIGHT_LOADING_OPEN,
+    RIGHT_LOADING_CLOSE
 }

@@ -1,6 +1,6 @@
 
 const urlAll = "ArchivesAll"
-const proxy = "https://www.easy-mock.com/mock/5c9d706a7c362049f15d7697/webCloudDev"
+const proxy = "http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev"
 
 export  {
     urlAll,
