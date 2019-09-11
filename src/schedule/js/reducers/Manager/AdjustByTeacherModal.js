@@ -1,9 +1,12 @@
 import ABTActions from '../../actions/Manager/AdjustByTeacherActions';
 
 
+
 const AdjustByTeacherModal = (state={
 
     show:false,
+
+    teacherList:[],
 
     replaceSchedule:{
 
@@ -12,8 +15,6 @@ const AdjustByTeacherModal = (state={
         teacherOptions:{
 
             dropSelectd:null,
-
-            dropList:[],
 
             searchList:[],
 
@@ -26,8 +27,6 @@ const AdjustByTeacherModal = (state={
         replaceTeacherOptions:{
 
             dropSelectd:null,
-
-            dropList:[],
 
             searchList:[],
 
@@ -67,7 +66,43 @@ const AdjustByTeacherModal = (state={
 
         weeksList:[],
 
-        weeksCheckedList:[]
+        weeksCheckedList:[],
+
+        dateCheckedList:[],
+
+        classHourDate:'',
+
+        WeekDay:'',
+
+        WeekNO:'',
+
+        dateLoadingShow:true,
+
+        classHourList:[],
+
+        classHourCheckedList:[],
+
+        classHourLoadingShow:true,
+
+        classHourPlainOpts:[]
+
+    },
+
+    changeSchedule:{
+
+        originDropSelectd:"",
+
+        originSearchList:[],
+
+        originSearchOpen:false,
+
+        originSearchLoadingShow:true,
+
+        originDate:'',
+
+        originSchedulePickDisabled:true,
+
+        originScheduleList:[]
 
     }
 
@@ -83,6 +118,8 @@ const AdjustByTeacherModal = (state={
 
                 show:true,
 
+                teacherList:[],
+
                 replaceSchedule:{
 
                     loadingShow:true,
@@ -90,8 +127,6 @@ const AdjustByTeacherModal = (state={
                     teacherOptions:{
 
                         dropSelectd:null,
-
-                        dropList:[],
 
                         searchList:[],
 
@@ -104,8 +139,6 @@ const AdjustByTeacherModal = (state={
                     replaceTeacherOptions:{
 
                         dropSelectd:null,
-
-                        dropList:[],
 
                         searchList:[],
 
@@ -145,7 +178,43 @@ const AdjustByTeacherModal = (state={
 
                     weeksList:[],
 
-                    weeksCheckedList:[]
+                    weeksCheckedList:[],
+
+                    dateCheckedList:[],
+
+                    classHourDate:'',
+
+                    WeekDay:'',
+
+                    WeekNO:'',
+
+                    dateLoadingShow:true,
+
+                    classHourList:[],
+
+                    classHourCheckedList:[],
+
+                    classHourLoadingShow:true,
+
+                    classHourPlainOpts:[]
+
+                },
+
+                changeSchedule:{
+
+                    originDropSelectd:"",
+
+                    originSearchList:[],
+
+                    originSearchOpen:false,
+
+                    originSearchLoadingShow:true,
+
+                    originDate:'',
+
+                    originSchedulePickDisabled:true,
+
+                    originScheduleList:[]
 
                 }
 
@@ -161,6 +230,16 @@ const AdjustByTeacherModal = (state={
 
             };
 
+        case ABTActions.ADJUST_BY_TEACHER_TEACHER_LIST_UPDATE:
+
+            return {
+
+                ...state,
+
+                teacherList:actions.data
+
+            };
+
         case ABTActions.REPLACE_SHCEDULE_LOADING_HIDE:
 
             return {...state,replaceSchedule:{...state.replaceSchedule,loadingShow:false}};
@@ -168,28 +247,6 @@ const AdjustByTeacherModal = (state={
         case ABTActions.REPLACE_SHCEDULE_LOADING_SHOW:
 
             return {...state,replaceSchedule:{...state.replaceSchedule,loadingShow:true}};
-
-        case ABTActions.REPLACE_SHCEDULE_TEACHER_LIST_UPDATE:
-
-            return {
-
-                ...state,
-
-                replaceSchedule:{
-
-                    ...state.replaceSchedule,
-
-                    teacherOptions:{
-
-                        ...state.replaceSchedule.teacherOptions,
-
-                        dropList:actions.data
-
-                    }
-
-                }
-
-            };
 
         case ABTActions.REPLACE_SHCEDULE_TEACHER_SSUBJECT_DROP_SHOW:
 
@@ -394,28 +451,6 @@ const AdjustByTeacherModal = (state={
 
                 }
 
-
-            };
-
-        case ABTActions.REPLACE_SHCEDULE_REPLACE_TEACHER_LIST_UPDATE:
-
-            return {
-
-                ...state,
-
-                replaceSchedule:{
-
-                    ...state.replaceSchedule,
-
-                    replaceTeacherOptions:{
-
-                        ...state.replaceSchedule.replaceTeacherOptions,
-
-                        dropList:actions.data
-
-                    }
-
-                }
 
             };
 
@@ -647,6 +682,308 @@ const AdjustByTeacherModal = (state={
                     ...state.replaceSchedule,
 
                     weeksCheckedList:actions.data
+
+                }
+
+            };
+
+        case ABTActions.REPLACE_SHCEDULE_DATE_CHECKED:
+
+            return {
+
+                ...state,
+
+                replaceSchedule:{
+
+                    ...state.replaceSchedule,
+
+                    dateCheckedList:actions.data
+
+                }
+
+            };
+
+        case ABTActions.REPLACE_SHCEDULE_CLASSHOUR_DATE_CHECKED:
+
+            return {
+
+                ...state,
+
+                replaceSchedule:{
+
+                    ...state.replaceSchedule,
+
+                    classHourDate:actions.data
+
+                }
+
+            };
+
+        case ABTActions.REPLACE_SHCEDULE_CLASSHOUR_WEEK_DATE_LOADING_SHOW:
+
+            return {
+
+                ...state,
+
+                replaceSchedule:{
+
+                    ...state.replaceSchedule,
+
+                    dateLoadingShow:true
+
+                }
+
+            };
+
+        case ABTActions.REPLACE_SHCEDULE_CLASSHOUR_WEEK_DATE_LOADING_HIDE:
+
+            return {
+
+                ...state,
+
+                replaceSchedule:{
+
+                    ...state.replaceSchedule,
+
+                    dateLoadingShow:false
+
+                }
+
+            };
+
+        case ABTActions.REPLACE_SHCEDULE_CLASSHOUR_WEEK_DATE_UPDATE:
+
+            return {
+
+                ...state,
+
+                replaceSchedule:{
+
+                    ...state.replaceSchedule,
+
+                    WeekNO:actions.data.WeekNO,
+
+                    WeekDay:actions.data.WeekDay
+
+                }
+
+            };
+
+
+        case ABTActions.REPLACE_SHCEDULE_CLASSHOUR_LOADING_SHOW:
+
+            return {
+
+                ...state,
+
+                replaceSchedule:{
+
+                    ...state.replaceSchedule,
+
+                    classHourLoadingShow:true
+
+                }
+
+            };
+
+        case ABTActions.REPLACE_SHCEDULE_CLASSHOUR_LOADING_HIDE:
+
+            return {
+
+            ...state,
+
+            replaceSchedule:{
+
+                ...state.replaceSchedule,
+
+                classHourLoadingShow:false
+
+            }
+
+        };
+
+        case ABTActions.REPLACE_SHCEDULE_CLASSHOUR_LIST_CHANGE:
+
+            return {
+
+                ...state,
+
+                replaceSchedule:{
+
+                    ...state.replaceSchedule,
+
+                    classHourList:actions.data.classHourList,
+
+                    classHourPlainOpts:actions.data.classHourPlainOpts,
+
+                    classHourCheckedList:actions.data.classHourCheckedList
+
+                }
+
+            };
+
+        case ABTActions.REPLACE_SHCEDULE_CLASSHOUR_CHECKED_LIST_CHANGE:
+
+            return {
+
+                ...state,
+
+                replaceSchedule:{
+
+                    ...state.replaceSchedule,
+
+                    classHourCheckedList:actions.data
+
+                }
+
+            };
+
+            //与人换课
+
+        case ABTActions.CHANGE_SHCEDULE_ORIGIN_TEACHER_DROP_CHANGE:
+
+            return {
+
+                ...state,
+
+                changeSchedule:{
+
+                    ...state.changeSchedule,
+
+                    originDropSelectd:actions.data
+
+                }
+
+            };
+
+        case ABTActions.CHANGE_SHCEDULE_ORIGIN_TEACHER_SEARCH_LIST_UPDATE:
+
+            return {
+
+                ...state,
+
+                changeSchedule:{
+
+                    ...state.changeSchedule,
+
+                    originSearchList:actions.data
+
+                }
+
+            };
+
+        case ABTActions.CHANGE_SHCEDULE_ORIGIN_TEACHER_SEARCH_OPEN:
+
+            return {
+
+                ...state,
+
+                changeSchedule:{
+
+                    ...state.changeSchedule,
+
+
+                    originSearchOpen:true
+
+                }
+
+            };
+
+        case ABTActions.CHANGE_SHCEDULE_ORIGIN_TEACHER_SEARCH_CLOSE:
+
+            return {
+
+                ...state,
+
+                changeSchedule:{
+
+                    ...state.changeSchedule,
+
+
+                    originSearchOpen:false
+
+                }
+
+            };
+
+        case ABTActions.CHANGE_SHCEDULE_ORIGIN_TEACHER_SEARCH_LOADING_HIDE:
+
+            return {
+
+                ...state,
+
+                changeSchedule:{
+
+                    ...state.changeSchedule,
+
+
+                    originSearchLoadingShow:false
+
+                }
+
+            };
+
+        case ABTActions.CHANGE_SHCEDULE_ORIGIN_TEACHER_SEARCH_LOADING_SHOW:
+
+            return {
+
+                ...state,
+
+                changeSchedule:{
+
+                    ...state.changeSchedule,
+
+
+                    originSearchLoadingShow:true
+
+                }
+
+            };
+
+        case ABTActions.CHANGE_SHCEDULE_ORIGIN_TEACHER_DATE_PICK:
+
+            return {
+
+                ...state,
+
+                changeSchedule:{
+
+                    ...state.changeSchedule,
+
+
+                    originDate:actions.data
+
+                }
+
+            };
+
+        case ABTActions.CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_ABLED:
+
+            return {
+
+                ...state,
+
+                changeSchedule:{
+
+                    ...state.changeSchedule,
+
+                    originSchedulePickDisabled:false
+
+                }
+
+            };
+
+        case ABTActions.CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_LIST_UPDATE:
+
+            return {
+
+                ...state,
+
+                changeSchedule:{
+
+                    ...state.changeSchedule,
+
+                    originScheduleList:actions.data
 
                 }
 

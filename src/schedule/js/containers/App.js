@@ -21,6 +21,7 @@ import DelScheduleModal from './Manager/DelScheduleModal';
 import ABTActions from '../actions/Manager/AdjustByTeacherActions';
 import AdjustByTeacherModal from './Manager/AdjustByTeacherModal';
 
+
 import '../../scss/index.scss';
 
 
@@ -155,9 +156,13 @@ class App extends Component{
                                 image:LoginUser.PhotoPath
                             }}
                             showBarner={ModuleSetting.timeBar}
+
+                            type="circle"
+
                         >
 
                             <div ref="frame-time-barner">
+
 
                                 <div className="schedule-period-tab clearfix">
 

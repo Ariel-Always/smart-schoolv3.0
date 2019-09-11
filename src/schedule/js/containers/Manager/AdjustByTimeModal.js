@@ -441,8 +441,6 @@ class AdjustByTimeModal extends Component{
 
                     </Loading>
 
-
-
                 </div>
 
             </Modal>

@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 
 import { Loading,DropDown,Radio } from "../../../../common";
 
-import { DatePicker,ConfigProvider } from 'antd';
+import { DatePicker,ConfigProvider,RangePicker } from 'antd';
 
 import { connect } from 'react-redux';
 
@@ -23,8 +23,6 @@ class ReplaceSchedule extends Component{
         super(props);
 
         const { dispatch } = props;
-
-        dispatch({type:ABTActions.REPLACE_SHCEDULE_LOADING_SHOW});
 
         dispatch(ABTActions.replaceScheduleInit());
 
@@ -125,6 +123,55 @@ class ReplaceSchedule extends Component{
 
     }
 
+    //日期改变的时候
+    dateChecked(date,dateString){
+
+        const { dispatch } = this.props;
+
+        dispatch(ABTActions.dateChecked(dateString));
+
+    }
+    //dateRanger改变date日历的显示方式
+    dateRander(current,today){
+
+        const { replaceSchedule } = this.props;
+
+        const { dateCheckedList } = replaceSchedule;
+
+        let currentDate = moment(current).format('L').replace(/\//g,'-');
+
+        if (dateCheckedList.includes(currentDate)){
+
+            return <div className="ant-calendar-date" style={{background:'#1890ff',color:"#ffffff"}}>{current.date()}</div>
+
+        }else{
+
+            return <div className="ant-calendar-date">{current.date()}</div>
+
+        }
+
+    }
+    //课时列表的点击选择
+    classHourDateChecked(date,dateString){
+
+        const { dispatch } = this.props;
+
+        dispatch(ABTActions.classHourDateChecked(dateString));
+
+    }
+
+    //点击课时
+
+    classHourChecked(opts){
+
+        const { dispatch } = this.props;
+
+        dispatch(ABTActions.classHourChecked(opts));
+
+    }
+
+
+
 
 
 
@@ -133,7 +180,7 @@ class ReplaceSchedule extends Component{
 
     render() {
 
-        const { replaceSchedule } = this.props;
+        const { replaceSchedule,teacherList } = this.props;
 
         const {
 
@@ -157,7 +204,23 @@ class ReplaceSchedule extends Component{
 
             weeksList,
 
-            weeksCheckedList
+            weeksCheckedList,
+
+            dateCheckedList,
+
+            classHourDate,
+
+            WeekNO,
+
+            WeekDay,
+
+            dateLoadingShow,
+
+            classHourList,
+
+            classHourCheckedList,
+
+            classHourLoadingShow
 
         } = replaceSchedule;
 
@@ -192,7 +255,7 @@ class ReplaceSchedule extends Component{
                             style={{zIndex:8}}
                             mutipleOptions={{
                                 range:2,
-                                dropMultipleList:teacherOptions.dropList,
+                                dropMultipleList:teacherList,
                                 dropMultipleChange:this.teacherDropChange.bind(this),
                                 dropClickSearch:this.teacherClickSearch.bind(this),
                                 dropCancelSearch:this.teacherSearchClose.bind(this),
@@ -266,7 +329,7 @@ class ReplaceSchedule extends Component{
                             style={{zIndex:5}}
                             mutipleOptions={{
                                 range:2,
-                                dropMultipleList:replaceTeacherOptions.dropList,
+                                dropMultipleList:teacherList,
                                 dropMultipleChange:this.replaceTeacherDropChange.bind(this),
                                 dropClickSearch:this.replaceTeacherClickSearch.bind(this),
                                 //dropCancelSearch:this.classSearchClose.bind(this),
@@ -302,7 +365,6 @@ class ReplaceSchedule extends Component{
 
                     {
 
-
                         activeRadio==='month'?
 
                             <div className="byMonth dateline-pick-wrapper clearfix">
@@ -311,7 +373,7 @@ class ReplaceSchedule extends Component{
 
                                     monthsList.map((item,key) => {
 
-                                        return <div className={`month-item check-item ${monthsCheckedList.includes(item.id)?'active':''}`} onClick={this.monthChecked.bind(this,item.id)}>
+                                        return <div key={key} className={`month-item check-item ${monthsCheckedList.includes(item.id)?'active':''}`} onClick={this.monthChecked.bind(this,item.id)}>
 
                                             {
 
@@ -331,11 +393,9 @@ class ReplaceSchedule extends Component{
 
                             :''
 
-
                     }
 
                     {
-
 
                         activeRadio==='week'?
 
@@ -345,7 +405,7 @@ class ReplaceSchedule extends Component{
 
                                     weeksList.map((item,key) => {
 
-                                        return <div className={`week-item check-item ${weeksCheckedList.includes(item)?'active':''}`} onClick={this.weekChecked.bind(this,item)}>
+                                        return <div key={key} className={`week-item check-item ${weeksCheckedList.includes(item)?'active':''}`} onClick={this.weekChecked.bind(this,item)}>
 
                                             第{item}周
 
@@ -361,21 +421,21 @@ class ReplaceSchedule extends Component{
 
                             :''
 
-
                     }
 
                     {
-
 
                         activeRadio==='date'?
 
                             <div className="byWeek dateline-pick-wrapper clearfix">
 
-                                <ConfigProvider locale={zhCN}>
+                                    <ConfigProvider locale={zhCN}>
 
-                                    <DatePicker></DatePicker>
+                                        <DatePicker showToday={false} dateRender={this.dateRander.bind(this)} onChange={this.dateChecked.bind(this)} style={{width:626}}></DatePicker>
 
-                                </ConfigProvider>
+                                    </ConfigProvider>
+
+                                <div className="date-wrapper" title={dateCheckedList.length>0?dateCheckedList.join(','):'请选择日期'}>{dateCheckedList.length>0?dateCheckedList.join(','):'请选择日期'}</div>
 
                                 <div className="trangle"></div>
 
@@ -383,6 +443,105 @@ class ReplaceSchedule extends Component{
 
                             :''
 
+                    }
+
+                    {
+
+                        activeRadio==='classHour'?
+
+                            <div className="byClassHour dateline-pick-wrapper clearfix">
+
+                                <span className="title">时间:</span>
+
+                                <ConfigProvider locale={zhCN}>
+
+                                    <DatePicker showToday={false} value={classHourDate?moment(classHourDate,'YYYY-MM-DD'):null} onChange={this.classHourDateChecked.bind(this)}></DatePicker>
+
+                                </ConfigProvider>
+
+                                {
+
+                                    classHourDate?
+
+                                        <Loading className="date-loading" spinning={dateLoadingShow} opacity={false} type="loading">
+
+                                                <span className="week-date">(第{WeekNO}周 {WeekDay})</span>
+
+                                        </Loading>
+
+                                        :''
+
+                                }
+
+                                <Loading opacity={false} className="class-hour-loading" type="loading"  spinning={classHourLoadingShow}>
+
+                                    <div className="title">节次:</div>
+
+                                    <div className="classHour-wrapper">
+
+                                        {
+
+                                            classHourList.map((item,key) => {
+
+                                                let noonChecked = false;
+
+                                                let itemList = [];
+
+                                                classHourCheckedList.map(itm => {
+
+                                                    if (itm.id === item.id){
+
+                                                        itemList = itm.list;
+
+                                                        if (itm.checked){
+
+                                                            noonChecked = true;
+
+                                                            return;
+
+                                                        }
+
+                                                    }
+
+                                                });
+
+                                                return <div key={key} className="class-hour-item-wrapper clearfix">
+
+                                                                <div className="noon">
+
+                                                                    <div className={`class-hour-item check-item ${noonChecked?'active':''}`} onClick={this.classHourChecked.bind(this,{type:'noon',id:item.id})}>
+
+                                                                        {item.name}
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                                {
+
+                                                                    item.list.map((i,k)=> {
+
+                                                                        return <div key={k} className={`class-hour-item check-item ${itemList.includes(i)?'active':''}`} onClick={this.classHourChecked.bind(this,{type:'item',pid:item.id,id:i})}>第{i}节</div>
+
+                                                                    })
+
+                                                                }
+
+                                                        </div>
+
+                                            })
+
+                                        }
+
+                                    </div>
+
+                                </Loading>
+
+                                <div className="trangle"></div>
+
+                            </div>
+
+                            :''
 
                     }
 
@@ -396,11 +555,13 @@ class ReplaceSchedule extends Component{
 
 const mapStateToProps = (state) => {
 
-    const { replaceSchedule } = state.Manager.AdjustByTeacherModal;
+    const { replaceSchedule,teacherList } = state.Manager.AdjustByTeacherModal;
 
     return{
 
-        replaceSchedule
+        replaceSchedule,
+
+        teacherList
 
     }
 
