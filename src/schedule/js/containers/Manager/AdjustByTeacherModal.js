@@ -8,6 +8,8 @@ import { Modal } from "../../../../common";
 
 import ReplaceSchedule from './ReplaceSchedule';
 
+import ChangeSchedule from './ChangeSchedule'
+
 
 const { TabPane  } = Tabs;
 
@@ -29,7 +31,6 @@ class AdjustByTeacherModal extends Component{
                    type={1}
                    visible={show}
                    width={840}
-                   bodyStyle={{height:330}}
                    mask={true}
                    cancelText="取消">
 
@@ -43,7 +44,11 @@ class AdjustByTeacherModal extends Component{
 
                         </TabPane>
 
-                        <TabPane tab="与人换课" key="2" forceRender={true}></TabPane>
+                        <TabPane tab="与人换课" key="2" forceRender={true}>
+
+                            <ChangeSchedule></ChangeSchedule>
+
+                        </TabPane>
 
                         <TabPane tab="调整时间" key="3" forceRender={true}></TabPane>
 

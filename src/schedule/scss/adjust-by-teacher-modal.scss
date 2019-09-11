@@ -1,18 +1,24 @@
 .adjust-by-teacher-modal{
 
+  color: #333333;
+
+  .ant-modal-body{
+
+    min-height:330px;
+
+    height: auto;
+
+  }
+
   .modal-wrapper{
 
-    position: absolute;
+    float: left;
 
     width: 840px;
 
-    height:330px;
+   margin-left: -36px;
 
-    left:0;
-
-    top:0;
-
-    overflow-y:auto;
+    margin-top: -24px;
 
 
   }
@@ -84,14 +90,102 @@
 
   }
 
+  .check-item{
+
+    float: left;
+
+    position: relative;
+
+    font-size: 14px;
+
+    height: 28px;
+
+    line-height: 28px;
+
+    border: solid 1px #bac7d9;
+
+    padding:0 4px;
+
+    text-align: center;
+
+    @include textOverFlow;
+
+    cursor: pointer;
+
+    color: #79879b;
+
+    font-size: 14px;
+
+    &.active{
+
+      border-color: #2ba500;
+
+      background-color:#e9ffe9;
+
+      color: #2ab500;
+
+      &:before{
+
+        position: absolute;
+
+        content: '';
+
+        width:0;
+
+        height: 0;
+
+        right: -10px;
+
+        top: -10px;
+
+        border-color:transparent transparent #2ba500 transparent;
+
+        border-style: solid;
+
+        border-width:10px;
+
+        @include transform(rotate(45deg));
+
+      }
+
+      &:after{
+
+        position: absolute;
+
+        right:3px;
+
+        top:3px;
+
+        width: 4px;
+
+        height:6px;
+
+        content: '';
+
+        display: table;
+
+        border:1px solid #fff;
+
+        border-top: 0;
+
+        border-left: 0;
+
+        transform: rotate(45deg) scale(1) translate(-50%, -50%);
+
+      }
+
+    }
+
+  }
+
     //找人代课
   .replace-schedule-wrapper{
 
-    padding:30px 40px;
+    padding:30px 0 0 40px;
 
     &>div{
 
-      margin:12px 0;
+      margin:16px 0;
 
     }
 
@@ -113,8 +207,383 @@
 
     }
 
-    .teacher-wrapper{
+    .subject-name{
 
+      margin-left:8px;
+
+    }
+
+    .class-pick-wrapper{
+
+      float: left;
+
+      margin-left: 8px;
+
+      max-width:640px;
+
+    }
+
+    .class-item{
+
+      width:90px;
+
+      margin-left: 20px;
+
+      &:nth-child(6n+1){
+
+        margin-left:0;
+
+      }
+
+    }
+
+    .class-wrapper{
+
+      height:28px;
+
+    }
+
+    .radio-item{
+
+      padding-left: 20px;
+
+      margin-left: 30px;
+
+     background: url("#{$image-url}/radio.png") no-repeat left center;
+
+      cursor: pointer;
+
+      &:first-child{
+
+        margin-left:8px;
+
+      }
+
+     &.active{
+
+       background-image: url('#{$image-url}/radio-checked.png');
+
+     }
+
+    }
+
+    .byMonth{
+
+      .trangle{
+
+        left:90px;
+
+      }
+
+    }
+
+    .byWeek{
+
+      .trangle{
+
+        left:302px;
+
+      }
+
+    }
+
+    .date-wrapper{
+
+      position: absolute;
+
+      max-width:580px;
+
+      @include textOverFlow;
+
+      min-height:14px;
+
+      left: 24px;
+
+      top:31px;
+
+      background-color: #ffffff;
+
+      font-size: 14px;
+
+      line-height: 1;
+
+      color: #999;
+
+      padding: 0 10px;
+
+    }
+
+    .byClassHour{
+
+      .trangle{
+
+        left: 406px;
+
+      }
+
+      .title{
+
+        margin-right:16px;
+
+        color:#666666;
+
+      }
+
+      .ant-spin-nested-loading{
+
+        &:nth-last-child(3){
+
+          display: inline-block;
+
+          vertical-align: middle;
+
+          margin-bottom: 6px;
+
+          margin-left:10px;
+
+        }
+
+        .title{
+
+          display: inline-block;
+
+          vertical-align: top;
+
+          margin-top: 20px;
+
+        }
+
+      }
+
+      .week-date{
+
+        font-size: 12px;
+
+        color: #999999;
+
+      }
+
+    }
+
+    .classHour-wrapper{
+
+      display: inline-block;
+
+      min-height: 56px;
+
+      margin-top: 20px;
+
+      max-width: 520px;
+
+    }
+
+    .noon{
+
+      position: relative;
+
+      &:after{
+
+        position: absolute;
+
+        content: '';
+
+        width: 0;
+
+        height: 0;
+
+        right: -18px;
+
+        top:10px;
+
+        border-width:4px;
+
+        border-style: solid;
+
+        border-color: transparent transparent transparent #999999;
+
+      }
+
+    }
+
+    .class-hour-item-wrapper{
+
+      &>div{
+
+        float: left;
+
+      }
+
+    }
+
+    .class-hour-item{
+
+      width:60px;
+
+      margin-left: 28px;
+
+      margin-bottom: 10px;
+
+      &:nth-child(5n+7){
+
+        margin-left:88px;
+
+      }
+
+      &:first-child{
+
+        margin-left:0;
+
+      }
+
+    }
+
+
+
+    .dateline-pick-wrapper{
+
+      position: relative;
+
+      width: 672px;
+
+      padding: 22px;
+
+      background-color: #f8f8f8;
+
+      border: 1px solid #d3d3c3;
+
+      margin-left: 104px;
+
+    }
+
+    .month-item{
+
+      width: 60px;
+
+      margin-left: 30px;
+
+      margin-bottom:10px;
+
+      &:nth-child(8n+1){
+
+        margin-left: 0;
+
+      }
+
+    }
+
+    .week-item{
+
+      width: 60px;
+
+      margin-left: 30px;
+
+      margin-bottom:10px;
+
+      &:nth-child(8n+1){
+
+        margin-left: 0;
+
+      }
+
+    }
+
+    .trangle{
+
+        position: absolute;
+
+        width: 16px;
+
+        height: 16px;
+
+        border-style: solid;
+
+        border-color:#d3d3d3 #d3d3d3 transparent transparent;
+
+        border-width: 1px;
+
+        top: -8px;
+
+      background-color: #f8f8f8;
+
+      @include transform(rotate(-45deg));
+
+    }
+
+  }
+
+  //与人换课
+
+  .change-schedule-wrapper{
+
+    padding:32px 45px;
+
+    .change-wrapper{
+
+      width: 300px;
+
+      height: 210px;
+
+      background-color:#f4f4f4;
+
+      padding:24px 40px;
+
+      &.origin-change-wrapper{
+
+        float: left;
+
+      }
+
+      &.target-change-wrapper{
+
+        float: right;
+
+      }
+
+    }
+
+    .title{
+
+      font-weight:bold;
+
+      text-align: center;
+
+      font-size: 16px;
+
+    }
+
+    .change-info-wrapper{
+
+      &:nth-child(2){
+
+        margin-top: 24px;
+
+      }
+
+      margin:18px auto;
+
+      &>div{
+
+        float: left;
+
+      }
+
+    }
+
+    .props{
+
+      font-size: 16px;
+
+      margin-right:20px;
+
+      color: #666666;
+
+    }
+
+    .ant-calendar-picker-input{
+
+      height: 28px;
+
+      line-height: 28px;
 
     }
 
