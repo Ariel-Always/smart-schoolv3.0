@@ -427,7 +427,7 @@ class ReplaceSchedule extends Component{
 
                         activeRadio==='date'?
 
-                            <div className="byWeek dateline-pick-wrapper clearfix">
+                            <div className="byDate dateline-pick-wrapper clearfix">
 
                                     <ConfigProvider locale={zhCN}>
 

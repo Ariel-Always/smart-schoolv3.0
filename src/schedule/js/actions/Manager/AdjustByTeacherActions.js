@@ -102,6 +102,33 @@ const  CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_ABLED = 'CHANGE_SHCEDULE_ORIGIN_T
 
 const CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_LIST_UPDATE = 'CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_LIST_UPDATE';
 
+const CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_DROP_SELECTD = 'CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_DROP_SELECTD';
+
+const CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_DISABLED = 'CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_DISABLED';
+
+
+const CHANGE_SHCEDULE_TARGET_TEACHER_DROP_CHANGE = 'CHANGE_SHCEDULE_TARGET_TEACHER_DROP_CHANGE';
+
+const CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_OPEN = 'CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_OPEN';
+
+const CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_CLOSE = 'CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_CLOSE';
+
+const CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LOADING_SHOW = 'CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LOADING_SHOW';
+
+const CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LIST_UPDATE = 'CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LIST_UPDATE';
+
+const CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LOADING_HIDE = 'CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LOADING_HIDE';
+
+const CHANGE_SHCEDULE_TARGET_TEACHER_DATE_PICK = 'CHANGE_SHCEDULE_TARGET_TEACHER_DATE_PICK';
+
+const  CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_ABLED = 'CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_ABLED';
+
+const CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_LIST_UPDATE = 'CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_LIST_UPDATE';
+
+const CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_DROP_SELECTD = 'CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_DROP_SELECTD';
+
+const CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_DISABLED = 'CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_DISABLED';
+
 
 
 
@@ -965,18 +992,94 @@ const originTeacherDropChange = (info) => {
 
     return ( dispatch,getState ) => {
 
-        let originDate = getState().Manager.AdjustByTeacherModal.changeSchedule;
+        let { originDate } = getState().Manager.AdjustByTeacherModal.changeSchedule;
 
         dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_DROP_CHANGE,data:{value:info.id,title:info.value}});
 
+        console.log(originDate);
+
         if (originDate !== ''){
 
+            let TeacherID = info.id;
 
+            let ClassDate = originDate;
+
+            let getChangeSchedulePromise = Method.getGetData(`/scheduleChangeTeacherSchedule?TeacherID${TeacherID}&ClassDate=${ClassDate}`);
+
+            getChangeSchedulePromise.then(json => {
+
+                if (json.StatusCode === 200 ){
+
+                    let list = json.Data.map(item => {
+
+                        let noon = '';
+
+                        switch (item.ClassHourType) {
+
+                            case 1:
+
+                                noon = '上午';
+
+                                break;
+
+                            case 2:
+
+                                noon = '下午';
+
+                                break;
+
+                            case 3:
+
+                                noon = '晚上';
+
+                                break;
+
+                            default:
+
+                                noon = '上午';
+
+                        }
+
+                        let title = <span>第{item.ClassHourNO}节<span className="noon">({noon})</span></span>
+
+                        return {
+
+                            value:item.ScheduleID,
+
+                            title:title
+
+                        }
+
+
+                    });
+
+                    dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_ABLED});
+
+                    dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_LIST_UPDATE,data:list})
+
+                }else{
+
+                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                            type:"btn-warn",
+
+                            title:json.Msg,
+
+                            ok:hideAlert(dispatch),
+
+                            close:hideAlert(dispatch),
+
+                            cancel:hideAlert(dispatch)
+
+                        }});
+
+                }
+
+            });
+
+            }
 
         }
-
-
-    }
 
 };
 //搜索原始教师
@@ -1083,7 +1186,7 @@ const originDateChecked = (date) => {
 
                 let ClassDate = date;
 
-                let getChangeSchedulePromise = Method.getGetData('/scheduleChangeTeacherSchedule');
+                let getChangeSchedulePromise = Method.getGetData(`/scheduleChangeTeacherSchedule?TeacherID${TeacherID}&ClassDate=${ClassDate}`);
 
                 getChangeSchedulePromise.then(json => {
 
@@ -1119,7 +1222,7 @@ const originDateChecked = (date) => {
 
                            }
 
-                           let title = <span>第{item.ClassHourNO}节<span class="noon">({noon})</span></span>
+                           let title = <span>第{item.ClassHourNO}节<span className="noon">({noon})</span></span>
 
                            return {
 
@@ -1158,7 +1261,320 @@ const originDateChecked = (date) => {
 
             }
 
+        }else{
+
+            dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_DISABLED});
+
+            dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_LIST_UPDATE,data:''});
+
         }
+
+    }
+
+};
+
+//待选节次变更
+const originScheduleDropChange = (info) => {
+
+    return ( dispatch ) => {
+
+        console.log(info);
+
+        dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_DROP_SELECTD,data:info});
+
+    }
+
+};
+
+const targetTeacherDropChange = (info) => {
+
+    return ( dispatch,getState ) => {
+
+        let { targetDate } = getState().Manager.AdjustByTeacherModal.changeSchedule;
+
+        dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_DROP_CHANGE,data:{value:info.id,title:info.value}});
+
+        if (targetDate !== ''){
+
+            let TeacherID = info.id;
+
+            let ClassDate = targetDate;
+
+            let getChangeSchedulePromise = Method.getGetData(`/scheduleChangeTeacherSchedule?TeacherID${TeacherID}&ClassDate=${ClassDate}`);
+
+            getChangeSchedulePromise.then(json => {
+
+                if (json.StatusCode === 200 ){
+
+                    let list = json.Data.map(item => {
+
+                        let noon = '';
+
+                        switch (item.ClassHourType) {
+
+                            case 1:
+
+                                noon = '上午';
+
+                                break;
+
+                            case 2:
+
+                                noon = '下午';
+
+                                break;
+
+                            case 3:
+
+                                noon = '晚上';
+
+                                break;
+
+                            default:
+
+                                noon = '上午';
+
+                        }
+
+                        let title = <span>第{item.ClassHourNO}节<span className="noon">({noon})</span></span>
+
+                        return {
+
+                            value:item.ScheduleID,
+
+                            title:title
+
+                        }
+
+
+                    });
+
+                    dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_ABLED});
+
+                    dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_LIST_UPDATE,data:list})
+
+                }else{
+
+                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                            type:"btn-warn",
+
+                            title:json.Msg,
+
+                            ok:hideAlert(dispatch),
+
+                            close:hideAlert(dispatch),
+
+                            cancel:hideAlert(dispatch)
+
+                        }});
+
+                }
+
+            });
+
+        }
+
+    }
+
+};
+//搜索待选教师
+const targetTeacherClickSearch = (key) => {
+
+    return (dispatch,getState) => {
+
+        if (key !== ''){
+
+            let SchoolID = getState().LoginUser;
+
+            dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_OPEN});
+
+            dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LOADING_SHOW});
+
+            let searchTeacherPromise = Method.getGetData(`/scheduleSubjectTeacherTeacher?SchoolID=${SchoolID}&key=${key}`);
+
+            searchTeacherPromise.then(json => {
+
+                if (json.Status === 200){
+
+                    let teacherSearchList = json.Data.map(item => {
+
+                        return{
+
+                            id:item.Teacher,
+
+                            name:item.TeacherName
+
+                        };
+
+                    });
+
+                    dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LIST_UPDATE,data:teacherSearchList});
+
+                    dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LOADING_HIDE});
+
+                }else{
+
+                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                            type:"btn-warn",
+
+                            title:json.Msg,
+
+                            ok:hideAlert(dispatch),
+
+                            close:hideAlert(dispatch),
+
+                            cancel:hideAlert(dispatch)
+
+                        }});
+
+                }
+
+            });
+
+        }else{
+
+            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                    type:"btn-warn",
+
+                    title:"搜索的内容不能为空！",
+
+                    ok:hideAlert(dispatch),
+
+                    close:hideAlert(dispatch),
+
+                    cancel:hideAlert(dispatch)
+
+                }});
+
+        }
+
+    };
+
+};
+//取消待选教师搜索
+const targetTeacherSearchClose = () => {
+
+    return dispatch => {
+
+        dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_CLOSE});
+
+    }
+
+};
+
+//待选教师日期改变
+const targetDateChecked = (date) => {
+
+    return (dispatch,getState) => {
+
+        dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_DATE_PICK,data:date});
+
+        if (date !== ''){
+
+            let { targetDropSelectd } = getState().Manager.AdjustByTeacherModal.changeSchedule;
+
+            if (targetDropSelectd.value){
+
+                let TeacherID = targetDropSelectd.value;
+
+                let ClassDate = date;
+
+                let getChangeSchedulePromise = Method.getGetData(`/scheduleChangeTeacherSchedule?TeacherID${TeacherID}&ClassDate=${ClassDate}`);
+
+                getChangeSchedulePromise.then(json => {
+
+                    if (json.StatusCode === 200 ){
+
+                        let list = json.Data.map(item => {
+
+                            let noon = '';
+
+                            switch (item.ClassHourType) {
+
+                                case 1:
+
+                                    noon = '上午';
+
+                                    break;
+
+                                case 2:
+
+                                    noon = '下午';
+
+                                    break;
+
+                                case 3:
+
+                                    noon = '晚上';
+
+                                    break;
+
+                                default:
+
+                                    noon = '上午';
+
+                            }
+
+                            let title = <span>第{item.ClassHourNO}节<span className="noon">({noon})</span></span>
+
+                            return {
+
+                                value:item.ScheduleID,
+
+                                title:title
+
+                            }
+
+
+                        });
+
+                        dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_ABLED});
+
+                        dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_LIST_UPDATE,data:list})
+
+                    }else{
+
+                        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                                type:"btn-warn",
+
+                                title:json.Msg,
+
+                                ok:hideAlert(dispatch),
+
+                                close:hideAlert(dispatch),
+
+                                cancel:hideAlert(dispatch)
+
+                            }});
+
+                    }
+
+                });
+
+            }
+
+        }else{
+
+            dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_DISABLED});
+
+            dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_LIST_UPDATE,data:''});
+
+        }
+
+    }
+
+};
+
+//待选节次变更
+const targetScheduleDropChange = (info) => {
+
+    return ( dispatch ) => {
+
+        dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_DROP_SELECTD,data:info});
 
     }
 
@@ -1285,6 +1701,32 @@ export default {
 
     CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_LIST_UPDATE,
 
+    CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_DROP_SELECTD,
+
+    CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_DISABLED,
+
+    CHANGE_SHCEDULE_TARGET_TEACHER_DROP_CHANGE,
+
+    CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_OPEN,
+
+    CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_CLOSE,
+
+    CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LOADING_SHOW,
+
+    CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LIST_UPDATE,
+
+    CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LOADING_HIDE,
+
+    CHANGE_SHCEDULE_TARGET_TEACHER_DATE_PICK,
+
+    CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_ABLED,
+
+    CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_LIST_UPDATE,
+
+    CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_DROP_SELECTD,
+
+    CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_DISABLED,
+
     replaceScheduleInit,
 
     teacherDropChange,
@@ -1321,6 +1763,18 @@ export default {
 
     originTeacherSearchClose,
 
-    originDateChecked
+    originDateChecked,
+
+    originScheduleDropChange,
+
+    targetTeacherDropChange,
+
+    targetTeacherClickSearch,
+
+    targetTeacherSearchClose,
+
+    targetDateChecked,
+
+    targetScheduleDropChange
 
 };

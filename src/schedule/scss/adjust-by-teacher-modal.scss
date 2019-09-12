@@ -281,35 +281,19 @@
 
       .trangle{
 
-        left:302px;
+        left:196px;
 
       }
 
     }
 
-    .date-wrapper{
+    .byDate{
 
-      position: absolute;
+      .trangle{
 
-      max-width:580px;
+        left:302px;
 
-      @include textOverFlow;
-
-      min-height:14px;
-
-      left: 24px;
-
-      top:31px;
-
-      background-color: #ffffff;
-
-      font-size: 14px;
-
-      line-height: 1;
-
-      color: #999;
-
-      padding: 0 10px;
+      }
 
     }
 
@@ -362,6 +346,32 @@
         color: #999999;
 
       }
+
+    }
+
+    .date-wrapper{
+
+      position: absolute;
+
+      max-width:580px;
+
+      @include textOverFlow;
+
+      min-height:14px;
+
+      left: 24px;
+
+      top:31px;
+
+      background-color: #ffffff;
+
+      font-size: 14px;
+
+      line-height: 1;
+
+      color: #999;
+
+      padding: 0 10px;
 
     }
 
@@ -573,7 +583,7 @@
 
       font-size: 16px;
 
-      margin-right:20px;
+      margin-right:12px;
 
       color: #666666;
 
@@ -584,6 +594,20 @@
       height: 28px;
 
       line-height: 28px;
+
+    }
+
+    .dropdown_container{
+
+      .noon{
+
+        color: #999999;
+
+        font-size: 12px;
+
+        padding-left: 8px;
+
+      }
 
     }
 

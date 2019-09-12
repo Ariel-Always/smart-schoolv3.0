@@ -27,7 +27,6 @@ class ChangeSchedule extends Component{
         dispatch(ABTActions.originTeacherDropChange(info));
 
     }
-
     //搜索教师
     originTeacherClickSearch(e){
 
@@ -46,12 +45,65 @@ class ChangeSchedule extends Component{
         dispatch(ABTActions.originTeacherSearchClose())
 
     }
-
+    //日期选择
     originDateChecked(date,dateString){
 
         const { dispatch } = this.props;
 
         dispatch(ABTActions.originDateChecked(dateString));
+
+    }
+    //原始节次选择
+    originScheduleDropChange(info){
+
+        const { dispatch } = this.props;
+
+        dispatch(ABTActions.originScheduleDropChange(info));
+
+    }
+
+
+
+    //点击选择待选的教师
+    targetTeacherDropChange(info){
+
+        const { dispatch } = this.props;
+
+        dispatch(ABTActions.targetTeacherDropChange(info));
+
+    }
+    //搜索待选教师
+    targetTeacherClickSearch(e){
+
+        const key = e.value;
+
+        const { dispatch } = this.props;
+
+        dispatch(ABTActions.targetTeacherClickSearch(key));
+
+    }
+    //取消待选搜索
+    targetTeacherSearchClose(){
+
+        const  { dispatch } = this.props;
+
+        dispatch(ABTActions.targetTeacherSearchClose())
+
+    }
+    //待选日期选择
+    targetDateChecked(date,dateString){
+
+        const { dispatch } = this.props;
+
+        dispatch(ABTActions.targetDateChecked(dateString));
+
+    }
+    //待选节次选择
+    targetScheduleDropChange(info){
+
+        const { dispatch } = this.props;
+
+        dispatch(ABTActions.targetScheduleDropChange(info));
 
     }
 
@@ -76,7 +128,25 @@ class ChangeSchedule extends Component{
 
             originSchedulePickDisabled,
 
-            originScheduleList
+            originScheduleList,
+
+            originScheduleDropSelectd,
+
+            targetDropSelectd,
+
+            targetSearchList,
+
+            targetSearchOpen,
+
+            targetSearchLoadingShow,
+
+            targetDate,
+
+            targetSchedulePickDisabled,
+
+            targetScheduleList,
+
+            targetScheduleDropSelectd
 
         } = changeSchedule;
 
@@ -128,7 +198,15 @@ class ChangeSchedule extends Component{
 
                         <div className="props">节次:</div>
 
-                        <DropDown dropList={originScheduleList} disabled={originSchedulePickDisabled}></DropDown>
+                        <DropDown
+                            dropSelectd={originScheduleDropSelectd?originScheduleDropSelectd:{value:"none",title:"请选择节次"}}
+                            dropList={originScheduleList}
+                            width={150}
+                            height={108}
+                            disabled={originSchedulePickDisabled}
+                            onChange={this.originScheduleDropChange.bind(this)}>
+
+                        </DropDown>
 
                     </div>
 
@@ -137,6 +215,58 @@ class ChangeSchedule extends Component{
                 <div className="target-change-wrapper change-wrapper">
 
                     <div className="title">进行换课的老师及课程</div>
+
+                    <div className="change-info-wrapper clearfix">
+
+                        <div className="props">老师:</div>
+
+                        <DropDown  width={150}
+                                   dropSelectd={targetDropSelectd?targetDropSelectd:{value:"none",title:"请选择任课教师"}}
+                                   type="multiple"
+                                   style={{zIndex:5}}
+                                   mutipleOptions={{
+                                       range:2,
+                                       dropMultipleList:teacherList,
+                                       dropMultipleChange:this.targetTeacherDropChange.bind(this),
+                                       dropClickSearch:this.targetTeacherClickSearch.bind(this),
+                                       dropCancelSearch:this.targetTeacherSearchClose.bind(this),
+                                       searchList:targetSearchList,
+                                       searchPlaceholder:"请输入教师名称进行搜索...",
+                                       searchOpen:targetSearchOpen,
+                                       searchLoadingShow:targetSearchLoadingShow
+                                   }}>
+
+                        </DropDown>
+
+                    </div>
+
+                    <div className="change-info-wrapper clearfix">
+
+                        <div className="props">日期:</div>
+
+                        <ConfigProvider locale={zhCN}>
+
+                            <DatePicker style={{width:150,marginLeft:8,height:28}}  value={targetDate?moment(targetDate,'YYYY-MM-DD'):null} onChange={this.targetDateChecked.bind(this)}></DatePicker>
+
+                        </ConfigProvider>
+
+                    </div>
+
+                    <div className="change-info-wrapper clearfix">
+
+                        <div className="props">节次:</div>
+
+                        <DropDown
+                            dropSelectd={targetScheduleDropSelectd?targetScheduleDropSelectd:{value:"none",title:"请选择节次"}}
+                            dropList={targetScheduleList}
+                            width={150}
+                            height={108}
+                            disabled={targetSchedulePickDisabled}
+                            onChange={this.targetScheduleDropChange.bind(this)}>
+
+                        </DropDown>
+
+                    </div>
 
                 </div>
 

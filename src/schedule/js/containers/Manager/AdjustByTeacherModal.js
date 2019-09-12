@@ -6,6 +6,8 @@ import { Tabs } from 'antd';
 
 import { Modal } from "../../../../common";
 
+import ABTAction from "../../actions/Manager/AdjustByTeacherActions";
+
 import ReplaceSchedule from './ReplaceSchedule';
 
 import ChangeSchedule from './ChangeSchedule'
@@ -15,6 +17,16 @@ const { TabPane  } = Tabs;
 
 
 class AdjustByTeacherModal extends Component{
+
+    CloseModal(){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:ABTAction.ADJUST_BY_TEACHER_HIDE});
+
+    }
+
+
     render() {
 
         const { AdjustByTeacherModal } = this.props;
@@ -26,13 +38,15 @@ class AdjustByTeacherModal extends Component{
         } = AdjustByTeacherModal;
 
         return (
+
             <Modal className="adjust-by-teacher-modal"
                    title="按老师调整课程"
                    type={1}
                    visible={show}
                    width={840}
                    mask={true}
-                   cancelText="取消">
+                   cancelText="取消"
+                   onCancel={this.CloseModal.bind(this)} >
 
                 <div className="modal-wrapper">
 
@@ -61,8 +75,11 @@ class AdjustByTeacherModal extends Component{
                 </div>
 
             </Modal>
+
         );
+
     }
+
 }
 
 const mapStateToProps = (state) => {
