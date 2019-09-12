@@ -269,6 +269,8 @@ class ChangeSchedule extends Component{
                     </div>
 
                 </div>
+                
+                <div className="arr-wrapper"></div>
 
             </div>
 
