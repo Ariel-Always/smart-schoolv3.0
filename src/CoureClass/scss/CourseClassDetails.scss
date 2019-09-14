@@ -1,0 +1,64 @@
+.CourseClassDetails {
+  height: 100%;
+  width: 100%;
+  .details-tips {
+    height: 40px;
+    background-color: #eeeeee;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    padding: 0 20px;
+
+    .tips-content{
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        color: #333;
+        font-size:12px;
+        .tips{
+            color: #999;
+        }
+    }
+
+    .className{
+        padding-left:25px;
+        font-size: 16px;
+        background: url(../images/inage-class.png) no-repeat left center;
+        background-size: 20px 13px;
+    }
+    .classTeacher{
+        color: #0099ff;
+        cursor: pointer;
+    }
+  }
+
+  .table{
+      overflow: hidden;
+    .ant-table-thead {
+        th {
+          padding: 0 10px;
+          &:first-of-type {
+            padding: 0 25px;
+          }
+        }
+      }
+      .ant-table-tbody > tr {
+        height: 48px;
+      }
+      .ant-table-row {
+        td {
+          padding: 10px;
+          white-space: nowrap;
+          &:first-of-type {
+            // padding: 10px 39px;
+          }
+          &:last-of-type {
+            //width: 320px;
+          }
+        }
+      }
+      .ant-table-column-title {
+        white-space: nowrap;
+      }
+  }
+}

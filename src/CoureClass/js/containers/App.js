@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Frame, Menu, Loading, Alert, LeftMenu ,Modal} from "../../../common";
+import { Frame, Menu, Loading, Alert, LeftMenu, Modal } from "../../../common";
 import { connect } from 'react-redux';
 import TimeBanner from '../component/TimeBanner'
 
@@ -11,7 +11,9 @@ import All from '../component/All'
 import Subject from '../component/Subject'
 import Search from '../component/Search'
 import Class from '../component/Class'
+import HandleCourseClass from '../component/HandleCourseClass'
 
+import CourseClassDetails from '../component/CourseClassDetails'
 
 //import Subject from '../component/Subject'
 import '../../scss/index.scss'
@@ -114,14 +116,14 @@ class App extends Component {
 
             dispatch({ type: actions.UpUIState.RIGHT_LOADING_OPEN });
             //if (DataState.getSubjectAllMsg[routeID] === undefined)
-                dispatch(actions.UpDataState.getSubjectAllMsg('/CoureClass_Subject?schoolID=sss', routeID));
+            dispatch(actions.UpDataState.getSubjectAllMsg('/CoureClass_Subject?schoolID=sss', routeID));
             if (!DataState.GetCoureClassAllMsg.MenuParams)
                 return;
             dispatch(actions.UpDataState.setCoureClassAllMsg(routeID));
 
         } else if (handleRoute === 'Subject' && subjectID === 'Class') {
             dispatch(actions.UpDataState.getSubjectAllMsg('/CoureClass_Subject?schoolID=sss', routeID));
-            dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss', routeID,classID));
+            dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss', routeID, classID));
 
             if (!DataState.GetCoureClassAllMsg.MenuParams)
                 return;
@@ -156,7 +158,24 @@ class App extends Component {
     }
 
 
-
+    //模态框关闭
+    CourseClassDetailsModalOk = () => {
+        const { dispatch, DataState } = this.props;
+        dispatch(actions.UpUIState.CourseClassDetailsModalClose())
+    }
+    CourseClassDetailsModalCancel = () => {
+        const { dispatch, DataState } = this.props;
+        dispatch(actions.UpUIState.CourseClassDetailsModalClose())
+    }
+    //编辑教学班模态框
+    ChangeCourseClassModalOk = () => {
+        const { dispatch, DataState } = this.props;
+        dispatch(actions.UpUIState.ChangeCourseClassModalClose())
+    }
+    ChangeCourseClassModalCancel = () => {
+        const { dispatch, DataState } = this.props;
+        dispatch(actions.UpUIState.ChangeCourseClassModalClose())
+    }
     render() {
         const { UIState, DataState } = this.props;
         console.log(DataState.GetCoureClassAllMsg.MenuParams)
@@ -225,9 +244,23 @@ class App extends Component {
                     type='1'
                     title={'教学班详情'}
                     visible={UIState.SetCourseClassDetailsModalShow.setCourseClassDetailsMadalShow}
-                    onOk={this.SetSubjectTeacherModalOk}
-                    onCancel={this.SetSubjectTeacherModalCancel}>
-
+                    onOk={this.CourseClassDetailsModalOk}
+                    onCancel={this.CourseClassDetailsModalCancel}>
+                    <Loading spinning={UIState.AppLoading.modalLoading}>
+                        <CourseClassDetails></CourseClassDetails>
+                    </Loading>
+                </Modal>
+                <Modal ref='CourseClassDetailsMadal'
+                    bodyStyle={{ padding: 0 }}
+                    type='1'
+                    width={680}
+                    title={'编辑教学班'}
+                    visible={UIState.ChangeCourseClassModalShow.Show}
+                    onOk={this.ChangeCourseClassModalOk}
+                    onCancel={this.ChangeCourseClassModalCancel}>
+                    <Loading spinning={UIState.AppLoading.modalLoading}>
+                        <HandleCourseClass></HandleCourseClass>
+                    </Loading>
                 </Modal>
             </React.Fragment >
 

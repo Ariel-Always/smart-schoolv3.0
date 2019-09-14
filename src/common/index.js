@@ -161,7 +161,7 @@ class Button extends React.Component {
 
         }
         console.log(style)
-        return {style};
+        return { style };
     }
     render() {
         return (
@@ -1308,10 +1308,10 @@ class Menu extends React.Component {
 
     /*参数解构*/
     paramsDeconstruction(props) {
-        
-        if(!props.params)
-        return ;
-        
+
+        if (!props.params)
+            return;
+
         const { initParams, ...reset } = props.params;
         let { children, MenuBox } = { ...reset };
         let layer = 1;
@@ -1351,7 +1351,7 @@ class Menu extends React.Component {
                                 </span>
                                 <span className="frame_leftmenu_arrow" ></span>
                             </div>
-                            <div className="frame_leftmenu_nextgrade_container" style={{ display: object.selected ? 'block' :'none' }}>
+                            <div className="frame_leftmenu_nextgrade_container" style={{ display: object.selected ? 'block' : 'none' }}>
 
                                 {this.objectDeconstruction(children, myLayer + 1)}
 
@@ -1457,12 +1457,12 @@ class Menu extends React.Component {
         //为左侧菜单设置固定高
         let height = window.innerHeight;
         this.setState({
-            height:height-100
+            height: height - 100
         })
         this.paramsDeconstruction(this.props)
     }
     componentWillReceiveProps(nextProps) {
-        
+
         this.paramsDeconstruction(nextProps)//props有变化时执行
 
 
@@ -1475,7 +1475,7 @@ class Menu extends React.Component {
                 style={{ width: this.state.MenuBoxWidth, display: this.state.MenuBoxShow }}
             >
                 <div className={`MenuBox_top ${this.state.MenuBoxTopPic}`}></div>
-                <div id="frame_left_menu_container" className="frame_left_menu_container" style={{height:this.state.height?this.state.height:600+'px'}}>{this.state.menuDom}</div>
+                <div id="frame_left_menu_container" className="frame_left_menu_container" style={{ height: this.state.height ? this.state.height : 600 + 'px' }}>{this.state.menuDom}</div>
             </div>
         )
     }
@@ -1820,7 +1820,9 @@ class DetailsModal extends React.Component {
                 {...params}
             >
                 <div className='modal-top'>
-                    <img alt={data.userName} src={data.userImg} className='top-img'></img>
+                    <div className='top-img'>
+                        <img width={80} height={80} alt={data.userName} src={data.userImg} ></img>
+                    </div>
                     <p className='top-userName'>{data.userName}<span style={{ opacity: 0.64, marginLeft: 3 + 'px' }}>{(data.Gende === '男' ? '♂' : data.userName + data.Gende === '女' ? '♀' : '')}</span></p>
                     <p className='top-userText'>{data.userText}</p>
                 </div>
@@ -1832,13 +1834,19 @@ class DetailsModal extends React.Component {
                             </span>
                             <span className='col-right'>{data.userID ? data.userID : <span className='content-null'>未填写</span>}</span>
                         </div>
-                        <div className='row' style={{ marginBottom: 20 + 'px' }}>
+                        <div className='row' >
                             <span className='col-left'>
-                                {type === 'student' ? '班级' : '工班级号'}
+                                {type === 'student' ? '班级' : '所教学科'}
                             </span>
-                            <span className='col-right'>{data.userGrade && data.userClass ? (data.userGrade + ' > ' + data.userClass) : <span className='content-null'>未填写</span>}</span>
+                            <span className='col-right'>{type === 'student' ? data.userGrade && data.userClass ? (data.userGrade + ' > ' + data.userClass) : <span className='content-null'>未填写</span> : data.subjectNames ? data.subjectNames : <span className='content-null'>未填写</span>}</span>
                         </div>
-                        <div className='row'>
+                        <div className='row' style={{ display: type === 'teacher' ? 'block' : 'none' }}>
+                            <span className='col-left'>
+                                {'职称'}
+                            </span>
+                            <span className='col-right'>{data.titleName ? data.titleName : <span className='content-null'>未填写</span>}</span>
+                        </div>
+                        <div className='row' style={{ marginTop: 20 + 'px' }}>
                             <span className='col-left'>
                                 {'身份证号码'}
                             </span>
@@ -1876,7 +1884,7 @@ class DetailsModal extends React.Component {
                         </div>
                     </div>
                 </div>
-            </AntdModal>
+            </AntdModal >
         )
     }
 }

@@ -19,8 +19,12 @@ const SET_COURE_CLASS_ALL_MSG = 'SET_COURE_CLASS_ALL_MSG'
 const GET_SUBJECT_ALL_MSG = 'GET_SUBJECT_ALL_MSG'
 //获取年级总览
 const GET_CLASS_ALL_MSG = 'GET_CLASS_ALL_MSG'
-
-
+//获取行政班信息
+const GET_COURSE_CLASS_DETAILS_MSG = 'GET_COURSE_CLASS_DETAILS_MSG'
+// 弹窗获取学校教师信息
+const GET_TEACHER_MSG = 'GET_TEACHER_MSG'
+//编辑教学班信息
+const GET_COURSE_CLASS_DETAILS_HANDEL_CLASS_MSG = 'GET_COURSE_CLASS_DETAILS_HANDEL_CLASS_MSG';
 //操作的执行
 //获取登录用户信息
 const getLoginUser = (url) => {
@@ -100,6 +104,60 @@ const getClassAllMsg = (url, subject, Class) => {
         });
     }
 }
+//获取教学班信息
+const getCourseClassDetailsMsg = (url) => {
+    return (dispatch) => {
+        dispatch({ type: actions.UpUIState.MODAL_LOADING_OPEN });
+
+        getData(CONFIG.proxy + url).then(res => {
+            return res.json()
+        }).then(json => {
+            if (json.Status === 400) {
+                console.log('错误码：' + json.Status)
+            } else if (json.Status === 200) {
+                console.log(json.Data)
+                dispatch({ type: GET_COURSE_CLASS_DETAILS_MSG, data: json.Data });
+                dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
+            }
+        });
+    }
+}
+//获取学校教师信息
+const getTeacherMsg = (url) => {
+    return (dispatch) => {
+        getData(CONFIG.Xproxy + url).then(res => {
+
+            return res.json()
+        }).then(json => {
+            if (json.Status === 400) {
+                console.log('错误码：' + json.Status)
+            } else if (json.Status === 200) {
+                console.log(json.Data)
+
+                dispatch({ type: GET_TEACHER_MSG, data: json.Data });
+                dispatch({ type: actions.UpUIState.SUBJECT_DETAILS_MODAL_OPEN });
+            }
+        });
+    }
+}
+//获取教学班信息
+const getCourseClassDetailsHandleClassMsg = (url) => {
+    return (dispatch) => {
+        dispatch({ type: actions.UpUIState.MODAL_LOADING_OPEN });
+
+        getData(CONFIG.proxy + url).then(res => {
+            return res.json()
+        }).then(json => {
+            if (json.Status === 400) {
+                console.log('错误码：' + json.Status)
+            } else if (json.Status === 200) {
+                console.log(json.Data)
+                dispatch({ type: GET_COURSE_CLASS_DETAILS_HANDEL_CLASS_MSG, data: json.Data });
+                dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
+            }
+        });
+    }
+}
 export default {
     getLoginUser,
     GET_LOGIN_USER_INFO,
@@ -110,6 +168,12 @@ export default {
     GET_SUBJECT_ALL_MSG,
     getSubjectAllMsg,
     GET_CLASS_ALL_MSG,
-    getClassAllMsg
+    getClassAllMsg,
+    GET_COURSE_CLASS_DETAILS_MSG,
+    getCourseClassDetailsMsg,
+    getTeacherMsg,
+    GET_TEACHER_MSG,
+    GET_COURSE_CLASS_DETAILS_HANDEL_CLASS_MSG,
+    getCourseClassDetailsHandleClassMsg
 
 }

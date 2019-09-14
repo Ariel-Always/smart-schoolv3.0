@@ -2,7 +2,10 @@ import React from 'react'
 import { connect } from 'react-redux';
 import actions from '../actions';
 import '../../scss/Class.scss'
+import { postData, getData } from '../../../common/js/fetch'
+
 import history from '../containers/history'
+import CONFIG from '../../../common/js/config';
 import { Table, Button, PagiNation, CheckBox, CheckBoxGroup } from "../../../common";
 
 class Class extends React.Component {
@@ -81,7 +84,7 @@ class Class extends React.Component {
                     }
                 }
             ],
-            checkList: [],
+            checkedList: [],
             checkAll: false
         })
     }
@@ -102,26 +105,45 @@ class Class extends React.Component {
 
     //列表复选框改变事件
     onTableCheckBoxChange = (e) => {
-        console.log(e.target.value)
+        //console.log(e.target.value)
         const { DataState, UIState } = this.props;
-        let checkList = this.state.checkList;
+        let checkedList = this.state.checkedList;
 
        
     }
     //列表班级点击事件
     onCourseClassClick = (classID) => {
-        //console.log('ss' + classID)
+        console.log('ss' + classID)
         const { dispatch, DataState,UIState } = this.props;
         dispatch(actions.UpUIState.CourseClassDetailsModalOpen())
+        dispatch(actions.UpDataState.getCourseClassDetailsMsg('/CoureClass_studentMsg?schoolID=sss'))
     }
     //列表操作编辑点击事件
     onHandleClassClick = (key) => {
-        //console.log(key)
+        const { dispatch, DataState,UIState } = this.props;
+        let ClassID = DataState.GetClassAllMsg.allClass.TableData[key].CourseClass.ClassID;
+        console.log(key)
+        dispatch(actions.UpUIState.ChangeCourseClassModalOpen())
+        dispatch(actions.UpDataState.getCourseClassDetailsHandleClassMsg('/CoureClass_studentMsg?courseClassID='+ClassID))
+
 
     }
     //列表操作删除点击事件
     onDeleteClassClick = (key) => {
+        const { dispatch, DataState,UIState } = this.props;
+        let checkedList = this.state.checkedList
+        let len = checkedList.length;
+        let source =  DataState.GetClassAllMsg.allClass.TableData;
         console.log(key)
+        let courseClassID = source[key].CourseClass.ClassID;
+        dispatch(actions.UpUIState.showErrorAlert({
+            type: 'btn-warn',
+            title: "您确定删除？",
+            ok: this.onAppAlertDeleteOK.bind(this),
+            cancel: this.onAppAlertCancel.bind(this),
+            close: this.onAppAlertClose.bind(this)
+        }));
+        
 
     }
     //列表分页改变事件
@@ -141,8 +163,13 @@ class Class extends React.Component {
     }
     //列表多选
     onCheckBoxGroupChange = (value) => {
+        let checkAll = false;
+        if(value.length===this.state.options.length){
+            checkAll = true;
+        }
         this.setState({
-            checkedList:value
+            checkedList:value,
+            checkAll:checkAll
         })
     }
     //列表全选
@@ -161,6 +188,91 @@ class Class extends React.Component {
             checkedList:checkList
         })
     }
+    //全选删除
+    onDeleteAllClick = () => {
+        const { dispatch, DataState } = this.props;
+        let checkedList = this.state.checkedList
+        let len = checkedList.length;
+        console.log(this.state.checkedList)
+        if(len===0){
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-error',
+                title: "您还没有选择哦~",
+                ok: this.onAppAlertOK.bind(this),
+                cancel: this.onAppAlertCancel.bind(this),
+                close: this.onAppAlertClose.bind(this)
+            }));
+        }else{
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-warn',
+                title: "您确定删除？",
+                ok: this.onAppAlertDeleteAllOK.bind(this,checkedList),
+                cancel: this.onAppAlertCancel.bind(this),
+                close: this.onAppAlertClose.bind(this)
+            }));
+        }
+    }
+    //通用提示弹窗
+    onAppAlertOK() {
+        const { dispatch } = this.props;
+        dispatch(actions.UpUIState.hideErrorAlert());
+
+    }
+    onAppAlertCancel() {
+        const { dispatch } = this.props;
+        dispatch(actions.UpUIState.hideErrorAlert());
+    }
+    onAppAlertClose() {
+        const { dispatch } = this.props;
+        dispatch(actions.UpUIState.hideErrorAlert());
+    }
+
+    //删除提示框
+    onAppAlertDeleteAllOK = (checkedList) => {
+        const { dispatch } = this.props;
+
+        let url = '/DeleteSubject';
+        dispatch(actions.UpUIState.hideErrorAlert());
+        postData(CONFIG.proxy + url, {
+            courseClassID:checkedList.join()
+        }).then(res => {
+            return res.json()
+        }).then(json => {
+            if (json.Status === 400) {
+                console.log('错误码：' + json.Status)
+            } else if (json.Status === 200) {
+                dispatch(actions.UpUIState.showErrorAlert({
+                    type: 'success',
+                    title: "成功",
+                    onHide: this.onAlertWarnHide.bind(this)
+                }));
+            }
+        })
+    }
+    onAppAlertDeleteOK = () => {
+        const { dispatch, DataState,UIState } = this.props;
+        let source =  DataState.GetClassAllMsg.allClass.TableData;
+        console.log(key)
+        let courseClassID = source[key].CourseClass.ClassID;
+        let url = '/DeleteSubject';
+        dispatch(actions.UpUIState.hideErrorAlert());
+        postData(CONFIG.proxy + url, {
+            courseClassID:courseClassID
+        }).then(res => {
+            return res.json()
+        }).then(json => {
+            if (json.Status === 400) {
+                console.log('错误码：' + json.Status)
+            } else if (json.Status === 200) {
+                dispatch(actions.UpUIState.showErrorAlert({
+                    type: 'success',
+                    title: "成功",
+                    onHide: this.onAlertWarnHide.bind(this)
+                }));
+            }
+        })
+    }
+
     render() {
         const { DataState, UIState } = this.props;
         let tips = DataState.GetClassAllMsg.allClass && DataState.GetCoureClassAllMsg.Subjects ? DataState.GetCoureClassAllMsg.Subjects[DataState.GetClassAllMsg.allClass.subject].subjectName + '教学班>' + DataState.GetCoureClassAllMsg.Subjects[DataState.GetClassAllMsg.allClass.subject][DataState.GetClassAllMsg.allClass.Class] : '';
