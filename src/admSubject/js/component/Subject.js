@@ -435,7 +435,7 @@ class Subject extends React.Component {
                     onOk={this.SubjectDetailsMsgModalOk}
                     onCancel={this.SubjectDetailsMsgModalCancel}
                     data={DataState.TeacherMsg ? DataState.TeacherMsg.data : {}}
-                    type='Teacher'
+                    type='teacher'
                 >
 
                 </DetailsModal>

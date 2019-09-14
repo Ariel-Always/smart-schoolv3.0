@@ -31,7 +31,6 @@ function handleData(data){
         subjectNames:data.SubjectNames,
         source:data.Source,
         position:data.Position
-        
     }
 }
 export default TeacherMsg;

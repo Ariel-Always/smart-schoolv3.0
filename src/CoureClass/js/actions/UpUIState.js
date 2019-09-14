@@ -39,6 +39,22 @@ const TABLE_LOADING_OPEN =  'TABLE_LOADING_OPEN';
 const COURSE_CLASS_DETAILS_MODAL_CLOSE =  'COURSE_CLASS_DETAILS_MODAL_CLOSE';
 const COURSE_CLASS_DETAILS_MODAL_OPEN =  'COURSE_CLASS_DETAILS_MODAL_OPEN';
 
+//编辑教学班弹窗
+const CHANGE_COURSE_CLASS_MODAL_OPEN = 'CHANGE_COURSE_CLASS_MODAL_OPEN'
+const CHANGE_COURSE_CLASS_MODAL_CLOSE = 'CHANGE_COURSE_CLASS_MODAL_CLOSE'
+//添加教学班弹窗
+const ADD_COURSE_CLASS_MODAL_OPEN = 'ADD_COURSE_CLASS_MODAL_OPEN'
+const ADD_COURSE_CLASS_MODAL_CLOSE = 'ADD_COURSE_CLASS_MODAL_CLOSE'
+
+
+
+
+
+
+
+
+
+
 //操作
 const showErrorAlert = (alertMsg)=> {
     return {type:SHOW_ERROR_ALERT,msg:alertMsg};
@@ -88,6 +104,25 @@ const CourseClassDetailsModalOpen = () => {
 const CourseClassDetailsModalClose = () => {
     return {type:COURSE_CLASS_DETAILS_MODAL_CLOSE};
 }
+//编辑教学班
+const ChangeCourseClassModalOpen = () => {
+    return {type:CHANGE_COURSE_CLASS_MODAL_OPEN};
+}
+const ChangeCourseClassModalClose = () => {
+    return {type:CHANGE_COURSE_CLASS_MODAL_CLOSE};
+}
+//添加教学班
+const AddCourseClassModalOpen = () => {
+    return {type:ADD_COURSE_CLASS_MODAL_OPEN};
+}
+const AddCourseClassModalClose = () => {
+    return {type:ADD_COURSE_CLASS_MODAL_CLOSE};
+}
+
+
+
+
+
 export default {
     APP_LOADING_CLOSE,
     APP_LOADING_OPEN,
@@ -131,5 +166,13 @@ export default {
     COURSE_CLASS_DETAILS_MODAL_OPEN,
     COURSE_CLASS_DETAILS_MODAL_CLOSE,
     CourseClassDetailsModalOpen,
-    CourseClassDetailsModalClose
+    CourseClassDetailsModalClose,
+    CHANGE_COURSE_CLASS_MODAL_OPEN,
+    CHANGE_COURSE_CLASS_MODAL_CLOSE,
+    ADD_COURSE_CLASS_MODAL_OPEN,
+    ADD_COURSE_CLASS_MODAL_CLOSE,
+    ChangeCourseClassModalOpen,
+    ChangeCourseClassModalClose,
+    AddCourseClassModalOpen,
+    AddCourseClassModalClose
 }
