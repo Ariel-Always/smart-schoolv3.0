@@ -102,7 +102,25 @@ const AdjustByTeacherModal = (state={
 
         originSchedulePickDisabled:true,
 
-        originScheduleList:[]
+        originScheduleList:[],
+
+        originScheduleDropSelectd:"",
+
+        targetDropSelectd:"",
+
+        targetSearchList:[],
+
+        targetSearchOpen:false,
+
+        targetSearchLoadingShow:true,
+
+        targetDate:'',
+
+        targetSchedulePickDisabled:true,
+
+        targetScheduleList:[],
+
+        targetScheduleDropSelectd:""
 
     }
 
@@ -214,7 +232,25 @@ const AdjustByTeacherModal = (state={
 
                     originSchedulePickDisabled:true,
 
-                    originScheduleList:[]
+                    originScheduleList:[],
+
+                    originScheduleDropSelectd:"",
+
+                    targetDropSelectd:"",
+
+                    targetSearchList:[],
+
+                    targetSearchOpen:false,
+
+                    targetSearchLoadingShow:true,
+
+                    targetDate:'',
+
+                    targetSchedulePickDisabled:true,
+
+                    targetScheduleList:[],
+
+                    targetScheduleDropSelectd:""
 
                 }
 
@@ -984,6 +1020,219 @@ const AdjustByTeacherModal = (state={
                     ...state.changeSchedule,
 
                     originScheduleList:actions.data
+
+                }
+
+            };
+
+        case ABTActions.CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_DROP_SELECTD:
+
+            return {
+
+                ...state,
+
+                changeSchedule:{
+
+                    ...state.changeSchedule,
+
+                    originScheduleDropSelectd:actions.data
+
+                }
+
+            };
+
+        case ABTActions.CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_DISABLED:
+
+            return {
+
+                ...state,
+
+                changeSchedule:{
+
+                    ...state.changeSchedule,
+
+                    originSchedulePickDisabled:true
+
+                }
+
+            };
+
+        case ABTActions.CHANGE_SHCEDULE_TARGET_TEACHER_DROP_CHANGE:
+
+            return {
+
+                ...state,
+
+                changeSchedule:{
+
+                    ...state.changeSchedule,
+
+                    targetDropSelectd:actions.data
+
+                }
+
+            };
+
+        case ABTActions.CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LIST_UPDATE:
+
+            return {
+
+                ...state,
+
+                changeSchedule:{
+
+                    ...state.changeSchedule,
+
+                    targetSearchList:actions.data
+
+                }
+
+            };
+
+        case ABTActions.CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_OPEN:
+
+            return {
+
+                ...state,
+
+                changeSchedule:{
+
+                    ...state.changeSchedule,
+
+
+                    targetSearchOpen:true
+
+                }
+
+            };
+
+        case ABTActions.CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_CLOSE:
+
+            return {
+
+                ...state,
+
+                changeSchedule:{
+
+                    ...state.changeSchedule,
+
+
+                    targetSearchOpen:false
+
+                }
+
+            };
+
+        case ABTActions.CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LOADING_HIDE:
+
+            return {
+
+                ...state,
+
+                changeSchedule:{
+
+                    ...state.changeSchedule,
+
+
+                    targetSearchLoadingShow:false
+
+                }
+
+            };
+
+        case ABTActions.CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LOADING_SHOW:
+
+            return {
+
+                ...state,
+
+                changeSchedule:{
+
+                    ...state.changeSchedule,
+
+
+                    targetSearchLoadingShow:true
+
+                }
+
+            };
+
+        case ABTActions.CHANGE_SHCEDULE_TARGET_TEACHER_DATE_PICK:
+
+            return {
+
+                ...state,
+
+                changeSchedule:{
+
+                    ...state.changeSchedule,
+
+
+                    targetDate:actions.data
+
+                }
+
+            };
+
+        case ABTActions.CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_ABLED:
+
+            return {
+
+                ...state,
+
+                changeSchedule:{
+
+                    ...state.changeSchedule,
+
+                    targetSchedulePickDisabled:false
+
+                }
+
+            };
+
+        case ABTActions.CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_LIST_UPDATE:
+
+            return {
+
+                ...state,
+
+                changeSchedule:{
+
+                    ...state.changeSchedule,
+
+                    targetScheduleList:actions.data
+
+                }
+
+            };
+
+        case ABTActions.CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_DROP_SELECTD:
+
+            return {
+
+                ...state,
+
+                changeSchedule:{
+
+                    ...state.changeSchedule,
+
+                    targetScheduleDropSelectd:actions.data
+
+                }
+
+            };
+
+        case ABTActions.CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_DISABLED:
+
+            return {
+
+                ...state,
+
+                changeSchedule:{
+
+                    ...state.changeSchedule,
+
+                    targetSchedulePickDisabled:true
 
                 }
 

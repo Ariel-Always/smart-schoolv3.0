@@ -1,0 +1,52 @@
+.base-setting-wrapper{
+
+  .title-bar{
+
+    height: 36px;
+
+    margin:16px 32px 0 54px;
+
+    line-height: 36px;
+
+    color: #333333;
+
+    border-bottom: 1px dashed #cdcdcd;
+
+  }
+
+  .edit-btn{
+
+    float: right;
+
+    background: url('#{$image-url}/pencil.png') no-repeat left center;
+
+    border:0;
+
+    outline: none;
+
+    color: #0099ff;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+    padding-left: 20px;
+
+    height: 36px;
+
+    margin-top: 0;
+
+    line-height: 36px;
+
+    &:hover{
+
+      background-image:url('#{$image-url}/pencil-active.png');
+
+      color:#ff6600;
+
+    }
+
+  }
+
+}
+
