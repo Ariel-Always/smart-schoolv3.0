@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-class TeacherContent extends Component{
+class SafeSetting extends Component{
     render() {
         return (
             <div>
@@ -8,4 +8,4 @@ class TeacherContent extends Component{
         );
     }
 }
-export default TeacherContent;
+export default SafeSetting;

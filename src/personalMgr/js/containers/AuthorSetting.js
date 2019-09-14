@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-class StudentContent extends Component{
+class AuthorSetting extends Component{
     render() {
         return (
             <div>
@@ -8,4 +8,4 @@ class StudentContent extends Component{
         );
     }
 }
-export default StudentContent;
+export default AuthorSetting;

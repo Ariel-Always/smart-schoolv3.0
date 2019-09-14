@@ -1,5 +1,7 @@
 .base-setting-wrapper{
 
+  color: #333333;
+
   .title-bar{
 
     height: 36px;
@@ -7,8 +9,6 @@
     margin:16px 32px 0 54px;
 
     line-height: 36px;
-
-    color: #333333;
 
     border-bottom: 1px dashed #cdcdcd;
 
@@ -45,6 +45,73 @@
       color:#ff6600;
 
     }
+
+  }
+
+  .base-item-setting{
+
+    padding:24px 48px;
+
+
+    .title{
+
+      padding-left:24px;
+
+      background-position: left center;
+
+      background-repeat: no-repeat;
+
+      &.base{
+
+        background-image:url("#{$image-url}/base.png");
+
+      }
+
+      &.concact{
+
+        background-image:url("#{$image-url}/concact.png");
+
+      }
+
+      &.sign{
+
+        background-image:url("#{$image-url}/sign.png");
+
+      }
+
+    }
+
+  }
+
+  .content-wrapper{
+
+    margin:32px 120px 0 24px;
+
+    font-size: 14px;
+
+    &>div{
+
+      margin-bottom: 24px;
+
+      &>*{
+
+        float: left;
+
+      }
+
+    }
+
+  }
+
+  .props{
+
+    width: 60px;
+
+    text-align: right;
+
+    margin-right: 12px;
+
+    color: #999999;
 
   }
 
