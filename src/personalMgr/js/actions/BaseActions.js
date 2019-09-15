@@ -8,6 +8,7 @@ import LoginUserActions from "./LoginUserActions";
 
 const BASE_INFO_UPDATE = 'BASE_INFO_UPDATE';
 
+const BASE_SETTING_STATUS_CHANGE = 'BASE_SETTING_STATUS_CHANGE';
 
 
 const Init = () => {
@@ -17,7 +18,7 @@ const Init = () => {
        /* let { UserID,UserType } = getState().LoginUser;*/
 
 
-        let LoginUserPromise =    getData('http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev/Login').then(res => res.json()).then(json => {
+        let LoginUserPromise =    Method.getGetData('/Login').then(json => {
 
             dispatch({type:LoginUserActions.UPDATE_LOGIN_USER,data:json.data.result});
 
@@ -73,6 +74,8 @@ const hideAlert = (dispatch) => {
 export default {
 
     BASE_INFO_UPDATE,
+
+    BASE_SETTING_STATUS_CHANGE,
 
     Init
 

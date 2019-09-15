@@ -2,7 +2,7 @@ import BaseActions from '../actions/BaseActions';
 
 const BaseSetting = (state={
 
-    editor:false,
+    editorStatus:false,
 
     baseInfo:{},
 
@@ -28,7 +28,11 @@ const BaseSetting = (state={
 
                 }
 
-            }
+            };
+
+        case BaseActions.BASE_SETTING_STATUS_CHANGE:
+
+            return {...state,editorStatus:actions.data};
 
         default:
 

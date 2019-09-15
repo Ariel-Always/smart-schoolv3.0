@@ -73,9 +73,9 @@ class App extends Component{
 
                             <div className="frame_left_menu_pic clearfix">
 
-                                <div className="header-pic"></div>
+                                <div className="header-pic" style={{backgroundImage:`url(${LoginUser.PhotoPath})`}}></div>
 
-                                <div className="user-name"></div>
+                                <div className="user-name">{LoginUser.UserName}</div>
 
                             </div>
 
