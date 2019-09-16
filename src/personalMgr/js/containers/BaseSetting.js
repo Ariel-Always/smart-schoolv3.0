@@ -4,7 +4,7 @@ import BaseActions from '../actions/BaseActions';
 
 import { Loading } from "../../../common";
 
-import { Input } from "antd";
+import { Input,Tooltip } from "antd";
 
 import { connect } from 'react-redux';
 
@@ -24,31 +24,359 @@ class BaseSetting extends Component{
     editorStatusChange(){
 
         const { dispatch,BaseSetting } = this.props;
+        //输入状态，如果是关闭状态就开启，如果是开启状态就关闭
+        if (BaseSetting.editorStatus){
 
-        dispatch({type:BaseActions.BASE_SETTING_STATUS_CHANGE,data:!BaseSetting.editorStatus});
+            dispatch({type:BaseActions.BASE_SETTING_EDITOR_CLOSE});
+
+        }else{
+
+            dispatch({type:BaseActions.BASE_SETTING_EDITOR_OPEN});
+
+        }
 
     }
 
-    roleLook(){
+    //用户名变更
+    ShortNameChange(e){
 
         const { dispatch } = this.props;
 
+        dispatch({type:BaseActions.BASE_SETTING_SHORT_NAME_CHANGE,data:e.target.value});
+
+        let result = this.UserComm_CheckShortName(e.target.value);
+
+        if (result!==0){
+
+            dispatch({type:BaseActions.BASE_SETTING_SHORT_NAME_TIPS_SHOW});
+
+        }else{
+
+            dispatch({type:BaseActions.BASE_SETTING_SHORT_NAME_TIPS_HIDE});
+
+        }
+
+        if(e.target.value === ''){
+
+            dispatch({type:BaseActions.BASE_SETTING_SHORT_NAME_TIPS_HIDE});
+
+        }
+
+    }
+    //QQ输入改变
+    QQChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:BaseActions.BASE_SETTING_QQ_CHANGE,data:e.target.value});
+
+        let result = this.UserComm_CheckQQ(e.target.value);
+
+        if (result){
+
+            dispatch({type:BaseActions.BASE_SETTING_QQ_TIPS_HIDE});
+
+        }else{
+
+            dispatch({type:BaseActions.BASE_SETTING_QQ_TIPS_SHOW});
+
+        }
+
+        if(e.target.value === ''){
+
+            dispatch({type:BaseActions.BASE_SETTING_SHORT_NAME_TIPS_HIDE});
+
+        }
+
     }
 
-    UserNameChange(e){
+    //微信输入改变
+    WeiChatChange(e){
 
-        console.log(e);
+        const { dispatch } = this.props;
+
+        dispatch({type:BaseActions.BASE_SETTING_WEIXIN_CHANGE,data:e.target.value});
+
+        let result = this.UserComm_CheckWeixin(e.target.value);
+
+        if (result){
+
+            dispatch({type:BaseActions.BASE_SETTING_WEIXIN_TIPS_HIDE});
+
+        }else{
+
+            dispatch({type:BaseActions.BASE_SETTING_WEIXIN_TIPS_SHOW});
+
+        }
+
+        if(e.target.value === ''){
+
+            dispatch({type:BaseActions.BASE_SETTING_SHORT_NAME_TIPS_HIDE});
+
+        }
 
     }
+
+    //微博输入改变
+    WeiBoChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:BaseActions.BASE_SETTING_WEIBO_CHANGE,data:e.target.value});
+
+        let result = this.UserComm_CheckSinaWeibo(e.target.value);
+
+        if (result){
+
+            dispatch({type:BaseActions.BASE_SETTING_WEIBO_TIPS_HIDE});
+
+        }else{
+
+            dispatch({type:BaseActions.BASE_SETTING_WEIBO_TIPS_SHOW});
+
+        }
+
+        if(e.target.value === ''){
+
+            dispatch({type:BaseActions.BASE_SETTING_SHORT_NAME_TIPS_HIDE});
+
+        }
+
+    }
+
+    //电话号码输入改变
+    TelChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:BaseActions.BASE_SETTING_TEL_CHANGE,data:e.target.value});
+
+        let result = this.UserComm_CheckTelephone(e.target.value);
+
+        if (result){
+
+            dispatch({type:BaseActions.BASE_SETTING_TEL_TIPS_HIDE});
+
+        }else{
+
+            dispatch({type:BaseActions.BASE_SETTING_TEL_TIPS_SHOW});
+
+        }
+
+        if(e.target.value === ''){
+
+            dispatch({type:BaseActions.BASE_SETTING_SHORT_NAME_TIPS_HIDE});
+
+        }
+
+    }
+    //sign个性签名变化
+    SignChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:BaseActions.BASE_SETTING_SIGN_CHANGE,data:e.target.value});
+
+    }
+    //点击保存
+    Ok(e){
+
+        const { dispatch } = this.props;
+
+        dispatch(BaseActions.Commit());
+
+    }
+
+
+    //取消保存
+    Cancel(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:BaseActions.BASE_SETTING_EDITOR_CLOSE});
+
+    }
+    //点击弹出模块权限详情
+    roleLook(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:BaseActions.BASE_SETTING_MANAGER_MODULES_SHOW})
+
+    }
+    //将模块权限详情关闭
+    roleDetailClose(e){
+
+        e.stopPropagation();
+
+        const { dispatch } = this.props;
+
+        dispatch({type:BaseActions.BASE_SETTING_MANAGER_MODULES_HIDE})
+
+    }
+    //教师点击身份详情
+    teacherRoleLook(key){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:BaseActions.BASE_SETTING_TEACHER_ROAL_DETAILS_STATUS_SHOW,data:key});
+
+    }
+    //教师角色面板关闭
+    TeacherRoalDetailsClose(e,key){
+
+        e.stopPropagation();
+
+        const { dispatch } = this.props;
+
+        dispatch({type:BaseActions.BASE_SETTING_TEACHER_ROAL_DETAILS_STATUS_HIDE,data:key});
+
+    }
+
+
+    //点击其他地方隐藏detail弹窗
+    hideDetail(e) {
+
+        const {dispatch} = this.props;
+
+        if (this.refs['module-detail']) {
+
+            if (!this.refs['module-detail'].contains(e.target)) {
+
+                dispatch({type: BaseActions.BASE_SETTING_MANAGER_MODULES_HIDE});
+
+            }
+
+        }
+
+        for (let i = 0; i <= 2; i++ ){
+
+            if (this.refs[`teacher-roal-detail${i}`]){
+
+                if (!this.refs[`teacher-roal-detail${i}`].contains(e.target)){
+
+                    dispatch({type: BaseActions.BASE_SETTING_TEACHER_ROAL_DETAILS_STATUS_HIDE,data:i});
+
+                }
+
+            }
+
+        }
+
+    }
+
+    componentDidMount(){
+
+        addEventListener('click',this.hideDetail.bind(this))
+
+    }
+
+
+
+
+
+
+
+
+
+
+    //检测用户名
+    UserComm_CheckShortName(strInput) {
+
+        if (!/^([a-zA-Z0-9]){3,15}$/.test(strInput)) {
+
+            return 1;   //格式错误
+
+        }
+
+        else {
+
+            if (/^(admin)$/.test(strInput) === true) {
+
+                return 2;  //与管理员ID具有相同格式
+
+            }
+
+            else {
+
+                return 0;
+
+            }
+
+        }
+
+    }
+
+    //检测QQ
+    UserComm_CheckQQ(strInput) {
+
+        return /^[1-9]*[1-9][0-9]{4,18}$/.test(strInput); //QQ号
+
+    }
+
+    //检测微信
+    UserComm_CheckWeixin(strInput) {
+
+        var result = false;
+
+        result = result || this.UserComm_CheckPhoneNumber(strInput); //手机号码
+
+        result = result || /^[a-zA-Z]{1}[-_a-zA-Z0-9]{5,20}$/.test(strInput); //微信ID（微信账号仅支持6-20个字母、数字、下划线或减号，以字母开头。）
+
+        result = result || this.UserComm_CheckQQ(strInput); //QQ号
+
+        result = result || this.UserComm_CheckEmail(strInput); //邮箱
+
+        return result;
+
+    }
+
+    //检测微博
+    UserComm_CheckSinaWeibo(strInput) {
+
+        var result = false;
+
+        result = result || this.UserComm_CheckPhoneNumber(strInput); //手机号码
+
+        result = result || this.UserComm_CheckEmail(strInput); //邮箱
+
+        return result;
+
+    }
+
+    //检测手机
+    UserComm_CheckPhoneNumber(strInput) {
+
+        return /^[0-9]{11}$/.test(strInput);
+
+    }
+    //检测电话
+    UserComm_CheckTelephone(strInput) {
+
+        return /^([0-9\/-]){1,40}$/.test(strInput);
+
+    }
+
+    //检测邮箱
+    UserComm_CheckEmail(strInput) {
+        //\S表示非空字符
+        if (!/^(\S)+@(\S)+\.[a-zA-Z]{2,3}$/.test(strInput)) {
+            return false;
+        }
+        else {
+            return /^([a-zA-Z0-9]+[_|\-|\.]*)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\-|\.]*)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/gi.test(strInput);
+        }
+    }
+
 
 
     render() {
 
         const { BaseSetting,LoginUser } = this.props;
 
-        const { editorStatus, baseInfo } = BaseSetting;
-
         const {
+
+            editorStatus,
 
             UserID,
 
@@ -62,6 +390,10 @@ class BaseSetting extends Component{
 
             Modules,
 
+            RoleNames,
+
+            RoleDetail,
+
             QQ,
 
             Weixin,
@@ -70,9 +402,35 @@ class BaseSetting extends Component{
 
             Telephone,
 
-            Sign
+            Sign,
 
-        } = baseInfo;
+            ShortNameValue,
+
+            QQValue,
+
+            WeixinValue,
+
+            WeiboValue,
+
+            TelephoneValue,
+
+            SignValue,
+
+            ShortNameTipsShow,
+
+            QQTipsShow,
+
+            WeixinTipsShow,
+
+            WeiboTipsShow,
+
+            TelephoneTipsShow,
+
+            ManagerModuleShow,
+
+            TeacherRoalDetails
+
+        } = BaseSetting;
 
         return (
 
@@ -105,8 +463,6 @@ class BaseSetting extends Component{
                             <div className="user-photo-wrapper clearfix">
 
                                 <span className="props">头像:</span>
-
-
 
                             </div>
 
@@ -160,7 +516,11 @@ class BaseSetting extends Component{
 
                                     <React.Fragment>
 
-                                        <Input value={ShortName}min={3} max={15} onChange={this.UserNameChange.bind(this)}/>
+                                        <Tooltip visible={ShortNameTipsShow} placement="right" title="用户名由3-20位的字母、数字组成（且不能为admin）">
+
+                                            <Input value={ShortNameValue}   maxLength={15} onChange={this.ShortNameChange.bind(this)}/>
+
+                                        </Tooltip>
 
                                         <span className="set-tips">(由3-15位英文/数字组成，可用于登录)</span>
 
@@ -220,7 +580,43 @@ class BaseSetting extends Component{
 
                                 <React.Fragment>
 
-                                    <span className={`val ${Modules?'link':''}`} onClick={this.roleLook.bind(this)}>{ShortName}</span>
+                                    <span className={`val ${Modules?'link':''}`} ref="module-detail" onClick={Modules?this.roleLook.bind(this):()=>{}}>
+
+                                        {ShortName}
+
+                                        <div className="detial-wrapper"  style={{display:`${ManagerModuleShow?'block':'none'}`}}>
+
+                                            {
+
+                                                Modules&&Modules.map((item,key) => {
+
+                                                    let content =  item.ModuleList.map(i =>i.ModuleName);
+
+                                                    return <div key={key} className="detail-item-wrapper">
+
+                                                        <div className="detail-item-title">{item.ModuleGroupName}</div>
+
+                                                        <div className="detail-content-wrapper">
+
+                                                            {
+
+                                                                content.join(',')
+
+                                                            }
+
+                                                        </div>
+
+                                                    </div>
+
+                                                })
+
+                                            }
+
+                                            <span className="close-btn" onClick={this.roleDetailClose.bind(this)}>×</span>
+
+                                        </div>
+
+                                     </span>
 
                                     {
 
@@ -237,6 +633,100 @@ class BaseSetting extends Component{
                                     :''
 
                             }
+
+                            {
+
+                                LoginUser.UserType===1?
+
+                                    <React.Fragment>
+
+                                        {
+
+                                            RoleNames&&RoleNames.map((item,key) => {
+
+                                                let title = '';
+
+                                                switch (key) {
+
+                                                    case 0:
+
+                                                        title = '任课班级';
+
+                                                        break;
+
+                                                    case 1:
+
+                                                        title = '所管班级';
+
+                                                        break;
+
+                                                    case 2:
+
+                                                        title = '所管教研组';
+
+                                                        break;
+
+                                                    default:
+
+                                                        title = '任课班级'
+                                                }
+
+                                                return  <React.Fragment key={key}>
+
+                                                            {
+
+                                                                (key ===0||item==='')?
+
+                                                                    '':<span>/</span>
+
+                                                            }
+
+                                                            {
+
+                                                                item !== ''?
+
+                                                                    <span  className='val link' ref={`teacher-roal-detail${key}`}  onClick={this.teacherRoleLook.bind(this,key)}>
+
+                                                                        {item}
+
+                                                                        <div className="detial-wrapper teacher" style={{display:`${TeacherRoalDetails[key]['show']?'block':'none'}`}}>
+
+                                                                            <div className="detail-item-title">{title}</div>
+
+                                                                             <div className="detail-content-wrapper">
+
+                                                                                {
+
+                                                                                    RoleDetail[key]
+
+                                                                                }
+
+                                                                            </div>
+
+                                                                            <span className="close-btn" onClick={e=>this.TeacherRoalDetailsClose(e,key)}>×</span>
+
+                                                                        </div>
+
+                                                                    </span>
+
+                                                                    :''
+
+                                                            }
+
+                                                        </React.Fragment>
+
+                                            })
+
+                                        }
+
+                                        <span className="set-tips">(点击可查看身份详情)</span>
+
+                                    </React.Fragment>
+
+                                    :''
+
+                            }
+
 
                         </div>
 
@@ -259,7 +749,11 @@ class BaseSetting extends Component{
 
                                 editorStatus?
 
-                                    <Input value={QQ}/>
+                                    <Tooltip visible={QQTipsShow} placement="right" title="QQ由5-18位纯数字组成">
+
+                                        <Input value={QQValue} onChange={this.QQChange.bind(this)} />
+
+                                    </Tooltip>
 
                                     :
 
@@ -278,7 +772,11 @@ class BaseSetting extends Component{
 
                                 editorStatus?
 
-                                    <Input value={Weixin}/>
+                                    <Tooltip visible={WeixinTipsShow} placement="right" title="微信为手机号、QQ、邮箱或微信ID">
+
+                                        <Input value={WeixinValue} onChange={this.WeiChatChange.bind(this)}/>
+
+                                    </Tooltip>
 
                                     :
 
@@ -297,7 +795,11 @@ class BaseSetting extends Component{
 
                                 editorStatus?
 
-                                    <Input value={Weibo}/>
+                                    <Tooltip visible={WeiboTipsShow} placement="right" title="微博为手机号码、微信号、QQ号、邮箱地址">
+
+                                    <Input value={WeiboValue} onChange={this.WeiBoChange.bind(this)}/>
+
+                                    </Tooltip>
 
                                     :
 
@@ -309,14 +811,18 @@ class BaseSetting extends Component{
 
                         <div className="tel-wrapper clearfix">
 
-                            <span className="props">微博:</span>
+                            <span className="props">联系电话:</span>
 
                             {
 
 
                                 editorStatus?
 
-                                    <Input value={Telephone}/>
+                                    <Tooltip visible={TelephoneTipsShow} placement="right" title="电话由数字及-/组成">
+
+                                        <Input value={TelephoneValue} onChange={this.TelChange.bind(this)}/>
+
+                                    </Tooltip>
 
                                     :
 
@@ -347,7 +853,7 @@ class BaseSetting extends Component{
 
                                         <span className="props">个性签名:</span>
 
-                                        <Input.TextArea value={Sign}/>
+                                        <Input.TextArea value={SignValue} onChange={this.SignChange.bind(this)}/>
 
                                     </React.Fragment>
 
@@ -372,9 +878,9 @@ class BaseSetting extends Component{
 
                                 <React.Fragment>
 
-                                    <input type="button" className="btn-save" value="保存"/>
+                                    <input type="button" className="btn-save" value="保存" onClick={this.Ok.bind(this)}/>
 
-                                    <input type="button" className="btn-cancel" value="取消"/>
+                                    <input type="button" className="btn-cancel" value="取消" onClick={this.Cancel.bind(this)}/>
 
                                 </React.Fragment>
 

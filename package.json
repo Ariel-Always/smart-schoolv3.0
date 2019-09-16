@@ -101,7 +101,8 @@
       "jsx-a11y/anchor-is-valid": "off",
       "jsx-a11y/anchor-has-content": "off",
       "array-callback-return": "off",
-      "no-extend-native": "off"
+      "no-extend-native": "off",
+      "no-useless-escape":"off"
     }
   },
   "browserslist": {

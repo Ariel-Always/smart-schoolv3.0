@@ -35,7 +35,7 @@ class App extends Component{
 
     render() {
 
-        const { LoginUser,ModuleCommonInfo } = this.props;
+        const { LoginUser,ModuleCommonInfo,AppAlert } = this.props;
 
         let Component = '';
 
@@ -118,6 +118,17 @@ class App extends Component{
 
                </Loading>
 
+               <Alert
+                   show={AppAlert.show}
+                   type={AppAlert.type}
+               onOk={AppAlert.ok}
+               onCancel={AppAlert.cancel}
+               onHide={AppAlert.hide}
+               title={AppAlert.title}
+               abstract={AppAlert.abstract}>
+
+               </Alert>
+
            </React.Fragment>
         );
     }
@@ -125,13 +136,15 @@ class App extends Component{
 
 const mapStateToProps = (state) => {
 
-    const { LoginUser,ModuleCommonInfo } = state;
+    const { LoginUser,ModuleCommonInfo,AppAlert } = state;
 
     return {
 
         LoginUser,
 
-        ModuleCommonInfo
+        ModuleCommonInfo,
+
+        AppAlert
 
     }
 

@@ -161,6 +161,8 @@
 
   .link{
 
+    position: relative;
+
     color: #0099ff;
 
     font-size: 16px;
@@ -168,6 +170,12 @@
     text-decoration: underline;
 
     cursor: pointer;
+
+    &:hover{
+
+      color: #ff6600;
+
+    }
 
   }
 
@@ -220,6 +228,8 @@
 
       background-blend-mode: normal, normal;
 
+      cursor: pointer;
+
       &.btn-save{
 
         @include box-shadow(0px 5px 22px -6px #23ba00);
@@ -235,6 +245,141 @@
         background-image: linear-gradient(90deg, rgba(255, 89, 62, 1) 0%, rgba(255, 27, 16, 1) 100%), linear-gradient(rgba(255, 255, 255, 1), rgba(255, 255, 255, 1));
 
         margin-left: 12px;
+
+      }
+
+    }
+
+  }
+
+  .detial-wrapper{
+
+    position: absolute;
+
+    width: max-content;
+
+    font-size: 14px;
+
+    border-radius: 6px;
+
+    bottom:28px;
+
+    padding: 8px 20px;
+
+    background-color: #ffffff;
+
+    left: 50%;
+
+    @include transform(translateX(-50%));
+
+    @include box-shadow(0 0 8px 0 rgba(0, 0, 0, 0.16));
+
+    .detail-item-wrapper{
+
+      border-top: 1px dashed #cccccc;
+
+      padding:16px;
+
+      padding-right: 80px;
+
+      max-width: 500px;
+
+      &:first-child{
+
+        border-top:0;
+
+      }
+
+    }
+
+    .detail-item-title{
+
+      color: #720000;
+
+      cursor: default;
+
+      &:hover{
+
+        color:#720000;
+
+      }
+
+    }
+
+    .detail-content-wrapper{
+
+    color: #666666;
+
+    cursor: default;
+
+    &:hover{
+
+      color: #666666;
+
+    }
+
+  }
+
+    .close-btn{
+
+      position: absolute;
+
+      right:12px;
+
+      font-size: 20px;
+
+      top:2px;
+
+      color: #cccccc;
+
+      &:hover{
+
+        color: #ff6600;
+
+      }
+
+    }
+
+    &:after{
+
+      position: absolute;
+
+      content: '';
+
+      width:10px;
+
+      height:10px;
+
+      bottom: -5px;
+
+      left: 50%;
+
+      @include transform(translateX(-50%) rotate(45deg));
+
+      background-color:#ffffff;
+
+      @include box-shadow(1px 1px 2px 0 rgba(0, 0, 0, 0.16));
+
+    }
+
+
+
+
+    &.teacher{
+
+      padding:0;
+
+      .detail-item-title{
+
+        padding:10px 80px 10px 12px;
+
+        border-bottom: 1px solid #dddddd;
+
+      }
+
+      .detail-content-wrapper{
+
+        padding:10px 80px 10px 12px;
 
       }
 
