@@ -534,7 +534,7 @@ class BaseSetting extends Component{
 
                         </div>
 
-                        {
+                       {/* {
 
                             LoginUser.UserType === 1?
 
@@ -550,7 +550,7 @@ class BaseSetting extends Component{
 
                                 :''
 
-                        }
+                        }*/}
 
                         {
 
@@ -795,7 +795,7 @@ class BaseSetting extends Component{
 
                                 editorStatus?
 
-                                    <Tooltip visible={WeiboTipsShow} placement="right" title="微博为手机号码、微信号、QQ号、邮箱地址">
+                                    <Tooltip visible={WeiboTipsShow} placement="right" title="微博为手机号码、邮箱地址">
 
                                     <Input value={WeiboValue} onChange={this.WeiBoChange.bind(this)}/>
 

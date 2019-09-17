@@ -10,6 +10,8 @@ import ModuleCommonInfo from './ModuleCommonInfo';
 
 import BaseSetting from './BaseSetting';
 
+import SafeSetting from './SafeSetting';
+
 
 
 
@@ -27,7 +29,9 @@ let rootReducers = combineReducers({
 
     ModuleCommonInfo,
 
-    BaseSetting
+    BaseSetting,
+
+    SafeSetting
 
 });
 
