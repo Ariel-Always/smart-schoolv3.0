@@ -7,7 +7,7 @@ import {AESEncryptionBody,AESEncryptionUrl,requestSecure} from './util'
 
 
 
-function postData(url, paramsObj, SecurityLevel = 1) {
+function postData(url, paramsObj, SecurityLevel = 1,mode='cors') {
 
     let token = sessionStorage.getItem('token');
 
@@ -24,7 +24,7 @@ function postData(url, paramsObj, SecurityLevel = 1) {
 
     let result = fetch(url, {
         method: 'post',//*post、get、put、delete，此项为请求方法相关的配置 
-        mode: 'cors',//no-cors(跨域模式但服务器端不支持cors),*cors(跨域模式，需要服务器通过Access-control-Allow-Origin来
+        mode:mode,//no-cors(跨域模式但服务器端不支持cors),*cors(跨域模式，需要服务器通过Access-control-Allow-Origin来
         //允许指定的源进行跨域),same-origin(同源)
         cache: 'no-cache',//*no-cache,default,reload,force-cache,only-ifcached,此项为缓存相关配置
         credentials: 'include',//*include(携带cookie)、same-origin(cookie同源携带)、omit(不携带)

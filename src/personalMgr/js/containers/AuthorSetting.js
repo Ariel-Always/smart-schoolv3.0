@@ -1,10 +1,10 @@
 import React,{Component} from 'react';
 
-import { Loading } from "../../../../common";
+import { Loading } from "../../../common";
 
 import { connect } from 'react-redux';
 
-class Author extends Component{
+class AuthorSetting extends Component{
     render() {
         return (
             <div>
@@ -16,14 +16,14 @@ class Author extends Component{
 
 const mapStateToProps = (state) => {
 
-    const { Author } = state.Manager;
+    const { AuthorSetting } = state;
 
     return {
 
-        Author
+        AuthorSetting
 
     }
 
 };
 
-export default connect(mapStateToProps)(Author);
+export default connect(mapStateToProps)(AuthorSetting);

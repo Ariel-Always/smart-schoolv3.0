@@ -8,7 +8,7 @@ import LoginUser from './LoginUser';
 
 import ModuleCommonInfo from './ModuleCommonInfo';
 
-import Manager from './Manager';
+import BaseSetting from './BaseSetting';
 
 
 
@@ -27,7 +27,7 @@ let rootReducers = combineReducers({
 
     ModuleCommonInfo,
 
-    Manager
+    BaseSetting
 
 });
 

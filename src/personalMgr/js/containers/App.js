@@ -4,15 +4,11 @@ import {Frame,Loading,Alert,MenuLeftNoLink,Modal} from "../../../common";
 
 import {connect} from 'react-redux';
 
-import { HashRouter as Router,Route,Switch,Redirect } from 'react-router-dom';
+import BaseSetting from './BaseSetting';
 
-import ManagerContent from './Manager/ManagerContent';
+import SafeSetting from "./SafeSetting";
 
-import TeacherContent from './Teacher/TeacherContent';
-
-import StudentContent from './Student/StudentContent'
-
-import ModuleIndexActions from '../actions/ModuleIndexActions';
+import AuthorSetting from "./AuthorSetting";
 
 import MCIActions from '../actions/ModuleCommonInfoActions';
 
@@ -27,8 +23,6 @@ class App extends Component{
 
         const { dispatch } = props;
 
-        dispatch(ModuleIndexActions.PageInit());
-
     }
     //点击menu
     menuClick(e){
@@ -41,9 +35,7 @@ class App extends Component{
 
     render() {
 
-        const { LoginUser } = this.props;
-
-        console.log(LoginUser);
+        const { LoginUser,ModuleCommonInfo,AppAlert } = this.props;
 
         let Component = '';
 
@@ -63,13 +55,15 @@ class App extends Component{
 
                <Loading size="large" tip="加载中..." spinning={false} opacity={false}>
 
-
-
                         <Frame
                         module={{
                             cnname: "个人账号管理",
                             enname: "Personal Account Management",
                             image: logo
+                        }}
+                        userInfo={{
+                            name:LoginUser.UserName,
+                            image:LoginUser.PhotoPath
                         }}
                         type="triangle"
                         showBarner={false}
@@ -79,9 +73,9 @@ class App extends Component{
 
                             <div className="frame_left_menu_pic clearfix">
 
-                                <div className="header-pic"></div>
+                                <div className="header-pic" style={{backgroundImage:`url(${LoginUser.PhotoPath})`}}></div>
 
-                                <div className="user-name"></div>
+                                <div className="user-name">{LoginUser.UserName}</div>
 
                             </div>
 
@@ -92,48 +86,29 @@ class App extends Component{
 
                         <div ref="frame-right-content">
 
-                            <Router>
+                            {
 
-                                <Switch>
+                                ModuleCommonInfo.menuActive==='base'?
 
-                                <Route path="/manager" exact component={ManagerContent}></Route>
+                                    <BaseSetting></BaseSetting>:''
 
-                                <Route path="/teacher" exact component={TeacherContent}></Route>
+                            }
 
-                                <Route path="/student" exact component={StudentContent}></Route>
+                            {
 
-                                {
+                                ModuleCommonInfo.menuActive==='safe'?
 
-                                    LoginUser&&LoginUser.UserType === 0?
+                                    <SafeSetting></SafeSetting>:''
 
-                                        <Redirect path="/*" to={{pathname:"/manager"}}></Redirect>
+                            }
 
-                                     :''
-                                }
+                            {
 
-                                {
+                                ModuleCommonInfo.menuActive==='author'?
 
-                                    LoginUser&&LoginUser.UserType === 1?
+                                    <AuthorSetting></AuthorSetting>:''
 
-                                        <Redirect  path="/*" to={{pathname:"/teacher"}}></Redirect>
-
-                                        :''
-
-                                }
-
-                                {
-
-                                    LoginUser&&LoginUser.UserType === 2?
-
-                                        <Redirect  path="/*" to={{pathname:"/student"}}></Redirect>
-
-                                        :''
-
-                                }
-
-                            </Switch>
-
-                            </Router>
+                            }
 
                         </div>
 
@@ -143,6 +118,17 @@ class App extends Component{
 
                </Loading>
 
+               <Alert
+                   show={AppAlert.show}
+                   type={AppAlert.type}
+               onOk={AppAlert.ok}
+               onCancel={AppAlert.cancel}
+               onHide={AppAlert.hide}
+               title={AppAlert.title}
+               abstract={AppAlert.abstract}>
+
+               </Alert>
+
            </React.Fragment>
         );
     }
@@ -150,11 +136,15 @@ class App extends Component{
 
 const mapStateToProps = (state) => {
 
-    const { LoginUser } = state;
+    const { LoginUser,ModuleCommonInfo,AppAlert } = state;
 
     return {
 
-        LoginUser
+        LoginUser,
+
+        ModuleCommonInfo,
+
+        AppAlert
 
     }
 

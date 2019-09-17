@@ -1,0 +1,28 @@
+.safe-setting-wrapper{
+
+  .title-bar{
+
+    height: 36px;
+
+    margin-top: 22px;
+
+    padding: 0 32px 0 54px;
+
+    line-height: 36px;
+
+    background: url('#{$image-url}/safe-icon.png') no-repeat 26px center;
+
+  }
+
+  .title-bar-name{
+
+    font-size: 18px;
+
+    color: #333333;
+
+    border-bottom: 1px dashed #cccccc;
+
+  }
+
+}
+
