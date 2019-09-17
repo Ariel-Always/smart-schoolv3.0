@@ -6,6 +6,8 @@ import GetClassAllMsg from './data/GetClassAllMsg';
 import GetCourseClassDetailsMsg from './data/GetCourseClassDetailsMsg';
 import TeacherMsg from './data/TeacherMsg';
 import GetCourseClassDetailsHandleClassMsg from './data/GetCourseClassDetailsHandleClassMsg';
+import GetSubjectTeacherMsg from './data/GetSubjectTeacherMsg';
+import GetStudentClassMsg from './data/GetStudentClassMsg';
 
 
 const DataState=combineReducers(
@@ -16,7 +18,9 @@ const DataState=combineReducers(
         GetClassAllMsg,
         GetCourseClassDetailsMsg,
         TeacherMsg,
-        GetCourseClassDetailsHandleClassMsg
+        GetCourseClassDetailsHandleClassMsg,
+        GetSubjectTeacherMsg,
+        GetStudentClassMsg
         
     });
 export default DataState;

@@ -170,10 +170,16 @@ class App extends Component {
     //编辑教学班模态框
     ChangeCourseClassModalOk = () => {
         const { dispatch, DataState } = this.props;
+        let Student = DataState.GetCourseClassDetailsHandleClassMsg.selectData.Student;
+        //dispatch(actions.UpDataState.setCourseClassStudentMsg(Student))
         dispatch(actions.UpUIState.ChangeCourseClassModalClose())
     }
     ChangeCourseClassModalCancel = () => {
         const { dispatch, DataState } = this.props;
+        let Student = DataState.GetCourseClassDetailsHandleClassMsg.TableSource;
+        let Teacher = {value:DataState.GetCourseClassDetailsHandleClassMsg.TeacherID,title:DataState.GetCourseClassDetailsHandleClassMsg.TeacherName}
+        dispatch(actions.UpDataState.setCourseClassStudentDefaultMsg(Student))
+        dispatch(actions.UpDataState.setSubjectTeacherDefaultMsg(Teacher))
         dispatch(actions.UpUIState.ChangeCourseClassModalClose())
     }
     render() {
@@ -251,10 +257,10 @@ class App extends Component {
                     </Loading>
                 </Modal>
                 <Modal ref='CourseClassDetailsMadal'
-                    bodyStyle={{ padding: 0 }}
                     type='1'
                     width={680}
                     title={'编辑教学班'}
+                    bodyStyle={{ height: 305 + 'px', padding: 0 }}
                     visible={UIState.ChangeCourseClassModalShow.Show}
                     onOk={this.ChangeCourseClassModalOk}
                     onCancel={this.ChangeCourseClassModalCancel}>

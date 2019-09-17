@@ -25,6 +25,24 @@ const GET_COURSE_CLASS_DETAILS_MSG = 'GET_COURSE_CLASS_DETAILS_MSG'
 const GET_TEACHER_MSG = 'GET_TEACHER_MSG'
 //编辑教学班信息
 const GET_COURSE_CLASS_DETAILS_HANDEL_CLASS_MSG = 'GET_COURSE_CLASS_DETAILS_HANDEL_CLASS_MSG';
+//编辑教学班-编辑教学班名称
+const SET_COURSE_CLASS_NAME = 'SET_COURSE_CLASS_NAME';
+//编辑/添加教学班-获取教师信息
+const GET_SUBJECT_TEACHER_MSG = 'GET_SUBJECT_TEACHER_MSG';
+//编辑/添加教学班-获取教师信息
+const SET_SUBJECT_TEACHER_MSG = 'SET_SUBJECT_TEACHER_MSG';
+//编辑/添加教学班-获取教师默认信息
+const SET_SUBJECT_TEACHER_DEFAULT_MSG = 'SET_SUBJECT_TEACHER_DEFAULT_MSG';
+//编辑/添加教学班-获取学生信息
+const SET_COURSE_CLASS_STUDENT_MSG = 'SET_COURSE_CLASS_STUDENT_MSG';
+//编辑/添加教学班-获取学生默认信息
+const SET_COURSE_CLASS_STUDENT_DEFAULT_MSG = 'SET_COURSE_CLASS_STUDENT_DEFAULT_MSG';
+//教师中转
+const SET_SUBJECT_TEACHER_TRANSFER_MSG = 'SET_SUBJECT_TEACHER_TRANSFER_MSG'
+
+
+//编辑/添加教学班-获取年级班级信息
+const GET_GRADE_CLASS_MSG = 'GET_GRADE_CLASS_MSG'
 //操作的执行
 //获取登录用户信息
 const getLoginUser = (url) => {
@@ -158,6 +176,79 @@ const getCourseClassDetailsHandleClassMsg = (url) => {
         });
     }
 }
+//编辑教学班-编辑教学班名称
+const setCourseClassName = (courseClassName) => {
+    return (dispatch) => {
+        dispatch({ type: SET_COURSE_CLASS_NAME, data: courseClassName })
+    }
+}
+//获取教学班信息
+const getSubjectTeacherMsg = (url) => {
+    return (dispatch) => {
+        dispatch({ type: actions.UpUIState.TEACHER_LOADING_MODAL_OPEN });
+
+        postData(CONFIG.proxy + url, {}).then(res => {
+            return res.json()
+        }).then(json => {
+            if (json.Status === 400) {
+                console.log('错误码：' + json.Status)
+            } else if (json.Status === 200) {
+                console.log(json.Data)
+                dispatch({ type: GET_SUBJECT_TEACHER_MSG, data: json.Data.data });
+                dispatch({ type: actions.UpUIState.TEACHER_LOADING_MODAL_COLSE });
+            }
+        });
+    }
+}
+//编辑教学班-设置教师
+const setSubjectTeacherMsg = (teacher) => {
+    return (dispatch) => {
+        dispatch({ type: SET_SUBJECT_TEACHER_MSG, data: teacher })
+    }
+}
+//编辑教学班-设置教师中转
+const setSubjectTeacherTransferMsg = (teacher) => {
+    return (dispatch) => {
+        dispatch({ type: SET_SUBJECT_TEACHER_TRANSFER_MSG, data: teacher })
+    }
+}
+//编辑教学班-设置默认教师
+const setSubjectTeacherDefaultMsg = (teacher) => {
+    return (dispatch) => {
+        dispatch({ type: SET_SUBJECT_TEACHER_DEFAULT_MSG, data: teacher })
+    }
+}
+//编辑教学班-设置学生
+const setCourseClassStudentMsg = (student) => {
+    return (dispatch) => {
+        dispatch({ type: SET_COURSE_CLASS_STUDENT_MSG, data: student })
+    }
+}
+//编辑教学班-设置默认学生
+const setCourseClassStudentDefaultMsg = (teacher) => {
+    return (dispatch) => {
+        dispatch({ type: SET_COURSE_CLASS_STUDENT_DEFAULT_MSG, data: teacher })
+    }
+}
+
+//获取年级行政班信息
+const getGradeClassMsg = (url) => {
+    return (dispatch) => {
+        dispatch({ type: actions.UpUIState.STUDENT_LOADING_MODAL_OPEN });
+
+        getData(CONFIG.proxy + url).then(res => {
+            return res.json()
+        }).then(json => {
+            if (json.Status === 400) {
+                console.log('错误码：' + json.Status)
+            } else if (json.Status === 200) {
+                console.log(json.Data)
+                dispatch({ type: GET_GRADE_CLASS_MSG, data: json.Data });
+                dispatch({ type: actions.UpUIState.STUDENT_LOADING_MODAL_COLSE });
+            }
+        });
+    }
+}
 export default {
     getLoginUser,
     GET_LOGIN_USER_INFO,
@@ -174,6 +265,24 @@ export default {
     getTeacherMsg,
     GET_TEACHER_MSG,
     GET_COURSE_CLASS_DETAILS_HANDEL_CLASS_MSG,
-    getCourseClassDetailsHandleClassMsg
+    getCourseClassDetailsHandleClassMsg,
+    SET_COURSE_CLASS_NAME,
+    setCourseClassName,
+    GET_SUBJECT_TEACHER_MSG,
+    getSubjectTeacherMsg,
+    SET_SUBJECT_TEACHER_MSG,
+    setSubjectTeacherMsg,
+    SET_SUBJECT_TEACHER_DEFAULT_MSG,
+    setSubjectTeacherDefaultMsg,
+    SET_COURSE_CLASS_STUDENT_MSG,
+    setCourseClassStudentMsg,
+    SET_COURSE_CLASS_STUDENT_DEFAULT_MSG,
+    setCourseClassStudentDefaultMsg,
+    setSubjectTeacherTransferMsg,
+    SET_SUBJECT_TEACHER_TRANSFER_MSG,
+
+    GET_GRADE_CLASS_MSG,
+    getGradeClassMsg
+
 
 }

@@ -8,6 +8,8 @@ import SetSubjectTeacher from './ui/SetSubjectTeacher';
 import SetCourseClassDetailsModalShow from './ui/SetCourseClassDetailsModalShow';
 import ChangeCourseClassModalShow from './ui/ChangeCourseClassModalShow';
 import AddCourseClassModalShow from './ui/AddCourseClassModalShow';
+import AddTeacherModalShow from './ui/AddTeacherModalShow';
+import AddStudentModalShow from './ui/AddStudentModalShow';
 const  UIState = combineReducers({
     AppLoading,
     AppAlert,
@@ -17,7 +19,9 @@ const  UIState = combineReducers({
     SetSubjectTeacher,
     SetCourseClassDetailsModalShow,
     ChangeCourseClassModalShow,
-    AddCourseClassModalShow
+    AddCourseClassModalShow,
+    AddTeacherModalShow,
+    AddStudentModalShow
 });
 
 export default UIState;

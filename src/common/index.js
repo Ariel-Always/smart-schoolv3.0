@@ -15,6 +15,7 @@ import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
 import CONFIG from './js/config';
 import 'moment/locale/zh-cn';
+import Password from 'antd/lib/input/Password';
 const $ = require('jquery');
 
 moment.locale('zh-cn');
@@ -202,7 +203,7 @@ class Input extends React.Component {
             prefix: props.prefix, /*前置图标*/
             suffix: props.suffix, /*后置图标*/
             onClick: props.onClick,
-            onChange: props.onChange,
+            onChange: props.onChange ? props.onChange : this.onInputChange.bind(this),
             onFocus: props.onFocus,
             onKeyDown: props.onKeyDown,
             onBlur: props.onBlur,
@@ -212,6 +213,14 @@ class Input extends React.Component {
         }
     }
 
+
+    //onChange
+    onInputChange = (e) => {
+        console.log(e.target.value)
+        this.setState({
+            value: e.target.value
+        })
+    }
     /*
      * 根据type选择组件
      * */
@@ -298,7 +307,46 @@ class Input extends React.Component {
     render() {
         return (
             <ConfigProvider locale={zhCN}>
-                {this.state.MyInput}
+                <AntdInput
+                    style={{ display: this.state.type !== 'textarea' ? 'block':'none' }}
+                    type={this.state.type}
+                    value={this.state.value}
+                    placeholder={this.state.placeholder}
+                    className={this.state.className}
+                    disabled={this.state.disabled}
+                    name={this.state.name}
+                    suffix={this.state.suffix}
+                    prefix={this.state.prefix}
+                    onClick={this.state.onClick}
+                    onChange={this.state.onChange}
+                    onFocus={this.state.onFocus}
+                    onKeyDown={this.state.onKeyDown}
+                    onBlur={this.state.onBlur}
+                    onInput={this.state.onInput}
+                    onKeyUp={this.state.onKeyUp}
+                />
+
+                <AntdInput.TextArea
+                    style={{resize: 'none', display: this.state.type === 'textarea' ? 'block':'none' }}
+                    rows={this.state.rows}
+                    value={this.state.value}
+                    cols={this.state.cols}
+                    placeholder={this.state.placeholder}
+                    className={this.state.className}
+                    disabled={this.state.disabled}
+                    name={this.state.name}
+                    suffix={this.state.suffix}
+                    prefix={this.state.prefix}
+                    onClick={this.state.onClick}
+                    onChange={this.state.onChange}
+                    onFocus={this.state.onFocus}
+                    onKeyDown={this.state.onKeyDown}
+                    onBlur={this.state.onBlur}
+                    onInput={this.state.onInput}
+                    onKeyUp={this.state.onKeyUp}
+                >
+
+                </AntdInput.TextArea>
             </ConfigProvider>
         )
     }

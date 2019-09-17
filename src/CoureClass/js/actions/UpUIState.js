@@ -45,8 +45,21 @@ const CHANGE_COURSE_CLASS_MODAL_CLOSE = 'CHANGE_COURSE_CLASS_MODAL_CLOSE'
 //添加教学班弹窗
 const ADD_COURSE_CLASS_MODAL_OPEN = 'ADD_COURSE_CLASS_MODAL_OPEN'
 const ADD_COURSE_CLASS_MODAL_CLOSE = 'ADD_COURSE_CLASS_MODAL_CLOSE'
+//添加/编辑教学班-教师
+
+const ADD_TEACHER_MODAL_OPEN = 'ADD_TEACHER_MODAL_OPEN';
+const ADD_TEACHER_MODAL_CLOSE = 'ADD_TEACHER_MODAL_CLOSE'
+
+//添加/编辑教学班-学生
+const ADD_STUDENT_MODAL_OPEN = 'ADD_STUDENT_MODAL_OPEN';
+const ADD_STUDENT_MODAL_CLOSE = 'ADD_STUDENT_MODAL_CLOSE'
 
 
+//编辑、添加教学班-loading
+const TEACHER_LOADING_MODAL_OPEN = 'TEACHER_LOADING_MODAL_OPEN';
+const TEACHER_LOADING_MODAL_COLSE = 'TEACHER_LOADING_MODAL_COLSE';
+const STUDENT_LOADING_MODAL_OPEN = 'STUDENT_LOADING_MODAL_OPEN';
+const STUDENT_LOADING_MODAL_COLSE = 'STUDENT_LOADING_MODAL_COLSE'
 
 
 
@@ -118,10 +131,36 @@ const AddCourseClassModalOpen = () => {
 const AddCourseClassModalClose = () => {
     return {type:ADD_COURSE_CLASS_MODAL_CLOSE};
 }
+//添加/编辑教学班-教师
+const AddTeacherModalOpen= () => {
+    return {type:ADD_TEACHER_MODAL_OPEN};
+}
 
+const AddTeacherModalClose= () => {
+    return {type:ADD_TEACHER_MODAL_CLOSE};
+}
 
+//添加/编辑教学班-学生
+const AddStudentModalOpen= () => {
+    return {type:ADD_STUDENT_MODAL_OPEN};
+}
 
-
+const AddStudentModalClose= () => {
+    return {type:ADD_STUDENT_MODAL_CLOSE};
+}
+//添加、编辑教学班-loading
+const StudentLoadingModalOpen = () => {
+    return {type:STUDENT_LOADING_MODAL_OPEN};
+}
+const StudentLoadingModalClose = () => {
+    return {type:STUDENT_LOADING_MODAL_COLSE};
+}
+const TeacherLoadingModalClose = () => {
+    return {type:TEACHER_LOADING_MODAL_COLSE};
+}
+const TeacherLoadingModalOpen = () => {
+    return {type:TEACHER_LOADING_MODAL_OPEN};
+}
 
 export default {
     APP_LOADING_CLOSE,
@@ -174,5 +213,24 @@ export default {
     ChangeCourseClassModalOpen,
     ChangeCourseClassModalClose,
     AddCourseClassModalOpen,
-    AddCourseClassModalClose
+    AddCourseClassModalClose,
+    AddTeacherModalClose,
+    AddTeacherModalOpen,
+    ADD_TEACHER_MODAL_OPEN,
+    ADD_TEACHER_MODAL_CLOSE,
+
+    AddStudentModalOpen,
+    AddStudentModalClose,
+    ADD_STUDENT_MODAL_CLOSE,
+    ADD_STUDENT_MODAL_OPEN,
+
+    TEACHER_LOADING_MODAL_OPEN,
+    TEACHER_LOADING_MODAL_COLSE,
+    STUDENT_LOADING_MODAL_OPEN,
+    STUDENT_LOADING_MODAL_COLSE,
+    StudentLoadingModalOpen,
+    StudentLoadingModalClose,
+    TeacherLoadingModalClose,
+    TeacherLoadingModalOpen
+   
 }
