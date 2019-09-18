@@ -1,8 +1,8 @@
 import React,{Component} from 'react';
 
-import { Loading,DropDown } from "../../../common";
+import { Loading,DropDown,Modal } from "../../../common";
 
-import { Input } from "antd";
+import { Input,Tooltip } from "antd";
 
 import SafeSettingActions from  '../actions/SafeSettingAcions';
 
@@ -45,6 +45,8 @@ class SafeSetting extends Component{
 
                     dispatch({ type:SafeSettingActions.SAFE_SETTING_CONTENT_SLIDE_DOWN,data:type});
 
+                    dispatch(SafeSettingActions.clearPwd());
+
                 }
 
                 break;
@@ -80,6 +82,8 @@ class SafeSetting extends Component{
                     $(this.refs['qa-content']).slideDown();
 
                     dispatch({ type:SafeSettingActions.SAFE_SETTING_CONTENT_SLIDE_DOWN,data:type});
+
+                    dispatch(SafeSettingActions.getQuestions());
 
                 }
 
@@ -117,35 +121,147 @@ class SafeSetting extends Component{
 
         let {addQaShow} = this.props.SafeSetting;
 
-        dispatch({type:SafeSettingActions.SAFE_SETTING_QUESTIONS_WRAPPER_SHOW});
+        if (addQaShow){
 
-        dispatch(SafeSettingActions.getQuestions());
+            dispatch({type:SafeSettingActions.SAFE_SETTING_QUESTIONS_WRAPPER_HIDE});
 
-        $(this.refs['add-qa-wrapper']).slideDown();
+            $(this.refs['add-qa-wrapper']).slideUp();
 
-    }
+        }else{
 
-    //设置密保问题取消
-    addQuestionHide(){
+            dispatch({type:SafeSettingActions.SAFE_SETTING_QUESTIONS_WRAPPER_SHOW});
 
-        const {dispatch} = this.props;
+            $(this.refs['add-qa-wrapper']).slideDown();
 
-        let {addQaShow} = this.props.SafeSetting;
+            dispatch(SafeSettingActions.clearQuestions());
 
-        dispatch({type:SafeSettingActions.SAFE_SETTING_QUESTIONS_WRAPPER_HIDE});
-
-        $(this.refs['add-qa-wrapper']).slideUp();
+        }
 
     }
 
     //密保问题选项改变
-    questionChange(e){
+    questionPickChange(e){
 
        const { dispatch } = this.props;
 
        dispatch({type:SafeSettingActions.SAFE_SETTING_QUESTIONS_PICK_CHANGE,data:e});
 
     }
+
+    //密保输入改变
+    questionInputChange(e,type){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:SafeSettingActions.SAFE_SETTING_QUESTIONS_INPUT_CHANGE,data:{type:type,value:e.target.value}});
+
+    }
+    //提交问题
+    commitQuestion(){
+
+        const { dispatch } = this.props;
+
+        dispatch(SafeSettingActions.commitQuestion());
+
+    }
+    //删除密保问题弹窗
+    delQuestionsModal(opts){
+
+        const { type,value,id } = opts;
+
+        const { dispatch } = this.props;
+
+        if (type==='close'){
+
+            dispatch({type:SafeSettingActions.SAFE_SETTING_DEL_QUESTIONS_MODAL_HIDE});
+
+        }else{
+
+            dispatch({type:SafeSettingActions.SAFE_SETTING_DEL_QUESTIONS_MODAL_SHOW,data:{value:value,id:id}});
+
+        }
+
+    }
+    //删除弹窗输入改变
+    delQaInputChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:SafeSettingActions.SAFE_SETTING_DEL_QUESTIONS_INPUT_CHANGE,data:e.target.value});
+
+    }
+    //弹出弹窗提交
+    commitDelQuestion(){
+
+        const  { dispatch } = this.props;
+
+        dispatch(SafeSettingActions.commitDelQuestion());
+
+    }
+
+    //编辑密保问题的弹窗
+    editQuestionsModal(opts){
+
+        const { type,value,id } = opts;
+
+        const { dispatch } = this.props;
+
+        if (type==='close'){
+
+            dispatch({type:SafeSettingActions.SAFE_SETTING_EDIT_QUESTIONS_MODAL_HIDE});
+
+        }else{
+
+            dispatch({type:SafeSettingActions.SAFE_SETTING_EDIT_QUESTIONS_MODAL_SHOW,data:{value:value,id:id}});
+
+        }
+
+    }
+
+    //编辑问题弹窗选项发生改变
+    editQuestionsPicked(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:SafeSettingActions.SAFE_SETTING_EDIT_QUESTIONS_PICK,data:e});
+
+    }
+
+    //提交密保弹窗
+
+    commitEditQuestion(){
+
+        const  { dispatch } = this.props;
+
+        dispatch(SafeSettingActions.commitEditQuestion());
+
+    }
+
+    //编辑问题弹窗inpu变化
+    editQaInputChange(e,type){
+
+       const { dispatch } = this.props;
+
+       dispatch({type:SafeSettingActions.SAFE_SETTING_EDIT_QUESTIONS_INPUT_CHANGE,data:{type:type,value:e.target.value}});
+
+    }
+    //邮箱输入变化
+    emailInputChange(e,type){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:SafeSettingActions.SAFE_SETTING_EMAIL_INPUT_CHANGE,data:{type:type,value:e.target.value}});
+
+    }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -157,13 +273,15 @@ class SafeSetting extends Component{
 
         const {
 
-            initData,qaSetShow,emailSetShow,pwdSetShow,pwdErrorTips,Questions,questionsList,
+            initData,qaSetShow,emailSetShow,pwdSetShow,pwdErrorTips,questionsList,
 
-            qaErrorTips,emailErrorTips,addQaShow,pwdValue,qaSelectd
+            qaErrorTips,emailErrorTips,addQaShow,pwdValue,qaValue,qaSelectd,delQuestionsModal,
+
+            editQuestionsModal,emailValue
 
         } = SafeSetting;
 
-        const { HasSetPwd,HasSetEmail,HasSetQA,EmailQuestions,LastTimeEditPwd,LastTimeLogin,LastTimeIP,Logs } = initData;
+        const { HasSetPwd,HasSetEmail,HasSetQA,Email,Questions,LastTimeEditPwd,LastTimeLogin,LastTimeIP,Logs } = initData;
 
 
         return (
@@ -215,7 +333,7 @@ class SafeSetting extends Component{
 
                                         <td className="col1">新密码:</td>
 
-                                        <td className="col2"><Input type="password" maxLength={20} onChange={e=>this.PwdChange(e,'new')}/></td>
+                                        <td className="col2"><Input type="password" value={pwdValue.newPwd} maxLength={20} onChange={e=>this.PwdChange(e,'new')}/></td>
 
                                         <td className="col3"><span className="error-tips" style={{display:`${pwdErrorTips.new?'block':'none'}`}}>{pwdErrorTips.newTips}</span></td>
 
@@ -225,7 +343,7 @@ class SafeSetting extends Component{
 
                                         <td className="col1">确认密码:</td>
 
-                                        <td className="col2"><Input type="password" maxLength={20} onChange={e=>this.PwdChange(e,'reNew')}/></td>
+                                        <td className="col2"><Input type="password" value={pwdValue.reNewPwd} maxLength={20} onChange={e=>this.PwdChange(e,'reNew')}/></td>
 
                                         <td className="col3"><span className="error-tips" style={{display:`${pwdErrorTips.reNew?'block':'none'}`}}>{pwdErrorTips.reNewTips}</span></td>
 
@@ -271,13 +389,13 @@ class SafeSetting extends Component{
 
                                                     <span className="qa-no">问题{key+1}:</span>
 
-                                                    <span className="question">{item}</span>
+                                                    <span className="question">{item.Question}</span>
 
                                                     <span className="question-btn-wrapper">
 
-                                                        <input type="button" className="edit-question" value="编辑"/>
+                                                        <input type="button" className="edit-question" value="编辑" onClick={this.editQuestionsModal.bind(this,{type:'show',id:item.ID,value:item.Question})}/>
 
-                                                        <input type="button" className="del-question" value="删除"/>
+                                                        <input type="button" className="del-question" value="删除" onClick={this.delQuestionsModal.bind(this,{type:'show',id:item.ID,value:item.Question})}/>
 
                                                     </span>
 
@@ -287,11 +405,11 @@ class SafeSetting extends Component{
 
                             }
 
+                            <div className="add-question-wrapper">
 
+                                {/*<input type="button" className="add-questions" value="+&nbsp;添加密保问题" onClick={this.addQuestion.bind(this)}/>*/}
 
-                            <div className="add-question-wrapper" style={{display:`${addQaShow?'none':'block'}`}}>
-
-                                <input type="button" className="add-questions" value="+&nbsp;添加密保问题" onClick={this.addQuestion.bind(this)}/>
+                                <span className={`add-question-drop ${addQaShow?'up':''}`} onClick={this.addQuestion.bind(this)}>添加密保问题</span>
 
                                 <span className="can-set-tips">(您还可以设置{Questions?3-Questions.length:3}个)</span>
 
@@ -313,7 +431,7 @@ class SafeSetting extends Component{
                                                       dropSelectd={qaSelectd}
                                                       dropList={questionsList}
                                                       style={{zIndex:8}}
-                                                      onChange={this.questionChange.bind(this)}  >
+                                                      onChange={this.questionPickChange.bind(this)}  >
 
                                             </DropDown>
 
@@ -330,9 +448,9 @@ class SafeSetting extends Component{
 
                                                 <td className="col1">自定义问题:</td>
 
-                                                <td className="col2"><Input type="password" maxLength={20}/></td>
+                                                <td className="col2"><Input  maxLength={30} value={qaValue.selfQa} onChange={e=>{this.questionInputChange(e,'self')}}/></td>
 
-                                                <td className="col3"><span className="error-tips" style={{display:`${qaErrorTips.self?'block':'none'}`}}>输入不符合规范</span></td>
+                                                <td className="col3"><span className="error-tips" style={{display:`${qaErrorTips.self?'block':'none'}`}}>{qaErrorTips.selfTips}</span></td>
 
                                             </tr>
 
@@ -343,9 +461,9 @@ class SafeSetting extends Component{
 
                                         <td className="col1">密保答案:</td>
 
-                                        <td className="col2"><Input type="password" maxLength={20}/></td>
+                                        <td className="col2"><Input  value={qaValue.answer}  onChange={e=>this.questionInputChange(e,'answer')} maxLength={30}/></td>
 
-                                        <td className="col3"><span className="error-tips" style={{display:`${qaErrorTips.answer?'block':'none'}`}}>输入不符合规范</span></td>
+                                        <td className="col3"><span className="error-tips" style={{display:`${qaErrorTips.answer?'block':'none'}`}}>{qaErrorTips.answerTips}</span></td>
 
                                     </tr>
 
@@ -353,9 +471,9 @@ class SafeSetting extends Component{
 
                                         <td className="col1">登录密码:</td>
 
-                                        <td className="col2"><Input type="password" maxLength={20}/></td>
+                                        <td className="col2"><Input type="password" value={qaValue.pwd} onChange={e=>this.questionInputChange(e,'pwd')} maxLength={20}/></td>
 
-                                        <td className="col3"><span className="error-tips" style={{display:`${qaErrorTips.pwd?'block':'none'}`}}>输入不符合规范</span></td>
+                                        <td className="col3"><span className="error-tips" style={{display:`${qaErrorTips.pwd?'block':'none'}`}}>{qaErrorTips.pwdTips}</span></td>
 
                                     </tr>
 
@@ -365,9 +483,9 @@ class SafeSetting extends Component{
 
                                 <div className="btn-wrapper">
 
-                                    <input className="commit" type="button" value="确定"/>
+                                    <input className="commit" type="button" value="确定" onClick={this.commitQuestion.bind(this)}/>
 
-                                    <input type="button" className="cancel" value="取消" onClick={this.addQuestionHide.bind(this)}/>
+                                    <input type="button" className="cancel" value="取消" onClick={this.addQuestion.bind(this)}/>
 
                                 </div>
 
@@ -399,21 +517,52 @@ class SafeSetting extends Component{
 
                                 <tbody>
 
+                                {
+                                    HasSetEmail&&HasSetEmail?
+
+                                        <tr>
+
+                                            <td className="col1">原邮箱:</td>
+
+                                            <td className="col2">{emailValue.originEmail}</td>
+
+                                            <td className="col3"></td>
+
+                                        </tr>
+
+                                        :''
+
+                                }
+
                                 <tr>
-                                    <td className="col1">原邮箱:</td>
-                                    <td className="col2"><Input type="password" maxLength={20}/></td>
-                                    <td className="col3"></td>
-                                </tr>
-                                <tr>
+
                                     <td className="col1">新邮箱:</td>
-                                    <td className="col2"><Input type="password" maxLength={20}/></td>
+
+                                    <td className="col2"><Input onChange={e=>this.emailInputChange(e,'new')} maxLength={20}/></td>
+
                                     <td className="col3"><span className="error-tips" style={{display:`${emailErrorTips.newEmail?'block':'none'}`}}>输入不符合规范</span></td>
+
                                 </tr>
-                                <tr>
-                                    <td className="col1">登录密码:</td>
-                                    <td className="col2"><Input type="password" maxLength={20}/></td>
-                                    <td className="col3"><span className="error-tips" style={{display:`${emailErrorTips.pwd?'block':'none'}`}}>输入不符合规范</span></td>
-                                </tr>
+
+                                {
+                                    HasSetEmail && HasSetEmail ?
+
+                                        <tr>
+
+                                            <td className="col1">登录密码:</td>
+
+                                            <td className="col2"><Input type="password" onChange={e=>this.emailInputChange(e,'pwd')} maxLength={20}/></td>
+
+                                            <td className="col3">
+
+                                                <span className="error-tips" style={{display: `${emailErrorTips.pwd ? 'block' : 'none'}`}}>输入不符合规范</span>
+
+                                            </td>
+
+                                        </tr>
+
+                                        :''
+                                }
 
                                 </tbody>
 
@@ -430,6 +579,136 @@ class SafeSetting extends Component{
                     </div>
 
                 </div>
+
+                <Modal
+                    className="del-question-modal"
+                    title="删除密保问题"
+                    type={1}
+                    visible={delQuestionsModal.show}
+                    width={560}
+                    bodyStyle={{height:156}}
+                    mask={true}
+                    onCancel={this.delQuestionsModal.bind(this,{type:'close'})}
+                    onOk={this.commitDelQuestion.bind(this)}>
+
+                    <div className="ModalContent">
+
+                        <div className="del-question-wrapper clearfix">
+
+                            <span className="props">密保问题:</span>
+
+                            <span className="question-content">{delQuestionsModal.question.value}</span>
+
+                        </div>
+
+                        <div className="del-answer-wrapper clearfix">
+
+                            <span className="props">密保答案:</span>
+
+
+                            <Input type="password" className="answer-content" maxLength={20} value={delQuestionsModal.pwd} onChange={this.delQaInputChange.bind(this)}/>
+
+
+                            <div className="error-tips" style={{display:`${delQuestionsModal.pwdTipsShow?'block':'none'}`}}>
+
+                                {delQuestionsModal.pwdTips}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </Modal>
+
+                <Modal
+                    className="edit-question-modal"
+                    title="编辑密保问题"
+                    type={1}
+                    visible={editQuestionsModal.show}
+                    width={560}
+                    bodyStyle={{height:356}}
+                    mask={true}
+                    onCancel={this.editQuestionsModal.bind(this,{type:'close'})}
+                    onOk={this.commitEditQuestion.bind(this)}>
+
+                    <div className="ModalContent">
+
+                        <div className="edit-origin-question-wrapper clearfix">
+
+                            <span className="props">原密保问题:</span>
+
+                            <span className="question-content">{editQuestionsModal.originQuestion.value}</span>
+
+                        </div>
+
+                        <div className="new-question-pick clearfix">
+
+                            <span className="props">新密保问题:</span>
+
+                            <DropDown
+                                dropSelectd={editQuestionsModal.newQuestionDropSelectd}
+                                dropList={questionsList}
+                                width={320}
+                                style={{zIndex:8,marginLeft:-8}}
+                                height={84}
+                                onChange={this.editQuestionsPicked.bind(this)}>
+
+                            </DropDown>
+
+                        </div>
+
+                        {
+
+                            editQuestionsModal.newQuestionDropSelectd.value=='self'?
+
+                                <div className="new-self-question clearfix">
+
+                                    <span className="props">自定义问题:</span>
+
+                                    <Input  maxLength={30} value={editQuestionsModal.selfQa} onChange={(e)=>this.editQaInputChange(e,'self')}/>
+
+                                    <div className="error-tips" style={{display:`${editQuestionsModal.selfQaTipsShow?'block':'none'}`}}>
+
+                                        {editQuestionsModal.selfQaTips}
+
+                                    </div>
+
+                                </div>:''
+
+                        }
+
+                        <div className="edit-new-answer clearfix">
+
+                            <span className="props">新密保答案:</span>
+
+                            <Input  className="answer-content" maxLength={30} value={editQuestionsModal.newAnswer} onChange={(e)=>this.editQaInputChange(e,'newAnswer')}/>
+
+                            <div className="error-tips" style={{display:`${editQuestionsModal.newAnswerTipsShow?'block':'none'}`}}>
+
+                                {editQuestionsModal.newAnswerTips}
+
+                            </div>
+
+                        </div>
+
+                        <div className="edit-pwd clearfix">
+
+                            <span className="props">密码:</span>
+
+                            <Input type="password"  maxLength={20} value={editQuestionsModal.pwd} onChange={(e)=>this.editQaInputChange(e,'pwd')}/>
+
+                            <div className="error-tips" style={{display:`${editQuestionsModal.pwdTipsShow?'block':'none'}`}}>
+
+                                {editQuestionsModal.pwdTips}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </Modal>
 
             </div>
 

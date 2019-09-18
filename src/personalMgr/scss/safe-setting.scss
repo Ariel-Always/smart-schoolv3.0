@@ -261,15 +261,7 @@
 
     .error-tips{
 
-      padding-left: 16px;
-
       margin-left: 20px;
-
-      font-size: 14px;
-
-      color: #ff0000;
-
-      background: url("#{$image-url}/input-error.png") no-repeat left center;
 
     }
 
@@ -285,13 +277,55 @@
 
     }
 
+    &.safe-qa-table{
+
+      margin-top:0;
+
+    }
+
   }
 
   .safe-qa-setting-content{
 
+    position: relative;
+
     display: none;
 
+    border: 1px solid #98ccd7;
+
+    margin: 0 150px 20px 100px;
+
+    padding-top:20px;
+
+    &:after{
+
+      position: absolute;
+
+      content: '';
+
+      width: 10px;
+
+      height: 10px;
+
+      top: -6px;
+
+      border-style: solid;
+
+      border-width: 1px;
+
+      border-color: #98ccd7 #98ccd7 transparent transparent;
+
+      left: 24px;
+
+      @include transform(rotate(-45deg));
+
+      background-color: #f7fcff;
+
+    }
+
   }
+
+
 
   .btn-wrapper{
 
@@ -424,6 +458,89 @@
   .can-set-tips{
 
     margin-left: 12px;
+
+  }
+
+  .add-question-drop{
+
+    position: relative;
+
+    color: #0099ff;
+    
+    cursor: pointer;
+
+    margin-right: 16px;
+
+    &:after{
+
+      position: absolute;
+
+      content: '';
+
+      width: 0;
+
+      height: 0;
+
+      border-style: solid;
+
+      border-width: 4px;
+
+      border-color: #0099ff transparent transparent transparent;
+
+      right: -12px;
+
+      top: 50%;
+
+      @include transform(translateY(-2px));
+
+    }
+
+    &:hover{
+
+      color: #ff6600;
+
+      &:after{
+
+        border-color:#ff6600 transparent transparent transparent;
+
+      }
+
+    }
+
+    &.up{
+
+      &:after{
+
+        @include transform(translateY(-6px));
+
+        border-color:transparent transparent #0099ff transparent;
+
+      }
+
+      &:hover{
+
+        &:after{
+
+          border-color:transparent transparent #ff6600 transparent;
+
+        }
+
+      }
+
+    }
+
+  }
+
+
+  .error-tips{
+
+    padding-left: 16px;
+
+    font-size: 14px;
+
+    color: #ff0000;
+
+    background: url("#{$image-url}/input-error.png") no-repeat left center;
 
   }
 

@@ -37,9 +37,15 @@ const SafeSetting = (state={
 
         self:false,
 
+        selfTips:'',
+
         answer:false,
 
-        pwd:false
+        answerTips:'',
+
+        pwd:false,
+
+        pwdTips:''
 
     },
 
@@ -63,7 +69,7 @@ const SafeSetting = (state={
 
     qaValue:{
 
-        question:'',
+        selfQa:'',
 
         answer:'',
 
@@ -73,9 +79,53 @@ const SafeSetting = (state={
 
     emailValue:{
 
+        originEmail:'',
+
         newEmail:'',
 
         pwd:''
+
+    },
+
+    delQuestionsModal:{
+
+        show:false,
+
+        question:'',
+
+        pwd:'',
+
+        pwdTipsShow:false,
+
+        pwdTips:''
+
+    },
+
+    editQuestionsModal:{
+
+        show:false,
+
+        originQuestion:'',
+
+        newQuestionDropSelectd:{value:"self",title:"自定义密保问题"},
+
+        pwd:'',
+
+        pwdTipsShow:false,
+
+        pwdTips:'',
+
+        selfQa:'',
+
+        selfQaTips:'',
+
+        selfQaTipsShow:'',
+
+        newAnswer:'',
+
+        newAnswerTips:'',
+
+        newAnswerTipsShow:false
 
     }
 
@@ -326,6 +376,494 @@ const SafeSetting = (state={
         case SafeSettingActions.SAFE_SETTING_QUESTIONS_PICK_CHANGE:
 
             return { ...state,qaSelectd:actions.data  };
+
+        case SafeSettingActions.SAFE_SETTING_QUESTIONS_INPUT_CHANGE:
+
+            switch (actions.data.type) {
+
+                case 'self':
+
+                    return {
+
+                        ...state,
+
+                        qaValue: {
+
+                            ...state.qaValue,
+
+                            selfQa:actions.data.value
+
+                        }
+
+                    };
+
+                case 'answer':
+
+                    return {
+
+                        ...state,
+
+                        qaValue: {
+
+                            ...state.qaValue,
+
+                            answer:actions.data.value
+
+                        }
+
+                    };
+
+                case 'pwd':
+
+                    return {
+
+                        ...state,
+
+                        qaValue: {
+
+                            ...state.qaValue,
+
+                            pwd:actions.data.value
+
+                        }
+
+                    };
+
+                default:
+
+                    return state;
+
+            }
+
+        case SafeSettingActions.SAFE_SETTING_QUESTIONS_TIPS_SHOW:
+
+            switch (actions.data.type) {
+
+                case 'self':
+
+                    return {
+
+                        ...state,
+
+                        qaErrorTips:{
+
+                            ...state.qaErrorTips,
+
+                            self:true,
+
+                            selfTips:actions.data.tips
+
+                        }
+
+                    };
+
+                case 'answer':
+
+                    return {
+
+                        ...state,
+
+                        qaErrorTips:{
+
+                            ...state.qaErrorTips,
+
+                            answer:true,
+
+                            answerTips:actions.data.tips
+
+                        }
+
+                    };
+
+                case 'pwd':
+
+                    return {
+
+                        ...state,
+
+                        qaErrorTips:{
+
+                            ...state.qaErrorTips,
+
+                            pwd:true,
+
+                            pwdTips:actions.data.tips
+
+                        }
+
+                    };
+
+                default:
+
+                    return state;
+
+            }
+
+        case SafeSettingActions.SAFE_SETTING_QUESTIONS_TIPS_HIDE:
+
+            switch (actions.data.type) {
+
+                case 'self':
+
+                    return {
+
+                        ...state,
+
+                        qaErrorTips:{
+
+                            ...state.qaErrorTips,
+
+                            self:false
+
+                        }
+
+                    };
+
+                case 'answer':
+
+                    return {
+
+                        ...state,
+
+                        qaErrorTips:{
+
+                            ...state.qaErrorTips,
+
+                            answer:false
+
+                        }
+
+                    };
+
+                case 'pwd':
+
+                    return {
+
+                        ...state,
+
+                        qaErrorTips:{
+
+                            ...state.qaErrorTips,
+
+                            pwd:false
+
+                        }
+
+                    };
+
+                default:
+
+                    return state;
+
+            }
+
+        case SafeSettingActions.SAFE_SETTING_DEL_QUESTIONS_MODAL_SHOW:
+
+            return {
+
+                ...state,
+
+                delQuestionsModal: {
+
+                    ...state.delQuestionsModal,
+
+                    show:true,
+
+                    question:actions.data,
+
+                    pwd:'',
+
+                    pwdTipsShow:false,
+
+                    pwdTips:''
+
+                }
+
+            };
+
+        case SafeSettingActions.SAFE_SETTING_DEL_QUESTIONS_MODAL_HIDE:
+
+            return {
+
+                ...state,
+
+                delQuestionsModal: {
+
+                    ...state.delQuestionsModal,
+
+                    show:false
+
+                }
+
+            };
+
+        case SafeSettingActions.SAFE_SETTING_DEL_QUESTIONS_INPUT_CHANGE:
+
+            return { ...state,delQuestionsModal:{...state.delQuestionsModal,pwd:actions.data} };
+
+        case SafeSettingActions.SAFE_SETTING_DEL_QUESTIONS_PWD_TIPS_SHOW:
+
+            return {...state,delQuestionsModal:{...state.delQuestionsModal,pwdTipsShow:true,pwdTips:actions.data}};
+
+        case SafeSettingActions.SAFE_SETTING_DEL_QUESTIONS_PWD_TIPS_HIDE:
+
+            return {...state,delQuestionsModal:{...state.delQuestionsModal,pwdTipsShow:false}};
+
+
+        case SafeSettingActions.SAFE_SETTING_EDIT_QUESTIONS_MODAL_SHOW:
+
+            return {
+
+                ...state,
+
+                editQuestionsModal: {
+
+                    ...state.editQuestionsModal,
+
+                    show:true,
+
+                    originQuestion:actions.data,
+
+                    newQuestionDropSelectd:{value:"self",title:"自定义密保问题"},
+
+                    pwd:'',
+
+                    pwdTipsShow:false,
+
+                    pwdTips:'',
+
+                    selfQa:'',
+
+                    selfQaTips:'',
+
+                    selfQaTipsShow:'',
+
+                    newAnswer:'',
+
+                    newAnswerTips:'',
+
+                    newAnswerTipsShow:false
+
+                }
+
+            };
+
+        case SafeSettingActions.SAFE_SETTING_EDIT_QUESTIONS_MODAL_HIDE:
+
+            return {
+
+                ...state,
+
+                editQuestionsModal: {
+
+                    ...state.editQuestionsModal,
+
+                    show:false
+
+                }
+
+            };
+
+        case SafeSettingActions.SAFE_SETTING_EDIT_QUESTIONS_PICK:
+
+            return { ...state,editQuestionsModal:{...state.editQuestionsModal,newQuestionDropSelectd:actions.data} };
+
+        case SafeSettingActions.SAFE_SETTING_EDIT_QUESTIONS_INPUT_CHANGE:
+
+            switch (actions.data.type) {
+
+                case 'self':
+
+                    return {
+
+                        ...state,
+
+                        editQuestionsModal: {
+
+                            ...state.editQuestionsModal,
+
+                            selfQa:actions.data.value
+
+                        }
+
+                    };
+
+                case 'newAnswer':
+
+                    return {
+
+                        ...state,
+
+                        editQuestionsModal: {
+
+                            ...state.editQuestionsModal,
+
+                            newAnswer:actions.data.value
+
+                        }
+
+                    };
+
+                case 'pwd':
+
+                    return {
+
+                        ...state,
+
+                        editQuestionsModal: {
+
+                            ...state.editQuestionsModal,
+
+                            pwd:actions.data.value
+
+                        }
+
+                    };
+
+                default:
+
+                    return state;
+
+            }
+
+        case SafeSettingActions.SAFE_SETTING_EDIT_QUESTIONS_TIPS_SHOW:
+
+            switch (actions.data.type) {
+
+                case 'self':
+
+                    return {
+
+                        ...state,
+
+                        editQuestionsModal:{
+
+                            ...state.editQuestionsModal,
+
+                            selfQaTipsShow:true,
+
+                            selfQaTips:actions.data.tips
+
+                        }
+
+                    };
+
+                case 'answer':
+
+                    return {
+
+                        ...state,
+
+                        editQuestionsModal:{
+
+                            ...state.editQuestionsModal,
+
+                            newAnswerTipsShow:true,
+
+                            newAnswerTips:actions.data.tips
+
+                        }
+
+                    };
+
+                case 'pwd':
+
+                    return {
+
+                        ...state,
+
+                        editQuestionsModal:{
+
+                            ...state.editQuestionsModal,
+
+                            pwdTipsShow:true,
+
+                            pwdTips:actions.data.tips
+
+                        }
+
+                    };
+
+                default:
+
+                    return state;
+
+            }
+
+        case SafeSettingActions.SAFE_SETTING_EDIT_QUESTIONS_TIPS_HIDE:
+
+            switch (actions.data.type) {
+
+                case 'self':
+
+                    return {
+
+                        ...state,
+
+                        editQuestionsModal:{
+
+                            ...state.editQuestionsModal,
+
+                            selfQaTipsShow:false
+
+                        }
+
+                    };
+
+                case 'answer':
+
+                    return {
+
+                        ...state,
+
+                        editQuestionsModal:{
+
+                            ...state.editQuestionsModal,
+
+                            newAnswerTipsShow:false
+
+                        }
+
+                    };
+
+                case 'pwd':
+
+                    return {
+
+                        ...state,
+
+                        editQuestionsModal:{
+
+                            ...state.editQuestionsModal,
+
+                            pwdTipsShow:false
+
+                        }
+
+                    };
+
+                default:
+
+                    return state;
+
+            }
+
+
+
+
+        case SafeSettingActions.SAFE_SETTING_EMAIL_INPUT_CHANGE:
+
+            return {
+
+                ...state,
+
+                emailValue: {
+
+                    ...state.emailValue
+
+                }
+
+            };
 
         default:
 
