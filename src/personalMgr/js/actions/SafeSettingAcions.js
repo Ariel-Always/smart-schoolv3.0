@@ -58,6 +58,10 @@ const SAFE_SETTING_EDIT_QUESTIONS_TIPS_HIDE = 'SAFE_SETTING_EDIT_QUESTIONS_TIPS_
 
 const SAFE_SETTING_EMAIL_INPUT_CHANGE = 'SAFE_SETTING_EMAIL_INPUT_CHANGE';
 
+const SAFE_SETTING_EMAIL_TIPS_SHOW = 'SAFE_SETTING_EMAIL_TIPS_SHOW';
+
+const SAFE_SETTING_EMAIL_TIPS_HIDE = 'SAFE_SETTING_EMAIL_TIPS_HIDE';
+
 
 
 
@@ -644,22 +648,6 @@ const commitQuestion = () => {
 };
 
 
-
-//清空密码部分，返回初始状态
-const clearPwd = () => {
-
-    return dispatch => {
-
-        dispatch({type:SAFE_SETTING_PWD_VALUE_CHANGE,data:{type:'origin',value:''}});
-
-        dispatch({type:SAFE_SETTING_PWD_VALUE_CHANGE,data:{type:'new',value:''}});
-
-        dispatch({type:SAFE_SETTING_PWD_VALUE_CHANGE,data:{type:'reNew',value:''}});
-
-    }
-
-};
-
 //提交删除命令
 const commitDelQuestion = () => {
 
@@ -1057,12 +1045,172 @@ const commitEditQuestion = () => {
 };
 
 
+//提交邮箱修改
+const emailCommit = () => {
+
+  return ( dispatch,getState ) => {
+
+      let { UserID } = getState().LoginUser;
+
+      let { pwd,newEmail } = getState().SafeSetting.emailValue;
+
+      let pwdOk,newEmailOk = false;
+
+
+      //判断密码是否正确
+      if (pwd){
+
+        let pwdChecked = UserComm_CheckUserPwd(pwd);
+
+        if (pwdChecked){
+
+            dispatch({type:SAFE_SETTING_EMAIL_TIPS_HIDE,data:{type:'pwd'}});
+
+            pwdOk = true;
+
+        }else{
+
+            dispatch({type:SAFE_SETTING_EMAIL_TIPS_SHOW,data:{type:'pwd',value:"密码格式错误！"}});
+
+        }
+
+
+      }else{
+
+          dispatch({type:SAFE_SETTING_EMAIL_TIPS_SHOW,data:{type:'pwd',value:"请输入密码！"}});
+
+      }
+
+
+      if (newEmail){
+
+          let emailChecked = UserComm_CheckEmail(newEmail);
+
+          if (emailChecked){
+
+              dispatch({type:SAFE_SETTING_EMAIL_TIPS_HIDE,data:{type:'new'}});
+
+              newEmailOk = true;
+
+          }else{
+
+              dispatch({type:SAFE_SETTING_EMAIL_TIPS_SHOW,data:{type:'new',value:"邮箱格式错误！"}});
+
+          }
+
+
+      }else{
+
+          dispatch({type:SAFE_SETTING_EMAIL_TIPS_SHOW,data:{type:'new',value:"请输入邮箱！"}});
+
+      }
+
+
+      //同时都正确的时候
+      if (pwdOk&&newEmailOk){
+
+          let commitEmail = Method.getPostData('/UserMgr/PersonalMgr/SetSecEmail',{
+
+              UserID:UserID,Pwd:pwd,Email:newEmail
+
+          },2);
+
+
+          commitEmail.then(json => {
+
+              if (json.Status === 200){
+
+                  dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{type:"success",title:"邮箱添加成功",hide:hideAlert(dispatch)}});
+
+                  dispatch(clearEmail());
+
+                  dispatch(Init());
+
+              }else{
+
+                  if (json.Data === -1){
+
+                      dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                              type:"btn-error",
+
+                              title:"参数错误！",
+
+                              close:hideAlert(dispatch),
+
+                              ok:hideAlert(dispatch),
+
+                              cancel: hideAlert(dispatch)
+
+                          }});
+
+                  }
+
+                  if (json.Data === -2){
+
+                      dispatch({type:SAFE_SETTING_EMAIL_TIPS_SHOW,data:{type:"new",value:"新旧邮箱相同"}});
+
+                     /* dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                              type:"btn-error",
+
+                              title:"新旧邮箱相同！",
+
+                              close:hideAlert(dispatch),
+
+                              ok:hideAlert(dispatch),
+
+                              cancel: hideAlert(dispatch)
+
+                          }});*/
+
+                  }
+
+                  if (json.Data === -3){
+
+                      dispatch({type:SAFE_SETTING_EMAIL_TIPS_SHOW,data:{type:'pwd',tips:"密码不正确！"}});
+
+                  }
+
+              }
+
+          });
+
+
+      }
+
+
+  }
+
+
+};
 
 
 
 
 
 
+
+
+
+
+
+
+
+//清空密码部分，返回初始状态
+const clearPwd = () => {
+
+    return dispatch => {
+
+        dispatch({type:SAFE_SETTING_PWD_VALUE_CHANGE,data:{type:'origin',value:''}});
+
+        dispatch({type:SAFE_SETTING_PWD_VALUE_CHANGE,data:{type:'new',value:''}});
+
+        dispatch({type:SAFE_SETTING_PWD_VALUE_CHANGE,data:{type:'reNew',value:''}});
+
+    }
+
+};
 
 
 
@@ -1082,6 +1230,35 @@ const clearQuestions = () => {
     }
 
 };
+
+//清空邮箱，返回初始状态
+
+const clearEmail = () => {
+
+    return dispatch => {
+
+        dispatch({type:SAFE_SETTING_EMAIL_INPUT_CHANGE,data:{type:'new',value:""}});
+
+        dispatch({type:SAFE_SETTING_EMAIL_INPUT_CHANGE,data:{type:'pwd',value:""}});
+
+    }
+
+};
+
+
+
+
+
+//检测邮箱
+function UserComm_CheckEmail(strInput) {
+    //\S表示非空字符
+    if (!/^(\S)+@(\S)+\.[a-zA-Z]{2,3}$/.test(strInput)) {
+        return false;
+    }
+    else {
+        return /^([a-zA-Z0-9]+[_|\-|\.]*)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\-|\.]*)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/gi.test(strInput);
+    }
+}
 
 
 //检测密码
@@ -1157,6 +1334,10 @@ export default{
 
     SAFE_SETTING_EMAIL_INPUT_CHANGE,
 
+    SAFE_SETTING_EMAIL_TIPS_SHOW,
+
+    SAFE_SETTING_EMAIL_TIPS_HIDE,
+
     Init,
 
     commitPwd,
@@ -1171,6 +1352,8 @@ export default{
 
     commitDelQuestion,
 
-    commitEditQuestion
+    commitEditQuestion,
+
+    emailCommit
 
 }

@@ -544,5 +544,65 @@
 
   }
 
+  .origin-email{
+
+    margin-left: 8px;
+
+  }
+
+  .safe-history-bar{
+
+    margin:24px 92px;
+
+    background-color: rgb(245,245,245);
+
+    font-size: 16px;
+
+    height: 56px;
+
+    line-height: 56px;
+
+    text-align: center;
+
+
+    .props{
+
+      color: #999999;
+
+      margin-right: 4px;
+
+    }
+
+
+    .login-time+.props{
+
+
+      margin-left: 20px;
+
+    }
+
+    .more-log{
+
+      color:#0099ff;
+
+      background-color: transparent;
+
+      margin-left: 20px;
+
+      text-decoration: underline;
+
+      &:hover{
+
+        color: #ff6600;
+
+
+      }
+
+    }
+
+  }
+
+
+
 }
 
