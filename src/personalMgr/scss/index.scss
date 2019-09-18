@@ -12,3 +12,10 @@ $image-url:'../images';
 
 //密码安全
 @import "./safe-setting";
+
+//弹出密保问题的弹窗
+@import "./del-questions-modal";
+
+
+//弹出编辑密保问题
+@import "./edit-questions-modal";
