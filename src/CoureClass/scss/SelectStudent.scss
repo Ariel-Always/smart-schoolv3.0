@@ -17,8 +17,90 @@
   }
 
   .box-content {
-    padding: 30px 17px;
+    //padding: 30px 17px;
+    background: #fff;
 
-    
+    .selectClassBox {
+      position: absolute;
+      left: 0;
+
+      .selectContent {
+        display: inline-block;
+        width: 177px;
+        height: 50px;
+        padding-left: 30px;
+        background-color: #e7e7e7;
+        line-height: 50px;
+        text-align: left;
+        font-size: 14px;
+        color: #666666;
+        cursor: pointer;
+        &::before {
+          content: "";
+          display: inline-block;
+          width: 4px;
+          left: 22px;
+          position: absolute;
+          height: 50px;
+          background: url(../images/icon-default.png) no-repeat center center;
+          background-size: contain;
+        }
+      }
+
+      .active {
+        background-color: #ffffff;
+        color: #0083e8;
+        &::before {
+          content: "";
+          display: inline-block;
+          width: 4px;
+          left: 22px;
+          position: absolute;
+          height: 50px;
+          background: url(../images/icon-active.png) no-repeat center center;
+          background-size: contain;
+        }
+      }
+    }
+
+    .selectStudent {
+      position: absolute;
+      right: 0;
+      li {
+        height: 48px;
+        line-height: 48px;
+        padding-left:18px;
+        width: 100%;
+        display: inline-block;
+        color: #333333;
+        border-bottom: 2px #ebebeb solid;
+        &:nth-of-type(2n+1) {
+          background-color: #fafafa;
+        }
+        &:nth-of-type(2n) {
+          background-color: #ffffff;
+        }
+        &:last-of-type {
+          border-bottom: none;
+        }
+      }
+      .selectContent {
+        .studentName {
+          font-size: 14px;
+          color: #333333;
+        }
+        .studentID {
+          color: #999999;
+        }
+      }
+      .selectAllBox {
+        background-color: #ffffff!important;
+        border-bottom: 2px #ebebeb solid!important;
+        .selectAll {
+          font-size: 14px;
+          color: #666666;
+        }
+      }
+    }
   }
 }

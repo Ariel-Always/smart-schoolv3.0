@@ -90,16 +90,16 @@ class Class extends React.Component {
     }
 
     //钩子函数
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps) {
         const { DataState, UIState } = this.props;
 
         let options = []
         let tableSource = nextProps.DataState.GetClassAllMsg.allClass ? nextProps.DataState.GetClassAllMsg.allClass.TableData : [];
-        options = tableSource.map((child,index) => {
+        options = tableSource.map((child, index) => {
             return index;
         })
         this.setState({
-            options:options
+            options: options
         })
     }
 
@@ -109,41 +109,41 @@ class Class extends React.Component {
         const { DataState, UIState } = this.props;
         let checkedList = this.state.checkedList;
 
-       
+
     }
     //列表班级点击事件
     onCourseClassClick = (classID) => {
         console.log('ss' + classID)
-        const { dispatch, DataState,UIState } = this.props;
+        const { dispatch, DataState, UIState } = this.props;
         dispatch(actions.UpUIState.CourseClassDetailsModalOpen())
         dispatch(actions.UpDataState.getCourseClassDetailsMsg('/CoureClass_studentMsg?schoolID=sss'))
     }
     //列表操作编辑点击事件
     onHandleClassClick = (key) => {
-        const { dispatch, DataState,UIState } = this.props;
+        const { dispatch, DataState, UIState } = this.props;
         let ClassID = DataState.GetClassAllMsg.allClass.TableData[key].CourseClass.ClassID;
         console.log(key)
         dispatch(actions.UpUIState.ChangeCourseClassModalOpen())
-        dispatch(actions.UpDataState.getCourseClassDetailsHandleClassMsg('/CoureClass_studentMsg?courseClassID='+ClassID))
+        dispatch(actions.UpDataState.getCourseClassDetailsHandleClassMsg('/CoureClass_studentMsg?courseClassID=' + ClassID))
 
 
     }
     //列表操作删除点击事件
     onDeleteClassClick = (key) => {
-        const { dispatch, DataState,UIState } = this.props;
+        const { dispatch, DataState, UIState } = this.props;
         let checkedList = this.state.checkedList
         let len = checkedList.length;
-        let source =  DataState.GetClassAllMsg.allClass.TableData;
+        let source = DataState.GetClassAllMsg.allClass.TableData;
         console.log(key)
         let courseClassID = source[key].CourseClass.ClassID;
         dispatch(actions.UpUIState.showErrorAlert({
             type: 'btn-warn',
             title: "您确定删除？",
-            ok: this.onAppAlertDeleteOK.bind(this),
+            ok: this.onAppAlertDeleteOK.bind(this, key),
             cancel: this.onAppAlertCancel.bind(this),
             close: this.onAppAlertClose.bind(this)
         }));
-        
+
 
     }
     //列表分页改变事件
@@ -157,19 +157,19 @@ class Class extends React.Component {
         let routeID = pathArr[2];
         let subjectID = pathArr[3];
         let classID = pathArr[4];
-        dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss&pageIndex='+value+'&pageSize=10', routeID,classID));
+        dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss&pageIndex=' + value + '&pageSize=10', routeID, classID));
 
 
     }
     //列表多选
     onCheckBoxGroupChange = (value) => {
         let checkAll = false;
-        if(value.length===this.state.options.length){
+        if (value.length === this.state.options.length) {
             checkAll = true;
         }
         this.setState({
-            checkedList:value,
-            checkAll:checkAll
+            checkedList: value,
+            checkAll: checkAll
         })
     }
     //列表全选
@@ -178,14 +178,14 @@ class Class extends React.Component {
         const { DataState, UIState } = this.props;
 
         let checkList = [];
-        if(e.target.checked){
-            checkList=this.state.options;
-        }else{
+        if (e.target.checked) {
+            checkList = this.state.options;
+        } else {
             checkList = []
         }
         this.setState({
-            checkAll:e.target.checked,
-            checkedList:checkList
+            checkAll: e.target.checked,
+            checkedList: checkList
         })
     }
     //全选删除
@@ -193,8 +193,18 @@ class Class extends React.Component {
         const { dispatch, DataState } = this.props;
         let checkedList = this.state.checkedList
         let len = checkedList.length;
+        let courseClassID = '';
+        let source = DataState.GetClassAllMsg.allClass.TableData;
+        checkedList.map((child, index) => {
+            // if (index !== len - 1)
+            courseClassID = source[child].CourseClass.ClassID + '-';
+            // else
+            //     courseClassID = source[child].CourseClass.ClassID;
+
+        })
+
         console.log(this.state.checkedList)
-        if(len===0){
+        if (len === 0) {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-error',
                 title: "您还没有选择哦~",
@@ -202,11 +212,11 @@ class Class extends React.Component {
                 cancel: this.onAppAlertCancel.bind(this),
                 close: this.onAppAlertClose.bind(this)
             }));
-        }else{
+        } else {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-warn',
                 title: "您确定删除？",
-                ok: this.onAppAlertDeleteAllOK.bind(this,checkedList),
+                ok: this.onAppAlertDeleteAllOK.bind(this, courseClassID),
                 cancel: this.onAppAlertCancel.bind(this),
                 close: this.onAppAlertClose.bind(this)
             }));
@@ -228,13 +238,18 @@ class Class extends React.Component {
     }
 
     //删除提示框
-    onAppAlertDeleteAllOK = (checkedList) => {
+    onAppAlertDeleteAllOK = (id) => {
         const { dispatch } = this.props;
-
+        let route = history.location.pathname;
+        let pathArr = route.split('/');
+        let handleRoute = pathArr[1];
+        let routeID = pathArr[2];
+        let subjectID = pathArr[3];
+        let classID = pathArr[4];
         let url = '/DeleteSubject';
         dispatch(actions.UpUIState.hideErrorAlert());
         postData(CONFIG.proxy + url, {
-            courseClassID:checkedList.join()
+            courseClassID: id
         }).then(res => {
             return res.json()
         }).then(json => {
@@ -246,18 +261,26 @@ class Class extends React.Component {
                     title: "成功",
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
+                this.setState({
+                    checkedList:[],
+                    checkAll:false
+                })
+                dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss&pageIndex=' + 1 + '&pageSize=10', routeID, classID));
             }
         })
     }
-    onAppAlertDeleteOK = () => {
-        const { dispatch, DataState,UIState } = this.props;
-        let source =  DataState.GetClassAllMsg.allClass.TableData;
-        console.log(key)
-        let courseClassID = source[key].CourseClass.ClassID;
+    onAppAlertDeleteOK = (id) => {
+        const { dispatch, DataState, UIState } = this.props;
+        let route = history.location.pathname;
+        let pathArr = route.split('/');
+        let handleRoute = pathArr[1];
+        let routeID = pathArr[2];
+        let subjectID = pathArr[3];
+        let classID = pathArr[4];
         let url = '/DeleteSubject';
         dispatch(actions.UpUIState.hideErrorAlert());
         postData(CONFIG.proxy + url, {
-            courseClassID:courseClassID
+            courseClassID: id
         }).then(res => {
             return res.json()
         }).then(json => {
@@ -269,10 +292,18 @@ class Class extends React.Component {
                     title: "成功",
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
+                
+                dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss&pageIndex=' + 1 + '&pageSize=10', routeID, classID));
+
             }
         })
     }
+    //关闭
+    onAlertWarnHide = () => {
+        const { dispatch } = this.props;
+        dispatch(actions.UpUIState.hideErrorAlert())
 
+    }
     render() {
         const { DataState, UIState } = this.props;
         let tips = DataState.GetClassAllMsg.allClass && DataState.GetCoureClassAllMsg.Subjects ? DataState.GetCoureClassAllMsg.Subjects[DataState.GetClassAllMsg.allClass.subject].subjectName + '教学班>' + DataState.GetCoureClassAllMsg.Subjects[DataState.GetClassAllMsg.allClass.subject][DataState.GetClassAllMsg.allClass.Class] : '';
@@ -300,8 +331,8 @@ class Class extends React.Component {
                             全选
                                     <Button onClick={this.onDeleteAllClick} className='deleteAll' color='blue'>删除</Button>
                         </CheckBox>
-                       
-                        <div  className='pagination-box'>
+
+                        <div className='pagination-box'>
                             <PagiNation
                                 showQuickJumper
                                 defaultCurrent={DataState.GetClassAllMsg.allClass ? DataState.GetClassAllMsg.allClass.PageIndex : 1}

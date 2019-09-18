@@ -39,10 +39,15 @@ const SET_COURSE_CLASS_STUDENT_MSG = 'SET_COURSE_CLASS_STUDENT_MSG';
 const SET_COURSE_CLASS_STUDENT_DEFAULT_MSG = 'SET_COURSE_CLASS_STUDENT_DEFAULT_MSG';
 //教师中转
 const SET_SUBJECT_TEACHER_TRANSFER_MSG = 'SET_SUBJECT_TEACHER_TRANSFER_MSG'
-
+//学生中转
+const SET_CLASS_STUDENT_TRANSFER_MSG = 'SET_CLASS_STUDENT_TRANSFER_MSG'
 
 //编辑/添加教学班-获取年级班级信息
-const GET_GRADE_CLASS_MSG = 'GET_GRADE_CLASS_MSG'
+const GET_GRADE_CLASS_MSG = 'GET_GRADE_CLASS_MSG';
+//编辑/添加教学班-获取年级班级信息
+const GET_CLASS_STUDENT_MSG = 'GET_CLASS_STUDENT_MSG';
+//编辑/添加教学班-搜索年级班级信息
+const SEARCH_CLASS_STUDENT_MSG = 'SEARCH_CLASS_STUDENT_MSG'
 //操作的执行
 //获取登录用户信息
 const getLoginUser = (url) => {
@@ -225,12 +230,17 @@ const setCourseClassStudentMsg = (student) => {
     }
 }
 //编辑教学班-设置默认学生
-const setCourseClassStudentDefaultMsg = (teacher) => {
+const setCourseClassStudentDefaultMsg = (student) => {
     return (dispatch) => {
-        dispatch({ type: SET_COURSE_CLASS_STUDENT_DEFAULT_MSG, data: teacher })
+        dispatch({ type: SET_COURSE_CLASS_STUDENT_DEFAULT_MSG, data: student })
     }
 }
-
+//编辑教学班-设置学生中转
+const setClassStudentTransferMsg = (student) => {
+    return (dispatch) => {
+        dispatch({ type: SET_CLASS_STUDENT_TRANSFER_MSG, data: student })
+    }
+}
 //获取年级行政班信息
 const getGradeClassMsg = (url) => {
     return (dispatch) => {
@@ -245,6 +255,42 @@ const getGradeClassMsg = (url) => {
                 console.log(json.Data)
                 dispatch({ type: GET_GRADE_CLASS_MSG, data: json.Data });
                 dispatch({ type: actions.UpUIState.STUDENT_LOADING_MODAL_COLSE });
+            }
+        });
+    }
+}
+//获取行政班学生信息
+const getClassStudentMsg = (url) => {
+    return (dispatch) => {
+        dispatch(actions.UpUIState.ClassStudentLoadingModalOpen());
+
+        getData(CONFIG.proxy + url).then(res => {
+            return res.json()
+        }).then(json => {
+            if (json.Status === 400) {
+                console.log('错误码：' + json.Status)
+            } else if (json.Status === 200) {
+                console.log(json.Data)
+                dispatch({ type: GET_CLASS_STUDENT_MSG, data: json.Data });
+                dispatch( actions.UpUIState.ClassStudentLoadingModalClose());
+            }
+        });
+    }
+}
+//搜索行政班学生信息
+const searchClassStudentMsg = (url) => {
+    return (dispatch) => {
+        dispatch(actions.UpUIState.ClassStudentLoadingModalOpen());
+
+        getData(CONFIG.proxy + url).then(res => {
+            return res.json()
+        }).then(json => {
+            if (json.Status === 400) {
+                console.log('错误码：' + json.Status)
+            } else if (json.Status === 200) {
+                console.log(json.Data)
+                dispatch({ type: SEARCH_CLASS_STUDENT_MSG, data: json.Data });
+                dispatch( actions.UpUIState.ClassStudentLoadingModalClose());
             }
         });
     }
@@ -280,9 +326,15 @@ export default {
     setCourseClassStudentDefaultMsg,
     setSubjectTeacherTransferMsg,
     SET_SUBJECT_TEACHER_TRANSFER_MSG,
+    SET_CLASS_STUDENT_TRANSFER_MSG,
+    setClassStudentTransferMsg,
 
     GET_GRADE_CLASS_MSG,
-    getGradeClassMsg
+    getGradeClassMsg,
+    GET_CLASS_STUDENT_MSG,
+    getClassStudentMsg,
+    SEARCH_CLASS_STUDENT_MSG,
+    searchClassStudentMsg
 
 
 }

@@ -59,7 +59,10 @@ const ADD_STUDENT_MODAL_CLOSE = 'ADD_STUDENT_MODAL_CLOSE'
 const TEACHER_LOADING_MODAL_OPEN = 'TEACHER_LOADING_MODAL_OPEN';
 const TEACHER_LOADING_MODAL_COLSE = 'TEACHER_LOADING_MODAL_COLSE';
 const STUDENT_LOADING_MODAL_OPEN = 'STUDENT_LOADING_MODAL_OPEN';
-const STUDENT_LOADING_MODAL_COLSE = 'STUDENT_LOADING_MODAL_COLSE'
+const STUDENT_LOADING_MODAL_COLSE = 'STUDENT_LOADING_MODAL_COLSE';
+
+const CLASS_STUDENT_LOADING_MODAL_COLSE = 'CLASS_STUDENT_LOADING_MODAL_COLSE';
+const CLASS_STUDENT_LOADING_MODAL_OPEN = 'CLASS_STUDENT_LOADING_MODAL_OPEN'
 
 
 
@@ -161,7 +164,12 @@ const TeacherLoadingModalClose = () => {
 const TeacherLoadingModalOpen = () => {
     return {type:TEACHER_LOADING_MODAL_OPEN};
 }
-
+const ClassStudentLoadingModalClose = () => {
+    return {type:CLASS_STUDENT_LOADING_MODAL_COLSE};
+}
+const ClassStudentLoadingModalOpen = () => {
+    return {type:CLASS_STUDENT_LOADING_MODAL_OPEN};
+}
 export default {
     APP_LOADING_CLOSE,
     APP_LOADING_OPEN,
@@ -231,6 +239,10 @@ export default {
     StudentLoadingModalOpen,
     StudentLoadingModalClose,
     TeacherLoadingModalClose,
-    TeacherLoadingModalOpen
+    TeacherLoadingModalOpen,
+    ClassStudentLoadingModalOpen,
+    ClassStudentLoadingModalClose
+    ,CLASS_STUDENT_LOADING_MODAL_COLSE,
+    CLASS_STUDENT_LOADING_MODAL_OPEN
    
 }

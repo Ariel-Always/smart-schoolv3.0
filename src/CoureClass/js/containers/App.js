@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Frame, Menu, Loading, Alert, LeftMenu, Modal } from "../../../common";
 import { connect } from 'react-redux';
 import TimeBanner from '../component/TimeBanner'
+import CONFIG from '../../../common/js/config';
 
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
 import history from './history'
@@ -12,13 +13,15 @@ import Subject from '../component/Subject'
 import Search from '../component/Search'
 import Class from '../component/Class'
 import HandleCourseClass from '../component/HandleCourseClass'
+import AddCourseClass from '../component/AddCourseClass'
 
 import CourseClassDetails from '../component/CourseClassDetails'
 
 //import Subject from '../component/Subject'
 import '../../scss/index.scss'
 import $ from 'jquery'
-import { getData } from '../../../common/js/fetch'
+import { postData, getData } from '../../../common/js/fetch'
+
 import actions from '../actions';
 //import { urlAll, proxy } from './config'
 
@@ -151,9 +154,7 @@ class App extends Component {
             history.push('/Subject/' + id + '/all')
         } else if (type === 'Class') {
             history.push('/Subject/' + sub + '/Class/' + id)
-        } else if (type === 'Search') {
-            history.push('/Search/' + id)
-        }
+        } 
         //history.push('/'+id)
     }
 
@@ -170,17 +171,94 @@ class App extends Component {
     //编辑教学班模态框
     ChangeCourseClassModalOk = () => {
         const { dispatch, DataState } = this.props;
-        let Student = DataState.GetCourseClassDetailsHandleClassMsg.selectData.Student;
+        let userMsg = DataState.LoginUser;
+        let data = DataState.GetCourseClassDetailsHandleClassMsg;
+        let route = history.location.pathname;
+        let pathArr = route.split('/');
+        let handleRoute = pathArr[1];
+        let routeID = pathArr[2];
+        let subjectID = pathArr[3];
+        let classID = pathArr[4];
+        
+        if(data.selectData.Teacher.value===data.TeacherID&&data.selectData.CourseClass.CourseClassName===data.CourseClassName&&data.selectData.Student==data.TableSource){
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-error',
+                title: "您还没有选择哦~",
+                ok: this.onAppAlertOK.bind(this),
+                cancel: this.onAppAlertCancel.bind(this),
+                close: this.onAppAlertClose.bind(this)
+            }));
+            return ;
+        }
+        let courseClassStus = data.selectData.Student.map((child,index) => {
+            return child.StudentID
+        }).join();
+        let url = '/DeleteSubject'
         //dispatch(actions.UpDataState.setCourseClassStudentMsg(Student))
+        
+        postData(CONFIG.proxy + url, {
+            userID: userMsg.UserID,
+            userType:userMsg.UserType,
+            schoolID:userMsg.SchoolID,
+            courseClassName:data.selectData.CourseClass.CourseClassName,
+            teacherID:data.selectData.Teacher.value,
+            gradeID:data.GradeID,
+            subjectID:data.SubjectID,
+            courseClassStus:courseClassStus
+        }).then(res => {
+            return res.json()
+        }).then(json => {
+            if (json.Status === 400) {
+                console.log('错误码：' + json.Status)
+            } else if (json.Status === 200) {
+                dispatch(actions.UpUIState.showErrorAlert({
+                    type: 'success',
+                    title: "成功",
+                    onHide: this.onAlertWarnHide.bind(this)
+                }));
+                
+                dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss&pageIndex=' + 1 + '&pageSize=10', routeID, classID));
+
+            }
+        })
+        
         dispatch(actions.UpUIState.ChangeCourseClassModalClose())
+        dispatch(actions.UpDataState.setCourseClassName([]))
+        dispatch(actions.UpDataState.setCourseClassStudentMsg([]))
+        dispatch(actions.UpDataState.setSubjectTeacherMsg([]))
+        dispatch(actions.UpDataState.setClassStudentTransferMsg([]))
+        dispatch(actions.UpDataState.setSubjectTeacherTransferMsg([]))
+    }
+    //关闭
+    onAlertWarnHide = () => {
+        const { dispatch } = this.props;
+        dispatch(actions.UpUIState.hideErrorAlert())
+
     }
     ChangeCourseClassModalCancel = () => {
         const { dispatch, DataState } = this.props;
-        let Student = DataState.GetCourseClassDetailsHandleClassMsg.TableSource;
-        let Teacher = {value:DataState.GetCourseClassDetailsHandleClassMsg.TeacherID,title:DataState.GetCourseClassDetailsHandleClassMsg.TeacherName}
-        dispatch(actions.UpDataState.setCourseClassStudentDefaultMsg(Student))
-        dispatch(actions.UpDataState.setSubjectTeacherDefaultMsg(Teacher))
+        // let Student = DataState.GetCourseClassDetailsHandleClassMsg.TableSource;
+        // let Teacher = {value:DataState.GetCourseClassDetailsHandleClassMsg.TeacherID,title:DataState.GetCourseClassDetailsHandleClassMsg.TeacherName}
+        dispatch(actions.UpDataState.setCourseClassName([]))
+        dispatch(actions.UpDataState.setCourseClassStudentMsg([]))
+        dispatch(actions.UpDataState.setSubjectTeacherMsg([]))
+        dispatch(actions.UpDataState.setClassStudentTransferMsg([]))
+        dispatch(actions.UpDataState.setSubjectTeacherTransferMsg([]))
         dispatch(actions.UpUIState.ChangeCourseClassModalClose())
+
+    }
+    //添加教学班模态框
+    AddCourseClassModalOk = () => {
+        const { dispatch, DataState } = this.props;
+        let Student = DataState.GetCourseClassDetailsHandleClassMsg.selectData.Student;
+        //dispatch(actions.UpDataState.setCourseClassStudentMsg(Student))
+        dispatch(actions.UpUIState.AddCourseClassModalClose())
+    }
+    AddCourseClassModalCancel = () => {
+        const { dispatch, DataState } = this.props;
+        let Student = DataState.GetCourseClassDetailsHandleClassMsg.TableSource;
+        let Teacher = { value: DataState.GetCourseClassDetailsHandleClassMsg.TeacherID, title: DataState.GetCourseClassDetailsHandleClassMsg.TeacherName }
+        dispatch(actions.UpUIState.AddCourseClassModalClose())
     }
     render() {
         const { UIState, DataState } = this.props;
@@ -265,7 +343,19 @@ class App extends Component {
                     onOk={this.ChangeCourseClassModalOk}
                     onCancel={this.ChangeCourseClassModalCancel}>
                     <Loading spinning={UIState.AppLoading.modalLoading}>
-                        <HandleCourseClass></HandleCourseClass>
+                        {UIState.ChangeCourseClassModalShow.Show?(<HandleCourseClass></HandleCourseClass>):''}
+                    </Loading>
+                </Modal>
+                <Modal ref='AddCourseClassDetailsMadal'
+                    type='1'
+                    width={680}
+                    title={'添加教学班'}
+                    bodyStyle={{ height: 305 + 'px', padding: 0 }}
+                    visible={UIState.AddCourseClassModalShow.Show}
+                    onOk={this.AddCourseClassModalOk}
+                    onCancel={this.AddCourseClassModalCancel}>
+                    <Loading spinning={UIState.AppLoading.modalLoading}>
+                        {UIState.AddCourseClassModalShow.Show?(<AddCourseClass></AddCourseClass>):''}
                     </Loading>
                 </Modal>
             </React.Fragment >

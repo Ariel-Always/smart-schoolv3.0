@@ -13,11 +13,14 @@ import SelectTeacher from './SelectTeacher';
 import SelectStudent from './SelectStudent';
 
 
-class HandleCourseClass extends React.Component {
+class AddCourseClass extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tableSource:[]
+            tableSource: [],
+            courseClassName: '',
+            TeacherName: '',
+
         }
     }
 
@@ -33,9 +36,9 @@ class HandleCourseClass extends React.Component {
     //数据绑定
     onCourseClassNameChange = (e) => {
         const { DataState, UIState, dispatch } = this.props;
-        let {CourseClassName,...data} = DataState.GetCourseClassDetailsHandleClassMsg.selectData.CourseClass
+        let { CourseClassName, ...data } = DataState.GetCourseClassDetailsHandleClassMsg.selectData.CourseClass
         console.log(this.state.courseClassName, e.target.value)
-        dispatch(actions.UpDataState.setCourseClassName({CourseClassName:e.target.value,...data}))
+        dispatch(actions.UpDataState.setCourseClassName({ CourseClassName: e.target.value, ...data }))
         // this.setState({
         //     courseClassName: e.target.value,
         // })
@@ -81,7 +84,7 @@ class HandleCourseClass extends React.Component {
     }
     AddStudentModalCancel = () => {
         const { DataState, UIState, dispatch } = this.props;
-        
+
         let oldStudent = DataState.GetCourseClassDetailsHandleClassMsg.selectData.Student;
         dispatch(actions.UpDataState.setClassStudentTransferMsg(oldStudent))
         //dispatch(actions.UpDataState.setSubjectTeacherMsg({}))
@@ -91,21 +94,21 @@ class HandleCourseClass extends React.Component {
     //删除学生
     onDeleteStudentClick = (id) => {
         const { DataState, UIState, dispatch } = this.props;
-        
+
         let data = DataState.GetCourseClassDetailsHandleClassMsg.selectData.Student;
-        let newData = data.splice(id,1);
+        let newData = data.splice(id, 1);
         this.setState({
-            tableSource:data
+            tableSource: data
         })
-        console.log(id,newData);
+        console.log(id, newData);
         dispatch(actions.UpDataState.setCourseClassStudentMsg(data))
 
     }
-//清空
+    //清空
     onDeleteAllClick = () => {
         const { DataState, UIState, dispatch } = this.props;
         this.setState({
-            tableSource:[]
+            tableSource: []
         })
         dispatch(actions.UpDataState.setCourseClassStudentMsg([]))
     }
@@ -119,8 +122,8 @@ class HandleCourseClass extends React.Component {
         const { DataState, UIState } = this.props;
         let data = DataState.GetCourseClassDetailsHandleClassMsg;
         let tableSource = data.TableSource ? data.TableSource : [];
-        let teacher = data.selectData?data.selectData.Teacher.length!==0?data.selectData.Teacher:{}:{};
-        
+        let teacher = data.selectData ? data.selectData.Teacher.length !== 0 ? data.selectData.Teacher : {} : {};
+
         return (
             <React.Fragment>
                 <div id='HandleCourseClass' className='HandleCourseClass'>
@@ -136,13 +139,13 @@ class HandleCourseClass extends React.Component {
                         <div className='row-column'>
                             <span className='left'>学科：</span>
                             <span className='right '>
-                                {/* <DropDown
-                                width={180}
-                                type='simple'
-                                dropSelectd={{ value:data?data.SubjectID:'', title: data?data.SubjectName:'' }}
-                                onChange={this.onSelectSubjectChange.bind(this)}
-                            ></DropDown> */}
-                                <span className='noChange SubjectName'>{data ? data.SubjectName : ''}</span>
+                                <DropDown
+                                    width={180}
+                                    type='simple'
+                                    dropSelectd={{ value: 0, title: '请选择学科' }}
+                                    onChange={this.onSelectSubjectChange.bind(this)}
+                                ></DropDown>
+
                             </span>
 
                         </div>
@@ -151,14 +154,12 @@ class HandleCourseClass extends React.Component {
                         <div className='row-column'>
                             <span className='left'>所属年级：</span>
                             <span className='right '>
-                                {/* <DropDown 
-                                width={180}
-                                type='simple'
-                                dropSelectd={{ value: data?data.GradeID:'', title: data?data.GradeName:'' }}
-                                onChange={this.onSelectGradeChange.bind(this)}
-                            ></DropDown> */}
-                                <span className='noChange GradeName'>{data ? data.GradeName : ''}</span>
-
+                                <DropDown
+                                    width={180}
+                                    type='simple'
+                                    dropSelectd={{ value: 0, title: '请选择年级' }}
+                                    onChange={this.onSelectGradeChange.bind(this)}
+                                ></DropDown>
                             </span>
                         </div>
                         <div className='row-column'>
@@ -197,7 +198,7 @@ class HandleCourseClass extends React.Component {
                                                         <span className='content-card' key={child.StudentID}>
                                                             {child.StudentName}
                                                             <span className='card-id'>{child.StudentID}</span>
-                                                            <span onClick={this.onDeleteStudentClick.bind(this,index)} className='icon-x'>x</span>
+                                                            <span onClick={this.onDeleteStudentClick.bind(this, index)} className='icon-x'>x</span>
                                                         </span>
                                                     )
                                                 })
@@ -220,7 +221,7 @@ class HandleCourseClass extends React.Component {
                     onOk={this.AddTeacherModalOk}
                     onCancel={this.AddTeacherModalCancel}
                 >
-                    <SelectTeacher></SelectTeacher>
+                    {UIState.AddTeacherModalShow.Show ? (<SelectTeacher></SelectTeacher>) : ''}
                 </Modal>
                 <Modal
                     ref='SelectStudentMadal'
@@ -232,7 +233,7 @@ class HandleCourseClass extends React.Component {
                     onOk={this.AddStudentModalOk}
                     onCancel={this.AddStudentModalCancel}
                 >
-                    {UIState.AddStudentModalShow.Show?(<SelectStudent></SelectStudent>):''}
+                    {UIState.AddStudentModalShow.Show ? (<SelectStudent></SelectStudent>) : ''}
                 </Modal>
             </React.Fragment>
         )
@@ -246,4 +247,4 @@ const mapStateToProps = (state) => {
         DataState
     }
 };
-export default connect(mapStateToProps)(HandleCourseClass);
+export default connect(mapStateToProps)(AddCourseClass);
