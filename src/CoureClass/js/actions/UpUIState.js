@@ -64,7 +64,9 @@ const STUDENT_LOADING_MODAL_COLSE = 'STUDENT_LOADING_MODAL_COLSE';
 const CLASS_STUDENT_LOADING_MODAL_COLSE = 'CLASS_STUDENT_LOADING_MODAL_COLSE';
 const CLASS_STUDENT_LOADING_MODAL_OPEN = 'CLASS_STUDENT_LOADING_MODAL_OPEN'
 
-
+//教学班更新动态
+const COURSE_CLASS_DYNAMIC_LOADING_CLOSE = 'COURSE_CLASS_DYNAMIC_LOADING_CLOSE'
+const COURSE_CLASS_DYNAMIC_LOADING_OPEN = 'COURSE_CLASS_DYNAMIC_LOADING_OPEN'
 
 
 
@@ -170,6 +172,12 @@ const ClassStudentLoadingModalClose = () => {
 const ClassStudentLoadingModalOpen = () => {
     return {type:CLASS_STUDENT_LOADING_MODAL_OPEN};
 }
+const CourseClassDynamicLoadingClose = () => {
+    return {type:COURSE_CLASS_DYNAMIC_LOADING_CLOSE};
+}
+const CourseClassDynamicLoadingOpen = () => {
+    return {type:COURSE_CLASS_DYNAMIC_LOADING_OPEN};
+}
 export default {
     APP_LOADING_CLOSE,
     APP_LOADING_OPEN,
@@ -243,6 +251,11 @@ export default {
     ClassStudentLoadingModalOpen,
     ClassStudentLoadingModalClose
     ,CLASS_STUDENT_LOADING_MODAL_COLSE,
-    CLASS_STUDENT_LOADING_MODAL_OPEN
+    CLASS_STUDENT_LOADING_MODAL_OPEN,
+
+    CourseClassDynamicLoadingOpen,
+    CourseClassDynamicLoadingClose,
+    COURSE_CLASS_DYNAMIC_LOADING_CLOSE,
+    COURSE_CLASS_DYNAMIC_LOADING_OPEN
    
 }

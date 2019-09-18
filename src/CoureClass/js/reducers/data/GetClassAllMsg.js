@@ -24,7 +24,8 @@ function handleData(data,subject,Class) {
                 ClassName:item.CourseClassName,
                 GradeID:item.GradeID,
                 GradeName:item.GradeName,
-                SubjectID:subject,
+                SubjectID:item.SubjectID,
+                SubjectName:item.SubjectName,
                 CourseClassLogoURL:item.CourseClassLogoURL
             },
             ClassMsg:{

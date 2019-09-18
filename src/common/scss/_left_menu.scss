@@ -36,6 +36,7 @@ ul{
 .frame_leftmenu_mainitem {
   position: relative;
   height: 48px;
+  background: #fff;
   &.active {
     background-image: linear-gradient(90deg,
             #ff4200 0%,

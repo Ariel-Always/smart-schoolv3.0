@@ -2,6 +2,11 @@ import React from 'react'
 import { connect } from 'react-redux';
 import { Table, Button, PagiNation, CheckBox, CheckBoxGroup } from "../../../common";
 import actions from '../actions';
+import history from '../containers/history'
+import { postData, getData } from '../../../common/js/fetch'
+import CONFIG from '../../../common/js/config';
+import '../../scss/Search.scss'
+
 class Search extends React.Component{
     constructor(props){
         super(props);
@@ -9,7 +14,8 @@ class Search extends React.Component{
             columns: [
                 {
                     title: '序号',
-                    align: 'left',
+                    align: 'center',
+                    width:70,
                     key: 'OrderNO',
                     dataIndex: 'OrderNO',
                     render: OrderNO => {
@@ -31,6 +37,32 @@ class Search extends React.Component{
                         return (
                             <React.Fragment>
                                 <span onClick={this.onCourseClassClick.bind(this, courseClass.ClassID)} className='courseClass-name'>{courseClass.ClassName}</span>
+                            </React.Fragment>
+                        )
+                    }
+                },
+                {
+                    title: '年级',
+                    align: 'center',
+                    dataIndex: 'CourseClass',
+                    key: 'Grade',
+                    render: courseClass => {
+                        return (
+                            <React.Fragment>
+                                <span className='Grade'>{courseClass.GradeName}</span>
+                            </React.Fragment>
+                        )
+                    }
+                },
+                {
+                    title: '学科',
+                    align: 'center',
+                    dataIndex: 'CourseClass',
+                    key: 'Subject',
+                    render: courseClass => {
+                        return (
+                            <React.Fragment>
+                                <span className='SubjectName'>{courseClass.SubjectName}</span>
                             </React.Fragment>
                         )
                     }
@@ -80,6 +112,19 @@ class Search extends React.Component{
             ],
             checkedList: [],
             checkAll: false
+        })
+    }
+    //钩子函数
+    componentWillReceiveProps(nextProps) {
+        const { DataState, UIState } = this.props;
+
+        let options = []
+        let tableSource = nextProps.DataState.GetClassAllMsg.allClass ? nextProps.DataState.GetClassAllMsg.allClass.TableData : [];
+        options = tableSource.map((child, index) => {
+            return index;
+        })
+        this.setState({
+            options: options
         })
     }
     //列表复选框改变事件
@@ -279,23 +324,28 @@ class Search extends React.Component{
     }
     //关闭
     onAlertWarnHide = () => {
-        const { dispatch } = this.props;
+        const { dispatch,DataState,UIState } = this.props;
         dispatch(actions.UpUIState.hideErrorAlert())
-
     }
     render(){
+        const { dispatch,DataState,UIState } = this.props;
+        let searchData = DataState.GetClassAllMsg.allClass? DataState.GetClassAllMsg.allClass.TableData:[];
+
         return (
             <div className='Search'>
                 <div className='Search-box'>
                     <div className='Search-top'>
                         <span className='top-tips'>
-                            <span className='tips tip-menu'>{'搜索结果: 共找到 20 个教学班'}</span>
+                            <span className='tips '>{'搜索结果: 共找到'+(DataState.GetClassAllMsg.allClass ? DataState.GetClassAllMsg.allClass.CourseClassCount : 0)+'个教学班'}</span>
                         </span>
 
                     </div>
                     <hr className='Search-hr' />
                     <div className='Search-content'>
-                        <CheckBoxGroup style={{ width: '100%' }} value={this.state.checkedList} onChange={this.onCheckBoxGroupChange.bind(this)}>
+                        <CheckBoxGroup 
+                        style={{ width: '100%' }} 
+                        value={this.state.checkedList} 
+                        onChange={this.onCheckBoxGroupChange.bind(this)}>
                             <Table
                                 className='table'
                                 loading={UIState.AppLoading.TableLoading}
