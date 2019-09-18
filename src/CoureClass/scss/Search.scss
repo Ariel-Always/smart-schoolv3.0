@@ -1,15 +1,15 @@
-.Class {
+.Search {
   position: relative;
   padding: 22px 32px;
   text-align: center;
 
   //公用
-  .Class-box {
+  .Search-box {
     position: relative;
     text-align: left;
     margin: 0 auto;
     width: 858px;
-    .Class-top {
+    .Search-top {
       position: relative;
       margin: 0;
       height: 37px;
@@ -17,9 +17,9 @@
       .top-tips {
         float: left;
         .tips {
-          font-size: 18px;
+          font-size: 14px;
           line-height: 37px;
-          color: #333333;
+          color: #999;
           padding-left: 21px;
           margin-left: -21px;
           background-size: 17px 17px;
@@ -33,14 +33,14 @@
         }
       }
     }
-    .Class-hr {
+    .Search-hr {
       position: relative;
       border: 0.5px dashed #ccc;
       width: 858px;
 
       margin: 0 auto;
     }
-    .Class-content {
+    .Search-content {
       margin: 18px auto 0;
       position: relative;
       width: 858px;
@@ -49,7 +49,7 @@
         th {
           padding: 0 10px;
           &:first-of-type {
-            padding: 0 25px;
+            padding: 0 10px;
           }
         }
       }
@@ -102,7 +102,16 @@
         line-height: 18px;
         color: #999999;
       }
-
+      .Grade {
+        font-size: 14px;
+        line-height: 18px;
+        color: #999999;
+      }
+      .SubjectName {
+        font-size: 14px;
+        line-height: 18px;
+        color: #333333;
+      }
       .StudentCount {
         font-size: 14px;
         color: #333333;

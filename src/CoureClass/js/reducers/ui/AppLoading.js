@@ -1,5 +1,5 @@
 import UpUIState from '../../actions/UpUIState';
-const AppLoading = (state = { appLoading: true, classStudentLoading: false, rightLoading: false, TableLoading: false, modalLoading: false, searchLoading: false, studentLoading: false, teacherLoading: false }, actions) => {
+const AppLoading = (state = { appLoading: true,appDynamicLoading: false, classStudentLoading: false, rightLoading: false, TableLoading: false, modalLoading: false, searchLoading: false, studentLoading: false, teacherLoading: false }, actions) => {
     switch (actions.type) {
         case UpUIState.APP_LOADING_OPEN:
             return Object.assign({}, state, { appLoading: true });
@@ -33,6 +33,10 @@ const AppLoading = (state = { appLoading: true, classStudentLoading: false, righ
             return Object.assign({}, state, { classStudentLoading: true });
         case UpUIState.CLASS_STUDENT_LOADING_MODAL_COLSE:
             return Object.assign({}, state, { classStudentLoading: false });
+            case UpUIState.COURSE_CLASS_DYNAMIC_LOADING_OPEN:
+            return Object.assign({}, state, { appDynamicLoading: true });
+        case UpUIState.COURSE_CLASS_DYNAMIC_LOADING_CLOSE:
+            return Object.assign({}, state, { appDynamicLoading: false });
         default:
             return state;
     }

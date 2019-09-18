@@ -47,7 +47,12 @@ const GET_GRADE_CLASS_MSG = 'GET_GRADE_CLASS_MSG';
 //编辑/添加教学班-获取年级班级信息
 const GET_CLASS_STUDENT_MSG = 'GET_CLASS_STUDENT_MSG';
 //编辑/添加教学班-搜索年级班级信息
-const SEARCH_CLASS_STUDENT_MSG = 'SEARCH_CLASS_STUDENT_MSG'
+const SEARCH_CLASS_STUDENT_MSG = 'SEARCH_CLASS_STUDENT_MSG';
+
+
+//获取教学班更新动态
+const GET_COURSE_CLASS_DYNAMIC_MSG = 'GET_COURSE_CLASS_DYNAMIC_MSG';
+
 //操作的执行
 //获取登录用户信息
 const getLoginUser = (url) => {
@@ -295,6 +300,24 @@ const searchClassStudentMsg = (url) => {
         });
     }
 }
+//搜索行政班学生信息
+const getCourseClassDynamicMsg = (url) => {
+    return (dispatch) => {
+        dispatch(actions.UpUIState.CourseClassDynamicLoadingOpen());
+
+        getData(CONFIG.proxy + url).then(res => {
+            return res.json()
+        }).then(json => {
+            if (json.Status === 400) {
+                console.log('错误码：' + json.Status)
+            } else if (json.Status === 200) {
+                console.log(json.Data)
+                dispatch({ type: GET_COURSE_CLASS_DYNAMIC_MSG, data: json.Data });
+                dispatch( actions.UpUIState.CourseClassDynamicLoadingClose());
+            }
+        });
+    }
+}
 export default {
     getLoginUser,
     GET_LOGIN_USER_INFO,
@@ -334,7 +357,10 @@ export default {
     GET_CLASS_STUDENT_MSG,
     getClassStudentMsg,
     SEARCH_CLASS_STUDENT_MSG,
-    searchClassStudentMsg
+    searchClassStudentMsg,
+
+    GET_COURSE_CLASS_DYNAMIC_MSG,
+    getCourseClassDynamicMsg
 
 
 }

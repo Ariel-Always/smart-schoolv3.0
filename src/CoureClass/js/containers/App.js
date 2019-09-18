@@ -12,6 +12,8 @@ import All from '../component/All'
 import Subject from '../component/Subject'
 import Search from '../component/Search'
 import Class from '../component/Class'
+import Dynamic from '../component/Dynamic'
+import Record from '../component/Record'
 import HandleCourseClass from '../component/HandleCourseClass'
 import AddCourseClass from '../component/AddCourseClass'
 
@@ -31,8 +33,17 @@ class App extends Component {
         super(props);
         const { dispatch } = props;
         this.state = {
-            MenuParams: {}
+            MenuParams: {},
+            showBarner: true,
+            showLeftMenu: true
         }
+        
+    }
+
+
+
+    componentWillMount() {
+        const { dispatch, DataState } = this.props;
         let route = history.location.pathname;
         //判断token是否存在
         if (sessionStorage.getItem('token')) {
@@ -51,13 +62,7 @@ class App extends Component {
                 close: this.onAppAlertClose.bind(this)
             }));
         }
-    }
-
-
-
-    componentWillMount() {
-
-        let route = history.location.pathname;
+        
         // 获取接口数据
 
 
@@ -105,6 +110,10 @@ class App extends Component {
         let routeID = pathArr[2];
         let subjectID = pathArr[3];
         let classID = pathArr[4];
+        this.setState({
+            showBarner: true,
+            showLeftMenu: true
+        })
         console.log(route, routeID, subjectID)
         dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
         if (route === '/' || handleRoute === 'All') {
@@ -113,7 +122,7 @@ class App extends Component {
             if (!DataState.GetCoureClassAllMsg.MenuParams)
                 return;
             dispatch(actions.UpDataState.setCoureClassAllMsg('all'));
-
+            
         } else if (handleRoute === 'Subject' && subjectID === 'all') {
 
 
@@ -123,7 +132,7 @@ class App extends Component {
             if (!DataState.GetCoureClassAllMsg.MenuParams)
                 return;
             dispatch(actions.UpDataState.setCoureClassAllMsg(routeID));
-
+            
         } else if (handleRoute === 'Subject' && subjectID === 'Class') {
             dispatch(actions.UpDataState.getSubjectAllMsg('/CoureClass_Subject?schoolID=sss', routeID));
             dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss', routeID, classID));
@@ -131,13 +140,21 @@ class App extends Component {
             if (!DataState.GetCoureClassAllMsg.MenuParams)
                 return;
             dispatch(actions.UpDataState.setCoureClassAllMsg(classID, routeID));
-
-
+            
         } else if (handleRoute === 'Search') {
-            if (!DataState.GetCoureClassAllMsg.MenuParams)
-                return;
-            dispatch(actions.UpDataState.setCoureClassAllMsg(routeID));
-
+            // if (!DataState.GetCoureClassAllMsg.MenuParams)
+            //     return;
+            dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss'));
+            
+            
+        } else if (handleRoute === 'Log') {
+            // if (!DataState.GetCoureClassAllMsg.MenuParams)
+            //     return;
+            //dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss'));
+            this.setState({
+                showBarner: false,
+                showLeftMenu: false
+            })
 
         } else {
             history.push('/')
@@ -154,7 +171,7 @@ class App extends Component {
             history.push('/Subject/' + id + '/all')
         } else if (type === 'Class') {
             history.push('/Subject/' + sub + '/Class/' + id)
-        } 
+        }
         //history.push('/'+id)
     }
 
@@ -179,8 +196,8 @@ class App extends Component {
         let routeID = pathArr[2];
         let subjectID = pathArr[3];
         let classID = pathArr[4];
-        
-        if(data.selectData.Teacher.value===data.TeacherID&&data.selectData.CourseClass.CourseClassName===data.CourseClassName&&data.selectData.Student==data.TableSource){
+
+        if (data.selectData.Teacher.value === data.TeacherID && data.selectData.CourseClass.CourseClassName === data.CourseClassName && data.selectData.Student == data.TableSource) {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-error',
                 title: "您还没有选择哦~",
@@ -188,23 +205,23 @@ class App extends Component {
                 cancel: this.onAppAlertCancel.bind(this),
                 close: this.onAppAlertClose.bind(this)
             }));
-            return ;
+            return;
         }
-        let courseClassStus = data.selectData.Student.map((child,index) => {
+        let courseClassStus = data.selectData.Student.map((child, index) => {
             return child.StudentID
         }).join();
         let url = '/DeleteSubject'
         //dispatch(actions.UpDataState.setCourseClassStudentMsg(Student))
-        
+
         postData(CONFIG.proxy + url, {
             userID: userMsg.UserID,
-            userType:userMsg.UserType,
-            schoolID:userMsg.SchoolID,
-            courseClassName:data.selectData.CourseClass.CourseClassName,
-            teacherID:data.selectData.Teacher.value,
-            gradeID:data.GradeID,
-            subjectID:data.SubjectID,
-            courseClassStus:courseClassStus
+            userType: userMsg.UserType,
+            schoolID: userMsg.SchoolID,
+            courseClassName: data.selectData.CourseClass.CourseClassName,
+            teacherID: data.selectData.Teacher.value,
+            gradeID: data.GradeID,
+            subjectID: data.SubjectID,
+            courseClassStus: courseClassStus
         }).then(res => {
             return res.json()
         }).then(json => {
@@ -216,12 +233,12 @@ class App extends Component {
                     title: "成功",
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
-                
+
                 dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss&pageIndex=' + 1 + '&pageSize=10', routeID, classID));
 
             }
         })
-        
+
         dispatch(actions.UpUIState.ChangeCourseClassModalClose())
         dispatch(actions.UpDataState.setCourseClassName([]))
         dispatch(actions.UpDataState.setCourseClassStudentMsg([]))
@@ -278,7 +295,7 @@ class App extends Component {
                             enname: "CoureClass Management",
                             image: logo
                         }}
-                        type="triangle" showBarner={true} showLeftMenu={true}>
+                        type="triangle" showBarner={this.state.showBarner} showLeftMenu={this.state.showLeftMenu}>
                         <div ref="frame-time-barner">
                             <TimeBanner />
                         </div>
@@ -298,6 +315,8 @@ class App extends Component {
                                     <Route path='/Subject/:subjectID/all' component={Subject}></Route>
                                     <Route path='/Subject/:subjectID/Class/:classID' component={Class}></Route>
                                     <Route path='/Search' component={Search}></Route>
+                                    <Route path='/Log/Record' component={Record}></Route>
+                                    <Route path='/Log/Dynamic' component={Dynamic}></Route>
                                 </Router>
 
                                 {/* <Route path='/UserArchives/All' exact history={history} component={All}></Route>
@@ -343,7 +362,7 @@ class App extends Component {
                     onOk={this.ChangeCourseClassModalOk}
                     onCancel={this.ChangeCourseClassModalCancel}>
                     <Loading spinning={UIState.AppLoading.modalLoading}>
-                        {UIState.ChangeCourseClassModalShow.Show?(<HandleCourseClass></HandleCourseClass>):''}
+                        {UIState.ChangeCourseClassModalShow.Show ? (<HandleCourseClass></HandleCourseClass>) : ''}
                     </Loading>
                 </Modal>
                 <Modal ref='AddCourseClassDetailsMadal'
@@ -355,7 +374,7 @@ class App extends Component {
                     onOk={this.AddCourseClassModalOk}
                     onCancel={this.AddCourseClassModalCancel}>
                     <Loading spinning={UIState.AppLoading.modalLoading}>
-                        {UIState.AddCourseClassModalShow.Show?(<AddCourseClass></AddCourseClass>):''}
+                        {UIState.AddCourseClassModalShow.Show ? (<AddCourseClass></AddCourseClass>) : ''}
                     </Loading>
                 </Modal>
             </React.Fragment >
