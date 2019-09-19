@@ -35,7 +35,7 @@ class App extends Component{
 
     render() {
 
-        const { LoginUser,ModuleCommonInfo,AppAlert } = this.props;
+        const { LoginUser,ModuleCommonInfo,AppAlert,AppLoading } = this.props;
 
         let Component = '';
 
@@ -53,7 +53,7 @@ class App extends Component{
 
            <React.Fragment>
 
-               <Loading size="large" tip="加载中..." spinning={false} opacity={false}>
+               <Loading size="large" tip="加载中..." spinning={AppLoading.show} opacity={false}>
 
                         <Frame
                         module={{
@@ -136,7 +136,7 @@ class App extends Component{
 
 const mapStateToProps = (state) => {
 
-    const { LoginUser,ModuleCommonInfo,AppAlert } = state;
+    const { LoginUser,ModuleCommonInfo,AppAlert,AppLoading } = state;
 
     return {
 
@@ -144,7 +144,9 @@ const mapStateToProps = (state) => {
 
         ModuleCommonInfo,
 
-        AppAlert
+        AppAlert,
+
+        AppLoading
 
     }
 

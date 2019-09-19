@@ -122,6 +122,50 @@ const AdjustByTeacherModal = (state={
 
         targetScheduleDropSelectd:""
 
+    },
+
+    changeTime:{
+
+        oldClassRoomList:[],
+
+        teacherDrop:{value:"none",title:"请选择教师"},
+
+        searchList:[],
+
+        searchOpen:false,
+
+        searchLoadingShow:true,
+
+        originDate:'',
+
+        oldClassHourDrop:{value:"none",title:"请选择节次"},
+
+        oldClassHourList:[],
+
+        oldClassHourDisabled:true,
+
+        oldWeek:'',
+
+        oldWeekLoading:true,
+
+        newDate:'',
+
+        newClassHourDrop:{value:"none",title:"请选择节次"},
+
+        newClassHourList:[],
+
+        newClassHourDisabled:true,
+
+        newWeek:'',
+
+        newWeekLoading:true,
+
+        newClassRoomDrop:{value:"none",title:"请选择教室"},
+
+        newClassRoomList:[],
+
+        newClassRoomDisabled:true
+
     }
 
 }, actions) => {
@@ -1237,6 +1281,253 @@ const AdjustByTeacherModal = (state={
                 }
 
             };
+
+            //调整时间
+
+        case ABTActions.CHANGE_TIME_TEACHER_DROP_CHANGE:
+
+            switch (actions.data.type) {
+
+                case 'drop':
+
+                    return {
+
+
+                        ...state,
+
+                      changeTime: {
+
+                          ...state.changeTime,
+
+
+                          teacherDrop:actions.data.value
+
+                      }
+
+                    };
+
+                case 'search':
+
+                    return {
+
+
+                        ...state,
+
+                        changeTime: {
+
+                            ...state.changeTime,
+
+
+                            searchOpen:true
+
+                        }
+
+                    };
+
+                case 'searchLoadingShow':
+
+                    return {
+
+
+                        ...state,
+
+                        changeTime: {
+
+                            ...state.changeTime,
+
+
+                            searchLoadingShow:true
+
+                        }
+
+                    };
+
+                case 'teacherListChange':
+
+                    return {
+
+
+                        ...state,
+
+                        changeTime: {
+
+                            ...state.changeTime,
+
+
+                            searchList:actions.data.value
+
+                        }
+
+                    };
+
+                case 'searchLoadingHide':
+
+                    return {
+
+
+                        ...state,
+
+                        changeTime: {
+
+                            ...state.changeTime,
+
+
+                            searchLoadingShow:false
+
+                        }
+
+                    };
+
+                case 'searchClose':
+
+                    return {
+
+
+                        ...state,
+
+                        changeTime: {
+
+                            ...state.changeTime,
+
+
+                            searchOpen:false
+
+                        }
+
+                    };
+
+                default:
+
+                    return state;
+
+            }
+
+        case ABTActions.CHANGE_TIME_ORIGIN_CHANGE:
+
+            switch (actions.data.type) {
+
+                case 'date':
+
+                    return{
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            originDate:actions.data.value
+
+                        }
+
+                    };
+
+                case 'classHourDisabled':
+
+                    return{
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            oldClassHourDisabled:true
+
+                        }
+
+                    };
+
+                case 'classHourAbled':
+
+                    return{
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            oldClassHourDisabled:false
+
+                        }
+
+                    };
+
+                case 'classHourListChange':
+
+                    return{
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            oldClassHourList:actions.data.value
+
+                        }
+
+                    };
+
+                case 'classHourPick':
+
+                    return{
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            oldClassHourDrop:actions.data.value
+
+                        }
+
+                    };
+
+                case 'weekChange':
+
+                    return{
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            oldWeek:actions.data.value
+
+                        }
+
+                    };
+
+                case 'oldClassRoomListChange':
+
+                    return{
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            oldClassRoomList:actions.data.value
+
+                        }
+
+                    };
+
+
+                default:
+
+                    return state;
+
+            }
+
+
+
+
 
         default:
 
