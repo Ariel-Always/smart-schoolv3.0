@@ -2,9 +2,9 @@ import UpDataState from '../../actions/UpDataState';
 import history from '../../containers/history'
 
 
-const GetCourseClassDynamicMsg = (state = {}, actions) => {
+const GetCourseClassRecordMsg = (state = {}, actions) => {
     switch (actions.type) {
-        case UpDataState.GET_COURSE_CLASS_DYNAMIC_MSG:
+        case UpDataState.GET_COURSE_CLASS_RECORD_MSG:
             
             let data = handleData(actions.data,actions.subject,actions.Class)
             return Object.assign({}, state, {tableSource:data} );
@@ -31,4 +31,4 @@ function handleData(data) {
     })
     return newData
 }
-export default GetCourseClassDynamicMsg;
+export default GetCourseClassRecordMsg;

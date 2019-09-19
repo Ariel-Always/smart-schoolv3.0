@@ -1,4 +1,4 @@
-#Dynamic {
+#Dynamic,#Record {
   position: relative;
   padding: 24px 42px;
   text-align: center;
@@ -62,6 +62,7 @@
       .dropList {
         float: left;
         margin-right: 45px;
+        z-index: 2;
       }
 
       .handleTimeSelect {
@@ -123,7 +124,8 @@
       white-space: nowrap;
     }
     .checkAll-box {
-        margin-top: -50px;
+      margin-top: -50px;
+      margin-left: 33px;
       float: left;
       .selectAll {
         color: #fff;
@@ -137,6 +139,18 @@
         box-sizing: border-box;
       }
     }
+    .go-btn {
+      color: #fff;
+      min-width: 0;
+      width: 41px;
+      line-height: 28px;
+      height: 28px;
+      padding: 0;
+      font-size: 16px;
+      text-align: center;
+      margin-left: 8px;
+      box-sizing: border-box;
+    }
     .key-content {
       margin-left: 5px;
     }
@@ -148,12 +162,15 @@
       font-size: 14px;
       color: #333333;
       display: inline-block;
+      .key-params{
+        color:#ff6600;
+      }
     }
     .Flag {
       color: #0099ff;
       cursor: pointer;
       text-decoration: underline;
-      margin-left:6px;
+      margin-left: 6px;
       display: inline-block;
     }
     .OperatorID {

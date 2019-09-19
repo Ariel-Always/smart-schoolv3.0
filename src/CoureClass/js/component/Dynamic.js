@@ -7,6 +7,8 @@ import moment from 'moment';
 import { postData, getData } from '../../../common/js/fetch'
 import actions from '../actions';
 import history from '../containers/history'
+import CONFIG from '../../../common/js/config';
+
 import { DatePicker, Input } from 'antd'
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
 
@@ -69,9 +71,17 @@ class Dynamic extends React.Component {
                     key: 'OperateParams',
                     render: OperateParams => {
                         return (
-                            <p style={{textAlign:'left',marginBottom:0,paddinLeft:10+'px'}}>
-                                <span className='OperateParams'>{OperateParams.OperateParams}</span>
-                                <span style={{display:OperateParams.Flag===1?'inline-block':'none'}} className='Flag'>查看详情</span>
+                            <p style={{ textAlign: 'left', marginBottom: 0, paddinLeft: 10 + 'px' }}>
+                                <span className='OperateParams'>{OperateParams.OperateParams.map((param,index) => {
+                                    if(index%2){
+                
+                                        return <span key={param} className='key-params'>{param}</span>
+                                        
+                                    }else{
+                                        return param
+                                    }
+                                })}</span>
+                                <span onClick={this.onOperateParamsClick.bind(this,OperateParams.CourseClassIDs)} style={{ display: OperateParams.Flag === 1 ? 'inline-block' : 'none' }} className='Flag'>查看详情</span>
                             </p>
                         )
                     }
@@ -116,11 +126,53 @@ class Dynamic extends React.Component {
                 }
             ],
             checkedList: [],
-            checkAll: false
+            checkAll: false,
+            pageSize: 11,
+            plainOptions: [],
+            pagination: 1,
+            dataSource: []
         }
+    }
+
+    //钩子
+    componentWillReceiveProps(nextProps) {
+        const { dispatch, DataState, UIState } = nextProps;
+        let plainOptions = this.state.plainOptions
+        let dataSource = DataState.GetCourseClassDynamicMsg.tableSource ? DataState.GetCourseClassDynamicMsg.tableSource : []
+        let { pagination, pageSize } = this.state;
+        let defaultPageSize = pageSize;
+        if (plainOptions.length) {
+            if (dataSource < pagination * pageSize) {
+                pageSize = dataSource - (pagination - 1) * pageSize;
+            }
+            for (let index = 0; index < pageSize; index++) {
+                plainOptions.push(index + defaultPageSize * (pagination - 1))
+            }
+            this.setState({
+                plainOptions: plainOptions
+            })
+        }
+        if (dataSource !== this.state.dataSource) {
+            this.setState({
+                checkedList: [],
+                checkAll: false,
+            })
+        }
+        this.setState({
+            dataSource: dataSource
+        })
     }
     onHandleTypeChange = (value) => {
         console.log(value.value)
+    }
+    //查看详情
+    onOperateParamsClick = (IDs) =>  {
+        const { dispatch, DataState } = this.props;
+        let url = '/CourseClass_ClassIDs?courseClassIDs='+IDs;
+        dispatch(actions.UpUIState.LogDetailsModalOpen())
+        dispatch(actions.UpDataState.getLogDetailsMsg(url))
+
+
     }
     //操作时间
     disabledStartDate = (current) => {
@@ -215,55 +267,96 @@ class Dynamic extends React.Component {
     //列表多选
     onCheckBoxGroupChange = (value) => {
         let checkAll = false;
-        // if (value.length === this.state.options.length) {
-        //     checkAll = true;
-        // }
-        // this.setState({
-        //     checkedList: value,
-        //     checkAll: checkAll
-        // })
+
+        if (value.length === this.state.plainOptions.length) {
+            checkAll = true;
+        }
+        this.setState({
+            checkedList: value,
+            checkAll: checkAll
+        })
     }
     //列表全选
     OnCheckAllChange = (e) => {
         //console.log(e.target,this.state.options)
-        const { DataState, UIState } = this.props;
+        const { dispatch, DataState } = this.props;
+        let plainOptions = []
+        let { pagination, pageSize, dataSource } = this.state;
+        let defaultPageSize = pageSize;
 
-        // let checkList = [];
-        // if (e.target.checked) {
-        //     checkList = this.state.options;
-        // } else {
-        //     checkList = []
-        // }
-        // this.setState({
-        //     checkAll: e.target.checked,
-        //     checkedList: checkList
-        // })
+        let checkedList = [];
+        if (e.target.checked) {
+            if (dataSource.length < pagination * defaultPageSize) {
+                pageSize = dataSource.length - (pagination - 1) * defaultPageSize;
+            }
+            for (let index = 0; index < pageSize; index++) {
+                plainOptions.push(index + defaultPageSize * (pagination - 1))
+            }
+            console.log(plainOptions,pageSize,dataSource)
+            this.setState({
+                plainOptions: plainOptions
+            })
+            checkedList = plainOptions;
+        } else {
+            checkedList = []
+        }
+        this.setState({
+            checkAll: e.target.checked,
+            checkedList: checkedList
+        })
     }
-    //全选删除
-    onDeleteAllClick = () => {
-        // const { dispatch, DataState } = this.props;
-        // let checkedList = this.state.checkedList
-        // let len = checkedList.length;
-        // let courseClassID = '';
-        // let source = DataState.GetClassAllMsg.allClass.TableData;
-        // checkedList.map((child, index) => {
-        //     // if (index !== len - 1)
-        //     courseClassID = source[child].CourseClass.ClassID + '-';
-        //     // else
-        //     //     courseClassID = source[child].CourseClass.ClassID;
+    //全选选择
+    onSelectAllClick = (e) => {
+        const { dispatch, DataState } = this.props;
 
-        // })
+        let url = '/DeleteSubject';
+        let userMsg = DataState.LoginUser;
+        let handleTypeSelected = this.state.handleTypeSelected;
 
-        // console.log(this.state.checkedList)
-        // if (len === 0) {
-        //     dispatch(actions.UpUIState.showErrorAlert({
-        //         type: 'btn-error',
-        //         title: "您还没有选择哦~",
-        //         ok: this.onAppAlertOK.bind(this),
-        //         cancel: this.onAppAlertCancel.bind(this),
-        //         close: this.onAppAlertClose.bind(this)
-        //     }));
-        // } else {
+        let checkedList = this.state.checkedList
+        let len = checkedList.length;
+        let LogID = '';
+        let source = this.state.dataSource;
+        console.log(checkedList,source)
+        checkedList.map((child, index) => {
+            if (index !== len - 1)
+                LogID += source[child].LogID + '-';
+            else
+                LogID += source[child].LogID
+
+        })
+
+
+        if (len === 0) {
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-error',
+                title: "您还没有选择哦~",
+                ok: this.onAppAlertOK.bind(this),
+                cancel: this.onAppAlertCancel.bind(this),
+                close: this.onAppAlertClose.bind(this)
+            }));
+            return
+        }
+        postData(CONFIG.proxy + url, {
+            userID: userMsg.UserID,
+            userType: userMsg.UserType,
+            logIDs: LogID
+        }).then(res => {
+            return res.json()
+        }).then(json => {
+            if (json.Status === 400) {
+                console.log('错误码：' + json.Status)
+            } else if (json.Status === 200) {
+                dispatch(actions.UpUIState.showErrorAlert({
+                    type: 'success',
+                    title: "成功",
+                    onHide: this.onAlertWarnHide.bind(this)
+                }));
+
+
+            }
+        })
+        //  else {
         //     dispatch(actions.UpUIState.showErrorAlert({
         //         type: 'btn-warn',
         //         title: "您确定删除？",
@@ -272,6 +365,30 @@ class Dynamic extends React.Component {
         //         close: this.onAppAlertClose.bind(this)
         //     }));
         // }
+
+    }
+    //关闭
+    onAlertWarnHide = () => {
+        const { dispatch, DataState, UIState } = this.props;
+
+
+        let userMsg = DataState.LoginUser;
+        let handleTypeSelected = this.state.handleTypeSelected;
+        dispatch(actions.UpDataState.getCourseClassDynamicMsg('/CourseClass_dynamic?userID=' + userMsg.UserID + '&userType=' + userMsg.UserType + '&schoolID=' + userMsg.SchoolID + '&startDate=' + this.state.startTime + '&endDate=' + this.state.endTime + '&operateType=' + handleTypeSelected.value))
+        this.setState({
+            pagination:1
+        })
+        dispatch(actions.UpUIState.hideErrorAlert())
+    }
+    //页数变化
+    onPaginationChange = (value) => {
+        const { DataState, UIState } = this.props;
+        console.log(value)
+        this.setState({
+            pagination: value,
+            checkAll: false,
+            checkedList:[]
+        })
     }
     render() {
         const { DataState, UIState } = this.props;
@@ -336,24 +453,32 @@ class Dynamic extends React.Component {
                                 value={this.state.checkedList}
                                 onChange={this.onCheckBoxGroupChange.bind(this)}>
                                 <Table
-                                
+
                                     className='table'
                                     columns={this.state.columns}
-                                    dataSource={DataState.GetCourseClassDynamicMsg.tableSource?DataState.GetCourseClassDynamicMsg.tableSource:[]}
+                                    dataSource={DataState.GetCourseClassDynamicMsg.tableSource ? DataState.GetCourseClassDynamicMsg.tableSource : []}
                                     bordered
-
+                                    pagination={{ pageSize: this.state.pageSize, showQuickJumper: { goButton: (<Button className='go-btn' color='blue' size='small'>GO</Button>) }, onChange: this.onPaginationChange }}
                                 >
 
                                 </Table>
                             </CheckBoxGroup>
-                            {DataState.GetCourseClassDynamicMsg.tableSource?(<CheckBox className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
-                                全选
-                                    <Button onClick={this.onDeleteAllClick} className='selectAll' color='blue'>标记为已读</Button>
-                            </CheckBox>):''}
+                            {DataState.GetCourseClassDynamicMsg.tableSource ? (
+                                <CheckBox
+                                    className='checkAll-box'
+                                    onChange={this.OnCheckAllChange}
+                                    checked={this.state.checkAll}>
+                                    全选
+                                    <Button
+                                        onClick={this.onSelectAllClick}
+                                        className='selectAll'
+                                        color='blue'>标记为已读</Button>
+                                </CheckBox>) : ''}
                         </div>
                     </Loading>
 
                 </div>
+                
             </div >
         )
     }

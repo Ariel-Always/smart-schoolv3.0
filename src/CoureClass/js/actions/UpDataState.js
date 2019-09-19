@@ -53,6 +53,10 @@ const SEARCH_CLASS_STUDENT_MSG = 'SEARCH_CLASS_STUDENT_MSG';
 //获取教学班更新动态
 const GET_COURSE_CLASS_DYNAMIC_MSG = 'GET_COURSE_CLASS_DYNAMIC_MSG';
 
+//获取教学班更新动态
+const GET_COURSE_CLASS_RECORD_MSG = 'GET_COURSE_CLASS_RECORD_MSG';
+//教学班调整详情
+const GET_LOG_DETAILS_MSG = 'GET_LOG_DETAILS_MSG'
 //操作的执行
 //获取登录用户信息
 const getLoginUser = (url) => {
@@ -277,7 +281,7 @@ const getClassStudentMsg = (url) => {
             } else if (json.Status === 200) {
                 console.log(json.Data)
                 dispatch({ type: GET_CLASS_STUDENT_MSG, data: json.Data });
-                dispatch( actions.UpUIState.ClassStudentLoadingModalClose());
+                dispatch(actions.UpUIState.ClassStudentLoadingModalClose());
             }
         });
     }
@@ -295,12 +299,12 @@ const searchClassStudentMsg = (url) => {
             } else if (json.Status === 200) {
                 console.log(json.Data)
                 dispatch({ type: SEARCH_CLASS_STUDENT_MSG, data: json.Data });
-                dispatch( actions.UpUIState.ClassStudentLoadingModalClose());
+                dispatch(actions.UpUIState.ClassStudentLoadingModalClose());
             }
         });
     }
 }
-//搜索行政班学生信息
+//获取最新动态
 const getCourseClassDynamicMsg = (url) => {
     return (dispatch) => {
         dispatch(actions.UpUIState.CourseClassDynamicLoadingOpen());
@@ -313,7 +317,46 @@ const getCourseClassDynamicMsg = (url) => {
             } else if (json.Status === 200) {
                 console.log(json.Data)
                 dispatch({ type: GET_COURSE_CLASS_DYNAMIC_MSG, data: json.Data });
-                dispatch( actions.UpUIState.CourseClassDynamicLoadingClose());
+                dispatch(actions.UpUIState.CourseClassDynamicLoadingClose());
+            }
+        });
+    }
+}
+//获取历史记录
+const getCourseClassRecordMsg = (url) => {
+    return (dispatch) => {
+        dispatch(actions.UpUIState.CourseClassDynamicLoadingOpen());
+
+        getData(CONFIG.proxy + url).then(res => {
+            return res.json()
+        }).then(json => {
+            if (json.Status === 400) {
+                console.log('错误码：' + json.Status)
+            } else if (json.Status === 200) {
+                console.log(json.Data)
+                dispatch({ type: GET_COURSE_CLASS_RECORD_MSG, data: json.Data });
+                dispatch(actions.UpUIState.CourseClassDynamicLoadingClose());
+            }
+        });
+    }
+}
+//教学班调整详情
+const getLogDetailsMsg = (url) => {
+    
+
+    return (dispatch) => {
+        
+        dispatch({ type: actions.UpUIState.MODAL_LOADING_OPEN });
+
+        getData(CONFIG.proxy + url).then(res => {
+            return res.json()
+        }).then(json => {
+            if (json.Status === 400) {
+                console.log('错误码：' + json.Status)
+            } else if (json.Status === 200) {
+                console.log(json.Data)
+                dispatch({ type: GET_LOG_DETAILS_MSG, data: json.Data });
+                dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
             }
         });
     }
@@ -360,7 +403,11 @@ export default {
     searchClassStudentMsg,
 
     GET_COURSE_CLASS_DYNAMIC_MSG,
-    getCourseClassDynamicMsg
+    getCourseClassDynamicMsg,
+    GET_COURSE_CLASS_RECORD_MSG,
+    getCourseClassRecordMsg,
+    getLogDetailsMsg,
+    GET_LOG_DETAILS_MSG
 
 
 }
