@@ -253,6 +253,15 @@ class SafeSetting extends Component{
         dispatch({type:SafeSettingActions.SAFE_SETTING_EMAIL_INPUT_CHANGE,data:{type:type,value:e.target.value}});
 
     }
+    //提交邮箱
+
+    emailCommit(e){
+
+        const { dispatch } = this.props;
+
+        dispatch(SafeSettingActions.emailCommit());
+
+    }
 
 
 
@@ -291,6 +300,20 @@ class SafeSetting extends Component{
                 <div className="title-bar">
 
                     <div className="title-bar-name">账号安全</div>
+
+                </div>
+
+                <div className="safe-history-bar">
+
+                    <span className="props">上次登录时间:</span>
+
+                    <span className="login-time">{LastTimeLogin}</span>
+
+                    <span className="props">IP:</span>
+
+                    <span className="login-ip">{LastTimeIP}</span>
+
+                    <input type="button" className="more-log" value="更多记录>>"/>
 
                 </div>
 
@@ -524,13 +547,15 @@ class SafeSetting extends Component{
 
                                             <td className="col1">原邮箱:</td>
 
-                                            <td className="col2">{emailValue.originEmail}</td>
+                                            <td className="col2"><span className="origin-email">{Email}</span></td>
 
                                             <td className="col3"></td>
 
                                         </tr>
 
-                                        :''
+                                        :
+
+                                        <React.Fragment></React.Fragment>
 
                                 }
 
@@ -540,29 +565,25 @@ class SafeSetting extends Component{
 
                                     <td className="col2"><Input onChange={e=>this.emailInputChange(e,'new')} maxLength={20}/></td>
 
-                                    <td className="col3"><span className="error-tips" style={{display:`${emailErrorTips.newEmail?'block':'none'}`}}>输入不符合规范</span></td>
+                                    <td className="col3"><span className="error-tips" style={{display:`${emailErrorTips.newEmail?'block':'none'}`}}>{emailErrorTips.newEmailTips}</span></td>
 
                                 </tr>
 
-                                {
-                                    HasSetEmail && HasSetEmail ?
 
-                                        <tr>
+                                <tr>
 
-                                            <td className="col1">登录密码:</td>
+                                    <td className="col1">登录密码:</td>
 
-                                            <td className="col2"><Input type="password" onChange={e=>this.emailInputChange(e,'pwd')} maxLength={20}/></td>
+                                    <td className="col2"><Input type="password" onChange={e=>this.emailInputChange(e,'pwd')} maxLength={20}/></td>
 
-                                            <td className="col3">
+                                    <td className="col3">
 
-                                                <span className="error-tips" style={{display: `${emailErrorTips.pwd ? 'block' : 'none'}`}}>输入不符合规范</span>
+                                        <span className="error-tips" style={{display: `${emailErrorTips.pwd ? 'block' : 'none'}`}}>{emailErrorTips.pwdTips}</span>
 
-                                            </td>
+                                    </td>
 
-                                        </tr>
+                                </tr>
 
-                                        :''
-                                }
 
                                 </tbody>
 
@@ -570,7 +591,7 @@ class SafeSetting extends Component{
 
                             <div className="btn-wrapper">
 
-                                <input className="commit" type="button" value="确定"/>
+                                <input className="commit" onClick={this.emailCommit.bind(this)} type="button" value="确定"/>
 
                             </div>
 

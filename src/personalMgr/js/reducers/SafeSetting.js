@@ -53,7 +53,11 @@ const SafeSetting = (state={
 
         newEmail:false,
 
-        pwd:false
+        newEmailTips:'',
+
+        pwd:false,
+
+        pwdTips:''
 
     },
 
@@ -78,8 +82,6 @@ const SafeSetting = (state={
     },
 
     emailValue:{
-
-        originEmail:'',
 
         newEmail:'',
 
@@ -853,17 +855,133 @@ const SafeSetting = (state={
 
         case SafeSettingActions.SAFE_SETTING_EMAIL_INPUT_CHANGE:
 
-            return {
+            switch (actions.data.type) {
 
-                ...state,
+                case 'new':
 
-                emailValue: {
+                    return {
 
-                    ...state.emailValue
+                        ...state,
 
-                }
+                        emailValue:{
 
-            };
+                            ...state.emailValue,
+
+                            newEmail:actions.data.value
+
+                        }
+
+                    };
+
+                case 'pwd':
+
+                    return {
+
+                        ...state,
+
+                        emailValue:{
+
+                            ...state.emailValue,
+
+                            pwd:actions.data.value
+
+                        }
+
+                    };
+
+                default:
+
+                    return state;
+
+            }
+
+        case SafeSettingActions.SAFE_SETTING_EMAIL_TIPS_SHOW:
+
+            switch (actions.data.type) {
+
+                case 'new':
+
+                    return {
+
+                        ...state,
+
+                        emailErrorTips:{
+
+                            ...state.emailErrorTips,
+
+                            newEmail:true,
+
+                            newEmailTips:actions.data.value
+
+                        }
+
+                    };
+
+                case 'pwd':
+
+                    return {
+
+                        ...state,
+
+                        emailErrorTips:{
+
+                            ...state.emailErrorTips,
+
+                            pwd:true,
+
+                            pwdTips:actions.data.value
+
+                        }
+
+                    };
+
+                default:
+
+                    return state;
+
+            }
+
+        case SafeSettingActions.SAFE_SETTING_EMAIL_TIPS_HIDE:
+
+            switch (actions.data.type) {
+
+                case 'new':
+
+                    return {
+
+                        ...state,
+
+                        emailErrorTips:{
+
+                            ...state.emailErrorTips,
+
+                            newEmail:false
+
+                        }
+
+                    };
+
+                case 'pwd':
+
+                    return {
+
+                        ...state,
+
+                        emailErrorTips:{
+
+                            ...state.emailErrorTips,
+
+                            pwd:false
+
+                        }
+
+                    };
+
+                default:
+
+                    return state;
+
+            }
 
         default:
 
