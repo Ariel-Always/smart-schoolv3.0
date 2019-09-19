@@ -220,10 +220,10 @@ class Search extends React.Component{
         let courseClassID = '';
         let source = DataState.GetClassAllMsg.allClass.TableData;
         checkedList.map((child, index) => {
-            // if (index !== len - 1)
-            courseClassID = source[child].CourseClass.ClassID + '-';
-            // else
-            //     courseClassID = source[child].CourseClass.ClassID;
+            if (index !== len - 1)
+            courseClassID += source[child].CourseClass.ClassID + '-';
+            else
+                courseClassID += source[child].CourseClass.ClassID;
 
         })
 
