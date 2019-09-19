@@ -1,6 +1,8 @@
 import React,{Component} from 'react';
 
-import { Loading,DropDown,Modal } from "../../../common";
+import { Loading,DropDown,Modal,Table } from "../../../common";
+
+
 
 import { Input,Tooltip } from "antd";
 
@@ -9,6 +11,7 @@ import SafeSettingActions from  '../actions/SafeSettingAcions';
 import $ from 'jquery';
 
 import { connect } from 'react-redux';
+
 
 class SafeSetting extends Component{
 
@@ -254,12 +257,32 @@ class SafeSetting extends Component{
 
     }
     //提交邮箱
-
     emailCommit(e){
 
         const { dispatch } = this.props;
 
         dispatch(SafeSettingActions.emailCommit());
+
+    }
+
+    //history的弹窗
+    historyModal(){
+
+
+        const { dispatch,SafeSetting } = this.props;
+
+        const { show } = SafeSetting.loginHistory;
+        
+        if (show){
+
+            dispatch({type:SafeSettingActions.SAFE_SETTING_LOGIN_HISTORY_HIDE});
+
+        }else{
+
+            dispatch({type:SafeSettingActions.SAFE_SETTING_LOGIN_HISTORY_SHOW});
+
+        }
+
 
     }
 
@@ -286,16 +309,181 @@ class SafeSetting extends Component{
 
             qaErrorTips,emailErrorTips,addQaShow,pwdValue,qaValue,qaSelectd,delQuestionsModal,
 
-            editQuestionsModal,emailValue
+            editQuestionsModal,emailValue,loginHistory,loadingShow
 
         } = SafeSetting;
 
         const { HasSetPwd,HasSetEmail,HasSetQA,Email,Questions,LastTimeEditPwd,LastTimeLogin,LastTimeIP,Logs } = initData;
 
 
+        const Columns = [
+
+            {
+
+                title:"登录时间",
+
+                dataIndex:"LoginTime",
+
+                key:"LoginTime",
+
+                align:"center",
+
+                render:(i,k)=>{
+
+                    if (i === ''){
+
+                        return <span className="login">--</span>;
+
+                    }else{
+
+                        return <span className="login">{i}</span>;
+
+                    }
+
+                },
+
+                width:200
+
+            },
+            {
+
+                title:"登出时间",
+
+                dataIndex:"LogoutTime",
+
+                key:"LogoutTime",
+
+                align:"center",
+
+                render:(i,k)=>{
+
+                    if (i === ''){
+
+                        return <span className="logout">--</span>;
+
+                    }else{
+
+                        return <span className="logout">{i}</span>;
+
+                    }
+
+                },
+
+                width:200
+
+            },
+            {
+
+                title:"IP",
+
+                dataIndex:"IPAddress",
+
+                key:"IPAddress",
+
+                align:"center",
+
+                render:(i,k)=>{
+
+                    if (i === ''){
+
+                        return <span className="ip">--</span>;
+
+                    }else{
+
+                        return <span className="ip">{i}</span>;
+
+                    }
+
+                },
+
+                width:180
+
+            },
+            {
+
+                title:"登录方式",
+
+                dataIndex:"LoginTypeTxt",
+
+                key:"LoginTypeTxt",
+
+                align:"center",
+
+                render:(i,k)=>{
+
+                    if (i === ''){
+
+                        return <span className="method">--</span>;
+
+                    }else{
+
+                        return <span className="method">{i}</span>;
+
+                    }
+
+                },
+
+                width:180
+
+            },
+            {
+
+                title:"登录设备",
+
+                dataIndex:"MachineTypeTxt",
+
+                key:"MachineTypeTxt",
+
+                align:"center",
+
+                render:(i,k)=>{
+
+                    if (i === ''){
+
+                        return <span className="device">--</span>;
+
+                    }else{
+
+                        return <span className="device">{i}</span>;
+
+                    }
+
+                },
+
+            }
+
+        ];
+
+        const data = Logs&&Logs.map(item=>{
+
+
+            return {
+
+
+                key:item.LogID,
+
+                LoginTime:item.LoginTime,
+
+                LogoutTime:item.LogoutTime,
+
+                IPAddress:item.IPAddress,
+
+                LoginTypeTxt:item.LoginTypeTxt,
+
+                MachineTypeTxt:item.MachineTypeTxt
+
+            }
+
+
+        });
+
+
+
         return (
 
-            <div className="safe-setting-wrapper">
+            <Loading spinning={loadingShow}>
+
+                <div className="safe-setting-wrapper">
 
                 <div className="title-bar">
 
@@ -313,7 +501,7 @@ class SafeSetting extends Component{
 
                     <span className="login-ip">{LastTimeIP}</span>
 
-                    <input type="button" className="more-log" value="更多记录>>"/>
+                    <input type="button" className="more-log" value="更多记录>>" onClick={this.historyModal.bind(this)}/>
 
                 </div>
 
@@ -569,7 +757,6 @@ class SafeSetting extends Component{
 
                                 </tr>
 
-
                                 <tr>
 
                                     <td className="col1">登录密码:</td>
@@ -681,7 +868,7 @@ class SafeSetting extends Component{
 
                         {
 
-                            editQuestionsModal.newQuestionDropSelectd.value=='self'?
+                            editQuestionsModal.newQuestionDropSelectd.value==='self'?
 
                                 <div className="new-self-question clearfix">
 
@@ -731,7 +918,28 @@ class SafeSetting extends Component{
 
                 </Modal>
 
+                <Modal
+                    className="login-history-modal"
+                    title="登录历史详情"
+                    type={1}
+                    visible={loginHistory.show}
+                    width={936}
+                    bodyStyle={{height:466}}
+                    mask={true}
+                    footer={null}
+                    onCancel={this.historyModal.bind(this)}>
+
+                    <div className="ModalContent">
+
+                        <Table dataSource={data} pagination={false} rowKey={(r,i)=>r.key} columns={Columns}></Table>
+
+                    </div>
+
+                </Modal>
+
             </div>
+
+            </Loading>
 
         );
 

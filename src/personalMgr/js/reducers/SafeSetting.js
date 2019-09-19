@@ -3,6 +3,8 @@ import SafeSettingActions from '../actions/SafeSettingAcions';
 
 const SafeSetting = (state={
 
+    loadingShow:true,
+
     initData:'',
 
     pwdSetShow:false,
@@ -128,6 +130,11 @@ const SafeSetting = (state={
         newAnswerTips:'',
 
         newAnswerTipsShow:false
+
+    },
+    loginHistory:{
+
+        show:false
 
     }
 
@@ -982,6 +989,53 @@ const SafeSetting = (state={
                     return state;
 
             }
+
+
+
+        case SafeSettingActions.SAFE_SETTING_LOGIN_HISTORY_SHOW:
+
+            return {
+
+                ...state,
+
+                loginHistory: {
+
+                    ...state.loginHistory,
+
+                    show:true
+
+                }
+
+            };
+
+        case SafeSettingActions.SAFE_SETTING_LOGIN_HISTORY_HIDE:
+
+            return {
+
+                ...state,
+
+                loginHistory: {
+
+                    ...state.loginHistory,
+
+                    show:false
+
+                }
+
+            };
+
+
+
+        case SafeSettingActions.SAFE_SETTING_LOADING_HIDE:
+
+
+            return { ...state,loadingShow:false };
+
+        case SafeSettingActions.SAFE_SETTING_LOADING_SHOW:
+
+
+            return { ...state,loadingShow:true };
+
 
         default:
 

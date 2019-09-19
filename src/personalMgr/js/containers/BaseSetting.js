@@ -376,6 +376,8 @@ class BaseSetting extends Component{
 
         const {
 
+            loadingShow,
+
             editorStatus,
 
             UserID,
@@ -434,7 +436,9 @@ class BaseSetting extends Component{
 
         return (
 
-            <div className="base-setting-wrapper">
+            <Loading spinning={loadingShow}>
+
+                <div className="base-setting-wrapper">
 
                 {
 
@@ -891,6 +895,8 @@ class BaseSetting extends Component{
                     </div>
 
             </div>
+
+            </Loading>
 
         );
 

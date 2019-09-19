@@ -12,6 +12,8 @@ import ReplaceSchedule from './ReplaceSchedule';
 
 import ChangeSchedule from './ChangeSchedule'
 
+import ChangeTime from './ChangeTime';
+
 
 const { TabPane  } = Tabs;
 
@@ -64,7 +66,11 @@ class AdjustByTeacherModal extends Component{
 
                         </TabPane>
 
-                        <TabPane tab="调整时间" key="3" forceRender={true}></TabPane>
+                        <TabPane tab="调整时间" key="3" forceRender={true}>
+
+                            <ChangeTime></ChangeTime>
+
+                        </TabPane>
 
                         <TabPane tab="更换教室" key="4" forceRender={true}></TabPane>
 

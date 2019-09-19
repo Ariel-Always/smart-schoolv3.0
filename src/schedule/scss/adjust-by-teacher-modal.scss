@@ -645,5 +645,125 @@
 
   }
 
+  //调整时间
+  .change-time-wrapper{
+
+    padding:36px 44px 0 44px;
+
+    &>*{
+
+      float: left;
+
+    }
+
+    .teacher-wrapper{
+
+      text-align: center;
+
+      margin-left:48px;
+
+      .props{
+
+        margin-right: 12px;
+
+      }
+
+    }
+
+    .props{
+
+      color: #666666;
+
+      font-size: 16px;
+
+      margin-right:20px;
+
+    }
+
+
+
+    .old-time-wrapper,
+    .new-time-wrapper{
+
+      width: 300px;
+
+      height: 182px;
+
+      background-color: #f4f4f4;
+
+      margin-top:46px;
+
+      padding: 20px 48px;
+
+      &>*{
+
+        float: left;
+
+      }
+
+    }
+
+    .old-time-wrapper{
+
+      margin-left: -94px;
+
+    }
+    .new-time-wrapper{
+
+      float: right;
+
+      .dropdown_container{
+
+        &:nth-child(4){
+
+          margin-left:-8px;
+
+          margin-top:8px;
+
+        }
+
+      }
+
+    }
+
+
+    .content-wrapper{
+
+      .dropdown_container{
+
+        margin-left: -154px;
+
+        margin-top: 38px;
+
+      }
+
+      .week-wrapper{
+
+        margin-top:44px;
+
+        color: #999999;
+
+        font-size: 12px;
+
+      }
+
+    }
+
+    .ant-input{
+
+      height: 28px;
+
+      line-height: 28px;
+
+      width: 146px;
+
+    }
+
+
+  }
+
+
+
+
 }
 

@@ -2,6 +2,8 @@ import BaseActions from '../actions/BaseActions';
 
 const BaseSetting = (state={
 
+    loadingShow:true,
+
     editorStatus:false,
 
     ShortNameValue:'',
@@ -165,6 +167,14 @@ const BaseSetting = (state={
             state.TeacherRoalDetails[actions.data]['show']=false;
 
             return {...state, TeacherRoalDetails:{...state.TeacherRoalDetails}};
+
+        case BaseActions.BASE_SETTING_LOADING_SHOW:
+
+            return { ...state,loadingShow:true };
+
+        case BaseActions.BASE_SETTING_LOADING_HIDE:
+
+            return { ...state,loadingShow:false };
 
         default:
 

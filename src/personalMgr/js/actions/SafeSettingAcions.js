@@ -1,6 +1,8 @@
-import AppAlertActions from '../actions/AppAlertActions';
+import AppAlertActions from './AppAlertActions';
 
-import Method from '../actions/Method';
+import AppLoadingActions from './AppLoadingActions';
+
+import Method from './Method';
 
 
 const SAFE_SETTING_INIT_DATA_UPDATE = 'SAFE_SETTING_INIT_DATA_UPDATE';
@@ -64,11 +66,23 @@ const SAFE_SETTING_EMAIL_TIPS_HIDE = 'SAFE_SETTING_EMAIL_TIPS_HIDE';
 
 
 
+const SAFE_SETTING_LOGIN_HISTORY_SHOW = 'SAFE_SETTING_LOGIN_HISTORY_SHOW';
+
+const SAFE_SETTING_LOGIN_HISTORY_HIDE = 'SAFE_SETTING_LOGIN_HISTORY_HIDE';
+
+
+const SAFE_SETTING_LOADING_SHOW = 'SAFE_SETTING_LOADING_SHOW';
+
+const SAFE_SETTING_LOADING_HIDE = 'SAFE_SETTING_LOADING_HIDE';
+
+
 
 //初始化界面
 const Init = () => {
 
     return ( dispatch,getState ) => {
+
+        dispatch({type:SAFE_SETTING_LOADING_SHOW});
 
         let { UserID } = getState().LoginUser;
 
@@ -79,6 +93,10 @@ const Init = () => {
            if (json.Status === 200){
 
                dispatch({type:SAFE_SETTING_INIT_DATA_UPDATE,data:json.Data});
+
+               dispatch({type:SAFE_SETTING_LOADING_HIDE});
+
+               dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
 
            }else{
 
@@ -1337,6 +1355,14 @@ export default{
     SAFE_SETTING_EMAIL_TIPS_SHOW,
 
     SAFE_SETTING_EMAIL_TIPS_HIDE,
+
+    SAFE_SETTING_LOGIN_HISTORY_SHOW,
+
+    SAFE_SETTING_LOGIN_HISTORY_HIDE,
+
+    SAFE_SETTING_LOADING_SHOW,
+
+    SAFE_SETTING_LOADING_HIDE,
 
     Init,
 

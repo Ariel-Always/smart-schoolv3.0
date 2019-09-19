@@ -6,6 +6,10 @@ import {getData} from "../../../common/js/fetch";
 
 import LoginUserActions from "./LoginUserActions";
 
+import AppLoadingActions from './AppLoadingActions';
+
+
+
 const BASE_INFO_UPDATE = 'BASE_INFO_UPDATE';
 
 const BASE_SETTING_EDITOR_OPEN = 'BASE_SETTING_EDITOR_OPEN';
@@ -52,15 +56,25 @@ const BASE_SETTING_TEACHER_ROAL_DETAILS_STATUS_SHOW = 'BASE_SETTING_TEACHER_ROAL
 
 const BASE_SETTING_TEACHER_ROAL_DETAILS_STATUS_HIDE = 'BASE_SETTING_TEACHER_ROAL_DETAILS_STATUS_HIDE';
 
+
+
+
+const BASE_SETTING_LOADING_HIDE = 'BASE_SETTING_LOADING_HIDE';
+
+const BASE_SETTING_LOADING_SHOW = 'BASE_SETTING_LOADING_SHOW';
+
 //界面初始化函数
 const Init = () => {
 
     return (dispatch,getState) => {
 
+
+        dispatch({type:BASE_SETTING_LOADING_SHOW});
+
        /* let { UserID,UserType } = getState().LoginUser;*/
 
 
-        getData('http://47.244.238.75:7300/mock/5d7e0519fdd0dc0457886a3c/webCloudDev/Login').then(res=>res.json()).then(json => {
+        Method.getGetData('/Login').then(json => {
 
             dispatch({type:LoginUserActions.UPDATE_LOGIN_USER,data:json.data.result});
 
@@ -78,7 +92,13 @@ const Init = () => {
 
                     let data = json.Data;
 
-                      dispatch({type:BASE_INFO_UPDATE,data:data});
+
+                    dispatch({type:BASE_INFO_UPDATE,data:data});
+
+                    dispatch({type:BASE_SETTING_LOADING_HIDE});
+
+                    dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
+
 
                 }else{
 
@@ -219,6 +239,10 @@ export default {
     BASE_SETTING_TEACHER_ROAL_DETAILS_STATUS_SHOW,
 
     BASE_SETTING_TEACHER_ROAL_DETAILS_STATUS_HIDE,
+
+    BASE_SETTING_LOADING_HIDE,
+
+    BASE_SETTING_LOADING_SHOW,
 
     Init,
 
