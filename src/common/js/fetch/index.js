@@ -31,7 +31,7 @@ function postData(url, paramsObj, SecurityLevel = 1,mode='cors') {
         
         headers: {
             'Accept': 'application/json, text/plain, */*',//请求头，代表的、发送端（客户端）希望接收的数据类型
-            'Content-Type': 'application/x-www-form-urlencodeed',//实体头，代表发送端（客户端|服务器）发送的实体数据的数据类型
+            'Content-Type': 'application/x-www-form-urlencoded',//实体头，代表发送端（客户端|服务器）发送的实体数据的数据类型
             'Autorization': requestSecure(paramsObj,TESTKEY,SecurityLevel),
         },
         redirect: 'follow',//manual、*follow(自动重定向)、error，此项为重定向的相关配置

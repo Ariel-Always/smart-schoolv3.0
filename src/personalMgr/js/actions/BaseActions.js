@@ -73,8 +73,8 @@ const Init = () => {
 
        /* let { UserID,UserType } = getState().LoginUser;*/
 
-
-        Method.getGetData('/Login').then(json => {
+        getData('http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev/Login').then(res=>res.json()).then(json=>{
+       // Method.getGetData('/Login').then(json => {
 
             dispatch({type:LoginUserActions.UPDATE_LOGIN_USER,data:json.data.result});
 
@@ -84,7 +84,7 @@ const Init = () => {
 
             let UserID = data.UserID;
 
-            let baseInfo =  Method.getGetData(`/UserMgr/PersonalMgr/GetBasicInfo?UserID=${UserID}&UserType=${UserType}`);
+            let baseInfo =  Method.getGetData(`/UserMgr/PersonalMgr/GetBasicInfo?UserID=${UserID}&UserType=${UserType}`,2);
 
             baseInfo.then(json => {
 

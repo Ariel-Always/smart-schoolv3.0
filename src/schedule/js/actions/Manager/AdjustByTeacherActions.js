@@ -136,6 +136,8 @@ const CHANGE_TIME_TEACHER_DROP_CHANGE = 'CHANGE_TIME_TEACHER_DROP_CHANGE';
 
 const CHANGE_TIME_ORIGIN_CHANGE = 'CHANGE_TIME_ORIGIN_CHANGE';
 
+const CHANGE_TIME_NEW_CHANGE = 'CHANGE_TIME_NEW_CHANGE';
+
 
 
 
@@ -1593,10 +1595,11 @@ const changeTimeTeacherDropChange = (info) => {
 
     return ( dispatch,getState ) => {
 
-        let { originDate } = getState().Manager.AdjustByTeacherModal.changeTime;
+        let { originDate,oldWeek } = getState().Manager.AdjustByTeacherModal.changeTime;
 
         dispatch({type:CHANGE_TIME_TEACHER_DROP_CHANGE,data:{type:'drop',value:{value:info.id,title:info.value}}});
 
+        dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:'weekChange',value:{...oldWeek,ClassHour:''}}});
 
         if (originDate !== ''){
 
@@ -1668,7 +1671,7 @@ const changeTimeTeacherDropChange = (info) => {
 
                     });
 
-                    dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:"classHourAbled"}});
+                    dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:"classHourAbled",value:{value:"none",title:"请选择节次"}}});
 
                     dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:'classHourListChange',value:list}});
 
@@ -1814,9 +1817,337 @@ const changeTimeOriginDate = (date) => {
 
                 Promise.all([getChangeTimePromise,getDatePromise]).then(res => {
 
-                    const json1 = res[1];
+                    const json1 = res[0];
 
-                    const json2 = res[2];
+                    const json2 = res[1];
+
+                    console.log(res);
+
+                    //第一个异步
+                    if (json1.StatusCode === 200 ){
+
+                        let list = json1.Data.map(item => {
+
+                            let noon = '';
+
+                            switch (item.ClassHourType) {
+
+                                case 1:
+
+                                    noon = '上午';
+
+                                    break;
+
+                                case 2:
+
+                                    noon = '下午';
+
+                                    break;
+
+                                case 3:
+
+                                    noon = '晚上';
+
+                                    break;
+
+                                default:
+
+                                    noon = '上午';
+
+                            }
+
+                            let title = <span>第{item.ClassHourNO}节<span className="noon">({noon})</span></span>
+
+                            return {
+
+                                value:item.ScheduleID,
+
+                                title:title
+
+                            }
+
+
+                        });
+
+                        let classRoomList = json1.Data.map(item => {
+
+                            return {
+
+                                ScheduleID:item.ScheduleID,
+
+                                ClassRoomID:item.ClassRoomID,
+
+                                ClassRoomName:item.ClassRoomName
+
+                            }
+
+
+                        });
+
+                        dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:"classHourAbled",value:{value:"none",title:"请选择节次"}}});
+
+                        dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:'classHourListChange',value:list}});
+
+                        dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:"oldClassRoomListChange",value:classRoomList}});
+
+                    }else{
+
+                        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                                type:"btn-warn",
+
+                                title:json1.Msg,
+
+                                ok:hideAlert(dispatch),
+
+                                close:hideAlert(dispatch),
+
+                                cancel:hideAlert(dispatch)
+
+                            }});
+
+                    }
+
+
+                    //第二个异步
+
+                    if (json2.Status === 200){
+
+                        let WeekNO = json2.Data.WeekNO;
+
+                        let weekDay = json2.Data.WeekDay;
+
+                        let WeekDay = '';
+
+                        switch (weekDay) {
+
+                            case 0:
+
+                                WeekDay = '星期一';
+
+                                break;
+
+                            case 1:
+
+                                WeekDay = '星期二';
+
+                                break;
+
+                            case 2:
+
+                                WeekDay = '星期三';
+
+                                break;
+
+                            case 3:
+
+                                WeekDay = '星期四';
+
+                                break;
+
+                            case 4:
+
+                                WeekDay = '星期五';
+
+                                break;
+
+                            case 5:
+
+                                WeekDay = '星期六';
+
+                                break;
+
+                            case 6:
+
+                                WeekDay = '星期日';
+
+                                break;
+
+                            default:
+
+                                WeekDay = '星期一';
+
+                        }
+
+                        dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:'weekChange',value:{WeekNO,WeekDay}}});
+
+                    }else{
+
+                        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                                type:"btn-warn",
+
+                                title:json2.Msg,
+
+                                ok:hideAlert(dispatch),
+
+                                close:hideAlert(dispatch),
+
+                                cancel:hideAlert(dispatch)
+
+                            }});
+
+                    }
+
+
+                });
+
+
+            }else{
+
+                let getDatePromise = Method.getGetData(`/scheduleDateUpdate?ClassDate=${date}`);
+
+                getDatePromise.then(json => {
+
+                    if (json.Status === 200){
+
+                        let WeekNO = json.Data.WeekNO;
+
+                        let weekDay = json.Data.WeekDay;
+
+                        let WeekDay = '';
+
+                        switch (weekDay) {
+
+                            case 0:
+
+                                WeekDay = '星期一';
+
+                                break;
+
+                            case 1:
+
+                                WeekDay = '星期二';
+
+                                break;
+
+                            case 2:
+
+                                WeekDay = '星期三';
+
+                                break;
+
+                            case 3:
+
+                                WeekDay = '星期四';
+
+                                break;
+
+                            case 4:
+
+                                WeekDay = '星期五';
+
+                                break;
+
+                            case 5:
+
+                                WeekDay = '星期六';
+
+                                break;
+
+                            case 6:
+
+                                WeekDay = '星期日';
+
+                                break;
+
+                            default:
+
+                                WeekDay = '星期一';
+
+                        }
+
+
+                        dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:'weekChange',value:{WeekNO,WeekDay}}});
+
+                    }else{
+
+                        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                                type:"btn-warn",
+
+                                title:json.Msg,
+
+                                ok:hideAlert(dispatch),
+
+                                close:hideAlert(dispatch),
+
+                                cancel:hideAlert(dispatch)
+
+                            }});
+
+                    }
+
+                })
+
+            }
+
+        }else{
+
+            dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:"classHourDisabled"}});
+
+            dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:"weekChange",value:""}});
+
+        }
+
+    }
+
+};
+
+//旧的课时选取
+
+const changTimeOldClassHourPick = (info) =>{
+
+    return (dispatch,getState) => {
+
+        const { oldClassRoomList,oldClassHourDrop,oldWeek } = getState().Manager.AdjustByTeacherModal.changeTime;
+
+        const { value,title } = info;
+
+
+        let classRoom = oldClassRoomList.find(item=>item.ScheduleID===value);
+
+        let classRoomObject = { value:classRoom.ClassRoomID,title:classRoom.ClassRoomName };
+
+        dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:"classHourPick",value:info}});
+
+        dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"classRoomDrop",value:classRoomObject}});
+
+        dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:"weekChange",value:{...oldWeek,ClassHour:title}}});
+
+    }
+
+};
+
+//新的日期选取
+
+const changeTimeNewTimeChange = (date) => {
+
+    return (dispatch,getState) => {
+
+        dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"date",value:date}});
+
+       /* if (date !== ''){
+
+            let { teacherDrop } = getState().Manager.AdjustByTeacherModal.changeTime;
+
+            if (teacherDrop.value!=='none'){
+
+                let TeacherID = teacherDrop.value;
+
+                let ClassDate = date;
+
+                let getChangeTimePromise = Method.getGetData(`/scheduleChangeTeacherSchedule?TeacherID${TeacherID}&ClassDate=${ClassDate}`);
+
+                let getDatePromise = Method.getGetData(`/scheduleDateUpdate?ClassDate=${date}`);
+
+                Promise.all([getChangeTimePromise,getDatePromise]).then(res => {
+
+                    const json1 = res[0];
+
+                    const json2 = res[1];
+
+                    console.log(res);
 
                     //第一个异步
                     if (json1.StatusCode === 200 ){
@@ -2084,28 +2415,7 @@ const changeTimeOriginDate = (date) => {
 
             dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:"weekChange",value:""}});
 
-        }
-
-    }
-
-};
-
-//旧的课时选取
-
-const changTimeOldClassHourPick = (info) =>{
-
-    return (dispatch,getState) => {
-
-        const { oldClassRoomList,oldClassHourDrop,oldWeek } = getState().Manager.AdjustByTeacherModal.changeTime;
-
-        const { value,title } = info;
-
-
-        let classRoomObject = oldClassRoomList.find(item=>item.ScheduleID===value);
-
-        dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:"classHourPick",value:info}});
-
-        dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:"weekChange",value:{...oldWeek,ClassHour:title}}});
+        }*/
 
     }
 
@@ -2264,6 +2574,8 @@ export default {
 
     CHANGE_TIME_ORIGIN_CHANGE,
 
+    CHANGE_TIME_NEW_CHANGE,
+
 
     replaceScheduleInit,
 
@@ -2325,6 +2637,8 @@ export default {
 
     changeTimeOriginDate,
 
-    changTimeOldClassHourPick
+    changTimeOldClassHourPick,
+
+    changeTimeNewTimeChange
 
 };

@@ -70,6 +70,16 @@ class ChangeTime extends Component{
 
     }
 
+    //新日期选取
+
+    newTimeChange(date,dateString){
+
+        const { dispatch } = this.props;
+
+        dispatch(ABTActions.changeTimeNewTimeChange(dateString));
+
+    }
+
 
 
 
@@ -173,24 +183,12 @@ class ChangeTime extends Component{
                                       dropSelectd={oldClassHourDrop}
                                       dropList={oldClassHourList}
                                       disabled={oldClassHourDisabled}
-                                      onChange={this.oldClassHourPick.bind(this)}  >
+                                      onChange={this.oldClassHourPick.bind(this)}>
 
                             </DropDown>
 
-                            {
 
-                                oldWeek&&oldWeek.ClassHour?
-
-                                    <Loading type="loading" spinning={oldWeekLoading}>
-
-                                        <div className="week-wrapper">(第{oldWeek.WeekNO}周 {oldWeek.WeekDay} { oldWeek.ClassHour })</div>
-
-                                    </Loading>
-
-                                    :''
-
-                            }
-
+                            <div className="week-wrapper">{oldWeek.WeekNO?`第${oldWeek.WeekNO}周`:''} {oldWeek.WeekDay} { oldWeek.ClassHour }</div>
 
 
                         </div>
@@ -205,7 +203,7 @@ class ChangeTime extends Component{
 
                             <ConfigProvider locale={zhCN}>
 
-                                <DatePicker value={newDate?moment(newDate):null} onChange={this.originTimeChange.bind(this)}></DatePicker>
+                                <DatePicker value={newDate?moment(newDate):null} onChange={this.newTimeChange.bind(this)}></DatePicker>
 
                             </ConfigProvider>
 
@@ -219,19 +217,9 @@ class ChangeTime extends Component{
 
                             </DropDown>
 
-                            {
 
-                                newWeek?
+                            <div className="week-wrapper">{newWeek}</div>
 
-                                    <Loading type="loading" spinning={newWeekLoading}>
-
-                                        <div className="week-wrapper">{newWeek}</div>
-
-                                    </Loading>
-
-                                    :''
-
-                            }
 
                             <DropDown width={146}
                                       height={72}
@@ -243,6 +231,8 @@ class ChangeTime extends Component{
                             </DropDown>
 
                         </div>
+
+                        <span className="props">新的教室:</span>
 
                     </div>
 

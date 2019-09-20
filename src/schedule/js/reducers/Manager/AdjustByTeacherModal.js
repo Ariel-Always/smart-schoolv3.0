@@ -1448,7 +1448,9 @@ const AdjustByTeacherModal = (state={
 
                             ...state.changeTime,
 
-                            oldClassHourDisabled:false
+                            oldClassHourDisabled:false,
+
+                            oldClassHourDrop:actions.data.value
 
                         }
 
@@ -1518,6 +1520,48 @@ const AdjustByTeacherModal = (state={
 
                     };
 
+
+                default:
+
+                    return state;
+
+            }
+
+        case ABTActions.CHANGE_TIME_NEW_CHANGE:
+
+            switch (actions.data.type) {
+
+                case 'classRoomDrop':
+
+                    return {
+
+                        ...state,
+
+                      changeTime:{
+
+                          ...state.changeTime,
+
+                          newClassRoomDrop:actions.data.value
+
+                      }
+
+                    };
+
+                case 'date':
+
+                    return {
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            newDate:actions.data.value
+
+                        }
+
+                    };
 
                 default:
 
