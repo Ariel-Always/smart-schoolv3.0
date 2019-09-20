@@ -16,9 +16,10 @@ function AESEncryptionBody(paramsObj, CRYPTOJSKEY = COMMONKEY,SecurityLevel) {//
 
     // console.log(decrypt(encrypt(plain,CRYPTOJSKEY)))
     if(SecurityLevel === 3 || SecurityLevel === 4){
-        body = JSON.stringify({ p: encrypt(plain, CRYPTOJSKEY) });
+        body =  $.param({ p: encrypt(plain, CRYPTOJSKEY) });
     }
-    return body;
+    
+    return plain;
 }
 //AES加密传输参数：get
 function AESEncryptionUrl(url, CRYPTOJSKEY = COMMONKEY, SecurityLevel) {//加密所使用的的key，需要与服务器端的解密key相对应
@@ -38,7 +39,7 @@ function AESEncryptionUrl(url, CRYPTOJSKEY = COMMONKEY, SecurityLevel) {//加密
 function requestSecure(params, securityKey, SecurityLevel = 1) {
     let token = sessionStorage.getItem('token');
     let Autorization = null;
-
+    
     if (!token && SecurityLevel !== 1) {
         console.log('token无效，请重新登录');//后期会进行无token的事件操作
         return;
@@ -57,6 +58,7 @@ function requestSecure(params, securityKey, SecurityLevel = 1) {
     } else {
         console.log('SecurityLevel有误，请重新设置');
     }
+    //console.log(Autorization)
     return Autorization;
 }
 

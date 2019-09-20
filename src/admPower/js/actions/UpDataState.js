@@ -13,6 +13,8 @@ import Mock from 'mockjs'
 const GET_LOGIN_USER_INFO = 'GET_LOGIN_USER_INFO';
 //获取教学班总览信息
 const GET_USER_POWER_MSG = 'GET_USER_POWER_MSG';
+//修改教学班总览信息
+const SET_USER_POWER_MSG = 'SET_USER_POWER_MSG';
 
 //操作的执行
 //获取登录用户信息
@@ -25,13 +27,9 @@ const getLoginUser = (url) => {
 };
 //获取用户权限信息
 const getUserPowerMsg = (url) => {
-
-
     return (dispatch) => {
-
-
-
         getData(CONFIG.PowerProxy + url, 2).then(res => {
+            console.log(res)
             return res.json()
         }).then(json => {
             if (json.Status === 400) {
@@ -45,13 +43,22 @@ const getUserPowerMsg = (url) => {
         });
     }
 }
+//修改用户权限信息
+const setUserPowerMsg = (data) => {
+    return (dispatch) => {
+        dispatch({ type: SET_USER_POWER_MSG, data: data });
+    }
+}
 
 export default {
     getLoginUser,
     GET_LOGIN_USER_INFO,
 
     GET_USER_POWER_MSG,
-    getUserPowerMsg
+    getUserPowerMsg,
+    setUserPowerMsg,
+    SET_USER_POWER_MSG
+
 
 
 }

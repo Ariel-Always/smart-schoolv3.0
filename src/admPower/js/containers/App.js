@@ -31,6 +31,7 @@ class App extends Component {
         let route = history.location.pathname;
         //判断token是否存在
         if (sessionStorage.getItem('token')) {
+            sessionStorage.setItem('token','test')
             dispatch(actions.UpDataState.getLoginUser('/Login?method=GetUserInfo'));
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
             dispatch({type:actions.UpUIState.RIGHT_LOADING_OPEN})
