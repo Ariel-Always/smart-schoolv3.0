@@ -11,12 +11,17 @@ class Radio extends React.Component {
 
         }
     }
-    onRadioChange = (e) => {
+    componentWillReceiveProps(nextProps){
         this.setState({
-            checked:e.target.checked
+            checked:nextProps.checked
         })
+    }
+    onRadioChange = (e) => {
+        // this.setState({
+        //     checked:e.target.checked
+        // })
         if(typeof this.props.onChange ==='function' )
-        console.log(e.target.value)
+        //console.log(e.target.value)
         this.props.onChange(e.target.checked,e.target.value);
     }
     render() {

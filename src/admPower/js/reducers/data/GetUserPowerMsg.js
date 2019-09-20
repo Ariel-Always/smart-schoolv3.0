@@ -9,6 +9,8 @@ const GetUserPowerMsg = (state = '', actions) => {
             let newData = handleData(actions.data)
 
             return Object.assign({}, state, { data: actions.data, Power: newData });
+        case UpDataState.SET_USER_POWER_MSG:
+            return Object.assign({}, state, {Power:actions.data});
         default:
             return state;
     }

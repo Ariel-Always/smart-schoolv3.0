@@ -27,11 +27,11 @@ function postData(url, paramsObj, SecurityLevel = 1,mode='cors') {
         mode:mode,//no-cors(跨域模式但服务器端不支持cors),*cors(跨域模式，需要服务器通过Access-control-Allow-Origin来
         //允许指定的源进行跨域),same-origin(同源)
         cache: 'no-cache',//*no-cache,default,reload,force-cache,only-ifcached,此项为缓存相关配置
-        credentials: 'include',//*include(携带cookie)、same-origin(cookie同源携带)、omit(不携带)
+        credentials: 'omit',//*include(携带cookie)、same-origin(cookie同源携带)、omit(不携带)
         
         headers: {
             'Accept': 'application/json, text/plain, */*',//请求头，代表的、发送端（客户端）希望接收的数据类型
-            'Content-Type': 'application/x-www-form-urlencodeed',//实体头，代表发送端（客户端|服务器）发送的实体数据的数据类型
+            'Content-Type': 'application/x-www-form-urlencoded',//实体头，代表发送端（客户端|服务器）发送的实体数据的数据类型
             'Autorization': requestSecure(paramsObj,TESTKEY,SecurityLevel),
         },
         redirect: 'follow',//manual、*follow(自动重定向)、error，此项为重定向的相关配置
@@ -40,12 +40,12 @@ function postData(url, paramsObj, SecurityLevel = 1,mode='cors') {
         body: AESEncryptionBody(paramsObj,TESTKEY,SecurityLevel)//此处需要和headers里的"Content-Type"相对应
     })
 
-    result.then(res => {//做提前处理
-        console.log(res)
-        return res;
-    }, err => {
+    // result.then(res => {//做提前处理
+    //     console.log(res)
+    //     return res;
+    // }, err => {
 
-    })
+    // })
 
     return result;
 }
@@ -75,8 +75,8 @@ function getData(url, SecurityLevel = 1,mode='cors') {
         
         headers: {
             'Accept': 'application/json, text/plain, */*',//请求头，代表的、发送端（客户端）希望接收的数据类型
-            'Content-Type': 'application/x-www-form-urlencodeed',//实体头，代表发送端（客户端|服务器）发送的实体数据的数据类型
-            Autorization: requestSecure(url,TESTKEY,SecurityLevel),
+            'Content-Type': 'application/x-www-form-urlencoded',//实体头，代表发送端（客户端|服务器）发送的实体数据的数据类型
+            'Autorization': requestSecure(url,TESTKEY,SecurityLevel),
         },
         redirect: 'follow',//manual、*follow(自动重定向)、error，此项为重定向的相关配置
         // referrer: 'no-referrer',//该首部字段会告知服务器请求的原始资源的URI

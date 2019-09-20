@@ -11,15 +11,123 @@ import Radio from './Radio'
 import { postData, getData } from '../../../common/js/fetch'
 import actions from '../actions';
 import '../../scss/PowerContent.scss'
+import { async } from 'q';
 
 class PowerContent extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            radioValue: 0,
+            disabled: false
+        }
     }
+    componentWillReceiveProps(nextProps) {
+        const { DataState, UIState } = nextProps;
+        if (DataState.GetUserPowerMsg.Power) {
 
+
+            console.log(DataState.GetUserPowerMsg.Power.student[0].Status)
+            this.setState({
+                radioValue: DataState.GetUserPowerMsg.Power.student[0].Status
+            })
+
+        }
+    }
     onRadioChange = (value, id) => {
         console.log(value, id)
+        const { DataState, UIState, dispatch } = this.props;
+        let Power = DataState.GetUserPowerMsg.Power;
+        let UserMsg = DataState.LoginUser;
+        let url = '/SetGlobalUserPower';
+        if (this.state.disabled === true)
+            return;
+        this.setState({
+            disabled: true
+        })
+        postData(CONFIG.PowerProxy + url, {
+            PowerID: id,
+            SchoolID: 'school1',
+            Status: value ? 1 : 0
+        }, 2).then((res) => {
+            this.setState({
+                disabled: false
+            })
+            return res.json()
+        }).then(json => {
+            if (json.Status === 400) {
+                console.log('错误码：' + json.Status)
+            } else if (json.Status === 200) {
+                if (json.Data === null) {
+                    Power = this.handlePower(Power, value ? 1 : 0, id)
+                    dispatch(actions.UpDataState.setUserPowerMsg(Power));
+                } else if (json.Data === -2) {
+                    console.log('参数错误')
+                } else if (json.Data === -10) {
+                    console.log('接口发生未知异常')
+                }
+
+            }
+        }).catch(err => {
+            console.log(err)
+        });
+    }
+    //
+    onChangeRadio = (e) => {
+        console.log(e.target.value, this.state.radioValue)
+        const { DataState, UIState, dispatch } = this.props;
+        let Power = DataState.GetUserPowerMsg.Power;
+        let UserMsg = DataState.LoginUser;
+        let id = Power.student[0].PowerID;
+        let url = '/SetGlobalUserPower'
+        let value = e.target.value;
+        if (this.state.disabled === true)
+            return;
+        this.setState({
+            disabled: true
+        })
+        postData(CONFIG.PowerProxy + url, {
+            PowerID: id,
+            SchoolID: 'school1',
+            Status: value
+        }, 2).then((res) => {
+            this.setState({
+                disabled: false
+            })
+            return res.json()
+        }).then(json => {
+            if (json.Status === 400) {
+                console.log('错误码：' + json.Status)
+            } else if (json.Status === 200) {
+                if (json.Data === null) {
+                    Power = this.handlePower(Power, value, id)
+                    dispatch(actions.UpDataState.setUserPowerMsg(Power));
+                } else if (json.Data === -1) {
+                    console.log('状态')
+                } else if (json.Data === -2) {
+                    console.log('参数错误')
+                } else if (json.Data === -10) {
+                    console.log('接口发生未知异常')
+                }
+
+            }
+        }).catch(err => {
+            console.log(err)
+        });
+        // this.setState({
+        //     radioValue: e.target.value
+        // })
+    }
+    //处理数据
+    handlePower(power, value, id) {
+        for (let key in power) {
+            power[key] = power[key].map((child, index) => {
+                if (child.PowerID === id) {
+                    child.Status = value
+                }
+                return child;
+            })
+        }
+        return power;
     }
     render() {
         const { DataState, UIState } = this.props;
@@ -49,6 +157,32 @@ class PowerContent extends React.Component {
                                             className='radio'
                                             onChange={this.onRadioChange.bind(this)}
                                         >{Power.student[0].PowerName}</Radio>
+                                        <div className='radio-box-2'>
+                                            <RadioGroup
+                                                name='radioGroup'
+                                                value={Power.student[0].Status}
+                                                onChange={this.onChangeRadio.bind(this)}
+                                            >
+                                                <div className='radio-2'>
+                                                    <MyRadio type value={1} disabled={Power.student[0].Status === 0 ? true : false}></MyRadio>
+                                                    <span className='radio-tips-1'>
+                                                        先审后用模式
+                                                </span>
+                                                    <span className='radio-tips-2'>
+                                                        需要经过学校管理员或班主任审核确认后，系统才会会学生创建用户账号
+                                                </span>
+                                                </div>
+                                                <div className='radio-2'>
+                                                    <MyRadio type value={2} disabled={Power.student[0].Status === 0 ? true : false}></MyRadio>
+                                                    <span className='radio-tips-1'>
+                                                        先审后用模式
+                                                </span>
+                                                    <span className='radio-tips-2'>
+                                                        需要经过学校管理员或班主任审核确认后，系统才会会学生创建用户账号
+                                                </span>
+                                                </div>
+                                            </RadioGroup>
+                                        </div>
 
                                     </div>
                                 </div>
