@@ -30,24 +30,31 @@ const getGetData =  async (url,level,mode) =>{
     }
 };
 //调用post接口
-const getPostData = async (url,data,level,mode) =>{
+const getPostData = async (url,data,level) =>{
+
+    let mode='no-cors';
 
     try {
         let fetchAsync = '';
         try {
             /*fetchAsync = await postData(CONFIG.proxy+url,data,level);*/
-            fetchAsync = await postData(api+url,data,level,mode='no-cors');
+            fetchAsync = await postData(api+url,data,level);
 
         }
         catch (e) {
+
             return  e;
+
         }
 
-        let json = await fetchAsync.json();
+
+        let json = fetchAsync.json();
+
 
         return  json;
 
     }
+
     catch (e) {
 
         return e;
@@ -55,6 +62,27 @@ const getPostData = async (url,data,level,mode) =>{
     }
 
 };
+
+/*const getPostData = (url,data,level) => {
+
+    return new Promise((resolve,reject)=>{
+
+        let mode = 'no-cors';
+
+        postData(api+url,data,level).then(res=>{ console.log(res);}).then(json=>{
+
+           if (json.Status === 200){
+
+                resolve(json);
+
+           }
+
+        });
+
+
+    });
+
+};*/
 
 export default {
 

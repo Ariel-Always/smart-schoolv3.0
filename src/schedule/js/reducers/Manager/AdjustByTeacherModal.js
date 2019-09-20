@@ -1563,6 +1563,118 @@ const AdjustByTeacherModal = (state={
 
                     };
 
+                case 'classHourDisabled':
+
+                    return {
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            newClassHourDisabled:true
+
+                        }
+
+                    };
+
+                case 'weekChange':
+
+                    return {
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            newWeek:actions.data.value
+
+                        }
+
+                    };
+
+                case 'classHourListChange':
+
+                    return {
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            newClassHourList:actions.data.value
+
+                        }
+
+                    };
+
+                case 'classHourAbled':
+
+                    return {
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            newClassHourDisabled:false
+
+                        }
+
+                    };
+
+                case 'classHourDrop':
+
+                    return {
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            newClassHourDrop:actions.data.value
+
+                        }
+
+                    };
+
+                case 'classRoomAbled':
+
+                    return {
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            newClassRoomDisabled:false
+
+                        }
+
+                    };
+
+                case 'classRoomListChange':
+
+                    return {
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            newClassRoomList:actions.data.value
+
+                        }
+
+                    };
+
                 default:
 
                     return state;

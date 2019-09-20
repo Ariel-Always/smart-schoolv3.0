@@ -80,6 +80,16 @@ class ChangeTime extends Component{
 
     }
 
+    //新的课时选取
+
+    newClassHourPick(info){
+
+        const { dispatch } = this.props;
+
+        dispatch(ABTActions.changeTimeNewClassHourPick(info));
+
+    }
+
 
 
 
@@ -213,12 +223,13 @@ class ChangeTime extends Component{
                                       dropSelectd={newClassHourDrop}
                                       dropList={newClassHourList}
                                       disabled={newClassHourDisabled}
+                                      onChange={this.newClassHourPick.bind(this)}
                                         >
 
                             </DropDown>
 
 
-                            <div className="week-wrapper">{newWeek}</div>
+                            <div className="week-wrapper">{newWeek.WeekNO?`第${newWeek.WeekNO}周`:''} {newWeek.WeekDay} {newWeek.ClassHour}</div>
 
 
                             <DropDown width={146}
