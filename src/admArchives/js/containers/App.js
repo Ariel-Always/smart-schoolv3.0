@@ -96,7 +96,7 @@ class App extends Component {
         let pathArr = route.split('/');
         let handleRoute = pathArr[2];
         if (route === '/' || route.split('/')[1] === 'UserArchives') {
-            dispatch(actions.UpDataState.getAllUserPreview('/ArchivesAll'));
+            dispatch(actions.UpDataState.getAllUserPreview('/GetSummary'));
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
             if (handleRoute) {
                 //dispatch(actions.UpDataState.getAllUserPreview('/Archives' + handleRoute));
@@ -117,6 +117,8 @@ class App extends Component {
                     history.push('/UserArchives/All')
                     console.log(handleRoute)
                 }
+            }else{
+                history.push('/UserArchives/All')
             }
 
         }

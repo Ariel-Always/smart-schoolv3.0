@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import logo from '../../images/admAriHeadImg-1.png'
 import { Frame, Menu, Loading, Alert } from "../../../common";
-import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
+import { HashRouter as Router,  Route, Link, BrowserRouter } from 'react-router-dom';
 import history from '../containers/history'
 import TimeBanner from './TimeBanner'
 import All from './All'
@@ -12,6 +12,7 @@ import Leader from './Leader'
 import $ from 'jquery'
 import '../../scss/index.scss'
 import { getData } from '../../../common/js/fetch'
+
 
 
 
@@ -46,15 +47,16 @@ class UserArchives extends React.Component {
                     icon: 'menu33',
                     onTitleClick: this.handleClick,
                 },
-                {
-                    key: 'Leader',
-                    title: '领导档案',
-                    icon: 'menu35',
-                    onTitleClick: this.handleClick,
-                }]
+                    // {
+                    //     key: 'Leader',
+                    //     title: '领导档案',
+                    //     icon: 'menu35',
+                    //     onTitleClick: this.handleClick,
+                    // }
+                ]
             }
         }
-        
+
     }
 
     componentWillMount() {
@@ -66,7 +68,7 @@ class UserArchives extends React.Component {
         history.listen(() => {//路由监听
             let route = history.location.pathname;
             // 获取接口数据
-           
+
 
             $('.frame_leftmenu_mainitem').removeClass('selected active');
             $('.frame_leftmenu_mainitem').children('*').removeClass('active');
@@ -74,7 +76,7 @@ class UserArchives extends React.Component {
         })
     }
 
-    
+
     //操作左侧菜单，响应路由变化
     handleMenu = () => {
         if (history.location.pathname === '/UserArchives') {
@@ -112,28 +114,28 @@ class UserArchives extends React.Component {
 
         return (
             <React.Fragment>
-               <Frame userInfo={{
-                                name: DataState.LoginUser.UserName,
-                                image: DataState.LoginUser.PhotoPath
-                            }}
+                <Frame userInfo={{
+                    name: DataState.LoginUser.UserName,
+                    image: DataState.LoginUser.PhotoPath
+                }}
 
-                                module={{
-                                    cnname: "用户档案管理",
-                                    enname: "User profile management",
-                                    image: logo
-                                }}
-                                type="circle" showLeftMenu={true}>
-                                <div ref="frame-time-barner"><TimeBanner /></div>
-                                <div ref="frame-left-menu"><Menu params={this.state.MenuParams}></Menu></div>
-                                <div ref="frame-right-content">
-
-                                    <Route path='/UserArchives/All' exact history={history} component={All}></Route>
-                                    <Route path='/UserArchives/Student' exact history={history} component={Student}></Route>
-                                    <Route path='/UserArchives/Teacher' exact history={history} component={Teacher}></Route>
-                                    <Route path='/UserArchives/Leader' exact history={history} component={Leader}></Route>
-
-                                </div>
-                            </Frame>
+                    module={{
+                        cnname: "用户档案管理",
+                        enname: "User profile management",
+                        image: logo
+                    }}
+                    type="circle" showLeftMenu={true}>
+                    <div ref="frame-time-barner"><TimeBanner /></div>
+                    <div ref="frame-left-menu"><Menu params={this.state.MenuParams}></Menu></div>
+                    <div ref="frame-right-content">
+                        <Loading size={'large'} opacity={false} spinning={UIState.AppLoading.RightLoading}>
+                            <Route path='/UserArchives/All' exact history={history} component={All}></Route>
+                            <Route path='/UserArchives/Student' exact history={history} component={Student}></Route>
+                            <Route path='/UserArchives/Teacher' exact history={history} component={Teacher}></Route>
+                            <Route path='/UserArchives/Leader' exact history={history} component={Leader}></Route>
+                        </Loading>
+                    </div>
+                </Frame>
             </React.Fragment>
         )
     }

@@ -8,6 +8,9 @@ const CLOSE_WARN_ALERT = 'CLOSE_WARN_ALERT';
 const SHOW_QUERY_ALERT = 'SHOW_QUERY_ALERT';
 const CLOSE_QUERY_ALERT = 'CLOSE_QUERY_ALERT';
 
+//右侧内容区loading
+const RIGHT_LOADING_CLOSE =  'RIGHT_LOADING_CLOSE';
+const RIGHT_LOADING_OPEN =  'RIGHT_LOADING_OPEN';
 //操作
 const showErrorAlert = (alertMsg)=> {
     return {type:SHOW_ERROR_ALERT,msg:alertMsg};
@@ -31,6 +34,14 @@ const hideQueryAlert = () =>{
     return {type:CLOSE_QUERY_ALERT};
 };
 
+//右侧loading
+const RightLoadingOpen = () => {
+    return {type:RIGHT_LOADING_OPEN};
+}
+const RightLoadingClose = () => {
+    return {type:RIGHT_LOADING_CLOSE};
+}
+
 export default {
     APP_LOADING_CLOSE,
     APP_LOADING_OPEN,
@@ -40,10 +51,14 @@ export default {
     CLOSE_WARN_ALERT,
     SHOW_QUERY_ALERT,
     CLOSE_QUERY_ALERT,
+    RIGHT_LOADING_OPEN,
+    RIGHT_LOADING_CLOSE,
     showErrorAlert,
     hideErrorAlert,
     showWarnAlert,
     hideWarnAlert,
     showQueryAlert,
-    hideQueryAlert
+    hideQueryAlert,
+    RightLoadingOpen,
+    RightLoadingClose
 }

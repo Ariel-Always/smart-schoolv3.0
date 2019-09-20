@@ -23,7 +23,8 @@ class Student extends React.Component {
                     title: '',
                     dataIndex: 'key',
                     key: 'key',
-                    align:'left',
+                    width:68,
+                    align:'center',
                     render: key => {
                         return (
                             <div className='registerTime-content'>
@@ -37,7 +38,7 @@ class Student extends React.Component {
                     title: '',
                     align:'right',
                     key: 'UserImg',
-                    width: 60,
+                    width: 50,
                     dataIndex: 'UserName',
                     render: arr => {
                         return (
@@ -51,6 +52,7 @@ class Student extends React.Component {
                 {
                     title: '姓名',
                     align:'left',
+                    width:50,
                     key: 'UserName',
                     dataIndex: 'UserName',
                     sorter: (a, b) => a.name.length - b.name.length,
@@ -66,6 +68,7 @@ class Student extends React.Component {
                 {
                     title: '学号',
                     align:'center',
+                    width:130,
                     dataIndex: 'UserID',
                     key: 'UserID',
                     sorter: (a, b) => a.age - b.age,
@@ -78,6 +81,7 @@ class Student extends React.Component {
                 {
                     title: '性别',
                     align:'center',
+                    width:100,
                     dataIndex: 'Gender',
                     key: 'Gender',
                     render: Gender => {
@@ -90,6 +94,7 @@ class Student extends React.Component {
                     title: '年级',
                     align:'center',
                     key: 'GradeName',
+                    width:100,
                     dataIndex: 'GradeName',
                     render: GradeName => {
                         return (
@@ -100,6 +105,7 @@ class Student extends React.Component {
                 {
                     title: '班级',
                     align:'center',
+                    width:100,
                     key: 'ClassName',
                     dataIndex: 'ClassName',
                     render: ClassName => {
@@ -112,6 +118,7 @@ class Student extends React.Component {
                     title: '操作',
                     align:'center',
                     key: 'handle',
+                    width:200,
                     dataIndex: 'key',
                     render: (key) => {
 
