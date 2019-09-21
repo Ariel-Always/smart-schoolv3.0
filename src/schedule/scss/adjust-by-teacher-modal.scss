@@ -678,6 +678,18 @@
 
       margin-right:20px;
 
+      &:first-child{
+
+        margin-left:30px;
+
+      }
+
+      &:last-child{
+
+        margin-top:10px;
+
+      }
+
     }
 
 
@@ -712,6 +724,8 @@
 
       float: right;
 
+      padding-left:20px;
+
       .dropdown_container{
 
         &:nth-child(4){
@@ -721,6 +735,14 @@
           margin-top:8px;
 
         }
+
+      }
+
+      .week-wrapper{
+
+        height: 20px;
+
+        line-height: 20px;
 
       }
 

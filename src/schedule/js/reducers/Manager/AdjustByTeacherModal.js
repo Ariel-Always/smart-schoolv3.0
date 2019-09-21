@@ -1448,7 +1448,9 @@ const AdjustByTeacherModal = (state={
 
                             ...state.changeTime,
 
-                            oldClassHourDisabled:false
+                            oldClassHourDisabled:false,
+
+                            oldClassHourDrop:actions.data.value
 
                         }
 
@@ -1518,6 +1520,160 @@ const AdjustByTeacherModal = (state={
 
                     };
 
+
+                default:
+
+                    return state;
+
+            }
+
+        case ABTActions.CHANGE_TIME_NEW_CHANGE:
+
+            switch (actions.data.type) {
+
+                case 'classRoomDrop':
+
+                    return {
+
+                        ...state,
+
+                      changeTime:{
+
+                          ...state.changeTime,
+
+                          newClassRoomDrop:actions.data.value
+
+                      }
+
+                    };
+
+                case 'date':
+
+                    return {
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            newDate:actions.data.value
+
+                        }
+
+                    };
+
+                case 'classHourDisabled':
+
+                    return {
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            newClassHourDisabled:true
+
+                        }
+
+                    };
+
+                case 'weekChange':
+
+                    return {
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            newWeek:actions.data.value
+
+                        }
+
+                    };
+
+                case 'classHourListChange':
+
+                    return {
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            newClassHourList:actions.data.value
+
+                        }
+
+                    };
+
+                case 'classHourAbled':
+
+                    return {
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            newClassHourDisabled:false
+
+                        }
+
+                    };
+
+                case 'classHourDrop':
+
+                    return {
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            newClassHourDrop:actions.data.value
+
+                        }
+
+                    };
+
+                case 'classRoomAbled':
+
+                    return {
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            newClassRoomDisabled:false
+
+                        }
+
+                    };
+
+                case 'classRoomListChange':
+
+                    return {
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            newClassRoomList:actions.data.value
+
+                        }
+
+                    };
 
                 default:
 

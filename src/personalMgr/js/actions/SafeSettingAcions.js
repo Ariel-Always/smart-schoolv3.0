@@ -4,6 +4,8 @@ import AppLoadingActions from './AppLoadingActions';
 
 import Method from './Method';
 
+import md5 from 'md5';
+
 
 const SAFE_SETTING_INIT_DATA_UPDATE = 'SAFE_SETTING_INIT_DATA_UPDATE';
 
@@ -86,7 +88,7 @@ const Init = () => {
 
         let { UserID } = getState().LoginUser;
 
-        let getInitPromise =  Method.getGetData(`/UserMgr/PersonalMgr/GetSecurityInfo?UserID=${UserID}`);
+        let getInitPromise =  Method.getGetData(`/UserMgr/PersonalMgr/GetSecurityInfo?UserID=${UserID}`,2);
 
         getInitPromise.then(json => {
 
@@ -248,15 +250,15 @@ const commitPwd = () => {
       //最终判断完成标志
         if (oldRes&&newRes&&reNewRes&&NRSame&&ONSame){
 
-           let { UserType } = getState().LoginUser;
+           let { UserType,UserID } = getState().LoginUser;
 
-           let OldPwd = originPwd;
+           let OldPwd = md5(originPwd);
 
-           let NewPwd = newPwd;
+           let NewPwd = md5(newPwd);
 
            let PwdCommit = Method.getPostData('/UserMgr/PersonalMgr/UpdatePwd',{
 
-               UserType:UserType,OldPwd:OldPwd,NewPwd:NewPwd
+               UserID:UserID,UserType:UserType,OldPwd:OldPwd,NewPwd:NewPwd
 
            },2);
 
@@ -321,7 +323,7 @@ const getQuestions = () =>{
 
         let { UserID } = getState().LoginUser;
 
-        let getQuestionsPromise = Method.getGetData(`/UserMgr/PersonalMgr/GetSystemSecQA?UserID=${UserID}`);
+        let getQuestionsPromise = Method.getGetData(`/UserMgr/PersonalMgr/GetSystemSecQA?UserID=${UserID}`,2);
 
         getQuestionsPromise.then(json => {
 
@@ -376,7 +378,7 @@ const commitQuestion = () => {
 
       let { qaValue,qaSelectd,initData } = getState().SafeSetting;
 
-      const { selfQa,answer,pwd } = qaValue;
+      let { selfQa,answer,pwd } = qaValue;
 
       let selfOk,answerOk,pwdOk = false;
       //判断是否选中自定义密保问题
@@ -474,6 +476,8 @@ const commitQuestion = () => {
           if (selfOk&&pwdOk&&answerOk){
 
               let { UserID } = getState().LoginUser;
+
+              pwd = md5(pwd);
 
               let commitQaPromise = Method.getPostData('/UserMgr/PersonalMgr/AddSecQA',{
 
@@ -593,6 +597,8 @@ const commitQuestion = () => {
 
               let { UserID } = getState().LoginUser;
 
+              pwd = md5(pwd);
+
               let commitQaPromise = Method.getPostData('/UserMgr/PersonalMgr/AddSecQA',{
 
                   UserID:UserID, Question:qaSelectd.title,Answer:answer,Pwd:pwd
@@ -682,6 +688,8 @@ const commitDelQuestion = () => {
               let { UserID } = getState().LoginUser;
 
               let { question,pwd } = delQuestionsModal;
+
+              pwd = md5(pwd);
 
               let delPromise = Method.getPostData('/UserMgr/PersonalMgr/DeleteSecQA',{
 
@@ -870,6 +878,7 @@ const commitEditQuestion = () => {
 
                 let { UserID } = getState().LoginUser;
 
+                pwd = md5(pwd);
 
                 let commitQaPromise = Method.getPostData('/UserMgr/PersonalMgr/EditSecQA',{
 
@@ -988,6 +997,8 @@ const commitEditQuestion = () => {
             if (answerOk&&pwdOk){
 
                 let { UserID } = getState().LoginUser;
+
+                pwd = md5(pwd);
 
                 let commitQaPromise = Method.getPostData('/UserMgr/PersonalMgr/AddSecQA',{
 
@@ -1126,6 +1137,8 @@ const emailCommit = () => {
 
       //同时都正确的时候
       if (pwdOk&&newEmailOk){
+
+          pwd = md5(pwd);
 
           let commitEmail = Method.getPostData('/UserMgr/PersonalMgr/SetSecEmail',{
 
