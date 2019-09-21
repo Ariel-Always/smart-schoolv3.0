@@ -11,6 +11,8 @@ const ADJUST_BY_TEACHER_HIDE = 'ADJUST_BY_TEACHER_HIDE';
 
 const ADJUST_BY_TEACHER_TEACHER_LIST_UPDATE = 'ADJUST_BY_TEACHER_TEACHER_LIST_UPDATE';
 
+const ADJUST_BY_TEACHER_TAB_CHANGE = 'ADJUST_BY_TEACHER_TAB_CHANGE';
+
 
 //找人代课
 const REPLACE_SHCEDULE_LOADING_SHOW = 'REPLACE_SHCEDULE_LOADING_SHOW';
@@ -139,7 +141,21 @@ const CHANGE_TIME_ORIGIN_CHANGE = 'CHANGE_TIME_ORIGIN_CHANGE';
 const CHANGE_TIME_NEW_CHANGE = 'CHANGE_TIME_NEW_CHANGE';
 
 
+//调整教室
 
+const CHANGE_CLASS_ROOM_TEACHER_CHANGE = 'CHANGE_CLASS_ROOM_TEACHER_CHANGE';
+
+const CHANGE_CLASS_ROOM_WEEK_TIME_CHANGE = 'CHANGE_TIME_WEEK_TIME_CHANGE';
+
+const CHANGE_CLASS_ROOM_CLASS_HOUR_CHANGE = 'CHANGE_TIME_CLASS_HOUR_CHANGE';
+
+const CHANGE_CLASS_ROOM_DATE_CHANGE = 'CHANGE_CLASS_ROOM_DATE_CHANGE';
+
+const CHANGE_CLASS_ROOM_TEACHER_CLASSROOM_LIST_CHANGE = 'CHANGE_CLASS_ROOM_TEACHER_CLASSROOM_LIST_CHANGE';
+
+const CHANGE_CLASS_ROOM_TEACHER_CLASSROOM_CHANGE = 'CHANGE_CLASS_ROOM_TEACHER_CLASSROOM_CHANGE';
+
+const CHANGE_CLASS_ROOM_CLASSROOM_CHANGE = 'CHANGE_CLASS_ROOM_CLASSROOM_CHANGE';
 
 
 //找人代课初始化
@@ -2086,6 +2102,8 @@ const changeTimeOriginDate = (date) => {
 
             dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:"classHourDisabled"}});
 
+            dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:"classHourPick",value:{title:"请选择节次",value:"none"}}});
+
             dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:"weekChange",value:""}});
 
         }
@@ -2100,9 +2118,7 @@ const changTimeOldClassHourPick = (info) =>{
 
     return (dispatch,getState) => {
 
-        let { newClassRoomDrop } = getState().Manager.AdjustByTeacherModal.changeTime;
-
-        const { oldClassRoomList,oldClassHourDrop,oldWeek } = getState().Manager.AdjustByTeacherModal.changeTime;
+        const { newClassRoomDrop,newClassHourDrop,oldClassRoomList,oldClassHourDrop,oldWeek } = getState().Manager.AdjustByTeacherModal.changeTime;
 
         const { value,title } = info;
 
@@ -2113,7 +2129,7 @@ const changTimeOldClassHourPick = (info) =>{
 
         dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:"classHourPick",value:info}});
 
-        if (newClassRoomDrop.value === 'none'){
+        if (newClassHourDrop.value==='none'){
 
             dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"classRoomDrop",value:classRoomObject}});
 
@@ -2308,6 +2324,12 @@ const changeTimeNewTimeChange = (date) => {
 
             dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"classHourDisabled"}});
 
+            dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"classHourDrop",value:{value:"none",title:"请选择节次"}}});
+
+            dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"classRoomDisabled"}});
+
+            dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"classRoomDrop",value:{value:"none",title:"请选择教室"}}});
+
             dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"weekChange",value:""}});
 
         }
@@ -2321,7 +2343,7 @@ const changeTimeNewClassHourPick = (info) => {
 
   return (dispatch,getState) => {
 
-      let { newWeek,newClassRoomDrop,newDate,newClassHourDrop } = getState().Manager.AdjustByTeacherModal.changeTime;
+      let { newWeek } = getState().Manager.AdjustByTeacherModal.changeTime;
 
       dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"classHourDrop",value:info}});
 
@@ -2350,44 +2372,30 @@ const changeTimeNewClassHourPick = (info) => {
               dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"classRoomListChange",value:classRoomList}});
 
 
-
-              isOccoputy(newClassRoomDrop.value,newDate,newClassHourDrop.value,dispatch).then(data=>console.log(data));
-
-
+              let { newClassRoomDrop,newDate,newClassHourDrop } = getState().Manager.AdjustByTeacherModal.changeTime;
 
               if (newClassRoomDrop.value !== 'none'){
 
-                  //let getClassRoomOccupy =  Method.getGetData(`/scheduleIsClassRoomOccupy?ClassRoomID=${ClassRoomID}&ClassDate=${ClassDate}&ClassHourNO=${ClassHourNO}`);
 
-                  /*getClassRoomOccupy.then(json=>{
+                  isOccoputy(newClassRoomDrop.value,newDate,newClassHourDrop.value,dispatch).then(data=>{
 
-                                        if (json.Status === 200){
+                        //是否被占用的接口
 
+                      if (data){
 
+                          if (data.Useded === 1){
 
-                                        }else{
+                              dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"errorTipsShow"}});
 
-                                            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+                          }else{
 
-                                                    type:"btn-warn",
+                              dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"errorTipsHide"}});
 
-                                                    title:json.Msg,
+                          }
 
-                                                    ok:hideAlert(dispatch),
+                      }
 
-                                                    close:hideAlert(dispatch),
-
-                                                    cancel:hideAlert(dispatch)
-
-                                                }});
-
-                                        }
-
-                                    })*/
-
-
-
-
+                  });
 
 
               }
@@ -2418,6 +2426,462 @@ const changeTimeNewClassHourPick = (info) => {
 
 };
 
+//新的教室更改
+
+const changeTimeNewClassRoomPick = (info) => {
+
+    return (dispatch,getState) =>{
+
+        dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"errorTipsHide"}});
+
+        dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"classRoomDrop",value:info}});
+
+    }
+
+};
+
+//教师选取
+const changeClassRoomTeacherPick = (info) => {
+
+    return ( dispatch,getState ) => {
+
+        let { date,WeekNo,WeekDay } = getState().Manager.AdjustByTeacherModal.ChangeClassRoom;
+
+        dispatch({type:CHANGE_CLASS_ROOM_TEACHER_CHANGE,data:{type:'drop',value:{value:info.id,title:info.value}}});
+
+        dispatch({type:CHANGE_CLASS_ROOM_TEACHER_CLASSROOM_CHANGE,data:{id:"none",name:"请选择节次来获取上课教室"}});
+
+        dispatch({type:CHANGE_CLASS_ROOM_WEEK_TIME_CHANGE,data:{WeekNo,WeekDay,ClassHour:''}});
+
+        dispatch({type:CHANGE_CLASS_ROOM_CLASSROOM_CHANGE,data:{type:"classRoomDrop",value:{value:"none",title:"请选择教室"}}});
+
+        dispatch({type:CHANGE_CLASS_ROOM_CLASSROOM_CHANGE,data:{type:"classRoomDisabled"}});
+
+        if (date !== ''){
+
+            let TeacherID = info.id;
+
+            let ClassDate = date;
+
+
+            getTeacherDaySchedule(TeacherID,ClassDate,dispatch).then(data => {
+
+                if (data){
+
+                    let list = data.map(item => {
+
+                        let noon = '';
+
+                        switch (item.ClassHourType) {
+
+                            case 1:
+
+                                noon = '上午';
+
+                                break;
+
+                            case 2:
+
+                                noon = '下午';
+
+                                break;
+
+                            case 3:
+
+                                noon = '晚上';
+
+                                break;
+
+                            default:
+
+                                noon = '上午';
+
+                        }
+
+                        let title = <span>第{item.ClassHourNO}节<span className="noon">({noon})</span></span>
+
+                        return {
+
+                            value:item.ScheduleID,
+
+                            title:title,
+
+                            NO:item.ClassHourNO
+
+                        }
+
+
+                    });
+
+                    let classRoomList = data.map(item => {
+
+                        return {
+
+                            ScheduleID:item.ScheduleID,
+
+                            ClassRoomID:item.ClassRoomID,
+
+                            ClassRoomName:item.ClassRoomName
+
+                        }
+
+
+                    });
+
+                    dispatch({type:CHANGE_CLASS_ROOM_TEACHER_CLASSROOM_LIST_CHANGE,data:classRoomList});
+
+
+                    dispatch({type:CHANGE_CLASS_ROOM_CLASS_HOUR_CHANGE,data:{type:'classHourAbled'}});
+
+                    dispatch({type:CHANGE_CLASS_ROOM_CLASS_HOUR_CHANGE,data:{type:'classHourListChange',value:list}});
+
+                    dispatch({type:CHANGE_CLASS_ROOM_CLASS_HOUR_CHANGE,data:{type:'classHourDrop',value:{value:"none",title:"请选择节次"}}});
+
+                }
+
+            });
+
+
+        }else{
+
+            dispatch({type:CHANGE_CLASS_ROOM_CLASS_HOUR_CHANGE,data:{type:'classHourDisabled'}});
+
+            dispatch({type:CHANGE_CLASS_ROOM_CLASS_HOUR_CHANGE,data:{type:'classHourDrop',value:{value:"none",title:"请选择节次"}}});
+
+        }
+
+    }
+
+};
+
+//日期选取
+
+const changeClassRoomDatePick = (date) => {
+
+    return (dispatch,getState) => {
+
+        dispatch({type:CHANGE_CLASS_ROOM_DATE_CHANGE,data:date});
+
+        if (date !== ''){
+
+            let { SchoolID } = getState().LoginUser;
+
+            let { teacherDrop } = getState().Manager.AdjustByTeacherModal.ChangeClassRoom;
+
+            getWeekDayTime(SchoolID,date,dispatch).then(data=>{
+
+                if (data){
+
+                    let WeekNO = data.WeekNO;
+
+                    let weekDay = data.WeekDay;
+
+                    let WeekDay = '';
+
+                    switch (weekDay) {
+
+                        case 0:
+
+                            WeekDay = '星期一';
+
+                            break;
+
+                        case 1:
+
+                            WeekDay = '星期二';
+
+                            break;
+
+                        case 2:
+
+                            WeekDay = '星期三';
+
+                            break;
+
+                        case 3:
+
+                            WeekDay = '星期四';
+
+                            break;
+
+                        case 4:
+
+                            WeekDay = '星期五';
+
+                            break;
+
+                        case 5:
+
+                            WeekDay = '星期六';
+
+                            break;
+
+                        case 6:
+
+                            WeekDay = '星期日';
+
+                            break;
+
+                        default:
+
+                            WeekDay = '星期一';
+
+                    }
+
+                    dispatch({type:CHANGE_CLASS_ROOM_WEEK_TIME_CHANGE,data:{WeekNO,WeekDay}});
+
+
+                }
+
+            });
+
+            if (teacherDrop.value !== 'none'){
+
+                let TeacherID = teacherDrop.value;
+
+                let ClassDate = date;
+
+                getTeacherDaySchedule(TeacherID,ClassDate,dispatch).then(data => {
+
+                  if (data){
+
+                      let list = data.map(item => {
+
+                          let noon = '';
+
+                          switch (item.ClassHourType) {
+
+                              case 1:
+
+                                  noon = '上午';
+
+                                  break;
+
+                              case 2:
+
+                                  noon = '下午';
+
+                                  break;
+
+                              case 3:
+
+                                  noon = '晚上';
+
+                                  break;
+
+                              default:
+
+                                  noon = '上午';
+
+                          }
+
+                          let title = <span>第{item.ClassHourNO}节<span className="noon">({noon})</span></span>
+
+                          return {
+
+                              value:item.ScheduleID,
+
+                              title:title,
+
+                              NO:item.ClassHourNO
+
+                          }
+
+
+                      });
+
+                      let classRoomList = data.map(item => {
+
+                          return {
+
+                              ScheduleID:item.ScheduleID,
+
+                              ClassRoomID:item.ClassRoomID,
+
+                              ClassRoomName:item.ClassRoomName
+
+                          }
+
+
+                      });
+
+                      dispatch({type:CHANGE_CLASS_ROOM_TEACHER_CLASSROOM_LIST_CHANGE,data:classRoomList});
+
+                      dispatch({type:CHANGE_CLASS_ROOM_CLASS_HOUR_CHANGE,data:{type:"classHourAbled"}});
+
+                      dispatch({type:CHANGE_CLASS_ROOM_CLASS_HOUR_CHANGE,data:{type:"classHourListChange",value:list}})
+
+                      dispatch({type:CHANGE_CLASS_ROOM_CLASS_HOUR_CHANGE,data:{type:'classHourDrop',value:{value:"none",title:"请选择节次"}}});
+
+
+                  }
+
+
+                });
+
+            }
+
+        }else{
+
+            dispatch({type:CHANGE_CLASS_ROOM_WEEK_TIME_CHANGE,data:{WeekNO:'',WeekDay:'',ClassHour:''}});
+
+            dispatch({type:CHANGE_CLASS_ROOM_CLASS_HOUR_CHANGE,data:{type:"classHourDisabled"}});
+
+            dispatch({type:CHANGE_CLASS_ROOM_CLASS_HOUR_CHANGE,data:{type:"classHourDrop",value:{value:"none",title:"请选择节次"}}});
+
+            dispatch({type:CHANGE_CLASS_ROOM_TEACHER_CLASSROOM_CHANGE,data:{id:"none",name:"请选择节次来获取上课教室"}});
+
+            dispatch({type:CHANGE_CLASS_ROOM_CLASSROOM_CHANGE,data:{type:"classRoomDisabled"}});
+
+            dispatch({type:CHANGE_CLASS_ROOM_CLASSROOM_CHANGE,data:{type:"classRoomDrop",value:{value:"none",title:"请选择教室"}}});
+
+        }
+
+    }
+
+};
+
+
+
+//课时选取
+const changeClassRoomClassHourPick = (info) => {
+
+    return (dispatch,getState) => {
+
+        const { date,classHourList,WeekNO,WeekDay,teacherClassRoomList } = getState().Manager.AdjustByTeacherModal.ChangeClassRoom;
+
+        const { value,title } = info;
+
+        dispatch({type:CHANGE_CLASS_ROOM_CLASS_HOUR_CHANGE,data:{type:"classHourDrop",value:info}});
+
+        let classRoom = teacherClassRoomList.find(item=>item.ScheduleID===value);
+
+        let classRoomObject = { id:classRoom.ClassRoomID,name:classRoom.ClassRoomName };
+
+        dispatch({type:CHANGE_CLASS_ROOM_TEACHER_CLASSROOM_CHANGE,data:classRoomObject});
+
+        dispatch({type:CHANGE_CLASS_ROOM_WEEK_TIME_CHANGE,data:{ClassHour:info.title}});
+
+        dispatch({type:CHANGE_CLASS_ROOM_CLASSROOM_CHANGE,data:{type:"classRoomAbled"}});
+
+        dispatch({type:CHANGE_CLASS_ROOM_CLASSROOM_CHANGE,data:{type:"classRoomDrop",value:{value:"none",title:"请选择教室"}}});
+
+        let no = classHourList.find(item=>{return item.value===value}).NO;
+
+        getEmptyClassRoomByDate(date,no,dispatch).then(data=>{
+
+           if (data){
+
+               let classRoomList = data.map(item=>{
+
+                    return {
+
+                        value:item.ClassRoomID,
+
+                        title:item.ClassRoomName
+
+                    }
+
+               });
+
+               dispatch({type:CHANGE_CLASS_ROOM_CLASSROOM_CHANGE,data:{type:"classRoomListChange",value:classRoomList}});
+
+           }
+
+        });
+
+    }
+
+};
+
+
+//搜索教师
+const changeClassRoomTeacherSearch = (key) => {
+
+    return (dispatch,getState) => {
+
+        if (key !== ''){
+
+            let SchoolID = getState().LoginUser;
+
+            dispatch({type:CHANGE_CLASS_ROOM_TEACHER_CHANGE,data:{type:"search"}});
+
+            dispatch({type:CHANGE_CLASS_ROOM_TEACHER_CHANGE,data:{type:"searchLoadingShow"}});
+
+            getTeacherBySearch(SchoolID,key,dispatch).then(data=>{
+
+               if (data){
+
+                   let teacherSearchList = data.map(item => {
+
+                       return{
+
+                           id:item.Teacher,
+
+                           name:item.TeacherName
+
+                       };
+
+                   });
+
+                   dispatch({type:CHANGE_CLASS_ROOM_TEACHER_CHANGE,data:{type:'searchListChange',value:teacherSearchList}});
+
+                   dispatch({type:CHANGE_CLASS_ROOM_TEACHER_CHANGE,data:{type:"searchLoadingHide"}});
+
+               }
+
+            });
+
+        }else{
+
+            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                    type:"btn-warn",
+
+                    title:"搜索的内容不能为空！",
+
+                    ok:hideAlert(dispatch),
+
+                    close:hideAlert(dispatch),
+
+                    cancel:hideAlert(dispatch)
+
+                }});
+
+        }
+
+    };
+
+};
+
+//取消搜索教师
+
+const changeClassRoomTeacherSearchClose = () => {
+
+    return dispatch => {
+
+        dispatch({type:CHANGE_CLASS_ROOM_TEACHER_CHANGE,data:{type:"searchClose"}});
+
+    }
+
+};
+
+const changeClassRoomClassRoomPick = (info) => {
+
+    return dispatch => {
+
+        dispatch({type:CHANGE_CLASS_ROOM_CLASSROOM_CHANGE,data:{type:"classRoomDrop",value:info}});
+
+    }
+
+};
+
+
+
+
+
+
+
 
 
 
@@ -2446,11 +2910,13 @@ Array.prototype.remove = function(val) {
     }
 };
 
-//
+
+
+//判断教室是否被占用
 
 const isOccoputy = async (ClassRoomID,ClassDate,ClassHourNO,dispatch) =>{
 
-  let res = await Method.getGetData(`/scheduleIsClassRoomOccupy?ClassRoomID${ClassRoomID}&ClassDate=${ClassDate}&ClassHourNO=${ClassHourNO}`);
+  let res = await Method.getGetData(`/scheduleIsClassRoomOccupy?ClassRoomID=${ClassRoomID}&ClassDate=${ClassDate}&ClassHourNO=${ClassHourNO}`);
 
   if(res.Status === 200){
 
@@ -2479,9 +2945,140 @@ const isOccoputy = async (ClassRoomID,ClassDate,ClassHourNO,dispatch) =>{
 };
 
 
+//根据教师和日期获取当天课程
+const getTeacherDaySchedule = async (TeacherID,ClassDate,dispatch) =>{
+
+    let res = await Method.getGetData(`/scheduleChangeTeacherSchedule?TeacherID=${TeacherID}&ClassDate=${ClassDate}`);
+
+    if(res.StatusCode === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                type:"btn-warn",
+
+                title:res.Msg,
+
+                ok:hideAlert(dispatch),
+
+                close:hideAlert(dispatch),
+
+                cancel:hideAlert(dispatch)
+
+            }});
+
+    }
+
+};
+
+
+
+//根据日期和节次获取空教室
+
+const getEmptyClassRoomByDate = async (ClassDate,ClassHourNO,dispatch) => {
+
+    let res = await Method.getGetData(`/scheduleEmptyClassRoom?ClassDate=${ClassDate}&ClassHourNO=${ClassHourNO}`);
+
+    if(res.Status === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                type:"btn-warn",
+
+                title:res.Msg,
+
+                ok:hideAlert(dispatch),
+
+                close:hideAlert(dispatch),
+
+                cancel:hideAlert(dispatch)
+
+            }});
+
+    }
+
+};
+
+
+
+
+//获取搜索后的教师列表
+
+const getTeacherBySearch = async (SchoolID,key,dispatch) => {
+
+    let res = await Method.getGetData(`/scheduleSubjectTeacherTeacher?SchoolID=${SchoolID}&key=${key}`);
+
+    if(res.Status === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                type:"btn-warn",
+
+                title:res.Msg,
+
+                ok:hideAlert(dispatch),
+
+                close:hideAlert(dispatch),
+
+                cancel:hideAlert(dispatch)
+
+            }});
+
+    }
+
+};
+
+
+
+//根据日期获取当天的周次和星期
+
+const getWeekDayTime = async (SchoolID,ClassDate,dispatch) =>{
+
+    let res = await Method.getGetData(`/scheduleDateUpdate?SchoolID=${SchoolID}&ClassDate=${ClassDate}`);
+
+    if(res.Status === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                type:"btn-warn",
+
+                title:res.Msg,
+
+                ok:hideAlert(dispatch),
+
+                close:hideAlert(dispatch),
+
+                cancel:hideAlert(dispatch)
+
+            }});
+
+    }
+
+};
+
+
+
+
 
 
 export default {
+
+    ADJUST_BY_TEACHER_TAB_CHANGE,
 
     ADJUST_BY_TEACHER_SHOW,
 
@@ -2607,6 +3204,21 @@ export default {
 
     CHANGE_TIME_NEW_CHANGE,
 
+    //调整教室
+
+    CHANGE_CLASS_ROOM_TEACHER_CHANGE,
+
+    CHANGE_CLASS_ROOM_WEEK_TIME_CHANGE,
+
+    CHANGE_CLASS_ROOM_CLASS_HOUR_CHANGE,
+
+    CHANGE_CLASS_ROOM_DATE_CHANGE,
+
+    CHANGE_CLASS_ROOM_TEACHER_CLASSROOM_LIST_CHANGE,
+
+    CHANGE_CLASS_ROOM_TEACHER_CLASSROOM_CHANGE,
+
+    CHANGE_CLASS_ROOM_CLASSROOM_CHANGE,
 
     replaceScheduleInit,
 
@@ -2672,6 +3284,22 @@ export default {
 
     changeTimeNewTimeChange,
 
-    changeTimeNewClassHourPick
+    changeTimeNewClassHourPick,
+
+    changeTimeNewClassRoomPick,
+
+    //换教室
+
+    changeClassRoomTeacherPick,
+
+    changeClassRoomDatePick,
+
+    changeClassRoomClassHourPick,
+
+    changeClassRoomTeacherSearch,
+
+    changeClassRoomTeacherSearchClose,
+
+    changeClassRoomClassRoomPick
 
 };

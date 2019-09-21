@@ -90,6 +90,17 @@ class ChangeTime extends Component{
 
     }
 
+    //新的教室变化
+
+    newClassRoomChange(info){
+
+        const { dispatch } = this.props;
+
+        dispatch(ABTActions.changeTimeNewClassRoomPick(info));
+
+
+    }
+
 
 
 
@@ -140,7 +151,9 @@ class ChangeTime extends Component{
 
             newClassRoomList,
 
-            newClassRoomDisabled
+            newClassRoomDisabled,
+
+            errorTips
 
         } = changeTime;
 
@@ -237,9 +250,12 @@ class ChangeTime extends Component{
                                       style={{zIndex:2}}
                                       dropSelectd={newClassRoomDrop}
                                       dropList={newClassRoomList}
-                                      disabled={newClassRoomDisabled}>
+                                      disabled={newClassRoomDisabled}
+                                      onChange={ this.newClassRoomChange.bind(this) }  >
 
                             </DropDown>
+                            
+                            <div className="error-tips" style={{display:`${errorTips?'block':'none'}`}}>该教室已被占用</div>
 
                         </div>
 

@@ -6,6 +6,8 @@ const AdjustByTeacherModal = (state={
 
     show:false,
 
+    activeKey:"1",
+
     teacherList:[],
 
     replaceSchedule:{
@@ -164,7 +166,59 @@ const AdjustByTeacherModal = (state={
 
         newClassRoomList:[],
 
-        newClassRoomDisabled:true
+        newClassRoomDisabled:true,
+
+        errorTips:false
+
+    },
+
+    ChangeClassRoom:{
+
+        loadingShow:true,
+
+        teacherDrop:{value:"none",title:"请选择教师"},
+
+        teacherSearchList:[],
+
+        teacherSearchOpen:false,
+
+        teacherSearchLoadingShow:true,
+
+        teacherClassRoomList:[],
+
+        date:"",
+
+        classHourDrop:{value:"none",title:"请选择节次"},
+
+        classHourList:[],
+
+        classHourDisabled:true,
+
+        WeekNO:"",
+
+        WeekDay:"",
+
+        ClassHour:"",
+
+        teacherClassRoom:{id:"none",name:"请选择节次来获取上课教室"},
+
+        classRoomDrop:{value:"none",title:"请选择教室"},
+
+        classRoomList:[],
+
+        classRoomDisabled:true
+
+    },
+
+    StopSchedule: {
+
+        date:"",
+
+        classHours:[],
+
+        classHoursCheckedList:[],
+
+
 
     }
 
@@ -179,6 +233,8 @@ const AdjustByTeacherModal = (state={
                 ...state,
 
                 show:true,
+
+                activeKey:"1",
 
                 teacherList:[],
 
@@ -296,6 +352,90 @@ const AdjustByTeacherModal = (state={
 
                     targetScheduleDropSelectd:""
 
+                },
+
+                changeTime:{
+
+                    oldClassRoomList:[],
+
+                    teacherDrop:{value:"none",title:"请选择教师"},
+
+                    searchList:[],
+
+                    searchOpen:false,
+
+                    searchLoadingShow:true,
+
+                    originDate:'',
+
+                    oldClassHourDrop:{value:"none",title:"请选择节次"},
+
+                    oldClassHourList:[],
+
+                    oldClassHourDisabled:true,
+
+                    oldWeek:'',
+
+                    oldWeekLoading:true,
+
+                    newDate:'',
+
+                    newClassHourDrop:{value:"none",title:"请选择节次"},
+
+                    newClassHourList:[],
+
+                    newClassHourDisabled:true,
+
+                    newWeek:'',
+
+                    newWeekLoading:true,
+
+                    newClassRoomDrop:{value:"none",title:"请选择教室"},
+
+                    newClassRoomList:[],
+
+                    newClassRoomDisabled:true,
+
+                    errorTips:false
+
+                },
+
+                ChangeClassRoom:{
+
+                    loadingShow:true,
+
+                    teacherDrop:{value:"none",title:"请选择教师"},
+
+                    teacherSearchList:[],
+
+                    teacherSearchOpen:false,
+
+                    teacherSearchLoadingShow:true,
+
+                    teacherClassRoomList:[],
+
+                    date:"",
+
+                    classHourDrop:{value:"none",title:"请选择节次"},
+
+                    classHourList:[],
+
+                    classHourDisabled:true,
+
+                    WeekNO:"",
+
+                    WeekDay:"",
+
+                    ClassHour:"",
+
+                    teacherClassRoom:{id:"none",name:"请选择节次来获取上课教室"},
+
+                    classRoomDrop:{value:"none",title:"请选择教室"},
+
+                    classRoomList:[],
+
+                    classRoomDisabled:true
+
                 }
 
             };
@@ -309,6 +449,10 @@ const AdjustByTeacherModal = (state={
                 show:false,
 
             };
+
+        case ABTActions.ADJUST_BY_TEACHER_TAB_CHANGE:
+
+            return{...state,activeKey:actions.data};
 
         case ABTActions.ADJUST_BY_TEACHER_TEACHER_LIST_UPDATE:
 
@@ -1531,22 +1675,6 @@ const AdjustByTeacherModal = (state={
 
             switch (actions.data.type) {
 
-                case 'classRoomDrop':
-
-                    return {
-
-                        ...state,
-
-                      changeTime:{
-
-                          ...state.changeTime,
-
-                          newClassRoomDrop:actions.data.value
-
-                      }
-
-                    };
-
                 case 'date':
 
                     return {
@@ -1659,6 +1787,22 @@ const AdjustByTeacherModal = (state={
 
                     };
 
+                case 'classRoomDisabled':
+
+                    return {
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            newClassRoomDisabled:true
+
+                        }
+
+                    };
+
                 case 'classRoomListChange':
 
                     return {
@@ -1675,6 +1819,54 @@ const AdjustByTeacherModal = (state={
 
                     };
 
+                case 'classRoomDrop':
+
+                    return {
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            newClassRoomDrop:actions.data.value
+
+                        }
+
+                    };
+
+                case 'errorTipsShow':
+
+                    return {
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            errorTips:true
+
+                        }
+
+                    };
+
+                case 'errorTipsHide':
+
+                    return {
+
+                        ...state,
+
+                        changeTime:{
+
+                            ...state.changeTime,
+
+                            errorTips:false
+
+                        }
+
+                    };
+
                 default:
 
                     return state;
@@ -1683,6 +1875,110 @@ const AdjustByTeacherModal = (state={
 
 
 
+         //调整教室
+
+        case ABTActions.CHANGE_CLASS_ROOM_TEACHER_CHANGE:
+
+            switch (actions.data.type) {
+
+                case "drop":
+
+                    return {...state,ChangeClassRoom:{...state.ChangeClassRoom,teacherDrop:actions.data.value}};
+
+                case "search":
+
+                    return {...state,ChangeClassRoom:{...state.ChangeClassRoom,teacherSearchOpen:true}};
+
+                case "searchClose":
+
+                    return {...state,ChangeClassRoom:{...state.ChangeClassRoom,teacherSearchOpen:false}};
+
+                case "searchLoadingShow":
+
+                    return {...state,ChangeClassRoom:{...state.ChangeClassRoom,teacherSearchLoadingShow:true}};
+
+                case "searchListChange":
+
+                    return {...state,ChangeClassRoom:{...state.ChangeClassRoom,teacherSearchList:actions.data.value}};
+
+                case "searchLoadingHide":
+
+                    return {...state,ChangeClassRoom:{...state.ChangeClassRoom,teacherSearchLoadingShow:false}};
+
+
+                default:
+
+                    return state;
+
+            }
+
+        case ABTActions.CHANGE_CLASS_ROOM_WEEK_TIME_CHANGE:
+
+            return { ...state,ChangeClassRoom:{...state.ChangeClassRoom,...actions.data} };
+
+        case ABTActions.CHANGE_CLASS_ROOM_CLASS_HOUR_CHANGE:
+
+            switch (actions.data.type) {
+
+                case "classHourDrop":
+
+                    return {...state,ChangeClassRoom:{...state.ChangeClassRoom,classHourDrop:actions.data.value}};
+
+                case "classHourAbled":
+
+                    return {...state,ChangeClassRoom:{...state.ChangeClassRoom,classHourDisabled:false}};
+
+                case "classHourListChange":
+
+                    return {...state,ChangeClassRoom:{...state.ChangeClassRoom,classHourList:actions.data.value}};
+
+                case "classHourDisabled":
+
+                    return {...state,ChangeClassRoom:{...state.ChangeClassRoom,classHourDisabled:true}};
+
+                default:
+
+                    return state;
+
+            }
+
+        case ABTActions.CHANGE_CLASS_ROOM_DATE_CHANGE:
+
+            return { ...state,ChangeClassRoom:{ ...state.ChangeClassRoom,date:actions.data }};
+
+        case ABTActions.CHANGE_CLASS_ROOM_TEACHER_CLASSROOM_LIST_CHANGE:
+
+            return { ...state,ChangeClassRoom:{ ...state.ChangeClassRoom,teacherClassRoomList:actions.data }};
+
+        case ABTActions.CHANGE_CLASS_ROOM_TEACHER_CLASSROOM_CHANGE:
+
+            return {...state,ChangeClassRoom:{...state.ChangeClassRoom,teacherClassRoom:actions.data}};
+
+        case ABTActions.CHANGE_CLASS_ROOM_CLASSROOM_CHANGE:
+
+            switch (actions.data.type) {
+
+                case "classRoomAbled":
+
+                    return{ ...state,ChangeClassRoom:{...state.ChangeClassRoom,classRoomDisabled:false} };
+
+                case "classRoomDisabled":
+
+                    return{ ...state,ChangeClassRoom:{...state.ChangeClassRoom,classRoomDisabled:true} };
+
+                case "classRoomDrop":
+
+                    return{ ...state,ChangeClassRoom:{...state.ChangeClassRoom,classRoomDrop:actions.data.value} };
+
+                case "classRoomListChange":
+
+                    return{ ...state,ChangeClassRoom:{...state.ChangeClassRoom,classRoomList:actions.data.value} };
+
+                default:
+
+                    return state;
+
+            }
 
 
         default:
