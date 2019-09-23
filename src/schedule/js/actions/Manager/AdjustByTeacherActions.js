@@ -13,11 +13,37 @@ const ADJUST_BY_TEACHER_TEACHER_LIST_UPDATE = 'ADJUST_BY_TEACHER_TEACHER_LIST_UP
 
 const ADJUST_BY_TEACHER_TAB_CHANGE = 'ADJUST_BY_TEACHER_TAB_CHANGE';
 
+const ADJUST_BY_TEACHER_LOADING_SHOW = 'ADJUST_BY_TEACHER_LOADING_SHOW';
+
+const ADJUST_BY_TEACHER_LOADING_HIDE = 'ADJUST_BY_TEACHER_LOADING_HIDE';
+
+
+
+
+
+const REPLACE_SHCEDULE_ERROR_TIPS_SHOW = 'REPLACE_SHCEDULE_ERROR_TIPS_SHOW';
+
+const REPLACE_SHCEDULE_ERROR_TIPS_HIDE = 'REPLACE_SHCEDULE_ERROR_TIPS_HIDE';
+
+const CHANGE_SHCEDULE_ERROR_TIPS_SHOW = 'CHANGE_SHCEDULE_ERROR_TIPS_SHOW';
+
+const CHANGE_SHCEDULE_ERROR_TIPS_HIDE = 'CHANGE_SHCEDULE_ERROR_TIPS_HIDE';
+
+const CHANGE_TIME_ERROR_TIPS_SHOW = 'CHANGE_TIME_ERROR_TIPS_SHOW';
+
+const CHANGE_TIME_ERROR_TIPS_HIDE = 'CHANGE_TIME_ERROR_TIPS_HIDE';
+
+const CHANGE_CLASS_ROOM_ERROR_TIPS_SHOW = 'CHANGE_CLASS_ROOM_ERROR_TIPS_SHOW';
+
+const CHANGE_CLASS_ROOM_ERROR_TIPS_HIDE = 'CHANGE_CLASS_ROOM_ERROR_TIPS_HIDE';
+
+const STOP_SCHEDULE_ERROR_TIPS_SHOW = 'STOP_SCHEDULE_ERROR_TIPS_SHOW';
+
+const STOP_SCHEDULE_ERROR_TIPS_HIDE = 'STOP_SCHEDULE_ERROR_TIPS_HIDE';
+
 
 //找人代课
-const REPLACE_SHCEDULE_LOADING_SHOW = 'REPLACE_SHCEDULE_LOADING_SHOW';
 
-const REPLACE_SHCEDULE_LOADING_HIDE = 'REPLACE_SHCEDULE_LOADING_HIDE';
 
 const REPLACE_SHCEDULE_TEACHER_SSUBJECT_DROP_SHOW = 'REPLACE_SHCEDULE_TEACHER_SSUBJECT_DROP_SHOW';
 
@@ -158,12 +184,23 @@ const CHANGE_CLASS_ROOM_TEACHER_CLASSROOM_CHANGE = 'CHANGE_CLASS_ROOM_TEACHER_CL
 const CHANGE_CLASS_ROOM_CLASSROOM_CHANGE = 'CHANGE_CLASS_ROOM_CLASSROOM_CHANGE';
 
 
+//停课
+
+const STOP_SCHEDULE_TEACHER_CHANGE = 'STOP_SCHEDULE_TEACHER_CHANGE';
+
+const STOP_SCHEDULE_TEACHER_CLASSHOUR_CHANGE = 'STOP_SCHEDULE_TEACHER_CLASSHOUR_CHANGE';
+
+const STOP_SCHEDULE_DATE_PICK = 'STOP_SCHEDULE_DATE_PICK';
+
+const STOP_SCHEDULE_CLASSHOUR_LOADING_SHOW = 'STOP_SCHEDULE_CLASSHOUR_LOADING_SHOW';
+
+const STOP_SCHEDULE_CLASSHOUR_LOADING_HIDE = 'STOP_SCHEDULE_CLASSHOUR_LOADING_HIDE';
+
+
 //找人代课初始化
 const replaceScheduleInit = () => {
 
     return ( dispatch,getState ) => {
-
-        dispatch({type:REPLACE_SHCEDULE_LOADING_SHOW});
 
         let getAllGradePromise = Method.getGetData('/scheduleSubjectGrade');
 
@@ -207,7 +244,7 @@ const replaceScheduleInit = () => {
 
            dispatch({type:ADJUST_BY_TEACHER_TEACHER_LIST_UPDATE,data:teacherList});
 
-            dispatch({type:REPLACE_SHCEDULE_LOADING_HIDE});
+            dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
 
         });
 
@@ -2866,6 +2903,8 @@ const changeClassRoomTeacherSearchClose = () => {
 
 };
 
+
+//点击教室
 const changeClassRoomClassRoomPick = (info) => {
 
     return dispatch => {
@@ -2879,7 +2918,864 @@ const changeClassRoomClassRoomPick = (info) => {
 
 
 
+//教师点击
+const stopScheduleTeacherPick = (info) => {
 
+    return ( dispatch,getState ) => {
+
+          let { date } = getState().Manager.AdjustByTeacherModal.StopSchedule;
+
+          console.log(date);
+
+          dispatch({type:STOP_SCHEDULE_TEACHER_CHANGE,data:{type:'drop',value:{value:info.id,title:info.value}}});
+
+          if (date !== ''){
+
+              dispatch({type:STOP_SCHEDULE_CLASSHOUR_LOADING_SHOW});
+
+              let TeacherID = info.id;
+
+              let ClassDate = date;
+
+              getTeacherDaySchedule(TeacherID,ClassDate,dispatch).then(data=>{
+
+                 if (data){
+
+                     let classHours = [];
+
+                     let morning = {type:1,name:"上午",list:[]};
+
+                     let afternoon = {type:2,name:"下午",list:[]};
+
+                     let tonight = {type:3,name:"晚上",list:[]};
+
+                     data.map(item => {
+
+                         if (item.ClassHourType === 1){
+
+                             morning['list'].push({id:item.ScheduleID,name:item.ClassHourNO});
+
+                         }else if (item.ClassHourType === 2){
+
+                             afternoon['list'].push({id:item.ScheduleID,name:item.ClassHourNO});
+
+                         }else if (item.ClassHourType === 3){
+
+                             tonight['list'].push({id:item.ScheduleID,name:item.ClassHourNO});
+
+                         }
+
+                     });
+
+                     if (morning.list.length > 0){
+
+                         classHours.push(morning);
+
+                     }
+
+                     if (afternoon.list.length > 0){
+
+                         classHours.push(afternoon);
+
+                     }
+
+                     if (tonight.list.length > 0){
+
+                         classHours.push(tonight);
+
+                     }
+
+                     let classHoursPlainOpts = classHours.map(item => {
+
+                         let list = [];
+
+                         item.list.map(i => {
+
+                             list.push(i.no);
+
+                         });
+
+                         return {
+
+                             type:item.type,
+
+                             list
+
+                         }
+
+                     });
+
+                     let classHoursCheckedList = classHours.map(item => {
+
+                         let list = [];
+
+                         return {
+
+                             type:item.type,
+
+                             checked:false,
+
+                             list
+
+                         }
+
+                     });
+
+                     dispatch({type:STOP_SCHEDULE_TEACHER_CLASSHOUR_CHANGE,data:{classHoursPlainOpts,classHoursCheckedList,classHours}});
+
+                     dispatch({type:STOP_SCHEDULE_CLASSHOUR_LOADING_HIDE});
+
+                 }
+
+              });
+
+          }
+
+      }
+
+};
+
+//教师搜索
+const stopScheduleTeacherClickSearch = (key) => {
+
+    return (dispatch,getState) => {
+
+        if (key !== ''){
+
+            let SchoolID = getState().LoginUser;
+
+            dispatch({type:STOP_SCHEDULE_TEACHER_CHANGE,data:{type:"search"}});
+
+            dispatch({type:STOP_SCHEDULE_TEACHER_CHANGE,data:{type:"searchLoadingShow"}});
+
+            getTeacherBySearch(SchoolID,key,dispatch).then(data => {
+
+                if (data){
+
+                    let teacherSearchList = data.map(item => {
+
+                        return{
+
+                            id:item.Teacher,
+
+                            name:item.TeacherName
+
+                        };
+
+                    });
+
+                    dispatch({type:STOP_SCHEDULE_TEACHER_CHANGE,data:{type:'teacherSearchListChange',value:teacherSearchList}});
+
+                    dispatch({type:STOP_SCHEDULE_TEACHER_CHANGE,data:{type:"searchLoadingHide"}});
+
+                }
+
+            });
+
+        }else{
+
+            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                    type:"btn-warn",
+
+                    title:"搜索的内容不能为空！",
+
+                    ok:hideAlert(dispatch),
+
+                    close:hideAlert(dispatch),
+
+                    cancel:hideAlert(dispatch)
+
+                }});
+
+        }
+
+    };
+
+};
+
+//取消搜索
+
+const stopScheduleTeacherSearchClose = () => {
+
+    return dispatch => {
+
+        dispatch({type:STOP_SCHEDULE_TEACHER_CHANGE,data:{type:"searchClose"}});
+
+    }
+
+};
+
+//时间变化
+
+const stopScheduleDateChange = (date) => {
+
+
+    return (dispatch,getState) => {
+
+        dispatch({type:STOP_SCHEDULE_DATE_PICK,data:date});
+
+        if (date !== ''){
+
+            let { teacherDrop } = getState().Manager.AdjustByTeacherModal.StopSchedule;
+
+            if (teacherDrop.value!=='none'){
+
+                dispatch({type:STOP_SCHEDULE_CLASSHOUR_LOADING_SHOW});
+
+                let TeacherID = teacherDrop.value;
+
+                let ClassDate = date;
+
+                getTeacherDaySchedule(TeacherID,ClassDate,dispatch).then(data=>{
+
+                    if (data){
+
+                        let classHours = [];
+
+                        let morning = {type:1,name:"上午",list:[]};
+
+                        let afternoon = {type:2,name:"下午",list:[]};
+
+                        let tonight = {type:3,name:"晚上",list:[]};
+
+                        data.map(item => {
+
+                            if (item.ClassHourType === 1){
+
+                                morning['list'].push({id:item.ScheduleID,name:item.ClassHourNO});
+
+                            }else if (item.ClassHourType === 2){
+
+                                afternoon['list'].push({id:item.ScheduleID,name:item.ClassHourNO});
+
+                            }else if (item.ClassHourType === 3){
+
+                                tonight['list'].push({id:item.ScheduleID,name:item.ClassHourNO});
+
+                            }
+
+                        });
+
+                        if (morning.list.length > 0){
+
+                            classHours.push(morning);
+
+                        }
+
+                        if (afternoon.list.length > 0){
+
+                            classHours.push(afternoon);
+
+                        }
+
+                        if (tonight.list.length > 0){
+
+                            classHours.push(tonight);
+
+                        }
+
+                        let classHoursPlainOpts = classHours.map(item => {
+
+                            let list = [];
+
+                            item.list.map(i => {
+
+                                list.push(i.id);
+
+                            });
+
+                            return {
+
+                                type:item.type,
+
+                                list
+
+                            }
+
+                        });
+
+                        let classHoursCheckedList = classHours.map(item => {
+
+                            let list = [];
+
+                            return {
+
+                                type:item.type,
+
+                                checked:false,
+
+                                list
+
+                            }
+
+                        });
+
+                        dispatch({type:STOP_SCHEDULE_TEACHER_CLASSHOUR_CHANGE,data:{classHoursPlainOpts,classHoursCheckedList,classHours}});
+
+                        dispatch({type:STOP_SCHEDULE_CLASSHOUR_LOADING_HIDE});
+
+                    }
+
+                });
+
+
+            }
+
+        }else{
+
+
+            dispatch({type:STOP_SCHEDULE_TEACHER_CLASSHOUR_CHANGE,data:{classHours:[]}});
+
+        }
+
+    }
+
+};
+
+//课时选取
+
+const stopScheduleClassHoursChecked = (opts) => {
+
+    return (dispatch,getState) => {
+
+        const { classHoursCheckedList,classHoursPlainOpts } = getState().Manager.AdjustByTeacherModal.StopSchedule;
+
+        let checkedList = [];
+
+        if (opts.type === 'noon'){
+
+            checkedList = classHoursCheckedList.map((item) => {
+
+                if (item.type === opts.id){
+                    //判断状态如果是已选改为未选
+                    if (item.checked){
+
+                        return{
+
+                            type:item.type,
+
+                            checked:false,
+
+                            list:[]
+
+                        }
+
+                    }else{//如果是未选改为已选
+
+                        let list = [];
+
+                        console.log(123);
+
+                        classHoursPlainOpts.map(i => {
+
+                            if (i.type === item.type){
+
+                                list = i.list;
+
+                            }
+
+                        });
+
+                        return {
+
+                            type:item.type,
+
+                            checked:true,
+
+                            list
+
+                        }
+
+                    }
+
+                }else{
+
+                    return item;
+
+                }
+
+            });
+
+        }else{
+
+            checkedList = classHoursCheckedList.map(item => {
+
+                if (item.type === opts.pid){
+
+                    //如果已经选中，去除选中的状态
+                    if (item.list.includes(opts.id)){
+
+                        item.list.remove(opts.id);
+
+                        return {
+
+                            type:item.type,
+
+                            checked:false,
+
+                            list:item.list
+
+                        }
+
+                    }else{//没有选中。先选中然后判断上一层的状态
+
+                        item.list.push(opts.id);
+
+                        let plainOptions = [];
+
+                        classHoursPlainOpts.map(i => {
+
+                            if (i.type === item.type){
+
+                                plainOptions = i.list;
+
+                            }
+
+                        });
+
+                        //判断是否是需要置为全选
+                        if(item.list.length === plainOptions.length){//需要全选
+
+                            return{
+
+                                type:item.type,
+
+                                checked:true,
+
+                                list:item.list
+
+                            }
+
+                        }else{//不需要全选
+
+                            return{
+
+                                type:item.type,
+
+                                checked:false,
+
+                                list:item.list
+
+                            }
+
+                        }
+
+                    }
+
+                }else{
+
+                    return item;
+
+                }
+
+            });
+
+        }
+
+        dispatch({type:STOP_SCHEDULE_TEACHER_CLASSHOUR_CHANGE,data:{classHoursCheckedList:checkedList}});
+
+    }
+
+};
+
+
+//提交按教师修改弹窗
+
+//提交弹窗
+
+const ModalCommit = () => {
+
+  return (dispatch,getState) => {
+
+      console.log(123);
+
+      const { AdjustByTeacherModal } = getState().Manager;
+
+      const { activeKey } = AdjustByTeacherModal;
+
+      const { replaceSchedule,changeSchedule,changeTime,ChangeClassRoom,StopSchedule } = AdjustByTeacherModal;
+
+      //是否是第一个tab
+
+      if (activeKey==='1'){
+
+        let {
+
+            activeRadio,
+
+            teacherOptions,
+
+            replaceTeacherOptions,
+
+            classCheckedList,
+
+            classList,
+
+            monthsCheckedList,
+
+            weeksCheckedList,
+
+            dateCheckedList,
+
+            classHourCheckedList,
+
+            classHourDate
+
+        } = replaceSchedule;
+
+        let originTeacherOk,replaceTeacherOk,classOk,dayLineOk = false;
+
+        //判断原始教师是否已被选择
+        if (teacherOptions.dropSelectd.value==='none'){
+
+            dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_SHOW,data:{type:"originTeacher",title:"请选择教师"}});
+
+        }else{
+
+            originTeacherOk = true;
+
+            dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:"originTeacher"}});
+
+
+        }
+
+        //判断替代的教师是否已被选择
+          if (replaceTeacherOptions.dropSelectd.value==='none'){
+
+              dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_SHOW,data:{type:"replaceTeacher",title:"请选择教师"}});
+
+          }else{
+
+              replaceTeacherOk = true;
+
+              dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:"replaceTeacher"}});
+
+          }
+
+          //判断班级是否选择
+
+          if (classList.length>0){
+
+              if (classCheckedList.length>0){
+
+                  classOk = true;
+
+                  dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:"class"}});
+
+              }else{
+
+                  dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_SHOW,data:{type:"class",title:"请选择班级"}});
+
+              }
+
+          }
+
+
+          if (activeRadio === 'all'){
+
+              dayLineOk = true;
+
+          }
+
+          if (activeRadio === 'month'){
+
+              if(monthsCheckedList.length>0){
+
+                  dayLineOk = true;
+
+                  dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:"month"}})
+
+              }else{
+
+                  dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_SHOW,data:{type:"month",title:"请选择月份"}})
+
+              }
+
+          }
+
+          if (activeRadio === 'week'){
+
+              if(weeksCheckedList.length>0){
+
+                  dayLineOk = true;
+
+                  dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:"week"}})
+
+              }else{
+
+                  dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_SHOW,data:{type:"week",title:"请选择周次"}})
+
+              }
+
+          }
+
+          if (activeRadio === 'date'){
+
+              if(dateCheckedList.length>0){
+
+                  dayLineOk = true;
+
+                  dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:"date"}})
+
+              }else{
+
+                  dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_SHOW,data:{type:"date",title:"请选择日期"}})
+
+              }
+
+          }
+
+          if (activeRadio === 'classHour'){
+
+              let thisDateOk,thisClassHourOk = false;
+
+              let classHourLength = 0;
+
+              classHourCheckedList.map(item => {
+
+                  classHourLength = classHourLength + item.list.length;
+
+              });
+
+              if (classHourDate){
+
+                  dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:"classHourDate"}});
+
+                  thisDateOk = true;
+
+              }else {
+
+                  dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_SHOW,data:{type:"classHourDate",title:"请选择日期"}});
+
+
+              }
+
+
+
+              if (classHourLength>0){
+
+                  dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:"classHour"}});
+
+                  thisClassHourOk = true;
+
+              }else {
+
+                  dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_SHOW,data:{type:"classHour",title:"请选择课时"}});
+
+
+              }
+
+
+              if (thisDateOk&&thisClassHourOk){
+
+                  dayLineOk = true;
+
+              }
+
+          }
+
+
+          //所有的都已经OK了可以向后台发送请求了
+          if (originTeacherOk&replaceTeacherOk&classOk&dayLineOk){
+
+              let Type,Item = '';
+
+              switch (activeRadio) {
+
+                  case 'all':
+
+                      Type = 0;
+
+                      break;
+
+                  case 'month':
+
+                      Type = 1;
+
+                      Item = monthsCheckedList.join(',');
+
+                      break;
+
+                  case 'week':
+
+                      Type = 2;
+
+                      Item = weeksCheckedList.join(',');
+
+                      break;
+
+                  case 'date':
+
+                      Type = 3;
+
+                      Item = dateCheckedList.join(',');
+
+                      break;
+
+                  case 'classHour':
+
+                      Type = 4;
+
+                       let list = classHourCheckedList.map(item=>item.list);
+
+                       let ClassHoursLit = [...list];
+
+                      Item = `${classHourDate};${ClassHoursLit.join(',')}`;
+
+                      break;
+
+                  default:
+
+                      Type = 0;
+
+                      Item = '';
+
+                      TeacherID1 = '';
+
+                      TeacherID2 = '';
+
+              }
+
+              let TeacherID1 = teacherOptions.dropSelectd.value;
+
+              let TeacherID2 = replaceTeacherOptions.dropSelectd.value;
+
+              dispatch({type:ADJUST_BY_TEACHER_LOADING_SHOW});
+
+              setReplaceCourse(Type,Item,TeacherID1,TeacherID2,dispatch).then(() => {
+
+                  dispatch({type:ADJUST_BY_TEACHER_HIDE});
+
+                  dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                          type:"success",
+
+                          title:"找人代课成功！",
+
+                          hide:hideAlert(dispatch)
+
+                      }});
+
+              })
+
+          }
+
+
+      }
+
+
+      if (activeKey==='2'){
+
+        let {
+
+            originDropSelectd,originDate,originScheduleDropSelectd,
+
+            targetDropSelectd,targetDate,targetScheduleDropSelectd } = changeSchedule;
+
+        let originTeacherOk,originDateOk,originScheduleOk,targetTeacherOk,targetDateOk,targetScheduleOk = false;
+
+            if (originDropSelectd.value==='none'){
+
+                dispatch({type:CHANGE_SHCEDULE_ERROR_TIPS_SHOW,data:{type:"originTeacher"}});
+
+            }else{
+
+                dispatch({type:CHANGE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:"originTeacher"}});
+
+                originTeacherOk = true;
+
+            }
+
+          if (originDate===''){
+
+              dispatch({type:CHANGE_SHCEDULE_ERROR_TIPS_SHOW,data:{type:"originDate"}});
+
+          }else{
+
+              dispatch({type:CHANGE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:"originDate"}});
+
+              originDateOk = true;
+
+          }
+
+          if (originScheduleDropSelectd.value==='none'){
+
+              dispatch({type:CHANGE_SHCEDULE_ERROR_TIPS_SHOW,data:{type:"originSchedule"}});
+
+          }else{
+
+              dispatch({type:CHANGE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:"originSchedule"}});
+
+              originScheduleOk = true;
+
+          }
+
+          if (targetDropSelectd.value==='none'){
+
+              dispatch({type:CHANGE_SHCEDULE_ERROR_TIPS_SHOW,data:{type:"targetTeacher"}});
+
+          }else{
+
+              dispatch({type:CHANGE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:"targetTeacher"}});
+
+              targetTeacherOk = true;
+
+          }
+
+          if (targetDate===''){
+
+              dispatch({type:CHANGE_SHCEDULE_ERROR_TIPS_SHOW,data:{type:"targetDate"}});
+
+          }else{
+
+              dispatch({type:CHANGE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:"targetDate"}});
+
+              targetDateOk = true;
+
+          }
+
+          if (targetScheduleDropSelectd.value==='none'){
+
+              dispatch({type:CHANGE_SHCEDULE_ERROR_TIPS_SHOW,data:{type:"targetSchedule"}});
+
+          }else{
+
+              dispatch({type:CHANGE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:"targetSchedule"}});
+
+              targetScheduleOk = true;
+
+          }
+
+          if (originDateOk&&originTeacherOk&&originScheduleOk&&targetTeacherOk&&targetDateOk&&targetScheduleOk){
+
+
+
+          }
+
+      }
+
+      if (activeKey==='3'){
+
+
+
+      }
+
+      if (activeKey==='4'){
+
+
+
+      }
+
+      if (activeKey==='5'){
+
+
+
+      }
+
+  }
+
+};
 
 
 
@@ -3072,6 +3968,42 @@ const getWeekDayTime = async (SchoolID,ClassDate,dispatch) =>{
 };
 
 
+//设置代课
+
+const setReplaceCourse = async (Type,Item,TeacherID1,TeacherID2,dispatch) =>{
+
+    let res = await Method.getPostData(`/scheduleSetReplacec`);
+
+    if(res.Status === 200){
+
+        return res;
+
+    }else{
+
+        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                type:"btn-warn",
+
+                title:res.Msg,
+
+                ok:hideAlert(dispatch),
+
+                close:hideAlert(dispatch),
+
+                cancel:hideAlert(dispatch)
+
+            }});
+
+    }
+
+};
+
+
+
+
+
+
+
 
 
 
@@ -3086,9 +4018,9 @@ export default {
 
     ADJUST_BY_TEACHER_TEACHER_LIST_UPDATE,
 
-    REPLACE_SHCEDULE_LOADING_HIDE,
+    ADJUST_BY_TEACHER_LOADING_SHOW,
 
-    REPLACE_SHCEDULE_LOADING_SHOW,
+    ADJUST_BY_TEACHER_LOADING_HIDE,
 
     REPLACE_SHCEDULE_TEACHER_SSUBJECT_DROP_SHOW,
 
@@ -3220,6 +4152,38 @@ export default {
 
     CHANGE_CLASS_ROOM_CLASSROOM_CHANGE,
 
+    //停课
+
+    STOP_SCHEDULE_TEACHER_CHANGE,
+
+    STOP_SCHEDULE_TEACHER_CLASSHOUR_CHANGE,
+
+    STOP_SCHEDULE_DATE_PICK,
+
+    STOP_SCHEDULE_CLASSHOUR_LOADING_SHOW,
+
+    STOP_SCHEDULE_CLASSHOUR_LOADING_HIDE,
+
+    REPLACE_SHCEDULE_ERROR_TIPS_SHOW,
+
+    REPLACE_SHCEDULE_ERROR_TIPS_HIDE,
+
+    CHANGE_SHCEDULE_ERROR_TIPS_SHOW,
+
+    CHANGE_SHCEDULE_ERROR_TIPS_HIDE,
+
+    CHANGE_TIME_ERROR_TIPS_SHOW,
+
+    CHANGE_TIME_ERROR_TIPS_HIDE,
+
+    CHANGE_CLASS_ROOM_ERROR_TIPS_SHOW,
+
+    CHANGE_CLASS_ROOM_ERROR_TIPS_HIDE,
+
+    STOP_SCHEDULE_ERROR_TIPS_SHOW,
+
+    STOP_SCHEDULE_ERROR_TIPS_HIDE,
+
     replaceScheduleInit,
 
     teacherDropChange,
@@ -3300,6 +4264,23 @@ export default {
 
     changeClassRoomTeacherSearchClose,
 
-    changeClassRoomClassRoomPick
+    changeClassRoomClassRoomPick,
+
+
+    //停课
+
+    stopScheduleTeacherPick,
+
+    stopScheduleTeacherClickSearch,
+
+    stopScheduleTeacherSearchClose,
+
+    stopScheduleDateChange,
+
+    stopScheduleClassHoursChecked,
+
+    //提交弹窗
+
+    ModalCommit
 
 };

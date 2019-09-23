@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { Tabs } from 'antd';
 
-import { Modal } from "../../../../common";
+import { Modal,Loading } from "../../../../common";
 
 import ABTAction from "../../actions/Manager/AdjustByTeacherActions";
 
@@ -42,6 +42,16 @@ class AdjustByTeacherModal extends Component{
     }
 
 
+    //面板确定
+    ModalOk(){
+
+        const { dispatch } = this.props;
+
+        dispatch(ABTAction.ModalCommit());
+
+    }
+
+
 
     render() {
 
@@ -51,7 +61,9 @@ class AdjustByTeacherModal extends Component{
 
             show,
 
-            activeKey
+            activeKey,
+
+            LoadingShow
 
         } = AdjustByTeacherModal;
 
@@ -64,45 +76,90 @@ class AdjustByTeacherModal extends Component{
                    width={840}
                    mask={true}
                    cancelText="取消"
-                   onCancel={this.CloseModal.bind(this)} >
+                   onCancel={this.CloseModal.bind(this)}
+                   onOk={this.ModalOk.bind(this)} >
 
-                <div className="modal-wrapper">
+                <Loading tip="加载中..." type="loading" spinning={LoadingShow}>
 
-                    <Tabs type="card" onChange={this.tabChange.bind(this)} activeKey={activeKey} tabBarStyle={{width:840}} tabBarGutter={0}>
+                    <div className="modal-wrapper">
 
-                        <TabPane tab="找人代课" key="1" >
+                        <Tabs type="card" onChange={this.tabChange.bind(this)} activeKey={activeKey} tabBarStyle={{width:840}} tabBarGutter={0}>
 
-                            <ReplaceSchedule></ReplaceSchedule>
+                            <TabPane tab="找人代课" key="1" >
 
-                        </TabPane>
+                                {
 
-                        <TabPane tab="与人换课" key="2" >
+                                    activeKey==='1'?
 
-                            <ChangeSchedule></ChangeSchedule>
+                                        <ReplaceSchedule></ReplaceSchedule>
 
-                        </TabPane>
+                                        :''
 
-                        <TabPane tab="调整时间" key="3">
+                                }
 
-                            <ChangeTime></ChangeTime>
+                            </TabPane>
 
-                        </TabPane>
+                            <TabPane tab="与人换课" key="2">
 
-                        <TabPane tab="更换教室" key="4" >
+                                {
 
-                            <ChangeClassRoom></ChangeClassRoom>
+                                    activeKey==='2'?
 
-                        </TabPane>
+                                        <ChangeSchedule></ChangeSchedule>
 
-                        <TabPane tab="停课" key="5">
+                                        :''
 
-                            <StopSchedule></StopSchedule>
+                                }
 
-                        </TabPane>
+                            </TabPane>
 
-                    </Tabs>
+                            <TabPane tab="调整时间" key="3">
+
+                                {
+
+                                    activeKey === '3' ?
+
+                                        <ChangeTime></ChangeTime>
+
+                                        : ''
+
+                                }
+
+                            </TabPane>
+
+                            <TabPane tab="更换教室" key="4" >
+
+                                {
+
+                                    activeKey === '4' ?
+
+                                        <ChangeClassRoom></ChangeClassRoom>
+
+                                    :""
+
+                                }
+
+                            </TabPane>
+
+                            <TabPane tab="停课" key="5">
+
+                                {
+
+                                    activeKey === '5' ?
+
+                                        <StopSchedule></StopSchedule>
+
+                                        :''
+
+                                }
+
+                            </TabPane>
+
+                        </Tabs>
 
                 </div>
+
+                </Loading>
 
             </Modal>
 

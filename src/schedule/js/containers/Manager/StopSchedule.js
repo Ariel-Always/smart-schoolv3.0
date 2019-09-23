@@ -25,7 +25,7 @@ class StopSchedule extends Component{
 
         const { dispatch } = this.props;
 
-        dispatch(ABTActions.changeClassRoomTeacherPick(info));
+        dispatch(ABTActions.stopScheduleTeacherPick(info));
 
     }
 
@@ -35,7 +35,7 @@ class StopSchedule extends Component{
 
         const key = e.value;
 
-        dispatch(ABTActions.changeClassRoomTeacherSearch(key));
+        dispatch(ABTActions.stopScheduleTeacherClickSearch(key));
 
     }
 
@@ -43,13 +43,23 @@ class StopSchedule extends Component{
 
         const { dispatch } = this.props;
 
-        dispatch(ABTActions.changeClassRoomTeacherSearchClose());
+        dispatch(ABTActions.stopScheduleTeacherSearchClose());
 
     }
 
-    datePick(){
+    datePick(date,dateString){
 
+        const { dispatch } = this.props;
 
+        dispatch(ABTActions.stopScheduleDateChange(dateString));
+
+    }
+
+    classHoursChecked(opts){
+
+        const { dispatch } = this.props;
+
+        dispatch(ABTActions.stopScheduleClassHoursChecked(opts));
 
     }
 
@@ -57,7 +67,25 @@ class StopSchedule extends Component{
 
         const { teacherList,StopSchedule } = this.props;
 
-        const { date,classHours,classHoursCheckedList,teacherDrop,teacherSearchList,teacherSearchOpen,teacherSearchLoadingShow } = StopSchedule;
+        const {
+
+            date,
+
+            classHours,
+
+            classHoursCheckedList,
+
+            teacherDrop,
+
+            teacherSearchList,
+
+            teacherSearchOpen,
+
+            teacherSearchLoadingShow,
+
+            classHourLoading
+
+        } = StopSchedule;
 
         return (
 
@@ -100,78 +128,82 @@ class StopSchedule extends Component{
 
                 </div>
 
-                <div className="class-hour-pick-wrapper">
+                <Loading type="loading" spinning={classHourLoading}>
 
-                    {
+                    <div className="class-hour-pick-wrapper">
 
-                        classHours.map((item,key) => {
+                        {
+
+                            classHours.map((item,key) => {
 
 
-                            let noonChecked = false;
+                                let noonChecked = false;
 
 
-                            classHoursCheckedList.map(itm => {
+                                classHoursCheckedList.map(itm => {
 
-                                if (itm.type === item.type){
+                                    if (itm.type === item.type){
 
-                                    if (itm.checked){
+                                        if (itm.checked){
 
-                                        noonChecked = true;
+                                            noonChecked = true;
+
+                                        }
 
                                     }
 
-                                }
+                                });
 
-                            });
+                                return  <div key={key} className="class-hour-item clearfix">
 
-                            return  <div key={key} className="class-hour-item clearfix">
+                                    <div className="noon">
 
-                                <div className="noon">
+                                        <div className={`check-item ${noonChecked?'active':''}`} onClick={this.classHoursChecked.bind(this,{type:'noon',id:item.type})}>
 
-                                    <div className={`check-item ${noonChecked?'active':''}`} onClick={this.classHoursChecked.bind(this,{type:'noon',id:item.type})}>
-
-                                        {item.name}
-
-                                    </div>
-
-                                </div>
-
-                                {
-
-                                    item.list.map((i,k) => {
-
-                                        let itemChecked = false;
-
-                                        classHoursCheckedList.map(it => {
-
-                                            if (it.type === item.type){
-
-                                                if (it.list.includes(i.no)){
-
-                                                    itemChecked = true;
-
-                                                }
-
-                                            }
-
-                                        });
-
-                                        return <div key={k} className={`check-item ${itemChecked?'active':''}`} onClick={this.classHoursChecked.bind(this,{type:'item',pid:item.type,id:i.no})}>
-
-                                            {i.name}
+                                            {item.name}
 
                                         </div>
 
-                                    })
+                                    </div>
 
-                                }
+                                    {
 
-                            </div>
+                                        item.list.map((i,k) => {
 
-                        })
+                                            let itemChecked = false;
 
-                    }
-                </div>
+                                            classHoursCheckedList.map(it => {
+
+                                                if (it.type === item.type){
+
+                                                    if (it.list.includes(i.id)){
+
+                                                        itemChecked = true;
+
+                                                    }
+
+                                                }
+
+                                            });
+
+                                            return <div key={k} className={`check-item ${itemChecked?'active':''}`} onClick={this.classHoursChecked.bind(this,{type:'item',pid:item.type,id:i.id})}>
+
+                                                第{i.name}节
+
+                                            </div>
+
+                                        })
+
+                                    }
+
+                                </div>
+
+                            })
+
+                        }
+                    </div>
+
+                </Loading>
 
 
             </div>

@@ -1,4 +1,5 @@
 import ABTActions from '../../actions/Manager/AdjustByTeacherActions';
+import StopSchedule from "../../containers/Manager/StopSchedule";
 
 
 
@@ -10,13 +11,15 @@ const AdjustByTeacherModal = (state={
 
     teacherList:[],
 
+    LoadingShow:true,
+
     replaceSchedule:{
 
         loadingShow:true,
 
         teacherOptions:{
 
-            dropSelectd:null,
+            dropSelectd:{value:"none",title:"请选择任课教师"},
 
             searchList:[],
 
@@ -28,7 +31,7 @@ const AdjustByTeacherModal = (state={
 
         replaceTeacherOptions:{
 
-            dropSelectd:null,
+            dropSelectd:{value:"none",title:"请选择任课教师"},
 
             searchList:[],
 
@@ -86,13 +89,45 @@ const AdjustByTeacherModal = (state={
 
         classHourLoadingShow:true,
 
-        classHourPlainOpts:[]
+        classHourPlainOpts:[],
+
+        originTeacherTips:false,
+
+        originTeacherTipsTitle:'',
+
+        replaceTeacherTips:false,
+
+        replaceTeacherTipsTitle:'',
+
+        classTips:false,
+
+        classTipsTitle:'',
+
+        monthTips:false,
+
+        monthTipsTitle:'',
+
+        weekTips:false,
+
+        weekTipsTitle:'',
+
+        dateTips:false,
+
+        dateTipsTitle:'',
+
+        classHourDateTips:false,
+
+        classHourDateTipsTitle:'',
+
+        classHourTips:false,
+
+        classHourTipsTitle:'',
 
     },
 
     changeSchedule:{
 
-        originDropSelectd:"",
+        originDropSelectd:{value:"none",title:"请选择任课教师"},
 
         originSearchList:[],
 
@@ -106,9 +141,9 @@ const AdjustByTeacherModal = (state={
 
         originScheduleList:[],
 
-        originScheduleDropSelectd:"",
+        originScheduleDropSelectd:{value:"none",title:"请选择节次"},
 
-        targetDropSelectd:"",
+        targetDropSelectd:{value:"none",title:"请选择任课教师"},
 
         targetSearchList:[],
 
@@ -122,7 +157,31 @@ const AdjustByTeacherModal = (state={
 
         targetScheduleList:[],
 
-        targetScheduleDropSelectd:""
+        targetScheduleDropSelectd:{value:"none",title:"请选择节次"},
+
+        originTeacherTips:false,
+
+        originTeacherTipsTitle:"",
+
+        originDateTips:false,
+
+        originDateTipsTitle:"",
+
+        originClassHourTips:false,
+
+        originClassHourTipsTitle:"",
+
+        targetTeacherTips:false,
+
+        targetTeacherTipsTitle:"",
+
+        targetDateTips:false,
+
+        targetDateTipsTitle:"",
+
+        targetClassHourTips:false,
+
+        targetClassHourTipsTitle:"",
 
     },
 
@@ -218,7 +277,17 @@ const AdjustByTeacherModal = (state={
 
         classHoursCheckedList:[],
 
+        classHoursPlainOpts:[],
 
+        teacherDrop:{value:"none",title:"请选择教师"},
+
+        teacherSearchOpen:false,
+
+        teacherSearchLoadingShow:false,
+
+        teacherSearchList:[],
+
+        classHourLoading:false
 
     }
 
@@ -236,6 +305,8 @@ const AdjustByTeacherModal = (state={
 
                 activeKey:"1",
 
+                LoadingShow:true,
+
                 teacherList:[],
 
                 replaceSchedule:{
@@ -244,7 +315,7 @@ const AdjustByTeacherModal = (state={
 
                     teacherOptions:{
 
-                        dropSelectd:null,
+                        dropSelectd:{value:"none",title:"请选择任课教师"},
 
                         searchList:[],
 
@@ -256,7 +327,7 @@ const AdjustByTeacherModal = (state={
 
                     replaceTeacherOptions:{
 
-                        dropSelectd:null,
+                        dropSelectd:{value:"none",title:"请选择任课教师"},
 
                         searchList:[],
 
@@ -314,13 +385,45 @@ const AdjustByTeacherModal = (state={
 
                     classHourLoadingShow:true,
 
-                    classHourPlainOpts:[]
+                    classHourPlainOpts:[],
+
+                    originTeacherTips:false,
+
+                    originTeacherTipsTitle:'',
+
+                    replaceTeacherTips:false,
+
+                    replaceTeacherTipsTitle:'',
+
+                    classTips:false,
+
+                    classTipsTitle:'',
+
+                    monthTips:false,
+
+                    monthTipsTitle:'',
+
+                    weekTips:false,
+
+                    weekTipsTitle:'',
+
+                    dateTips:false,
+
+                    dateTipsTitle:'',
+
+                    classHourDateTips:false,
+
+                    classHourDateTipsTitle:'',
+
+                    classHourTips:false,
+
+                    classHourTipsTitle:'',
 
                 },
 
                 changeSchedule:{
 
-                    originDropSelectd:"",
+                    originDropSelectd:{value:"none",title:"请选择任课教师"},
 
                     originSearchList:[],
 
@@ -334,9 +437,9 @@ const AdjustByTeacherModal = (state={
 
                     originScheduleList:[],
 
-                    originScheduleDropSelectd:"",
+                    originScheduleDropSelectd:{value:"none",title:"请选择节次"},
 
-                    targetDropSelectd:"",
+                    targetDropSelectd:{value:"none",title:"请选择任课教师"},
 
                     targetSearchList:[],
 
@@ -350,7 +453,31 @@ const AdjustByTeacherModal = (state={
 
                     targetScheduleList:[],
 
-                    targetScheduleDropSelectd:""
+                    targetScheduleDropSelectd:{value:"none",title:"请选择节次"},
+
+                    originTeacherTips:false,
+
+                    originTeacherTipsTitle:"",
+
+                    originDateTips:false,
+
+                    originDateTipsTitle:"",
+
+                    originClassHourTips:false,
+
+                    originClassHourTipsTitle:"",
+
+                    targetTeacherTips:false,
+
+                    targetTeacherTipsTitle:"",
+
+                    targetDateTips:false,
+
+                    targetDateTipsTitle:"",
+
+                    targetClassHourTips:false,
+
+                    targetClassHourTipsTitle:"",
 
                 },
 
@@ -436,6 +563,28 @@ const AdjustByTeacherModal = (state={
 
                     classRoomDisabled:true
 
+                },
+
+                StopSchedule: {
+
+                    date:"",
+
+                    classHours:[],
+
+                    classHoursCheckedList:[],
+
+                    classHoursPlainOpts:[],
+
+                    teacherDrop:{value:"none",title:"请选择教师"},
+
+                    teacherSearchOpen:false,
+
+                    teacherSearchLoadingShow:false,
+
+                    teacherSearchList:[],
+
+                    classHourLoading:false
+
                 }
 
             };
@@ -447,6 +596,8 @@ const AdjustByTeacherModal = (state={
                 ...state,
 
                 show:false,
+
+                activeKey:"5"
 
             };
 
@@ -464,13 +615,13 @@ const AdjustByTeacherModal = (state={
 
             };
 
-        case ABTActions.REPLACE_SHCEDULE_LOADING_HIDE:
+        case ABTActions.ADJUST_BY_TEACHER_LOADING_HIDE:
 
-            return {...state,replaceSchedule:{...state.replaceSchedule,loadingShow:false}};
+            return {...state,LoadingShow:false};
 
-        case ABTActions.REPLACE_SHCEDULE_LOADING_SHOW:
+        case ABTActions.ADJUST_BY_TEACHER_LOADING_SHOW:
 
-            return {...state,replaceSchedule:{...state.replaceSchedule,loadingShow:true}};
+            return {...state,LoadingShow:true};
 
         case ABTActions.REPLACE_SHCEDULE_TEACHER_SSUBJECT_DROP_SHOW:
 
@@ -1980,6 +2131,192 @@ const AdjustByTeacherModal = (state={
 
             }
 
+        case ABTActions.STOP_SCHEDULE_CLASSHOUR_LOADING_HIDE:
+
+            return {...state,StopSchedule:{...state.StopSchedule,classHourLoading:false}};
+
+        case ABTActions.STOP_SCHEDULE_CLASSHOUR_LOADING_SHOW:
+
+            return {...state,StopSchedule:{...state.StopSchedule,classHourLoading:true}};
+
+
+
+        //停课
+
+        case ABTActions.STOP_SCHEDULE_TEACHER_CHANGE:
+
+            switch (actions.data.type) {
+
+                case "drop":
+
+                    return {...state,StopSchedule:{...state.StopSchedule,teacherDrop:actions.data.value}};
+
+                case "search":
+
+                    return {...state,StopSchedule:{...state.StopSchedule,teacherSearchOpen:true}};
+
+                case "searchClose":
+
+                    return {...state,StopSchedule:{...state.StopSchedule,teacherSearchOpen:false}};
+
+                case "searchLoadingShow":
+
+                    return {...state,StopSchedule:{...state.StopSchedule,teacherSearchLoadingShow:true}};
+
+                case "teacherSearchListChange":
+
+                    return {...state,StopSchedule:{...state.StopSchedule,teacherSearchList:actions.data.value}};
+
+                case "searchLoadingHide":
+
+                    return {...state,StopSchedule:{...state.StopSchedule,teacherSearchLoadingShow:false}};
+
+
+                default:
+
+                    return state;
+
+            }
+
+        case ABTActions.STOP_SCHEDULE_TEACHER_CLASSHOUR_CHANGE:
+
+            return {...state,StopSchedule:{...state.StopSchedule,...actions.data}};
+
+        case ABTActions.STOP_SCHEDULE_DATE_PICK:
+
+            return { ...state,StopSchedule:{ ...state.StopSchedule,date:actions.data }};
+
+
+         //所有的错误提示
+
+        case ABTActions.REPLACE_SHCEDULE_ERROR_TIPS_SHOW:
+
+            switch (actions.data.type) {
+
+                case 'originTeacher':
+
+                    return {...state,replaceSchedule:{...state.replaceSchedule,originTeacherTips:true,originTeacherTipsTitle:actions.data.title}};
+
+                case 'replaceTeacher':
+
+                    return {...state,replaceSchedule:{...state.replaceSchedule,replaceTeacherTips:true,replaceTeacherTipsTitle:actions.data.title}};
+
+                case 'class':
+
+                    return {...state,replaceSchedule:{...state.replaceSchedule,classTips:true,classTipsTitle:actions.data.title}};
+
+                case 'month':
+
+                    return {...state,replaceSchedule:{...state.replaceSchedule,monthTips:true,monthTipsTitle:actions.data.title}};
+
+                case 'week':
+
+                    return {...state,replaceSchedule:{...state.replaceSchedule,weekTips:true,weekTipsTitle:actions.data.title}};
+
+                case 'date':
+
+                    return {...state,replaceSchedule:{...state.replaceSchedule,dateTips:true,dateTipsTitle:actions.data.title}};
+
+                case 'classHourDate':
+
+                    return {...state,replaceSchedule:{...state.replaceSchedule,classHourDateTips:true,classHourDateTipsTitle:actions.data.title}};
+
+                case 'classHour':
+
+                    return {...state,replaceSchedule:{...state.replaceSchedule,classHourTips:true,classHourTipsTitle:actions.data.title}};
+
+
+                default:
+
+                    return state;
+
+            }
+
+        case ABTActions.REPLACE_SHCEDULE_ERROR_TIPS_HIDE:
+
+            switch (actions.data.type) {
+
+                case 'originTeacher':
+
+                    return {...state,replaceSchedule:{...state.replaceSchedule,originTeacherTips:false}};
+
+                case 'replaceTeacher':
+
+                    return {...state,replaceSchedule:{...state.replaceSchedule,replaceTeacherTips:false}};
+
+                case 'class':
+
+                    return {...state,replaceSchedule:{...state.replaceSchedule,classTips:false}};
+
+                case 'month':
+
+                    return {...state,replaceSchedule:{...state.replaceSchedule,monthTips:false}};
+
+                case 'week':
+
+                    return {...state,replaceSchedule:{...state.replaceSchedule,weekTips:false}};
+
+                case 'date':
+
+                    return {...state,replaceSchedule:{...state.replaceSchedule,dateTips:false}};
+
+                case 'classHourDate':
+
+                    return {...state,replaceSchedule:{...state.replaceSchedule,classHourDateTips:false}};
+
+                case 'classHour':
+
+                    return {...state,replaceSchedule:{...state.replaceSchedule,classHourTips:false}};
+
+
+                default:
+
+                    return state;
+
+            }
+
+        case ABTActions.CHANGE_SHCEDULE_ERROR_TIPS_SHOW:
+
+            switch (actions.data.type) {
+
+                case 'originTeacher':
+
+                    return {...state,changeSchedule:{...state.changeSchedule,originTeacherTips:false}};
+
+                case 'replaceTeacher':
+
+                    return {...state,replaceSchedule:{...state.replaceSchedule,replaceTeacherTips:false}};
+
+                case 'class':
+
+                    return {...state,replaceSchedule:{...state.replaceSchedule,classTips:false}};
+
+                case 'month':
+
+                    return {...state,replaceSchedule:{...state.replaceSchedule,monthTips:false}};
+
+                case 'week':
+
+                    return {...state,replaceSchedule:{...state.replaceSchedule,weekTips:false}};
+
+                case 'date':
+
+                    return {...state,replaceSchedule:{...state.replaceSchedule,dateTips:false}};
+
+                case 'classHourDate':
+
+                    return {...state,replaceSchedule:{...state.replaceSchedule,classHourDateTips:false}};
+
+                case 'classHour':
+
+                    return {...state,replaceSchedule:{...state.replaceSchedule,classHourTips:false}};
+
+
+                default:
+
+                    return state;
+
+            }
 
         default:
 
