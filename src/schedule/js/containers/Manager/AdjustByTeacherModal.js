@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { Tabs } from 'antd';
 
-import { Modal } from "../../../../common";
+import { Modal,Loading } from "../../../../common";
 
 import ABTAction from "../../actions/Manager/AdjustByTeacherActions";
 
@@ -13,6 +13,10 @@ import ReplaceSchedule from './ReplaceSchedule';
 import ChangeSchedule from './ChangeSchedule'
 
 import ChangeTime from './ChangeTime';
+
+import ChangeClassRoom from './ChangeClassRoom';
+
+import StopSchedule from './StopSchedule';
 
 
 const { TabPane  } = Tabs;
@@ -28,6 +32,26 @@ class AdjustByTeacherModal extends Component{
 
     }
 
+    //面板发生变化
+    tabChange(activeKey){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:ABTAction.ADJUST_BY_TEACHER_TAB_CHANGE,data:activeKey});
+
+    }
+
+
+    //面板确定
+    ModalOk(){
+
+        const { dispatch } = this.props;
+
+        dispatch(ABTAction.ModalCommit());
+
+    }
+
+
 
     render() {
 
@@ -35,7 +59,11 @@ class AdjustByTeacherModal extends Component{
 
         const {
 
-            show
+            show,
+
+            activeKey,
+
+            LoadingShow
 
         } = AdjustByTeacherModal;
 
@@ -48,37 +76,90 @@ class AdjustByTeacherModal extends Component{
                    width={840}
                    mask={true}
                    cancelText="取消"
-                   onCancel={this.CloseModal.bind(this)} >
+                   onCancel={this.CloseModal.bind(this)}
+                   onOk={this.ModalOk.bind(this)} >
 
-                <div className="modal-wrapper">
+                <Loading tip="加载中..." type="loading" spinning={LoadingShow}>
 
-                    <Tabs type="card" tabBarStyle={{width:840}} tabBarGutter={0}>
+                    <div className="modal-wrapper">
 
-                        <TabPane tab="找人代课" key="1" forceRender={true}>
+                        <Tabs type="card" onChange={this.tabChange.bind(this)} activeKey={activeKey} tabBarStyle={{width:840}} tabBarGutter={0}>
 
-                            <ReplaceSchedule></ReplaceSchedule>
+                            <TabPane tab="找人代课" key="1" >
 
-                        </TabPane>
+                                {
 
-                        <TabPane tab="与人换课" key="2" forceRender={true}>
+                                    activeKey==='1'?
 
-                            <ChangeSchedule></ChangeSchedule>
+                                        <ReplaceSchedule></ReplaceSchedule>
 
-                        </TabPane>
+                                        :''
 
-                        <TabPane tab="调整时间" key="3" forceRender={true}>
+                                }
 
-                            <ChangeTime></ChangeTime>
+                            </TabPane>
 
-                        </TabPane>
+                            <TabPane tab="与人换课" key="2">
 
-                        <TabPane tab="更换教室" key="4" forceRender={true}></TabPane>
+                                {
 
-                        <TabPane tab="停课" key="5" forceRender={true}></TabPane>
+                                    activeKey==='2'?
 
-                    </Tabs>
+                                        <ChangeSchedule></ChangeSchedule>
+
+                                        :''
+
+                                }
+
+                            </TabPane>
+
+                            <TabPane tab="调整时间" key="3">
+
+                                {
+
+                                    activeKey === '3' ?
+
+                                        <ChangeTime></ChangeTime>
+
+                                        : ''
+
+                                }
+
+                            </TabPane>
+
+                            <TabPane tab="更换教室" key="4" >
+
+                                {
+
+                                    activeKey === '4' ?
+
+                                        <ChangeClassRoom></ChangeClassRoom>
+
+                                    :""
+
+                                }
+
+                            </TabPane>
+
+                            <TabPane tab="停课" key="5">
+
+                                {
+
+                                    activeKey === '5' ?
+
+                                        <StopSchedule></StopSchedule>
+
+                                        :''
+
+                                }
+
+                            </TabPane>
+
+                        </Tabs>
 
                 </div>
+
+                </Loading>
 
             </Modal>
 

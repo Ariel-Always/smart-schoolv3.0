@@ -2,6 +2,18 @@
 
   color: #333333;
 
+  .error-tips{
+
+    padding-left: 16px;
+
+    font-size: 14px;
+
+    color: #ff0000;
+
+    background: url("#{$image-url}/input-error.png") no-repeat left center;
+
+  }
+
   .ant-modal-body{
 
     min-height:330px;
@@ -189,6 +201,20 @@
 
     }
 
+    .teacher-wrapper,
+    .replace-teacher-wrapper{
+
+      .error-tips{
+
+        margin-left:180px;
+
+        margin-top: 2px;
+
+      }
+
+    }
+
+
     .props{
 
       float: left;
@@ -211,6 +237,12 @@
 
       margin-left:8px;
 
+      &.unset{
+
+        color: #999999;
+
+      }
+
     }
 
     .class-pick-wrapper{
@@ -220,6 +252,18 @@
       margin-left: 8px;
 
       max-width:640px;
+
+      &.unset{
+
+        color: #999999;
+
+        &+.error-tips{
+
+          margin-top:2px;
+
+        }
+
+      }
 
     }
 
@@ -239,7 +283,13 @@
 
     .class-wrapper{
 
-      height:28px;
+      .error-tips{
+
+        margin-left: 100px;
+
+        margin-top: 16px;
+
+      }
 
     }
 
@@ -344,6 +394,18 @@
         font-size: 12px;
 
         color: #999999;
+
+      }
+
+      .error-tips{
+
+        margin-left:20px;
+
+      }
+
+      .ant-calendar-picker+.ant-spin-nested-loading{
+
+        display: inline-block;
 
       }
 
@@ -676,7 +738,7 @@
 
       font-size: 16px;
 
-      margin-right:20px;
+      margin-right:14px;
 
       &:first-child{
 
@@ -719,6 +781,8 @@
 
       margin-left: -94px;
 
+      padding-left:20px;
+
     }
     .new-time-wrapper{
 
@@ -751,6 +815,8 @@
 
     .content-wrapper{
 
+      position: relative;
+
       .dropdown_container{
 
         margin-left: -154px;
@@ -781,10 +847,351 @@
 
     }
 
+    .error-tips{
+
+      position: absolute;
+
+      left:0;
+
+      bottom: -62px;
+
+      padding-left: 16px;
+
+      font-size: 14px;
+
+      color: #ff0000;
+
+      background: url('#{$image-url}/input-error.png') no-repeat left center
+
+    }
 
   }
 
+  .change-class-room-wrapper{
 
+    padding:40px 50px;
+    
+    .props{
+      
+      font-size: 16px;
+
+      color: #666666;
+
+      margin-right: 12px;
+
+    }
+
+    &>*{
+
+      height:60px;
+
+    }
+
+    .ant-input{
+
+      width: 150px;
+
+      height:28px;
+
+      line-height: 28px;
+
+      margin-left: 8px;
+
+    }
+
+    .classroom{
+
+      display: inline-block;
+
+      width: 180px;
+
+      margin-left: 8px;
+
+      color: #999999;
+
+      font-size: 12px;
+
+      &.pick{
+
+        color: #333333;
+
+        font-size: 14px;
+
+      }
+
+    }
+
+    .time-wrapper{
+
+      .dropdown_container{
+
+        margin-top:0;
+
+      }
+
+      .week-wrapper{
+
+        margin-left: 172px;
+
+        color: #999999;
+
+      }
+
+    }
+
+
+    .class-room-wrapper{
+
+      position: relative;
+
+      .props:not(:first-child){
+
+        margin-left: 138px;
+
+      }
+
+      &:after{
+
+        position: absolute;
+
+        content: '';
+
+        width: 32px;
+
+        height: 32px;
+
+        @include border-radius(50%);
+
+        color: #ffffff;
+
+        background-color: #1ba7fe;
+
+        font-size: 16px;
+
+        background-image:url("#{$image-url}/arr.png");
+
+        background-repeat: no-repeat;
+
+        background-position: center;
+
+        left: 276px;
+
+        top: -2px;
+
+      }
+
+    }
+
+  }
+
+  .stop-schedule-by-teacher-wrapper{
+
+    padding:40px 50px;
+
+    .props{
+
+      font-size: 16px;
+
+      color: #666666;
+
+      margin-right: 12px;
+
+    }
+
+    .ant-input{
+
+      line-height: 28px;
+
+      height: 28px;
+
+      width: 150px;
+
+      margin-left: 8px;
+
+    }
+
+    .teacher-wrapper{
+
+      .props{
+
+        margin-left: 30px;
+
+      }
+
+    }
+
+
+    &>*:not(:last-child){
+
+      height:42px;
+
+    }
+
+    .class-hour-item{
+
+      max-width: 580px;
+
+      &>div{
+
+        float: left;
+
+        margin-bottom: 10px;
+
+        &:not(:first-child){
+
+          margin-left: 24px;
+
+        }
+
+        &:nth-child(6n+8){
+
+          margin-left: 84px;
+
+        }
+
+      }
+
+    }
+
+    .date-pick{
+
+      margin-left: 24px;
+
+      margin-top: 8px;
+
+      input{
+
+        border-color:#bac7d9;
+
+        width:150px;
+
+        height:28px;
+
+      }
+
+    }
+
+    .noon{
+
+      position: relative;
+
+      &:after{
+
+        position: absolute;
+
+        content: '';
+
+        width: 0;
+
+        height: 0;
+
+        right: -18px;
+
+        top:10px;
+
+        border-width:4px;
+
+        border-style: solid;
+
+        border-color: transparent transparent transparent #999999;
+
+      }
+
+    }
+
+    .check-item{
+
+      position: relative;
+
+      width: 60px;
+
+      height: 28px;
+
+      line-height: 28px;
+
+      border: solid 1px #bac7d9;
+
+      padding:0 4px;
+
+      text-align: center;
+
+      @include textOverFlow;
+
+      cursor: pointer;
+
+      color: #79879b;
+
+      font-size: 14px;
+
+      &.active{
+
+        border-color: #2ba500;
+
+        background-color:#e9ffe9;
+
+        &:before{
+
+          position: absolute;
+
+          content: '';
+
+          width:0;
+
+          height: 0;
+
+          right: -10px;
+
+          top: -10px;
+
+          border-color:transparent transparent #2ba500 transparent;
+
+          border-style: solid;
+
+          border-width:10px;
+
+          @include transform(rotate(45deg));
+
+        }
+
+        &:after{
+
+          position: absolute;
+
+          right:3px;
+
+          top:3px;
+
+          width: 4px;
+
+          height:6px;
+
+          content: '';
+
+          display: table;
+
+          border:1px solid #fff;
+
+          border-top: 0;
+
+          border-left: 0;
+
+          transform: rotate(45deg) scale(1) translate(-50%, -50%);
+
+        }
+
+      }
+
+    }
+
+
+    .class-hour-pick-wrapper{
+
+      margin-left:86px;
+
+    }
+
+
+  }
 
 
 }

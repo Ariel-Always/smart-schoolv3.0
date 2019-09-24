@@ -163,7 +163,7 @@ class ChangeSchedule extends Component{
                         <div className="props">老师:</div>
 
                         <DropDown  width={150}
-                                   dropSelectd={originDropSelectd?originDropSelectd:{value:"none",title:"请选择任课教师"}}
+                                   dropSelectd={originDropSelectd}
                                    type="multiple"
                                    style={{zIndex:5}}
                                    mutipleOptions={{
@@ -199,7 +199,7 @@ class ChangeSchedule extends Component{
                         <div className="props">节次:</div>
 
                         <DropDown
-                            dropSelectd={originScheduleDropSelectd?originScheduleDropSelectd:{value:"none",title:"请选择节次"}}
+                            dropSelectd={originScheduleDropSelectd}
                             dropList={originScheduleList}
                             width={150}
                             height={108}
@@ -221,7 +221,7 @@ class ChangeSchedule extends Component{
                         <div className="props">老师:</div>
 
                         <DropDown  width={150}
-                                   dropSelectd={targetDropSelectd?targetDropSelectd:{value:"none",title:"请选择任课教师"}}
+                                   dropSelectd={targetDropSelectd}
                                    type="multiple"
                                    style={{zIndex:5}}
                                    mutipleOptions={{
@@ -257,7 +257,7 @@ class ChangeSchedule extends Component{
                         <div className="props">节次:</div>
 
                         <DropDown
-                            dropSelectd={targetScheduleDropSelectd?targetScheduleDropSelectd:{value:"none",title:"请选择节次"}}
+                            dropSelectd={targetScheduleDropSelectd}
                             dropList={targetScheduleList}
                             width={150}
                             height={108}

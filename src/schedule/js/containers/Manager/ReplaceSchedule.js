@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 
 import { Loading,DropDown,Radio } from "../../../../common";
 
-import { DatePicker,ConfigProvider,RangePicker } from 'antd';
+import { DatePicker,ConfigProvider,Tooltip } from 'antd';
 
 import { connect } from 'react-redux';
 
@@ -220,7 +220,39 @@ class ReplaceSchedule extends Component{
 
             classHourCheckedList,
 
-            classHourLoadingShow
+            classHourLoadingShow,
+
+            originTeacherTips,
+
+            originTeacherTipsTitle,
+
+            replaceTeacherTips,
+
+            replaceTeacherTipsTitle,
+
+            classTips,
+
+            classTipsTitle,
+
+            monthTips,
+
+            monthTipsTitle,
+
+            weekTips,
+
+            weekTipsTitle,
+
+            dateTips,
+
+            dateTipsTitle,
+
+            classHourDateTips,
+
+            classHourDateTipsTitle,
+
+            classHourTipsTitle,
+
+            classHourTips
 
         } = replaceSchedule;
 
@@ -238,9 +270,9 @@ class ReplaceSchedule extends Component{
 
     ];
 
-    return (
 
-            <Loading spinning={loadingShow} opacity={false} tip="加载中...">
+
+    return (
 
                 <div className="replace-schedule-wrapper">
 
@@ -248,11 +280,11 @@ class ReplaceSchedule extends Component{
 
                         <div className="props">老师:</div>
 
-                        <DropDown
+                            <DropDown
                             width={160}
-                            dropSelectd={teacherOptions.dropSelectd?teacherOptions.dropSelectd:{value:"none",title:"请选择任课教师"}}
+                            dropSelectd={teacherOptions.dropSelectd}
                             type="multiple"
-                            style={{zIndex:8}}
+                            style={{zIndex:1080}}
                             mutipleOptions={{
                                 range:2,
                                 dropMultipleList:teacherList,
@@ -263,10 +295,11 @@ class ReplaceSchedule extends Component{
                                 searchPlaceholder:"请输入教师名称进行搜索...",
                                 searchOpen:teacherOptions.searchOpen,
                                 searchLoadingShow:teacherOptions.searchLoadingShow
-                            }}
-                        >
+                            }}>
 
                         </DropDown>
+
+                        <span className="error-tips" style={{display:`${originTeacherTips?'inline-block':'none'}`}}>{originTeacherTipsTitle}</span>
 
                     </div>
 
@@ -282,7 +315,7 @@ class ReplaceSchedule extends Component{
 
                                 :
 
-                                <span className="subject-name">{teacherSubject.name?teacherSubject.name:"请选择老师"}</span>
+                                <span className={`subject-name ${teacherSubject.name?'':'unset'}`}>{teacherSubject.name?teacherSubject.name:"请选择老师"}</span>
 
                         }
 
@@ -292,7 +325,7 @@ class ReplaceSchedule extends Component{
 
                         <div className="props">代课班级:</div>
 
-                        <div className="class-pick-wrapper clearfix">
+                        <div className={`class-pick-wrapper clearfix ${classList.length>0?'':'unset'}`}>
 
                             {
 
@@ -316,17 +349,27 @@ class ReplaceSchedule extends Component{
 
                         </div>
 
+                        {
+
+                            classList.length>0?
+
+                                <span className="error-tips" style={{display:`${classTips?'inline-block':'none'}`}}>{classTipsTitle}</span>
+
+                                :''
+
+                        }
+
                     </div>
 
                     <div className="replace-teacher-wrapper clearfix">
 
                         <div className="props">代课老师:</div>
 
-                        <DropDown
+                            <DropDown
                             width={160}
                             dropSelectd={replaceTeacherOptions.dropSelectd?replaceTeacherOptions.dropSelectd:{value:"none",title:"请选择任课教师"}}
                             type="multiple"
-                            style={{zIndex:5}}
+                            style={{zIndex:1078}}
                             mutipleOptions={{
                                 range:2,
                                 dropMultipleList:teacherList,
@@ -340,6 +383,8 @@ class ReplaceSchedule extends Component{
                             }}>
 
                         </DropDown>
+
+                        <span className="error-tips" style={{display:`${replaceTeacherTips?'inline-block':'none'}`}}>{replaceTeacherTipsTitle}</span>
 
                     </div>
 
@@ -389,6 +434,8 @@ class ReplaceSchedule extends Component{
 
                                 <div className="trangle"></div>
 
+                                <span className="error-tips" style={{display:`${monthTips?'inline-block':'none'}`}}>{monthTipsTitle}</span>
+
                             </div>
 
                             :''
@@ -417,6 +464,9 @@ class ReplaceSchedule extends Component{
 
                                 <div className="trangle"></div>
 
+                                <span className="error-tips" style={{display:`${weekTips?'inline-block':'none'}`}}>{weekTipsTitle}</span>
+
+
                             </div>
 
                             :''
@@ -438,6 +488,9 @@ class ReplaceSchedule extends Component{
                                 <div className="date-wrapper" title={dateCheckedList.length>0?dateCheckedList.join(','):'请选择日期'}>{dateCheckedList.length>0?dateCheckedList.join(','):'请选择日期'}</div>
 
                                 <div className="trangle"></div>
+
+                                <span className="error-tips" style={{display:`${dateTips?'inline-block':'none'}`}}>{dateTipsTitle}</span>
+
 
                             </div>
 
@@ -463,7 +516,7 @@ class ReplaceSchedule extends Component{
 
                                     classHourDate?
 
-                                        <Loading className="date-loading" spinning={dateLoadingShow} opacity={false} type="loading">
+                                        <Loading  className="date-loading" spinning={dateLoadingShow} opacity={false} type="loading">
 
                                                 <span className="week-date">(第{WeekNO}周 {WeekDay})</span>
 
@@ -472,6 +525,9 @@ class ReplaceSchedule extends Component{
                                         :''
 
                                 }
+
+                                <span className="error-tips" style={{display:`${classHourDateTips?'inline-block':'none'}`}}>{classHourDateTipsTitle}</span>
+
 
                                 <Loading opacity={false} className="class-hour-loading" type="loading"  spinning={classHourLoadingShow}>
 
@@ -539,6 +595,8 @@ class ReplaceSchedule extends Component{
 
                                 <div className="trangle"></div>
 
+                                <span className="error-tips" style={{display:`${classHourTips?'inline-block':'none'}`}}>{classHourTipsTitle}</span>
+
                             </div>
 
                             :''
@@ -546,8 +604,6 @@ class ReplaceSchedule extends Component{
                     }
 
                 </div>
-
-            </Loading>
 
         );
     }
