@@ -1702,7 +1702,9 @@ const changeTimeTeacherDropChange = (info) => {
 
                             value:item.ScheduleID,
 
-                            title:title
+                            title:title,
+
+                            no:item.ClassHourNO
 
                         }
 
@@ -1915,7 +1917,9 @@ const changeTimeOriginDate = (date) => {
 
                                 value:item.ScheduleID,
 
-                                title:title
+                                title:title,
+
+                                no:item.ClassHourNO
 
                             }
 
@@ -3388,8 +3392,6 @@ const ModalCommit = () => {
 
   return (dispatch,getState) => {
 
-      console.log(123);
-
       const { AdjustByTeacherModal } = getState().Manager;
 
       const { activeKey } = AdjustByTeacherModal;
@@ -3631,9 +3633,6 @@ const ModalCommit = () => {
 
                       Item = '';
 
-                      TeacherID1 = '';
-
-                      TeacherID2 = '';
 
               }
 
@@ -3643,19 +3642,23 @@ const ModalCommit = () => {
 
               dispatch({type:ADJUST_BY_TEACHER_LOADING_SHOW});
 
-              setReplaceCourse(Type,Item,TeacherID1,TeacherID2,dispatch).then(() => {
+              setReplaceCourse(Type,Item,TeacherID1,TeacherID2,dispatch).then((data) => {
 
-                  dispatch({type:ADJUST_BY_TEACHER_HIDE});
+                  if (data){
 
-                  dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+                      dispatch({type:ADJUST_BY_TEACHER_HIDE});
 
-                          type:"success",
+                      dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
 
-                          title:"找人代课成功！",
+                              type:"success",
 
-                          hide:hideAlert(dispatch)
+                              title:"找人代课成功！",
 
-                      }});
+                              hide:hideAlert(dispatch)
+
+                          }});
+
+                  }
 
               })
 
@@ -3675,7 +3678,9 @@ const ModalCommit = () => {
 
         let originTeacherOk,originDateOk,originScheduleOk,targetTeacherOk,targetDateOk,targetScheduleOk = false;
 
-            if (originDropSelectd.value==='none'){
+        console.log(originDropSelectd,originDate,originScheduleDropSelectd,targetDropSelectd,targetDate,targetScheduleDropSelectd);
+
+        if (originDropSelectd.value==='none'){
 
                 dispatch({type:CHANGE_SHCEDULE_ERROR_TIPS_SHOW,data:{type:"originTeacher"}});
 
@@ -3687,15 +3692,19 @@ const ModalCommit = () => {
 
             }
 
-          if (originDate===''){
 
-              dispatch({type:CHANGE_SHCEDULE_ERROR_TIPS_SHOW,data:{type:"originDate"}});
+            console.log(originDate);
 
-          }else{
+
+          if (originDate){
 
               dispatch({type:CHANGE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:"originDate"}});
 
               originDateOk = true;
+
+          }else{
+
+              dispatch({type:CHANGE_SHCEDULE_ERROR_TIPS_SHOW,data:{type:"originDate"}});
 
           }
 
@@ -3723,15 +3732,15 @@ const ModalCommit = () => {
 
           }
 
-          if (targetDate===''){
-
-              dispatch({type:CHANGE_SHCEDULE_ERROR_TIPS_SHOW,data:{type:"targetDate"}});
-
-          }else{
+          if (targetDate){
 
               dispatch({type:CHANGE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:"targetDate"}});
 
               targetDateOk = true;
+
+          }else{
+
+              dispatch({type:CHANGE_SHCEDULE_ERROR_TIPS_SHOW,data:{type:"targetDate"}});
 
           }
 
@@ -3749,7 +3758,31 @@ const ModalCommit = () => {
 
           if (originDateOk&&originTeacherOk&&originScheduleOk&&targetTeacherOk&&targetDateOk&&targetScheduleOk){
 
+              let ScheduleID1 = originScheduleDropSelectd.value;
 
+              let ScheduleID2 = targetScheduleDropSelectd.value;
+
+              dispatch({type:ADJUST_BY_TEACHER_LOADING_SHOW});
+
+              changeSchedule(ScheduleID1,ScheduleID2,dispatch).then(data=>{
+
+                 if (data){
+
+                     dispatch({type:ADJUST_BY_TEACHER_HIDE});
+
+                     dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                             type:"success",
+
+                             title:"与人换课成功！",
+
+                             hide:hideAlert(dispatch)
+
+                     }});
+
+                 }
+
+              });
 
           }
 
@@ -3757,19 +3790,302 @@ const ModalCommit = () => {
 
       if (activeKey==='3'){
 
+            let { oldClassHourList,errorTips,teacherDrop,originDate,oldClassHourDrop,newDate,newClassHourDrop,newClassRoomDrop } = changeTime;
 
+
+            let teacherOk,originDateOk,originSchedukeOk,targetDateOk,targetScheduleOk,targetClassRoomOk = false;
+
+            if (teacherDrop.value==='none'){
+
+                dispatch({type:CHANGE_TIME_ERROR_TIPS_SHOW,data:{type:"teacher"}});
+
+            }else{
+
+                dispatch({type:CHANGE_TIME_ERROR_TIPS_HIDE,data:{type:"teacher"}});
+
+                teacherOk = true;
+
+            }
+
+          if (originDate){
+
+              dispatch({type:CHANGE_TIME_ERROR_TIPS_HIDE,data:{type:"originDate"}});
+
+              originDateOk = true;
+
+          }else{
+
+              dispatch({type:CHANGE_TIME_ERROR_TIPS_SHOW,data:{type:"originDate"}});
+
+          }
+
+          if (oldClassHourDrop.value==='none'){
+
+              dispatch({type:CHANGE_TIME_ERROR_TIPS_SHOW,data:{type:"originSchedule"}});
+
+          }else{
+
+              dispatch({type:CHANGE_TIME_ERROR_TIPS_HIDE,data:{type:"originSchedule"}});
+
+              originSchedukeOk = true;
+
+          }
+
+          if (newDate){
+
+              dispatch({type:CHANGE_TIME_ERROR_TIPS_HIDE,data:{type:"targetDate"}});
+
+              targetDateOk = true;
+
+          }else{
+
+              dispatch({type:CHANGE_TIME_ERROR_TIPS_SHOW,data:{type:"targetDate"}});
+
+          }
+
+          if (newClassHourDrop.value==='none'){
+
+              dispatch({type:CHANGE_TIME_ERROR_TIPS_SHOW,data:{type:"targetSchedule"}});
+
+          }else{
+
+              dispatch({type:CHANGE_TIME_ERROR_TIPS_HIDE,data:{type:"targetSchedule"}});
+
+              targetScheduleOk = true;
+
+          }
+
+          if (newClassRoomDrop.value==='none'){
+
+              dispatch({type:CHANGE_TIME_ERROR_TIPS_SHOW,data:{type:"targetClassRoom"}});
+
+          }else{
+
+              dispatch({type:CHANGE_TIME_ERROR_TIPS_HIDE,data:{type:"targetClassRoom"}});
+
+              targetClassRoomOk = true;
+
+          }
+
+          if (teacherOk&&originDateOk&&originSchedukeOk&&targetDateOk&&targetScheduleOk&&targetClassRoomOk&&(!errorTips)){
+
+
+              let ScheduleID = oldClassHourDrop.value;
+
+              let ClassDate1 = originDate;
+
+              let ClassHourNO1 = oldClassHourList.find(item=>item.value === ScheduleID).no;
+
+              let ClassDate2 = newDate;
+
+              let ClassHourNO2 = newClassHourDrop.value;
+
+              let ClassRoomID = newClassRoomDrop.value;
+
+              dispatch({type:ADJUST_BY_TEACHER_LOADING_SHOW});
+
+              changeScheduleTime(ScheduleID,ClassDate1,ClassHourNO1,ClassDate2,ClassHourNO2,ClassRoomID,dispatch).then(data=>{
+
+                 if (data){
+
+                     dispatch({type:ADJUST_BY_TEACHER_HIDE});
+
+                     dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                             type:"success",
+
+                             title:"调整时间成功！",
+
+                             hide:hideAlert(dispatch)
+
+                         }});
+
+                 }
+
+              });
+
+
+
+          }
 
       }
 
       if (activeKey==='4'){
 
+          let { classHourList,teacherDrop,date,classHourDrop,teacherClassRoom,classRoomDrop } = ChangeClassRoom;
 
+          let teacherOk,dateOk,scheduleOk,targetClassRoomOk = false;
+
+          if (teacherDrop.value==='none'){
+
+              dispatch({type:CHANGE_CLASS_ROOM_ERROR_TIPS_SHOW,data:{type:"teacher"}});
+
+          }else{
+
+              dispatch({type:CHANGE_CLASS_ROOM_ERROR_TIPS_HIDE,data:{type:"teacher"}});
+
+              teacherOk = true;
+
+          }
+
+          if (date){
+
+              dispatch({type:CHANGE_CLASS_ROOM_ERROR_TIPS_HIDE,data:{type:"date"}});
+
+              dateOk = true;
+
+          }else{
+
+              dispatch({type:CHANGE_CLASS_ROOM_ERROR_TIPS_SHOW,data:{type:"date"}});
+
+          }
+
+          if (classHourDrop.value==='none'){
+
+              dispatch({type:CHANGE_CLASS_ROOM_ERROR_TIPS_SHOW,data:{type:"schedule"}});
+
+          }else{
+
+              dispatch({type:CHANGE_CLASS_ROOM_ERROR_TIPS_HIDE,data:{type:"schedule"}});
+
+              scheduleOk = true;
+
+          }
+
+          if (classRoomDrop.value==='none'){
+
+              dispatch({type:CHANGE_CLASS_ROOM_ERROR_TIPS_SHOW,data:{type:"targetClassRoom"}});
+
+          }else{
+
+              dispatch({type:CHANGE_CLASS_ROOM_ERROR_TIPS_HIDE,data:{type:"targetClassRoom"}});
+
+              targetClassRoomOk = true;
+
+          }
+
+          if (teacherOk&&dateOk&&scheduleOk&&targetClassRoomOk){
+
+              dispatch({type:ADJUST_BY_TEACHER_LOADING_SHOW});
+
+              let { SchoolID } = getState().LoginUser;
+
+              let ClassHourNo = classHourList.find(item=>item.value === classHourDrop.value).NO;
+
+              let Type = 4;
+
+              let Item = `${date};${ClassHourNo}`;
+
+              let ClassRoomID1 = teacherClassRoom.id;
+
+              let ClassRoomID2 = classRoomDrop.value;
+
+              changeClassRoom(SchoolID,Type,Item,ClassRoomID1,ClassRoomID2,dispatch).then(data=>{
+
+
+                  if (data){
+
+                      dispatch({type:ADJUST_BY_TEACHER_HIDE});
+
+                      dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                              type:"success",
+
+                              title:"调整教室成功！",
+
+                              hide:hideAlert(dispatch)
+
+                          }});
+
+                  }
+
+              });
+
+
+          }
 
       }
 
       if (activeKey==='5'){
 
+        let { teacherDrop,date,classHoursCheckedList } = StopSchedule;
 
+        let teacherOk,dateOk,scheduleOk = false;
+
+        let ScheduleLength = 0;
+
+        classHoursCheckedList.map(item=>{
+
+            ScheduleLength = ScheduleLength + item.list.length;
+
+        });
+
+        if (teacherDrop.value==='none'){
+
+            dispatch({type:STOP_SCHEDULE_ERROR_TIPS_SHOW,data:{type:"teacher"}});
+
+        }else{
+
+            dispatch({type:STOP_SCHEDULE_ERROR_TIPS_HIDE,data:{type:"teacher"}});
+
+            teacherOk = true;
+
+        }
+
+          if (date){
+
+              dispatch({type:STOP_SCHEDULE_ERROR_TIPS_HIDE,data:{type:"date"}});
+
+              dateOk = true;
+
+          }else{
+
+              dispatch({type:STOP_SCHEDULE_ERROR_TIPS_SHOW,data:{type:"date"}});
+
+          }
+
+          if (ScheduleLength>0){
+
+              dispatch({type:STOP_SCHEDULE_ERROR_TIPS_HIDE,data:{type:"schedule"}});
+
+              scheduleOk = true;
+
+          }else{
+
+              dispatch({type:STOP_SCHEDULE_ERROR_TIPS_SHOW,data:{type:"schedule"}});
+
+          }
+
+          if (teacherOk&&dateOk&&scheduleOk){
+
+              dispatch({type:ADJUST_BY_TEACHER_LOADING_SHOW});
+
+              let ScheduleList = [...classHoursCheckedList.map(item=>item.list)];
+
+              let ScheduleIDs = ScheduleList.join(',');
+
+              stopSchedule(ScheduleIDs,dispatch).then(data=>{
+
+                  if (data){
+
+                      dispatch({type:ADJUST_BY_TEACHER_HIDE});
+
+                      dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                              type:"success",
+
+                              title:"停课成功！",
+
+                              hide:hideAlert(dispatch)
+
+                          }});
+
+
+                  }
+
+              })
+
+          }
 
       }
 
@@ -3836,6 +4152,8 @@ const isOccoputy = async (ClassRoomID,ClassDate,ClassHourNO,dispatch) =>{
 
           }});
 
+      dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
+
   }
 
 };
@@ -3865,6 +4183,8 @@ const getTeacherDaySchedule = async (TeacherID,ClassDate,dispatch) =>{
                 cancel:hideAlert(dispatch)
 
             }});
+
+        dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
 
     }
 
@@ -3897,6 +4217,8 @@ const getEmptyClassRoomByDate = async (ClassDate,ClassHourNO,dispatch) => {
                 cancel:hideAlert(dispatch)
 
             }});
+
+        dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
 
     }
 
@@ -3931,6 +4253,8 @@ const getTeacherBySearch = async (SchoolID,key,dispatch) => {
 
             }});
 
+        dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
+
     }
 
 };
@@ -3963,6 +4287,8 @@ const getWeekDayTime = async (SchoolID,ClassDate,dispatch) =>{
 
             }});
 
+        dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
+
     }
 
 };
@@ -3972,7 +4298,143 @@ const getWeekDayTime = async (SchoolID,ClassDate,dispatch) =>{
 
 const setReplaceCourse = async (Type,Item,TeacherID1,TeacherID2,dispatch) =>{
 
-    let res = await Method.getPostData(`/scheduleSetReplacec`);
+    let res = await Method.getPostData(`/scheduleSetReplacec`,{Type:Type,Item:Item,TeacherID1:TeacherID1,TeacherID2:TeacherID2 });
+
+    if(res.Status === 200){
+
+        return res;
+
+    }else{
+
+        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                type:"btn-warn",
+
+                title:res.Msg,
+
+                ok:hideAlert(dispatch),
+
+                close:hideAlert(dispatch),
+
+                cancel:hideAlert(dispatch)
+
+            }});
+
+        dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
+
+    }
+
+};
+
+
+
+//教师课程互换
+
+const changeSchedule = async (ScheduleID1,ScheduleID2,dispatch) =>{
+
+    let res = await Method.getPostData(`/scheduleChangeSchedule`,{ScheduleID1:ScheduleID1,ScheduleID2:ScheduleID2});
+
+    if(res.Status === 200){
+
+        return res;
+
+    }else{
+
+        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                type:"btn-warn",
+
+                title:res.Msg,
+
+                ok:hideAlert(dispatch),
+
+                close:hideAlert(dispatch),
+
+                cancel:hideAlert(dispatch)
+
+            }});
+
+        dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
+
+    }
+
+};
+
+
+//调整上课时间
+
+const changeScheduleTime = async (ScheduleID,ClassDate1,ClassHourNO1,ClassDate2,ClassHourNO2,ClassRoomID,dispatch) =>{
+
+    let res = await Method.getPostData(`/changeScheduleTime`,{ScheduleID:ScheduleID,ClassDate1:ClassDate1,
+
+        ClassHourNO1:ClassHourNO1,ClassDate2:ClassDate2,ClassHourNO2:ClassHourNO2,ClassRoomID:ClassRoomID});
+
+
+    if(res.Status === 200){
+
+        return res;
+
+    }else{
+
+        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                type:"btn-warn",
+
+                title:res.Msg,
+
+                ok:hideAlert(dispatch),
+
+                close:hideAlert(dispatch),
+
+                cancel:hideAlert(dispatch)
+
+            }});
+
+        dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
+
+    }
+
+};
+
+//调整上课教室
+const changeClassRoom = async (SchoolID,Type,Item,ClassRoomID1,ClassRoomID2,dispatch) =>{
+
+    let res = await Method.getPostData(`/scheduleChangeClassRoom`,{SchoolID:SchoolID,Type:Type,
+
+        Item:Item,ClassRoomID1:ClassRoomID1,ClassRoomID2:ClassRoomID2});
+
+
+    if(res.Status === 200){
+
+        return res;
+
+    }else{
+
+        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+
+                type:"btn-warn",
+
+                title:res.Msg,
+
+                ok:hideAlert(dispatch),
+
+                close:hideAlert(dispatch),
+
+                cancel:hideAlert(dispatch)
+
+            }});
+
+        dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
+
+    }
+
+};
+
+//单个停课
+const stopSchedule = async (ScheduleIDs,dispatch) =>{
+
+    let res = await Method.getPostData(`/stopSchedule`,{ScheduleIDs:ScheduleIDs});
+
 
     if(res.Status === 200){
 
@@ -3997,16 +4459,6 @@ const setReplaceCourse = async (Type,Item,TeacherID1,TeacherID2,dispatch) =>{
     }
 
 };
-
-
-
-
-
-
-
-
-
-
 
 export default {
 

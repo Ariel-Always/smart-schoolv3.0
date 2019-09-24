@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 
 import { Loading,DropDown,Radio } from "../../../../common";
 
-import { DatePicker,ConfigProvider } from 'antd';
+import { DatePicker,ConfigProvider,Tooltip } from 'antd';
 
 import { connect } from 'react-redux';
 
@@ -146,7 +146,19 @@ class ChangeSchedule extends Component{
 
             targetScheduleList,
 
-            targetScheduleDropSelectd
+            targetScheduleDropSelectd,
+
+            originTeacherTips,
+
+            originDateTips,
+
+            originScheduleTips,
+
+            targetTeacherTips,
+
+            targetDateTips,
+
+            targetScheduleTips
 
         } = changeSchedule;
 
@@ -180,6 +192,8 @@ class ChangeSchedule extends Component{
 
                         </DropDown>
 
+                        <span className="error-tips" style={{display:`${originTeacherTips?'block':'none'}`}}>请选择教师</span>
+
                     </div>
 
                     <div className="change-info-wrapper clearfix">
@@ -191,6 +205,8 @@ class ChangeSchedule extends Component{
                             <DatePicker style={{width:150,marginLeft:8,height:28}}  value={originDate?moment(originDate,'YYYY-MM-DD'):null} onChange={this.originDateChecked.bind(this)}></DatePicker>
 
                         </ConfigProvider>
+
+                        <span className="error-tips" style={{display:`${originDateTips?'block':'none'}`}}>请选择日期</span>
 
                     </div>
 
@@ -207,6 +223,9 @@ class ChangeSchedule extends Component{
                             onChange={this.originScheduleDropChange.bind(this)}>
 
                         </DropDown>
+
+                        <span className="error-tips" style={{display:`${originScheduleTips?'block':'none'}`}}>请选择节次</span>
+
 
                     </div>
 
@@ -238,6 +257,9 @@ class ChangeSchedule extends Component{
 
                         </DropDown>
 
+                        <span className="error-tips" style={{display:`${targetTeacherTips?'block':'none'}`}}>请选择教师</span>
+
+
                     </div>
 
                     <div className="change-info-wrapper clearfix">
@@ -249,6 +271,8 @@ class ChangeSchedule extends Component{
                             <DatePicker style={{width:150,marginLeft:8,height:28}}  value={targetDate?moment(targetDate,'YYYY-MM-DD'):null} onChange={this.targetDateChecked.bind(this)}></DatePicker>
 
                         </ConfigProvider>
+
+                        <span className="error-tips" style={{display:`${targetDateTips?'block':'none'}`}}>请选择日期</span>
 
                     </div>
 
@@ -262,9 +286,12 @@ class ChangeSchedule extends Component{
                             width={150}
                             height={108}
                             disabled={targetSchedulePickDisabled}
-                            onChange={this.targetScheduleDropChange.bind(this)}>
+                            onChange={this.targetScheduleDropChange.bind(this)}
+                            style={{zIndex:2}}>
 
                         </DropDown>
+
+                        <span className="error-tips" style={{display:`${targetScheduleTips?'block':'none'}`}}>请选择节次</span>
 
                     </div>
 

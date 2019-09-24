@@ -181,7 +181,7 @@ class Subject extends Component{
 
                     <Loading spinning={SubjectTeacherSchedule.loadingShow} tip="正在为您查找，请稍后...">
 
-                        <Scrollbars
+                        {/*<Scrollbars
 
                          ref="scrollBars"
 
@@ -197,7 +197,7 @@ class Subject extends Component{
 
                         }}
 
-                        onScrollFrame={this.scrollToBottom.bind(this)}>
+                        onScrollFrame={this.scrollToBottom.bind(this)}>*/}
 
 
 
@@ -215,7 +215,7 @@ class Subject extends Component{
 
                     </DoubleSingleTable>
 
-                    </Scrollbars>
+                   {/* </Scrollbars>*/}
 
                     </Loading>
 

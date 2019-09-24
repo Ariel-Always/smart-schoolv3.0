@@ -153,7 +153,19 @@ class ChangeTime extends Component{
 
             newClassRoomDisabled,
 
-            errorTips
+            errorTips,
+
+            teacherTips,
+
+            originDateTips,
+
+            originScheduleTips,
+
+            targetDateTips,
+
+            targetScheduleTips,
+
+            targetClassRoomTips
 
         } = changeTime;
 
@@ -186,6 +198,8 @@ class ChangeTime extends Component{
 
                         </DropDown>
 
+                        <span className="error-tips" style={{display:`${teacherTips?'block':'none'}`}}>请选择教师</span>
+
                     </div>
 
                     <div className="old-time-wrapper clearfix">
@@ -200,6 +214,9 @@ class ChangeTime extends Component{
 
                             </ConfigProvider>
 
+                            <span className="error-tips" style={{display:`${originDateTips?'block':'none'}`}}>请选择日期</span>
+
+
                             <DropDown width={146}
                                       height={72}
                                       style={{zIndex:4}}
@@ -210,6 +227,7 @@ class ChangeTime extends Component{
 
                             </DropDown>
 
+                            <span className="error-tips" style={{display:`${originScheduleTips?'block':'none'}`}}>请选择节次</span>
 
                             <div className="week-wrapper">{oldWeek.WeekNO?`第${oldWeek.WeekNO}周`:''} {oldWeek.WeekDay} { oldWeek.ClassHour }</div>
 
@@ -230,6 +248,9 @@ class ChangeTime extends Component{
 
                             </ConfigProvider>
 
+                            <span className="error-tips" style={{display:`${targetDateTips?'block':'none'}`}}>请选择时间</span>
+
+
                             <DropDown width={146}
                                       height={72}
                                       style={{zIndex:4}}
@@ -240,6 +261,8 @@ class ChangeTime extends Component{
                                         >
 
                             </DropDown>
+
+                            <span className="error-tips" style={{display:`${targetScheduleTips?'block':'none'}`}}>请选择节次</span>
 
 
                             <div className="week-wrapper">{newWeek.WeekNO?`第${newWeek.WeekNO}周`:''} {newWeek.WeekDay} {newWeek.ClassHour}</div>
@@ -254,7 +277,10 @@ class ChangeTime extends Component{
                                       onChange={ this.newClassRoomChange.bind(this) }  >
 
                             </DropDown>
-                            
+
+                            <span className="error-tips" style={{display:`${targetClassRoomTips?'block':'none'}`}}>请选择教室</span>
+
+
                             <div className="error-tips" style={{display:`${errorTips?'block':'none'}`}}>该教室已被占用</div>
 
                         </div>

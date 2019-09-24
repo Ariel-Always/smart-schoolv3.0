@@ -1,10 +1,30 @@
 import React,{Component} from 'react';
+
+import { Table } from "../../../common";
+
+import $ from 'jquery';
+
 class DoubleSingleTable extends Component{
+
+
+    componentDidMount() {
+
+        console.log($(this.refs['table']).find('.ant-table-fixed'));
+
+        $('#tb').find('div.ant-table-body').scroll(() => {
+
+            let scrollTop = $('#tb').find('div.ant-table-body').scrollTop();
+
+        });
+
+    }
 
     render() {
 
         const {ItemClassHourCount,ItemClassHour,leftColWidth,commonColWidth,rowOneHeight,rowTowHeight,commonRowHeight,schedule} = this.props;
 
+
+        /*console.log(schedule,ItemClassHour);*/
 
         //设置头部的td
 
@@ -20,11 +40,27 @@ class DoubleSingleTable extends Component{
 
         }
 
+
         let tdWeek =[];
 
         let tdCourse = [];
 
         let key = 1;
+
+        //ant table
+        let dataSource = [];
+
+        let WeekCol = [];
+
+        //将schedule转换为ant 类型的table
+        schedule.map(item=>{
+
+            dataSource.push({id:item.id,name:item.name})
+
+        });
+
+        console.log(schedule,dataSource);
+
 
         for (let i = 1; i <= 7; i++){
 
@@ -66,6 +102,11 @@ class DoubleSingleTable extends Component{
 
             tdWeek.push(<td key={i} colSpan={weekColSpan} className={`week week${i}`} style={{height:rowOneHeight}}>{weekTitle}</td>);
 
+            let ClassHourCol=[];
+
+
+
+
             for (let j = 1 ;j <= weekColSpan; j++){
 
                 tdCourse.push(<td key={key}  className={`course-time week${i} time${j} col${key}`} style={{height:rowTowHeight}}>
@@ -96,19 +137,133 @@ class DoubleSingleTable extends Component{
 
                 key+=1;
 
+                //ant table
+
+
+
+
+                if(dataSource.length>0){
+
+                    dataSource.map((item,key)=>{
+
+                        let HasClass = false;
+
+                        let ClassObj = "";
+
+                        schedule.map((itm,k)=>{
+
+                            if (k===key){
+
+                                itm.list.map((it,ky)=>{
+
+                                    if (it.WeekDay===i&&it.ClassHourNO===j){
+
+                                        HasClass = true;
+
+                                        ClassObj = {
+
+                                            secondTitle:it.secondTitle,
+
+                                            secondTitleID:it.secondTitleID,
+
+                                            thirdTitle:it.thirdTitle,
+
+                                            thirdTitleID:it.thirdTitleID,
+
+                                            title:it.title,
+
+                                            titleID:it.titleID
+                                        }
+
+                                    }
+
+                                })
+
+                            }
+
+                        });
+
+                        if (HasClass){
+
+                            dataSource[key][`${i}${j}`] = <div className="schedule-wrapper" style={{width:commonColWidth,height:commonRowHeight}}>
+
+                                <div className="title" data-id={ClassObj.titleID}>{ClassObj.title}</div>
+
+                                <div className="second-title" data-id={ClassObj.secondTitleID}>{ClassObj.secondTitle}</div>
+
+                                <div className="second-title" data-id={ClassObj.thirdTitleID}>{ClassObj.thirdTitle}</div>
+
+                            </div>;
+
+                        }else{
+
+                            dataSource[key][`${i}${j}`] = <div className="schedule-wrapper empty" style={{width:commonColWidth,height:commonRowHeight}}>--</div>
+
+                        }
+
+                    });
+
+
+
+
+                }
+
+
+
+
+
+
+                let Title = <div className="course-time-th" style={{width:commonColWidth}}>
+
+                    <div className="course">第{ItemClassHour[j-1].ClassHourNO}节</div>
+
+                    <div className="time">{ItemClassHour[j-1].StartTime}-{ItemClassHour[j-1].EndTime}</div>
+
+                </div>;
+
+                ClassHourCol.push({title:Title,width:commonColWidth,key:`${i}${j}`,height:rowTowHeight,dataIndex:`${i}${j}`});
+
             }
+
+
+
+            //ant col
+            WeekCol.push({key:`week${i}`,colSpan:weekColSpan,height:rowOneHeight,title:weekTitle,children:[...ClassHourCol]});
 
         }
 
 
+        //ant columns
+
+        let Columns = [
+
+            {
+
+                width:leftColWidth,
+
+                fixed:"left",
+
+                key:"blank",
+
+                dataIndex:"name"
+
+            },
+            ...WeekCol
+
+        ];
+
+        console.log(dataSource,WeekCol,Columns);
+
+
         //类型为single-single,double-single,single-double三种
 
-        return (
 
-            <table>
+
+
+        {/*<table>
 
                 <tbody>
-                {/* 表头*/}
+                 表头
                    <tr>
 
                        <td className="col col0" rowSpan={2}>
@@ -130,7 +285,7 @@ class DoubleSingleTable extends Component{
                         }
 
                     </tr>
-                   {/* 表体*/}
+                    表体
                     {
                         schedule.map((item,key) => {
 
@@ -199,7 +354,7 @@ class DoubleSingleTable extends Component{
                                         {
 
                                             tds
-                                            
+
                                         }
 
                                     </tr>;
@@ -209,8 +364,16 @@ class DoubleSingleTable extends Component{
 
 
                 </tbody>
-                
-            </table>
+
+            </table>*/}
+
+        return (
+
+            <Table id="tb" ref="table" columns={Columns} onChange={(q1,q2,q3,q4)=>{console.log(q1,q2,q3,q4)}} bordered dataSource={dataSource} pagination={false} scroll={{x:1120,y:760}}>
+
+
+
+            </Table>
 
         );
 
