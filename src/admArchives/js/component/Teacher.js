@@ -1,9 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import { DetailsModal,DropDown, PagiNation, Search, Table, Button, CheckBox, CheckBoxGroup, Modal } from '../../../common/index'
+import { DetailsModal, DropDown, PagiNation, Search, Table, Button, CheckBox, CheckBoxGroup, Modal } from '../../../common/index'
 //import '../../../common/scss/_left_menu.scss'
-import {  Link, } from 'react-router-dom';
-
+import { Link, } from 'react-router-dom';
+import CONFIG from '../../../common/js/config';
+import { postData, getData } from "../../../common/js/fetch";
 
 import history from '../containers/history'
 import EditModal from './EditModal'
@@ -11,7 +12,7 @@ import IconLocation from '../../images/icon-location.png'
 import actions from '../actions';
 import TeacherChangeRecord from './TeacherChangeRecord'
 import '../../scss/Teacher.scss'
-class Teacher extends React.Component{
+class Teacher extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -24,26 +25,27 @@ class Teacher extends React.Component{
                     title: '',
                     dataIndex: 'key',
                     key: 'key',
-                    align:'left',
+                    width: 68,
+                    align: 'left',
                     render: key => {
                         return (
                             <div className='registerTime-content'>
                                 <CheckBox value={key} onChange={this.onCheckChange}></CheckBox>
-                                <span className='key-content'>{key+1 >= 10 ? key+1 : '0' + (key+1)}</span>
+                                <span className='key-content'>{key + 1 >= 10 ? key + 1 : '0' + (key + 1)}</span>
                             </div>
                         )
                     }
-                }, 
+                },
                 {
                     title: '',
-                    align:'right',
+                    align: 'right',
                     key: 'UserImg',
-                    width: 60,
+                    width: 50,
                     dataIndex: 'UserImgs',
                     render: arr => {
                         return (
-                            <div className='name-content'>        
-                                <img alt={arr.UserName} onClick={this.onUserNameClick.bind(this,arr.key)} className='name-img' width='47' height='47' src={arr.UserImg}></img>
+                            <div className='name-content'>
+                                <img alt={arr.UserName} onClick={this.onUserNameClick.bind(this, arr.key)} className='name-img' width='47' height='47' src={arr.UserImg}></img>
                             </div>
                         )
                     }
@@ -51,14 +53,15 @@ class Teacher extends React.Component{
                 },
                 {
                     title: '姓名',
-                    align:'left',
+                    align: 'left',
+                    width: 70,
                     key: 'UserName',
                     dataIndex: 'UserName',
                     sorter: true,
                     render: arr => {
                         return (
                             <div className='name-content'>
-                                <span className='name-UserName' onClick={this.onUserNameClick.bind(this,arr.key)}>{arr.UserName}</span>
+                                <span className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.key)}>{arr.UserName}</span>
                             </div>
                         )
                     }
@@ -66,9 +69,10 @@ class Teacher extends React.Component{
                 },
                 {
                     title: '工号',
-                    align:'center',
+                    align: 'center',
                     dataIndex: 'UserID',
                     key: 'UserID',
+                    width: 130,
                     sorter: true,
                     render: UserID => {
                         return (
@@ -78,8 +82,9 @@ class Teacher extends React.Component{
                 },
                 {
                     title: '性别',
-                    align:'center',
+                    align: 'center',
                     dataIndex: 'Gender',
+                    width: 100,
                     key: 'Gender',
                     render: Gender => {
                         return (
@@ -89,7 +94,8 @@ class Teacher extends React.Component{
                 },
                 {
                     title: '所在学科',
-                    align:'center',
+                    width: 100,
+                    align: 'center',
                     key: 'SubjectNames',
                     dataIndex: 'SubjectNames',
                     render: arr => {
@@ -100,7 +106,8 @@ class Teacher extends React.Component{
                 },
                 {
                     title: '职称',
-                    align:'center',
+                    width: 100,
+                    align: 'center',
                     key: 'Titles',
                     dataIndex: 'Titles',
                     render: Titles => {
@@ -111,14 +118,15 @@ class Teacher extends React.Component{
                 },
                 {
                     title: '操作',
-                    align:'center',
+                    align: 'center',
+                    width: 200,
                     key: 'handleMsg',
                     dataIndex: 'handleMsg',
                     render: (handleMsg) => {
 
                         return (
                             <div className='handle-content'>
-                                <Button color='blue' type='default' onClick={this.TeacherChange.bind(this, handleMsg)} className='handle-btn'>查看变记录</Button>
+                                {/* <Button color='blue' type='default' onClick={this.TeacherChange.bind(this, handleMsg)} className='handle-btn'>查看变记录</Button> */}
                                 <Button color='blue' type='default' onClick={this.TeacherEdit.bind(this, handleMsg)} className='handle-btn'>编辑</Button>
                             </div>
                         )
@@ -147,54 +155,63 @@ class Teacher extends React.Component{
             alertTitle: '提示信息',
             alertQueryShow: false,
             alertQueryTitle: '查询提示~',
-            TeacherDetailsMsgModalVisible:false,
-            addTeacherModalVisible:false
+            TeacherDetailsMsgModalVisible: false,
+            addTeacherModalVisible: false,
+            selectSubject: { value: 'all', title: '全部' }
 
         }
     }
-    componentWillReceiveProps() {
-        // let Grades = this.props.DataState.GradeClassMsg.Grades ? this.props.DataState.GradeClassMsg.Grades : [];
-        // let len = Grades.lenght;
-        // console.log(Grades)
-        // let GradeArr = [{ value: 0, title: '全部年级' }];
+    componentWillReceiveProps(nextProps) {
+        const { DataState, UIState } = nextProps;
+        let SubjectTeacherPreview = DataState.SubjectTeacherPreview;
+        this.setState({
+            selectSubject: SubjectTeacherPreview.SubjectID
+        })
 
-        // for (let i = 0; i < len; i++) {
-        //     let Grade = { value: Grades[i].GradeID, title: Grades[i].GradeName }
-        //     GradeArr.push(Grade)
-        // }
-
-        // this.setState({
-        //     GradeArr: GradeArr
-        // })
 
     }
-    componentWillMount(){
-        
-       
+    componentWillMount() {
+
+
     }
 
     TeacherDropMenu = (e) => {
         const { dispatch } = this.props;
 
-        
 
-        dispatch(actions.UpDataState.getSubjectTeacherPreview('/ArchivesTeacher?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
+
+        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&SubjectIDs=' + e.value + '&PageIndex=0&PageSize=10', e));
+
 
     }
 
-    
+
 
     TeacherSearch = (e) => {
-        console.log(e)
+        const { dispatch } = this.props;
+        if (e.value === '') {
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-warn',
+                title: "你还没有输入关键字哦~",
+                ok: this.onAlertWarnOk.bind(this),
+                cancel: this.onAlertWarnClose.bind(this),
+                close: this.onAlertWarnClose.bind(this)
+            }));
+            return;
+        } else {
+            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&PageIndex=0&PageSize=10&keyword=' + e.value));
+
+        }
+
     }
 
     onSelectChange = (e) => {
-        console.log(e)
+
         //this.setState({ selectedRowKeys });
     }
 
     TeacherEdit = (e) => {
-        console.log(e.key)
+
         this.setState({
             TeacherModalVisible: true,
             userKey: e.key
@@ -202,7 +219,7 @@ class Teacher extends React.Component{
     }
 
     TeacherChange = (e, handleMsg) => {
-        console.log(e, handleMsg.key)
+
         this.setState({
             TeacherChangeMadalVisible: true,
             TeacherChangeKey: handleMsg.key
@@ -213,7 +230,7 @@ class Teacher extends React.Component{
 
     }
     OnCheckAllChange = (e) => {
-        console.log(e)
+
         if (e.target.checked) {
             this.setState({
                 checkedList: this.props.DataState.SubjectTeacherPreview.keyList,
@@ -227,7 +244,9 @@ class Teacher extends React.Component{
         }
     }
     onCheckBoxGroupChange = (checkedList) => {
-        console.log(checkedList)
+        const { dispatch } = this.props;
+
+        
         this.setState({
             checkedList,
             checkAll: checkedList === this.props.DataState.SubjectTeacherPreview.keyList ? true : false
@@ -235,21 +254,163 @@ class Teacher extends React.Component{
     }
     handleTeacherModalOk = (e) => {
         console.log(e)
-        this.setState({
-            TeacherModalVisible: false
-        })
+        let url = '/EditTeacher'
+        const { DataState, dispatch, UIState } = this.props
+        const { initTeacherMsg, changeTeacherMsg } = DataState.SetTeacherMsg;
+        let visible = UIState.EditModalVisible;
+        let haveMistake = false;
+        for (let visi in visible) {
+            if (visible[visi]) {
+                haveMistake = true;
+            }
+        }
+        console.log(visible)
+        if (this.deepCompare(initTeacherMsg, changeTeacherMsg)) {
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-error',
+                title: "你没有修改数据哦",
+                ok: this.onAppAlertOK.bind(this),
+                cancel: this.onAppAlertCancel.bind(this),
+                close: this.onAppAlertClose.bind(this)
+            }));
+            return;
+        } else {
+
+            if (haveMistake) {
+                return;
+            }
+            postData(CONFIG.UserInfoProxy + url, {
+                ...changeTeacherMsg
+            }, 2).then(res => {
+                return res.json()
+            }).then(json => {
+                if (json.Status !== 200) {
+                    dispatch(actions.UpUIState.showErrorAlert({
+                        type: 'btn-error',
+                        title: json.Message,
+                        ok: this.onAppAlertOK.bind(this),
+                        cancel: this.onAppAlertCancel.bind(this),
+                        close: this.onAppAlertClose.bind(this)
+                    }));
+                } else if (json.Status === 200) {
+
+                    this.setState({
+                        TeacherModalVisible: false
+                    })
+                    dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&SubjectIDs=all&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
+
+
+                }
+            });
+
+        }
+
     }
+    //提示事件
+    onAppAlertOK() {
+        const { dispatch } = this.props;
+        dispatch(actions.UpUIState.hideErrorAlert());
+
+    }
+    onAppAlertCancel() {
+        const { dispatch } = this.props;
+        dispatch(actions.UpUIState.hideErrorAlert());
+    }
+    onAppAlertClose() {
+        const { dispatch } = this.props;
+        dispatch(actions.UpUIState.hideErrorAlert());
+    }
+    //
     handleTeacherModalCancel = (e) => {
         console.log(e)
         this.setState({
             TeacherModalVisible: false
         })
     }
+    //添加教师
     handleAddTeacherModalOk = (e) => {
         console.log(e)
-        this.setState({
-            addTeacherModalVisible: false
-        })
+        let url = '/AddTeacher';
+        const { DataState, dispatch, UIState } = this.props
+        const { initTeacherMsg, changeTeacherMsg } = DataState.SetTeacherMsg;
+        let visible = UIState.EditModalVisible;
+        let haveMistake = false;
+        for (let visi in visible) {
+            if (visible[visi]) {
+                haveMistake = true;
+            }
+        }
+        if (this.deepCompare(initTeacherMsg, changeTeacherMsg)) {
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-error',
+                title: "你没有填写资料哦",
+                ok: this.onAppAlertOK.bind(this),
+                cancel: this.onAppAlertCancel.bind(this),
+                close: this.onAppAlertClose.bind(this)
+            }));
+            return;
+        } else {
+
+            //用户名必填
+            if (!changeTeacherMsg.userName) {
+                dispatch(actions.UpUIState.editModalTipsVisible({
+                    UserNameTipsVisible: true
+                }))
+                haveMistake = true;
+            }
+            //性别必选
+            if (!changeTeacherMsg.gender) {
+                dispatch(actions.UpUIState.editModalTipsVisible({
+                    GenderTipsVisible: true
+                }))
+                haveMistake = true;
+            }
+            //职称必选
+            if (changeTeacherMsg.titleID === '') {
+                dispatch(actions.UpUIState.editModalTipsVisible({
+                    TitleIDVisible: true
+                }))
+                haveMistake = true;
+            }
+            //学科必选
+            if (changeTeacherMsg.subjectIDs === '') {
+                dispatch(actions.UpUIState.editModalTipsVisible({
+                    changeSubjectTipsVisible: true
+                }))
+                haveMistake = true;
+            }
+            if (!haveMistake) {
+                postData(CONFIG.UserInfoProxy + url, {
+                    ...changeTeacherMsg
+                }, 2).then(res => {
+                    return res.json()
+                }).then(json => {
+                    if (json.Status !== 200) {
+                        dispatch(actions.UpUIState.showErrorAlert({
+                            type: 'btn-error',
+                            title: json.Msg,
+                            ok: this.onAppAlertOK.bind(this),
+                            cancel: this.onAppAlertCancel.bind(this),
+                            close: this.onAppAlertClose.bind(this)
+                        }));
+                    } else if (json.Status === 200) {
+
+                        console.log(json.Data)
+                        this.setState({
+                            studentModalVisible: false
+                        })
+                        this.setState({
+                            addTeacherModalVisible: false
+                        })
+                        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&SubjectIDs=all&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
+
+                    }
+                });
+            }
+
+
+        }
+
     }
     handleAddTeacherModalCancel = (e) => {
         console.log(e)
@@ -295,41 +456,71 @@ class Teacher extends React.Component{
         }
     }
     onAlertWarnClose = () => {
-        const {dispatch} = this.props;
+        const { dispatch } = this.props;
         dispatch(actions.UpUIState.hideErrorAlert());
     }
     onAlertWarnOk = () => {
-        const {dispatch} = this.props;
+        const { dispatch } = this.props;
         dispatch(actions.UpUIState.hideErrorAlert());
     }
     onAlertQueryClose = () => {
-        const {dispatch} = this.props;
+        const { dispatch } = this.props;
         dispatch(actions.UpUIState.hideErrorAlert());
     }
     onAlertQueryOk = () => {
-        const {dispatch} = this.props;
+        const { dispatch, DataState } = this.props;
+        let url = '/DeleteTeacher'
+        let checkList = this.state.checkedList;
+        let dataList = DataState.SubjectTeacherPreview.newList;
+        let UserIDList = checkList.map((child, index) => {
+            return dataList[child].UserID
+        })
+        let UserIDListString = UserIDList.join()
+
+        postData(CONFIG.UserInfoProxy + url, {
+            userIDs: UserIDListString,
+            schoolID: 'school1'
+        }, 2).then(res => {
+            return res.json()
+        }).then(json => {
+            if (json.Status === 400) {
+                console.log('错误码：400' + json)
+            } else if (json.Status === 200) {
+                this.setState({
+                    checkedList: [],
+                    checkAll: false
+                })
+                dispatch(actions.UpUIState.hideErrorAlert());
+                dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
+
+
+            }
+        });
         dispatch(actions.UpUIState.hideErrorAlert());
     }
     onPagiNationChange = (e) => {
-        console.log(e)
+        const { dispatch, DataState } = this.props;
+
+        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&PageIndex=' + (--e) + '&PageSize=10'));
+
     }
     onUserNameClick = (key) => {
-        console.log(key)
+        const { DataState } = this.props
         this.setState({
             TeacherDetailsMsgModalVisible: true,
-            
+            detailData: DataState.SubjectTeacherPreview.pensonalList[key]
         })
     }
     TeacherDetailsMsgModalOk = () => {
         this.setState({
             TeacherDetailsMsgModalVisible: false,
-            
+
         })
     }
     TeacherDetailsMsgModalCancel = () => {
         this.setState({
             TeacherDetailsMsgModalVisible: false,
-            
+
         })
     }
     onAddTeacher = (e, ) => {
@@ -339,31 +530,144 @@ class Teacher extends React.Component{
             userKey: 'add'
         })
     }
+    //对象深度对比
+    deepCompare(x, y) {
+        var i, l, leftChain, rightChain;
+
+        function compare2Objects(x, y) {
+            var p;
+
+            // remember that NaN === NaN returns false
+            // and isNaN(undefined) returns true
+            if (isNaN(x) && isNaN(y) && typeof x === 'number' && typeof y === 'number') {
+                return true;
+            }
+
+            // Compare primitives and functions.     
+            // Check if both arguments link to the same object.
+            // Especially useful on the step where we compare prototypes
+            if (x === y) {
+                return true;
+            }
+
+            // Works in case when functions are created in constructor.
+            // Comparing dates is a common scenario. Another built-ins?
+            // We can even handle functions passed across iframes
+            if ((typeof x === 'function' && typeof y === 'function') ||
+                (x instanceof Date && y instanceof Date) ||
+                (x instanceof RegExp && y instanceof RegExp) ||
+                (x instanceof String && y instanceof String) ||
+                (x instanceof Number && y instanceof Number)) {
+                return x.toString() === y.toString();
+            }
+
+            // At last checking prototypes as good as we can
+            if (!(x instanceof Object && y instanceof Object)) {
+                return false;
+            }
+
+            if (x.isPrototypeOf(y) || y.isPrototypeOf(x)) {
+                return false;
+            }
+
+            if (x.constructor !== y.constructor) {
+                return false;
+            }
+
+            if (x.prototype !== y.prototype) {
+                return false;
+            }
+
+            // Check for infinitive linking loops
+            if (leftChain.indexOf(x) > -1 || rightChain.indexOf(y) > -1) {
+                return false;
+            }
+
+            // Quick checking of one object being a subset of another.
+            // todo: cache the structure of arguments[0] for performance
+            for (p in y) {
+                if (y.hasOwnProperty(p) !== x.hasOwnProperty(p)) {
+                    return false;
+                } else if (typeof y[p] !== typeof x[p]) {
+                    return false;
+                }
+            }
+
+            for (p in x) {
+                if (y.hasOwnProperty(p) !== x.hasOwnProperty(p)) {
+                    return false;
+                } else if (typeof y[p] !== typeof x[p]) {
+                    return false;
+                }
+
+                switch (typeof (x[p])) {
+                    case 'object':
+                    case 'function':
+
+                        leftChain.push(x);
+                        rightChain.push(y);
+
+                        if (!compare2Objects(x[p], y[p])) {
+                            return false;
+                        }
+
+                        leftChain.pop();
+                        rightChain.pop();
+                        break;
+
+                    default:
+                        if (x[p] !== y[p]) {
+                            return false;
+                        }
+                        break;
+                }
+            }
+
+            return true;
+        }
+
+        if (arguments.length < 1) {
+            return true; //Die silently? Don't know how to handle such case, please help...
+            // throw "Need two or more arguments to compare";
+        }
+
+        for (i = 1, l = arguments.length; i < l; i++) {
+
+            leftChain = []; //Todo: this can be cached
+            rightChain = [];
+
+            if (!compare2Objects(arguments[0], arguments[i])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
     render() {
         const { UIState, DataState } = this.props;
-        const data = {
-            userName:'康欣',
-            userImg:'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
-            Gende:'男',
-            userText:'学如逆水行舟，不进则退',
-            userID:'20170025444',
-            userGrade:'一年级',
-            userClass:'1班',
-            userIDCard:'',
-            userPhone:'15626248624',
-            userMail:'1519406168@qq.com',
-            userAddress:'蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团'
-        };
+        // const data = {
+        //     userName: '康欣',
+        //     userImg: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
+        //     Gende: '男',
+        //     userText: '学如逆水行舟，不进则退',
+        //     userID: '20170025444',
+        //     userGrade: '一年级',
+        //     userClass: '1班',
+        //     userIDCard: '',
+        //     userPhone: '15626248624',
+        //     userMail: '1519406168@qq.com',
+        //     userAddress: '蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团'
+        // };
         return (
             <div className='Teacher'>
                 <div className='Teacher-box'>
                     <div className='Teacher-top'>
                         <span className='top-tips'>
-                            <span className='tips menu39 '>教师档案管理</span>
+                            <span className='tips menu33 '>教师档案管理</span>
                         </span>
                         <div className='top-nav'>
-                            
-                            <span className='link' style={{cursor:'pointer'}}  onClick={this.onAddTeacher}>添加教师</span>
+
+                            <span className='link' style={{ cursor: 'pointer' }} onClick={this.onAddTeacher}>添加教师</span>
                             <span className='divide'>|</span>
                             <Link className='link' to='/ImportTeacher' replace>导入教师</Link>
                         </div>
@@ -373,16 +677,15 @@ class Teacher extends React.Component{
                         <div className='content-top'>
                             <DropDown
                                 ref='dropMenuFirst'
-                                onChange={this.TeacherDropMenu}
+                                onChange={this.TeacherDropMenu.bind(this)}
                                 width={120}
                                 height={72}
-
-                                dropSelectd={DataState.SubjectTeacherMsg.returnData ? DataState.SubjectTeacherMsg.returnData.SubjectList[0] : { value: 'all', title: '全部教师' }}
+                                dropSelectd={this.state.selectSubject}
                                 dropList={DataState.SubjectTeacherMsg.returnData ? DataState.SubjectTeacherMsg.returnData.SubjectList : [{ value: 'all', title: '全部教师' }]}
                             ></DropDown>
-                            
+
                             <Search placeHolder='搜索'
-                                onClickSearch={this.TeacherSearch}
+                                onClickSearch={this.TeacherSearch.bind(this)}
                                 height={30}
                             ></Search>
                         </div>
@@ -393,7 +696,7 @@ class Teacher extends React.Component{
                                         className='table'
                                         columns={this.state.columns}
                                         pagination={false}
-                                        loading={{delay:500,spinning:DataState.SubjectTeacherPreview?DataState.SubjectTeacherPreview.loading:true}}
+                                        loading={{ delay: 500, spinning: DataState.SubjectTeacherPreview ? DataState.SubjectTeacherPreview.loading : true }}
                                         dataSource={DataState.SubjectTeacherPreview.newList} >
 
                                     </Table>
@@ -403,10 +706,10 @@ class Teacher extends React.Component{
                                     <Button onClick={this.onDeleteAllClick} className='deleteAll' color='blue'>删除</Button>
                                 </CheckBox>
                                 <div className='pagination-box'>
-                                    <PagiNation 
-                                    showQuickJumper  
-                                    total={DataState.SubjectTeacherPreview.Total} 
-                                    onChange={this.onPagiNationChange}
+                                    <PagiNation
+                                        showQuickJumper
+                                        total={DataState.SubjectTeacherPreview.Total}
+                                        onChange={this.onPagiNationChange}
                                     ></PagiNation>
                                 </div>
                             </div>
@@ -424,7 +727,7 @@ class Teacher extends React.Component{
                     onOk={this.handleTeacherModalOk}
                     onCancel={this.handleTeacherModalCancel}
                 >
-                    <EditModal type='teacher' userKey={this.state.userKey}></EditModal>
+                    {this.state.TeacherModalVisible ? (<EditModal type='teacher' userKey={this.state.userKey}></EditModal>) : ''}
                 </Modal>
                 <Modal
                     ref='handleTeacherMadal'
@@ -435,7 +738,7 @@ class Teacher extends React.Component{
                     onOk={this.handleAddTeacherModalOk}
                     onCancel={this.handleAddTeacherModalCancel}
                 >
-                    <EditModal type='teacher' userKey={this.state.userKey}></EditModal>
+                    {this.state.addTeacherModalVisible ? (<EditModal type='teacher' userKey={this.state.userKey}></EditModal>) : ''}
                 </Modal>
                 <Modal
                     ref='TeacherChangeMadal'
@@ -461,7 +764,7 @@ class Teacher extends React.Component{
                     visible={this.state.TeacherDetailsMsgModalVisible}
                     onOk={this.TeacherDetailsMsgModalOk}
                     onCancel={this.TeacherDetailsMsgModalCancel}
-                    data={data}
+                    data={this.state.detailData ? this.state.detailData : []}
                     type='Teacher'
                 >
                     <div className='modal-top'>

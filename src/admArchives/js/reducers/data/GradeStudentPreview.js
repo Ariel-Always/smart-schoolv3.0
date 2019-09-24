@@ -7,9 +7,8 @@ const GradeStudentPreview = (state={},actions)=>{
         case UpDataState.GET_GRADE_STUDENT_PREVIEW:
             let {Total,...list} = actions.data;
 
-            let {newList,keyList }= handleData(list);
-            console.log(newList,keyList)
-            return {...state,Total,newList,keyList};
+            let List= handleData(list);
+            return Object.assign({}, state,{Total,...List,GradeID:actions.GradeID,ClassID:actions.ClassID});
         default:
             return state;
     }
@@ -17,6 +16,7 @@ const GradeStudentPreview = (state={},actions)=>{
 
 function handleData(data){
     let keyList = [];
+    let pensonalList = [];
     let newList = data.List.map((child,index) => {
         let list = {}
         list.UserName = {key:index,PhotoPath:child.PhotoPath,UserName:child.UserName};
@@ -29,10 +29,25 @@ function handleData(data){
         
         let {UserID,Grader,GradeName,ClassName,PhotoPath,UserName,...others} = child;
         list.Others = others;
-        return list
+        let person = {
+            userName:child.UserName,
+            userImg:child.PhotoPath,
+            Gende:child.Gender,
+            userText:'',
+            userID:child.UserID,
+            userGrade:child.GradeName,
+            userClass:child.ClassName,
+            userIDCard:child.IDCardNo,
+            userPhone:child.Telephone,
+            userMail:child.Email,
+            userAddress:child.HomeAddress
+        }
+        pensonalList.push(person)
+        return {...list,child}
 
     })
-    return {newList,keyList};
+    
+    return {newList,keyList,pensonalList};
 }
 
 export default  GradeStudentPreview;

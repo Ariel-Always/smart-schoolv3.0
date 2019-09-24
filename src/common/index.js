@@ -1886,7 +1886,7 @@ class DetailsModal extends React.Component {
                             <span className='col-left'>
                                 {type === 'student' ? '班级' : '所教学科'}
                             </span>
-                            <span className='col-right'>{type === 'student' ? data.userGrade && data.userClass ? (data.userGrade + ' > ' + data.userClass) : <span className='content-null'>未填写</span> : data.subjectNames ? data.subjectNames : <span className='content-null'>未填写</span>}</span>
+                            <span className='col-right'>{type === 'student' ? data.userGrade && data.userClass ? (data.userGrade + ' > ' + data.userClass) : <span className='content-null'>未填写</span> : data.subjectName ? data.subjectName : <span className='content-null'>未填写</span>}</span>
                         </div>
                         <div className='row' style={{ display: type === 'teacher' ? 'block' : 'none' }}>
                             <span className='col-left'>
