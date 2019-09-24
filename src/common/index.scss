@@ -624,6 +624,7 @@ textarea.ant-input {
         border: #00a1ff 2px solid;
         border-radius: 50%;
         margin-left: -40px;
+        overflow: hidden;
         left: 50%; 
       }
       .top-userName{
@@ -682,7 +683,7 @@ textarea.ant-input {
           .content-null{
             color: #999;
             font-size: 14px;
-            line-height: 30px;
+            line-height: 20px;
             text-align: left;
           }
         }

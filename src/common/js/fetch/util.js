@@ -7,19 +7,34 @@ import $ from 'jquery'
 //import { type } from 'os';
 
 //AES加密传输参数：post
-function AESEncryptionBody(paramsObj, CRYPTOJSKEY = COMMONKEY,SecurityLevel) {//加密所使用的的key，需要与服务器端的解密key相对应
-    let body = JSON.stringify(paramsObj);
-    let plain = $.param(paramsObj);//json序列化
-    // if (SecurityLevel === 4) {
-    //     plain = getSign(paramsObj, CRYPTOJSKEY, randomString, 'post');
-    // }
+function AESEncryptionBody(paramsObj, CRYPTOJSKEY = COMMONKEY, SecurityLevel, content_type) {//加密所使用的的key，需要与服务器端的解密key相对应
+    if (content_type === 'json') {
+        //let body = JSON.stringify(paramsObj);
+        let plain = JSON.stringify(paramsObj);//json序列化
+        // if (SecurityLevel === 4) {
+        //     plain = getSign(paramsObj, CRYPTOJSKEY, randomString, 'post');
+        // }
 
-    // console.log(decrypt(encrypt(plain,CRYPTOJSKEY)))
-    if(SecurityLevel === 3 || SecurityLevel === 4){
-        body =  $.param({ p: encrypt(plain, CRYPTOJSKEY) });
+        // console.log(decrypt(encrypt(plain,CRYPTOJSKEY)))
+        if (SecurityLevel === 3 || SecurityLevel === 4) {
+            plain =JSON.stringify({ p: encrypt(plain, CRYPTOJSKEY) });
+        }
+        console.log(plain)
+        return plain;
+    } else {
+        //let body = JSON.stringify(paramsObj);
+        let plain = $.param(paramsObj);//json序列化
+        // if (SecurityLevel === 4) {
+        //     plain = getSign(paramsObj, CRYPTOJSKEY, randomString, 'post');
+        // }
+
+        // console.log(decrypt(encrypt(plain,CRYPTOJSKEY)))
+        if (SecurityLevel === 3 || SecurityLevel === 4) {
+            plain = $.param({ p: encrypt(plain, CRYPTOJSKEY) });
+        }
+
+        return plain;
     }
-    
-    return plain;
 }
 //AES加密传输参数：get
 function AESEncryptionUrl(url, CRYPTOJSKEY = COMMONKEY, SecurityLevel) {//加密所使用的的key，需要与服务器端的解密key相对应
@@ -28,7 +43,7 @@ function AESEncryptionUrl(url, CRYPTOJSKEY = COMMONKEY, SecurityLevel) {//加密
     let params = urlArray[1];
     let host = urlArray[0];
 
-    if(SecurityLevel === 3 || SecurityLevel === 4){
+    if (SecurityLevel === 3 || SecurityLevel === 4) {
         newUrl = host + '?p=' + encrypt(params, CRYPTOJSKEY);//参数加密处理
     }
 
@@ -39,7 +54,7 @@ function AESEncryptionUrl(url, CRYPTOJSKEY = COMMONKEY, SecurityLevel) {//加密
 function requestSecure(params, securityKey, SecurityLevel = 1) {
     let token = sessionStorage.getItem('token');
     let Autorization = null;
-    
+
     if (!token && SecurityLevel !== 1) {
         console.log('token无效，请重新登录');//后期会进行无token的事件操作
         return;
@@ -154,7 +169,7 @@ function formatDate(url) {
         // referrer: 'no-referrer',//该首部字段会告知服务器请求的原始资源的URI
         // 注意post时候参数的形式  
     })
-    
+
 
     console.log(nonce)
     return nonce;

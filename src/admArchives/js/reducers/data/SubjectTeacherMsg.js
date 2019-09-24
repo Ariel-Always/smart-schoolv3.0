@@ -1,18 +1,20 @@
 import UpDataState from '../../actions/UpDataState';
 
 function handleData(data) {
-    let SubjectList = data.SubjectList; 
-    let len = SubjectList.length;
+    //let SubjectList = data.SubjectList; 
+    let len = data.length;
     let newSubject = [];
-    
+    let SubjectListChange = [];
     for(let i = 0; i < len; i++){
-        let Subject = {value:SubjectList[i].SubjectID,title:SubjectList[i].SubjectName};
+        let Subject = {value:data[i].SubjectID,title:data[i].SubjectName};
         
         
         newSubject.push(Subject)
+        if(data[i].SubjectID!=='all')
+        SubjectListChange.push(Subject)
     }
     
-    return {SubjectList:newSubject}
+    return {SubjectList:newSubject,SubjectListChange:SubjectListChange}
 }
 const SubjectTeacherMsg = (state={},actions)=>{
     let returnData = {grades:null};
@@ -20,7 +22,7 @@ const SubjectTeacherMsg = (state={},actions)=>{
         case UpDataState.GET_SUBJECT_TEACHER_MSG:
             returnData = handleData(actions.data);
             
-            return {...state,returnData};
+            return Object.assign({}, state,{returnData});
         default:
             return state;
     }

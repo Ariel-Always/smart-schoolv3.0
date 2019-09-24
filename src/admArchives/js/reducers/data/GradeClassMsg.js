@@ -5,6 +5,7 @@ function handleData(data) {
     let len = Grades.length;
     
     let GradeArr = [{value:0,title:'全部年级'}];
+    let NewGrade = []
     let AllClasses = {};
     for(let i = 0; i < len; i++){
         let Grade = {value:Grades[i].GradeID,title:Grades[i].GradeName};
@@ -15,10 +16,11 @@ function handleData(data) {
         }
         AllClasses[Grades[i].GradeID] = ClassArr;
         
-        GradeArr.push(Grade)
+        GradeArr.push(Grade);
+        NewGrade.push(Grade);
     }
     
-    return {grades:GradeArr,AllClasses:AllClasses}
+    return {NewGrade:NewGrade,grades:GradeArr,AllClasses:AllClasses}
 }
 const GradeClassMsg = (state={},actions)=>{
     let returnData = {grades:null};
@@ -26,7 +28,7 @@ const GradeClassMsg = (state={},actions)=>{
         case UpDataState.GET_GRADE_CLASS_MSG:
             returnData = handleData(actions.data);
             console.log(returnData)
-            return {...state,returnData};
+            return Object.assign({}, state, {returnData});
         default:
             return state;
     }

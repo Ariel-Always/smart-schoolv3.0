@@ -102,7 +102,12 @@ class UserArchives extends React.Component {
     //左侧菜单每项的点击事件
     handleClick = (key) => {
         console.log(key)
+        if(key!=='All')
+        history.push('/UserArchives/' + key+'/all');
+        else{
         history.push('/UserArchives/' + key);
+
+        }
     }
     //每个组件的下拉菜单的数据请求
     AllDropDownMenu = (route) => {
@@ -124,15 +129,15 @@ class UserArchives extends React.Component {
                         enname: "User profile management",
                         image: logo
                     }}
-                    type="circle" showLeftMenu={true}>
+                    type="circle" showLeftMenu={true} showBarner={false}>
                     <div ref="frame-time-barner"><TimeBanner /></div>
                     <div ref="frame-left-menu"><Menu params={this.state.MenuParams}></Menu></div>
                     <div ref="frame-right-content">
                         <Loading size={'large'} opacity={false} spinning={UIState.AppLoading.RightLoading}>
-                            <Route path='/UserArchives/All' exact history={history} component={All}></Route>
-                            <Route path='/UserArchives/Student' exact history={history} component={Student}></Route>
-                            <Route path='/UserArchives/Teacher' exact history={history} component={Teacher}></Route>
-                            <Route path='/UserArchives/Leader' exact history={history} component={Leader}></Route>
+                            <Route path='/UserArchives/All'  history={history} component={All}></Route>
+                            <Route path='/UserArchives/Student/:GradeID'  history={history} component={Student}></Route>
+                            <Route path='/UserArchives/Teacher/:SubjectID'  history={history} component={Teacher}></Route>
+                            <Route path='/UserArchives/Leader'  history={history} component={Leader}></Route>
                         </Loading>
                     </div>
                 </Frame>

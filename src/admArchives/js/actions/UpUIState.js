@@ -11,6 +11,11 @@ const CLOSE_QUERY_ALERT = 'CLOSE_QUERY_ALERT';
 //右侧内容区loading
 const RIGHT_LOADING_CLOSE =  'RIGHT_LOADING_CLOSE';
 const RIGHT_LOADING_OPEN =  'RIGHT_LOADING_OPEN';
+//Table
+const TABLE_LOADING_OPEN = 'TABLE_LOADING_OPEN';
+const TABLE_LOADING_CLOSE = 'TABLE_LOADING_CLOSE';
+//editModalTipsVisible
+const EDIT_MODAL_TIPS_VISIBLE = 'EDIT_MODAL_TIPS_VISIBLE'
 //操作
 const showErrorAlert = (alertMsg)=> {
     return {type:SHOW_ERROR_ALERT,msg:alertMsg};
@@ -41,6 +46,17 @@ const RightLoadingOpen = () => {
 const RightLoadingClose = () => {
     return {type:RIGHT_LOADING_CLOSE};
 }
+//Table
+const TableLoadingOpen = () => {
+    return {type:TABLE_LOADING_OPEN};
+}
+const TableLoadingClose = () => {
+    return {type:TABLE_LOADING_CLOSE};
+}
+//EditModalTipsVisible
+const editModalTipsVisible = (data) => {
+    return {type:EDIT_MODAL_TIPS_VISIBLE,data:data}
+}
 
 export default {
     APP_LOADING_CLOSE,
@@ -53,6 +69,9 @@ export default {
     CLOSE_QUERY_ALERT,
     RIGHT_LOADING_OPEN,
     RIGHT_LOADING_CLOSE,
+    TABLE_LOADING_CLOSE,
+    TABLE_LOADING_OPEN,
+
     showErrorAlert,
     hideErrorAlert,
     showWarnAlert,
@@ -60,5 +79,10 @@ export default {
     showQueryAlert,
     hideQueryAlert,
     RightLoadingOpen,
-    RightLoadingClose
+    RightLoadingClose,
+    TableLoadingOpen,
+    TableLoadingClose,
+
+    EDIT_MODAL_TIPS_VISIBLE,
+    editModalTipsVisible,
 }

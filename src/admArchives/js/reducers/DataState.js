@@ -6,6 +6,9 @@ import SubjectTeacherPreview from './data/SubjectTeacherPreview'
 import GradeStudentPreview from './data/GradeStudentPreview'
 import GradeClassMsg from './data/GradeClassMsg';
 import SubjectTeacherMsg from './data/SubjectTeacherMsg';
+import SetStudentMsg from './data/SetStudentMsg';
+import SetTeacherMsg from './data/SetTeacherMsg';
+import TeacherTitleMsg from './data/TeacherTitleMsg';
 const DataState=combineReducers(
     {
         LoginUser,
@@ -14,6 +17,9 @@ const DataState=combineReducers(
         SubjectTeacherPreview,
         GradeStudentPreview,
         GradeClassMsg,
-        SubjectTeacherMsg
+        SubjectTeacherMsg,
+        SetStudentMsg,
+        SetTeacherMsg,
+        TeacherTitleMsg
     });
 export default DataState;

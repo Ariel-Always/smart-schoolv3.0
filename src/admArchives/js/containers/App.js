@@ -63,7 +63,7 @@ class App extends Component {
                 history.push('/UserArchives/All')
                 console.log(this.state)
             }
-            if (history.location.pathname === '/RegisterExamine' ) {
+            if (history.location.pathname === '/RegisterExamine') {
                 history.push('/RegisterExamine/RegisterWillExamine')
                 console.log(this.state)
             }
@@ -92,9 +92,11 @@ class App extends Component {
     }
     // 请求每个组件主要渲染的数据
     requestData = (route) => {
-        const { dispatch } = this.props;
+        const { dispatch, DataState } = this.props;
+        let userMsg = DataState.LoginUser;
         let pathArr = route.split('/');
         let handleRoute = pathArr[2];
+        let ID = pathArr[3]
         if (route === '/' || route.split('/')[1] === 'UserArchives') {
             dispatch(actions.UpDataState.getAllUserPreview('/GetSummary'));
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
@@ -102,22 +104,30 @@ class App extends Component {
                 //dispatch(actions.UpDataState.getAllUserPreview('/Archives' + handleRoute));
                 dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
                 if (handleRoute === 'Student') {
-                    console.log('Student')
-                    if (!this.props.DataState.GradeClassMsg.returnData)
-                        dispatch(actions.UpDataState.getGradeClassMsg('/ArchivesStudent_DropDownMenu'));
-                    dispatch(actions.UpDataState.getGradeStudentPreview('/ArchivesStudent?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
-                }else if (handleRoute === 'Teacher') {
-                    console.log('Teacher：'+this.props.DataState.SubjectTeacherMsg.returnData)
-                    if (!this.props.DataState.SubjectTeacherMsg.returnData)
-                        dispatch(actions.UpDataState.getSubjectTeacherMsg('/ArchivesTeacher_DropDownMenu'));
-                    dispatch(actions.UpDataState.getSubjectTeacherPreview('/ArchivesTeacher?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
-                }else if (handleRoute === 'All') {
-                   
-                }else{
+
+                    if (!DataState.GradeClassMsg.returnData)
+                        dispatch(actions.UpDataState.getGradeClassMsg('/GetGradeClassTree?schoolID=school1'));
+
+                    if (ID==='all') {
+                        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
+                    }
+                } else if (handleRoute === 'Teacher') {
+                    console.log('Teacher：' + DataState.SubjectTeacherMsg.returnData)
+                    if (!DataState.SubjectTeacherMsg.returnData)
+                        dispatch(actions.UpDataState.getSubjectTeacherMsg('/GetSubject?schoolID=school1'));
+                    if (!DataState.TeacherTitleMsg.returnData) {
+                        dispatch(actions.UpDataState.getTeacherTitleMsg('/GetTitle?schoolID=school1'));
+                    }
+                    if (ID==='all') {
+                        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&SubjectIDs=all&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
+                    }
+                } else if (handleRoute === 'All') {
+
+                } else {
                     history.push('/UserArchives/All')
                     console.log(handleRoute)
                 }
-            }else{
+            } else {
                 history.push('/UserArchives/All')
             }
 
@@ -127,10 +137,10 @@ class App extends Component {
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
             if (!this.props.DataState.GradeClassMsg.returnData)
                 dispatch(actions.UpDataState.getGradeClassMsg('/ArchivesStudent_DropDownMenu'));
-            if(route.split('/')[2] !== 'RegisterWillExamine' && route.split('/')[2] !== 'RegisterDidExamine'){
+            if (route.split('/')[2] !== 'RegisterWillExamine' && route.split('/')[2] !== 'RegisterDidExamine') {
                 history.push('/RegisterExamine/RegisterWillExamine')
             }
-        }else{
+        } else {
             history.push('/UserArchives/All')
         }
 
@@ -166,7 +176,7 @@ class App extends Component {
                     <Router >
 
                         <Route path='/UserArchives' component={UserArchives}></Route>
-                        <Route path='/RegisterExamine'  component={RegisterExamine}></Route>
+                        <Route path='/RegisterExamine' component={RegisterExamine}></Route>
                     </Router>
 
                 </Loading>
