@@ -97,6 +97,8 @@ const getCommonInfo = () => {
 
                         "NowWeekNo": 3,
 
+                        "NowDate":"2019-9-10",
+
                         "ItemWeek": [{
                             "WeekNO": 1,
                             "StartDate": "2019-8-26",

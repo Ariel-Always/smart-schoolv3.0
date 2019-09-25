@@ -7,13 +7,23 @@ import $ from 'jquery';
 class DoubleSingleTable extends Component{
 
 
-    componentDidMount() {
+    componentDidMount(){
 
-        console.log($(this.refs['table']).find('.ant-table-fixed'));
+        const  { scrollToBottom } = this.props;
 
         $('#tb').find('div.ant-table-body').scroll(() => {
 
             let scrollTop = $('#tb').find('div.ant-table-body').scrollTop();
+
+            let wrapperHeight = $('#tb .ant-table-scroll>.ant-table-body .ant-table-tbody').height();
+
+            let scrollHeight = $('#tb .ant-table-scroll>.ant-table-body').height();
+
+            if ((wrapperHeight - scrollTop + 8)<= scrollHeight){
+
+                scrollToBottom();
+
+            }
 
         });
 
@@ -21,7 +31,7 @@ class DoubleSingleTable extends Component{
 
     render() {
 
-        const {ItemClassHourCount,ItemClassHour,leftColWidth,commonColWidth,rowOneHeight,rowTowHeight,commonRowHeight,schedule} = this.props;
+        const {ItemClassHourCount,ItemClassHour,leftColWidth,commonColWidth,rowOneHeight,rowTowHeight,commonRowHeight,schedule,onClickRow,scrollToBottom} = this.props;
 
 
         /*console.log(schedule,ItemClassHour);*/
@@ -53,13 +63,11 @@ class DoubleSingleTable extends Component{
         let WeekCol = [];
 
         //将schedule转换为ant 类型的table
-        schedule.map(item=>{
+        schedule.map((item,key)=>{
 
-            dataSource.push({id:item.id,name:item.name})
+            dataSource.push({id:item.id,name:item.name,active:item.active,key:key});
 
         });
-
-        console.log(schedule,dataSource);
 
 
         for (let i = 1; i <= 7; i++){
@@ -185,19 +193,13 @@ class DoubleSingleTable extends Component{
 
                         if (HasClass){
 
-                            dataSource[key][`${i}${j}`] = <div className="schedule-wrapper" style={{width:commonColWidth,height:commonRowHeight}}>
 
-                                <div className="title" data-id={ClassObj.titleID}>{ClassObj.title}</div>
-
-                                <div className="second-title" data-id={ClassObj.secondTitleID}>{ClassObj.secondTitle}</div>
-
-                                <div className="second-title" data-id={ClassObj.thirdTitleID}>{ClassObj.thirdTitle}</div>
-
-                            </div>;
+                            dataSource[key][`${i}${j}`] = ClassObj
 
                         }else{
 
-                            dataSource[key][`${i}${j}`] = <div className="schedule-wrapper empty" style={{width:commonColWidth,height:commonRowHeight}}>--</div>
+
+                            dataSource[key][`${i}${j}`] = 'none';
 
                         }
 
@@ -213,7 +215,7 @@ class DoubleSingleTable extends Component{
 
 
 
-                let Title = <div className="course-time-th" style={{width:commonColWidth}}>
+                let Title = <div className="course-time-th" >
 
                     <div className="course">第{ItemClassHour[j-1].ClassHourNO}节</div>
 
@@ -221,14 +223,40 @@ class DoubleSingleTable extends Component{
 
                 </div>;
 
-                ClassHourCol.push({title:Title,width:commonColWidth,key:`${i}${j}`,height:rowTowHeight,dataIndex:`${i}${j}`});
+
+                ClassHourCol.push({title:Title,key:`${i}${j}`,height:64,dataIndex:`${i}${j}`,render:(item,record)=>{
+
+
+                        if (item === 'none'){
+
+                            return <div className={`schedule-wrapper empty ${record.active?'active':''}`} style={{height:commonRowHeight}}>
+
+                                --
+
+                            </div>
+
+                        }else{
+
+                            return <div  className={`schedule-wrapper ${record.active?'active':''}`} style={{height:commonRowHeight}}>
+
+                                <div className="title" data-id={item.titleID}>{item.title}</div>
+
+                                <div className="second-title" data-id={item.secondTitleID}>{item.secondTitle}</div>
+
+                                <div className="second-title" data-id={item.thirdTitleID}>{item.thirdTitle}</div>
+
+                            </div>
+
+                        }
+
+
+                    }});
 
             }
 
 
-
             //ant col
-            WeekCol.push({key:`week${i}`,colSpan:weekColSpan,height:rowOneHeight,title:weekTitle,children:[...ClassHourCol]});
+            WeekCol.push({key:`week${i}`,title:()=>{return <div className="week-wrapper" >{weekTitle}</div>},children:[...ClassHourCol]});
 
         }
 
@@ -239,137 +267,44 @@ class DoubleSingleTable extends Component{
 
             {
 
-                width:leftColWidth,
-
                 fixed:"left",
 
-                key:"blank",
+                key:"name",
 
-                dataIndex:"name"
+                dataIndex:"name",
+
+                title:()=>{
+
+                    return <div className="blank-tab"></div>
+
+                    },
+
+                render:(item,record)=>{
+
+                    return <div className={`double-single-left-col ${record.active?'active':''}`} style={{height:commonRowHeight}}>
+
+                        <div className="content">
+
+                            {item}
+
+                        </div>
+
+                    </div>
+
+                }
 
             },
             ...WeekCol
 
         ];
 
-        console.log(dataSource,WeekCol,Columns);
 
 
         //类型为single-single,double-single,single-double三种
 
-
-
-
-        {/*<table>
-
-                <tbody>
-                 表头
-                   <tr>
-
-                       <td className="col col0" rowSpan={2}>
-
-                           <div className="course-time-div colDiv0" style={{width:leftColWidth}}></div>
-
-                       </td>
-
-                       {
-                           tdWeek
-                       }
-
-                   </tr>
-
-                    <tr>
-
-                        {
-                            tdCourse
-                        }
-
-                    </tr>
-                    表体
-                    {
-                        schedule.map((item,key) => {
-
-                            let tds = [];
-
-                            for (let i = 1; i <= 7; i++){
-
-                                for (let j = 1; j <= weekColSpan; j++){
-
-                                    let hasClass = false;
-
-                                    let tdContent = '';
-
-                                    item.list.map((itm,k) => {
-
-                                        if ((itm.WeekDay+1) === i&&itm.ClassHourNO === j){
-
-                                            hasClass = true;
-
-                                            tdContent = <td key={k} className="common-col" style={{height:commonRowHeight}}>
-
-                                                            <div className="course-time-div" style={{height:"100%",width:commonColWidth}}>
-
-                                                                <div className={`course-title ${itm.type === 1?'disabled':''}`} data-id={itm.titleID} title={itm.title}>{itm.title}</div>
-
-                                                                <div className="course-abstract" data-id={itm.secondTitleID} title={itm.secondTitle}>{itm.secondTitle}</div>
-
-                                                                <div className="course-abstract" data-id={itm.thirdTitleID} title={itm.thirdTitle}>{itm.thirdTitle}</div>
-
-                                                            </div>
-
-                                                        </td>
-
-                                            return;
-
-                                        }
-
-                                    });
-
-                                    if (hasClass){
-
-                                        tds.push(tdContent);
-
-                                    }else{
-
-                                        tds.push(<td key={`${i}${j}`} className="common-col" style={{height:commonRowHeight}}>
-
-                                                    <div className="course-time-div empty" style={{height:"100%",width:commonColWidth}}> -- </div>
-
-                                                 </td>)
-
-                                    }
-
-                                }
-
-                            }
-
-                            return <tr key={key}>
-
-                                        <td className="col0" style={{height:commonRowHeight}}>
-
-                                            <div className="course-teacher" style={{width:leftColWidth,height:commonRowHeight,lineHeight:`${commonRowHeight}px`}} data-id={item.id} title={item.name}>{item.name}</div>
-
-                                        </td>
-
-                                        {
-
-                                            tds
-
-                                        }
-
-                                    </tr>;
-
-                        })
-                    }
-
-
-                </tbody>
-
-            </table>*/}
-
         return (
 
-            <Table id="tb" ref="table" columns={Columns} onChange={(q1,q2,q3,q4)=>{console.log(q1,q2,q3,q4)}} bordered dataSource={dataSource} pagination={false} scroll={{x:1120,y:760}}>
+            <Table id="tb" ref="table" columns={Columns} bordered dataSource={dataSource} pagination={false} scroll={{x:1120,y:580}} onRow={record=>{return { onClick:onClickRow(record) } }}>
 
 
 

@@ -55,7 +55,9 @@ const STSPageUpdate = (opt) => {
 
                     id:item.TeacherID,
 
-                    name:item.TeacherName
+                    name:item.TeacherName,
+
+                    active:false
 
                 };
 
@@ -81,7 +83,7 @@ const STSPageUpdate = (opt) => {
 
                             WeekDay:i.WeekDay,
 
-                            ClassHourNO:i.ClassHourNO
+                            ClassHourNO:i.ClassHourNO,
 
                         };
 
@@ -120,6 +122,8 @@ const STSPageUpdate = (opt) => {
     }
 
 };
+
+
 
 export default {
 
