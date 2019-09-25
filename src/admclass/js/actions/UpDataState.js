@@ -1,8 +1,8 @@
 import {postData,getData} from "../../../common/js/fetch";
 import UpUIState from './UpUIState';
-import CONFIG from '../../../common/js/config';
 import 'whatwg-fetch';
 
+const CONFIG = {proxy:"http://47.244.238.75:7300/mock/5d7e0519fdd0dc0457886a3c/webCloudDev"};
 
 
 //操作常量
@@ -55,7 +55,7 @@ const  getPageInit = () => {
 
                 }else if (res.Status===400||res.Status===500) {
 
-                    dispatch({type:UpUIState.SHOW_ERROR_ALERT,title:res.Msg});
+                    dispatch({type:UpUIState.SHOW_ERROR_ALERT,data:{title:res.Msg}});
 
                     //Status不是200的情况
 
@@ -211,7 +211,7 @@ const postAdjustClass = (data) => {
 
              dispatch({type:UpUIState.ADJUST_CLASS_MODAL_HIDE});
 
-             dispatch({type:UpUIState.SHOW_ERROR_ALERT,msg:{
+             dispatch({type:UpUIState.SHOW_ERROR_ALERT,data:{
                      type:'success',
                      title:"调班成功！",
                      hide:()=>{
@@ -223,7 +223,7 @@ const postAdjustClass = (data) => {
 
          }else if (json.Status===400||json.Status===500){
 
-             dispatch({type:UpUIState.SHOW_ERROR_ALERT,msg:{
+             dispatch({type:UpUIState.SHOW_ERROR_ALERT,data:{
                     type:'error',
                      title:json.msg,
                      onHide:()=>{dispatch({type:UpUIState.CLOSE_ERROR_ALERT})}
@@ -478,7 +478,7 @@ const updateGenger = (classInfo) =>{
 
                    type:UpUIState.SHOW_ERROR_ALERT,
 
-                   msg:{
+                   data:{
 
                        type:"success",
 
@@ -546,7 +546,7 @@ const updateTeacher = (classInfo) => {
 
                     type:UpUIState.SHOW_ERROR_ALERT,
 
-                    msg:{
+                    data:{
 
                         type:"success",
 

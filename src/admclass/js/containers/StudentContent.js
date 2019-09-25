@@ -4,6 +4,8 @@ import {Search, Button, Loading, Modal} from "../../../common";
 import connect from "react-redux/es/connect/connect";
 import UpDataState from '../actions/UpDataState';
 import UpUIState from '../actions/UpUIState';
+import AppAlertActions from '../actions/AppAlertActions';
+import SearchActions from '../actions/SearchActions';
 import ContentWrapper from '../component/ContentWrapper';
 import TeacherTabWrapper from '../component/TeacherTabWrapper'
 import StudentTabWrapper from '../component/StudentTabWrapper';
@@ -399,6 +401,22 @@ class StudentContent extends Component{
 
     }
 
+    onStudentSearch(e){
+
+        const key = e.value;
+
+        if (key){
+
+            AppAlertActions.alertError("搜索不能为空！");
+
+        }else{
+
+            dispatch(SearchActions.StudentSearch(key));
+
+        }
+
+    }
+
 
     render() {
         const {UIState,DataState,info} = this.props;
@@ -424,7 +442,7 @@ class StudentContent extends Component{
                 {/*学生内容区域*/}
                 <ContentWrapper>
 
-                    <Search className="admclass-search-student"></Search>
+                    <Search className="admclass-search-student" onClickSearch={this.onStudentSearch.bind(this)}></Search>
 
                     <StudentTabWrapper
                         CheckList={StudentsCheckList}
