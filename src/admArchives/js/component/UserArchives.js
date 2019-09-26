@@ -137,7 +137,7 @@ class UserArchives extends React.Component {
                             <Route path='/UserArchives/All'  history={history} component={All}></Route>
                             <Route path='/UserArchives/Student/:GradeID'  history={history} component={Student}></Route>
                             <Route path='/UserArchives/Teacher/:SubjectID'  history={history} component={Teacher}></Route>
-                            <Route path='/UserArchives/Leader'  history={history} component={Leader}></Route>
+                            <Route path='/UserArchives/Leader' history={history} component={Leader}></Route>
                         </Loading>
                     </div>
                 </Frame>

@@ -17,7 +17,7 @@ class HandleCourseClass extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tableSource:[]
+            tableSource: []
         }
     }
 
@@ -25,17 +25,34 @@ class HandleCourseClass extends React.Component {
         const { DataState, UIState } = nextProps;
         let data = nextProps.DataState.GetCourseClassDetailsHandleClassMsg
         this.setState({
-            courseClassName: data.selectData?data.selectData.CourseClass.CourseClassName:'',
-            TeacherName: data.selectData?data.selectData.Teacher.TeacherName:'',
-            tableSource:data.selectData?data.selectData.Student:[]
+            courseClassName: data.selectData ? data.selectData.CourseClass.CourseClassName : '',
+            TeacherName: data.selectData ? data.selectData.Teacher.TeacherName : '',
+            tableSource: data.selectData ? data.selectData.Student : []
         })
+    }
+    componentWillMount() {
+        // const { DataState, dispatch } = this.props;
+        // //获取路由
+        // let route = history.location.pathname;
+        // let pathArr = route.split('/');
+        // let handleRoute = pathArr[1];
+        // let routeID = pathArr[2];
+        // let subjectID = pathArr[3];
+        // let classID = pathArr[4];
+        // //*************** */
+        // if (handleRoute === 'Teacher') {
+        //     let UserMsg = DataState.LoginUser;
+        //     DataState.GetCourseClassDetailsHandleClassMsg.selectData.Teacher = { value: UserMsg.UserID, title: UserMsg.UserName };
+        //     //dispatch(actions.UpDataState.setSubjectTeacherTransferMsg({value:UserMsg.UserID,title:UserMsg.UserName}))
+        // }
+
     }
     //数据绑定
     onCourseClassNameChange = (e) => {
         const { DataState, UIState, dispatch } = this.props;
-        let {CourseClassName,...data} = DataState.GetCourseClassDetailsHandleClassMsg.selectData.CourseClass
+        let { CourseClassName, ...data } = DataState.GetCourseClassDetailsHandleClassMsg.selectData.CourseClass
         console.log(this.state.courseClassName, e.target.value)
-        dispatch(actions.UpDataState.setCourseClassName({CourseClassName:e.target.value,...data}))
+        dispatch(actions.UpDataState.setCourseClassName({ CourseClassName: e.target.value, ...data }))
         // this.setState({
         //     courseClassName: e.target.value,
         // })
@@ -81,7 +98,7 @@ class HandleCourseClass extends React.Component {
     }
     AddStudentModalCancel = () => {
         const { DataState, UIState, dispatch } = this.props;
-        
+
         let oldStudent = DataState.GetCourseClassDetailsHandleClassMsg.selectData.Student;
         dispatch(actions.UpDataState.setClassStudentTransferMsg(oldStudent))
         //dispatch(actions.UpDataState.setSubjectTeacherMsg({}))
@@ -91,21 +108,21 @@ class HandleCourseClass extends React.Component {
     //删除学生
     onDeleteStudentClick = (id) => {
         const { DataState, UIState, dispatch } = this.props;
-        
+
         let data = DataState.GetCourseClassDetailsHandleClassMsg.selectData.Student;
-        let newData = data.splice(id,1);
+        let newData = data.splice(id, 1);
         this.setState({
-            tableSource:data
+            tableSource: data
         })
-        console.log(id,newData);
+        console.log(id, newData);
         dispatch(actions.UpDataState.setCourseClassStudentMsg(data))
 
     }
-//清空
+    //清空
     onDeleteAllClick = () => {
         const { DataState, UIState, dispatch } = this.props;
         this.setState({
-            tableSource:[]
+            tableSource: []
         })
         dispatch(actions.UpDataState.setCourseClassStudentMsg([]))
     }
@@ -119,8 +136,15 @@ class HandleCourseClass extends React.Component {
         const { DataState, UIState } = this.props;
         let data = DataState.GetCourseClassDetailsHandleClassMsg;
         let tableSource = data.TableSource ? data.TableSource : [];
-        let teacher = data.selectData?data.selectData.Teacher.length!==0?data.selectData.Teacher:{}:{};
-        
+        let teacher = data.selectData ? data.selectData.Teacher.length !== 0 ? data.selectData.Teacher : {} : {};
+        //获取路由
+        let route = history.location.pathname;
+        let pathArr = route.split('/');
+        let handleRoute = pathArr[1];
+        let routeID = pathArr[2];
+        let subjectID = pathArr[3];
+        let classID = pathArr[4];
+        //*************** */
         return (
             <React.Fragment>
                 <div id='HandleCourseClass' className='HandleCourseClass'>
@@ -163,11 +187,17 @@ class HandleCourseClass extends React.Component {
                         </div>
                         <div className='row-column'>
                             <span className='left'>任课老师：</span>
-                            <span className='right'>
-                                <Input readOnly unselectable="on" onClick={this.onTeacherSelectClick.bind(this)} className='teacherName selectTeacher' type='text' value={data.selectData ? data.selectData.Teacher.title : ''} style={{ width: 150 + 'px' }} onChange={this.onCourseClassNameChange.bind(this)} />
-                                <span onClick={this.onTeacherSelectClick.bind(this)} className='teacher-select'>选择</span>
-
-                            </span>
+                            
+                                {/* <Input readOnly unselectable="on" onClick={this.onTeacherSelectClick.bind(this)} className='teacherName selectTeacher' type='text' value={data.selectData ? data.selectData.Teacher.title : ''} style={{ width: 150 + 'px' }} onChange={this.onCourseClassNameChange.bind(this)} />
+                                <span onClick={this.onTeacherSelectClick.bind(this)} className='teacher-select'>选择</span> */}
+                                {handleRoute !== 'Teacher' ? (<span className='right'>
+                                    <Input readOnly unselectable="on" onClick={this.onTeacherSelectClick.bind(this)} className='teacherName selectTeacher' type='text' value={data.selectData ? data.selectData.Teacher.title : ''} style={{ width: 150 + 'px' }} onChange={this.onCourseClassNameChange.bind(this)} />
+                                    <span onClick={this.onTeacherSelectClick.bind(this)} className='teacher-select'>选择</span>
+                                </span>) : (
+                                        <span className='right'>
+                                            <span className='noChange teacherName'>{data.selectData ? data.selectData.Teacher.title : ''}</span>
+                                        </span>
+                                    )}
                         </div>
                     </div>
                     <div className='row clearfix'>
@@ -197,7 +227,7 @@ class HandleCourseClass extends React.Component {
                                                         <span className='content-card' key={child.StudentID}>
                                                             {child.StudentName}
                                                             <span className='card-id'>{child.StudentID}</span>
-                                                            <span onClick={this.onDeleteStudentClick.bind(this,index)} className='icon-x'>x</span>
+                                                            <span onClick={this.onDeleteStudentClick.bind(this, index)} className='icon-x'>x</span>
                                                         </span>
                                                     )
                                                 })
@@ -232,7 +262,7 @@ class HandleCourseClass extends React.Component {
                     onOk={this.AddStudentModalOk}
                     onCancel={this.AddStudentModalCancel}
                 >
-                    {UIState.AddStudentModalShow.Show?(<SelectStudent></SelectStudent>):''}
+                    {UIState.AddStudentModalShow.Show ? (<SelectStudent></SelectStudent>) : ''}
                 </Modal>
             </React.Fragment>
         )

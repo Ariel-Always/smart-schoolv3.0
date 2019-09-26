@@ -269,6 +269,7 @@ class Class extends React.Component {
             }
         })
     }
+    //单个删除
     onAppAlertDeleteOK = (id) => {
         const { dispatch, DataState, UIState } = this.props;
         let route = history.location.pathname;

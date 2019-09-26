@@ -4,6 +4,7 @@ import CONFIG from '../../../common/js/config';
 import 'whatwg-fetch';
 import actions from './index'
 import Mock from 'mockjs'
+import TeacherState from './TeacherUpDataState'
 
 
 
@@ -362,6 +363,7 @@ const getLogDetailsMsg = (url) => {
     }
 }
 export default {
+    ...TeacherState,
     getLoginUser,
     GET_LOGIN_USER_INFO,
     getCoureClassAllMsg,

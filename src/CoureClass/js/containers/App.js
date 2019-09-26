@@ -3,6 +3,7 @@ import { Frame, Menu, Loading, Alert, LeftMenu, Modal } from "../../../common";
 import { connect } from 'react-redux';
 import TimeBanner from '../component/TimeBanner'
 import CONFIG from '../../../common/js/config';
+import  deepCompare  from '../../../common/js/public';
 
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
 import history from './history'
@@ -14,11 +15,13 @@ import Search from '../component/Search'
 import Class from '../component/Class'
 import Dynamic from '../component/Dynamic'
 import Record from '../component/Record'
+import ImportFile from '../component/ImportFile'
 import LogDetails from '../component/LogDetails'
 import HandleCourseClass from '../component/HandleCourseClass'
 import AddCourseClass from '../component/AddCourseClass'
 
 import CourseClassDetails from '../component/CourseClassDetails'
+import Teacher from '../component/Teacher'
 
 //import Subject from '../component/Subject'
 import '../../scss/index.scss'
@@ -38,7 +41,7 @@ class App extends Component {
             showBarner: true,
             showLeftMenu: true
         }
-        
+
     }
 
 
@@ -46,6 +49,7 @@ class App extends Component {
     componentWillMount() {
         const { dispatch, DataState } = this.props;
         let route = history.location.pathname;
+        sessionStorage.setItem('token', 'aaa')
         //判断token是否存在
         if (sessionStorage.getItem('token')) {
             dispatch(actions.UpDataState.getLoginUser('/Login?method=GetUserInfo'));
@@ -63,7 +67,7 @@ class App extends Component {
                 close: this.onAppAlertClose.bind(this)
             }));
         }
-        
+
         // 获取接口数据
 
 
@@ -117,13 +121,19 @@ class App extends Component {
         })
         console.log(route, routeID, subjectID)
         dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-        if (route === '/' || handleRoute === 'All') {
+        if (route === '/') {
+            history.push('/All')
+            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+            if (!DataState.GetCoureClassAllMsg.MenuParams)
+                return;
+            dispatch(actions.UpDataState.setCoureClassAllMsg('all'));
+        } else if (handleRoute === 'All') {
 
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
             if (!DataState.GetCoureClassAllMsg.MenuParams)
                 return;
             dispatch(actions.UpDataState.setCoureClassAllMsg('all'));
-            
+
         } else if (handleRoute === 'Subject' && subjectID === 'all') {
 
 
@@ -133,7 +143,7 @@ class App extends Component {
             if (!DataState.GetCoureClassAllMsg.MenuParams)
                 return;
             dispatch(actions.UpDataState.setCoureClassAllMsg(routeID));
-            
+
         } else if (handleRoute === 'Subject' && subjectID === 'Class') {
             dispatch(actions.UpDataState.getSubjectAllMsg('/CoureClass_Subject?schoolID=sss', routeID));
             dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss', routeID, classID));
@@ -141,24 +151,39 @@ class App extends Component {
             if (!DataState.GetCoureClassAllMsg.MenuParams)
                 return;
             dispatch(actions.UpDataState.setCoureClassAllMsg(classID, routeID));
-            
+
         } else if (handleRoute === 'Search') {
             // if (!DataState.GetCoureClassAllMsg.MenuParams)
             //     return;
             dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss'));
-            
-            
+
+
         } else if (handleRoute === 'Log') {
             // if (!DataState.GetCoureClassAllMsg.MenuParams)
             //     return;
             //dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss'));
             this.setState({
+                showBarner: true,
+                showLeftMenu: false
+            })
+
+        } else if (handleRoute === 'Teacher') {
+            dispatch(actions.UpDataState.getTeacherCourseClassMsg('/GetCourseClassByUserID?schoolID=S0003&teacherID=T0001'));
+
+            this.setState({
+                showBarner: true,
+                showLeftMenu: false
+            })
+
+        } else if (handleRoute === 'ImportFile') {
+           
+            this.setState({
                 showBarner: false,
                 showLeftMenu: false
             })
 
-        } else {
-            history.push('/')
+        }  else {
+            history.push('/All')
         }
 
 
@@ -207,7 +232,7 @@ class App extends Component {
         let subjectID = pathArr[3];
         let classID = pathArr[4];
 
-        if (data.selectData.Teacher.value === data.TeacherID && data.selectData.CourseClass.CourseClassName === data.CourseClassName && data.selectData.Student == data.TableSource) {
+        if (data.selectData.Teacher.value === data.TeacherID && data.selectData.CourseClass.CourseClassName === data.CourseClassName && deepCompare.deepCompare(data.selectData.Student, data.TableSource)) {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-error',
                 title: "您还没有选择哦~",
@@ -217,6 +242,7 @@ class App extends Component {
             }));
             return;
         }
+        // console.log(data.selectData.Student,data.TableSource,deepCompare.deepCompare(data.selectData.Student, data.TableSource))
         let courseClassStus = data.selectData.Student.map((child, index) => {
             return child.StudentID
         }).join();
@@ -289,7 +315,13 @@ class App extends Component {
     }
     render() {
         const { UIState, DataState } = this.props;
-        console.log(DataState.GetCoureClassAllMsg.MenuParams)
+        let route = history.location.pathname.split('/');
+        let cnname = '教学班管理';
+        let enname = 'CoureClass Management'
+        if (route[1] === 'Teacher') {
+            cnname = '我的教学班管理';
+            enname = 'My class Management'
+        }
         return (
             <React.Fragment>
                 <Loading tip="加载中..." size="large" spinning={UIState.AppLoading.appLoading}>
@@ -301,8 +333,8 @@ class App extends Component {
                     }}
 
                         module={{
-                            cnname: "教学班管理",
-                            enname: "CoureClass Management",
+                            cnname: cnname,
+                            enname: enname,
                             image: logo
                         }}
                         type="triangle" showBarner={this.state.showBarner} showLeftMenu={this.state.showLeftMenu}>
@@ -327,6 +359,8 @@ class App extends Component {
                                     <Route path='/Search' component={Search}></Route>
                                     <Route path='/Log/Record' component={Record}></Route>
                                     <Route path='/Log/Dynamic' component={Dynamic}></Route>
+                                    <Route path='/Teacher' component={Teacher}></Route>
+                                    <Route path='/ImportFile' component={ImportFile}></Route>
                                 </Router>
 
                                 {/* <Route path='/UserArchives/All' exact history={history} component={All}></Route>
@@ -396,9 +430,9 @@ class App extends Component {
                     footer={null}
                     onOk={this.LogDetailsModalOk}
                     onCancel={this.LogDetailsModalCancel}>
-                    
-                        {UIState.LogDetailsModalShow.Show ? (<LogDetails></LogDetails>) : ''}
-                    
+
+                    {UIState.LogDetailsModalShow.Show ? (<LogDetails></LogDetails>) : ''}
+
                 </Modal>
             </React.Fragment >
 

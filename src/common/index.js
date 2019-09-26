@@ -1862,7 +1862,7 @@ class DetailsModal extends React.Component {
                 width={400}
                 footer={type === 'examine' ? [
                     <Button key='agree' className='antdModal-btn-footer left' color='blue' onClick={params.onOk ? params.onOk.bind(this, data) : ''}>通过</Button>,
-                    <Button key='refuse' className='antdModal-btn-footer right' color='red' onClick={params.onCancel ? params.onCancel.bind(this, data) : ''}>不通过</Button>
+                    <Button key='refuse' className='antdModal-btn-footer right' color='red' onClick={params.onFail ? params.onFail.bind(this, data) : ''}>不通过</Button>
                 ] : null}
                 className='DetailsMsgModal'
                 {...params}
@@ -1871,7 +1871,7 @@ class DetailsModal extends React.Component {
                     <div className='top-img'>
                         <img width={80} height={80} alt={data.userName} src={data.userImg} ></img>
                     </div>
-                    <p className='top-userName'>{data.userName}<span style={{ opacity: 0.64, marginLeft: 3 + 'px' }}>{(data.Gende === '男' ? '♂' : data.userName + data.Gende === '女' ? '♀' : '')}</span></p>
+                    <p className='top-userName'>{data.userName}<span style={{ opacity: 0.64, marginLeft: 3 + 'px' }}>{(data.Gende === '男' ? '♂' :  data.Gende === '女' ? '♀' : '')}</span></p>
                     <p className='top-userText'>{data.userText}</p>
                 </div>
                 <div className='modal-content'>
@@ -1884,9 +1884,9 @@ class DetailsModal extends React.Component {
                         </div>
                         <div className='row' >
                             <span className='col-left'>
-                                {type === 'student' ? '班级' : '所教学科'}
+                                {type === 'student'||type==='examine' ? '班级' : '所教学科'}
                             </span>
-                            <span className='col-right'>{type === 'student' ? data.userGrade && data.userClass ? (data.userGrade + ' > ' + data.userClass) : <span className='content-null'>未填写</span> : data.subjectName ? data.subjectName : <span className='content-null'>未填写</span>}</span>
+                            <span className='col-right'>{type === 'student'||type==='examine' ? data.userGrade && data.userClass ? (data.userGrade + ' > ' + data.userClass) : <span className='content-null'>未填写</span> : data.subjectName ? data.subjectName : <span className='content-null'>未填写</span>}</span>
                         </div>
                         <div className='row' style={{ display: type === 'teacher' ? 'block' : 'none' }}>
                             <span className='col-left'>

@@ -31,8 +31,8 @@ class RegisterDidExamine extends React.Component {
                 {
                     title: '注册时间',
                     align: 'center',
-                    dataIndex: 'UserRegisterTime',
-                    key: 'UserRegisterTime',
+                    dataIndex: 'SignUpTime',
+                    key: 'SignUpTime',
                     sorter: true,
                     render: time => {
                         return (
@@ -52,8 +52,8 @@ class RegisterDidExamine extends React.Component {
                     render: arr => {
                         return (
                             <div className='name-content'>
-                                <img alt={arr.UserName} onClick={this.onUserNameClick} className='name-img' width='47' height='47' src={arr.PhotoPath}></img>
-                                
+                                <img alt={arr.UserName} onClick={this.onUserNameClick.bind(this, arr.key)} className='name-img' width='47' height='47' src={arr.PhotoPath}></img>
+
                             </div>
                         )
                     }
@@ -64,12 +64,12 @@ class RegisterDidExamine extends React.Component {
                     align: 'left',
                     dataIndex: 'UserName',
                     key: 'UserName',
-                    sorter: (a, b) => a.name.length - b.name.length,
+                    sorter: true,
                     render: arr => {
                         return (
                             <div className='name-content'>
-                                
-                                <span className='name-UserName' onClick={this.onUserNameClick}>{arr.UserName}</span>
+
+                                <span className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.key)}>{arr.UserName}</span>
                             </div>
                         )
                     }
@@ -101,231 +101,39 @@ class RegisterDidExamine extends React.Component {
                 {
                     title: '年级',
                     align: 'center',
-                    dataIndex: 'GradeName',
-                    key: 'GradeName',
-                    render: GradeName => {
+                    dataIndex: 'Grade',
+                    key: 'Grade',
+                    render: Grade => {
                         return (
-                            <span className='GradeName'>{GradeName}</span>
+                            <span className='GradeName'>{Grade.GradeName}</span>
                         )
                     }
                 },
                 {
                     title: '班级',
                     align: 'center',
-                    dataIndex: 'ClassName',
-                    key: 'ClassName',
-                    render: ClassName => {
+                    dataIndex: 'Class',
+                    key: 'Class',
+                    render: Class => {
                         return (
-                            <span className='ClassName'>{ClassName}</span>
+                            <span className='ClassName'>{Class.ClassName}</span>
                         )
                     }
                 },
                 {
                     title: '状态',
                     align: 'center',
-                    dataIndex: 'Others',
-                    key: 'Others',
-                    render: (Others) => {
+                    dataIndex: 'Status',
+                    key: 'Status',
+                    render: (Status) => {
 
                         return (
                             <div className='handle-content'>
-                                <span   className={`handle-tips `}>{Others.isAgree ? '已通过' : '未通过'}</span>
+                                <span className={`handle-tips `}>{Status.Status === 1 ? '审核通过' : Status.Status === 2 ? '审核未通过' : '未审核'}</span>
                             </div>
                         )
                     }
                 }
-            ],
-            data: [{
-                key: 1,
-                UserRegisterTime: '2019-01-01 12:24',
-                UserName: { key: '01', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
-                UserID: 'S00001',
-                Gender: '男',
-                GradeName: '一年级',
-                ClassName: '1班',
-                Others: {
-                    key: 1,
-                    userRegisterTime: '2019-01-01',
-                    UserName: { key: '01', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
-                    UserID: 'S00001',
-                    Grader: '男',
-                    GradeName: '一年级',
-                    ClassName: '1班',
-                    isAgree: true,
-                }
-            },
-            {
-                key: 2,
-                UserRegisterTime: '2019-01-01 12:24',
-                UserName: { key: '02', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
-                UserID: 'S00001',
-                Gender: '男',
-                GradeName: '一年级',
-                ClassName: '1班',
-                Others: {
-                    key: 2,
-                    userRegisterTime: '2019-01-01',
-                    UserName: { key: '02', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
-                    UserID: 'S00001',
-                    Grader: '男',
-                    GradeName: '一年级',
-                    ClassName: '1班',
-                    isAgree: true,
-                }
-            },
-            {
-                key: 3,
-                UserRegisterTime: '2019-01-01 12:24',
-                UserName: { key: '03', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
-                UserID: 'S00001',
-                Gender: '男',
-                GradeName: '一年级',
-                ClassName: '1班',
-                Others: {
-                    key: 3,
-                    userRegisterTime: '2019-01-01',
-                    UserName: { key: '03', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
-                    UserID: 'S00001',
-                    Grader: '男',
-                    GradeName: '一年级',
-                    ClassName: '1班',
-                    isAgree: false,
-                }
-            },
-            {
-                key: 4,
-                UserRegisterTime: '2019-01-01 12:24',
-                UserName: { key: '04', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
-                UserID: 'S00001',
-                Gender: '男',
-                GradeName: '一年级',
-                ClassName: '1班',
-                Others: {
-                    key: 4,
-                    userRegisterTime: '2019-01-01',
-                    UserName: { key: '04', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
-                    UserID: 'S00001',
-                    Grader: '男',
-                    GradeName: '一年级',
-                    ClassName: '1班',
-                    isAgree: true,
-                }
-            },
-            {
-                key: 5,
-                UserRegisterTime: '2019-01-01 12:24',
-                UserName: { key: '05', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
-                UserID: 'S00001',
-                Gender: '男',
-                GradeName: '一年级',
-                ClassName: '1班',
-                Others: {
-                    key: 5,
-                    userRegisterTime: '2019-01-01',
-                    UserName: { key: '05', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
-                    UserID: 'S00001',
-                    Grader: '男',
-                    GradeName: '一年级',
-                    ClassName: '1班',
-                    isAgree: false,
-                }
-            },
-            {
-                key: 6,
-                UserRegisterTime: '2019-01-01 12:24',
-                UserName: { key: '06', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
-                UserID: 'S00001',
-                Gender: '男',
-                GradeName: '一年级',
-                ClassName: '1班',
-                Others: {
-                    key: 6,
-                    userRegisterTime: '2019-01-01',
-                    UserName: { key: '06', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
-                    UserID: 'S00001',
-                    Grader: '男',
-                    GradeName: '一年级',
-                    ClassName: '1班',
-                    isAgree: true,
-                }
-            },
-            {
-                key: 7,
-                UserRegisterTime: '2019-01-01 12:24',
-                UserName: { key: '07', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
-                UserID: 'S00001',
-                Gender: '男',
-                GradeName: '一年级',
-                ClassName: '1班',
-                Others: {
-                    key: 7,
-                    userRegisterTime: '2019-01-01',
-                    UserName: { key: '07', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
-                    UserID: 'S00001',
-                    Grader: '男',
-                    GradeName: '一年级',
-                    ClassName: '1班',
-                    isAgree: false,
-                }
-            },
-            {
-                key: 8,
-                UserRegisterTime: '2019-01-01 12:24',
-                UserName: { key: '08', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
-                UserID: 'S00001',
-                Gender: '男',
-                GradeName: '一年级',
-                ClassName: '1班',
-                Others: {
-                    key: 8,
-                    userRegisterTime: '2019-01-01',
-                    UserName: { key: '08', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
-                    UserID: 'S00001',
-                    Grader: '男',
-                    GradeName: '一年级',
-                    ClassName: '1班',
-                    isAgree: false,
-                }
-            },
-            {
-                key: 9,
-                UserRegisterTime: '2019-01-01 12:24',
-                UserName: { key: '09', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
-                UserID: 'S00001',
-                Gender: '男',
-                GradeName: '一年级',
-                ClassName: '1班',
-                Others: {
-                    key: 9,
-                    userRegisterTime: '2019-01-01',
-                    UserName: { key: '09', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
-                    UserID: 'S00001',
-                    Grader: '男',
-                    GradeName: '一年级',
-                    ClassName: '1班',
-                    isAgree: false,
-                }
-            },
-            {
-                key: 10,
-                UserRegisterTime: '2019-01-01 12:24',
-                UserName: { key: '10', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
-                UserID: 'S00001',
-                Gender: '男',
-                GradeName: '一年级',
-                ClassName: '1班',
-                Others: {
-                    key: 10,
-                    userRegisterTime: '2019-01-01',
-                    UserName: { key: '10', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
-                    UserID: 'S00001',
-                    Grader: '男',
-                    GradeName: '一年级',
-                    ClassName: '1班',
-                    isAgree: false,
-                }
-            },
-
             ],
             keyList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             loading: false,
@@ -337,9 +145,14 @@ class RegisterDidExamine extends React.Component {
             alertTitle: '提示信息',
             alertQueryShow: false,
             alertQueryTitle: '查询提示~',
+            firstSelect: { value: 0, title: '全部年级' },
+            secondSelect: { value: 0, title: '全部班级' },
+            handleUserMsg: [],
+            pageindex: 0,
+            StudentDetailsMsgModalVisible: false
+
         }
-        let route = history.location.pathname;
-        console.log(route);
+
     }
 
     componentWillMount() {
@@ -351,7 +164,9 @@ class RegisterDidExamine extends React.Component {
         const { dispatch } = this.props;
         console.log(e);
         let Classes = [{ value: 0, title: '全部班级' }];
-
+        this.setState({
+            firstSelect: e
+        })
         //console.log(this.refs.dropMenuSecond)
         if (e.value !== 0) {
             let ClassArr = this.props.DataState.GradeClassMsg.returnData.AllClasses[e.value];
@@ -363,14 +178,17 @@ class RegisterDidExamine extends React.Component {
             this.setState({
                 secondDropList: Classes,
             })
-            dispatch(actions.UpDataState.getGradeStudentPreview('/ArchivesStudent?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
+            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=1&gradeID=' + e.value))
+
             this.setState({
                 DropMenuShow: true
             })
         } else {
-            dispatch(actions.UpDataState.getGradeStudentPreview('/ArchivesStudent?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
+            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=1'))
+
             this.setState({
-                DropMenuShow: false
+                DropMenuShow: false,
+                secondSelect: { value: 0, title: '全部班级' }
             })
         }
 
@@ -378,8 +196,15 @@ class RegisterDidExamine extends React.Component {
 
     StudentDropMenuSecond = (e) => {
         const { dispatch } = this.props;
-        console.log(e);
-        //dispatch(actions.UpDataState.getGradeStudentPreview('/ArchivesStudent?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
+        this.setState({
+            secondSelect: e
+        })
+        if (e.value === 0) {
+            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=1&gradeID=' + this.state.firstSelect.value))
+        } else {
+            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=1&gradeID=' + this.state.firstSelect.value + '&classID=' + e.value))
+
+        }
     }
 
     OnCheckAllChange = (e) => {
@@ -413,7 +238,17 @@ class RegisterDidExamine extends React.Component {
         })
     }
     onPagiNationChange = (e) => {
-        console.log(e)
+        const { dispatch } = this.props;
+        this.setState({
+            pageindex: e - 1
+        })
+        if (this.state.firstSelect.value === 0) {
+            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=' + (--e) + '&PageSize=10&status=1'))
+        } else if (this.state.secondSelect.value === 0)
+            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=' + (--e) + '&PageSize=10&status=1&gradeID=' + this.state.firstSelect.value))
+        else {
+            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=' + (--e) + '&PageSize=10&status=1&gradeID=' + this.state.firstSelect.value + '&classID=' + this.state.secondSelect.value))
+        }
     }
     UserExamineMadalOk = (e) => {
         console.log(e)
@@ -433,10 +268,11 @@ class RegisterDidExamine extends React.Component {
             UserExamineModalVisible: false
         })
     }
-    onUserNameClick = (e) => {
+    onUserNameClick = (key) => {
+        const { DataState } = this.props
         this.setState({
-            UserExamineModalVisible: true,
-
+            StudentDetailsMsgModalVisible: true,
+            handleUserMsg: DataState.GetSignUpLog.DidData.returnData[key].UserMsg
         })
     }
     onAgreeAll = (e) => {
@@ -503,32 +339,60 @@ class RegisterDidExamine extends React.Component {
         const { dispatch } = this.props;
         dispatch(actions.UpUIState.hideErrorAlert());
     }
-    onTableChange = (page,filter,sorter,extra) => {
+    onTableChange = (page, filter, sorter, extra) => {
+        const { DataState, dispatch } = this.props;
         console.log(sorter)
-        if(sorter.order==="descend"){//降序
-            console.log('降序')
-        }else if(sorter.order==="ascend"){//升序
-            console.log('升序')
+        if (sorter && (sorter.columnKey === 'SignUpTime' || sorter.columnKey === 'UserName' || sorter.columnKey === 'UserID')) {
+            let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
+            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=1&sortFiled=' + sorter.columnKey + '&PageSize=10&' + sortType))
+
         }
     }
+    //搜索
+    LogSearch = (e) => {
+        const { dispatch } = this.props
+        if (e.value === '') {
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-warn',
+                title: "你还没有输入关键字哦~",
+                ok: this.onAlertWarnOk.bind(this),
+                cancel: this.onAlertWarnClose.bind(this),
+                close: this.onAlertWarnClose.bind(this)
+            }));
+            return;
+        } else
+            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=1&keyword=' + e.value))
+    }
+    //学生详情信息
+    StudentDetailsMsgModalOk = () => {
+        this.setState({
+            StudentDetailsMsgModalVisible: false,
 
+        })
+    }
+    StudentDetailsMsgModalCancel = () => {
+        this.setState({
+            StudentDetailsMsgModalVisible: false,
+
+        })
+    }
     render() {
         const { UIState, DataState } = this.props;
-        const data = {
-            userName: '康欣',
-            userImg: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
-            Gende: '男',
-            userText: '学如逆水行舟，不进则退',
-            userID: '20170025444',
-            userGrade: '一年级',
-            userClass: '1班',
-            userIDCard: '',
-            userPhone: '15626248624',
-            userMail: '1519406168@qq.com',
-            userAddress: '蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团',
-            userRegisterTime: '2019-01-01 12:24',
-            userRegisterIP: '190.163.252.198'
-        };
+        // const data = {
+        //     userName: '康欣',
+        //     userImg: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
+        //     Gende: '男',
+        //     userText: '学如逆水行舟，不进则退',
+        //     userID: '20170025444',
+        //     userGrade: '一年级',
+        //     userClass: '1班',
+        //     userIDCard: '',
+        //     userPhone: '15626248624',
+        //     userMail: '1519406168@qq.com',
+        //     userAddress: '蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团',
+        //     userRegisterTime: '2019-01-01 12:24',
+        //     userRegisterIP: '190.163.252.198'
+        // };
         return (
             <React.Fragment>
 
@@ -540,7 +404,7 @@ class RegisterDidExamine extends React.Component {
                         width={120}
                         height={72}
 
-                        dropSelectd={{ value: 0, title: '全部年级' }}
+                        dropSelectd={this.state.firstSelect}
                         dropList={DataState.GradeClassMsg.returnData ? DataState.GradeClassMsg.returnData.grades : [{ value: 0, title: '全部年级' }]}
                     ></DropDown>
                     <DropDown
@@ -549,12 +413,12 @@ class RegisterDidExamine extends React.Component {
                         height={72}
 
                         style={{ display: this.state.DropMenuShow ? 'block' : 'none' }}
-                        dropSelectd={{ value: 0, title: '全部班级' }}
+                        dropSelectd={this.state.secondSelect}
                         dropList={this.state.secondDropList}
                         onChange={this.StudentDropMenuSecond}
                     ></DropDown>
                     <Search placeHolder='搜索'
-                        onClickSearch={this.StudentSearch}
+                        onClickSearch={this.LogSearch}
                         height={30}
                         width={80}
                     ></Search>
@@ -567,18 +431,18 @@ class RegisterDidExamine extends React.Component {
                                 columns={this.state.columns}
                                 pagination={false}
                                 loading={this.state.loading}
-                                dataSource={this.state.data} 
-                                onChange = {this.onTableChange.bind(this)}
-                                >
+                                dataSource={DataState.GetSignUpLog.DidData.returnData}
+                                onChange={this.onTableChange.bind(this)}
+                            >
 
                             </Table>
                         </CheckBoxGroup>
                     </Loading>
-                    
+
                     <div className='pagination-box'>
                         <PagiNation
                             showQuickJumper
-                            total={50}
+                            total={DataState.GetSignUpLog.DidData.Total}
                             onChange={this.onPagiNationChange}
                         ></PagiNation>
                     </div>
@@ -586,14 +450,14 @@ class RegisterDidExamine extends React.Component {
                 </div>
 
 
+                
                 <DetailsModal
                     ref='StudentDetailsMsgModal'
-                    visible={this.state.UserExamineModalVisible}
-                    onOk={this.UserExamineMadalOk}
-                    onCancel={this.UserExamineMadalCancel}
-                    data={data}
-                    footer={null}
-                    type='examine'
+                    visible={this.state.StudentDetailsMsgModalVisible}
+                    onOk={this.StudentDetailsMsgModalOk}
+                    onCancel={this.StudentDetailsMsgModalCancel}
+                    data={this.state.handleUserMsg}
+                    type='student'
                 >
 
                 </DetailsModal>

@@ -246,7 +246,33 @@ class Teacher extends React.Component {
     onCheckBoxGroupChange = (checkedList) => {
         const { dispatch } = this.props;
 
-        
+        // postData('http://192.168.2.9:8082/Schedule/api/SetSubstituteTeacher', {
+        //     Type:0,
+        //     schooID: "s0003",
+        //     Item:'',
+        //     TeacherID1:'T0002',
+        //     TeacherID2:'T0003'
+        // }, 2, 'json').then(res => {
+        //     return res.json()
+        // }).then(json => {
+        //     if (json.Status !== 200) {
+        //         dispatch(actions.UpUIState.showErrorAlert({
+        //             type: 'btn-error',
+        //             title: json.Message,
+        //             ok: this.onAppAlertOK.bind(this),
+        //             cancel: this.onAppAlertCancel.bind(this),
+        //             close: this.onAppAlertClose.bind(this)
+        //         }));
+        //     } else if (json.Status === 200) {
+
+        //         this.setState({
+        //             TeacherModalVisible: false
+        //         })
+        //         dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&SubjectIDs=all&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
+
+
+        //     }
+        // });
         this.setState({
             checkedList,
             checkAll: checkedList === this.props.DataState.SubjectTeacherPreview.keyList ? true : false
@@ -496,7 +522,7 @@ class Teacher extends React.Component {
 
             }
         });
-        dispatch(actions.UpUIState.hideErrorAlert());
+        
     }
     onPagiNationChange = (e) => {
         const { dispatch, DataState } = this.props;
@@ -643,6 +669,15 @@ class Teacher extends React.Component {
 
         return true;
     }
+    //监听table的change进行排序操作
+    onTableChange = (page, filters, sorter) => {
+        const { DataState, dispatch } = this.props;
+        console.log(sorter)
+        if (sorter && (sorter.columnKey === 'UserName' || sorter.columnKey === 'UserID')) {
+            let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
+            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&PageIndex=0&sortFiled=' + sorter.columnKey + '&PageSize=10&' + sortType));
+        }
+    }
     render() {
         const { UIState, DataState } = this.props;
         // const data = {
@@ -669,7 +704,7 @@ class Teacher extends React.Component {
 
                             <span className='link' style={{ cursor: 'pointer' }} onClick={this.onAddTeacher}>添加教师</span>
                             <span className='divide'>|</span>
-                            <Link className='link' to='/ImportTeacher' replace>导入教师</Link>
+                            <Link className='link' target='_blank' to='/ImportFile/Teacher' replace>导入教师</Link>
                         </div>
                     </div>
                     <hr className='Teacher-hr' />
@@ -697,7 +732,9 @@ class Teacher extends React.Component {
                                         columns={this.state.columns}
                                         pagination={false}
                                         loading={{ delay: 500, spinning: DataState.SubjectTeacherPreview ? DataState.SubjectTeacherPreview.loading : true }}
-                                        dataSource={DataState.SubjectTeacherPreview.newList} >
+                                        dataSource={DataState.SubjectTeacherPreview.newList}
+                                        onChange={this.onTableChange.bind(this)}
+                                    >
 
                                     </Table>
                                 </CheckBoxGroup>

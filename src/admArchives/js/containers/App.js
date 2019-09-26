@@ -6,12 +6,13 @@ import UserArchives from "../component/UserArchives";
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
 import history from './history'
 import RegisterExamine from "../component/RegisterExamine";
-import logo from '../../images/admAriHeadImg-1.png'
-import TimeBanner from '../component/TimeBanner'
-import All from '../component/All'
-import Student from '../component/Student'
-import Teacher from '../component/Teacher'
-import Leader from '../component/Leader'
+import ImportFile from "../component/ImportFile";
+// import logo from '../../images/admAriHeadImg-1.png'
+// import TimeBanner from '../component/TimeBanner'
+// import All from '../component/All'
+// import Student from '../component/Student'
+// import Teacher from '../component/Teacher'
+// import Leader from '../component/Leader'
 import '../../scss/index.scss'
 import $ from 'jquery'
 import { getData } from '../../../common/js/fetch'
@@ -108,7 +109,7 @@ class App extends Component {
                     if (!DataState.GradeClassMsg.returnData)
                         dispatch(actions.UpDataState.getGradeClassMsg('/GetGradeClassTree?schoolID=school1'));
 
-                    if (ID==='all') {
+                    if (ID === 'all') {
                         dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
                     }
                 } else if (handleRoute === 'Teacher') {
@@ -118,7 +119,7 @@ class App extends Component {
                     if (!DataState.TeacherTitleMsg.returnData) {
                         dispatch(actions.UpDataState.getTeacherTitleMsg('/GetTitle?schoolID=school1'));
                     }
-                    if (ID==='all') {
+                    if (ID === 'all') {
                         dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&SubjectIDs=all&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
                     }
                 } else if (handleRoute === 'All') {
@@ -136,11 +137,16 @@ class App extends Component {
             //dispatch(actions.UpDataState.getAllUserPreview('/RegisterExamine'));
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
             if (!this.props.DataState.GradeClassMsg.returnData)
-                dispatch(actions.UpDataState.getGradeClassMsg('/ArchivesStudent_DropDownMenu'));
+                dispatch(actions.UpDataState.getGradeClassMsg('/GetGradeClassTree?schoolID=school1'));
+
             if (route.split('/')[2] !== 'RegisterWillExamine' && route.split('/')[2] !== 'RegisterDidExamine') {
                 history.push('/RegisterExamine/RegisterWillExamine')
             }
-        } else {
+        } else if (route.split('/')[1] === 'ImportFile') {
+            //dispatch(actions.UpDataState.getAllUserPreview('/RegisterExamine'));
+            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+            
+        } else{
             history.push('/UserArchives/All')
         }
 
@@ -177,6 +183,7 @@ class App extends Component {
 
                         <Route path='/UserArchives' component={UserArchives}></Route>
                         <Route path='/RegisterExamine' component={RegisterExamine}></Route>
+                        <Route path='/ImportFile/:role' component={ImportFile}></Route>
                     </Router>
 
                 </Loading>

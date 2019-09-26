@@ -52,19 +52,39 @@ class TimeBanner extends React.Component {
         }
         return (
             <React.Fragment>
-                <span className='timeBanner_tips'>当前共有{DataState.GetCoureClassAllMsg.newData ? DataState.GetCoureClassAllMsg.newData.LastLogCount : 0}条更新记录
-                <a href='http://localhost:3000/html/CoureClass#/Log/Dynamic' target='_blank' onClick={this.onCheckLogClick.bind(this)} className='tips_handle'>查看详情</a></span>
-                <div className='handle-content'>
-                    <Button onClick={this.onAddCourseClassClick.bind(this)} className='content content-button' height='24' type='primary' color='blue' value='添加教学班' shape='round' />
-                    <Button className='content content-button' height='24' type='primary' color='blue' value='导入教学班' shape='round' />
-                    <span className='divide content'>|</span>
-                    <Search
-                        className='content search'
-                        placeholder='请输入关键字搜索...'
-                        width='220'
+                <Router>
+                    {handleRoute !== 'Teacher' ? (
+                        <div>
+                            <span className='timeBanner_tips'>当前共有{DataState.GetCoureClassAllMsg.newData ? DataState.GetCoureClassAllMsg.newData.LastLogCount : 0}条更新记录
+                       <Link to='Log/Dynamic'
+                                    target='_blank'
+                                    rel='tips_handle'
+                                    onClick={this.onCheckLogClick.bind(this)}
+                                    className='tips_handle'
+                                >查看详情
+                        </Link>
+                            </span>
+                            <div className='handle-content'>
+                                <Button onClick={this.onAddCourseClassClick.bind(this)} className='content content-button' height='24' type='primary' color='blue' value='添加教学班' shape='round' />
+                                <Link to={'/ImportFile'} target='_blank'><Button className='content content-button' height='24' type='primary' color='blue' value='导入教学班' shape='round' /></Link>
 
-                        onClickSearch={this.onClickSearch.bind(this)}></Search>
-                </div>
+                                <span className='divide content'>|</span>
+                                <Search
+                                    className='content search'
+                                    placeholder='请输入关键字搜索...'
+                                    width='220'
+                                    onClickSearch={this.onClickSearch.bind(this)}>
+
+                                </Search>
+                            </div>
+                        </div>
+                    ) : (
+                            <div className='handle-content'>
+                                <Button onClick={this.onAddCourseClassClick.bind(this)} className='content content-button' height='24' type='primary' color='blue' value='添加教学班' shape='round' />
+                                <Link to={'/ImportFile'} target='_blank'><Button className='content content-button' height='24' type='primary' color='blue' value='导入教学班' shape='round' /></Link>
+                            </div>
+                        )}
+                </Router>
             </React.Fragment>
         )
     }

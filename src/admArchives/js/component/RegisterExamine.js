@@ -31,33 +31,46 @@ class RegisterExamine extends React.Component {
             UserExamineModalVisible: false,
 
         }
+        const { dispatch, DataState } = this.props;
 
+        if (!DataState.GradeClassMsg.returnData)
+            dispatch(actions.UpDataState.getGradeClassMsg('/GetGradeClassTree?schoolID=school1'));
     }
 
-    componentWillMount(){
-        console.log(history);
+    componentWillMount() {
+        const { DataState, dispatch } = this.props;
+
         let pathname = history.location.pathname;
-            console.log(pathname.split('/')[2])
-            if(pathname.split('/')[2]==='RegisterDidExamine'){
-                this.setState({
-                    handleClick:false
-                })
-            }else if(pathname.split('/')[2]==='RegisterWillExamine'){
-                this.setState({
-                    handleClick:true
-                })
-            }
+        if (pathname.split('/')[2] === 'RegisterDidExamine') {
+            this.setState({
+                handleClick: false
+            })
+            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=1'))
+
+        } else if (pathname.split('/')[2] === 'RegisterWillExamine') {
+            this.setState({
+                handleClick: true
+            })
+            dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=0'))
+
+        }
         history.listen(() => {//路由监听
             let pathname = history.location.pathname;
             console.log(pathname.split('/')[2])
-            if(pathname.split('/')[2]==='RegisterDidExamine'){
+            if (pathname.split('/')[2] === 'RegisterDidExamine') {
                 this.setState({
-                    handleClick:false
+                    handleClick: false
                 })
-            }else if(pathname.split('/')[2]==='RegisterWillExamine'){
+                dispatch(actions.UpDataState.setSignUpLogCountMsg(0));
+
+                dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=1'))
+
+            } else if (pathname.split('/')[2] === 'RegisterWillExamine') {
                 this.setState({
-                    handleClick:true
+                    handleClick: true
                 })
+                dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=0'))
+
             }
         })
     }
@@ -94,21 +107,21 @@ class RegisterExamine extends React.Component {
 
     render() {
         const { UIState, DataState } = this.props;
-        const data = {
-            userName: '康欣',
-            userImg: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
-            Gende: '男',
-            userText: '学如逆水行舟，不进则退',
-            userID: '20170025444',
-            userGrade: '一年级',
-            userClass: '1班',
-            userIDCard: '',
-            userPhone: '15626248624',
-            userMail: '1519406168@qq.com',
-            userAddress: '蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团',
-            userRegisterTime: '2019-01-01 12:24',
-            userRegisterIP: '190.163.252.198'
-        };
+        // const data = {
+        //     userName: '康欣',
+        //     userImg: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
+        //     Gende: '男',
+        //     userText: '学如逆水行舟，不进则退',
+        //     userID: '20170025444',
+        //     userGrade: '一年级',
+        //     userClass: '1班',
+        //     userIDCard: '',
+        //     userPhone: '15626248624',
+        //     userMail: '1519406168@qq.com',
+        //     userAddress: '蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团',
+        //     userRegisterTime: '2019-01-01 12:24',
+        //     userRegisterIP: '190.163.252.198'
+        // };
         return (
             <React.Fragment>
                 <Frame userInfo={{
@@ -131,8 +144,10 @@ class RegisterExamine extends React.Component {
                             <div className='main-handle'>
                                 {/* <Link to='/RegisterExamine/RegisterWillExamine'><button onClick={this.onExaminingClick} className={`handle-btn btn-examining ${this.state.handleClick ? 'active' : ''} `} >待审核</button></Link>
                                 <Link to='/RegisterExamine/RegisterDidExamine'><button onClick={this.onExaminedClick} className={`handle-btn btn-examined ${!this.state.handleClick ? 'active' : ''} `} >已审核</button></Link> */}
-                                 <Link to='/RegisterExamine/RegisterWillExamine' onClick={this.onExaminingClick} className={`handle-btn btn-examining ${this.state.handleClick ? 'active' : ''} `} >待审核</Link>
-                                <Link to='/RegisterExamine/RegisterDidExamine' onClick={this.onExaminedClick} className={`handle-btn btn-examined ${!this.state.handleClick ? 'active' : ''} `} >已审核</Link>
+                                <Link to='/RegisterExamine/RegisterWillExamine' onClick={this.onExaminingClick} className={`handle-btn btn-examining ${this.state.handleClick ? 'active' : ''} `} >待审核</Link>
+                                <Link to='/RegisterExamine/RegisterDidExamine' onClick={this.onExaminedClick} className={`handle-btn btn-examined ${!this.state.handleClick ? 'active' : ''} `} >已审核
+                                <span className='newCount' style={{ display: DataState.GetSignUpLog.newStatus === 0 ? 'none' : 'inline-block' }}>{'+' + DataState.GetSignUpLog.newStatus}</span>
+                                </Link>
                             </div>
 
                             <Router >
@@ -144,7 +159,7 @@ class RegisterExamine extends React.Component {
 
                     </div>
                 </Frame>
-                <DetailsModal
+                {/* <DetailsModal
                     ref='StudentDetailsMsgModal'
                     visible={this.state.UserExamineModalVisible}
                     onOk={this.UserExamineMadalOk}
@@ -153,7 +168,7 @@ class RegisterExamine extends React.Component {
                     type='examine'
                 >
 
-                </DetailsModal>
+                </DetailsModal> */}
             </React.Fragment>
         )
     }

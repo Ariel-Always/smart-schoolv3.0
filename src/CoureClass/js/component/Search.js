@@ -145,8 +145,9 @@ class Search extends React.Component{
     //列表操作编辑点击事件
     onHandleClassClick = (key) => {
         const { dispatch, DataState, UIState } = this.props;
-        let ClassID = DataState.GetClassAllMsg.allClass.TableData[key].CourseClass.ClassID;
         console.log(key)
+        let ClassID = DataState.GetClassAllMsg.allClass.TableData[key].CourseClass.ClassID;
+        
         dispatch(actions.UpUIState.ChangeCourseClassModalOpen())
         dispatch(actions.UpDataState.getCourseClassDetailsHandleClassMsg('/CoureClass_studentMsg?courseClassID=' + ClassID))
 

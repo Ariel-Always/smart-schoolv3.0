@@ -687,7 +687,7 @@ class Student extends React.Component {
     onTableChange = (page,filters,sorter) => {
         const {DataState,dispatch} = this.props; 
         console.log(sorter)
-        if(sorter&&(sorter.columnKey==='UserName'||sorter.columnKey==='UserName')){
+        if(sorter&&(sorter.columnKey==='UserName'||sorter.columnKey==='UserID')){
             let sortType = sorter.order==="descend"?'SortType=DESC':sorter.order==="ascend"?'SortType=ASC':'';
             dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&sortFiled='+sorter.columnKey+'&PageIndex=0&PageSize=10&'+sortType));
         }
@@ -716,12 +716,12 @@ class Student extends React.Component {
                         </span>
                         <div className='top-nav'>
                             {/* <Link className='link' to='/GraduteArchives' replace>查看毕业生档案</Link>
-                            <span className='divide'>|</span>
-                            <Link className='link' target='_blank' to='/RegisterExamine' replace>学生注册审核</Link>
                             <span className='divide'>|</span> */}
+                            <Link className='link' target='_blank' to='/RegisterExamine' replace>学生注册审核</Link>
+                            <span className='divide'>|</span>
                             <span className='link' style={{ cursor: 'pointer' }} onClick={this.onAddStudent}>添加学生</span>
                             <span className='divide'>|</span>
-                            <Link className='link' to='/ImportStudent' replace>导入学生</Link>
+                            <Link className='link' target='_blank' to='/ImportFile/Student' replace>导入学生</Link>
                         </div>
                     </div>
                     <hr className='Student-hr' />

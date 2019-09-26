@@ -22,11 +22,27 @@ class AddCourseClass extends React.Component {
             TeacherName: '',
             Subject: { value: 0, title: '请选择学科' },
             Grade: { value: 0, title: '请选择年级' },
-            SubjectSelect:{ value: 0, title: '请选择学科' },
-            GradeSelect:{ value: 0, title: '请选择年级' }
+            SubjectSelect: { value: 0, title: '请选择学科' },
+            GradeSelect: { value: 0, title: '请选择年级' }
         }
     }
-
+    componentWillMount() {
+        const { DataState, dispatch } = this.props;
+        //获取路由
+        let route = history.location.pathname;
+        let pathArr = route.split('/');
+        let handleRoute = pathArr[1];
+        let routeID = pathArr[2];
+        let subjectID = pathArr[3];
+        let classID = pathArr[4];
+        //*************** */
+        if (handleRoute === 'Teacher'){
+            let UserMsg = DataState.LoginUser;
+            DataState.GetCourseClassDetailsHandleClassMsg.selectData.Teacher={value:UserMsg.UserID,title:UserMsg.UserName};
+            //dispatch(actions.UpDataState.setSubjectTeacherTransferMsg({value:UserMsg.UserID,title:UserMsg.UserName}))
+        }
+        
+    }
     componentWillReceiveProps(nextProps) {
         const { DataState, UIState } = nextProps;
         let data = nextProps.DataState.GetCourseClassDetailsHandleClassMsg
@@ -118,10 +134,10 @@ class AddCourseClass extends React.Component {
     //选择弹窗
     onSelectStudentAllClick = () => {
         const { DataState, UIState, dispatch } = this.props;
-        if(this.state.SubjectSelect.value===0)
-        return
-        if(this.state.GradeSelect.value===0)
-        return
+        if (this.state.SubjectSelect.value === 0)
+            return
+        if (this.state.GradeSelect.value === 0)
+            return
         dispatch(actions.UpDataState.getGradeClassMsg('/CourseClass_GradeID'))
         dispatch(actions.UpUIState.AddStudentModalOpen())
     }
@@ -130,7 +146,7 @@ class AddCourseClass extends React.Component {
         console.log(value)
         this.setState({
             Subject: value,
-            SubjectSelect:value
+            SubjectSelect: value
         })
     }
     //选择年级
@@ -139,7 +155,7 @@ class AddCourseClass extends React.Component {
         console.log(value)
         this.setState({
             GradeSelect: value,
-            SubjectSelect:value
+            SubjectSelect: value
         })
         // if(this.state.Subject.value===0){
         //     dispatch(actions.UpUIState.showErrorAlert({
@@ -166,6 +182,15 @@ class AddCourseClass extends React.Component {
     }
     render() {
         const { DataState, UIState } = this.props;
+        //获取路由
+        let route = history.location.pathname;
+        let pathArr = route.split('/');
+        let handleRoute = pathArr[1];
+        let routeID = pathArr[2];
+        let subjectID = pathArr[3];
+        let classID = pathArr[4];
+        //*************** */
+
         let data = DataState.GetCourseClassDetailsHandleClassMsg;
         let Subjects = DataState.GetCoureClassAllMsg.Subjects;
         let SubjectDropList = [{ value: 0, title: '请选择学科' }];
@@ -180,16 +205,16 @@ class AddCourseClass extends React.Component {
             let Grade = [];
             for (let child in Subjects[index]) {
                 if (child !== 'subjectName') {
-                    
+
                     Grade.push({
                         value: child,
                         title: Subjects[index][child]
                     })
-                    
+
                 }
             }
             GradeDropList[index] = Grade;
-           
+
         }
         console.log(SubjectDropList)
         return (
@@ -228,18 +253,21 @@ class AddCourseClass extends React.Component {
                                     width={180}
                                     type='simple'
                                     dropSelectd={{ value: 0, title: '请选择年级' }}
-                                    dropList={this.state.Subject.value === 0?[]:GradeDropList[this.state.Subject.value]}
+                                    dropList={this.state.Subject.value === 0 ? [] : GradeDropList[this.state.Subject.value]}
                                     onChange={this.onSelectGradeChange.bind(this)}
                                 ></DropDown>
                             </span>
                         </div>
                         <div className='row-column'>
                             <span className='left'>任课老师：</span>
-                            <span className='right'>
+                            {handleRoute !== 'Teacher' ? (<span className='right'>
                                 <Input readOnly unselectable="on" onClick={this.onTeacherSelectClick.bind(this)} className='teacherName selectTeacher' type='text' value={data.selectData ? data.selectData.Teacher.title : ''} style={{ width: 150 + 'px' }} onChange={this.onCourseClassNameChange.bind(this)} />
                                 <span onClick={this.onTeacherSelectClick.bind(this)} className='teacher-select'>选择</span>
-
-                            </span>
+                            </span>) : (
+                                    <span className='right'>
+                                        <span className='noChange teacherName'>{data.selectData ? data.selectData.Teacher.title : ''}</span>
+                                    </span>
+                                )}
                         </div>
                     </div>
                     <div className='row clearfix'>

@@ -81,6 +81,12 @@ class CourseClassDetails extends React.Component {
         dispatch(actions.UpDataState.getTeacherMsg('/GetUserDetail?userID=T0001'));
 
     }
+    //关闭教师详情弹窗
+    TeacherMsgModalCancel = () => {
+        const { dispatch } = this.props;
+        dispatch({ type: actions.UpUIState.SUBJECT_DETAILS_MODAL_CLOSE });
+
+    }
 
     render() {
         const { DataState ,UIState} = this.props;
@@ -108,8 +114,7 @@ class CourseClassDetails extends React.Component {
                 <DetailsModal
                     ref='SubjectDetailsMsgModal'
                     visible={UIState.SubjectDetailsMsgModalShow.Show}
-                    onOk={this.SubjectDetailsMsgModalOk}
-                    onCancel={this.SubjectDetailsMsgModalCancel}
+                    onCancel={this.TeacherMsgModalCancel}
                     data={DataState.TeacherMsg ? DataState.TeacherMsg.data : {}}
                     type='teacher'
                 >
