@@ -116,7 +116,15 @@ class ChangeClassRoom extends Component{
 
             classRoomDrop,
 
-            classRoomDisabled
+            classRoomDisabled,
+
+            teacherTips,
+
+            dateTips,
+
+            scheduleTips,
+
+            targetClassRoomTips
 
         } = this.props.ChangeClassRoom;
 
@@ -148,6 +156,8 @@ class ChangeClassRoom extends Component{
 
                     </DropDown>
 
+                    <span className="error-tips" style={{display:`${teacherTips?'block':'none'}`}}>请选择教师</span>
+
                 </div>
 
                 <div className="time-wrapper">
@@ -160,6 +170,9 @@ class ChangeClassRoom extends Component{
 
                     </ConfigProvider>
 
+                    <span className="error-tips" style={{display:`${dateTips?'block':'none'}`}}>请选择日期</span>
+
+
                     <DropDown width={150}
                               height={72}
                               style={{zIndex:4}}
@@ -171,6 +184,9 @@ class ChangeClassRoom extends Component{
 
                     </DropDown>
 
+                    <span className="error-tips" style={{display:`${scheduleTips?'block':'none'}`}}>请选择课时</span>
+
+
                     <span className="week-wrapper">{WeekNO?`第${WeekNO}周`:''} {WeekDay} { ClassHour }</span>
 
                 </div>
@@ -180,6 +196,7 @@ class ChangeClassRoom extends Component{
                     <span className="props">教室:</span>
 
                     <span className={`classroom ${classHourDrop.value!=='none'?'pick':''}`}>{teacherClassRoom.name}</span>
+
 
                     <span className="props">新的教室:</span>
 
@@ -192,6 +209,8 @@ class ChangeClassRoom extends Component{
                               onChange={this.classRoomPick.bind(this)}>
 
                     </DropDown>
+
+                    <span className="error-tips" style={{display:`${targetClassRoomTips?'block':'none'}`}}>请选择教室</span>
 
                 </div>
 

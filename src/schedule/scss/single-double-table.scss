@@ -19,7 +19,9 @@
         font-weight: bold;
 
         text-align: center;
-        
+
+        padding-top: 10px;
+
       }
 
       .date{
@@ -29,6 +31,61 @@
         color: #00728f;
 
         text-align: center;
+
+      }
+
+      .week-wrapper{
+
+        position: relative;
+
+        &.active{
+
+          border: 1px solid #96d4e3;
+
+          background-image: linear-gradient(
+                          #cbe5ec,
+                          #cbe5ec),
+          linear-gradient(
+                          #d6f7ff,
+                          #d6f7ff);
+
+          &:before{
+
+            position: absolute;
+
+            content: '';
+
+            top:0;
+
+            left:0;
+
+            width:0;
+
+            height: 100%;
+
+            @include box-shadow(-3px 0 5px 1px #aaddea);
+
+          }
+
+          &:after{
+
+            position: absolute;
+
+            content: '';
+
+            top:0;
+
+            left:100%;
+
+            width:0;
+
+            height: 100%;
+
+            @include box-shadow(3px 0 5px 1px #aaddea);
+
+          }
+
+        }
 
       }
 
@@ -68,8 +125,19 @@
 
     }
 
+  td{
+
+    &.active{
+
+      border:0;
+
+    }
+
+  }
 
   .scheduleDiv{
+
+    position: relative;
 
     text-align: left;
 
@@ -89,6 +157,59 @@
 
       padding:0 20px 0 10px;
       
+    }
+
+    &.active{
+
+      border-bottom: 1px solid #96d4e3;
+
+      border-right: 1px solid #96d4e3;
+
+      border-left: 1px solid #96d4e3;
+
+      background-image: linear-gradient(
+                      #e8faff,
+                      #e8faff),
+      linear-gradient(
+                      #fcfcfc,
+                      #fcfcfc);
+
+      &:before{
+
+        position: absolute;
+
+        content: '';
+
+        top:0;
+
+        left:0;
+
+        width:0;
+
+        height: 100%;
+
+        @include box-shadow(-3px 0 5px 1px #aaddea);
+
+      }
+
+      &:after{
+
+        position: absolute;
+
+        content: '';
+
+        top:0;
+
+        left:100%;
+
+        width:0;
+
+        height: 100%;
+
+        @include box-shadow(3px 0 5px 1px #aaddea);
+
+      }
+
     }
 
   }

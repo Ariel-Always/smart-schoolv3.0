@@ -627,6 +627,8 @@
 
     .change-info-wrapper{
 
+      position: relative;
+
       &:nth-child(2){
 
         margin-top: 24px;
@@ -640,6 +642,24 @@
         float: left;
 
       }
+
+      .error-tips{
+
+        position: absolute;
+
+        right: -78px;
+
+      }
+
+      &:nth-child(3){
+
+        .error-tips{
+
+          top:4px;
+
+        }
+
+       }
 
     }
 
@@ -720,6 +740,8 @@
 
     .teacher-wrapper{
 
+      position: relative;
+
       text-align: center;
 
       margin-left:48px;
@@ -727,6 +749,14 @@
       .props{
 
         margin-right: 12px;
+
+      }
+
+      .error-tips{
+
+        left: 237px;
+
+        top: 4px;
 
       }
 
@@ -790,9 +820,10 @@
 
       padding-left:20px;
 
+
       .dropdown_container{
 
-        &:nth-child(4){
+        &:nth-child(6){
 
           margin-left:-8px;
 
@@ -835,6 +866,34 @@
 
       }
 
+      .error-tips{
+
+        &:nth-child(2){
+
+          left: 152px;
+
+          top: 4px;
+
+        }
+
+        &:nth-child(4){
+
+          left: 152px;
+
+          top: 42px;
+
+        }
+
+        &:nth-child(7){
+
+          left: 152px;
+
+          top:104px;
+
+        }
+
+      }
+
     }
 
     .ant-input{
@@ -853,6 +912,8 @@
 
       left:0;
 
+      text-align:left;
+
       bottom: -62px;
 
       padding-left: 16px;
@@ -861,7 +922,13 @@
 
       color: #ff0000;
 
-      background: url('#{$image-url}/input-error.png') no-repeat left center
+      background: url('#{$image-url}/input-error.png') no-repeat left center;
+
+      height: 18px;
+
+      line-height: 18px;
+
+      width:128px;
 
     }
 
@@ -980,6 +1047,60 @@
 
       }
 
+      .error-tips{
+
+        right: 36px;
+
+        top:2px;
+
+      }
+
+    }
+
+    .teacher-wrapper{
+
+      position: relative;
+
+      .error-tips{
+
+        left: 212px;
+
+        top: 2px;
+
+      }
+
+    }
+
+    .time-wrapper{
+
+      position: relative;
+
+      .error-tips{
+
+        &:nth-child(3){
+
+          left: 56px;
+
+          top: 30px;
+
+        }
+
+        &:nth-child(5){
+
+          top: 30px;
+
+          left: 214px;
+
+        }
+
+      }
+
+    }
+
+    .error-tips{
+
+      position: absolute;
+
     }
 
   }
@@ -1012,9 +1133,19 @@
 
     .teacher-wrapper{
 
+      position: relative;
+
       .props{
 
         margin-left: 30px;
+
+      }
+
+      .error-tips{
+
+        left: 240px;
+
+        top: 2px;
 
       }
 
@@ -1186,10 +1317,39 @@
 
     .class-hour-pick-wrapper{
 
+      position: relative;
+
       margin-left:86px;
+
+      .error-tips{
+
+        left:0;
+
+        bottom: -16px;
+
+      }
 
     }
 
+    .checked-date-wrapper{
+
+      position: relative;
+
+      .error-tips{
+
+        left: 240px;
+
+        top: 2px;
+
+      }
+
+    }
+
+    .error-tips{
+
+      position: absolute;
+
+    }
 
   }
 

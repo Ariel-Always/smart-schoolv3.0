@@ -17,28 +17,29 @@ class ContentContainer extends Component{
         return (
                 <div>
 
-                    {/*<Switch>*/}
-
-                        {/*<Route path="/" exact component={GradeContent}></Route>
-
-                        <Route path="/:GradeId" exact component={ClassContent}></Route>
-
-                        <Route path="/:GradeId/:ClassId" exact component={StudentContent}></Route>*/}
-
                     {
                         ComponentChange.stu?
+
                             <GradeContent info = {ComponentChange.stuInfo}></GradeContent>
+
                             :''
+
                     }
                     {
                         ComponentChange.grade?
+
                             <ClassContent info ={ ComponentChange.gradeInfo } key={ ComponentChange.gradeInfo.id }></ClassContent>
+
                             :''
+
                     }
                     {
                         ComponentChange.class?
+
                             <StudentContent info ={ ComponentChange.classInfo } key={ComponentChange.classInfo.id}></StudentContent>
+
                             :''
+
                     }
 
                     {/*</Switch>*/}

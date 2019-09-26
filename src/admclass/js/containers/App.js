@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import '../../scss/index.scss';
 import UpUIState from '../actions/UpUIState';
 import UpDataState from '../actions/UpDataState';
+import AppAlertActions from '../actions/AppAlertActions';
 import logo from '../../images/logo.png';
 import Banner from '../component/Banner';
 import ContentContainer from './ContentContainer';
@@ -26,6 +27,7 @@ class App extends Component{
         }else{
             //不存在的情况下
             dispatch({type:UpUIState.APP_LOADING_SHOW});
+
             dispatch(UpUIState.showErrorAlert({
                 type:'btn-error',
                 title:"登录错误，请重新登录!",
@@ -180,7 +182,7 @@ class App extends Component{
     //点击左侧的菜单
 
     menuClick(e){
-        console.log(e);
+
         const {ident,id,name,preName,preId} = e;
 
        const {dispatch} = this.props;
@@ -285,8 +287,8 @@ class App extends Component{
                         </Loading>
                             {/*提示弹出框组件*/}
                         <Alert  show={UIState.AppAlert.show}  type={UIState.AppAlert.type} title={UIState.AppAlert.title}
-                        onOk={UIState.AppAlert.onOk} onCancel={UIState.AppAlert.onCancel} onClose={UIState.AppAlert.onClose}
-                        onHide = {UIState.AppAlert.onHide }>
+                        onOk={UIState.AppAlert.ok} onCancel={UIState.AppAlert.cancel} onClose={UIState.AppAlert.close}
+                        onHide = {UIState.AppAlert.hide } abstract={UIState.AppAlert.abstract}>
 
                         </Alert>
 

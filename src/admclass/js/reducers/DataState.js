@@ -8,16 +8,35 @@ import TheTeachersList from './data/TheTeachersList';
 import StudentsCheckList from './data/StudentsCheckList';
 import StudentsCheckAll from './data/StudentsCheckAll';
 import StudentsPlainOptions from "./data/StudentsPlainOptions";
+
+import ClassPagination from './data/ClassPagination';
+
+import GradePagination from './data/GradePagination';
+
 const DataState=combineReducers(
     {
         LoginUser,
+
         AllGradePreview,
+
         SchoolGradeClasses,
+
         TheGradePreview,
+
         TheStudentList,
+
         TheTeachersList,
+
         StudentsCheckList,
+
         StudentsCheckAll,
-        StudentsPlainOptions
+
+        StudentsPlainOptions,
+
+        ClassPagination,
+
+        GradePagination
+
     });
+
 export default DataState;

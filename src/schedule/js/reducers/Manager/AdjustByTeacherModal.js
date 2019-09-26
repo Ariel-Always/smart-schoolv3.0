@@ -1,5 +1,5 @@
 import ABTActions from '../../actions/Manager/AdjustByTeacherActions';
-import StopSchedule from "../../containers/Manager/StopSchedule";
+
 
 
 
@@ -161,27 +161,15 @@ const AdjustByTeacherModal = (state={
 
         originTeacherTips:false,
 
-        originTeacherTipsTitle:"",
-
         originDateTips:false,
 
-        originDateTipsTitle:"",
-
-        originClassHourTips:false,
-
-        originClassHourTipsTitle:"",
+        originScheduleTips:false,
 
         targetTeacherTips:false,
 
-        targetTeacherTipsTitle:"",
-
         targetDateTips:false,
 
-        targetDateTipsTitle:"",
-
-        targetClassHourTips:false,
-
-        targetClassHourTipsTitle:"",
+        targetScheduleTips:false
 
     },
 
@@ -227,7 +215,19 @@ const AdjustByTeacherModal = (state={
 
         newClassRoomDisabled:true,
 
-        errorTips:false
+        errorTips:false,
+
+        teacherTips:false,
+
+        originDateTips:false,
+
+        originScheduleTips:false,
+
+        targetDateTips:false,
+
+        targetScheduleTips:false,
+
+        targetClassRoomTips:false
 
     },
 
@@ -265,7 +265,15 @@ const AdjustByTeacherModal = (state={
 
         classRoomList:[],
 
-        classRoomDisabled:true
+        classRoomDisabled:true,
+
+        teacherTips:false,
+
+        dateTips:false,
+
+        scheduleTips:false,
+
+        targetClassRoomTips:false
 
     },
 
@@ -287,7 +295,13 @@ const AdjustByTeacherModal = (state={
 
         teacherSearchList:[],
 
-        classHourLoading:false
+        classHourLoading:false,
+
+        dateTips:false,
+
+        scheduleTips:false,
+
+        teacherTips:false
 
     }
 
@@ -457,27 +471,15 @@ const AdjustByTeacherModal = (state={
 
                     originTeacherTips:false,
 
-                    originTeacherTipsTitle:"",
-
                     originDateTips:false,
 
-                    originDateTipsTitle:"",
-
-                    originClassHourTips:false,
-
-                    originClassHourTipsTitle:"",
+                    originScheduleTips:false,
 
                     targetTeacherTips:false,
 
-                    targetTeacherTipsTitle:"",
-
                     targetDateTips:false,
 
-                    targetDateTipsTitle:"",
-
-                    targetClassHourTips:false,
-
-                    targetClassHourTipsTitle:"",
+                    targetScheduleTips:false
 
                 },
 
@@ -523,7 +525,19 @@ const AdjustByTeacherModal = (state={
 
                     newClassRoomDisabled:true,
 
-                    errorTips:false
+                    errorTips:false,
+
+                    teacherTips:false,
+
+                    originDateTips:false,
+
+                    originScheduleTips:false,
+
+                    targetDateTips:false,
+
+                    targetScheduleTips:false,
+
+                    targetClassRoomTips:false
 
                 },
 
@@ -561,7 +575,15 @@ const AdjustByTeacherModal = (state={
 
                     classRoomList:[],
 
-                    classRoomDisabled:true
+                    classRoomDisabled:true,
+
+                    teacherTips:false,
+
+                    dateTips:false,
+
+                    scheduleTips:false,
+
+                    targetClassRoomTips:false
 
                 },
 
@@ -583,7 +605,13 @@ const AdjustByTeacherModal = (state={
 
                     teacherSearchList:[],
 
-                    classHourLoading:false
+                    classHourLoading:false,
+
+                    dateTips:false,
+
+                    scheduleTips:false,
+
+                    teacherTips:false
 
                 }
 
@@ -2281,35 +2309,236 @@ const AdjustByTeacherModal = (state={
 
                 case 'originTeacher':
 
+                    return {...state,changeSchedule:{...state.changeSchedule,originTeacherTips:true}};
+
+                case 'originDate':
+
+                    return {...state,changeSchedule:{...state.changeSchedule,originDateTips:true}};
+
+                case 'originSchedule':
+
+                    return {...state,changeSchedule:{...state.changeSchedule,originScheduleTips:true}};
+
+                case 'targetTeacher':
+
+                    return {...state,changeSchedule:{...state.changeSchedule,targetTeacherTips:true}};
+
+                case 'targetDate':
+
+                    return {...state,changeSchedule:{...state.changeSchedule,targetDateTips:true}};
+
+                case 'targetSchedule':
+
+                    return {...state,changeSchedule:{...state.changeSchedule,targetScheduleTips:true}};
+
+
+
+                default:
+
+                    return state;
+
+            }
+
+        case ABTActions.CHANGE_SHCEDULE_ERROR_TIPS_HIDE:
+
+            switch (actions.data.type) {
+
+                case 'originTeacher':
+
                     return {...state,changeSchedule:{...state.changeSchedule,originTeacherTips:false}};
 
-                case 'replaceTeacher':
+                case 'originDate':
 
-                    return {...state,replaceSchedule:{...state.replaceSchedule,replaceTeacherTips:false}};
+                    return {...state,changeSchedule:{...state.changeSchedule,originDateTips:false}};
 
-                case 'class':
+                case 'originSchedule':
 
-                    return {...state,replaceSchedule:{...state.replaceSchedule,classTips:false}};
+                    return {...state,changeSchedule:{...state.changeSchedule,originScheduleTips:false}};
 
-                case 'month':
+                case 'targetTeacher':
 
-                    return {...state,replaceSchedule:{...state.replaceSchedule,monthTips:false}};
+                    return {...state,changeSchedule:{...state.changeSchedule,targetTeacherTips:false}};
 
-                case 'week':
+                case 'targetDate':
 
-                    return {...state,replaceSchedule:{...state.replaceSchedule,weekTips:false}};
+                    return {...state,changeSchedule:{...state.changeSchedule,targetDateTips:false}};
+
+                case 'targetSchedule':
+
+                    return {...state,changeSchedule:{...state.changeSchedule,targetScheduleTips:false}};
+
+
+
+                default:
+
+                    return state;
+
+            }
+
+        case ABTActions.CHANGE_TIME_ERROR_TIPS_HIDE:
+
+            switch (actions.data.type) {
+
+                case 'teacher':
+
+                    return {...state,changeTime:{...state.changeTime,teacherTips:false}};
+
+                case 'originDate':
+
+                    return {...state,changeTime:{...state.changeTime,originDateTips:false}};
+
+                case 'originSchedule':
+
+                    return {...state,changeTime:{...state.changeTime,originScheduleTips:false}};
+
+                case 'targetDate':
+
+                    return {...state,changeTime:{...state.changeTime,targetDateTips:false}};
+
+                case 'targetSchedule':
+
+                    return {...state,changeTime:{...state.changeTime,targetScheduleTips:false}};
+
+                case 'targetClassRoom':
+
+                    return {...state,changeTime:{...state.changeTime,targetClassRoomTips:false}};
+
+
+
+                default:
+
+                    return state;
+
+            }
+
+        case ABTActions.CHANGE_TIME_ERROR_TIPS_SHOW:
+
+            switch (actions.data.type) {
+
+                case 'teacher':
+
+                    return {...state,changeTime:{...state.changeTime,teacherTips:true}};
+
+                case 'originDate':
+
+                    return {...state,changeTime:{...state.changeTime,originDateTips:true}};
+
+                case 'originSchedule':
+
+                    return {...state,changeTime:{...state.changeTime,originScheduleTips:true}};
+
+                case 'targetDate':
+
+                    return {...state,changeTime:{...state.changeTime,targetDateTips:true}};
+
+                case 'targetSchedule':
+
+                    return {...state,changeTime:{...state.changeTime,targetScheduleTips:true}};
+
+                case 'targetClassRoom':
+
+                    return {...state,changeTime:{...state.changeTime,targetClassRoomTips:true}};
+
+
+
+                default:
+
+                    return state;
+
+            }
+
+        case ABTActions.CHANGE_CLASS_ROOM_ERROR_TIPS_SHOW:
+
+            switch (actions.data.type) {
+
+                case 'teacher':
+
+                    return {...state,ChangeClassRoom:{...state.ChangeClassRoom,teacherTips:true}};
 
                 case 'date':
 
-                    return {...state,replaceSchedule:{...state.replaceSchedule,dateTips:false}};
+                    return {...state,ChangeClassRoom:{...state.ChangeClassRoom,dateTips:true}};
 
-                case 'classHourDate':
+                case 'schedule':
 
-                    return {...state,replaceSchedule:{...state.replaceSchedule,classHourDateTips:false}};
+                    return {...state,ChangeClassRoom:{...state.ChangeClassRoom,scheduleTips:true}};
 
-                case 'classHour':
+                case 'targetClassRoom':
 
-                    return {...state,replaceSchedule:{...state.replaceSchedule,classHourTips:false}};
+                    return {...state,ChangeClassRoom:{...state.ChangeClassRoom,targetClassRoomTips:true}};
+
+
+                default:
+
+                    return state;
+
+            }
+
+        case ABTActions.CHANGE_CLASS_ROOM_ERROR_TIPS_HIDE:
+
+            switch (actions.data.type) {
+
+                case 'teacher':
+
+                    return {...state,ChangeClassRoom:{...state.ChangeClassRoom,teacherTips:false}};
+
+                case 'date':
+
+                    return {...state,ChangeClassRoom:{...state.ChangeClassRoom,dateTips:false}};
+
+                case 'schedule':
+
+                    return {...state,ChangeClassRoom:{...state.ChangeClassRoom,scheduleTips:false}};
+
+                case 'targetClassRoom':
+
+                    return {...state,ChangeClassRoom:{...state.ChangeClassRoom,targetClassRoomTips:false}};
+
+
+                default:
+
+                    return state;
+
+            }
+
+        case ABTActions.STOP_SCHEDULE_ERROR_TIPS_SHOW:
+
+            switch (actions.data.type) {
+
+                case 'teacher':
+
+                    return {...state,StopSchedule:{...state.StopSchedule,teacherTips:true}};
+
+                case 'date':
+
+                    return {...state,StopSchedule:{...state.StopSchedule,dateTips:true}};
+
+                case 'schedule':
+
+                    return {...state,StopSchedule:{...state.StopSchedule,scheduleTips:true}};
+
+
+                default:
+
+                    return state;
+
+            }
+
+        case ABTActions.STOP_SCHEDULE_ERROR_TIPS_HIDE:
+
+            switch (actions.data.type) {
+
+                case 'teacher':
+
+                    return {...state,StopSchedule:{...state.StopSchedule,teacherTips:false}};
+
+                case 'date':
+
+                    return {...state,StopSchedule:{...state.StopSchedule,dateTips:false}};
+
+                case 'schedule':
+
+                    return {...state,StopSchedule:{...state.StopSchedule,scheduleTips:false}};
 
 
                 default:

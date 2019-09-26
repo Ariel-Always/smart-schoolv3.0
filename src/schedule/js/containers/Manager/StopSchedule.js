@@ -83,7 +83,13 @@ class StopSchedule extends Component{
 
             teacherSearchLoadingShow,
 
-            classHourLoading
+            classHourLoading,
+
+            dateTips,
+
+            scheduleTips,
+
+            teacherTips
 
         } = StopSchedule;
 
@@ -113,6 +119,8 @@ class StopSchedule extends Component{
 
                     </DropDown>
 
+                    <span className="error-tips" style={{display:`${teacherTips?'block':'none'}`}}>请选择教师</span>
+
                 </div>
 
                 <div className="checked-date-wrapper">
@@ -125,6 +133,8 @@ class StopSchedule extends Component{
 
 
                     </ConfigProvider>
+
+                    <span className="error-tips" style={{display:`${dateTips?'block':'none'}`}}>请选择日期</span>
 
                 </div>
 
@@ -201,7 +211,19 @@ class StopSchedule extends Component{
                             })
 
                         }
+
+                        {
+
+                            classHours.length>0?
+
+                                <span className="error-tips" style={{display:`${scheduleTips?'block':'none'}`}}>请选择节次</span>
+
+                                :''
+
+                        }
+
                     </div>
+
 
                 </Loading>
 

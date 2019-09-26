@@ -17,6 +17,8 @@ class SingleDoubleTable extends Component{
 
         const { commonHeight,topHeight,ItemClassHourCount,ItemClassHour,ItemWeek,NowWeekNo,commonWidth,leftOneWidth,leftTwoWidth,schedule,NowDate } = this.props;
         //根据课程
+
+
         let courseTotal = 0;
 
         let ths =[];
@@ -109,11 +111,16 @@ class SingleDoubleTable extends Component{
 
                }
 
-               let th = <th key={i} style={{height:topHeight}} className={`${dateTime===NowDate?'active':''}`}>
 
-                            <div className={`week week${i}`} style={{width:commonWidth}}>{week}</div>
+               let th = <th key={i}>
 
-                            <div className={`date date${i}`} style={{width:commonWidth}}>{dateTime}</div>
+                            <div className={`week-wrapper ${dateTime===NowDate?'active':''}`} style={{height:topHeight}}>
+
+                                <div className={`week week${i}`} style={{width:commonWidth}}>{week}</div>
+
+                                <div className={`date date${i}`} style={{width:commonWidth}}>{dateTime}</div>
+
+                            </div>
 
                         </th>;
 
@@ -212,9 +219,9 @@ class SingleDoubleTable extends Component{
 
                                     if (((it.WeekDay+1) === i)&&(it.ClassHourNO===item.ClassHourNO)){
 
-                                        tds.push(<td key={`${i}${ky}`} className={`shedule${i}`} style={{height:commonHeight}}>
+                                        tds.push(<td key={`${i}${ky}`} className={`shedule${i} `} style={{height:commonHeight,width:commonWidth}}>
 
-                                            <div className={`scheduleDiv ${i === weekDay?'active':''}`} style={{width:commonWidth}}>
+                                            <div className={`scheduleDiv ${i === weekDay?'active':''}`} style={{width:'100%'}}>
 
                                                 <div className={`title ${it.ScheduleType===1?'':'active'}`} title={it.title} data-id={it.titleID}>{it.title}</div>
 
@@ -238,9 +245,9 @@ class SingleDoubleTable extends Component{
                                 //如果当天的该节课没有课程。添加空。
                                 if (!hasCourse){
 
-                                    tds.push(<td key={i} className={`shedule${i}`} style={{height:commonHeight}}>
+                                    tds.push(<td key={i} className={`shedule${i}`} style={{height:commonHeight,width:commonWidth}}>
 
-                                        <div className={`scheduleDiv empty ${i === weekDay?'active':''}`} style={{width:commonWidth,lineHeight:`${commonHeight}px`}}>--</div>
+                                        <div className={`scheduleDiv empty ${i === weekDay?'active':''}`} style={{width:"100%",lineHeight:`${commonHeight}px`}}>--</div>
 
                                     </td>)
 
@@ -250,11 +257,13 @@ class SingleDoubleTable extends Component{
 
                         }else{
 
+
+
                             for (let i = 1; i <= 7; i++){
 
-                                tds.push(<td key={i} className={`shedule${i}`} style={{height:commonHeight}}>
+                                tds.push(<td key={i} className={`shedule${i}`} style={{height:commonHeight,width:commonWidth}}>
 
-                                            <div className="scheduleDiv empty" style={{width:commonWidth,lineHeight:`${commonHeight}px`}}>--</div>
+                                            <div className={`scheduleDiv empty ${i === weekDay?'active':''}`} style={{width:'100%',lineHeight:`${commonHeight}px`}}>--</div>
 
                                         </td>)
 

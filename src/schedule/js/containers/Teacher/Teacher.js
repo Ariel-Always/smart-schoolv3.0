@@ -181,7 +181,8 @@ class Teacher extends Component{
                         ItemClassHour={SubjectCourseGradeClassRoom.ItemClassHour}
                         ItemWeek = {PeriodWeekTerm.ItemWeek}
                         NowWeekNo={SubjectTeacherTeacherSchedule.NowWeekNo}
-                        schedule={SubjectTeacherTeacherSchedule.schedule}>
+                        schedule={SubjectTeacherTeacherSchedule.schedule}
+                        NowDate={PeriodWeekTerm.NowDate}>
 
                     </SingleDoubleTable>
 

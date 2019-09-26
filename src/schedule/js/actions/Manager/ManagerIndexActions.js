@@ -46,7 +46,9 @@ const STSPageInit = () => {
 
                         id:item.TeacherID,
 
-                        name:item.TeacherName
+                        name:item.TeacherName,
+
+                        active:false
 
                     };
 
@@ -138,7 +140,9 @@ const STSPageInit = () => {
 
                                 id:item.TeacherID,
 
-                                name:item.TeacherName
+                                name:item.TeacherName,
+
+                                active:false
 
                             };
 

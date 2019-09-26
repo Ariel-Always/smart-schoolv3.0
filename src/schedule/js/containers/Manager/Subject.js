@@ -10,7 +10,7 @@ import TermPick from '../../component/TermPick';
 
 import DoubleSingleTable from '../../component/DoubleSingleTable';
 
-import {Scrollbars } from 'react-custom-scrollbars';
+import $ from 'jquery';
 
 import {connect} from 'react-redux';
 
@@ -40,7 +40,7 @@ class Subject extends Component{
 
         dispatch({type:STSAction.STS_SUBJECT_CHANGE,data:data});
 
-        this.refs.scrollBars.scrollTop(0);
+        $('#tb').find('div.ant-table-body').scrollTop(0);
 
         dispatch(STSAction.STSPageUpdate());
 
@@ -53,7 +53,7 @@ class Subject extends Component{
 
         dispatch({type:STSAction.STS_NOW_WEEK_CHANGE,data:e.value});
 
-        this.refs.scrollBars.scrollTop(0);
+        $('#tb').find('div.ant-table-body').scrollTop(0);
 
         dispatch(STSAction.STSPageUpdate());
 
@@ -68,7 +68,7 @@ class Subject extends Component{
 
         dispatch({type:STSAction.STS_NOW_WEEK_CHANGE,data:(NowWeekNo+1)});
 
-        this.refs.scrollBars.scrollTop(0);
+        $('#tb').find('div.ant-table-body').scrollTop(0);
 
         dispatch(STSAction.STSPageUpdate());
 
@@ -83,7 +83,7 @@ class Subject extends Component{
 
         dispatch({type:STSAction.STS_NOW_WEEK_CHANGE,data:(NowWeekNo-1)});
 
-        this.refs.scrollBars.scrollTop(0);
+        $('#tb').find('div.ant-table-body').scrollTop(0);
 
         dispatch(STSAction.STSPageUpdate());
 
@@ -92,13 +92,36 @@ class Subject extends Component{
 
     scrollToBottom(e){
 
-        if (e.top===1){
+        const {dispatch} = this.props;
 
-            const {dispatch} = this.props;
+        dispatch(STSAction.STSPageUpdate({nextPage:true}));
 
-            dispatch(STSAction.STSPageUpdate({nextPage:true}));
+    }
 
-        }
+    //表格点击某一行
+    clickRow(record){
+
+        const { Manager,dispatch } = this.props;
+
+        const { schedule } = Manager.SubjectTeacherSchedule;
+
+        let rID  = record.id;
+
+        schedule.map((item,key)=>{
+
+            if (item.id === rID){
+
+                schedule[key]['active'] = true;
+
+            }else{
+
+                schedule[key]['active'] = false;
+
+            }
+
+        });
+
+        dispatch({type:STSAction.SUBJECT_TEACHER_SCHEDULE_UPDATE,data:schedule});
 
     }
 
@@ -181,25 +204,6 @@ class Subject extends Component{
 
                     <Loading spinning={SubjectTeacherSchedule.loadingShow} tip="正在为您查找，请稍后...">
 
-                        <Scrollbars
-
-                         ref="scrollBars"
-
-                        style={{width:1148}}
-
-                        autoHeight={true}
-
-                        autoHeightMax={748}
-
-                        renderTrackHorizontal={()=>{
-
-                            return <div className="scrollbar-horizo​​ntal" style={{position:"absolute",bottom:0,width:"100%",left:0,height:4,borderRadius:2}}></div>
-
-                        }}
-
-                        onScrollFrame={this.scrollToBottom.bind(this)}>
-
-
 
                         <DoubleSingleTable
                         ItemClassHourCount={SubjectCourseGradeClassRoom.ItemClassHourCount}
@@ -211,11 +215,12 @@ class Subject extends Component{
                         rowOneHeight={46}
                         rowTowHeight={64}
                         commonRowHeight={90}
-                        schedule={SubjectTeacherSchedule.schedule}>
+                        schedule={SubjectTeacherSchedule.schedule}
+                        onClickRow={(record) => this.clickRow.bind(this,record)}
+                        scrollToBottom={this.scrollToBottom.bind(this)}>
 
                     </DoubleSingleTable>
 
-                    </Scrollbars>
 
                     </Loading>
 
