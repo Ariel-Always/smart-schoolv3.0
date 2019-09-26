@@ -1,8 +1,14 @@
 import {postData,getData} from "../../../common/js/fetch";
-import UpUIState from './UpUIState';
-import 'whatwg-fetch';
 
-const CONFIG = {proxy:"http://47.244.238.75:7300/mock/5d7e0519fdd0dc0457886a3c/webCloudDev"};
+import UpUIState from './UpUIState';
+
+import Method from './Method';
+
+import AppAlertActions from './AppAlertActions';
+
+import PaginationActions from './PaginationActions';
+
+// const CONFIG = {proxy:"http://47.244.238.75:7300/mock/5d7e0519fdd0dc0457886a3c/webCloudDev"};
 
 
 //操作常量
@@ -14,6 +20,41 @@ const  GET_ALL_GRADE_PREVIEW = 'GET_ALL_GRADE_PREVIEW';
 const GET_SHCOOL_GRADE_CLASSES = 'GET_SHCOOL_GRADE_CLASSES';
 //获取某一年级总览数据
 const  GET_THE_GRADE_PREVIEW = 'GET_THE_GRADE_PREVIEW';
+
+//某一年级内classloading展现
+
+const THE_GRADE_CLASS_LOADING_SHOW = 'THE_GRADE_CLASS_LOADING_SHOW';
+
+const THE_GRADE_CLASS_LOADING_HIDE = 'THE_GRADE_CLASS_LOADING_HIDE';
+
+
+//某一年级内是否出现统计
+
+const THE_GRADE_CLASS_STATICS_SHOW = 'THE_GRADE_CLASS_STATICS_SHOW';
+
+const THE_GRADE_CLASS_STATICS_HIDE = 'THE_GRADE_CLASS_STATICS_HIDE';
+
+
+//搜索值的变化
+const THE_GRADE_CLASS_SEARCHKEY_CHANGE = 'THE_GRADE_CLASS_SEARCHKEY_CHANGE';
+
+//list更新
+const THE_GRADE_CLASS_LIST_UPDATE = 'THE_GRADE_CLASS_LIST_UPDATE';
+
+
+const ALL_GRADE_CLASS_SEARCHKEY_CHANGE = 'ALL_GRADE_CLASS_SEARCHKEY_CHANGE';
+
+const ALL_GRADE_CLASS_LOADING_HIDE = 'ALL_GRADE_CLASS_LOADING_HIDE';
+
+const ALL_GRADE_CLASS_LOADING_SHOW = 'ALL_GRADE_CLASS_LOADING_SHOW';
+
+const ALL_GRADE_CLASS_CONTENT_SHOW = 'ALL_GRADE_CLASS_CONTENT_SHOW';
+
+const ALL_GRADE_CLASS_CONTENT_HIDE = 'ALL_GRADE_CLASS_CONTENT_HIDE';
+
+const ALL_GRADE_CLASS_LIST_UPDATE = 'ALL_GRADE_CLASS_LIST_UPDATE';
+
+
 //获取某一班级的教师列表
 const GET_THE_CLASS_THEACHERS = 'GET_THE_CLASS_THEACHERS';
 //获取某一班级的学生列表
@@ -39,29 +80,47 @@ const ADD_TEACHER_NEW_TEACHER_TITLE = 'ADD_TEACHER_NEW_TEACHER_TITLE';
 //操作的执行
 //获取界面初始信息
 const  getPageInit = () => {
+
     return (dispatch,getState) => {
 
-        fetch(`${CONFIG.proxy}/Login?method=GetUserInfo`).then(res => res.json()).then(json => {
+        getLogin(dispatch).then(data => {
 
-            dispatch({type:GET_LOGIN_USER_INFO,data:json.data.result});
+            if (data){
 
-            const GradesClassesPromise = getXuGetData('/GradesClasses');
+                dispatch({type:GET_LOGIN_USER_INFO,data:data.result});
 
-            GradesClassesPromise.then((res)=>{
+                let SchoolID = data.result.SchoolID;
 
-                if (res.Status===200){
+                 getGradeClass(SchoolID,dispatch).then(data=>{
 
-                    dispatch({type:GET_SHCOOL_GRADE_CLASSES,data:res.Data});
+                     if (data){
 
-                }else if (res.Status===400||res.Status===500) {
+                         dispatch({type:GET_SHCOOL_GRADE_CLASSES,data:data});
 
-                    dispatch({type:UpUIState.SHOW_ERROR_ALERT,data:{title:res.Msg}});
 
-                    //Status不是200的情况
+                     }
 
-                }
+                 });
 
-            });
+               /* let getSchoolPromise = getSchoolData(SchoolID,dispatch);*/
+
+             /*   Promise.all([getGradeClassPromise,getSchoolPromise]).then(res=>{
+
+                    if (res){
+
+                       dispatch({type:GET_SHCOOL_GRADE_CLASSES,data:res[0]});
+
+                        dispatch({type:GET_ALL_GRADE_PREVIEW,data:res[1]});
+
+                        dispatch({type:UpUIState.GRADE_LOADING_HIDE});
+
+                        dispatch({type:UpUIState.APP_LOADING_CLOSE});
+
+                    }
+
+                });*/
+
+            }
 
         });
     }
@@ -70,26 +129,86 @@ const  getPageInit = () => {
 //获取所有的年纪总览数据
 const getAllGradePreview = () => {
 
-    return dispatch =>{
+    return (dispatch,getState) =>{
 
         dispatch({type:UpUIState.GRADE_LOADING_SHOW});
 
-        const AdmAllGradePreviewPromise =  getXuGetData('/AdmAllGradePreview?Token=Token&SchoolID=SchoolID');
+        let { SchoolID } = getState().DataState.LoginUser;
 
-        AdmAllGradePreviewPromise.then((res)=>{
+        if (SchoolID){
 
-            if (res.Status===200){
+            getSchoolData(SchoolID,dispatch).then(data=>{
 
-                dispatch({type:GET_ALL_GRADE_PREVIEW,data:res.Data});
+                if (data){
 
-                dispatch({type:UpUIState.GRADE_LOADING_HIDE});
+                    dispatch({type:GET_ALL_GRADE_PREVIEW,data:data});
+
+                    dispatch({type:UpUIState.GRADE_LOADING_HIDE});
+
+                    dispatch({type:UpUIState.APP_LOADING_CLOSE});
+
+                }
+
+            });
+
+        }else{
+
+            let waitUser = setInterval(()=>{
+
+                let id = getState().DataState.LoginUser.SchoolID;
+
+
+                if (id){
+
+                    clearInterval(waitUser);
+
+                    getSchoolData(id,dispatch).then(data=>{
+
+                        if (data){
+
+                            dispatch({type:GET_ALL_GRADE_PREVIEW,data:data});
+
+                            dispatch({type:UpUIState.GRADE_LOADING_HIDE});
+
+                            dispatch({type:UpUIState.APP_LOADING_CLOSE});
+
+                        }
+
+                    });
+
+                }
+
+            },50);
+
+        }
+
+    }
+
+};
+
+//获取某一年纪的所有总览数据
+const getTheGradePreview = (GradeID)=> {
+
+    return (dispatch,getState) => {
+
+        let { SchoolID } = getState().DataState.LoginUser;
+
+        dispatch({type:UpUIState.CLASS_LOADING_SHOW});
+
+        getClassList({SchoolID,GradeID,PageIndex:0,PageSize:1,dispatch}).then(data=>{
+
+
+            if (data){
+
+                dispatch({type:GET_THE_GRADE_PREVIEW,data:data});
+
+                dispatch({type:PaginationActions.CLASS_PAGINATION_CURRENT_UPDATE,data:1});
+
+                dispatch({type:PaginationActions.CLASS_PAGINATION_TOTAL_UPDATE,data:data.Total});
+
+                dispatch({type:UpUIState.CLASS_LOADING_HIDE});
 
                 dispatch({type:UpUIState.APP_LOADING_CLOSE});
-
-            }else if (res.Status===400||res.Status===500){
-
-                dispatch({type:UpUIState.SHOW_ERROR_ALERT,title:res.Msg});
-                //Status不是200的情况
 
             }
 
@@ -98,52 +217,30 @@ const getAllGradePreview = () => {
     }
 
 };
-
-//获取某一年纪的所有总览数据
-const getTheGradePreview = ()=> {
-
-    return dispatch => {
-
-        dispatch({type:UpUIState.CLASS_LOADING_SHOW});
-
-       let AdmTheGradePreviewPromise =  getXuGetData('/AdmTheGradePreview?Token=Token&GradeID=GradeID&PageIndex=PageIndex&PageSize=9');
-
-       AdmTheGradePreviewPromise.then((res)=>{
-
-           if (res.Status===200){
-
-               dispatch({type:GET_THE_GRADE_PREVIEW,data:res.Data});
-
-               dispatch({type:UpUIState.CLASS_LOADING_HIDE});
-
-               dispatch({type:UpUIState.APP_LOADING_CLOSE});
-
-           }
-
-       });
-
-    }
-
-};
 //获取某一班级的数据
-const getTheClassPreview = () =>{
-    return (dispatch,nextState) => {
+const getTheClassPreview = (ClassID) =>{
+
+    return (dispatch,getState) => {
 
         dispatch({type:UpUIState.STUDENT_LOADING_SHOW});
 
-        let getAmdClassTeachersPromise = getXuGetData('/AmdClassTeachers');
+        let getTeachersPromise = getTeachers({ClassID:ClassID,dispatch});
 
-        let getAmdClassStudentPromise = getXuGetData('/AmdClassStudents');
+        let getStudentsPromise = getStudents({ClassID:ClassID,dispatch,PageSize:16,PageIndex:0});
 
-        Promise.all([getAmdClassStudentPromise,getAmdClassTeachersPromise]).then((res) => {
+        Promise.all([getStudentsPromise,getTeachersPromise]).then((res) => {
 
-            dispatch({type:GET_THE_CLASS_STUDENTS,data:res[0].Data});
+            dispatch({type:GET_THE_CLASS_STUDENTS,data:res[0]});
 
-            dispatch({type:GET_THE_CLASS_THEACHERS,data:res[1].Data});
+            dispatch({type:GET_THE_CLASS_THEACHERS,data:res[1]});
 
-            let {TheStudentList} = nextState().DataState;
+            console.log(res[0]);
+
+            let { TheStudentList } = getState().DataState;
+
+            console.log(TheStudentList);
             //获取最新的学生列表信息，传递给待选项。
-            if (TheStudentList.List.length>0&&TheStudentList.Total>0){
+            if (TheStudentList.List&&TheStudentList.List.length>0&&TheStudentList.Total>0){
 
                 let list = TheStudentList.List.map(item =>{return JSON.stringify({id:item.UserID,name:item.UserName})});
 
@@ -619,6 +716,136 @@ const postXuData = async (url,data,level) =>{
 
 };
 
+
+
+
+//接口
+
+
+//获取login信息
+const getLogin = async (dispatch) => {
+
+   let res = await Method.getGetData('/Login?method=GetUserInfo');
+
+   if (res.error === 0){
+
+       return res.data;
+
+   }else{
+
+    dispatch(AppAlertActions.alertError(res.Msg));
+
+   }
+
+};
+
+
+
+//获取所有的年级班级信息
+
+const getGradeClass = async (SchoolID,dispatch) => {
+
+    let res = await Method.getGetData(`/UserMgr/UserInfoMgr/GetGradeClassTree?SchoolID=${SchoolID}`,2,'http://192.168.2.248:8075');
+
+    if (res.Status === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError(res.Msg));
+
+    }
+
+};
+
+
+
+
+//获取班级总览数据
+
+const getSchoolData = async (SchoolID,dispatch) => {
+
+    let res = await Method.getGetData(`/UserMgr/ClassMgr/GetSummary?SchoolID=${SchoolID}`,2,'http://192.168.2.248:8075');
+
+    if (res.Status === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError(res.Msg));
+
+    }
+
+};
+
+
+//获取班级列表
+
+const getClassList = async ({SchoolID,PageIndex,PageSize,dispatch,Keyword,GradeID}) => {
+
+
+    let res = await Method.getGetData(`/UserMgr/ClassMgr/GetGradeSummary?SchoolID=${SchoolID}&PageIndex=${PageIndex}&PageSize=${PageSize}${Keyword?`&Keyword=${Keyword}`:''}${GradeID?`&GradeID=${GradeID}`:''}`,2,'http://192.168.2.248:8075');
+
+    if (res.Status === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError(res.Msg));
+
+    }
+
+
+};
+
+
+
+//获取教师接口
+
+const getTeachers = async ({ClassID,dispatch}) => {
+
+    let res = await Method.getGetData(`/UserMgr/ClassMgr/GetTeacherToPage?ClassID=${ClassID}`,2,'http://192.168.2.248:8075');
+
+    if (res.Status === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError(res.Msg));
+
+    }
+
+
+};
+
+
+
+//获取学生接口
+
+const getStudents = async ({ClassID,dispatch,Keyword,PageIndex,PageSize}) => {
+
+    let res = await Method.getGetData(`/UserMgr/UserInfoMgr/GetStudentToPage?ClassID=${ClassID}&PageIndex=${PageIndex}&PageSize=${PageSize}${Keyword?`&Keyword=${Keyword}`:''}`,2,'http://192.168.2.248:8075');
+
+    if (res.Status === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError(res.Msg));
+
+    }
+
+
+};
+
+
+
+
 export default {
     getPageInit,
     getAllGradePreview,
@@ -633,10 +860,38 @@ export default {
     teacherSearchClose,
     updateGenger,
     updateTeacher,
+
+    getClassList,
+
     GET_LOGIN_USER_INFO,
     GET_ALL_GRADE_PREVIEW,
     GET_SHCOOL_GRADE_CLASSES,
     GET_THE_GRADE_PREVIEW,
+
+    THE_GRADE_CLASS_LOADING_SHOW,
+
+    THE_GRADE_CLASS_LOADING_HIDE,
+
+    THE_GRADE_CLASS_STATICS_SHOW,
+
+    THE_GRADE_CLASS_STATICS_HIDE,
+
+    THE_GRADE_CLASS_SEARCHKEY_CHANGE,
+
+    THE_GRADE_CLASS_LIST_UPDATE,
+
+    ALL_GRADE_CLASS_SEARCHKEY_CHANGE,
+
+    ALL_GRADE_CLASS_LOADING_HIDE,
+
+    ALL_GRADE_CLASS_LOADING_SHOW,
+
+    ALL_GRADE_CLASS_CONTENT_SHOW,
+
+    ALL_GRADE_CLASS_CONTENT_HIDE,
+
+    ALL_GRADE_CLASS_LIST_UPDATE,
+
     GET_THE_CLASS_THEACHERS,
     GET_THE_CLASS_STUDENTS,
     STUDENTS_CHECK_LIST_CHANGE,

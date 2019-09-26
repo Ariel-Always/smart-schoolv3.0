@@ -38,7 +38,7 @@ const alertError = (msg) => {
 
                 title:msg,
 
-                hide:closeAlert(dispatch),
+                cancel:closeAlert(dispatch),
 
                 close:closeAlert(dispatch),
 
@@ -66,7 +66,7 @@ const alertWarn = (msg) => {
 
                 title:msg,
 
-                hide:closeAlert(dispatch),
+                cancel:closeAlert(dispatch),
 
                 close:closeAlert(dispatch),
 

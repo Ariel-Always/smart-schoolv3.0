@@ -30,19 +30,8 @@ class StudentContent extends Component{
 
         const {SchoolGradeClasses} = DataState;
 
-        if (Object.keys(SchoolGradeClasses).length!==0){
 
-            dispatch(UpDataState.getTheClassPreview());//获取数据
-
-        }else{
-
-            setTimeout(()=>{
-
-                dispatch(UpDataState.getTheClassPreview());//获取数据
-
-            },500)
-
-        }
+        dispatch(UpDataState.getTheClassPreview(props.info.id));//获取数据
 
     }
 
@@ -85,19 +74,7 @@ class StudentContent extends Component{
         //判断是否有选中的项
         if (StudentsCheckList.length===0){
 
-            dispatch({type:UpUIState.SHOW_ERROR_ALERT,
-
-                msg:{
-
-                type:"btn-tips",
-
-                title:"您还没有选中任何学生，请先选择学生！",
-
-                cancel:this.hide.bind(this),
-
-                close:this.hide.bind(this)
-
-            }})
+            dispatch(AppAlertActions.alertWarn('您还没有选中任何学生，请先选择学生！'));
 
         }else{
             //弹出弹窗
@@ -322,23 +299,7 @@ class StudentContent extends Component{
 
         }else{//如果等于空的时候弹框警告
 
-           dispatch({type:UpUIState.SHOW_ERROR_ALERT,
-
-               msg:{
-
-                type:"btn-warn",
-
-                title:"请输入搜索的内容！",
-
-                ok:()=>{dispatch({type:UpUIState.CLOSE_ERROR_ALERT})},
-
-                cancel:()=>{dispatch({type:UpUIState.CLOSE_ERROR_ALERT})},
-
-                close:()=>{dispatch({type:UpUIState.CLOSE_ERROR_ALERT})}
-
-               }
-
-           });
+           dispatch(AppAlertActions.alertWarn('请输入搜索的内容！'));
         }
 
     }
@@ -377,43 +338,39 @@ class StudentContent extends Component{
 
         }else{
 
-            dispatch({
+            AppAlertActions.alertWarn('请选中一个教师！');
 
-                type:UpUIState.SHOW_ERROR_ALERT,
+        }
 
-                msg:{
+    }
+    //学生搜索
+    onStudentSearch(e){
 
-                    type:"btn-warn",
+        const key = e.value;
 
-                    title:"请选中一个教师！",
+        const { info,dispatch } = this.props;
 
-                    ok:()=>{dispatch({type:UpUIState.CLOSE_ERROR_ALERT})},
+        if (key){
 
-                    cancel:()=>{dispatch({type:UpUIState.CLOSE_ERROR_ALERT})},
+            dispatch(SearchActions.StudentSearch(info.id,key));
 
-                    close:()=>{dispatch({type:UpUIState.CLOSE_ERROR_ALERT})}
+            console.log(info.id,key);
 
-                }
+        }else{
 
-            })
+            dispatch(AppAlertActions.alertWarn("搜索不能为空！"));
 
         }
 
     }
 
-    onStudentSearch(e){
+    //取消学生搜索
 
-        const key = e.value;
+    StudentCancelSearch(){
 
-        if (key){
+        const { dispatch,info } = this.props;
 
-            AppAlertActions.alertError("搜索不能为空！");
-
-        }else{
-
-            dispatch(SearchActions.StudentSearch(key));
-
-        }
+        dispatch(SearchActions.StudentCancelSearch(info.id))
 
     }
 
@@ -421,9 +378,11 @@ class StudentContent extends Component{
     render() {
         const {UIState,DataState,info} = this.props;
 
-        const {StudentLoading} = UIState;
+        const {StudentLoading,StudentSearchLoading} = UIState;
 
         const {TheTeachersList,TheStudentList,SchoolGradeClasses,StudentsCheckList,StudentsCheckAll} = DataState;
+
+
 
         return (
             <Loading tip="加载中..."  spinning={StudentLoading.show}  size="large">
@@ -442,7 +401,11 @@ class StudentContent extends Component{
                 {/*学生内容区域*/}
                 <ContentWrapper>
 
-                    <Search className="admclass-search-student" onClickSearch={this.onStudentSearch.bind(this)}></Search>
+                    <div className="search-wrapper clearfix">
+
+                        <Search className="admclass-search-student" onCancelSearch={this.StudentCancelSearch.bind(this)} onClickSearch={this.onStudentSearch.bind(this)}></Search>
+
+                    </div>
 
                     <StudentTabWrapper
                         CheckList={StudentsCheckList}
@@ -455,7 +418,9 @@ class StudentContent extends Component{
 
                         StudentList={TheStudentList}
 
-                        adjustBtnClick ={this.adjustBtnClick.bind(this)}>
+                        adjustBtnClick ={this.adjustBtnClick.bind(this)}
+
+                        StudentSearchLoading = { StudentSearchLoading }>
 
                     </StudentTabWrapper>
 
