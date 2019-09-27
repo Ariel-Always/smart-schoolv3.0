@@ -15,8 +15,6 @@ const getGetData =  async (url,level,api = 'http://47.244.238.75:7300/mock/5d7e0
 
             fetchAsync = await getData(api+url,level);
 
-
-
         }
         catch (e) {
 

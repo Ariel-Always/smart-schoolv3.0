@@ -3,16 +3,15 @@ import React,{Component} from "react";
 import { Empty,PagiNation } from "../../../common";
 
 class PartData extends Component{
+
     render() {
 
-        const {PartDataList,type} = this.props;
+        const { PartDataList,type,GradeClick,ClassClick } = this.props;
 
 
         let DataItem ='';
 
         if (type==='grade'){
-
-            console.log(PartDataList);
 
             DataItem = (PartDataList&&PartDataList.length>0)?
 
@@ -20,7 +19,7 @@ class PartData extends Component{
 
                         return  <div key={key} className="partdata-tab-item grade">
 
-                                    <a href="#">
+                                    <a onClick={(e) => GradeClick({id:item.GradeID,name:item.GradeName})}>
 
                                         <div className="partdata-tab-content">
 
@@ -84,7 +83,9 @@ class PartData extends Component{
 
                 PartDataList.map((item,key)=>{
                     return <div key={key} className="partdata-tab-item class">
-                                <a href="#">
+
+                                <a onClick={(e)=>ClassClick({id:item.ClassID,name:item.ClassName})}>
+
                                     <div className="partdata-tab-content">
                                         <div className="partdata-tab-title">{item.ClassName}</div>
                                         <table className="partdata-tab-table">

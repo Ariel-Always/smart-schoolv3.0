@@ -4,31 +4,48 @@ import UpUIState from './UpUIState';
 
 import UpDataState from './UpDataState';
 
-import SearchLoadingActions from './SearchLoadingActions';
-
 import AppAlertActions from './AppAlertActions';
+
 import PaginationActions from "./PaginationActions";
 
-const STUDENG_CLICK_SEARCH = 'STUDENG_CLICK_SEARCH';
 
 //学生搜索
 const StudentSearch = (ClassID,key) => {
 
     return (dispatch,getState) => {
 
-        dispatch({type:SearchLoadingActions.STUDENT_SEARCH_LOADING_SHOW});
+        dispatch({type:UpDataState.STUDENT_WRAPPER_LOADING_SHOW});
 
-        getStudentList(ClassID,1,10,dispatch,key).then(data=>{
+        dispatch({type:UpDataState.STUDENT_SEARCHKEY_CHANGE,data:key});
+
+        UpDataState.getStudents({ClassID,PageIndex:0,PageSize:8,dispatch,Keyword:key}).then(data=>{
 
 
             if (data){
 
                 dispatch({type:UpDataState.GET_THE_CLASS_STUDENTS,data:data});
 
-                dispatch({type:SearchLoadingActions.STUDENT_SEARCH_LOADING_HIDE});
+                dispatch({type:PaginationActions.STUDENT_PAGINATION_CURRENT_UPDATE,data:1});
 
+                dispatch({type:PaginationActions.STUDENT_PAGINATION_TOTAL_UPDATE,data:data.Total});
+
+                if (data.List.length>0){
+
+                    let list = data.List.map(item =>{return JSON.stringify({id:item.UserID,name:item.UserName})})
+
+                    dispatch({type:UpDataState.INIT_STUDEUNT_PLAIN_OPTIONS,data:list});
+
+                }else{
+
+                    dispatch({type:UpDataState.INIT_STUDEUNT_PLAIN_OPTIONS,data:[]});
+
+                }
+
+                dispatch({type:UpDataState.STUDENTS_CHECKED_NONE});
 
             }
+
+            dispatch({type:UpDataState.STUDENT_WRAPPER_LOADING_HIDE});
 
         })
 
@@ -41,15 +58,43 @@ const StudentCancelSearch = (ClassID) => {
 
     return (dispatch,getState) => {
 
-        dispatch({type:SearchLoadingActions.STUDENT_SEARCH_LOADING_SHOW});
+        dispatch({type:UpDataState.STUDENT_WRAPPER_LOADING_SHOW});
 
-        Method.getGetData('/UserMgr/UserInfoMgr/GetStudentToPage',2,'http://192.168.2.248:8075').then(
+        dispatch({type:UpDataState.STUDENT_SEARCHKEY_CHANGE,data:''});
 
-            json => {
+        UpDataState.getStudents({ClassID:ClassID,dispatch,PageIndex:0,PageSize:8}).then(
 
-                dispatch({type:UpDataState.GET_THE_CLASS_STUDENTS,data:json.Data});
+            data => {
+
+                if (data){
+
+                    dispatch({type:UpDataState.GET_THE_CLASS_STUDENTS,data:data});
+
+                    dispatch({type:PaginationActions.STUDENT_PAGINATION_CURRENT_UPDATE,data:1});
+
+                    dispatch({type:PaginationActions.STUDENT_PAGINATION_TOTAL_UPDATE,data:data.Total});
+
+                    if (data.List.length>0){
+
+                        let list = data.List.map(item =>{return JSON.stringify({id:item.UserID,name:item.UserName})})
+
+                        dispatch({type:UpDataState.INIT_STUDEUNT_PLAIN_OPTIONS,data:list});
+
+                    }else{
+
+                        dispatch({type:UpDataState.INIT_STUDEUNT_PLAIN_OPTIONS,data:[]});
+
+                    }
+
+                    dispatch({type:UpDataState.STUDENTS_CHECKED_NONE});
+
+                }
+
+                dispatch({type:UpDataState.STUDENT_WRAPPER_LOADING_HIDE});
 
             }
+
+
 
         );
 
@@ -81,10 +126,10 @@ const SchoolClassSearch = (key) => {
 
                 dispatch({type:PaginationActions.GRADE_PAGINATION_CURRENT_UPDATE,data:1});
 
-                dispatch({type:PaginationActions.GRADE_PAGINATION_TOTAL_UPDATE,data:data.Total})
-
-                dispatch({type:UpDataState.ALL_GRADE_CLASS_LOADING_HIDE});
+                dispatch({type:PaginationActions.GRADE_PAGINATION_TOTAL_UPDATE,data:data.Total});
             }
+
+            dispatch({type:UpDataState.ALL_GRADE_CLASS_LOADING_HIDE});
 
         })
 
@@ -140,9 +185,9 @@ const GradeClassSearch = (GradeID,key) => {
 
                 dispatch({type:PaginationActions.CLASS_PAGINATION_TOTAL_UPDATE,data:data.Total})
 
-                dispatch({type:UpDataState.THE_GRADE_CLASS_LOADING_HIDE});
-
             }
+
+            dispatch({type:UpDataState.THE_GRADE_CLASS_LOADING_HIDE});
 
         })
 
@@ -176,9 +221,9 @@ const GradeClassCloseSearch = (GradeID) => {
 
               dispatch({type:PaginationActions.CLASS_PAGINATION_TOTAL_UPDATE,data:data.Total})
 
-              dispatch({type:UpDataState.THE_GRADE_CLASS_LOADING_HIDE});
-
           }
+
+          dispatch({type:UpDataState.THE_GRADE_CLASS_LOADING_HIDE});
 
       })
 
@@ -190,32 +235,11 @@ const GradeClassCloseSearch = (GradeID) => {
 
 
 
-//获取学生列表（包含搜索）
-
-const getStudentList = async (ClassID,PageIndex,PageSize,dispatch,Keyword) => {
-
-
-  let res = await Method.getGetData(`/UserMgr/UserInfoMgr/GetStudentToPage?ClassID=${ClassID}&PageIndex=${PageIndex}&PageSize=${PageSize}${Keyword?`&Keyword=${Keyword}`:''}`,2,'http://192.168.2.248:8075');
-
-   if (res.Status === 200){
-
-        return res.Data;
-
-   }else{
-
-       dispatch(AppAlertActions.alertError(res.Msg));
-
-   }
-
-
-} ;
 
 
 
 
 export default {
-
-    STUDENG_CLICK_SEARCH,
 
     StudentSearch,
 

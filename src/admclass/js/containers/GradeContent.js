@@ -8,9 +8,12 @@ import connect from "react-redux/es/connect/connect";
 import UpDataState from '../actions/UpDataState';
 import UpUIState from '../actions/UpUIState';
 
+import $ from 'jquery';
+
 import SearchActions from '../actions/SearchActions';
 
 import AppAlertActions from '../actions/AppAlertActions';
+
 import PaginationActions from "../actions/PaginationActions";
 
 class GradeContent extends Component{
@@ -66,6 +69,32 @@ class GradeContent extends Component{
 
     }
 
+    //点击某一个年级跳转到相对应的年级界面
+
+    GradeClick({id,name}) {
+
+        const {dispatch} = this.props;
+
+        dispatch({type: UpUIState.CHANGE_GRADE_ACTIVE, info: {id: id, name: name}});
+
+
+        $('.frame_leftmenu_mainitem').removeClass('active');
+
+        $('.frame_leftmenu_mainitem').removeClass('selected');
+
+        $(`.frame_leftmenu_mainitem`).each((index,that)=>{
+
+            if ($(that).attr('data-id')===id){
+
+                $(that).addClass('active','selectd');
+
+            }
+
+        })
+
+    }
+
+
 
     render() {
 
@@ -98,7 +127,7 @@ class GradeContent extends Component{
 
                                 <Statistics classNum={AllGradePreview.Class} teacherNum={AllGradePreview.CourseTecher} studentNum={AllGradePreview.Student}></Statistics>
 
-                                <PartData type="grade" PartDataList={AllGradePreview.List}></PartData>
+                                <PartData GradeClick={this.GradeClick.bind(this)} type="grade" PartDataList={AllGradePreview.List}></PartData>
 
                             </React.Fragment>
 

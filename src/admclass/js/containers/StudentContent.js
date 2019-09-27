@@ -11,6 +11,7 @@ import TeacherTabWrapper from '../component/TeacherTabWrapper'
 import StudentTabWrapper from '../component/StudentTabWrapper';
 import AdjustClassModal from '../component/AdjustClassModal';
 import AddTeacherModal from '../component/AddTeacherModal';
+import PaginationActions from "../actions/PaginationActions";
 
 
 
@@ -59,7 +60,7 @@ class StudentContent extends Component{
 
             dispatch({type:UpDataState.STUDENTS_CHECKED_ALL});
 
-            dispatch({type:UpDataState.STUDENTS_CHECK_LIST_CHANGE,list:StudentsPlainOptions});
+            dispatch({type:UpDataState.STUDENTS_CHECK_LIST_CHANGE,list:StudentsPlainOptions.list});
 
         }
 
@@ -190,7 +191,7 @@ class StudentContent extends Component{
     //弹出添加教师的弹窗
     addTeacherModalShow(opt){
 
-        const {dispatch} = this.props;
+        const {dispatch,info} = this.props;
 
         switch (opt.type) {
 
@@ -207,11 +208,15 @@ class StudentContent extends Component{
 
                         originTeacherInfo:opt.originTeacherInfo,
 
+                        originTeacherTitle:"原任课教师",
+
                         newTeacherTitle:"新任课教师",
 
                         modalTitle:"更改任课教师",
 
-                        type:2
+                        type:2,
+
+                        SubjectID:opt.originTeacherInfo.SubjectID
 
                     }});
 
@@ -221,7 +226,11 @@ class StudentContent extends Component{
 
                 dispatch({type:UpUIState.ADD_TEACHER_MODAL_SHOW,options:{
 
+                        originTeacherShow:false,
+
                         modalTitle:"添加班主任",
+
+                        newTeacherTitle:"班主任",
 
                         type:3
 
@@ -236,6 +245,8 @@ class StudentContent extends Component{
                         originTeacherShow:true,
 
                         originTeacherInfo:opt.originTeacherInfo,
+
+                        originTeacherTitle:"原班主任",
 
                         newTeacherTitle:"新班主任",
 
@@ -253,7 +264,7 @@ class StudentContent extends Component{
 
         }
         //初始化所有的教师和学科的数据
-        dispatch(UpDataState.getAddTeacherData({type:opt.type}));
+        dispatch(UpDataState.getAddTeacherData({type:opt.type,ClassID:info.id}));
 
     }
 
@@ -318,9 +329,11 @@ class StudentContent extends Component{
     //点击OK的时候
     teacherModalOk(e){
 
-        const {dispatch,UIState,match} =this.props;
+        const {dispatch,UIState,info} =this.props;
 
         const {AddTeacherModal} = UIState;
+
+        console.log(AddTeacherModal);
 
         //先判断是否选中一个新的教师
 
@@ -328,17 +341,17 @@ class StudentContent extends Component{
 
             if (AddTeacherModal.type===3||AddTeacherModal.type===4){ //是修改的班主任
 
-                dispatch(UpDataState.updateGenger({ClassID:UIState.ComponentChange.classInfo.id}));
+                dispatch(UpDataState.updateGenger({ClassID:info.id}));
 
             }else{//是修改的任课教师
 
-                dispatch(UpDataState.updateTeacher({ClassID:UIState.ComponentChange.classInfo.id}));
+                dispatch(UpDataState.updateTeacher({ClassID:info.id}));
 
             }
 
         }else{
 
-            AppAlertActions.alertWarn('请选中一个教师！');
+            dispatch(AppAlertActions.alertWarn('请选中一个教师！'));
 
         }
 
@@ -353,8 +366,6 @@ class StudentContent extends Component{
         if (key){
 
             dispatch(SearchActions.StudentSearch(info.id,key));
-
-            console.log(info.id,key);
 
         }else{
 
@@ -375,39 +386,111 @@ class StudentContent extends Component{
     }
 
 
+    //学生页码发生变化
+
+    StudentPageChange(e){
+
+        console.log(e);
+
+        const { dispatch,info } = this.props;
+
+        dispatch(PaginationActions.StudentPageChange(e-1,info.id));
+
+    }
+
+    //删除班主任
+
+    delGanger(){
+
+        const { dispatch,info } = this.props;
+
+        dispatch({type:UpUIState.SHOW_ERROR_ALERT,data:{
+
+                type:"btn-query",
+
+                title:"您确定要删除该班主任么？",
+
+                ok:()=>{  return dispatch(UpDataState.delGanger({ClassID:info.id}));},
+
+                cancel:()=>dispatch({type:UpUIState.CLOSE_ERROR_ALERT}),
+
+                close:()=>dispatch({type:UpUIState.CLOSE_ERROR_ALERT})
+
+        }});
+
+
+    }
+
+    //删除教师
+
+    delSubjectTeacher({SubjectID}){
+
+        const { dispatch,info } = this.props;
+
+        dispatch({type:UpUIState.SHOW_ERROR_ALERT,data:{
+
+                type:"btn-query",
+
+                title:"您确定要删除该学科任课教师么？",
+
+                ok:()=>{  return dispatch(UpDataState.delSubjectTeacher({ClassID:info.id,SubjectID}));},
+
+                cancel:()=>dispatch({type:UpUIState.CLOSE_ERROR_ALERT}),
+
+                close:()=>dispatch({type:UpUIState.CLOSE_ERROR_ALERT})
+
+            }});
+
+    }
+
+
+
+
+
+
+
     render() {
+
         const {UIState,DataState,info} = this.props;
 
-        const {StudentLoading,StudentSearchLoading} = UIState;
+        const {StudentLoading} = UIState;
 
-        const {TheTeachersList,TheStudentList,SchoolGradeClasses,StudentsCheckList,StudentsCheckAll} = DataState;
+        const {StudentPagination,TheTeachersList,TheStudentList,SchoolGradeClasses,StudentsCheckList,StudentsCheckAll} = DataState;
 
 
 
         return (
             <Loading tip="加载中..."  spinning={StudentLoading.show}  size="large">
                 {/*第一个标题*/}
-                <TitleBar type="icon2" title={`${info.preName} > ${info.name} 教师名单`} abstract={`(${TheTeachersList.Total}人)`}></TitleBar>
+                <TitleBar type="icon2" title={`${info.preName} > ${info.name}`}></TitleBar>
                {/* 教师内容区域*/}
                 <ContentWrapper>
 
-                    <Button size="small" color="blue" className="addTeacher" onClick={this.addTeacherModalShow.bind(this,{type:1})}>添加任课教师</Button>
+                    <span className="number-wrapper">教师名单 <span className="num">({TheTeachersList.Total}人)</span></span>
 
-                    <TeacherTabWrapper addTeacherModalShow={this.addTeacherModalShow.bind(this)} Teachers={TheTeachersList}></TeacherTabWrapper>
+                    <div className="btn-wrapper clearfix">
+
+                        <Button size="small" color="blue" className="addTeacher" onClick={this.addTeacherModalShow.bind(this,{type:1})}>添加任课教师</Button>
+
+                    </div>
+
+                    <TeacherTabWrapper delSubjectTeacher={this.delSubjectTeacher.bind(this)} delGanger={this.delGanger.bind(this)} addTeacherModalShow={this.addTeacherModalShow.bind(this)} Teachers={TheTeachersList}></TeacherTabWrapper>
 
                 </ContentWrapper>
-               {/* 学生标题头部*/}
-                <TitleBar type="icon2" title={`${info.preName} > ${info.name}学生名单`} abstract={`（${TheStudentList.Total}人）`}></TitleBar>
+
                 {/*学生内容区域*/}
                 <ContentWrapper>
 
+                    <span className="number-wrapper">学生名单 <span className="num">({TheStudentList.Total}人)</span></span>
+
                     <div className="search-wrapper clearfix">
 
-                        <Search className="admclass-search-student" onCancelSearch={this.StudentCancelSearch.bind(this)} onClickSearch={this.onStudentSearch.bind(this)}></Search>
+                        <Search className="admclass-search-student" width={280} placeHolder="请输入学生学号或者姓名搜索" onCancelSearch={this.StudentCancelSearch.bind(this)} onClickSearch={this.onStudentSearch.bind(this)}></Search>
 
                     </div>
 
                     <StudentTabWrapper
+
                         CheckList={StudentsCheckList}
 
                         onChangeAll={this.onChangeAll.bind(this)}
@@ -420,7 +503,11 @@ class StudentContent extends Component{
 
                         adjustBtnClick ={this.adjustBtnClick.bind(this)}
 
-                        StudentSearchLoading = { StudentSearchLoading }>
+                        StudentWrapperLoading = { TheStudentList.WrapperLoading }
+
+                        StudentPagination={StudentPagination}
+
+                        StudentPageChange={this.StudentPageChange.bind(this)}>
 
                     </StudentTabWrapper>
 
@@ -524,6 +611,8 @@ class StudentContent extends Component{
 
                             newTeacherTitle = {UIState.AddTeacherModal.newTeacherTitle}
 
+                            originTeacherTitle={UIState.AddTeacherModal.originTeacherTitle}
+
                             teacherModalDropChange = {this.teacherModalDropChange.bind(this)}
 
                             teacherLoadingShow = {UIState.AddTeacherModal.teacherLoadingShow}
@@ -536,7 +625,9 @@ class StudentContent extends Component{
 
                             emptyShow = {UIState.AddTeacherModal.emptyShow}
 
-                            searchClose = {this.teacherSearchClose.bind(this)}>
+                            searchClose = {this.teacherSearchClose.bind(this)}
+
+                            >
 
                    </AddTeacherModal>
 

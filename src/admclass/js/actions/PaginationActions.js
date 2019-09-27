@@ -1,6 +1,5 @@
 import UpDataState from './UpDataState'
 
-import PaginationActions from './PaginationActions';
 
 const CLASS_PAGINATION_TOTAL_UPDATE = 'CLASS_PAGINATION_TOTAL_UPDATE';
 
@@ -9,6 +8,10 @@ const CLASS_PAGINATION_CURRENT_UPDATE = 'CLASS_PAGINATION_CURRENT_UPDATE';
 const GRADE_PAGINATION_TOTAL_UPDATE = 'GRADE_PAGINATION_TOTAL_UPDATE';
 
 const GRADE_PAGINATION_CURRENT_UPDATE = 'GRADE_PAGINATION_CURRENT_UPDATE';
+
+const STUDENT_PAGINATION_CURRENT_UPDATE = 'STUDENT_PAGINATION_CURRENT_UPDATE';
+
+const STUDENT_PAGINATION_TOTAL_UPDATE = 'STUDENT_PAGINATION_TOTAL_UPDATE';
 
 //年级班级列表变化
 const GradeClassPageChange = (GradeID,PageIndex) =>{
@@ -41,6 +44,7 @@ const GradeClassPageChange = (GradeID,PageIndex) =>{
 
 };
 
+//学校班级列表变化
 const SchoolClassPageChange = (PageIndex) =>{
 
     return (dispatch,getState) => {
@@ -72,6 +76,49 @@ const SchoolClassPageChange = (PageIndex) =>{
 };
 
 
+const StudentPageChange = (PageIndex,ClassID) => {
+
+    return (dispatch,getState) => {
+
+        let { SearchKey } = getState().DataState.TheStudentList;
+
+        dispatch({type:UpDataState.STUDENT_WRAPPER_LOADING_SHOW});
+
+        UpDataState.getStudents({ClassID,PageIndex,PageSize:8,dispatch,Keyword:SearchKey}).then(data=>{
+
+            if (data){
+
+                dispatch({type:UpDataState.GET_THE_CLASS_STUDENTS,data:data});
+
+                dispatch({type:STUDENT_PAGINATION_CURRENT_UPDATE,data:PageIndex+1});
+
+                dispatch({type:STUDENT_PAGINATION_TOTAL_UPDATE,data:data.Total});
+
+                dispatch({type:UpDataState.STUDENT_WRAPPER_LOADING_HIDE});
+
+                if (data.List.length>0){
+
+                    let list = data.List.map(item =>{return JSON.stringify({id:item.UserID,name:item.UserName})})
+
+                    dispatch({type:UpDataState.INIT_STUDEUNT_PLAIN_OPTIONS,data:list});
+
+                }else{
+
+                    dispatch({type:UpDataState.INIT_STUDEUNT_PLAIN_OPTIONS,data:[]});
+
+                }
+
+                dispatch({type:UpDataState.STUDENTS_CHECKED_NONE});
+
+            }
+
+        });
+
+    }
+
+};
+
+
 export default {
 
     CLASS_PAGINATION_TOTAL_UPDATE,
@@ -82,8 +129,14 @@ export default {
 
     GRADE_PAGINATION_CURRENT_UPDATE,
 
+    STUDENT_PAGINATION_CURRENT_UPDATE,
+
+    STUDENT_PAGINATION_TOTAL_UPDATE,
+
     GradeClassPageChange,
 
-    SchoolClassPageChange
+    SchoolClassPageChange,
+
+    StudentPageChange
 
 }

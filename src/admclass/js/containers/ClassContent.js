@@ -10,6 +10,8 @@ import PaginationActions from '../actions/PaginationActions';
 import {Loading} from "../../../common";
 import AppAlertActions from "../actions/AppAlertActions";
 import SearchActions from "../actions/SearchActions";
+import UpUIState from "../actions/UpUIState";
+import $ from "jquery";
 
 
 
@@ -67,8 +69,39 @@ class ClassContent extends Component{
 
     }
 
+    //点击班级
+
+    ClassClick({id,name}){
+
+        const { dispatch,info } = this.props;
+
+        dispatch({type:UpUIState.CHANGE_CLASS_ACTIVE,info:{id,name,preName:info.name,preId:info.id}});
+
+        $('.frame_leftmenu_mainitem').removeClass('active');
+
+        $('.frame_leftmenu_mainitem').removeClass('selected');
+
+        $(`.frame_leftmenu_onegrade_ul li`).each((index,that)=>{
+
+            if ($(that).attr('data-id')===id){
+
+                $(that).addClass('active');
+
+                $(that).children('.frame_leftmenu_onegrade_name').addClass('active');
+
+                $(that).closest('.frame_leftmenu_nextgrade_container').prev().addClass('selected');
+
+            }
+
+        })
+
+    }
+
+
+
 
     render() {
+
         const {UIState,DataState,info} = this.props;
 
         const {ClassLoading} = UIState;
@@ -102,7 +135,8 @@ class ClassContent extends Component{
                     <Loading spinning={TheGradePreview.ClassLoading}>
 
                         <PartData type="class"
-                                  PartDataList={TheGradePreview.List}>
+                                  PartDataList={TheGradePreview.List}
+                                  ClassClick={this.ClassClick.bind(this)}>
 
                         </PartData>
 

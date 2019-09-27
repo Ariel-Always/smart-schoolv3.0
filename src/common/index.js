@@ -1626,12 +1626,12 @@ class MenuLeftNoLink extends React.Component {
                     {
                         Menu && Menu.map((item, key) => {
                             //如果有第二级别
-                            if (item.List) {
+                            if (item.List&&item.List.length>0) {
                                 //active状态的类名
 
                                 return <React.Fragment key={key}>
                                     {/* {第二级别块}*/}
-                                    <div className={`frame_leftmenu_mainitem`}>
+                                    <div className={`frame_leftmenu_mainitem`} data-id={item.id}>
 
                                         <span className={`frame_leftmenu_mainitem_name ${item.menu ? item.menu : ''}`} onClick={() => { menuClick({ ident: item.ident, id: item.id, name: item.name }) }}>{item.name}</span>
 
@@ -1644,7 +1644,7 @@ class MenuLeftNoLink extends React.Component {
                                             {
                                                 item.List && item.List.map((i, k) => {
 
-                                                    return <li key={k} className={`clearfix`}>
+                                                    return <li key={k} className={`clearfix`} data-id={i.id}>
 
                                                         <span className={`frame_leftmenu_point`}></span>
 
@@ -1661,7 +1661,7 @@ class MenuLeftNoLink extends React.Component {
 
                             } else {
                                 //如果没有第二级直接返回，同时pathname和NavLink的参数相同处于活动状态
-                                return <div key={key} className={`frame_leftmenu_mainitem no_child ${item.default ? 'active selected' : ''}`}>
+                                return <div key={key} className={`frame_leftmenu_mainitem no_child ${item.default ? 'active selected' : ''}`} data-id={item.id}>
 
                                     <span className={`frame_leftmenu_mainitem_name ${item.menu ? item.menu : ''}`} onClick={() => { menuClick({ ident: item.ident, id: item.id, name: item.name }) }}>{item.name}</span>
 
