@@ -147,7 +147,7 @@ class GradeContent extends Component{
 
                                 </PartData>
 
-                                <PagiNation pageSize={1} onChange={this.pageChange.bind(this)} current={GradePagination.CurrentPage} total={GradePagination.Total}></PagiNation>
+                                <PagiNation pageSize={12} onChange={this.pageChange.bind(this)} current={GradePagination.CurrentPage} total={GradePagination.Total}></PagiNation>
 
                             </Loading>
 

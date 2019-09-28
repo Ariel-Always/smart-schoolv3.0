@@ -107,24 +107,6 @@ const  getPageInit = () => {
 
                  });
 
-               /* let getSchoolPromise = getSchoolData(SchoolID,dispatch);*/
-
-             /*   Promise.all([getGradeClassPromise,getSchoolPromise]).then(res=>{
-
-                    if (res){
-
-                       dispatch({type:GET_SHCOOL_GRADE_CLASSES,data:res[0]});
-
-                        dispatch({type:GET_ALL_GRADE_PREVIEW,data:res[1]});
-
-                        dispatch({type:UpUIState.GRADE_LOADING_HIDE});
-
-                        dispatch({type:UpUIState.APP_LOADING_CLOSE});
-
-                    }
-
-                });*/
-
             }
 
         });
@@ -160,14 +142,15 @@ const getAllGradePreview = () => {
 
             let waitUser = setInterval(()=>{
 
-                let id = getState().DataState.LoginUser.SchoolID;
+                let { SchoolID } = getState().DataState.LoginUser;
 
+                let Grades = getState().DataState.SchoolGradeClasses.Grades;
 
-                if (id){
+                if (Grades){
 
                     clearInterval(waitUser);
 
-                    getSchoolData(id,dispatch).then(data=>{
+                    getSchoolData(SchoolID,dispatch).then(data=>{
 
                         if (data){
 
@@ -200,7 +183,7 @@ const getTheGradePreview = (GradeID)=> {
 
         dispatch({type:UpUIState.CLASS_LOADING_SHOW});
 
-        getClassList({SchoolID,GradeID,PageIndex:0,PageSize:1,dispatch}).then(data=>{
+        getClassList({SchoolID,GradeID,PageIndex:0,PageSize:12,dispatch}).then(data=>{
 
 
             if (data){
@@ -231,7 +214,7 @@ const getTheClassPreview = (ClassID) =>{
 
         let getTeachersPromise = getTeachers({ClassID:ClassID,dispatch});
 
-        let getStudentsPromise = getStudents({ClassID:ClassID,dispatch,PageSize:8,PageIndex:0});
+        let getStudentsPromise = getStudents({ClassID:ClassID,dispatch,PageSize:12,PageIndex:0});
 
         Promise.all([getStudentsPromise,getTeachersPromise]).then((res) => {
 
@@ -303,44 +286,7 @@ const addClass = () =>{
     }
 
 };
-//调班
-const postAdjustClass = (data) => {
 
-  return dispatch => {
-
-      let adjustPostPromise = postXuData('/admAdjustClass',data);
-
-     adjustPostPromise.then((json)=>{
-
-         if (json.Status===200){
-
-             dispatch({type:UpUIState.ADJUST_CLASS_MODAL_HIDE});
-
-             dispatch({type:UpUIState.SHOW_ERROR_ALERT,data:{
-                     type:'success',
-                     title:"调班成功！",
-                     hide:()=>{
-                         dispatch({type:UpUIState.CLOSE_ERROR_ALERT});
-                         dispatch(getTheClassPreview());
-                     }
-             }});
-
-
-         }else if (json.Status===400||json.Status===500){
-
-             dispatch({type:UpUIState.SHOW_ERROR_ALERT,data:{
-                    type:'error',
-                     title:json.msg,
-                     onHide:()=>{dispatch({type:UpUIState.CLOSE_ERROR_ALERT})}
-                 }})
-
-         }
-
-     });
-
-  }
-
-};
 
 //添加教师弹框获取所有的教师和学科的数据
 const getAddTeacherData = (opts) =>{
@@ -995,6 +941,30 @@ const setTeacher =  async ({ClassID,SubjectID,UserID='',dispatch}) => {
 
 };
 
+//调班接口
+const adjustClass =  async ({ClassID,UserIDs,dispatch}) => {
+
+    let res = await Method.getPostData(`/UserMgr/ClassMgr/ReSetStudentClass`,{
+
+        ClassID,UserIDs
+
+    },2,'http://192.168.2.248:8066');
+
+
+
+    if (res.StatusCode === 200){
+
+        return res;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError(res.Msg));
+
+    }
+
+
+};
+
 
 
 export default {
@@ -1004,7 +974,6 @@ export default {
     getTheClassPreview,
     changeStudentCheckList,
     addClass,
-    postAdjustClass,
     getAddTeacherData,
     teacherModalSelectChange,
     teacherSearchBtnClick,
@@ -1019,6 +988,8 @@ export default {
     delGanger,
 
     delSubjectTeacher,
+
+    adjustClass,
 
     GET_LOGIN_USER_INFO,
     GET_ALL_GRADE_PREVIEW,

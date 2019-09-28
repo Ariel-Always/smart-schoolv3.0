@@ -18,7 +18,7 @@ const StudentSearch = (ClassID,key) => {
 
         dispatch({type:UpDataState.STUDENT_SEARCHKEY_CHANGE,data:key});
 
-        UpDataState.getStudents({ClassID,PageIndex:0,PageSize:8,dispatch,Keyword:key}).then(data=>{
+        UpDataState.getStudents({ClassID,PageIndex:0,PageSize:12,dispatch,Keyword:key}).then(data=>{
 
 
             if (data){
@@ -62,7 +62,7 @@ const StudentCancelSearch = (ClassID) => {
 
         dispatch({type:UpDataState.STUDENT_SEARCHKEY_CHANGE,data:''});
 
-        UpDataState.getStudents({ClassID:ClassID,dispatch,PageIndex:0,PageSize:8}).then(
+        UpDataState.getStudents({ClassID:ClassID,dispatch,PageIndex:0,PageSize:12}).then(
 
             data => {
 
@@ -118,7 +118,7 @@ const SchoolClassSearch = (key) => {
 
         dispatch({type:UpDataState.ALL_GRADE_CLASS_SEARCHKEY_CHANGE,data:key});
 
-        UpDataState.getClassList({SchoolID:SchoolID,PageIndex:0,PageSize:1,dispatch,Keyword:key}).then(data=>{
+        UpDataState.getClassList({SchoolID:SchoolID,PageIndex:0,PageSize:12,dispatch,Keyword:key}).then(data=>{
 
             if (data){
 
@@ -175,7 +175,7 @@ const GradeClassSearch = (GradeID,key) => {
 
         dispatch({type:UpDataState.THE_GRADE_CLASS_SEARCHKEY_CHANGE,data:key});
 
-        UpDataState.getClassList({SchoolID,GradeID,PageIndex:0,PageSize:1,dispatch,Keyword:key}).then(data=>{
+        UpDataState.getClassList({SchoolID,GradeID,PageIndex:0,PageSize:12,dispatch,Keyword:key}).then(data=>{
 
             if (data){
 
@@ -211,7 +211,7 @@ const GradeClassCloseSearch = (GradeID) => {
 
       dispatch({type:UpDataState.THE_GRADE_CLASS_SEARCHKEY_CHANGE,data:''});
 
-      UpDataState.getClassList({SchoolID,GradeID,PageIndex:0,PageSize:1,dispatch}).then(data=>{
+      UpDataState.getClassList({SchoolID,GradeID,PageIndex:0,PageSize:12,dispatch}).then(data=>{
 
           if (data){
 

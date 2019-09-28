@@ -21,7 +21,7 @@ class StudentTabWrapper extends Component{
 
                                 <React.Fragment>
 
-                                    <CheckBoxGroup  value={CheckList} onChange={(e)=>{onCheckChange(e)}}>
+                                    <CheckBoxGroup className="clearfix" value={CheckList} onChange={(e)=>{onCheckChange(e)}}>
 
                                         {
                                             StudentList.List&&StudentList.List.map((item,key) => {
@@ -88,7 +88,7 @@ class StudentTabWrapper extends Component{
 
                                     </div>
 
-                                    <PagiNation pageSize={8} onChange={e=>StudentPageChange(e)} total={StudentPagination.Total} current={StudentPagination.CurrentPage}></PagiNation>
+                                    <PagiNation pageSize={12} onChange={e=>StudentPageChange(e)} total={StudentPagination.Total} current={StudentPagination.CurrentPage}></PagiNation>
 
                                 </React.Fragment>
 

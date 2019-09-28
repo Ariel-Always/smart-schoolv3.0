@@ -18,7 +18,6 @@ class SingleDoubleTable extends Component{
         const { commonHeight,topHeight,ItemClassHourCount,ItemClassHour,ItemWeek,NowWeekNo,commonWidth,leftOneWidth,leftTwoWidth,schedule,NowDate } = this.props;
         //根据课程
 
-
         let courseTotal = 0;
 
         let ths =[];

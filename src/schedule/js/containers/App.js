@@ -62,9 +62,13 @@ class App extends Component{
 
         const {dispatch} = this.props;
 
-        if ((!document.getElementById('adjust-schedule').contains(e.target))&&(!document.getElementById('adjust-list-wrapper').contains(e.target))){
+        if (document.getElementById('adjust-schedule')){
 
-            dispatch({type:AdjustBtnsActions.ADJUST_BTNS_HIDE});
+            if ((!document.getElementById('adjust-schedule').contains(e.target))&&(!document.getElementById('adjust-list-wrapper').contains(e.target))){
+
+                dispatch({type:AdjustBtnsActions.ADJUST_BTNS_HIDE});
+
+            }
 
         }
 
@@ -270,8 +274,6 @@ class App extends Component{
                <StopScheduleModal></StopScheduleModal>
 
                <DelScheduleModal></DelScheduleModal>
-
-               <AdjustByTeacherModal></AdjustByTeacherModal>
 
                <Alert type={AppAlert.type}
                       title={AppAlert.title}

@@ -24,11 +24,8 @@ class AdjustClassModal extends Component{
             return {value:item.GradeID,title:item.GradeName}
 
         });
-        gradeList.unshift({value:0,title:"请选择年级"});
 
         let classDropList = classList.map(item =>{return {value:item.ClassID,title:item.ClassName}});
-
-        classDropList.unshift({value:0,title:"请选择班级"});
 
         return (
             <div className="adjust-class-wrapper">
@@ -56,14 +53,16 @@ class AdjustClassModal extends Component{
                     <DropDown dropSelectd={gradeSelecd?gradeSelecd:''}
                               dropList={gradeList} height={56}
                               onChange={(e)=>gradeSelectChange(e)}
-                              style={{zIndex:5}}>
+                              style={{zIndex:5}}
+                              height={108}>
 
                     </DropDown>
 
                     <DropDown dropSelectd ={classSelectd?classSelectd:''}
                               onChange={e=>classSelectChange(e)}
                               disabled={classDisabled}
-                              dropList={classDropList}>
+                              dropList={classDropList}
+                              height={108}>
 
                     </DropDown>
 

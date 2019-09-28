@@ -1081,7 +1081,7 @@ class DropDown extends React.Component {
 
                     <Loading spinning={dropLoadingShow ? dropLoadingShow : false}>
 
-                        <Scrollbars style={{ width: width ? width : 120, height: ClientHeight ? ClientHeight : 48 }}>
+                        <Scrollbars style={{ width: width ? width : 120, height: ClientHeight}}>
                             {//dropList是否存在？dropList:''
                                 dropList ?
                                     dropList.map((item, key) => {

@@ -82,9 +82,9 @@ class Subject extends Component{
     //表格点击某一行
     clickRow(record){
 
-        const { Manager,dispatch } = this.props;
+        const { Teacher,dispatch } = this.props;
 
-        const { schedule } = Manager.SubjectTeacherSchedule;
+        const { schedule } = Teacher.SubjectTeacherSubjectSchedule;
 
         let rID  = record.id;
 

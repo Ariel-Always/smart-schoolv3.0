@@ -84,7 +84,7 @@ const StudentPageChange = (PageIndex,ClassID) => {
 
         dispatch({type:UpDataState.STUDENT_WRAPPER_LOADING_SHOW});
 
-        UpDataState.getStudents({ClassID,PageIndex,PageSize:8,dispatch,Keyword:SearchKey}).then(data=>{
+        UpDataState.getStudents({ClassID,PageIndex,PageSize:12,dispatch,Keyword:SearchKey}).then(data=>{
 
             if (data){
 

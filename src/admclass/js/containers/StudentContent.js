@@ -96,17 +96,17 @@ class StudentContent extends Component{
     //调班模态框点击OK事件
     adjustClassOk(e){
 
-        const {dispatch,DataState} = this.props;
+        const {dispatch,DataState,info} = this.props;
 
         const {StudentsCheckList} = DataState;
 
         const {AdjustClassModal} = this.props.UIState;
 
-        if (AdjustClassModal.gradeChecked.value===0){
+        if (AdjustClassModal.gradeChecked.value==="none"){
 
             dispatch({type:UpUIState.ADJUST_CLASS_ERROR_SHOW});
 
-        }else if (AdjustClassModal.classChecked.value===0){
+        }else if (AdjustClassModal.classChecked.value==="none"){
 
             dispatch({type:UpUIState.ADJUST_CLASS_ERROR_SHOW});
 
@@ -114,7 +114,31 @@ class StudentContent extends Component{
 
             let stuIDList = StudentsCheckList.map((item) => { return JSON.parse(item).id});
 
-            dispatch(UpDataState.postAdjustClass({UserIDs:stuIDList.join(','),NewClassID:AdjustClassModal.classChecked.value}));
+            dispatch({type:UpDataState.STUDENT_WRAPPER_LOADING_SHOW});
+
+            UpDataState.adjustClass({ClassID:AdjustClassModal.classChecked.value,UserIDs:stuIDList.join(','),dispatch}).then(data=>{
+
+                if (data){
+
+                    dispatch({type:UpUIState.ADJUST_CLASS_MODAL_HIDE});
+
+                    dispatch(AppAlertActions.alertSuccess("调班成功"));
+
+                    UpDataState.getStudents({ClassID:info.id,PageIndex:0,PageSize:8,dispatch}).then(data=>{
+
+                        if (data){
+
+                            dispatch({type:UpDataState.GET_THE_CLASS_STUDENTS,data:data});
+
+                            dispatch({type:UpDataState.STUDENT_WRAPPER_LOADING_HIDE});
+
+                        }
+
+                    })
+
+                }
+
+            })
 
         }
 
@@ -132,7 +156,7 @@ class StudentContent extends Component{
 
     gradeSelectChange(e){
 
-        const {dispatch,DataState} = this.props;
+        const {dispatch,DataState,info} = this.props;
 
         const {Grades} = DataState.SchoolGradeClasses;
 
@@ -142,29 +166,19 @@ class StudentContent extends Component{
 
         dispatch({type:UpUIState.ADJUST_CLASS_ERROR_HIDE});
 
-        if (value===0){
+        //获取所选的值所在的年级
+        let gradeSelect = Grades.find((item)=>{return item.GradeID === value});
+        //根据URL得到本班级的classID
+        let ClassID = info.id;
+        //获取除去本年级的班级数组
+        let classList =  gradeSelect.Classes.filter((item) => {return item.ClassID !== ClassID});
 
-            dispatch({type:UpUIState.ADJUST_CLASS_CLASSLIST_DISABLED});
+        dispatch({type:UpUIState.ADJUST_CLASS_GRADE_CHANGE,checked:e});
 
-            dispatch({type:UpUIState.ADJUST_CLASS_CLASS_CHANGE,checked:{value:0,title:"请选择班级"}});
+        dispatch({type:UpUIState.ADJUST_CLASS_CLASS_LIST_UPDATE,list:classList});
 
-            dispatch({type:UpUIState.ADJUST_CLASS_GRADE_CHANGE,checked:{value:0,title:"请选择年级"}});
+        dispatch({type:UpUIState.ADJUST_CLASS_CLASSLIST_ABLED});
 
-        }else{
-            //获取所选的值所在的年级
-            let gradeSelect = Grades.find((item)=>{return item.GradeID === value});
-            //根据URL得到本班级的classID
-            let ClassID = this.props.match.params.ClassId;
-            //获取除去本年级的班级数组
-            let classList =  gradeSelect.Classes.filter((item) => {return item.ClassID !== ClassID});
-
-            dispatch({type:UpUIState.ADJUST_CLASS_GRADE_CHANGE,checked:e});
-
-            dispatch({type:UpUIState.ADJUST_CLASS_CLASS_LIST_UPDATE,list:classList});
-
-            dispatch({type:UpUIState.ADJUST_CLASS_CLASSLIST_ABLED});
-
-        }
     }
 
 
@@ -485,7 +499,7 @@ class StudentContent extends Component{
 
                     <div className="search-wrapper clearfix">
 
-                        <Search className="admclass-search-student" width={280} placeHolder="请输入学生学号或者姓名搜索" onCancelSearch={this.StudentCancelSearch.bind(this)} onClickSearch={this.onStudentSearch.bind(this)}></Search>
+                        <Search className="admclass-search-student" width={280} placeHolder="请输入学生姓名搜索..." onCancelSearch={this.StudentCancelSearch.bind(this)} onClickSearch={this.onStudentSearch.bind(this)}></Search>
 
                     </div>
 

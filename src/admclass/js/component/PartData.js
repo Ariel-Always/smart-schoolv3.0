@@ -6,7 +6,7 @@ class PartData extends Component{
 
     render() {
 
-        const { PartDataList,type,GradeClick,ClassClick } = this.props;
+        const { PartDataList,type,GradeClick,ClassClick,ResetClassName,delClass } = this.props;
 
 
         let DataItem ='';
@@ -117,9 +117,9 @@ class PartData extends Component{
                                             </tbody>
                                         </table>
                                         <div className="cooperate">
-                                            <div className="reset">重命名</div>
+                                            <div className="reset" onClick={(e)=>{ResetClassName({ClassID:item.ClassID,ClassName:item.ClassName,Event:e})}}>重命名</div>
                                             <div className="line"></div>
-                                            <div className="delete">删除</div>
+                                            <div className="delete" onClick={(e)=>{delClass({ClassID:item.ClassID,Event:e})}}>删除</div>
                                         </div>
                                     </div>
                                     <div className="partdata-tab-shadow"></div>
