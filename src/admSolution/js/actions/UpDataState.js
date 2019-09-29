@@ -11,9 +11,11 @@ import actions from './index'
 //获取登录用户信息
 const GET_LOGIN_USER_INFO = 'GET_LOGIN_USER_INFO';
 // 获取教学方案
-const GET_TEACHING_ABSOLUTION_MSG = 'GET_TEACHING_ABSOLUTION_MSG'
-
-
+const GET_TEACHING_SOLUTION_MSG = 'GET_TEACHING_SOLUTION_MSG'
+// 查看教学方案
+const GET_TEACHING_SOLUTION_DETAILS_MSG = 'GET_TEACHING_SOLUTION_DETAILS_MSG'
+// 重命名方案ID
+const GET_SOLUTION_ID = 'GET_SOLUTION_ID'
 //操作的执行
 //获取登录用户信息
 const getLoginUser = (url) => {
@@ -26,32 +28,66 @@ const getLoginUser = (url) => {
 
 
 //设置教学方案
-const getTeachingAbsolutionMsg = (url) => {
+const getTeachingSolutionMsg = (url) => {
     return (dispatch) => {
-        getData(CONFIG.proxy + url).then(res => {
+        getData(CONFIG.TeachingSolutionProxy + url, 2).then(res => {
             dispatch({ type: actions.UpUIState.APP_LOADING_OPEN });
 
 
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
 
-                dispatch({ type: GET_TEACHING_ABSOLUTION_MSG, data:  json.Data});
+                dispatch({ type: GET_TEACHING_SOLUTION_MSG, data: json.Data });
                 dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
 
             }
         });
     }
 }
+//设置教学方案
+const getTeachingSolutionDetailsMsg = (url) => {
+    return (dispatch) => {
+        getData(CONFIG.TeachingSolutionProxy + url, 2).then(res => {
+            dispatch(actions.UpUIState.ModalLoadingOpen());
+
+
+            return res.json()
+        }).then(json => {
+            if (json.StatusCode === 400) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
+
+                dispatch({ type: GET_TEACHING_SOLUTION_DETAILS_MSG, data: json.Data });
+                dispatch(actions.UpUIState.ModalLoadingClose());
+
+
+            }
+        });
+    }
+}
+//获取方案ID
+const getSolutionID = (id) => {
+    return (dispatch) => {
+        dispatch({ type: GET_SOLUTION_ID, data: id });
+    }
+};
+
 
 export default {
     getLoginUser,
     GET_LOGIN_USER_INFO,
 
 
-    getTeachingAbsolutionMsg,
-    GET_TEACHING_ABSOLUTION_MSG
+    getTeachingSolutionMsg,
+    GET_TEACHING_SOLUTION_MSG,
+
+    GET_TEACHING_SOLUTION_DETAILS_MSG,
+    getTeachingSolutionDetailsMsg,
+
+    GET_SOLUTION_ID,
+    getSolutionID
 
 }

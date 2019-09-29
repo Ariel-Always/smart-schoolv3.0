@@ -134,7 +134,6 @@ const getSchoolLeaderPreview = (url) => {
 //获取年级班级信息/改
 const getGradeClassMsg = (url) => {
     return (dispatch) => {
-        console.log(CONFIG.proxy + url);
         getData(CONFIG.UserInfoProxy + url, 2).then(res => {
             if (res.Status === '401') {
                 console.log('错误码：' + res.Status)

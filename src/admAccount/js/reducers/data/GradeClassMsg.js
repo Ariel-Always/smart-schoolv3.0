@@ -20,13 +20,12 @@ function handleData(data) {
     
     return {grades:GradeArr,AllClasses:AllClasses}
 }
-const GradeClassMsg = (state={},actions)=>{
+const GradeClassMsg = (state={returnData:{grades:null}},actions)=>{
     let returnData = {grades:null};
     switch (actions.type) {
         case UpDataState.GET_GRADE_CLASS_MSG:
             returnData = handleData(actions.data);
-            console.log(returnData)
-            return {...state,returnData};
+            return Object.assign({},state,{returnData:returnData});
         default:
             return state;
     }

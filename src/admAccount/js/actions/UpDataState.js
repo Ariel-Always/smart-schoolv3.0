@@ -53,11 +53,10 @@ const getAllUserPreview = (url) =>{
     }
 }
 
-//获取学生档案信息
+//获取学生账号信息/改
 const getGradeStudentPreview = (url) =>{
     return (dispatch)=>{
-        console.log(CONFIG.proxy+url);
-        getData(CONFIG.proxy+url).then(res=>{
+        getData(CONFIG.UserAccountProxy+url).then(res=>{
             if(res.Status === '401'){
                 console.log('错误码：'+ res.Status)
             }
@@ -114,16 +113,14 @@ const getSchoolLeaderPreview = (url) =>{
 //获取年级班级信息
 const getGradeClassMsg = (url) =>{
     return (dispatch)=>{
-        console.log(CONFIG.proxy+url);
-        getData(CONFIG.proxy+url).then(res=>{
-            if(res.status === '401'){
-                console.log('错误码：'+ res.status)
+        getData(CONFIG.UserInfoProxy+url).then(res=>{
+            if(res.Status === '401'){
+                console.log('错误：'+ res.Msg)
             }
             return res.json()}).then(json=>{
-            if(json.status === 400){
-                console.log(json.status)
+            if(json.Status === 400){
+                console.log(json.Status)
             }else if(json.Status === 200){
-                console.log('ddd')
                 dispatch({type:GET_GRADE_CLASS_MSG,data:json.Data});
             }
            

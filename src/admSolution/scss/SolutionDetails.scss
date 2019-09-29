@@ -1,0 +1,33 @@
+.SolutionDetails {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  .top {
+    height: 40px;
+    background-color: #eeeeee;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+  }
+  .main {
+    position: relative;
+    width: 100%;
+    //height: calc(100% - 40px);
+    height: 416px;
+    overflow: auto;
+    .handle-btn {
+      height: 20px;
+      line-height: 20px;
+      font-size: 14px;
+    }
+  }
+}
+.ant-modal-header {
+  border: none;
+}
+
+.ant-table-tbody > tr > td {
+  padding: 5px 21px;
+}

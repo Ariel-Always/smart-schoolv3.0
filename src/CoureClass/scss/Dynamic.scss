@@ -1,16 +1,19 @@
-#Dynamic,#Record {
+#Dynamic,
+#Record {
   position: relative;
-  padding: 24px 42px;
+  padding: 24px 40px;
   text-align: center;
   width: 1200px;
   height: 754px;
+  background: #fff;
+  border-radius: 12px;
 
   //公用
   .log-box {
     position: relative;
     text-align: left;
     margin: 0 auto;
-    width: 1122px;
+    width: 1120px;
 
     .log-top {
       position: relative;
@@ -162,8 +165,8 @@
       font-size: 14px;
       color: #333333;
       display: inline-block;
-      .key-params{
-        color:#ff6600;
+      .key-params {
+        color: #ff6600;
       }
     }
     .Flag {
