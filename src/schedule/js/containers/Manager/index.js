@@ -8,6 +8,8 @@ import HeaderRouter from '../../component/HeaderRouter';
 
 import SubjectTeacher from './SubjectTeacher';
 
+import AdjustByTeacherModal from "./AdjustByTeacherModal";
+
 
 
 
@@ -46,6 +48,8 @@ class Index extends Component{
                     </Switch>
 
                 </Router>
+
+                <AdjustByTeacherModal></AdjustByTeacherModal>
 
 
             </React.Fragment>

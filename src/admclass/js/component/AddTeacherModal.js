@@ -30,6 +30,8 @@ class AddTeacherModal extends Component{
 
             newTeacherTitle,
 
+            originTeacherTitle,
+
             teacherModalDropChange,
 
             teacherLoadingShow,
@@ -45,6 +47,7 @@ class AddTeacherModal extends Component{
             searchClose
 
         } = this.props;
+
 
 
         let subjectsList = subjects.map((item) => {
@@ -117,15 +120,24 @@ class AddTeacherModal extends Component{
 
                             }
 
+                            {
+
+                                !teacherList.List||teacherList.List.length===0?
+
+                                    <div className="empty-wrapper">
+
+                                        <Empty type="4"  title="没找到相对应的教师"></Empty>
+
+                                    </div>
+
+                                    :''
+
+                            }
+
                             </ScrollBar>
 
-                                <div className="empty-wrapper" style={{display:`${emptyShow?"block":"none"}`}} >
-
-                                    <Empty type="4"  title="空空如也"></Empty>
-
-                                </div>
-
                             </Loading>
+
                         </div>
 
                     </div>
@@ -138,7 +150,7 @@ class AddTeacherModal extends Component{
 
                                 <div className="origin-teacher-wrapper">
 
-                                    <div className="orgin-teacher-title">原任课教师</div>
+                                    <div className="orgin-teacher-title">{originTeacherTitle?originTeacherTitle:"原任课教师"}</div>
 
                                     <div className="origin-teacher-photo" style={{backgroundImage:`url(${originTeacherInfo.photo})`}}></div>
 

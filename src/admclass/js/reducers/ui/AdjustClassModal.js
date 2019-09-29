@@ -1,10 +1,10 @@
 import UpUIState from '../../actions/UpUIState';
 const AdjustClassModal = (state={show:false,
-    gradeDropSelectd:{value:0,title:"请选择年级"},
-    classDropSelectd:{value:0,title:"请选择班级"},
+    gradeDropSelectd:{value:"none",title:"请选择年级"},
+    classDropSelectd:{value:"none",title:"请选择班级"},
     classDisabled:true,
-    gradeChecked:{value:0,title:"请选择年级"},
-    classChecked:{value:0,title:"请选择班级"},
+    gradeChecked:{value:"none",title:"请选择年级"},
+    classChecked:{value:"none",title:"请选择班级"},
     classList:[],
     errTips:"请选择年级和班级",
     errTipsShow:false
@@ -12,11 +12,11 @@ const AdjustClassModal = (state={show:false,
     switch (actions.type) {
         case UpUIState.ADJUST_CLASS_MODAL_SHOW:
             return {...state,show:true,
-                gradeDropSelectd:{value:0,title:"请选择年级"},
-                classDropSelectd:{value:0,title:"请选择班级"},
+                gradeDropSelectd:{value:"none",title:"请选择年级"},
+                classDropSelectd:{value:"none",title:"请选择班级"},
                 classDisabled:true,
-                gradeChecked:{value:0,title:"请选择年级"},
-                classChecked:{value:0,title:"请选择班级"},
+                gradeChecked:{value:"none",title:"请选择年级"},
+                classChecked:{value:"none",title:"请选择班级"},
                 classList:[],
                 errTips:"请选择年级和班级",
                 errTipsShow:false

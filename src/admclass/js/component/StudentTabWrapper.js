@@ -1,104 +1,108 @@
 import React,{Component} from 'react';
 
-import {CheckBox,CheckBoxGroup,Button,Empty,Loading} from "../../../common";
+import {CheckBox,CheckBoxGroup,Button,Empty,Loading,PagiNation} from "../../../common";
 
 
 class StudentTabWrapper extends Component{
 
     render() {
 
-        const {StudentSearchLoading,StudentList,CheckList,onCheckChange,allChecked,onChangeAll,adjustBtnClick} = this.props;
+        const {StudentPageChange,StudentPagination,StudentWrapperLoading,StudentList,CheckList,onCheckChange,allChecked,onChangeAll,adjustBtnClick} = this.props;
 
         return (
 
-                <Loading type="loading" spinning={StudentSearchLoading.show}>
+                <div className="person-tab-wrapper clearfix">
 
-                    <div className="person-tab-wrapper clearfix">
+                    <Loading spinning={StudentWrapperLoading}>
 
-                    {
+                        {
 
-                        StudentList&&StudentList.Total>0?
+                            StudentList&&StudentList.Total>0?
 
-                            <React.Fragment>
+                                <React.Fragment>
 
-                                <CheckBoxGroup  value={CheckList} onChange={(e)=>{onCheckChange(e)}}>
+                                    <CheckBoxGroup className="clearfix" value={CheckList} onChange={(e)=>{onCheckChange(e)}}>
 
-                                    {
-                                        StudentList.List&&StudentList.List.map((item,key) => {
-                                            //是否是班长
-                                            let isMonitor = item.UserClass===1?true:false;
-                                            //性别男女或者保密
-                                            let sex= 'none';
+                                        {
+                                            StudentList.List&&StudentList.List.map((item,key) => {
+                                                //是否是班长
+                                                let isMonitor = item.UserClass===1?true:false;
+                                                //性别男女或者保密
+                                                let sex= 'none';
 
-                                            switch (item.Gender) {
-                                                case '男':
-                                                    sex = 'men';
-                                                    break;
-                                                case '女':
-                                                    sex = 'women';
-                                                    break;
-                                                default:
-                                                    sex = 'none'
-                                            }
+                                                switch (item.Gender) {
+                                                    case '男':
+                                                        sex = 'men';
+                                                        break;
+                                                    case '女':
+                                                        sex = 'women';
+                                                        break;
+                                                    default:
+                                                        sex = 'none'
+                                                }
 
-                                            return <div key={key} className={`person-item-wrapper ${isMonitor?'monitor':''}`} >
+                                                return <div key={key} className={`person-item-wrapper ${isMonitor?'monitor':''}`} >
 
-                                                <div className="person-item-content clearfix">
+                                                    <div className="person-item-content clearfix">
 
-                                                    <div className="person-item-photo" style={{backgroundImage:`url(${item.PhotoPath})`}}></div>
+                                                        <div className="person-item-photo" style={{backgroundImage:`url(${item.PhotoPath})`}}></div>
 
-                                                    <div className="person-item-info-wrapper">
+                                                        <div className="person-item-info-wrapper">
 
-                                                        <div className="person-item-info">
+                                                            <div className="person-item-info">
 
-                                                            <div className="person-item-name" title={item.UserName}>{item.UserName}</div>
+                                                                <div className="person-item-name" title={item.UserName}>{item.UserName}</div>
 
-                                                            <div className={`person-sex-icon ${sex}`}></div>
+                                                                <div className={`person-sex-icon ${sex}`}></div>
+
+                                                            </div>
+
+                                                            <div className="person-item-id" title={item.UserID}>{item.UserID}</div>
 
                                                         </div>
 
-                                                        <div className="person-item-id" title={item.UserID}>{item.UserID}</div>
+                                                        <CheckBox  value={JSON.stringify({id:item.UserID,name:item.UserName})}></CheckBox>
+
+                                                        <div className="cooperate">
+
+                                                            <div>{isMonitor?'取消班长':'设为班长'}</div>
+
+                                                        </div>
 
                                                     </div>
 
-                                                    <CheckBox  value={JSON.stringify({id:item.UserID,name:item.UserName})}></CheckBox>
-
-                                                    <div className="cooperate">
-
-                                                        <div>{isMonitor?'取消班长':'设为班长'}</div>
-
-                                                    </div>
+                                                    <div className="person-item-border"></div>
 
                                                 </div>
 
-                                                <div className="person-item-border"></div>
+                                            })
+                                        }
 
-                                            </div>
+                                    </CheckBoxGroup>
 
-                                        })
-                                    }
+                                    <div className="person-checkgroup-wrapper">
 
-                                </CheckBoxGroup>
+                                        <CheckBox checked={allChecked} onChange={()=>{onChangeAll()}}>全选</CheckBox>
 
-                                <div className="person-checkgroup-wrapper">
+                                        <Button size="small" className="person-adjust-btn" color="blue" onClick={e=>adjustBtnClick(e)}>调班</Button>
 
-                                    <CheckBox checked={allChecked} onChange={()=>{onChangeAll()}}>全选</CheckBox>
+                                    </div>
 
-                                    <Button size="small" className="person-adjust-btn" color="blue" onClick={e=>adjustBtnClick(e)}>调班</Button>
+                                    <PagiNation pageSize={12} onChange={e=>StudentPageChange(e)} total={StudentPagination.Total} current={StudentPagination.CurrentPage}></PagiNation>
 
-                                </div>
+                                </React.Fragment>
 
-                            </React.Fragment>
-
-                            :
-                            <Empty type="5"></Empty>
+                                :
+                                <Empty type="5"></Empty>
 
 
-                    }
+                        }
+
+                    </Loading>
 
                 </div>
 
-                </Loading>
+
         );
     }
 }

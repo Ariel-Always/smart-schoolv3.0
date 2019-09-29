@@ -8,6 +8,8 @@ import SubjectTeacherTeacherSchedule from './SubjectTeacherTeacherSchedule';
 
 import PersonalSchedule from "./PersonalSchedule";
 
+import AdjustByTeacherModal from './AdjustByTeacherModal';
+
 const Teacher = combineReducers({
 
     SubjectTeacherSubjectSchedule,
@@ -16,7 +18,9 @@ const Teacher = combineReducers({
 
     SubjectTeacherTeacherSchedule,
 
-    PersonalSchedule
+    PersonalSchedule,
+
+    AdjustByTeacherModal
 
 });
 

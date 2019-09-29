@@ -216,6 +216,7 @@ class App extends Component{
 
 
     render() {
+
         const {UIState,DataState} = this.props;
 
         const {Grades=[]} = DataState.SchoolGradeClasses;//左侧菜单的年级和班级信息
@@ -321,7 +322,6 @@ class App extends Component{
                         </Modal>
 
 
-
                     </React.Fragment>
 
 
@@ -329,10 +329,17 @@ class App extends Component{
     }
 }
 const  mapStateToProps = (state) => {
+
     let {UIState,DataState} = state;
+
     return {
+
         UIState,
+
         DataState
+
     }
+
 };
+
 export default connect(mapStateToProps)(App);

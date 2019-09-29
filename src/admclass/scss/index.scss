@@ -47,6 +47,7 @@ $image-url:'../images';
 
 
 
+
 //行政班总览
 .admclass-search{
 
@@ -54,7 +55,43 @@ $image-url:'../images';
 
 }
 .admclass-content-wrapper{
+
+  position: relative;
+
   margin:16px 42px;
+
+  .number-wrapper{
+
+    left: 12px;
+
+    top: 4px;
+
+  }
+
+}
+
+.number-wrapper{
+
+  position: absolute;
+
+  font-size: 16px;
+
+  color: #333333;
+
+  padding-left: 28px;
+
+  background-image: url("#{$image-url}/class-bar.png");
+
+  background-repeat: no-repeat;
+
+  background-position: left center;
+
+  .num{
+
+    color: #999999;
+
+  }
+
 }
 
 
@@ -191,8 +228,15 @@ $image-url:'../images';
 .admclass-teacher-info{
   float: left;
   margin-left: 10px;
-  margin-top: 26px;
+  margin-top: 32px;
   height: 52px;
+
+  .admclass-teacher-tab{
+
+    line-height: 1;
+
+  }
+
 }
 
 .admclass-teacher-name{
@@ -200,7 +244,7 @@ $image-url:'../images';
   color: #333333;
   font-size:14px;
   font-weight: bold;
-  max-width:56px;
+  max-width:72px;
   line-height:22px;
   @include textOverFlow;
   cursor: pointer;
@@ -211,16 +255,25 @@ $image-url:'../images';
   font-size:12px;
   color:#999999;
   max-width:100px;
-  margin-top:8px;
+  margin-top:4px;
   @include textOverFlow;
 }
 .admclass-teacher-project{
-  display: inline-block;
-  margin-left: 3px;
-  max-width:46px;
+
+  position: absolute;
+
+  right:11px;
+
+  top:7px;
+
+  max-width:80px;
+
   padding:3px 6px;
+
   line-height:16px;
+
   @include border-radius(3px);
+
   @include textOverFlow;
 
   &.math{

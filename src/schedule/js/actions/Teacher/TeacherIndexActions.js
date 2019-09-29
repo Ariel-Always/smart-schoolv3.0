@@ -460,18 +460,20 @@ const TeacherPersonalInit = () => {
 
             let getSCGCPromise = Method.getGetData(`/scheduleSubjectGrade-teacher?SchoolID=${SchoolID}&PeriodID=${PeriodID}&UserID=${UserID}&UserType=${UserType}`);
 
-            let teacherSchedulePromise = Method.getGetData(`/scheduleSubjectTeacherTeacherSchedule?UserID=${UserID}&UserType=${UserType}&SchoolID=${SchoolID}&NowWeekNo=${NowWeekNo}`);
+            let teacherSchedulePromise = Method.getGetData(`/scheduleSubjectTeacherTeacherSchedule?UserID=${UserID}&UserType=${UserType}&SchoolID=${SchoolID}&NowWeekNo=${PeriodWeekTerm.NowWeekNo}`);
 
             Promise.all([getSCGCPromise,teacherSchedulePromise]).then(res => {
 
 
                 let NowWeekNo = PeriodWeekTerm.NowWeekNo;
 
+
+
                 //将课程、学期、等等放到redux中
 
                 dispatch({type:SCGCRActions.SCGCR_INFO_INIT,data:res[0].Data});
 
-                dispatch({type:STTActions.TP_NOW_WEEK_CHANGE,data:NowWeekNo});
+                dispatch({type:TPActions.TP_NOW_WEEK_CHANGE,data:NowWeekNo});
 
                 dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
 

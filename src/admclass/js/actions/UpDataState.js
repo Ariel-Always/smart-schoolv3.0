@@ -54,6 +54,11 @@ const ALL_GRADE_CLASS_CONTENT_HIDE = 'ALL_GRADE_CLASS_CONTENT_HIDE';
 
 const ALL_GRADE_CLASS_LIST_UPDATE = 'ALL_GRADE_CLASS_LIST_UPDATE';
 
+const STUDENT_SEARCHKEY_CHANGE = 'STUDENT_SEARCHKEY_CHANGE';
+
+const STUDENT_WRAPPER_LOADING_SHOW = 'STUDENT_WRAPPER_LOADING_SHOW';
+
+const STUDENT_WRAPPER_LOADING_HIDE = 'STUDENT_WRAPPER_LOADING_HIDE';
 
 //获取某一班级的教师列表
 const GET_THE_CLASS_THEACHERS = 'GET_THE_CLASS_THEACHERS';
@@ -102,24 +107,6 @@ const  getPageInit = () => {
 
                  });
 
-               /* let getSchoolPromise = getSchoolData(SchoolID,dispatch);*/
-
-             /*   Promise.all([getGradeClassPromise,getSchoolPromise]).then(res=>{
-
-                    if (res){
-
-                       dispatch({type:GET_SHCOOL_GRADE_CLASSES,data:res[0]});
-
-                        dispatch({type:GET_ALL_GRADE_PREVIEW,data:res[1]});
-
-                        dispatch({type:UpUIState.GRADE_LOADING_HIDE});
-
-                        dispatch({type:UpUIState.APP_LOADING_CLOSE});
-
-                    }
-
-                });*/
-
             }
 
         });
@@ -155,14 +142,15 @@ const getAllGradePreview = () => {
 
             let waitUser = setInterval(()=>{
 
-                let id = getState().DataState.LoginUser.SchoolID;
+                let { SchoolID } = getState().DataState.LoginUser;
 
+                let Grades = getState().DataState.SchoolGradeClasses.Grades;
 
-                if (id){
+                if (Grades){
 
                     clearInterval(waitUser);
 
-                    getSchoolData(id,dispatch).then(data=>{
+                    getSchoolData(SchoolID,dispatch).then(data=>{
 
                         if (data){
 
@@ -195,7 +183,7 @@ const getTheGradePreview = (GradeID)=> {
 
         dispatch({type:UpUIState.CLASS_LOADING_SHOW});
 
-        getClassList({SchoolID,GradeID,PageIndex:0,PageSize:1,dispatch}).then(data=>{
+        getClassList({SchoolID,GradeID,PageIndex:0,PageSize:12,dispatch}).then(data=>{
 
 
             if (data){
@@ -226,25 +214,28 @@ const getTheClassPreview = (ClassID) =>{
 
         let getTeachersPromise = getTeachers({ClassID:ClassID,dispatch});
 
-        let getStudentsPromise = getStudents({ClassID:ClassID,dispatch,PageSize:16,PageIndex:0});
+        let getStudentsPromise = getStudents({ClassID:ClassID,dispatch,PageSize:12,PageIndex:0});
 
         Promise.all([getStudentsPromise,getTeachersPromise]).then((res) => {
 
             dispatch({type:GET_THE_CLASS_STUDENTS,data:res[0]});
 
+            dispatch({type:PaginationActions.STUDENT_PAGINATION_CURRENT_UPDATE,data:1});
+
+            dispatch({type:PaginationActions.STUDENT_PAGINATION_TOTAL_UPDATE,data:res[0].Total});
+
             dispatch({type:GET_THE_CLASS_THEACHERS,data:res[1]});
 
-            console.log(res[0]);
-
-            let { TheStudentList } = getState().DataState;
-
-            console.log(TheStudentList);
             //获取最新的学生列表信息，传递给待选项。
-            if (TheStudentList.List&&TheStudentList.List.length>0&&TheStudentList.Total>0){
+            if (res[0].List&&res[0].List.length>0&&res[0].Total>0){
 
-                let list = TheStudentList.List.map(item =>{return JSON.stringify({id:item.UserID,name:item.UserName})});
+                let list = res[0].List.map(item =>{return JSON.stringify({id:item.UserID,name:item.UserName})});
 
-                dispatch({type:INIT_STUDEUNT_PLAIN_OPTIONS,list:list});
+                dispatch({type:INIT_STUDEUNT_PLAIN_OPTIONS,data:list});
+
+            }else{
+
+                dispatch({type:INIT_STUDEUNT_PLAIN_OPTIONS,data:[]});
 
             }
 
@@ -272,7 +263,7 @@ const changeStudentCheckList = (checkList) => {
 
         //判断是不是全选。
 
-        if (StudentsCheckList.length===StudentsPlainOptions.length){
+        if (StudentsCheckList.length===StudentsPlainOptions.list.length){
 
             dispatch({type:STUDENTS_CHECKED_ALL});
 
@@ -295,44 +286,7 @@ const addClass = () =>{
     }
 
 };
-//调班
-const postAdjustClass = (data) => {
 
-  return dispatch => {
-
-      let adjustPostPromise = postXuData('/admAdjustClass',data);
-
-     adjustPostPromise.then((json)=>{
-
-         if (json.Status===200){
-
-             dispatch({type:UpUIState.ADJUST_CLASS_MODAL_HIDE});
-
-             dispatch({type:UpUIState.SHOW_ERROR_ALERT,data:{
-                     type:'success',
-                     title:"调班成功！",
-                     hide:()=>{
-                         dispatch({type:UpUIState.CLOSE_ERROR_ALERT});
-                         dispatch(getTheClassPreview());
-                     }
-             }});
-
-
-         }else if (json.Status===400||json.Status===500){
-
-             dispatch({type:UpUIState.SHOW_ERROR_ALERT,data:{
-                    type:'error',
-                     title:json.msg,
-                     onHide:()=>{dispatch({type:UpUIState.CLOSE_ERROR_ALERT})}
-                 }})
-
-         }
-
-     });
-
-  }
-
-};
 
 //添加教师弹框获取所有的教师和学科的数据
 const getAddTeacherData = (opts) =>{
@@ -340,54 +294,41 @@ const getAddTeacherData = (opts) =>{
     return (dispatch,getState) => {
 
 
-        if (opts.type===1||opts.type===3) {//如果类型是添加
+        let TeacherID = '';
+
+        const { ClassID,type } = opts;
+
+        let { SchoolID } = getState().DataState.LoginUser;
+
+        if (type===1||type===3) {//如果类型是添加
 
 
         }else{//如果类型是更新，需要获取到已选择的教师的ID
 
-            console.log(getState().UIState.AddTeacherModal.originTeacherInfo.id);
+            TeacherID = getState().UIState.AddTeacherModal.originTeacherInfo.id;
 
         }
 
-        //查看是否已经有获取过的学科数据了如果有的话就不请求后台学科数据
-        if(getState().UIState.AddTeacherModal.subjects.length>0){
+        //请求学科和教师
 
-            let getTeachersPromise = getXuGetData('/admTeachers');
+        let getSubjectsPromise = getSubjects({ClassID,dispatch});
 
-            getTeachersPromise.then(json=>{
+        let getTeachersPromise = getAllTeacher({SchoolID,UserID:TeacherID,PageSize:0});
 
-                dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:json.Data});
 
-                dispatch({type:UpUIState.ADD_TEACHER_LOADING_HIDE});
+        Promise.all([getSubjectsPromise,getTeachersPromise]).then(res=>{
 
-            }).catch((e) => {
+            if (res){
 
-                console.log(e);
+                dispatch({type:ADD_TEACHER_UPDATA_SUBJECTS,list:res[0]});
 
-            })
+                dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:res[1]});
 
-        }else{//如果没有学科数据的情况下，则学科数据和教师数据一块请求
+            }
 
-            let getSubjectPromise = getXuGetData('/admSubjects');
+            dispatch({type:UpUIState.ADD_TEACHER_LOADING_HIDE});
 
-            let getTeachersPromise = getXuGetData('/admTeachers');
-
-            Promise.all([getSubjectPromise,getTeachersPromise]).then(res=>{
-
-                dispatch({type:ADD_TEACHER_UPDATA_SUBJECTS,list:res[0].Data.SubjectList});
-
-                dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:res[1].Data});
-
-                dispatch({type:UpUIState.ADD_TEACHER_LOADING_HIDE});
-
-            }).catch( e=>{
-
-                console.log(e);
-
-            })
-
-        }
-
+        });
 
     }
 
@@ -401,38 +342,30 @@ const teacherModalSelectChange = (selectData) => {
 
         const {type,inputContent} = getState().UIState.AddTeacherModal;
 
+        let { SchoolID } = getState().DataState.LoginUser;
+
         dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_SHOW});
 
-        if (type ===1||type===3){ //如果type是1或者3类型的代表新增不需要将已有教师ID排除
+        let TeacherID = '';
 
+        if (type ===2||type===4){ //如果type是2或者4类型的代表更新需要将已有教师ID排除
 
-        }else{
-
-            console.log(getState().UIState.AddTeacherModal.originTeacherInfo.id);
-
-        }
-
-        if (selectData.value!=='all'){//选择的是某一门学科
-
-
+            TeacherID = getState().UIState.AddTeacherModal.originTeacherInfo.id;
 
         }
 
-        let postTeacherListPromise = getXuGetData('/admTeachers');
-
-        postTeacherListPromise.then(json => {
-
-            if (json.Status===200){  //成功之后
-
-                dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:json.Data});
-
-                dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
-
-            }else{
+        let SubjectID = selectData.value;
 
 
+        getAllTeacher({SchoolID,UserID:TeacherID,SubjectIDs:SubjectID,Keyword:inputContent}).then(data=>{
 
-            }
+           if (data){
+
+               dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:data});
+
+           }
+
+            dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
 
         });
 
@@ -449,41 +382,37 @@ const  teacherSearchBtnClick = () => {
 
       dispatch({type:UpUIState.ADD_TEACHER_CLOSE_SHOW});
 
-      let state = getState().UIState.AddTeacherModal;
+      let { type,subjectsSelect,inputContent } = getState().UIState.AddTeacherModal;
 
-      if (state.type===1||state.type===3){//不需要排除教师ID
+      let { SchoolID } = getState().DataState.LoginUser;
 
+      let UserID = '';
 
+      let SubjectID = '';
 
-      }else{
+      if (type===2||type===4){//排除教师ID
 
-
-
-      }
-
-      if (state.subjectsSelect!=='all'){ //如果是某一门学科的情况下
-
-
-
-      }else{
-
-
+        UserID = getState().UIState.AddTeacherModal.originTeacherInfo.id;
 
       }
 
-      let postTeacherListPromise = getXuGetData('/admTeachers');
+      if(subjectsSelect.value==='all'){
 
-      postTeacherListPromise.then(json => {
+        SubjectID = '';
 
-          if (json.Status===200){  //成功之后
+      }else{
 
-              dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:json.Data});
+          SubjectID = subjectsSelect.value;
+
+      }
+
+      getAllTeacher({SchoolID,SubjectIDs:SubjectID,UserID,Keyword:inputContent}).then(data=>{
+
+          if (data){
+
+              dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:data});
 
               dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
-
-          }else{
-
-
 
           }
 
@@ -501,27 +430,37 @@ const teacherSearchClose = () => {
 
         dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_SHOW});
 
-        let subjectsSelect = getState().UIState.AddTeacherModal;
+        let { SchoolID } = getState().DataState.LoginUser;
 
-        if (subjectsSelect.value!=='all'){
+        let {subjectsSelect,type} = getState().UIState.AddTeacherModal;
 
+        let UserID = '';
 
+        let SubjectID = '';
+
+        if (subjectsSelect.value==='all'){
+
+            SubjectID = '';
+
+        }else{
+
+            SubjectID = subjectsSelect.value;
 
         }
 
-        let postTeacherListPromise = getXuGetData('/admTeachers');
+        if (type===2||type===4){//排除教师ID
 
-        postTeacherListPromise.then(json => {
+            UserID = getState().UIState.AddTeacherModal.originTeacherInfo.id;
 
-            if (json.Status===200){
+        }
 
-                dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:json.Data});
+        getAllTeacher({SchoolID,SubjectIDs:SubjectID,UserID}).then(data=>{
+
+            if (data){
+
+                dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:data});
 
                 dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
-
-            }else{
-
-
 
             }
 
@@ -535,7 +474,9 @@ const updateGenger = (classInfo) =>{
 
     return (dispatch,getState) => {
 
-        const newTeacherId = getState().UIState.AddTeacherModal.newPickTeacher.value;
+        console.log(classInfo);
+
+        const newTeacherId = getState().UIState.AddTeacherModal.newPickTeacher.id;
 
         const classId = classInfo.ClassID;
 
@@ -563,51 +504,97 @@ const updateGenger = (classInfo) =>{
 
         }
 
-        dispatch({type:UpUIState.ADD_TEACHER_MODAL_HIDE});
+        setGengar({ClassID:classId,UserID:newTeacherId,dispatch}).then(data=>{
 
-        let updateGengerPromise = postXuData('/admUpdateGenger');
+            if (data){
 
-        updateGengerPromise.then((json) => {
+                dispatch(AppAlertActions.alertSuccess(tips));
 
-           if (json.Status === 200){
+                getTeachers({ClassID:classId,dispatch}).then(data=>{
 
-               dispatch({
+                    if (data){
 
-                   type:UpUIState.SHOW_ERROR_ALERT,
+                        dispatch({type:GET_THE_CLASS_THEACHERS,data:data});
 
-                   data:{
+                    }
 
-                       type:"success",
+                });
 
-                       title:tips,
+            }
 
-                       hide:() => {dispatch({type:UpUIState.CLOSE_ERROR_ALERT});dispatch(getTheClassPreview())}
-
-                   }
-
-               });
-
-           }
+            dispatch({type:UpUIState.ADD_TEACHER_MODAL_HIDE});
 
         });
+
 
 
     }
 
 };
 
+//删除班主任
+
+const delGanger = ({ClassID}) => {
+
+  return dispatch => {
+
+      setGengar({ClassID,dispatch}).then(data=>{
+
+          if (data){
+
+            dispatch(AppAlertActions.alertSuccess("删除班主任成功"));
+
+              getTeachers({ClassID,dispatch}).then(data=>{
+
+                  if (data){
+
+                      dispatch({type:GET_THE_CLASS_THEACHERS,data:data});
+
+                  }
+
+              });
+
+          }
+
+      })
+
+  }
+
+};
+
+
 //更改任课教师
 const updateTeacher = (classInfo) => {
 
     return (dispatch,getState) => {
 
-        const newTeacherId = getState().UIState.AddTeacherModal.newPickTeacher.value;
+        const newTeacherId = getState().UIState.AddTeacherModal.newPickTeacher.id;
 
-        const classId = classInfo.ClassID;
+        const ClassID = classInfo.ClassID;
 
-        const subjectId = getState().UIState.AddTeacherModal.subjectsSelect.value;
+        let SubjectID = '';
 
         const type = getState().UIState.AddTeacherModal.type;
+
+        if (type===2){
+
+            SubjectID = getState().UIState.AddTeacherModal.SubjectID;
+
+        }else{
+
+            SubjectID = getState().UIState.AddTeacherModal.subjectsSelect.value;
+
+        }
+
+        if (SubjectID === 'all'){
+
+
+            dispatch(AppAlertActions.alertWarn("请选择学科"));
+
+
+            return;
+
+        }
 
         let tips = '';
 
@@ -631,40 +618,63 @@ const updateTeacher = (classInfo) => {
 
         }
 
-        dispatch({type:UpUIState.ADD_TEACHER_MODAL_HIDE});
+        setTeacher({ClassID,SubjectID,UserID:newTeacherId,dispatch}).then(data=>{
 
-        let updateTeacherPromise = postXuData('/admUpdateTeacher');
+            console.log(ClassID,SubjectID,newTeacherId);
 
-        updateTeacherPromise.then((json) => {
+            if (data){
 
-            if (json.Status === 200){
-
-                dispatch({
-
-                    type:UpUIState.SHOW_ERROR_ALERT,
-
-                    data:{
-
-                        type:"success",
-
-                        title:tips,
-
-                        hide:() => {dispatch({type:UpUIState.CLOSE_ERROR_ALERT});dispatch(getTheClassPreview())}
-
-                    }
-
-                });
+                dispatch(AppAlertActions.alertSuccess(tips));
 
             }
 
-        });
+            getTeachers({ClassID}).then(data=>{
 
+                if (data){
+
+                    dispatch({type:GET_THE_CLASS_THEACHERS,data:data});
+
+                }
+
+            });
+
+            dispatch({type:UpUIState.ADD_TEACHER_MODAL_HIDE});
+
+        });
 
     }
 
 };
 
+const delSubjectTeacher = ({ClassID,SubjectID}) => {
 
+    return (dispatch,getState) => {
+
+        setTeacher({ClassID,SubjectID,dispatch}).then(data=>{
+
+            console.log(ClassID,SubjectID);
+
+            if (data){
+
+                dispatch(AppAlertActions.alertSuccess("删除成功！"));
+
+            }
+
+            getTeachers({ClassID}).then(data=>{
+
+                if (data){
+
+                    dispatch({type:GET_THE_CLASS_THEACHERS,data:data});
+
+                }
+
+            });
+
+        });
+
+    }
+
+};
 
 
 
@@ -745,9 +755,9 @@ const getLogin = async (dispatch) => {
 
 const getGradeClass = async (SchoolID,dispatch) => {
 
-    let res = await Method.getGetData(`/UserMgr/UserInfoMgr/GetGradeClassTree?SchoolID=${SchoolID}`,2,'http://192.168.2.248:8075');
+    let res = await Method.getGetData(`/UserMgr/UserInfoMgr/GetGradeClassTree?SchoolID=${SchoolID}`,2,'http://192.168.2.248:8066');
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
@@ -766,9 +776,9 @@ const getGradeClass = async (SchoolID,dispatch) => {
 
 const getSchoolData = async (SchoolID,dispatch) => {
 
-    let res = await Method.getGetData(`/UserMgr/ClassMgr/GetSummary?SchoolID=${SchoolID}`,2,'http://192.168.2.248:8075');
+    let res = await Method.getGetData(`/UserMgr/ClassMgr/GetSummary?SchoolID=${SchoolID}`,2,'http://192.168.2.248:8066');
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
@@ -786,9 +796,9 @@ const getSchoolData = async (SchoolID,dispatch) => {
 const getClassList = async ({SchoolID,PageIndex,PageSize,dispatch,Keyword,GradeID}) => {
 
 
-    let res = await Method.getGetData(`/UserMgr/ClassMgr/GetGradeSummary?SchoolID=${SchoolID}&PageIndex=${PageIndex}&PageSize=${PageSize}${Keyword?`&Keyword=${Keyword}`:''}${GradeID?`&GradeID=${GradeID}`:''}`,2,'http://192.168.2.248:8075');
+    let res = await Method.getGetData(`/UserMgr/ClassMgr/GetGradeSummary?SchoolID=${SchoolID}&PageIndex=${PageIndex}&PageSize=${PageSize}${Keyword?`&Keyword=${Keyword}`:''}${GradeID?`&GradeID=${GradeID}`:''}`,2,'http://192.168.2.248:8066');
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
@@ -803,13 +813,13 @@ const getClassList = async ({SchoolID,PageIndex,PageSize,dispatch,Keyword,GradeI
 
 
 
-//获取教师接口
+//获取某个班级教师接口
 
 const getTeachers = async ({ClassID,dispatch}) => {
 
-    let res = await Method.getGetData(`/UserMgr/ClassMgr/GetTeacherToPage?ClassID=${ClassID}`,2,'http://192.168.2.248:8075');
+    let res = await Method.getGetData(`/UserMgr/ClassMgr/GetClassTeacher?ClassID=${ClassID}`,2,'http://192.168.2.248:8066');
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
@@ -824,13 +834,13 @@ const getTeachers = async ({ClassID,dispatch}) => {
 
 
 
-//获取学生接口
+//获取学生接口包含搜索
 
 const getStudents = async ({ClassID,dispatch,Keyword,PageIndex,PageSize}) => {
 
-    let res = await Method.getGetData(`/UserMgr/UserInfoMgr/GetStudentToPage?ClassID=${ClassID}&PageIndex=${PageIndex}&PageSize=${PageSize}${Keyword?`&Keyword=${Keyword}`:''}`,2,'http://192.168.2.248:8075');
+    let res = await Method.getGetData(`/UserMgr/UserInfoMgr/GetStudentToPage?ClassID=${ClassID}&PageIndex=${PageIndex}&PageSize=${PageSize}${Keyword?`&Keyword=${Keyword}`:''}`,2,'http://192.168.2.248:8066');
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
@@ -843,6 +853,117 @@ const getStudents = async ({ClassID,dispatch,Keyword,PageIndex,PageSize}) => {
 
 };
 
+//获取行政班开课学科
+
+const getSubjects = async ({ClassID,dispatch}) => {
+
+    let res = await Method.getGetData(`/UserMgr/ClassMgr/GetSubject?ClassID=${ClassID}`,2,'http://192.168.2.248:8066');
+
+    if (res.StatusCode === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError(res.Msg));
+
+    }
+
+
+};
+
+
+//获取所有的任课教师
+
+const getAllTeacher = async ({SchoolID,SubjectIDs='',Keyword,UserID,dispatch}) => {
+
+    let res = await Method.getGetData(`/UserMgr/ClassMgr/GetTeacherToPage?SchoolID=${SchoolID}&SubjectIDs=${SubjectIDs}${Keyword?`&Keyword=${Keyword}`:''}${UserID?`&UserID=${UserID}`:''}`,2,'http://192.168.2.248:8066');
+
+    if (res.StatusCode === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError(res.Msg));
+
+    }
+
+
+};
+
+//设置班主任
+
+const setGengar =  async ({ClassID,UserID='',dispatch}) => {
+
+    let res = await Method.getPostData(`/UserMgr/ClassMgr/SetGanger`,{
+
+        ClassID,UserID
+
+    },2,'http://192.168.2.248:8066');
+
+    if (res.StatusCode === 200){
+
+        return res;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError(res.Msg));
+
+    }
+
+
+};
+
+
+//设置教师
+
+const setTeacher =  async ({ClassID,SubjectID,UserID='',dispatch}) => {
+
+    let res = await Method.getPostData(`/UserMgr/ClassMgr/SetCourseClassTeacher`,{
+
+        ClassID,UserID,SubjectID
+
+    },2,'http://192.168.2.248:8066');
+
+
+
+    if (res.StatusCode === 200){
+
+        return res;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError(res.Msg));
+
+    }
+
+
+};
+
+//调班接口
+const adjustClass =  async ({ClassID,UserIDs,dispatch}) => {
+
+    let res = await Method.getPostData(`/UserMgr/ClassMgr/ReSetStudentClass`,{
+
+        ClassID,UserIDs
+
+    },2,'http://192.168.2.248:8066');
+
+
+
+    if (res.StatusCode === 200){
+
+        return res;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError(res.Msg));
+
+    }
+
+
+};
 
 
 
@@ -853,7 +974,6 @@ export default {
     getTheClassPreview,
     changeStudentCheckList,
     addClass,
-    postAdjustClass,
     getAddTeacherData,
     teacherModalSelectChange,
     teacherSearchBtnClick,
@@ -862,6 +982,14 @@ export default {
     updateTeacher,
 
     getClassList,
+
+    getStudents,
+
+    delGanger,
+
+    delSubjectTeacher,
+
+    adjustClass,
 
     GET_LOGIN_USER_INFO,
     GET_ALL_GRADE_PREVIEW,
@@ -891,6 +1019,12 @@ export default {
     ALL_GRADE_CLASS_CONTENT_HIDE,
 
     ALL_GRADE_CLASS_LIST_UPDATE,
+
+    STUDENT_SEARCHKEY_CHANGE,
+
+    STUDENT_WRAPPER_LOADING_SHOW,
+
+    STUDENT_WRAPPER_LOADING_HIDE,
 
     GET_THE_CLASS_THEACHERS,
     GET_THE_CLASS_STUDENTS,

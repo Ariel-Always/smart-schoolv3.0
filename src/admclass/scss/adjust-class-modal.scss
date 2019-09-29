@@ -19,7 +19,21 @@
     margin-right:6px;
   }
   .adjust-class-select{
-    margin-top: 24px;
+
+    margin-top: 22px;
+
+    .dropdown_container{
+
+      position: fixed;
+
+      &:last-child{
+
+        margin-left: 132px;
+
+      }
+
+    }
+
   }
   .total{
     color: #999999;

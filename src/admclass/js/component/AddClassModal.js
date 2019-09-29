@@ -18,8 +18,6 @@ class AddClassModal extends Component{
 
         });
 
-        gradeList.unshift({title:"请选择年级",value:0});
-
         return (
 
            <React.Fragment>

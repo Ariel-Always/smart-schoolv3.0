@@ -14,6 +14,10 @@ import SingleDoubleTable from "../../component/SingleDoubleTable";
 
 import TPActions from "../../actions/Teacher/TeacherPersonalActions";
 
+import AdjustByTeacherActions from '../../actions/Teacher/AdjustByTeacherActions';
+
+import AdjustByTeacherModal from './AdjustByTeacherModal';
+
 class TeacherPersonalSchedule extends Component{
 
     constructor(props) {
@@ -63,6 +67,14 @@ class TeacherPersonalSchedule extends Component{
 
     }
 
+    AdjustScheduleShow(){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:AdjustByTeacherActions.ADJUST_BY_TEACHER_SHOW});
+
+    }
+
 
     render() {
 
@@ -86,7 +98,7 @@ class TeacherPersonalSchedule extends Component{
 
             <div className="teacher-mine-wrapper">
 
-                <TopButtons></TopButtons>
+                <TopButtons AdjustScheduleShow={this.AdjustScheduleShow.bind(this)}></TopButtons>
 
                 <TermPick
 
@@ -117,11 +129,13 @@ class TeacherPersonalSchedule extends Component{
                         ItemWeek = {PeriodWeekTerm.ItemWeek}
                         NowWeekNo={PersonalSchedule.NowWeekNo}
                         schedule={PersonalSchedule.schedule}
-                        NowDate = {PersonalSchedule.NowDate}>
+                        NowDate = {PeriodWeekTerm.NowDate}>
 
                     </SingleDoubleTable>
 
                 </Loading>
+
+                <AdjustByTeacherModal></AdjustByTeacherModal>
 
             </div>
 

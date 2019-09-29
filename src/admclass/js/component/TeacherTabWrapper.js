@@ -10,11 +10,9 @@ class TeacherTabWrapper extends Component{
 
         let type = 3;
 
-        if (Teachers.Ganger && Teachers.Ganger.UserID) {
+        if (Teachers.Ganger && (Teachers.Ganger.UserID!=='未设置')) {
 
             type = 4;
-
-            console.log(123);
 
             addTeacherModalShow({type: type,originTeacherInfo:{id:Teachers.Ganger.UserID,name:Teachers.Ganger.UserName,photo:Teachers.Ganger.PhotoPath}});
 
@@ -26,15 +24,20 @@ class TeacherTabWrapper extends Component{
 
         }
 
-
-
     }
+
+
+
+
+
+
 
     render() {
 
-        const {Teachers,addTeacherModalShow} = this.props;
+        const { Teachers,addTeacherModalShow,delGanger,delSubjectTeacher } = this.props;
 
         return (
+
             <CheckBoxGroup>
 
                 <div className="admclass-teacher-wrapper clearfix">
@@ -65,7 +68,7 @@ class TeacherTabWrapper extends Component{
 
                         <div className="cooperate ganger">
 
-                            <div className={`reset ${Teachers.Ganger&&Teachers.Ganger.UserID?'':'no-set'}`} onClick={this.setGanger.bind(this)}>{Teachers.Ganger&&Teachers.Ganger.UserID?'更改':'设置'}</div>
+                            <div className={`reset ${Teachers.Ganger&&Teachers.Ganger.UserID?'':'no-set'}`} onClick={this.setGanger.bind(this)}>{Teachers.Ganger&&Teachers.Ganger.UserID!=='未设置'?'更改':'设置'}</div>
 
                             {
 
@@ -75,7 +78,7 @@ class TeacherTabWrapper extends Component{
 
                                         <div className="line"></div>
 
-                                        <div className="delete">删除</div>
+                                        <div className="delete" onClick={()=>delGanger()}>删除</div>
 
                                 </React.Fragment>:''
 
@@ -123,21 +126,21 @@ class TeacherTabWrapper extends Component{
 
                                                    <div className="admclass-teacher-name" title={item.UserName}>{item.UserName}</div>
 
-                                                   <div className={`admclass-teacher-project ${projects}`}>{item.SubjectName}</div>
-
                                                </div>
 
                                                <div className="admclass-teacher-id" title={item.UserID}>{item.UserID}</div>
 
                                            </div>
 
+                                           <div className={`admclass-teacher-project ${projects}`}>{item.SubjectName}</div>
+
                                            <div className="cooperate">
 
-                                               <div className="reset" onClick={() => addTeacherModalShow({type:2,originTeacherInfo:{id:item.UserID,name:item.UserName,photo:item.PhotoPath}})}>更改</div>
+                                               <div className="reset" onClick={() => addTeacherModalShow({type:2,originTeacherInfo:{id:item.UserID,name:item.UserName,photo:item.PhotoPath,SubjectID:item.SubjectID}})}>更改</div>
 
                                                <div className="line"></div>
 
-                                               <div className="delete">删除</div>
+                                               <div className="delete" onClick={()=>delSubjectTeacher({SubjectID:item.SubjectID})}>删除</div>
 
                                            </div>
 

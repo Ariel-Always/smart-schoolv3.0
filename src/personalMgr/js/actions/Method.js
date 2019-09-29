@@ -1,18 +1,18 @@
 import {getData,postData} from "../../../common/js/fetch";
 
-const api = 'http://192.168.2.248:8075';
+//const api = 'http://192.168.2.248:8075';
 
 
 //const api = ' http://47.244.238.75:7300/mock/5d7e0519fdd0dc0457886a3c/webCloudDev';
 
 //获取数据以及封装数据格式
-const getGetData =  async (url,level,mode) =>{
+const getGetData =  async (url,level,api="http://192.168.2.248:8075") =>{
     try {
         let fetchAsync = '';
         try {
             /*fetchAsync = await getData(CONFIG.proxy+url);*/
 
-            fetchAsync = await getData(api+url,level,mode);
+            fetchAsync = await getData(api+url,level);
         }
         catch (e) {
             return  e;

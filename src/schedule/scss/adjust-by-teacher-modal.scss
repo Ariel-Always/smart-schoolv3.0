@@ -269,11 +269,13 @@
 
     .class-item{
 
-      width:90px;
+      width:112px;
 
       margin-left: 20px;
 
-      &:nth-child(6n+1){
+      margin-bottom: 10px;
+
+      &:nth-child(5n+1){
 
         margin-left:0;
 
@@ -285,9 +287,9 @@
 
       .error-tips{
 
-        margin-left: 100px;
+        margin-left:10px;
 
-        margin-top: 16px;
+        margin-top:4px;
 
       }
 

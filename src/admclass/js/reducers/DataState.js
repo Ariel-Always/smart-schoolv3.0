@@ -13,6 +13,8 @@ import ClassPagination from './data/ClassPagination';
 
 import GradePagination from './data/GradePagination';
 
+import StudentPagination from './data/StudentPagination';
+
 const DataState=combineReducers(
     {
         LoginUser,
@@ -35,7 +37,9 @@ const DataState=combineReducers(
 
         ClassPagination,
 
-        GradePagination
+        GradePagination,
+
+        StudentPagination
 
     });
 

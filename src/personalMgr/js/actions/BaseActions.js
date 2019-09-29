@@ -186,6 +186,13 @@ const Commit = () => {
 };
 
 
+
+
+//获取登录用户信息
+
+
+
+
 const hideAlert = (dispatch) => {
 
     return () => { dispatch({type:AppAlertActions.APP_ALERT_HIDE}) }
