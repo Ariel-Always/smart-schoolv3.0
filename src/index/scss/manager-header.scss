@@ -2,7 +2,11 @@
 
   height:292px;
 
-  background: url("#{$image-url}/banner.png") no-repeat top center;
+  background-image: url("#{$image-url}/banner.png");
+
+  background-repeat: no-repeat;
+
+  background-position: top center;
 
   .header-user-info{
 
@@ -46,12 +50,6 @@
   .arrow{
 
     float: right;
-
-  /*  background: url("#{$image-url}/arrow.png") no-repeat left center;
-
-    width: 40px;
-
-    height: 100%;*/
 
     width: 8px;
 
@@ -195,6 +193,146 @@
       &:hover{
 
         background-image: url("#{$image-url}/logout-hover.png");
+
+      }
+
+    }
+
+  }
+
+  .header-content-wrapper{
+
+    margin:82px auto;
+
+    width:1032px;
+
+    .circle{
+
+      float: left;
+
+      width: 142px;
+
+      .num{
+
+        height:142px;
+
+        line-height: 142px;
+
+        text-align: center;
+
+        background-position:top center;
+
+        background-repeat: no-repeat;
+
+        .num-detail{
+
+          font-size: 36px;
+
+        }
+
+        .unit{
+
+          font-size: 16px;
+
+        }
+
+      }
+
+      .title{
+
+        text-align: center;
+
+      }
+
+      .tips{
+
+        color: #999999;
+
+      }
+
+      &:not(:first-child){
+
+        margin-left: 80px;
+
+      }
+
+      &.online{
+
+        .num{
+
+          background-image: url("#{$image-url}/blue-circle.png");
+
+         &>*{
+
+           color: #0c51ff;
+
+         }
+
+        }
+
+      }
+
+      &.top-visit{
+
+        .num{
+
+          background-image: url("#{$image-url}/green-circle.png");
+
+          &>*{
+
+            color: #249721;
+
+          }
+
+        }
+
+      }
+
+      &.suspicious-login{
+
+        .num{
+
+          background-image: url("#{$image-url}/origen-circle.png");
+
+          &>*{
+
+            color: #e96a39;
+
+          }
+
+        }
+
+      }
+
+      &.used-space{
+
+        .num{
+
+          background-image: url("#{$image-url}/blue-circle.png");
+
+          &>*{
+
+            color: #0c51ff;
+
+          }
+
+        }
+
+      }
+
+      &.free-space{
+
+        .num{
+
+          background-image: url("#{$image-url}/green-circle.png");
+
+          &>*{
+
+            color: #249721;
+
+          }
+
+        }
 
       }
 

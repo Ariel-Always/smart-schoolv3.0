@@ -8,7 +8,9 @@ import AppLoadingActions from '../../actions/AppLoadingActions';
 
 import HeaderActions from '../../actions/Manager/HeaderActions';
 
-import Header from '../../components/Manager/Header'
+import Header from '../../components/Manager/Header';
+
+import ModulesContent from '../../components/Manager/ModulesContent';
 
 import { connect } from 'react-redux';
 
@@ -71,15 +73,15 @@ class Index extends Component{
 
         const { LoginUser,Manager } = this.props;
 
-        const { HeaderSetting } = Manager;
+        const { HeaderSetting,Modules } = Manager;
 
         return (
 
             <div className="manager-desk-top">
 
-
                 <Header LoginUser={LoginUser} HeaderSetting={HeaderSetting} HeaderMenuToggle={this.HeaderMenuToggle.bind(this)}></Header>
 
+                <ModulesContent Modules={Modules}></ModulesContent>
 
             </div>
 

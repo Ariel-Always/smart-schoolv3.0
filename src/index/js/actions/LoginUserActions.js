@@ -31,7 +31,7 @@ const getLoginUser = async ({dispatch}) => {
 
   //let res = await Method.getGetData(`/UserMgr/Login/Api/Login.ashx?method=GetUserInfo`,1,'http://192.168.129.2:10102');
 
-  let res = await Method.getGetData(`/Login?method=GetUserInfo`,1);
+  let res = await Method.getGetData(`/Login?method=GetUserInfo`,1,' http://47.244.238.75:7300/mock/5d7e0519fdd0dc0457886a3c/webCloudDev');
 
   if (res.error === 0){
 
