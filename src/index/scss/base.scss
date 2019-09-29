@@ -1,0 +1,64 @@
+$image-url:'../images';
+
+/*公共的mixin start*/
+@mixin textOverFlow() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@mixin flex{
+  display: flex;
+  display:-moz-flex;
+  display:-ms-flex;
+  display:-webkit-flex;
+}
+@mixin justify-content($dir){
+  justify-content: $dir;
+  -ms-flex-pack: $dir;
+}
+@mixin flex-direction($dir){
+  flex-direction:$dir;
+  -ms-flex-direction:$dir;
+}
+@mixin align-items($dir){
+  align-items: $dir;
+  -ms-flex-align: $dir;
+}
+/*公共的mixin end*/
+
+
+*{
+
+  color: #333333;
+
+  margin:0;
+
+  padding:0;
+
+  font-family: 微软雅黑;
+
+}
+
+
+//全局加载中
+.desk-top-wrapper{
+
+  .ant-spin{
+
+    position:fixed;
+
+    width: 100%;
+
+    height: 100%;
+
+    left: 0;
+
+    top: 0;
+
+    background:#ffffff;
+
+    z-index: 10101;
+
+  }
+
+}

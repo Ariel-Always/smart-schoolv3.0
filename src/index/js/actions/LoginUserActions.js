@@ -1,0 +1,7 @@
+const LOGIN_USER_INFO_UPDATE = 'LOGIN_USER_INFO_UPDATE';
+
+export default {
+
+    LOGIN_USER_INFO_UPDATE
+
+}

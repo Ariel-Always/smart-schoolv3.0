@@ -642,9 +642,18 @@ class Search extends React.Component {
             selectShow: false,
             selectdValue: '',
             cancleShow: false,
-            inputFocus: false
+            inputFocus: false,
+            Value:""
         }
     }
+
+    InputChange(e){
+
+        this.setState({Value:e.target.value});
+
+    }
+
+
     componentDidMount() {
         const { select } = this.props;
         if (select) {
@@ -713,7 +722,7 @@ class Search extends React.Component {
         }
     }//键盘enter事件
     render() {
-        const { width, select, placeHolder, selectOptions, onClickSearch, onCancelSearch, className } = this.props;
+        const { width, select, placeHolder, selectOptions, onClickSearch, onCancelSearch, className,CancelBtnShow,Value,onChange } = this.props;
         return (
             <div className={`search_container ${className ? className : ''}`} style={{
                 width: width ? width : '',
@@ -771,11 +780,14 @@ class Search extends React.Component {
                                     onFocus={this.onInputFocus.bind(this)}
                                     onBlur={this.onInputBlur.bind(this)}
                                     onKeyPress={this.handleEnterKey.bind(this)}
+                                    value={Value?Value:this.state.Value}
+                                    onChange={onChange?(e)=>onChange(e):this.InputChange.bind(this)}
                                 />
                                 <input className="search_cancel_input" type="button"
                                     onClick={
                                         () => {
-                                            this.setState({ cancleShow: false }, () => {
+
+                                            this.setState({ cancleShow: false,Value:"" }, () => {
                                                 this.refs.search_text_input.value = '';
                                                 if (onCancelSearch) {
                                                     onCancelSearch(
@@ -791,9 +803,10 @@ class Search extends React.Component {
                                                     );
                                                 }
                                             })
+
                                         }
                                     }
-                                    style={{ display: this.state.cancleShow === true ? 'block' : 'none' }} />
+                                    style={{ display:CancelBtnShow?(CancelBtnShow==='y'?'block':'none'):(this.state.cancleShow === true ? 'block' : 'none')}} />
                             </td>
                             <td className="search_right_td">
                                 <input className="search_btn_input" type="button"
