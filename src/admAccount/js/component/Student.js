@@ -1,10 +1,10 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import { Alert,DetailsModal, DropDown, PagiNation, Search, Table, Button, CheckBox, CheckBoxGroup, Modal } from '../../../common/index'
+import { Alert, DetailsModal, DropDown, PagiNation, Search, Table, Button, CheckBox, CheckBoxGroup, Modal } from '../../../common/index'
 //import '../../../common/scss/_left_menu.scss'
 import { Link, } from 'react-router-dom';
 import '../../scss/Student.scss'
-import { Tooltip,  Input } from 'antd'
+import { Tooltip, Input } from 'antd'
 import TipsContact from './TipsContact'
 import history from '../containers/history'
 //import EditModal from './EditModal'
@@ -23,6 +23,7 @@ class Student extends React.Component {
                 {
                     title: '',
                     dataIndex: 'key',
+                    width: 70,
                     key: 'key',
                     align: 'left',
                     render: key => {
@@ -37,8 +38,9 @@ class Student extends React.Component {
                 {
                     title: '姓名',
                     align: 'center',
-                    key: 'Name',
-                    dataIndex: 'Name',
+                    key: 'UserName',
+                    width: 130,
+                    dataIndex: 'UserName',
                     sorter: true,
                     render: arr => {
                         return (
@@ -53,18 +55,20 @@ class Student extends React.Component {
                 {
                     title: '用户名',
                     align: 'right',
-                    dataIndex: 'UserName',
-                    key: 'UserName',
+                    width: 120,
+                    dataIndex: 'ShortName',
+                    key: 'ShortName',
                     sorter: true,
-                    render: UserName => {
+                    render: ShortName => {
                         return (
-                            <span className='UserName'>{UserName}</span>
+                            <span className='UserName'>{ShortName}</span>
                         )
                     }
                 },
                 {
                     title: '个性签名',
                     align: 'center',
+                    width: 300,
                     dataIndex: 'Sign',
                     key: 'Sign',
                     render: Sign => {
@@ -76,6 +80,7 @@ class Student extends React.Component {
                 {
                     title: '联系方式',
                     align: 'center',
+                    width: 120,
                     key: 'UserContact',
                     dataIndex: 'UserContact',
                     render: UserContact => {
@@ -88,6 +93,7 @@ class Student extends React.Component {
                 },
                 {
                     title: '操作',
+                    width: 120,
                     align: 'center',
                     key: 'handle',
                     dataIndex: 'key',
@@ -102,6 +108,26 @@ class Student extends React.Component {
                     }
                 }
             ],
+            pagination: { total: 50 },
+            loading: false,
+            selectedAll: false,
+            checkedList: [],
+            checkAll: false,
+            studentModalVisible: false,
+            userKey: 0,
+            StudentChangeKey: 0,
+            ChangePwdMadalVisible: false,
+            alertShow: false,
+            alertTitle: '提示信息',
+            alertQueryShow: false,
+            alertQueryTitle: '查询提示~',
+            StudentDetailsMsgModalVisible: false,
+            addStudentModalVisible: false,
+            defaultPwd: 888888,
+            onClickKey: 0,
+            userMsgKey: 0,
+            firstSelect:{ value: 0, title: '全部年级' },
+            secondSelect:{ value: 0, title: '全部班级' },
             data: [{
                 key: 1,
                 UserName: { key: '01', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
@@ -125,255 +151,20 @@ class Student extends React.Component {
                 UserImg: {
                     PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
                     PhotoPath_NOcache: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg'
-                },
-                UserContact: {
-                    QQ: '1519406168',
-                    WeiXin: 'asd1519406168',
-                    Telephone: '15626248624',
-                    Weibo: '15626248624'
-                },
-                handle: {
-                    key: 0
-                }
-            }, {
-                key: 1,
-                Name: {
-                    Name: '黄尚',
-                    UserID: '201700121245',
-                    key: 1
-                },
-                UserName: 'ZXSTU_001',
-                Sign: '人生重要的不是所站的位置，而是所朝的方向',
-                Gender: '男',
-                UserImg: {
-                    PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
-                    PhotoPath_NOcache: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg'
-                },
-                UserContact: {
-                    QQ: '1519406168',
-                    WeiXin: 'asd1519406168',
-                    Telephone: '15626248624',
-                    weibo: '15626248624'
-                },
-                handle: {
-                    key: 1
-                }
-            }, {
-                key: 2,
-                Name: {
-                    Name: '李丽丽',
-                    UserID: '201700121245',
-                    key: 2
-                },
-                UserName: 'ZXSTU_001',
-                Sign: '人生重要的不是所站的位置，而是所朝的方向',
-                Gender: '男',
-                UserImg: {
-                    PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
-                    PhotoPath_NOcache: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg'
-                },
-                UserContact: {
-                    QQ: '1519406168',
-                    WeiXin: 'asd1519406168',
-                    Telephone: '15626248624',
-                    weibo: '15626248624'
-                },
-                handle: {
-                    key: 2
-                }
-            }, {
-                key: 3,
-                Name: {
-                    Name: '蓝线',
-                    UserID: '201700121245',
-                    key: 3
-                },
-                UserName: 'ZXSTU_001',
-                Sign: '人生重要的不是所站的位置，而是所朝的方向',
-                Gender: '男',
-                UserImg: {
-                    PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
-                    PhotoPath_NOcache: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg'
-                },
-                UserContact: {
-                    QQ: '1519406168',
-                    WeiXin: 'asd1519406168',
-                    Telephone: '15626248624',
-                    weibo: '15626248624'
-                },
-                handle: {
-                    key: 3
-                }
-            }, {
-                key: 4,
-                Name: {
-                    Name: '张心仪',
-                    UserID: '201700121245',
-                    key: 4
-                },
-                UserName: 'ZXSTU_001',
-                Sign: '人生重要的不是所站的位置，而是所朝的方向',
-                Gender: '男',
-                UserImg: {
-                    PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
-                    PhotoPath_NOcache: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg'
-                },
-                UserContact: {
-                    QQ: '1519406168',
-                    WeiXin: 'asd1519406168',
-                    Telephone: '15626248624',
-                    weibo: '15626248624'
-                },
-                handle: {
-                    key: 4
-                }
-            }, {
-                key: 5,
-                Name: {
-                    Name: '张心仪',
-                    UserID: '201700121245',
-                    key: 5
-                },
-                UserName: 'ZXSTU_001',
-                Sign: '人生重要的不是所站的位置，而是所朝的方向',
-                Gender: '男',
-                UserImg: {
-                    PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
-                    PhotoPath_NOcache: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg'
-                },
-                UserContact: {
-                    QQ: '1519406168',
-                    WeiXin: '',
-                    Telephone: '15626248624',
-                    weibo: '15626248624'
-                },
-                handle: {
-                    key: 5
-                }
-            }, {
-                key: 6,
-                Name: {
-                    Name: '张心仪',
-                    UserID: '201700121245',
-                    key: 6
-                },
-                UserName: 'ZXSTU_001',
-                Sign: '人生重要的不是所站的位置，而是所朝的方向',
-                Gender: '男',
-                UserImg: {
-                    PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
-                    PhotoPath_NOcache: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg'
-                },
-                UserContact: {
-                    QQ: '1519406168',
-                    WeiXin: 'asd1519406168',
-                    Telephone: '15626248624',
-                    weibo: ''
-                },
-                handle: {
-                    key: 6
-                }
-            }, {
-                key: 7,
-                Name: {
-                    Name: '张心仪',
-                    UserID: '201700121245',
-                    key: 7
-                },
-                UserName: 'ZXSTU_001',
-                Sign: '人生重要的不是所站的位置，而是所朝的方向',
-                Gender: '男',
-                UserImg: {
-                    PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
-                    PhotoPath_NOcache: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg'
-                },
-                UserContact: {
-                    QQ: '',
-                    WeiXin: '',
-                    Telephone: '',
-                    weibo: ''
-                },
-                handle: {
-                    key: 7
-                }
-            }, {
-                key: 8,
-                Name: {
-                    Name: '张心仪',
-                    UserID: '201700121245',
-                    key: 8
-                },
-                UserName: 'ZXSTU_001',
-                Sign: '人生重要的不是所站的位置，而是所朝的方向',
-                Gender: '男',
-                UserImg: {
-                    PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
-                    PhotoPath_NOcache: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg'
-                },
-                UserContact: {
-                    QQ: '1519406168',
-                    WeiXin: 'asd1519406168',
-                    Telephone: '15626248624',
-                    weibo: '15626248624'
-                },
-                handle: {
-                    key: 8
-                }
-            }, {
-                key: 9,
-                Name: {
-                    Name: '张心仪',
-                    UserID: '201700121245',
-                    key: 9
-                },
-                UserName: 'ZXSTU_001',
-                Sign: '人生重要的不是所站的位置，而是所朝的方向',
-                Gender: '男',
-                UserImg: {
-                    PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
-                    PhotoPath_NOcache: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg'
-                },
-                UserContact: {
-                    QQ: '1519406168',
-                    WeiXin: 'asd1519406168',
-                    Telephone: '15626248624',
-                    weibo: '15626248624'
-                },
-                handle: {
-                    key: 9
                 }
             }],
-            pagination: { total: 50 },
-            loading: false,
-            selectedAll: false,
-            checkedList: [],
-            checkAll: false,
-            studentModalVisible: false,
-            userKey: 0,
-            StudentChangeKey: 0,
-            ChangePwdMadalVisible: false,
-            alertShow: false,
-            alertTitle: '提示信息',
-            alertQueryShow: false,
-            alertQueryTitle: '查询提示~',
-            StudentDetailsMsgModalVisible: false,
-            addStudentModalVisible: false,
-            defaultPwd:888888,
-            onClickKey:0,
-            userMsgKey:0
 
         }
     }
-    componentWillMount(){
-        const {dispatch} = this.props;
+    componentWillMount() {
+        const { dispatch } = this.props;
         let pwd = 888888;
-        
+
         dispatch(actions.UpDataState.getChangeInputValue(pwd));
     }
     componentWillReceiveProps() {
         let Grades = this.props.DataState.GradeClassMsg.Grades ? this.props.DataState.GradeClassMsg.Grades : [];
         let len = Grades.lenght;
-        console.log(Grades)
         let GradeArr = [{ value: 0, title: '全部年级' }];
 
         for (let i = 0; i < len; i++) {
@@ -386,17 +177,17 @@ class Student extends React.Component {
         })
 
     }
-    
+
 
 
     StudentDropMenu = (e) => {
-        const { dispatch } = this.props;
+        const { dispatch, DataState } = this.props;
 
         let Classes = [{ value: 0, title: '全部班级' }];
 
         //console.log(this.refs.dropMenuSecond)
         if (e.value !== 0) {
-            let ClassArr = this.props.DataState.GradeClassMsg.returnData.AllClasses[e.value];
+            let ClassArr = DataState.GradeClassMsg.returnData.AllClasses[e.value];
             ClassArr.map((Class) => {
                 Classes.push(Class);
             })
@@ -405,35 +196,57 @@ class Student extends React.Component {
             this.setState({
                 secondDropList: Classes,
             })
-            dispatch(actions.UpDataState.getGradeStudentPreview('/ArchivesStudent?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10&gradeID=' + e.value));
             this.setState({
-                DropMenuShow: true
+                DropMenuShow: true,
+                firstSelect:e,
+                searchValue:''
             })
         } else {
-            dispatch(actions.UpDataState.getGradeStudentPreview('/ArchivesStudent?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
             this.setState({
-                DropMenuShow: false
+                DropMenuShow: false,
+                secondSelect:{ value: 0, title: '全部班级' },
+                searchValue:''
             })
         }
 
     }
 
     StudentDropMenuSecond = (e) => {
-        console.log(e);
-        dispatch(actions.UpDataState.getGradeStudentPreview('/ArchivesStudent?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
+        const { dispatch, DataState } = this.props;
+        this.setState({
+            secondSelect:e,
+            searchValue:''
+        })
+        if(e.value!==0)
+        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10&gradeID=' + this.state.firstSelect.value+'&classID='+e.value));
+        else
+        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10&gradeID=' + this.state.firstSelect.value));
     }
 
     StudentSearch = (e) => {
-        console.log(e)
+        const {dispatch} = this.props;
+        if(e.value===''){
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-warn',
+                title: "关键词不能为空",
+                ok: this.onAlertWarnOk.bind(this),
+                cancel: this.onAlertWarnClose.bind(this),
+                close: this.onAlertWarnClose.bind(this)
+            }));
+        }else{
+        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10&keyword=' + e.value+'&gradeID=' + this.state.firstSelect.value+'&classID='+this.state.secondSelect.value));
+        }
     }
 
     onSelectChange = (e) => {
-        console.log(e)
+
         //this.setState({ selectedRowKeys });
     }
 
     onUserContactClick = (UserContact) => {
-        console.log(UserContact)
+
         // this.setState({
         //     StudentChangeMadalVisible: true,
         //     StudentChangeKey: key
@@ -451,10 +264,10 @@ class Student extends React.Component {
 
     }
     OnCheckAllChange = (e) => {
-        console.log(e)
+        const { DataState, dispatch } = this.props;
         if (e.target.checked) {
             this.setState({
-                checkedList: this.props.DataState.GradeStudentPreview.keyList,
+                checkedList: DataState.GradeStudentPreview.keyList,
                 checkAll: e.target.checked
             })
         } else {
@@ -465,32 +278,28 @@ class Student extends React.Component {
         }
     }
     onCheckBoxGroupChange = (checkedList) => {
-        console.log(checkedList)
+        const { DataState, dispatch } = this.props;
         this.setState({
             checkedList,
-            checkAll: checkedList === this.props.DataState.GradeStudentPreview.keyList ? true : false
+            checkAll: checkedList === DataState.GradeStudentPreview.keyList ? true : false
         })
     }
     handleStudentModalOk = (e) => {
-        console.log(e)
         this.setState({
             studentModalVisible: false
         })
     }
     handleStudentModalCancel = (e) => {
-        console.log(e)
         this.setState({
             studentModalVisible: false
         })
     }
     ChangePwdMadalOk = (e) => {
-        console.log(e)
         this.setState({
             ChangePwdMadalVisible: false
         })
     }
     ChangePwdMadalOk = (e) => {
-        console.log(e)
         this.setState({
             ChangePwdMadalVisible: false
         })
@@ -498,7 +307,6 @@ class Student extends React.Component {
 
     onChangePwdAllClick = () => {
         const { dispatch } = this.props;
-        console.log(this.state.checkedList)
         if (this.state.checkedList.length === 0) {
 
             dispatch(actions.UpUIState.showErrorAlert({
@@ -514,42 +322,40 @@ class Student extends React.Component {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-query',
                 title: "确定批量重置密码？",
-                ok: this.onAlertQueryOk.bind(this,888888),
+                ok: this.onAlertQueryOk.bind(this, 888888),
                 cancel: this.onAlertQueryClose.bind(this),
                 close: this.onAlertQueryClose.bind(this)
             }));
         }
     }
     onChangePwdClick = (key) => {
-        const { dispatch,DataState } = this.props;
+        const { dispatch, DataState } = this.props;
         let data = this.state.StudentAccountData;
         let pwd = 888888;
         this.setState({
-            ChangePwdMadalVisible:true,
-            onClickKey:key
-         })
-      
+            ChangePwdMadalVisible: true,
+            onClickKey: key
+        })
+
 
 
     }
     onPwdchangeOk = (pwd) => {
-        console.log(pwd);
         this.setState({
-            ChangePwdMadalVisible:false,
-            defaultPwd:888888
-         })
+            ChangePwdMadalVisible: false,
+            defaultPwd: 888888
+        })
     }
     onPwdchangeClose = () => {
-         this.setState({
-            ChangePwdMadalVisible:false,
-            defaultPwd:888888
-         })
+        this.setState({
+            ChangePwdMadalVisible: false,
+            defaultPwd: 888888
+        })
     }
     onPwdchange = (e) => {
-        const {dispatch} = this.props;
-        console.log(e.target.value)
+        const { dispatch } = this.props;
         this.setState({
-            defaultPwd:e.target.value
+            defaultPwd: e.target.value
         })
     }
     onAlertWarnClose = () => {
@@ -571,15 +377,13 @@ class Student extends React.Component {
             checkedList: [],
             checkAll: false
         })
-        console.log(pwd);
     }
     onPagiNationChange = (e) => {
-        console.log(e)
     }
     onUserNameClick = (key) => {
         this.setState({
             StudentDetailsMsgModalVisible: true,
-            userMsgKey:key
+            userMsgKey: key
         })
     }
     StudentDetailsMsgModalOk = () => {
@@ -595,20 +399,17 @@ class Student extends React.Component {
         })
     }
     onAddStudent = (e, ) => {
-        console.log(e)
         this.setState({
             addStudentModalVisible: true,
             userKey: 'add'
         })
     }
     handleAddStudentModalOk = (e) => {
-        console.log(e)
         this.setState({
             addStudentModalVisible: false
         })
     }
     handleAddStudentModalCancel = (e) => {
-        console.log(e)
         this.setState({
             addStudentModalVisible: false
         })
@@ -654,7 +455,7 @@ class Student extends React.Component {
                                 width={120}
                                 height={72}
 
-                                dropSelectd={{ value: 0, title: '全部年级' }}
+                                dropSelectd={this.state.firstSelect}
                                 dropList={DataState.GradeClassMsg.returnData ? DataState.GradeClassMsg.returnData.grades : [{ value: 0, title: '全部年级' }]}
                             ></DropDown>
                             <DropDown
@@ -663,12 +464,13 @@ class Student extends React.Component {
                                 height={72}
 
                                 style={{ display: this.state.DropMenuShow ? 'block' : 'none' }}
-                                dropSelectd={{ value: 0, title: '全部班级' }}
+                                dropSelectd={this.state.secondSelect}
                                 dropList={this.state.secondDropList}
                                 onChange={this.StudentDropMenuSecond}
                             ></DropDown>
                             <Search placeHolder='请输入关键字搜索...'
                                 onClickSearch={this.StudentSearch}
+                                value= {this.state.searchValue}
                                 height={30}
                             ></Search>
                         </div>
@@ -680,13 +482,13 @@ class Student extends React.Component {
                                         columns={this.state.columns}
                                         pagination={false}
                                         loading={this.state.loading}
-                                        dataSource={this.state.StudentAccountData} >
+                                        dataSource={DataState.GradeStudentPreview.newList} >
 
                                     </Table>
                                 </CheckBoxGroup>
                                 <CheckBox className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
                                     全选
-                                    <Button onClick={this.onChangePwdAllClick} className='changePwdAll'  color='blue'>批量重置密码</Button>
+                                    <Button onClick={this.onChangePwdAllClick} className='changePwdAll' color='blue'>批量重置密码</Button>
                                 </CheckBox>
                                 <div className='pagination-box'>
                                     <PagiNation
@@ -772,8 +574,8 @@ class Student extends React.Component {
                 {/* 提示框 */}
                 <Alert show={this.state.ChangePwdMadalVisible}
                     type={'btn-query'}
-                    abstract={<div className='alert-pwd'><span className='alert-pwd-tips'>新密码：</span><Input size='small' onChange={this.onPwdchange.bind(this)} style={{width:120+'px'}} value={this.state.defaultPwd}></Input></div>}
-                    title={<p className='alert-Title'>确定重置<span className='alert-Title-name'>{this.state.StudentAccountData[this.state.onClickKey].Name.Name}</span><span className='alert-Title-id'>({this.state.StudentAccountData[this.state.onClickKey].Name.UserID})</span> 的密码？</p>}
+                    abstract={<div className='alert-pwd'><span className='alert-pwd-tips'>新密码：</span><Input size='small' onChange={this.onPwdchange.bind(this)} style={{ width: 120 + 'px' }} value={this.state.defaultPwd}></Input></div>}
+                    title={this.state.ChangePwdMadalVisible ? (<p className='alert-Title'>确定重置<span className='alert-Title-name'>{DataState.GradeStudentPreview.newList[this.state.onClickKey].UserName.Name}</span><span className='alert-Title-id'>({DataState.GradeStudentPreview.newList[this.state.onClickKey].UserName.UserID})</span> 的密码？</p>) : ''}
                     onOk={this.onPwdchangeOk}
                     onCancel={this.onPwdchangeClose}
                     onClose={this.onPwdchangeClose}

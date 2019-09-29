@@ -84,14 +84,14 @@ class App extends Component {
         let route = history.location.pathname;
         // 获取接口数据
         //this.requestData(route)
-       
-            this.handleMenu()
+
+        this.handleMenu()
         history.listen(() => {//路由监听
             let route = history.location.pathname;
-            console.log(route)
+
             // 获取接口数据
             // this.requestData(route)
-           
+
             this.handleMenu()
 
             // if (history.location.pathname === '/' || history.location.pathname === '/UserAccount') {
@@ -130,32 +130,30 @@ class App extends Component {
         const { dispatch } = this.props;
         let pathArr = route.split('/');
         let handleRoute = pathArr[1];
-        console.log(route)
-        if (route === '/' ) {
+
+        if (route === '/') {
             //dispatch(actions.UpDataState.getAllUserPreview('/ArchivesAll'));
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-            
 
-        }else if (handleRoute ==='Student') {
+
+        } else if (handleRoute === 'Student') {
             //dispatch(actions.UpDataState.getAllUserPreview('/Archives' + handleRoute));
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+            if (!this.props.DataState.GradeClassMsg.returnData.grades)
+                dispatch(actions.UpDataState.getGradeClassMsg('/GetGradeClassTree'));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
 
-                console.log('Student')
-                if (!this.props.DataState.GradeClassMsg.returnData)
-                    dispatch(actions.UpDataState.getGradeClassMsg('/AccountStudent_DropDownMenu'));
-                dispatch(actions.UpDataState.getGradeStudentPreview('/AccountStudent?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
-             
-        }else if (handleRoute === 'Teacher') {
-            console.log('Teacher：' )
+        } else if (handleRoute === 'Teacher') {
+
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
             if (!this.props.DataState.SubjectTeacherMsg.returnData)
                 dispatch(actions.UpDataState.getSubjectTeacherMsg('/ArchivesTeacher_DropDownMenu'));
             dispatch(actions.UpDataState.getSubjectTeacherPreview('/ArchivesTeacher?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
         } else if (handleRoute === 'Leader') {
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-        }  else if (handleRoute === 'Leader') {
+        } else if (handleRoute === 'Leader') {
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-        }else if (handleRoute === 'Admin') {
+        } else if (handleRoute === 'Admin') {
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
         } else {
             history.push('/')
@@ -168,7 +166,7 @@ class App extends Component {
         $('.frame_leftmenu_mainitem').removeClass('selected active');
         $('.frame_leftmenu_mainitem').children('*').removeClass('active');
         let path = history.location.pathname.split('/')[1];
-        console.log(path)
+
         let param = this.state.MenuParams;
         let len = param.children.length;
         for (let i = 0; i < len; i++) {
@@ -177,7 +175,7 @@ class App extends Component {
             if (path === param.children[i].key) {
                 param.children[i]['active'] = true;
                 param.children[i]['selected'] = true;
-                
+
             }
         }
         this.setState({
@@ -186,7 +184,7 @@ class App extends Component {
     }
     //左侧菜单每项的点击事件
     handleClick = (key) => {
-        console.log(key)
+
         history.push('/' + key);
     }
     //每个组件的下拉菜单的数据请求
@@ -219,10 +217,10 @@ class App extends Component {
                         <div ref="frame-right-content">
                             <Router >
                                 <Route path='/' history={history} exact component={Introduce}></Route>
-                                <Route path='/Student'  history={history} component={Student}></Route>
-                                    <Route path='/Teacher' exact history={history} component={Teacher}></Route>
-                                    <Route path='/Leader' exact history={history} component={Leader}></Route>
-                                    <Route path='/Admin' exact history={history} component={Admin}></Route>
+                                <Route path='/Student' history={history} component={Student}></Route>
+                                <Route path='/Teacher' exact history={history} component={Teacher}></Route>
+                                <Route path='/Leader' exact history={history} component={Leader}></Route>
+                                <Route path='/Admin' exact history={history} component={Admin}></Route>
                             </Router>
                         </div>
                     </Frame>

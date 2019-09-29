@@ -1,4 +1,4 @@
-//操作名称
+///操作名称
 const APP_LOADING_CLOSE = 'APP_LOADING_CLOSE';
 const APP_LOADING_OPEN = 'APP_LOADING_OPEN';
 const MODAL_LOADING_CLOSE = 'MODAL_LOADING_CLOSE';
@@ -9,25 +9,13 @@ const SHOW_WARN_ALERT = 'SHOW_WARN_ALERT';
 const CLOSE_WARN_ALERT = 'CLOSE_WARN_ALERT';
 const SHOW_QUERY_ALERT = 'SHOW_QUERY_ALERT';
 const CLOSE_QUERY_ALERT = 'CLOSE_QUERY_ALERT';
-//Subject
-const SUBJECT_TABLE_LOADING_OPEN = 'SUBJECT_TABLE_LOADING_OPEN';
-const SUBJECT_TABLE_LOADING_CLOSE = 'SUBJECT_TABLE_LOADING_CLOSE';
+//查看教学班
+const TEACHING_SOLUTION_DETAILS_MODAL_OPEN = 'TEACHING_SOLUTION_DETAILS_MODAL_OPEN';
+const TEACHING_SOLUTION_DETAILS_MODAL_CLOSE = 'TEACHING_SOLUTION_DETAILS_MODAL_CLOSE';
 
-const SUBJECT_DETAILS_MODAL_OPEN = 'SUBJECT_DETAILS_MODAL_OPEN';
-const SUBJECT_DETAILS_MODAL_CLOSE = 'SUBJECT_DETAILS_MODAL_CLOSE';
-
-//编辑学科弹窗
-const CHANGE_SUBJECT_MODAL_OPEN = 'CHANGE_SUBJECT_MODAL_OPEN'
-const CHANGE_SUBJECT_MODAL_CLOSE = 'CHANGE_SUBJECT_MODAL_CLOSE'
-//添加学科弹窗
-const ADD_SUBJECT_MODAL_OPEN = 'ADD_SUBJECT_MODAL_OPEN'
-const ADD_SUBJECT_MODAL_CLOSE = 'ADD_SUBJECT_MODAL_CLOSE'
-//设置教研组长
-const ADD_SUBJECT_TEACHER_MODAL_OPEN = 'ADD_SUBJECT_TEACHER_MODAL_OPEN'
-const ADD_SUBJECT_TEACHER_MODAL_CLOSE = 'ADD_SUBJECT_TEACHER_MODAL_CLOSE'
-//设置教研组长查询
-const SEARCH_LOADING_OPEN = 'SEARCH_LOADING_OPEN'
-const SEARCH_LOADING_CLOSE = 'SEARCH_LOADING_CLOSE'
+//重命名
+const RESET_NAME_MODAL_OPEN = 'RESET_NAME_MODAL_OPEN';
+const RESET_NAME_MODAL_CLOSE = 'RESET_NAME_MODAL_CLOSE'
 
 
 //操作
@@ -52,26 +40,30 @@ const showQueryAlert = (alertMsg)=> {
 const hideQueryAlert = () =>{
     return {type:CLOSE_QUERY_ALERT};
 };
-//编辑学科
-const changeSubjectModalOpen = () => {
-    return {type:CHANGE_SUBJECT_MODAL_OPEN};
+//查看
+const TeachingSolutionDetailsModalOpen = () => {
+    return {type:TEACHING_SOLUTION_DETAILS_MODAL_OPEN};
 }
-const changeSubjectModalClose = () => {
-    return {type:CHANGE_SUBJECT_MODAL_CLOSE};
+const TeachingSolutionDetailsModalClose = () => {
+    return {type:TEACHING_SOLUTION_DETAILS_MODAL_CLOSE};
 }
-//添加学科
-const addSubjectModalOpen = () => {
-    return {type:ADD_SUBJECT_MODAL_OPEN};
+
+//loading
+const ModalLoadingOpen = () => {
+    return {type:MODAL_LOADING_OPEN};
 }
-const addSubjectModalClose = () => {
-    return {type:ADD_SUBJECT_MODAL_CLOSE};
+const ModalLoadingClose = () => {
+    return {type:MODAL_LOADING_CLOSE};
 }
-const setSubjectTeacherModalOpen = () => {
-    return {type:ADD_SUBJECT_TEACHER_MODAL_OPEN};
+
+//重命名
+const ResetNameModalOpen = () => {
+    return {type:RESET_NAME_MODAL_OPEN};
 }
-const setSubjectTeacherModalClose = () => {
-    return {type:ADD_SUBJECT_TEACHER_MODAL_CLOSE};
+const ResetNameModalClose = () => {
+    return {type:RESET_NAME_MODAL_CLOSE};
 }
+
 
 export default {
     APP_LOADING_CLOSE,
@@ -82,30 +74,28 @@ export default {
     CLOSE_WARN_ALERT,
     SHOW_QUERY_ALERT,
     CLOSE_QUERY_ALERT,
-    SUBJECT_TABLE_LOADING_OPEN,
-    SUBJECT_TABLE_LOADING_CLOSE,
-    SUBJECT_DETAILS_MODAL_OPEN,
-    SUBJECT_DETAILS_MODAL_CLOSE,
-    CHANGE_SUBJECT_MODAL_OPEN,
-    CHANGE_SUBJECT_MODAL_CLOSE,
+    
     showErrorAlert,
     hideErrorAlert,
     showWarnAlert,
     hideWarnAlert,
     showQueryAlert,
     hideQueryAlert,
-    changeSubjectModalOpen,
-    changeSubjectModalClose,
-    addSubjectModalOpen,
-    addSubjectModalClose,
-    ADD_SUBJECT_MODAL_CLOSE,
-    ADD_SUBJECT_MODAL_OPEN,
+
+    TEACHING_SOLUTION_DETAILS_MODAL_OPEN,
+    TEACHING_SOLUTION_DETAILS_MODAL_CLOSE,
+    TeachingSolutionDetailsModalOpen,
+    TeachingSolutionDetailsModalClose,
+
+
     MODAL_LOADING_CLOSE,
     MODAL_LOADING_OPEN,
-    ADD_SUBJECT_TEACHER_MODAL_OPEN,
-    ADD_SUBJECT_TEACHER_MODAL_CLOSE,
-    setSubjectTeacherModalOpen,
-    setSubjectTeacherModalClose,
-    SEARCH_LOADING_OPEN,
-    SEARCH_LOADING_CLOSE
+    ModalLoadingOpen,
+    ModalLoadingClose,
+
+    ResetNameModalOpen,
+    ResetNameModalClose,
+    RESET_NAME_MODAL_CLOSE,
+    RESET_NAME_MODAL_OPEN
+   
 }

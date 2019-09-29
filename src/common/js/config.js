@@ -4,6 +4,8 @@ export default {
   logo:logo,
   footer:"蓝鸽科技 版权所有",
   CourseClassProxy:'http://192.168.2.9:8082/CourseClass/api',
+  UserAccountProxy:'http://192.168.2.248:8075/UserMgr/UserAccount',
+  TeachingSolutionProxy:'http://192.168.2.114:8090/SubjectResMgr/TeachingSolutionMgr/Teacher',
   Xproxy:'http://192.168.2.248:8075/UserMgr/UserInfoMgr',
   PowerProxy:'http://192.168.2.248:8075/UserMgr/PowerMgr',
   UserInfoProxy:'http://192.168.2.248:8075/UserMgr/UserInfoMgr',
