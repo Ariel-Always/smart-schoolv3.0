@@ -1,9 +1,11 @@
 import React from 'react'
+import CONFIG from '../../../common/js/config';
 import { connect } from 'react-redux';
 import { Alert, DetailsModal, DropDown, PagiNation, Search, Table, Button, CheckBox, CheckBoxGroup, Modal } from '../../../common/index'
 //import '../../../common/scss/_left_menu.scss'
 import { Link, } from 'react-router-dom';
 import '../../scss/Student.scss'
+import { postData, getData } from "../../../common/js/fetch";
 import { Tooltip, Input } from 'antd'
 import TipsContact from './TipsContact'
 import history from '../containers/history'
@@ -22,15 +24,15 @@ class Student extends React.Component {
             columns: [
                 {
                     title: '',
-                    dataIndex: 'key',
+                    dataIndex: 'handle',
                     width: 70,
                     key: 'key',
                     align: 'left',
-                    render: key => {
+                    render: handle => {
                         return (
                             <div className='registerTime-content'>
-                                <CheckBox value={key} onChange={this.onCheckChange}></CheckBox>
-                                <span className='key-content'>{key + 1 >= 10 ? key + 1 : '0' + (key + 1)}</span>
+                                <CheckBox value={handle.key} onChange={this.onCheckChange}></CheckBox>
+                                <span className='key-content'>{handle.OrderNo + 1 >= 10 ? handle.OrderNo + 1 : '0' + (handle.OrderNo + 1)}</span>
                             </div>
                         )
                     }
@@ -45,7 +47,7 @@ class Student extends React.Component {
                     render: arr => {
                         return (
                             <div className='name-content'>
-                                <span className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.key)}>{arr.Name}</span><br />
+                                <span className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.UserID)}>{arr.Name}</span><br />
                                 <span className='name-UserID'>{'(' + arr.UserID + ')'}</span>
                             </div>
                         )
@@ -108,7 +110,7 @@ class Student extends React.Component {
                     }
                 }
             ],
-            pagination: { total: 50 },
+            pagination: 1,
             loading: false,
             selectedAll: false,
             checkedList: [],
@@ -126,8 +128,10 @@ class Student extends React.Component {
             defaultPwd: 888888,
             onClickKey: 0,
             userMsgKey: 0,
-            firstSelect:{ value: 0, title: '全部年级' },
-            secondSelect:{ value: 0, title: '全部班级' },
+            keyword: '',
+            CancelBtnShow: 'n',
+            firstSelect: { value: 0, title: '全部年级' },
+            secondSelect: { value: 0, title: '全部班级' },
             data: [{
                 key: 1,
                 UserName: { key: '01', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
@@ -199,15 +203,19 @@ class Student extends React.Component {
             dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10&gradeID=' + e.value));
             this.setState({
                 DropMenuShow: true,
-                firstSelect:e,
-                searchValue:''
+                firstSelect: e,
+                searchValue: '',
+                pagination: 1,
+                CancelBtnShow: 'n'
             })
         } else {
             dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
             this.setState({
                 DropMenuShow: false,
-                secondSelect:{ value: 0, title: '全部班级' },
-                searchValue:''
+                secondSelect: { value: 0, title: '全部班级' },
+                searchValue: '',
+                pagination: 1,
+                CancelBtnShow: 'n'
             })
         }
 
@@ -216,18 +224,24 @@ class Student extends React.Component {
     StudentDropMenuSecond = (e) => {
         const { dispatch, DataState } = this.props;
         this.setState({
-            secondSelect:e,
-            searchValue:''
+            secondSelect: e,
+            searchValue: '',
+            pagination: 1,
+            CancelBtnShow: 'n'
         })
-        if(e.value!==0)
-        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10&gradeID=' + this.state.firstSelect.value+'&classID='+e.value));
+        if (e.value !== 0)
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10&gradeID=' + this.state.firstSelect.value + '&classID=' + e.value));
         else
-        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10&gradeID=' + this.state.firstSelect.value));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10&gradeID=' + this.state.firstSelect.value));
     }
-
+    //搜索
     StudentSearch = (e) => {
-        const {dispatch} = this.props;
-        if(e.value===''){
+        const { dispatch } = this.props;
+        this.setState({
+            keyword: e.value,
+            CancelBtnShow: 'y'
+        })
+        if (e.value === '') {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-warn',
                 title: "关键词不能为空",
@@ -235,9 +249,16 @@ class Student extends React.Component {
                 cancel: this.onAlertWarnClose.bind(this),
                 close: this.onAlertWarnClose.bind(this)
             }));
-        }else{
-        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10&keyword=' + e.value+'&gradeID=' + this.state.firstSelect.value+'&classID='+this.state.secondSelect.value));
+        } else {
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10&keyword=' + e.value + '&gradeID=' + this.state.firstSelect.value + '&classID=' + this.state.secondSelect.value));
         }
+    }
+
+    //搜索change
+    onChangeSearch = (e) => {
+        this.setState({
+            searchValue: e.target.value
+        })
     }
 
     onSelectChange = (e) => {
@@ -316,7 +337,7 @@ class Student extends React.Component {
                 cancel: this.onAlertWarnClose.bind(this),
                 close: this.onAlertWarnClose.bind(this)
             }));
-
+            return;
         } else {
 
             dispatch(actions.UpUIState.showErrorAlert({
@@ -328,24 +349,58 @@ class Student extends React.Component {
             }));
         }
     }
+    //table点击重置密码
     onChangePwdClick = (key) => {
         const { dispatch, DataState } = this.props;
         let data = this.state.StudentAccountData;
         let pwd = 888888;
+        console.log(key)
         this.setState({
             ChangePwdMadalVisible: true,
             onClickKey: key
         })
-
-
-
     }
+    // 重置密码ok
     onPwdchangeOk = (pwd) => {
-        this.setState({
-            ChangePwdMadalVisible: false,
-            defaultPwd: 888888
-        })
+        const { dispatch, DataState } = this.props;
+        let url = '/ResetPwd';
+        let UserMsg = DataState.LoginUser;
+        if (this.state.defaultPwd === '') {
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-query',
+                title: "密码不能为空",
+                ok: this.onAlertQueryClose.bind(this),
+                cancel: this.onAlertQueryClose.bind(this),
+                close: this.onAlertQueryClose.bind(this)
+            }));
+            return;
+        } else {
+            postData(CONFIG.UserAccountProxy + url,
+                {
+                    userID: DataState.GradeStudentPreview.newList[this.state.onClickKey].Others.UserID,
+                    userType: 2,
+                    newPwd: this.state.defaultPwd
+                },
+                2).then(res => {
+                    if (res.Status === '401') {
+                        console.log('错误码：' + res.Status)
+                    }
+                    return res.json()
+                }).then(json => {
+                    if (json.Status === 400) {
+                        console.log(json.Status)
+                    } else if (json.Status === 200) {
+                        this.setState({
+                            ChangePwdMadalVisible: false,
+                            defaultPwd: 888888
+                        })
+                    }
+
+                });
+        }
+
     }
+    // 重置密码close
     onPwdchangeClose = () => {
         this.setState({
             ChangePwdMadalVisible: false,
@@ -371,19 +426,87 @@ class Student extends React.Component {
         dispatch(actions.UpUIState.hideErrorAlert());
     }
     onAlertQueryOk = (pwd) => {
-        const { dispatch } = this.props;
+        let url = '/ResetPwd';
+        const { dispatch, DataState } = this.props;
         dispatch(actions.UpUIState.hideErrorAlert());
-        this.setState({
-            checkedList: [],
-            checkAll: false
+        let userIDs = this.state.checkedList.map((child, index) => {
+            return DataState.GradeStudentPreview.newList[child].Others.UserID
         })
+        postData(CONFIG.UserAccountProxy + url,
+            {
+                userID: userIDs.join(),
+                userType: 2,
+                newPwd: this.state.defaultPwd
+            },
+            2).then(res => {
+                if (res.Status === '401') {
+                    console.log('错误码：' + res.Status)
+                }
+                return res.json()
+            }).then(json => {
+                if (json.Status === 400) {
+                    console.log(json.Status)
+                } else if (json.Status === 200) {
+                    this.setState({
+                        checkedList: [],
+                        checkAll: false
+                    })
+                }
+
+            });
+
     }
-    onPagiNationChange = (e) => {
+    //分页
+    onPagiNationChange = (value) => {
+        const { dispatch } = this.props;
+        this.setState({
+            pagination: value
+        })
+        let firstSelect = '';
+        let secondSelect = '';
+        let keyword = ''
+        if (this.state.firstSelect.value !== 0) {
+            firstSelect = '&gradeID=' + this.state.firstSelect.value
+        }
+        if (this.state.secondSelect.value !== 0) {
+            secondSelect = '&classID=' + this.state.secondSelect.value
+        }
+        if (this.state.keyword !== '') {
+            keyword = '&keyword=' + this.state.keyword
+        }
+
+        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=' + (--value) + '&PageSize=10' + keyword + firstSelect + secondSelect));
+
     }
-    onUserNameClick = (key) => {
+
+    //table改变，进行排序操作
+    onTableChange = (a, b, sorter) => {
+        const { DataState, dispatch } = this.props;
+        let firstSelect = '';
+        let secondSelect = '';
+        let keyword = ''
+        if (this.state.firstSelect.value !== 0) {
+            firstSelect = '&gradeID=' + this.state.firstSelect.value
+        }
+        if (this.state.secondSelect.value !== 0) {
+            secondSelect = '&classID=' + this.state.secondSelect.value
+        }
+        if (this.state.keyword !== '') {
+            keyword = '&keyword=' + this.state.keyword
+        }
+        console.log(sorter)
+        if (sorter && (sorter.columnKey === 'UserName' || sorter.columnKey === 'ShortName')) {
+            let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&sortFiled=' + sorter.columnKey + '&PageIndex=0&PageSize=10&' + sortType + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + keyword + firstSelect + secondSelect));
+        }
+    }
+    onUserNameClick = (UserID) => {
+        const { dispatch } = this.props;
+        dispatch(actions.UpDataState.getUserMsg('/GetUserDetail?userid=' + UserID))
+
         this.setState({
             StudentDetailsMsgModalVisible: true,
-            userMsgKey: key
+
         })
     }
     StudentDetailsMsgModalOk = () => {
@@ -470,7 +593,9 @@ class Student extends React.Component {
                             ></DropDown>
                             <Search placeHolder='请输入关键字搜索...'
                                 onClickSearch={this.StudentSearch}
-                                value= {this.state.searchValue}
+                                Value={this.state.searchValue}
+                                onChange={this.onChangeSearch.bind(this)}
+                                CancelBtnShow={this.state.CancelBtnShow}
                                 height={30}
                             ></Search>
                         </div>
@@ -482,17 +607,20 @@ class Student extends React.Component {
                                         columns={this.state.columns}
                                         pagination={false}
                                         loading={this.state.loading}
+                                        onChange={this.onTableChange.bind(this)}
                                         dataSource={DataState.GradeStudentPreview.newList} >
 
                                     </Table>
                                 </CheckBoxGroup>
-                                <CheckBox className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
+                                <CheckBox style={{display:DataState.GradeStudentPreview.Total===0?'none':'inline-block'}} className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
                                     全选
                                     <Button onClick={this.onChangePwdAllClick} className='changePwdAll' color='blue'>批量重置密码</Button>
                                 </CheckBox>
                                 <div className='pagination-box'>
                                     <PagiNation
                                         showQuickJumper
+                                        current={this.state.pagination}
+                                        hideOnSinglepage={true}
                                         total={DataState.GradeStudentPreview.Total}
                                         onChange={this.onPagiNationChange}
                                     ></PagiNation>
@@ -550,13 +678,10 @@ class Student extends React.Component {
                     visible={this.state.StudentDetailsMsgModalVisible}
                     onOk={this.StudentDetailsMsgModalOk}
                     onCancel={this.StudentDetailsMsgModalCancel}
-                    data={data}
+                    data={DataState.GetUserMsg}
                     type='student'
                 >
-                    <div className='modal-top'>
 
-                    </div>
-                    <div className='modal-content'></div>
                 </DetailsModal>
                 {/* <AntdModal
                     ref='changePwdMadal'
@@ -576,7 +701,7 @@ class Student extends React.Component {
                     type={'btn-query'}
                     abstract={<div className='alert-pwd'><span className='alert-pwd-tips'>新密码：</span><Input size='small' onChange={this.onPwdchange.bind(this)} style={{ width: 120 + 'px' }} value={this.state.defaultPwd}></Input></div>}
                     title={this.state.ChangePwdMadalVisible ? (<p className='alert-Title'>确定重置<span className='alert-Title-name'>{DataState.GradeStudentPreview.newList[this.state.onClickKey].UserName.Name}</span><span className='alert-Title-id'>({DataState.GradeStudentPreview.newList[this.state.onClickKey].UserName.UserID})</span> 的密码？</p>) : ''}
-                    onOk={this.onPwdchangeOk}
+                    onOk={this.onPwdchangeOk.bind(this)}
                     onCancel={this.onPwdchangeClose}
                     onClose={this.onPwdchangeClose}
                 ></Alert>

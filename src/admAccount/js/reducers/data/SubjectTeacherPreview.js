@@ -1,23 +1,9 @@
 import UpDataState from '../../actions/UpDataState';
 
-
-
-const GradeStudentPreview = (state={keyList:[],newList:[],Total:0},actions)=>{
-    switch (actions.type) {
-        case UpDataState.GET_GRADE_STUDENT_PREVIEW:
-            let {Total,...list} = actions.data;
-
-            let {newList,keyList }= handleData(list,actions.pageIndex,actions.pageSize);
-            
-            return Object.assign({},state,{Total,newList,keyList});
-        default:
-            return state;
-    }
-} ;
-
-function handleData(data,pageIndex,pageSize){
+function handleData(data,pageIndex,pageSize) {
+    const {Total,List} = data;
     let keyList = [];
-    let newList = data.List.map((child,index) => {
+    let newList = List.map((child,index) => {
         let list = {}
         list.key = index;
         list.OrderNo=index+pageIndex*pageSize;
@@ -48,7 +34,19 @@ function handleData(data,pageIndex,pageSize){
         return list
 
     })
-    return {newList,keyList};
+    return {Total:Total,newList,keyList};
 }
+const SubjectTeacherPreview = (state={Total:0,newList:[],keyList:[]},actions)=>{
+    let returnData = {grades:null};
+    switch (actions.type) {
+        case UpDataState.GET_SUBJECT_TEACHER_PREVIEW:
+            returnData = handleData(actions.data,actions.pageIndex,actions.pageSize);
+            
+            return Object.assign({},state,{...returnData});
+        default:
+            return state;
+    }
+} ;
 
-export default  GradeStudentPreview;
+
+export default  SubjectTeacherPreview;

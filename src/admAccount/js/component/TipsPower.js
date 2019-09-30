@@ -1,5 +1,5 @@
 import React from 'react';
-
+import {Empty} from '../../../common'
 import '../../scss/TipsPower.scss';
 class TipsPower extends React.Component {
     constructor(props) {
@@ -13,12 +13,12 @@ class TipsPower extends React.Component {
     render() {
         const PowerList = this.props.data.Powers.map((power, index) => {
             return (
-                <Power key={index} power={power}></Power>
+                <Power key={index+power.value} power={power}></Power>
             )
         })
         return (
             <React.Fragment> 
-                    {PowerList}
+                    {PowerList.length?PowerList:<Empty style={{paddingBottom:20+'px',paddingTop:10+'px'}} type='4' title='暂无权限'></Empty>}
             </React.Fragment>
         )
     }
@@ -28,11 +28,11 @@ function Power(props) {
     const data = props.power;
     const dataList = data.PowerChild.map((child, index) => {
         return (
-            <span className='powerText' key={child.value}>{child.PowerChildName}<span className='text-after'>，</span></span>
+            <span className='powerText' key={child.value+index}>{child.PowerChildName}<span className='text-after'>，</span></span>
         )
     })
     return (
-        <div className='tipsPower-Box'>
+        <div key={props.power.value} className='tipsPower-Box'>
             <div className='box-top'>
                 <span className='top-tip'>{data.PowerName+':'}</span>
             </div>

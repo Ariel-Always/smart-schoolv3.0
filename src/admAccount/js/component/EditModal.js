@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import '../../scss/EditModal.scss'
 import { Input } from 'antd'
 import { Radio, RadioGroup, DropDown, CheckBox, CheckBoxGroup, Tips } from '../../../common/index'
+import actions from '../actions';
 
 
 class EditModal extends React.Component {
@@ -32,12 +33,12 @@ class EditModal extends React.Component {
     }
     componentWillMount() {
         const { DataState } = this.props;
-        console.log(this.state.data)
+        // console.log(this.state.data)
 
         if (this.state.UserKey === 'change') {
             this.setState({
-                UserIDChange: this.state.data.Name.UserID,
-                defaultUserName: this.state.data.Name.Name
+                UserIDChange: this.state.data.UserName.UserID,
+                defaultUserName: this.state.data.UserName.Name
             })
             this.state.PowerList.map((power, index) => {
                 let checkAll = this.state.checkAll;
@@ -52,14 +53,16 @@ class EditModal extends React.Component {
                 })
 
                 plainOptionsArr[index] = plainOptions;
-                console.log(plainOptionsArr, index)
+                // console.log(plainOptionsArr, index)
+                let Powers = this.props.data.Power.Powers[index]?this.props.data.Power.Powers[index].PowerChild:[]
+                checkAll[index] = this.props.data.Power.Powers[index]?this.props.data.Power.Powers[index].PowerChild.length !== 0 ? true : false:false;
 
-                checkAll[index] = this.state.data.Power.Powers[index].PowerChild.length !== 0 ? true : false
-
-                this.state.data.Power.Powers[index].PowerChild.map((child, key) => {
+                Powers.map((child, key) => {
                     checkedList[key] = child.value;
                 })
-                indeterminate[index] = this.state.plainOptionsArr[index].length === checkedList.length || checkedList === [] ? false : true;;
+                
+                indeterminate[index] = plainOptionsArr[index].length === checkedList.length || checkedList.length === 0 ? false : true;
+                console.log(plainOptionsArr,checkedList,indeterminate)
                 checkedListArr[index] = checkedList;
                 this.setState({
                     checkAll: checkAll,
@@ -110,7 +113,7 @@ class EditModal extends React.Component {
                 })
 
                 plainOptionsArr[index] = plainOptions;
-                console.log(plainOptionsArr, index)
+                // console.log(plainOptionsArr, index)
 
                 checkAll[index] = false;
 
@@ -157,7 +160,7 @@ class EditModal extends React.Component {
     }
     componentWillReceiveProps() {
         //const { DataState } = this.props;
-        console.log(this.props.data)
+        // console.log(this.props.data)
         let checkedListArr = [];
         let PowerChildLen = [];
         let indeterminate = [];
@@ -165,8 +168,8 @@ class EditModal extends React.Component {
         let plainOptionsArr = [];
         if (this.state.UserKey === 'change') {
             this.setState({
-                UserIDChange: this.props.data.Name.UserID,
-                defaultUserName: this.props.data.Name.Name
+                UserIDChange: this.props.data.UserName.UserID,
+                defaultUserName: this.props.data.UserName.Name
             })
             this.state.PowerList.map((power, index) => {
                 
@@ -182,18 +185,18 @@ class EditModal extends React.Component {
                 })
 
                 plainOptionsArr[index] = plainOptions;
-                console.log(plainOptionsArr, index)
+                // console.log(plainOptionsArr, index)
+                let Powers = this.props.data.Power.Powers[index]?this.props.data.Power.Powers[index].PowerChild:[]
+                checkAll[index] = this.props.data.Power.Powers[index]?this.props.data.Power.Powers[index].PowerChild.length !== 0 ? true : false:false;
 
-                checkAll[index] = this.props.data.Power.Powers[index].PowerChild.length !== 0 ? true : false
-
-                this.props.data.Power.Powers[index].PowerChild.map((child, key) => {
+                Powers.map((child, key) => {
                     checkedList[key] = child.value;
                 })
                 
                 PowerChildLen[index] = checkedList ? checkedList.length : 0;
                 indeterminate[index] = this.state.plainOptionsArr[index].length === checkedList.length || checkedList === [] ? false : true;;
                 checkedListArr[index] = checkedList;
-                console.log(checkedListArr)
+                //console.log(checkedListArr)
                 this.setState({
                     checkAll: checkAll,
                     indeterminate: indeterminate,
@@ -246,7 +249,7 @@ class EditModal extends React.Component {
                 })
 
                 plainOptionsArr[index] = plainOptions;
-                console.log(plainOptionsArr, index)
+                // console.log(plainOptionsArr, index)
 
                 checkAll[index] = false;
 
@@ -292,18 +295,23 @@ class EditModal extends React.Component {
         }
     }
     onEditIDChange = (e) => {
-
+        const {dispatch} = this.props
         this.setState({
             UserIDChange: e.target.value
         })
         //用户ID（工号/学号）检测  
         //长度是1~30位，只能由字母与数字组成。
         let Test = /^([a-zA-Z0-9]{1,24})$/.test(e.target.value)
+        // console.log(Test,e.target.value)
         if (!Test) {
             this.setState({
                 UserIDTipsVisible: true
             })
         } else {
+            dispatch(actions.UpDataState.setAdminPreview({
+                isChange:true,
+                UserID:e.target.value
+            }))
             this.setState({
                 UserIDTipsVisible: false
             })
@@ -312,7 +320,7 @@ class EditModal extends React.Component {
 
     }
     onEditNameChange = (e) => {
-        console.log(e.target.value)
+        const {dispatch} = this.props        
         //用户姓名检测
         //用户姓名由1-20位的汉字、字母、数字、下划线组成。
         let value = e.target.value;
@@ -327,6 +335,10 @@ class EditModal extends React.Component {
                 UserNameTipsVisible: true
             })
         } else {
+            dispatch(actions.UpDataState.setAdminPreview({
+                isChange:true,
+                UserName:value
+            }))
             this.setState({
                 UserNameTipsVisible: false
             })
@@ -336,7 +348,8 @@ class EditModal extends React.Component {
 
     // 新
     onCheckAllChange = (index, e) => {
-        console.log(e, index);
+        const {dispatch} = this.props        
+        
         let checkedListArr = this.state.checkedListArr;
         let indeterminate = this.state.indeterminate;
         let checkAll = this.state.checkAll;
@@ -345,6 +358,11 @@ class EditModal extends React.Component {
         indeterminate[index] = false;
         checkAll[index] = e.target.checked;
         PowerChildLen[index] = e.target.checked ? this.state.plainOptionsArr[index].length : 0;
+        dispatch(actions.UpDataState.setAdminPreview({
+            isChange:true,
+            ModuleIDs:checkedListArr
+        }))
+        console.log(indeterminate, checkedListArr,checkAll);
         this.setState({
             checkedListArr: checkedListArr,
             indeterminate: indeterminate,
@@ -386,7 +404,7 @@ class EditModal extends React.Component {
                         </span>
                         <div className='culonm-2'>
 
-                            <Tips className='tips-edit' getPopupContainer={() => document.getElementById('123')} visible={this.state.UserIDTipsVisible} title={'工号' + this.state.UserIDTipsTitle} >
+                            <Tips overlayClassName='tips-edit'  visible={this.state.UserIDTipsVisible} title={'工号' + this.state.UserIDTipsTitle} >
                                 <Input maxLength={24} id="123" style={{ display: 'block' }} className='UserName-input'
                                     type='text'
                                     name='EditID'
@@ -400,7 +418,7 @@ class EditModal extends React.Component {
                             账号名称：
                         </span>
                         <div className='culonm-2'>
-                            <Tips visible={this.state.UserNameTipsVisible} title={this.state.UserNameTipsTitle} >
+                            <Tips overlayClassName={'tips-edit'} visible={this.state.UserNameTipsVisible} title={this.state.UserNameTipsTitle} >
                                 <Input className='UserName-input'
                                     maxLength={20}
                                     type='text'
@@ -443,6 +461,7 @@ class EditModal extends React.Component {
                                 //     checkedListArr: checkedListArr,
                                 //     plainOptionsArr:plainOptionsArr
                                 // })
+                                // console.log(this.state.checkedListArr[index],this.state.PowerList[index])
                                 return (
                                     <div key={this.state.PowerList[index].value}>
                                         <CheckBox
@@ -452,7 +471,7 @@ class EditModal extends React.Component {
                                             checked={this.state.checkAll[index]}
                                         >
                                             {power.PowerName}
-                                            <span className='checkTips'>[已选择<span style={{ color: 'red' }}>{this.state.PowerChildLen[index]}</span>项]</span>
+                                            <span className='checkTips'>[已选择<span style={{ color: 'red' }}>{this.state.PowerChildLen[index]?this.state.PowerChildLen[index]:0}</span>项]</span>
                                         </CheckBox>
                                         <CheckBoxGroup
 
@@ -465,7 +484,7 @@ class EditModal extends React.Component {
                                                     <CheckBox
                                                         className='checkChild'
                                                         value={child.value}
-                                                        key={child.value}
+                                                        key={child.value+index}
                                                     >{child.PowerChildName}</CheckBox>
                                                 )
                                             })}

@@ -44,12 +44,12 @@ class App extends Component {
                         icon: 'menu33',
                         onTitleClick: this.handleClick,
                     },
-                    {
-                        key: 'Leader',
-                        title: '领导账号管理',
-                        icon: 'menu35',
-                        onTitleClick: this.handleClick,
-                    },
+                    // {
+                    //     key: 'Leader',
+                    //     title: '领导账号管理',
+                    //     icon: 'menu35',
+                    //     onTitleClick: this.handleClick,
+                    // },
                     {
                         key: 'Admin',
                         title: '管理员账号管理',
@@ -90,7 +90,7 @@ class App extends Component {
             let route = history.location.pathname;
 
             // 获取接口数据
-            // this.requestData(route)
+            this.requestData(route)
 
             this.handleMenu()
 
@@ -147,14 +147,14 @@ class App extends Component {
 
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
             if (!this.props.DataState.SubjectTeacherMsg.returnData)
-                dispatch(actions.UpDataState.getSubjectTeacherMsg('/ArchivesTeacher_DropDownMenu'));
-            dispatch(actions.UpDataState.getSubjectTeacherPreview('/ArchivesTeacher?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
+                dispatch(actions.UpDataState.getSubjectTeacherMsg('/GetSubject'));
+            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
         } else if (handleRoute === 'Leader') {
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-        } else if (handleRoute === 'Leader') {
+        }  else if (handleRoute === 'Admin') {
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-        } else if (handleRoute === 'Admin') {
-            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+            dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
+
         } else {
             history.push('/')
         }

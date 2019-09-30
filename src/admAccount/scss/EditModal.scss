@@ -53,6 +53,7 @@
         vertical-align: middle;
         position: relative;
 
+        
         .UserID-text {
           line-height: 40px;
           text-align: left;
@@ -124,4 +125,14 @@
       }
     }
   }
+}
+
+
+.tips-edit  .ant-tooltip-inner{
+  background: red;
+  color:#fff;
+}
+.tips-edit .ant-tooltip-arrow::before{
+  background: red;
+
 }

@@ -23,14 +23,15 @@ class Admin extends React.Component {
             columns: [
                 {
                     title: '',
-                    dataIndex: 'key',
+                    dataIndex: 'handle',
+                    width: 70,
                     key: 'key',
                     align: 'left',
-                    render: key => {
+                    render: handle => {
                         return (
                             <div className='registerTime-content'>
-                                <CheckBox value={key} onChange={this.onCheckChange}></CheckBox>
-                                <span className='key-content'>{key + 1 >= 10 ? key + 1 : '0' + (key + 1)}</span>
+                                <CheckBox value={handle.key} onChange={this.onCheckChange}></CheckBox>
+                                <span className='key-content'>{handle.OrderNo + 1 >= 10 ? handle.OrderNo + 1 : '0' + (handle.OrderNo + 1)}</span>
                             </div>
                         )
                     }
@@ -38,13 +39,14 @@ class Admin extends React.Component {
                 {
                     title: '姓名',
                     align: 'center',
-                    key: 'Name',
-                    dataIndex: 'Name',
+                    width: 130,
+                    key: 'UserName',
+                    dataIndex: 'UserName',
                     sorter: true,
                     render: arr => {
                         return (
                             <div className='name-content'>
-                                <span className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.key)}>{arr.Name}</span><br />
+                                <span className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.UserID)}>{arr.Name}</span><br />
                                 <span className='name-UserID'>{'(' + arr.UserID + ')'}</span>
                             </div>
                         )
@@ -53,18 +55,20 @@ class Admin extends React.Component {
                 },
                 {
                     title: '用户名',
+                    width: 120,
                     align: 'center',
-                    dataIndex: 'UserName',
-                    key: 'UserName',
+                    dataIndex: 'ShortName',
+                    key: 'ShortName',
                     sorter: true,
-                    render: UserName => {
+                    render: ShortName => {
                         return (
-                            <span className='UserName'>{UserName}</span>
+                            <span className='UserName'>{ShortName}</span>
                         )
                     }
                 },
                 {
                     title: '访问权限',
+                    width: 120,
                     align: 'center',
                     dataIndex: 'Power',
                     key: 'Power',
@@ -78,6 +82,7 @@ class Admin extends React.Component {
                 },
                 {
                     title: '联系方式',
+                    width: 120,
                     align: 'center',
                     key: 'UserContact',
                     dataIndex: 'UserContact',
@@ -92,6 +97,7 @@ class Admin extends React.Component {
                 {
                     title: '操作',
                     align: 'center',
+                    width: 300,
                     key: 'handle',
                     dataIndex: 'key',
                     render: (key) => {
@@ -1484,7 +1490,7 @@ class Admin extends React.Component {
                                         columns={this.state.columns}
                                         pagination={false}
                                         loading={this.state.loading}
-                                        dataSource={this.state.AdminAccountData} >
+                                        dataSource={DataState.AdminPreview.newList} >
 
                                     </Table>
                                 </CheckBoxGroup>
@@ -1540,25 +1546,25 @@ class Admin extends React.Component {
                     ref='handleAdminMadal'
                     bodyStyle={{ padding: 0 }}
                     type='1'
-                    title={this.state.userKey==='add'?'添加学生':'编辑学生'}
+                    title={'添加管理员'}
                     visible={this.state.addAdminModalVisible}
                     onOk={this.handleAddAdminModalOk}
                     onCancel={this.handleAddAdminModalCancel}
                     
                 >
-                    <EditModal type='Admin' userKey={this.state.userKey} data = {this.state.AdminAccountData[this.state.AdminChangeKey]} PowerList = {this.state.PowerList}></EditModal>
+                    <EditModal type='Admin' userKey={this.state.userKey} data = {DataState.AdminPreview.newList[this.state.AdminChangeKey]} PowerList = {DataState.AdminPreview.PowerList}></EditModal>
                 </Modal>
                 <Modal
                     ref='handleAdminMadal'
                     bodyStyle={{ padding: 0 }}
                     type='1'
-                    title={this.state.userKey==='add'?'添加学生':'编辑学生'}
+                    title={'编辑管理员'}
                     visible={this.state.changeAdminModalVisible}
                     onOk={this.handleChangeAdminModalOk}
                     onCancel={this.handleChangeAdminModalCancel}
                     
                 >
-                    <EditModal type='Admin' userKey={this.state.userKey} data = {this.state.AdminAccountData[this.state.AdminChangeKey]} PowerList = {this.state.PowerList}></EditModal>
+                    {this.state.changeAdminModalVisible?(<EditModal type='Admin' userKey={this.state.userKey} data = {DataState.AdminPreview.newList[this.state.AdminChangeKey]} PowerList = {DataState.AdminPreview.PowerList}></EditModal>):''}
                 </Modal>
                 <DetailsModal
                     ref='AdminDetailsMsgModal'
@@ -1590,7 +1596,7 @@ class Admin extends React.Component {
                 <Alert show={this.state.ChangePwdMadalVisible}
                     type={'btn-query'}
                     abstract={<div className='alert-pwd'><span className='alert-pwd-tips'>新密码：</span><Input size='small' onChange={this.onPwdchange.bind(this)} style={{ width: 120 + 'px' }} value={this.state.defaultPwd}></Input></div>}
-                    title={<p className='alert-Title'>确定重置<span className='alert-Title-name'>{this.state.AdminAccountData[this.state.onClickKey].Name.Name}</span><span className='alert-Title-id'>({this.state.AdminAccountData[this.state.onClickKey].Name.UserID})</span> 的密码？</p>}
+                    title={this.state.ChangePwdMadalVisible?(<p className='alert-Title'>确定重置<span className='alert-Title-name'>{DataState.AdminPreview.newList[this.state.onClickKey].UserName.Name}</span><span className='alert-Title-id'>({DataState.AdminPreview.newList[this.state.onClickKey].UserName.UserID})</span> 的密码？</p>):''}
                     onOk={this.onPwdchangeOk}
                     onCancel={this.onPwdchangeClose}
                     onClose={this.onPwdchangeClose}
