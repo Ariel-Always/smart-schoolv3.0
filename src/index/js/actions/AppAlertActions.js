@@ -86,6 +86,35 @@ const alertWarn = ({title,cancel,ok,close}) => {
 };
 
 
+const alertTips = ({title,cancel,ok,close}) => {
+
+    return dispatch => {
+
+        dispatch({
+
+            type:APP_ALERT_SHOW,
+
+            data:{
+
+                type:"btn-tips",
+
+                title:title,
+
+                cancel:(cancel?cancel():closeAlert(dispatch)),
+
+                close:(close?close():closeAlert(dispatch)),
+
+                ok:(ok?ok():closeAlert(dispatch))
+
+            }
+
+        });
+
+    }
+
+};
+
+
 
 const closeAlert = (dispatch) => {
 
@@ -103,6 +132,8 @@ export default {
 
     alertError,
 
-    alertWarn
+    alertWarn,
+
+    alertTips
 
 }

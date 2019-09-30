@@ -6,6 +6,8 @@ import AppAlertActions from "../AppAlertActions";
 
 import AppLoadingActions from '../AppLoadingActions';
 
+import CONFIG from "../../../../common/js/config";
+
 
 const MODULES_INFO_UPDATE = 'MODULES_INFO_UPDATE';
 
@@ -39,7 +41,7 @@ const PageInit = () => {
 
 const getManagerDesk = async ({UserID,dispatch}) => {
 
-    let res = await Method.getGetData(`/SubjectInfoMgr/DeskTop/Admin/GetDeskTop?UserID=${UserID}`,2,'http://47.244.238.75:7300/mock/5d7e0519fdd0dc0457886a3c/webCloudDev');
+    let res = await Method.getGetData(`/SubjectInfoMgr/DeskTop/Admin/GetDeskTop?UserID=${UserID}`,2,CONFIG.DeskTopProxy);
 
     if (res.StatusCode === 200){
 

@@ -312,11 +312,11 @@ const teacherDropChange = (info) => {
 
                 }else{
 
-                    let  subject =  json.Data.ItemSubject[0];
+                    let  subject =  json.Data.ItemSubject[0]?json.Data.ItemSubject[0]:{SubjectID:"none",SubjectName:"未设置"};
 
                     let subjectObj = { id:subject.SubjectID,name:subject.SubjectName };
 
-                    let classList = json.Data.ItemClass.map(item => {
+                    let classList = json.Data.ItemClass.length>0?json.Data.ItemClass.map(item => {
 
                         return {
 
@@ -326,7 +326,7 @@ const teacherDropChange = (info) => {
 
                         }
 
-                    });
+                    }):[];
 
                     dispatch({type:REPLACE_SHCEDULE_CLASS_LIST_UPDATE,data:classList});
 

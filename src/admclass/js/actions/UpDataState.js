@@ -8,6 +8,8 @@ import AppAlertActions from './AppAlertActions';
 
 import PaginationActions from './PaginationActions';
 
+import CONFIG from '../../../common/js/config'
+
 // const CONFIG = {proxy:"http://47.244.238.75:7300/mock/5d7e0519fdd0dc0457886a3c/webCloudDev"};
 
 
@@ -755,9 +757,9 @@ const getLogin = async (dispatch) => {
 
 const getGradeClass = async (SchoolID,dispatch) => {
 
-    let res = await Method.getGetData(`/UserMgr/UserInfoMgr/GetGradeClassTree?SchoolID=${SchoolID}`,2,'http://192.168.2.248:8066');
+    let res = await Method.getGetData(`/UserMgr/UserInfoMgr/GetGradeClassTree?SchoolID=${SchoolID}`,2,CONFIG.AdmClassProxy);
 
-    if (res.StatusCode === 200){
+    if (res.Status === 200){
 
         return res.Data;
 
@@ -776,9 +778,9 @@ const getGradeClass = async (SchoolID,dispatch) => {
 
 const getSchoolData = async (SchoolID,dispatch) => {
 
-    let res = await Method.getGetData(`/UserMgr/ClassMgr/GetSummary?SchoolID=${SchoolID}`,2,'http://192.168.2.248:8066');
+    let res = await Method.getGetData(`/UserMgr/ClassMgr/GetSummary?SchoolID=${SchoolID}`,2,CONFIG.AdmClassProxy);
 
-    if (res.StatusCode === 200){
+    if (res.Status === 200){
 
         return res.Data;
 
@@ -796,9 +798,9 @@ const getSchoolData = async (SchoolID,dispatch) => {
 const getClassList = async ({SchoolID,PageIndex,PageSize,dispatch,Keyword,GradeID}) => {
 
 
-    let res = await Method.getGetData(`/UserMgr/ClassMgr/GetGradeSummary?SchoolID=${SchoolID}&PageIndex=${PageIndex}&PageSize=${PageSize}${Keyword?`&Keyword=${Keyword}`:''}${GradeID?`&GradeID=${GradeID}`:''}`,2,'http://192.168.2.248:8066');
+    let res = await Method.getGetData(`/UserMgr/ClassMgr/GetGradeSummary?SchoolID=${SchoolID}&PageIndex=${PageIndex}&PageSize=${PageSize}${Keyword?`&Keyword=${Keyword}`:''}${GradeID?`&GradeID=${GradeID}`:''}`,2,CONFIG.AdmClassProxy);
 
-    if (res.StatusCode === 200){
+    if (res.Status === 200){
 
         return res.Data;
 
@@ -817,9 +819,9 @@ const getClassList = async ({SchoolID,PageIndex,PageSize,dispatch,Keyword,GradeI
 
 const getTeachers = async ({ClassID,dispatch}) => {
 
-    let res = await Method.getGetData(`/UserMgr/ClassMgr/GetClassTeacher?ClassID=${ClassID}`,2,'http://192.168.2.248:8066');
+    let res = await Method.getGetData(`/UserMgr/ClassMgr/GetClassTeacher?ClassID=${ClassID}`,2,CONFIG.AdmClassProxy);
 
-    if (res.StatusCode === 200){
+    if (res.Status === 200){
 
         return res.Data;
 
@@ -838,9 +840,9 @@ const getTeachers = async ({ClassID,dispatch}) => {
 
 const getStudents = async ({ClassID,dispatch,Keyword,PageIndex,PageSize}) => {
 
-    let res = await Method.getGetData(`/UserMgr/UserInfoMgr/GetStudentToPage?ClassID=${ClassID}&PageIndex=${PageIndex}&PageSize=${PageSize}${Keyword?`&Keyword=${Keyword}`:''}`,2,'http://192.168.2.248:8066');
+    let res = await Method.getGetData(`/UserMgr/UserInfoMgr/GetStudentToPage?ClassID=${ClassID}&PageIndex=${PageIndex}&PageSize=${PageSize}${Keyword?`&Keyword=${Keyword}`:''}`,2,CONFIG.AdmClassProxy);
 
-    if (res.StatusCode === 200){
+    if (res.Status === 200){
 
         return res.Data;
 
@@ -857,9 +859,9 @@ const getStudents = async ({ClassID,dispatch,Keyword,PageIndex,PageSize}) => {
 
 const getSubjects = async ({ClassID,dispatch}) => {
 
-    let res = await Method.getGetData(`/UserMgr/ClassMgr/GetSubject?ClassID=${ClassID}`,2,'http://192.168.2.248:8066');
+    let res = await Method.getGetData(`/UserMgr/ClassMgr/GetSubject?ClassID=${ClassID}`,2,CONFIG.AdmClassProxy);
 
-    if (res.StatusCode === 200){
+    if (res.Status === 200){
 
         return res.Data;
 
@@ -877,9 +879,9 @@ const getSubjects = async ({ClassID,dispatch}) => {
 
 const getAllTeacher = async ({SchoolID,SubjectIDs='',Keyword,UserID,dispatch}) => {
 
-    let res = await Method.getGetData(`/UserMgr/ClassMgr/GetTeacherToPage?SchoolID=${SchoolID}&SubjectIDs=${SubjectIDs}${Keyword?`&Keyword=${Keyword}`:''}${UserID?`&UserID=${UserID}`:''}`,2,'http://192.168.2.248:8066');
+    let res = await Method.getGetData(`/UserMgr/ClassMgr/GetTeacherToPage?SchoolID=${SchoolID}&SubjectIDs=${SubjectIDs}${Keyword?`&Keyword=${Keyword}`:''}${UserID?`&UserID=${UserID}`:''}`,2,CONFIG.AdmClassProxy);
 
-    if (res.StatusCode === 200){
+    if (res.Status === 200){
 
         return res.Data;
 
@@ -900,9 +902,9 @@ const setGengar =  async ({ClassID,UserID='',dispatch}) => {
 
         ClassID,UserID
 
-    },2,'http://192.168.2.248:8066');
+    },2,CONFIG.AdmClassProxy);
 
-    if (res.StatusCode === 200){
+    if (res.Status === 200){
 
         return res;
 
@@ -924,11 +926,11 @@ const setTeacher =  async ({ClassID,SubjectID,UserID='',dispatch}) => {
 
         ClassID,UserID,SubjectID
 
-    },2,'http://192.168.2.248:8066');
+    },2,CONFIG.AdmClassProxy);
 
 
 
-    if (res.StatusCode === 200){
+    if (res.Status === 200){
 
         return res;
 
@@ -948,11 +950,11 @@ const adjustClass =  async ({ClassID,UserIDs,dispatch}) => {
 
         ClassID,UserIDs
 
-    },2,'http://192.168.2.248:8066');
+    },2,CONFIG.AdmClassProxy);
 
 
 
-    if (res.StatusCode === 200){
+    if (res.Status === 200){
 
         return res;
 

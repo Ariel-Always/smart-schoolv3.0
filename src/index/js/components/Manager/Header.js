@@ -8,7 +8,7 @@ class Header extends Component{
 
     diskSize(num){
 
-        if (num == 0) return { num:0,unit:"B" };
+        if (num === 0) return { num:0,unit:"B" };
 
         var k = 1024; //设定基础容量大小
 
@@ -83,13 +83,13 @@ class Header extends Component{
 
                                     <span className={`arrow ${HeaderSetting.MenuShow?'up':''}`}></span>
 
-                                    <span className="frame-home-username">{LoginUser.UserName}</span>
+                                    <span className="frame-home-username" title={LoginUser.UserName}>{LoginUser.UserName}</span>
 
                                 </div>
 
                                 <div className="menu-wrapper" id="header-menu-wrapper" style={{display:`${HeaderSetting.MenuShow?'block':'none'}`}}>
 
-                                    <a className="perMgrLink menu">账号管理</a>
+                                    <a href="/html/personalMgr" target="_blank" className="perMgrLink menu">账号管理</a>
 
                                     <a className="help menu">帮助</a>
 
@@ -97,7 +97,7 @@ class Header extends Component{
 
                                 </div>
 
-                                <span className="frame-home-userpic" style={{backgroundImage:`url(${LoginUser.PhotoPath})`}}></span>
+                                <a href="/html/personalMgr" target="_blank" className="frame-home-userpic" style={{backgroundImage:`url(${LoginUser.PhotoPath})`}}></a>
 
                             </div>
 

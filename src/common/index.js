@@ -1802,7 +1802,7 @@ class Frame extends React.Component {
                             <div className="frame-home-header-menus">
                                 <div className="frame-home-header-menu">
                                     <input className="frame-home-logout" title="退出" type="button" onClick={this.LogOut.bind(this)} value="" />
-                                    <a href="/html/personal/index.html" rel="noopener noreferrer" target="_blank" className="frame-home-username">{userInfo && userInfo.name ? userInfo.name : ''}</a>
+                                    <a href="/html/personalMgr/" rel="noopener noreferrer" target="_blank" className="frame-home-username" title={userInfo && userInfo.name?userInfo.name:""}>{userInfo && userInfo.name ? userInfo.name : ''}</a>
                                     <span className="frame-home-userpic" style={{ backgroundImage: `url(${userInfo && userInfo.image ? userInfo.image : ''})` }}></span>
                                 </div>
                                 <div className="frame-home-header-menu">

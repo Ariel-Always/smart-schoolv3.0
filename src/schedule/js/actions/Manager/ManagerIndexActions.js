@@ -12,7 +12,11 @@ import STTActions from './SubjectTeacherTeacherActions';
 //学科教师总表学科课表界面初始化
 const STSPageInit = () => {
 
+
+
     return (dispatch,getState) => {
+
+        dispatch({type:STSActions.LOADING_SHOW});
 
         let {PeriodWeekTerm,LoginUser} = getState();
         //如果前面获取的周次、学段信息已获得
@@ -209,6 +213,7 @@ const STTPageInit = () => {
 
   return (dispatch,getState) => {
 
+      dispatch({type:STTActions.SCHEDULE_LOADING_SHOW});
 
       let {PeriodWeekTerm,LoginUser} = getState();
       //如果前面获取的周次、学段信息已获得
@@ -267,7 +272,7 @@ const STTPageInit = () => {
 
               });
 
-              dispatch({type:STTActions.TEACHER_LIST_UPDATE,data:leftMenuData});
+              dispatch({type:STTActions.STT_SCHEDULE_INIT,data:leftMenuData});
 
               dispatch({type:STTActions.SCHEDULE_LOADING_HIDE});
 
@@ -342,7 +347,7 @@ const STTPageInit = () => {
 
                       });
 
-                      dispatch({type:STTActions.TEACHER_LIST_UPDATE,data:leftMenuData});
+                      dispatch({type:STTActions.STT_SCHEDULE_INIT,data:leftMenuData});
 
                       dispatch({type:STTActions.SCHEDULE_LOADING_HIDE});
 

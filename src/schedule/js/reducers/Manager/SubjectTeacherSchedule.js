@@ -18,7 +18,19 @@ const SubjectTeacherSchedule = (state={
 
         case STSActions.SUBJECT_TEACHER_SCHEDULE_INIT:
 
-            return {...state,schedule:actions.data};
+            return {
+
+                ...state,
+
+                ItemSubjectSelect:{value:0,title:"全部学科"},
+
+                pageIndex:1,
+
+                loadingShow:true,
+
+                schedule:actions.data
+
+            };
 
         case STSActions.STS_SUBJECT_CHANGE:
 

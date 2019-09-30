@@ -24,8 +24,6 @@ class Index extends Component{
 
         dispatch(ManagerPageActions.PageInit());
 
-        dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
-
     }
 
     //头部点击menu
@@ -34,9 +32,7 @@ class Index extends Component{
 
         e.stopPropagation();
 
-        const { dispatch,Manager } = this.props;
-        
-        const { HeaderSetting } = Manager;
+        const { dispatch } = this.props;
 
         dispatch({type:HeaderActions.HEADER_MENU_TOGGLE});
 
@@ -51,10 +47,9 @@ class Index extends Component{
 
         let HMW = document.getElementById('header-menu-wrapper');
 
-        if ((!HDM.contains(e.target))&&(!HMW.contains(e.target))){
+        if (!HDM.contains(e.target)){
 
             dispatch({type:HeaderActions.HEADER_MENU_HIDE});
-
 
         }
 
@@ -69,6 +64,64 @@ class Index extends Component{
     }
 
 
+    //点击模块的时候调用
+    ModuleClick({AccessType,AccessParam,ModuleStatus}){
+
+        const { dispatch } = this.props;
+
+        if (AccessType === 'href'){
+
+            if (ModuleStatus===1){
+
+                window.open(AccessParam);
+
+            }else{
+                
+                switch (ModuleStatus) {
+
+
+                    case 2:
+
+                        dispatch(AppAlertActions.alertTips({title:"您还购买该模块，请先购买"}));
+
+                        break;
+
+                    case 3:
+
+                        dispatch(AppAlertActions.alertTips({title:"该模块未安装，请先安装"}));
+
+                        break;
+
+                    case 4:
+
+                        dispatch(AppAlertActions.alertTips({title:"该模块维护中"}));
+
+                        break;
+
+                    case 5:
+
+                        dispatch(AppAlertActions.alertTips({title:"该模块已过期"}));
+
+                        break;
+
+                    default:
+
+                        return;
+
+                }
+
+            }
+
+        }else{
+
+            //后期做处理
+
+        }
+
+    }
+
+
+
     render() {
 
         const { LoginUser,Manager } = this.props;
@@ -81,7 +134,13 @@ class Index extends Component{
 
                 <Header LoginUser={LoginUser} HeaderSetting={HeaderSetting} HeaderMenuToggle={this.HeaderMenuToggle.bind(this)}></Header>
 
-                <ModulesContent Modules={Modules}></ModulesContent>
+                <ModulesContent Modules={Modules} ModuleClick={this.ModuleClick.bind(this)}></ModulesContent>
+
+                <div className="footer">
+
+                    蓝鸽科技 版权所有
+
+                </div>
 
             </div>
 

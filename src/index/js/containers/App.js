@@ -29,6 +29,8 @@ class App extends Component {
 
         const { dispatch } = props;
 
+        sessionStorage.setItem("token","6a547099-cc4a-4cb0-88f6-062804b42153");
+
         //判断本地token是否存在
         if(sessionStorage.getItem("token")){
 
@@ -39,8 +41,6 @@ class App extends Component {
         }else{
 
             const lg_tk = this.getQueryString('lg_tk');
-
-            sessionStorage.setItem("token","6a547099-cc4a-4cb0-88f6-062804b42153");
 
             //判断URL中token是否存在
 
@@ -79,13 +79,6 @@ class App extends Component {
         var r = window.location.search.substr(1).match(reg);
 
         if (r != null) return (r[2]); return null;
-
-    }
-
-
-    componentWillMount(){
-
-
 
     }
 
