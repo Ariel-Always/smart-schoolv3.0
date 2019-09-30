@@ -1,2 +1,8 @@
 //基础部分的scss
+@import "~compass-mixins/lib/compass/css3";
+
 @import "./base";
+
+
+//管理员桌面
+@import "./manager-desk-top";

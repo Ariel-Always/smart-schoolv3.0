@@ -2,9 +2,16 @@ import React,{Component} from 'react';
 
 import { Loading,Alert } from "../../../common";
 
-import AppAlertActions from '../actions/AppAlertActions'
+import AppAlertActions from '../actions/AppAlertActions';
+
+import LoginUserActions from '../actions/LoginUserActions';
 
 import { connect } from 'react-redux';
+
+import TeacherDeskTop from './Teacher/Index';
+
+import ManagerDeskTop from './Manager/Index';
+
 
 class App extends Component {
 
@@ -12,26 +19,28 @@ class App extends Component {
 
         super(props);
 
-        this.PageBefore();
+        this.PageBefore(props);
 
     }
 
 
     //界面加载前的操作
-    PageBefore(){
+    PageBefore(props){
 
-        const { dispatch } = this.props;
+        const { dispatch } = props;
 
         //判断本地token是否存在
         if(sessionStorage.getItem("token")){
 
             //获取用户信息并且加载界面
 
-            dispatch()
+            dispatch(LoginUserActions.getUserInfo());
 
         }else{
 
             const lg_tk = this.getQueryString('lg_tk');
+
+            sessionStorage.setItem("token","6a547099-cc4a-4cb0-88f6-062804b42153");
 
             //判断URL中token是否存在
 
@@ -39,13 +48,17 @@ class App extends Component {
 
                 //获取用户信息并且加载界面
 
+                sessionStorage.setItem("token",lg_tk);
+
+                dispatch(LoginUserActions.getUserInfo());
+
             }else{
 
                 //弹出登录提示警告弹窗
 
                 dispatch(AppAlertActions.alertWarn(
 
-                    {title:"您还没有登录，请重新登录",ok:()=>{ return this.GoToLogin}}
+                    {title:"您还没有登录，请重新登录",ok:()=>{ return LoginUserActions.GoToLogin }}
 
                     ));
 
@@ -55,20 +68,6 @@ class App extends Component {
 
     }
 
-
-    //跳转到login界面
-
-    GoToLogin(){
-
-        //获取本地的地址。
-
-        let lg_preurl = encodeURIComponent(window.location.href);
-
-        //在这里做异步获取login的地址然后跳转
-
-        window.location.href = 'http://www.baidu.com';
-
-    }
 
 
     //拦截并获取界面参数
@@ -93,20 +92,41 @@ class App extends Component {
 
     render() {
 
-        const { AppAlert } = this.props;
+        const { AppAlert,LoginUser,AppLoading } = this.props;
 
         return (
 
             <div className="desk-top-wrapper">
 
-                <Loading tip="加载中请稍后..." size="large" opacity={false}>
+                {
 
+                    AppLoading.show?
 
+                        <Loading tip="加载中请稍后..." size="large" opacity={false}></Loading>
 
-                </Loading>
+                        :''
 
-                <div className="">123</div>
+                }
 
+                {
+
+                    LoginUser.UserType === 0?
+
+                        <ManagerDeskTop></ManagerDeskTop>
+
+                        :''
+
+                }
+
+                {
+
+                    LoginUser.UserType === 1?
+
+                    <TeacherDeskTop></TeacherDeskTop>
+
+                    :''
+
+                }
 
                 <Alert
                     type={AppAlert.type}
@@ -132,13 +152,15 @@ class App extends Component {
 
 const mapStateToProps = (state)=>{
 
-    const { LoginUser,AppAlert } = state;
+    const { LoginUser,AppAlert,AppLoading } = state;
 
     return {
 
         LoginUser,
 
-        AppAlert
+        AppAlert,
+
+        AppLoading
 
     }
 

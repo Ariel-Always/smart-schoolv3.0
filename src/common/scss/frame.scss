@@ -369,6 +369,36 @@ $img_url:'#{$image_url}/frame';
     opacity: 0.8;
   }
 }
+
+.frame-home-tel-menu{
+  position: relative;
+  display: inline-block;
+  top: 2px;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  width: 16px;
+  height: 16px;
+  margin-left: 12px;
+  background: url("#{$img_url}/tel.png") no-repeat center top;
+  &.msg{
+    &:after{
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      content: '';
+      background-color: #ff0000;
+      right: -2px;
+      top: -2px;
+      @include border-radius(50%);
+    }
+  }
+  &:hover{
+    opacity: 0.8;
+  }
+}
+
 //中间条
 .frame-time-bar{
   height: 50px;

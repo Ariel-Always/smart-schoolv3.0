@@ -7,10 +7,10 @@ $image-url:'../images';
   white-space: nowrap;
 }
 @mixin flex{
-  display: flex;
-  display:-moz-flex;
-  display:-ms-flex;
-  display:-webkit-flex;
+  display: flex!important;
+  display:-moz-flex!important;
+  display:-ms-flexbox!important;
+  display:-webkit-flex!important;
 }
 @mixin justify-content($dir){
   justify-content: $dir;
@@ -39,6 +39,12 @@ $image-url:'../images';
 
 }
 
+body{
+
+  background-color: #eff9ff;
+
+}
+
 
 //全局加载中
 .desk-top-wrapper{
@@ -58,6 +64,17 @@ $image-url:'../images';
     background:#ffffff;
 
     z-index: 10101;
+
+    @include flex;
+
+    @include flex-direction(column);
+
+    @include justify-content(center);
+
+    @include align-items(center);
+
+    -ms-flex-direction: row;
+
 
   }
 
