@@ -3,7 +3,9 @@ import ModuleActions from '../../actions/Teacher/ModuleActions';
 
 const Modules = (state={
 
-    ModuleGroups:[]
+    ModuleGroups:[],
+
+    ModulesLoading:true
 
 },actions) => {
 

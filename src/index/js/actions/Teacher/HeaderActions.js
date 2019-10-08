@@ -37,6 +37,8 @@ const SubjectClick = (info) => {
 
                 dispatch({type:ModulesActions.TEACHER_MODULE_GROUPS_UPDATE,data:data.Groups});
 
+
+
             }
 
         });

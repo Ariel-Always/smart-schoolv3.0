@@ -52,7 +52,77 @@ const PageInit = () => {
 
                 if (data){
 
-                    dispatch({type:ModulesActions.TEACHER_MODULE_GROUPS_UPDATE,data:data.Groups});
+                    let ModuleGroups = data.Groups.map(item=>{
+
+                        return {
+
+                            ...item,
+
+                            "Modules":item.Modules.map(i=>{
+
+                                if (i.IsGroup){
+
+                                    let SubGroupModules = i.SubGroupModules.map(it=>{
+
+                                       if (it.ModuleType==='website'){
+
+                                           return {
+
+                                               ...it,
+
+                                               "show":false,
+
+                                               "showDom":"img"
+
+                                           }
+
+                                       }else{
+
+                                           return it
+
+                                       }
+
+                                    });
+
+                                    return {
+
+                                        ...i,
+
+                                        SubGroupModules:SubGroupModules,
+
+                                        DetailShow:false
+
+                                    }
+
+                                }else{
+
+                                    if (i.ModuleType==='website'){
+
+                                        return {
+
+                                            ...i,
+
+                                            "show":false,
+
+                                            "showDom":"img"
+
+                                        }
+
+                                    }else{
+
+                                        return i;
+
+                                    }
+
+                                }
+
+                            })
+
+                        }
+
+                    });
+
+                    dispatch({type:ModulesActions.TEACHER_MODULE_GROUPS_UPDATE,data:ModuleGroups});
 
                     dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
 
