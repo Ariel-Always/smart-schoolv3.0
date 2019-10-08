@@ -17,9 +17,9 @@ class TipsPower extends React.Component {
             )
         })
         return (
-            <React.Fragment> 
+            <div className='TipsPower'> 
                     {PowerList.length?PowerList:<Empty style={{paddingBottom:20+'px',paddingTop:10+'px'}} type='4' title='暂无权限'></Empty>}
-            </React.Fragment>
+            </div>
         )
     }
 }

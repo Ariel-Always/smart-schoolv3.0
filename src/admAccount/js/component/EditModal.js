@@ -26,13 +26,14 @@ class EditModal extends React.Component {
             checkedList: [],
             checkedListArr: [],
             plainOptionsArr: [],
-            PowerChildLen: props.userKey === 'change' ? props.data.Power.Powers.map((child, index) => {
-                return child.PowerChild.length
-            }) : props.PowerList.map((child, index) => 0)
+            PowerChildLen: []
+            // props.userKey === 'change' ? props.data.Power.Powers.map((child, index) => {
+            //     return child.PowerChild.length
+            // }) : props.PowerList.map((child, index) => 0)
         }
     }
     componentWillMount() {
-        const { DataState } = this.props;
+        const { DataState, dispatch } = this.props;
         // console.log(this.state.data)
 
         if (this.state.UserKey === 'change') {
@@ -40,12 +41,18 @@ class EditModal extends React.Component {
                 UserIDChange: this.state.data.UserName.UserID,
                 defaultUserName: this.state.data.UserName.Name
             })
+            dispatch(actions.UpDataState.setAdminPreview({
+                UserID: this.state.data.UserName.UserID,
+                UserName: this.state.data.UserName.Name,
+                PhotoPath:this.state.data.UserImg
+            }))
             this.state.PowerList.map((power, index) => {
                 let checkAll = this.state.checkAll;
                 let indeterminate = this.state.indeterminate;
                 let plainOptions = [];
                 let plainOptionsArr = this.state.plainOptionsArr;
                 let checkedList = [];
+                let PowerChildLen = this.state.PowerChildLen
                 let checkedListArr = this.state.checkedListArr;
                 this.state.PowerList[index].PowerChild.map((child, index) => {
                     plainOptions[index] = child.value;
@@ -54,155 +61,29 @@ class EditModal extends React.Component {
 
                 plainOptionsArr[index] = plainOptions;
                 // console.log(plainOptionsArr, index)
-                let Powers = this.props.data.Power.Powers[index]?this.props.data.Power.Powers[index].PowerChild:[]
-                checkAll[index] = this.props.data.Power.Powers[index]?this.props.data.Power.Powers[index].PowerChild.length !== 0 ? true : false:false;
-
-                Powers.map((child, key) => {
-                    checkedList[key] = child.value;
-                })
-                
-                indeterminate[index] = plainOptionsArr[index].length === checkedList.length || checkedList.length === 0 ? false : true;
-                console.log(plainOptionsArr,checkedList,indeterminate)
-                checkedListArr[index] = checkedList;
-                this.setState({
-                    checkAll: checkAll,
-                    indeterminate: indeterminate,
-                    checkedListArr: checkedListArr,
-                    plainOptionsArr: plainOptionsArr
-                })
-                // return (
-                //     <div key={this.state.PowerList[index].value}>
-                //         <CheckBox
-                //             indeterminate={this.state.indeterminate[index]}
-                //             onChange={this.onCheckAllChange.bind(this, index)}
-                //             checked={this.state.checkAll[index]}
-                //         >
-                //             {power.PowerName}
-                //             <span className='checkTips'>[已选择<span style={{ color: 'red' }}>{this.state.data.Power.Powers[index].PowerChild.length}</span>项]</span>
-                //         </CheckBox>
-                //         <CheckBoxGroup
-
-                //             value={this.state.checkedListArr[index]}
-                //             onChange={this.onCheckChange.bind(this,index)}
-                //         >
-                //             {this.state.PowerList[index].PowerChild.map((child, index) => {
-
-                //                 return(
-                //                     <CheckBox 
-                //                     value={child.value}
-                //                     key = {child.value}
-                //                     >{child.PowerChildName}</CheckBox>
-                //                 )
-                //             })}
-                //         </CheckBoxGroup>
-                //     </div>
-                // )
-            })
-        } else if (this.state.UserKey === 'add') {
-
-            this.state.PowerList.map((power, index) => {
-                let checkAll = this.state.checkAll;
-                let indeterminate = this.state.indeterminate;
-                let plainOptions = [];
-                let plainOptionsArr = this.state.plainOptionsArr;
-                let checkedList = [];
-                let checkedListArr = this.state.checkedListArr;
-                this.state.PowerList[index].PowerChild.map((child, index) => {
-                    plainOptions[index] = child.value;
-
+                let Powers = this.props.data.Power.Powers[index] ? this.props.data.Power.Powers[index].PowerChild : []
+                this.props.data.Power.Powers.map((child, powerIndex) => {
+                    if (child.value === power.value) {
+                        child.PowerChild.map((child, key) => {
+                            checkedList[key] = child.value;
+                        })
+                    }
                 })
 
-                plainOptionsArr[index] = plainOptions;
-                // console.log(plainOptionsArr, index)
-
-                checkAll[index] = false;
-
-                checkedList = []
-                indeterminate[index] = false;
-                checkedListArr[index] = checkedList;
-                this.setState({
-                    checkAll: checkAll,
-                    indeterminate: indeterminate,
-                    checkedListArr: checkedListArr,
-                    plainOptionsArr: plainOptionsArr
-                })
-                // return (
-                //     <div key={this.state.PowerList[index].value}>
-                //         <CheckBox
-                //             indeterminate={this.state.indeterminate[index]}
-                //             onChange={this.onCheckAllChange.bind(this, index)}
-                //             checked={this.state.checkAll[index]}
-                //         >
-                //             {power.PowerName}
-                //             <span className='checkTips'>[已选择<span style={{ color: 'red' }}>{this.state.data.Power.Powers[index].PowerChild.length}</span>项]</span>
-                //         </CheckBox>
-                //         <CheckBoxGroup
-
-                //             value={this.state.checkedListArr[index]}
-                //             onChange={this.onCheckChange.bind(this,index)}
-                //         >
-                //             {this.state.PowerList[index].PowerChild.map((child, index) => {
-
-                //                 return(
-                //                     <CheckBox 
-                //                     value={child.value}
-                //                     key = {child.value}
-                //                     >{child.PowerChildName}</CheckBox>
-                //                 )
-                //             })}
-                //         </CheckBoxGroup>
-                //     </div>
-                // )
-            })
 
 
-        }
-    }
-    componentWillReceiveProps() {
-        //const { DataState } = this.props;
-        // console.log(this.props.data)
-        let checkedListArr = [];
-        let PowerChildLen = [];
-        let indeterminate = [];
-        let checkAll = [];
-        let plainOptionsArr = [];
-        if (this.state.UserKey === 'change') {
-            this.setState({
-                UserIDChange: this.props.data.UserName.UserID,
-                defaultUserName: this.props.data.UserName.Name
-            })
-            this.state.PowerList.map((power, index) => {
-                
-                
-                let plainOptions = [];
-                
-                let checkedList = [];
-                
-                
-                this.state.PowerList[index].PowerChild.map((child, index) => {
-                    plainOptions[index] = child.value;
+                checkAll[index] = checkedList.length !== 0 ? true : false;
 
-                })
-
-                plainOptionsArr[index] = plainOptions;
-                // console.log(plainOptionsArr, index)
-                let Powers = this.props.data.Power.Powers[index]?this.props.data.Power.Powers[index].PowerChild:[]
-                checkAll[index] = this.props.data.Power.Powers[index]?this.props.data.Power.Powers[index].PowerChild.length !== 0 ? true : false:false;
-
-                Powers.map((child, key) => {
-                    checkedList[key] = child.value;
-                })
-                
                 PowerChildLen[index] = checkedList ? checkedList.length : 0;
-                indeterminate[index] = this.state.plainOptionsArr[index].length === checkedList.length || checkedList === [] ? false : true;;
+
+                indeterminate[index] = plainOptionsArr[index].length === checkedList.length || checkedList.length === 0 ? false : true;
+                console.log(plainOptionsArr, checkedList, indeterminate)
                 checkedListArr[index] = checkedList;
-                //console.log(checkedListArr)
                 this.setState({
                     checkAll: checkAll,
                     indeterminate: indeterminate,
                     checkedListArr: checkedListArr,
-                    plainOptionsArr: plainOptionsArr,
-                    PowerChildLen: PowerChildLen
+                    plainOptionsArr: plainOptionsArr
                 })
                 // return (
                 //     <div key={this.state.PowerList[index].value}>
@@ -232,15 +113,22 @@ class EditModal extends React.Component {
                 //     </div>
                 // )
             })
+            let ModulesID = []
+            this.state.checkedListArr.map((child) => {
+                console.log(child.length)
+                if (child.length !== 0)
+                    ModulesID.push(child.join())
+            })
+            dispatch(actions.UpDataState.setAdminPreview({
+                ModuleIDs: ModulesID.join()
+            }))
         } else if (this.state.UserKey === 'add') {
 
-            let checkAll = [];
-            let indeterminate = [];
-            
-            let plainOptionsArr = [];
-            
             this.state.PowerList.map((power, index) => {
+                let checkAll = this.state.checkAll;
+                let indeterminate = this.state.indeterminate;
                 let plainOptions = [];
+                let plainOptionsArr = this.state.plainOptionsArr;
                 let checkedList = [];
                 let checkedListArr = this.state.checkedListArr;
                 this.state.PowerList[index].PowerChild.map((child, index) => {
@@ -294,8 +182,151 @@ class EditModal extends React.Component {
 
         }
     }
+    // componentWillReceiveProps() {
+    //     //const { DataState } = this.props;
+    //     // console.log(this.props.data)
+    //     let checkedListArr = [];
+    //     let PowerChildLen = [];
+    //     let indeterminate = [];
+    //     let checkAll = [];
+    //     let plainOptionsArr = [];
+    //     if (this.state.UserKey === 'change') {
+    //         this.setState({
+    //             UserIDChange: this.props.data.UserName.UserID,
+    //             defaultUserName: this.props.data.UserName.Name
+    //         })
+    //         this.state.PowerList.map((power, index) => {
+
+
+    //             let plainOptions = [];
+
+    //             let checkedList = [];
+
+
+    //             this.state.PowerList[index].PowerChild.map((child, index) => {
+    //                 plainOptions[index] = child.value;
+
+    //             })
+
+    //             plainOptionsArr[index] = plainOptions;
+    //             // console.log(plainOptionsArr, index)
+    //             let Powers = this.props.data.Power.Powers[index]?this.props.data.Power.Powers[index].PowerChild:[]
+    //             this.props.data.Power.Powers.map((child,powerIndex) => {
+    //                 if(child.value===power.value){
+    //                     child.PowerChild.map((child, key) => {
+    //                         checkedList[key] = child.value;
+    //                     })
+    //                 }
+    //             })
+
+
+
+    //             checkAll[index] = checkedList.length!==0 ? true : false;
+
+
+    //             PowerChildLen[index] = checkedList ? checkedList.length : 0;
+    //             indeterminate[index] = this.state.plainOptionsArr[index].length === checkedList.length || checkedList === [] ? false : true;;
+    //             checkedListArr[index] = checkedList;
+    //             //console.log(checkedListArr)
+    //             this.setState({
+    //                 checkAll: checkAll,
+    //                 indeterminate: indeterminate,
+    //                 checkedListArr: checkedListArr,
+    //                 plainOptionsArr: plainOptionsArr,
+    //                 PowerChildLen: PowerChildLen
+    //             })
+    //             // return (
+    //             //     <div key={this.state.PowerList[index].value}>
+    //             //         <CheckBox
+    //             //             indeterminate={this.state.indeterminate[index]}
+    //             //             onChange={this.onCheckAllChange.bind(this, index)}
+    //             //             checked={this.state.checkAll[index]}
+    //             //         >
+    //             //             {power.PowerName}
+    //             //             <span className='checkTips'>[已选择<span style={{ color: 'red' }}>{this.state.data.Power.Powers[index].PowerChild.length}</span>项]</span>
+    //             //         </CheckBox>
+    //             //         <CheckBoxGroup
+
+    //             //             value={this.state.checkedListArr[index]}
+    //             //             onChange={this.onCheckChange.bind(this,index)}
+    //             //         >
+    //             //             {this.state.PowerList[index].PowerChild.map((child, index) => {
+
+    //             //                 return(
+    //             //                     <CheckBox 
+    //             //                     value={child.value}
+    //             //                     key = {child.value}
+    //             //                     >{child.PowerChildName}</CheckBox>
+    //             //                 )
+    //             //             })}
+    //             //         </CheckBoxGroup>
+    //             //     </div>
+    //             // )
+    //         })
+    //     } else if (this.state.UserKey === 'add') {
+
+    //         let checkAll = [];
+    //         let indeterminate = [];
+
+    //         let plainOptionsArr = [];
+
+    //         this.state.PowerList.map((power, index) => {
+    //             let plainOptions = [];
+    //             let checkedList = [];
+    //             let checkedListArr = this.state.checkedListArr;
+    //             this.state.PowerList[index].PowerChild.map((child, index) => {
+    //                 plainOptions[index] = child.value;
+
+    //             })
+
+    //             plainOptionsArr[index] = plainOptions;
+    //             // console.log(plainOptionsArr, index)
+
+    //             checkAll[index] = false;
+
+    //             checkedList = []
+    //             indeterminate[index] = false;
+    //             checkedListArr[index] = checkedList;
+    //             this.setState({
+    //                 checkAll: checkAll,
+    //                 indeterminate: indeterminate,
+    //                 checkedListArr: checkedListArr,
+    //                 plainOptionsArr: plainOptionsArr
+    //             })
+    //             // return (
+    //             //     <div key={this.state.PowerList[index].value}>
+    //             //         <CheckBox
+    //             //             indeterminate={this.state.indeterminate[index]}
+    //             //             onChange={this.onCheckAllChange.bind(this, index)}
+    //             //             checked={this.state.checkAll[index]}
+    //             //         >
+    //             //             {power.PowerName}
+    //             //             <span className='checkTips'>[已选择<span style={{ color: 'red' }}>{this.state.data.Power.Powers[index].PowerChild.length}</span>项]</span>
+    //             //         </CheckBox>
+    //             //         <CheckBoxGroup
+
+    //             //             value={this.state.checkedListArr[index]}
+    //             //             onChange={this.onCheckChange.bind(this,index)}
+    //             //         >
+    //             //             {this.state.PowerList[index].PowerChild.map((child, index) => {
+
+    //             //                 return(
+    //             //                     <CheckBox 
+    //             //                     value={child.value}
+    //             //                     key = {child.value}
+    //             //                     >{child.PowerChildName}</CheckBox>
+    //             //                 )
+    //             //             })}
+    //             //         </CheckBoxGroup>
+    //             //     </div>
+    //             // )
+    //         })
+
+
+    //     }
+    // }
     onEditIDChange = (e) => {
-        const {dispatch} = this.props
+        const { dispatch } = this.props
         this.setState({
             UserIDChange: e.target.value
         })
@@ -304,23 +335,23 @@ class EditModal extends React.Component {
         let Test = /^([a-zA-Z0-9]{1,24})$/.test(e.target.value)
         // console.log(Test,e.target.value)
         if (!Test) {
-            this.setState({
-                UserIDTipsVisible: true
-            })
+            dispatch(actions.UpUIState.UserIDTipsVisibleOpen())
+
+
         } else {
             dispatch(actions.UpDataState.setAdminPreview({
-                isChange:true,
-                UserID:e.target.value
+                isChange: true,
+                UserID: e.target.value
             }))
-            this.setState({
-                UserIDTipsVisible: false
-            })
+            dispatch(actions.UpUIState.UserIDTipsVisibleClose())
+
+
         }
 
 
     }
     onEditNameChange = (e) => {
-        const {dispatch} = this.props        
+        const { dispatch } = this.props
         //用户姓名检测
         //用户姓名由1-20位的汉字、字母、数字、下划线组成。
         let value = e.target.value;
@@ -331,25 +362,23 @@ class EditModal extends React.Component {
         })
 
         if (!Test) {
-            this.setState({
-                UserNameTipsVisible: true
-            })
+            dispatch(actions.UpUIState.UserNameTipsVisibleOpen())
+
         } else {
             dispatch(actions.UpDataState.setAdminPreview({
-                isChange:true,
-                UserName:value
+                isChange: true,
+                UserName: value
             }))
-            this.setState({
-                UserNameTipsVisible: false
-            })
+            dispatch(actions.UpUIState.UserNameTipsVisibleClose())
+
         }
     }
 
 
     // 新
     onCheckAllChange = (index, e) => {
-        const {dispatch} = this.props        
-        
+        const { dispatch } = this.props
+
         let checkedListArr = this.state.checkedListArr;
         let indeterminate = this.state.indeterminate;
         let checkAll = this.state.checkAll;
@@ -358,11 +387,17 @@ class EditModal extends React.Component {
         indeterminate[index] = false;
         checkAll[index] = e.target.checked;
         PowerChildLen[index] = e.target.checked ? this.state.plainOptionsArr[index].length : 0;
+        let ModulesID = []
+        checkedListArr.map((child) => {
+            console.log(child.length)
+            if (child.length !== 0)
+                ModulesID.push(child.join())
+        })
         dispatch(actions.UpDataState.setAdminPreview({
-            isChange:true,
-            ModuleIDs:checkedListArr
+            isChange: true,
+            ModuleIDs: ModulesID.join()
         }))
-        console.log(indeterminate, checkedListArr,checkAll);
+        console.log(indeterminate, checkedListArr, checkAll);
         this.setState({
             checkedListArr: checkedListArr,
             indeterminate: indeterminate,
@@ -371,6 +406,8 @@ class EditModal extends React.Component {
         });
     }
     onCheckChange = (index, value, e) => {
+        const { dispatch } = this.props
+
         console.log(index, value, this.state.plainOptionsArr[index], this.state.checkedListArr, this.state.PowerChildLen)
         let checkedListArr = this.state.checkedListArr;
         let indeterminate = this.state.indeterminate;
@@ -381,6 +418,16 @@ class EditModal extends React.Component {
         checkAll[index] = this.state.plainOptionsArr[index].length === value.length ? true : false;
         PowerChildLen[index] = value.length;
         console.log(checkedListArr, indeterminate, checkAll)
+        let ModulesID = []
+        checkedListArr.map((child) => {
+            console.log(child.length)
+            if (child.length !== 0)
+                ModulesID.push(child.join())
+        })
+        dispatch(actions.UpDataState.setAdminPreview({
+            isChange: true,
+            ModuleIDs: ModulesID.join()
+        }))
         this.setState({
             checkedListArr: checkedListArr,
             indeterminate: indeterminate,
@@ -403,29 +450,46 @@ class EditModal extends React.Component {
                             {'工号：'}
                         </span>
                         <div className='culonm-2'>
+                            <div className='EditName-tips'>
+                                <Tips
+                                    placement='bottomRight'
+                                    getPopupContainer={(trigger) => trigger.parentNode}
+                                    overlayClassName={'tips-edit tips-userName'}
+                                    visible={UIState.TipsVisible.UserIDTipsVisible}
+                                    title={'工号' + this.state.UserIDTipsTitle} >
+                                    >
+                                </Tips>
+                            </div>
 
-                            <Tips overlayClassName='tips-edit'  visible={this.state.UserIDTipsVisible} title={'工号' + this.state.UserIDTipsTitle} >
-                                <Input maxLength={24} id="123" style={{ display: 'block' }} className='UserName-input'
-                                    type='text'
-                                    name='EditID'
-                                    value={this.state.UserIDChange}
-                                    onChange={this.onEditIDChange} />
-                            </Tips>
+                            <Input maxLength={24} id="123" style={{ display: 'block' }} className='UserName-input'
+                                type='text'
+                                name='EditID'
+                                value={this.state.UserIDChange}
+                                onChange={this.onEditIDChange} />
+
                         </div>
                     </div>
                     <div className="row clearfix">
                         <span className='culonm-1'>
                             账号名称：
                         </span>
-                        <div className='culonm-2'>
-                            <Tips overlayClassName={'tips-edit'} visible={this.state.UserNameTipsVisible} title={this.state.UserNameTipsTitle} >
-                                <Input className='UserName-input'
-                                    maxLength={20}
-                                    type='text'
-                                    name='EditName'
-                                    value={this.state.defaultUserName}
-                                    onChange={this.onEditNameChange} />
-                            </Tips>
+                        <div className='culonm-2 '>
+                            <div className='EditName-tips'>
+                                <Tips
+                                    placement='bottomRight'
+                                    getPopupContainer={(trigger) => trigger.parentNode}
+                                    overlayClassName={'tips-edit tips-userName'}
+                                    visible={UIState.TipsVisible.UserNameTipsVisible}
+                                    title={this.state.UserNameTipsTitle} >
+                                </Tips>
+                            </div>
+                            <Input className='UserName-input'
+                                maxLength={20}
+                                type='text'
+                                name='EditName'
+                                value={this.state.defaultUserName}
+                                onChange={this.onEditNameChange} />
+
                         </div>
                     </div>
                     <div className="row clearfix">
@@ -471,7 +535,7 @@ class EditModal extends React.Component {
                                             checked={this.state.checkAll[index]}
                                         >
                                             {power.PowerName}
-                                            <span className='checkTips'>[已选择<span style={{ color: 'red' }}>{this.state.PowerChildLen[index]?this.state.PowerChildLen[index]:0}</span>项]</span>
+                                            <span className='checkTips'>[已选择<span style={{ color: 'red' }}>{this.state.PowerChildLen[index] ? this.state.PowerChildLen[index] : 0}</span>项]</span>
                                         </CheckBox>
                                         <CheckBoxGroup
 
@@ -484,12 +548,12 @@ class EditModal extends React.Component {
                                                     <CheckBox
                                                         className='checkChild'
                                                         value={child.value}
-                                                        key={child.value+index}
+                                                        key={child.value + index}
                                                     >{child.PowerChildName}</CheckBox>
                                                 )
                                             })}
                                         </CheckBoxGroup>
-                                        <hr style={{display:this.state.PowerList.length===index+1?'none':'block'}} className='editModal-hr'/>
+                                        <hr style={{ display: this.state.PowerList.length === index + 1 ? 'none' : 'block' }} className='editModal-hr' />
                                     </div>
                                 )
                             })}

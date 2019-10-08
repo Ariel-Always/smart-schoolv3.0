@@ -28,7 +28,7 @@
     .row {
       position: relative;
       width: 100%;
-      margin: 3px 0;
+      margin: 25px 0 0;
       //height: 40px;
       .culonm-1 {
         width: 18%;
@@ -98,6 +98,13 @@
         }
       }
 
+      .EditName-tips{
+        position: absolute;
+        //left: 310px;
+        width: 0;
+        height: 40px;
+      }
+
       .culonm-3 {
         height: auto;
         margin-top: 9px;
@@ -135,4 +142,8 @@
 .tips-edit .ant-tooltip-arrow::before{
   background: red;
 
+}
+.tips-userName{
+  //left:-300px!important;
+  top:33px!important;
 }

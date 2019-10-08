@@ -4,7 +4,9 @@ import { Alert, DetailsModal, DropDown, PagiNation, Search, Table, Button, Check
 //import '../../../common/scss/_left_menu.scss'
 import { Link, } from 'react-router-dom';
 import '../../scss/Admin.scss'
-import { Tooltip, Input,Modal as AntdModal } from 'antd'
+import { postData, getData } from "../../../common/js/fetch";
+import CONFIG from '../../../common/js/config';
+import { Tooltip, Input, Modal as AntdModal } from 'antd'
 import TipsContact from './TipsContact'
 import TipsPower from './TipsPower'
 import history from '../containers/history'
@@ -75,7 +77,7 @@ class Admin extends React.Component {
                     render: Power => {
                         return (
                             <Tooltip placement='topLeft' width={540} trigger='click' arrowPointAtCenter={true} title={<TipsPower data={Power}></TipsPower>}>
-                                <span className='Power' onClick={this.onPowerClick.bind(this, Power)}>查看</span>
+                                <span className='Power' >查看</span>
                             </Tooltip>
                         )
                     }
@@ -121,1054 +123,8 @@ class Admin extends React.Component {
                 ClassName: '一年1班',
                 Others: {}
             }],
-            PowerList:[
-                {
-                    PowerName:'子系统管理',
-                    value:'0',
-                    PowerChild:[{
-                        value:'0-0',
-                        PowerChildName:'群文件夹管理'
-                    },{
-                        value:'0-1',
-                        PowerChildName:'成绩总评管理'
-                    },{
-                        value:'0-2',
-                        PowerChildName:'大数据认知评估管理'
-                    },{
-                        value:'0-3',
-                        PowerChildName:'学科测试管理'
-                    },]
-                },{
-                    PowerName:'信息发布',
-                    value:'1',
-                    PowerChild:[{
-                        value:'1-0',
-                        PowerChildName:'发布新闻资讯'
-                    },{
-                        value:'1-1',
-                        PowerChildName:'发布通知'
-                    },{
-                        value:'1-2',
-                        PowerChildName:'发布问卷调查'
-                    }]
-                },{
-                    PowerName:'平台管理',
-                    value:'2',
-                    PowerChild:[{
-                        value:'2-0',
-                        PowerChildName:'用户档案管理'
-                    },{
-                        value:'2-1',
-                        PowerChildName:'行政班管理'
-                    },{
-                        value:'2-2',
-                        PowerChildName:'用户账号管理'
-                    },{
-                        value:'2-3',
-                        PowerChildName:'学科管理'
-                    },{
-                        value:'2-4',
-                        PowerChildName:'教学班管理'
-                    },{
-                        value:'2-5',
-                        PowerChildName:'课程安排管理'
-                    },{
-                        value:'2-6',
-                        PowerChildName:'系统管理'
-                    },{
-                        value:'2-7',
-                        PowerChildName:'在线用户管理'
-                    },{
-                        value:'2-8',
-                        PowerChildName:'网络访问统计'
-                    },]
-                },{
-                    PowerName:'资源建设',
-                    value:'3',
-                    PowerChild:[{
-                        value:'3-0',
-                        PowerChildName:'网站资源管理'
-                    },{
-                        value:'3-1',
-                        PowerChildName:'应用管理'
-                    },{
-                        value:'3-2',
-                        PowerChildName:'资源库管理'
-                    }]
-                }
-            ],
-            AdminAccountData: [{
-                key: 0,
-                Name: {
-                    Name: '张心仪',
-                    UserID: '201700121245',
-                    key: 0
-                },
-                UserName: 'ZXSTU_001',
-                Sign: '人生重要的不是所站的位置，而是所朝的方向`````````````````11111111111',
-                Gender: '男',
-                UserImg: {
-                    PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
-                    PhotoPath_NOcache: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg'
-                },
-                UserContact: {
-                    QQ: '1519406168',
-                    WeiXin: 'asd1519406168',
-                    Telephone: '15626248624',
-                    Weibo: '15626248624'
-                },
-                handle: {
-                    key: 0
-                }, Power: {
-                    key: 0,
-                    
-                    Powers:[{
-                        PowerName:'子系统管理',
-                        value:'0',
-                        PowerChild:[{
-                            value:'0-0',
-                            PowerChildName:'群文件夹管理'
-                        },{
-                            value:'0-1',
-                            PowerChildName:'成绩总评管理'
-                        },{
-                            value:'0-2',
-                            PowerChildName:'大数据认知评估管理'
-                        },{
-                            value:'0-3',
-                            PowerChildName:'学科测试管理'
-                        },]
-                    },{
-                        PowerName:'信息发布',
-                        value:'1',
-                        PowerChild:[{
-                            value:'1-0',
-                            PowerChildName:'发布新闻资讯'
-                        },{
-                            value:'1-1',
-                            PowerChildName:'发布通知'
-                        },{
-                            value:'1-2',
-                            PowerChildName:'发布问卷调查'
-                        }]
-                    },{
-                        PowerName:'平台管理',
-                        value:'2',
-                        PowerChild:[{
-                            value:'2-0',
-                            PowerChildName:'用户档案管理'
-                        },{
-                            value:'2-1',
-                            PowerChildName:'行政班管理'
-                        },{
-                            value:'2-2',
-                            PowerChildName:'用户账号管理'
-                        },{
-                            value:'2-3',
-                            PowerChildName:'学科管理'
-                        },{
-                            value:'2-4',
-                            PowerChildName:'教学班管理'
-                        },{
-                            value:'2-5',
-                            PowerChildName:'课程安排管理'
-                        },{
-                            value:'2-6',
-                            PowerChildName:'系统管理'
-                        },{
-                            value:'2-7',
-                            PowerChildName:'在线用户管理'
-                        },{
-                            value:'2-8',
-                            PowerChildName:'网络访问统计'
-                        },]
-                    },{
-                        PowerName:'资源建设',
-                        value:'3',
-                        PowerChild:[{
-                            value:'3-0',
-                            PowerChildName:'网站资源管理'
-                        },{
-                            value:'3-1',
-                            PowerChildName:'应用管理'
-                        },{
-                            value:'3-2',
-                            PowerChildName:'资源库管理'
-                        }]
-                    },]
-                }
-            }, {
-                key: 1,
-                Name: {
-                    Name: '黄尚',
-                    UserID: '201700121245',
-                    key: 1
-                },
-                UserName: 'ZXSTU_001',
-                Sign: '人生重要的不是所站的位置，而是所朝的方向',
-                Gender: '男',
-                UserImg: {
-                    PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
-                    PhotoPath_NOcache: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg'
-                },
-                UserContact: {
-                    QQ: '1519406168',
-                    WeiXin: 'asd1519406168',
-                    Telephone: '15626248624',
-                    weibo: '15626248624'
-                },
-                handle: {
-                    key: 1
-                }, Power: {
-                    key: 1,
-                    Powers:[{
-                        PowerName:'子系统管理',
-                        value:'0',
-                        PowerChild:[{
-                            value:'0-0',
-                            PowerChildName:'群文件夹管理'
-                        },{
-                            value:'0-1',
-                            PowerChildName:'成绩总评管理'
-                        },{
-                            value:'0-2',
-                            PowerChildName:'大数据认知评估管理'
-                        },{
-                            value:'0-3',
-                            PowerChildName:'学科测试管理'
-                        },]
-                    },{
-                        PowerName:'信息发布',
-                        value:'1',
-                        PowerChild:[{
-                            value:'1-0',
-                            PowerChildName:'发布新闻资讯'
-                        },{
-                            value:'1-1',
-                            PowerChildName:'发布通知'
-                        },{
-                            value:'1-2',
-                            PowerChildName:'发布问卷调查'
-                        }]
-                    },{
-                        PowerName:'平台管理',
-                        value:'2',
-                        PowerChild:[{
-                            value:'2-0',
-                            PowerChildName:'用户档案管理'
-                        },{
-                            value:'2-1',
-                            PowerChildName:'行政班管理'
-                        },{
-                            value:'2-2',
-                            PowerChildName:'用户账号管理'
-                        },{
-                            value:'2-3',
-                            PowerChildName:'学科管理'
-                        },{
-                            value:'2-4',
-                            PowerChildName:'教学班管理'
-                        },{
-                            value:'2-5',
-                            PowerChildName:'课程安排管理'
-                        },{
-                            value:'2-8',
-                            PowerChildName:'网络访问统计'
-                        },]
-                    },{
-                        PowerName:'资源建设',
-                        value:'3',
-                        PowerChild:[{
-                            value:'3-0',
-                            PowerChildName:'网站资源管理'
-                        },{
-                            value:'3-2',
-                            PowerChildName:'资源库管理'
-                        }]
-                    },]
-                }
-            }, {
-                key: 2,
-                Name: {
-                    Name: '李丽丽',
-                    UserID: '201700121245',
-                    key: 2
-                },
-                UserName: 'ZXSTU_001',
-                Sign: '人生重要的不是所站的位置，而是所朝的方向',
-                Gender: '男',
-                UserImg: {
-                    PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
-                    PhotoPath_NOcache: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg'
-                },
-                UserContact: {
-                    QQ: '1519406168',
-                    WeiXin: 'asd1519406168',
-                    Telephone: '15626248624',
-                    weibo: '15626248624'
-                },
-                handle: {
-                    key: 2
-                }, Power: {
-                    key: 2,
-                    Powers:[{
-                        PowerName:'子系统管理',
-                        value:'0',
-                        PowerChild:[{
-                            value:'0-0',
-                            PowerChildName:'群文件夹管理'
-                        },{
-                            value:'0-1',
-                            PowerChildName:'成绩总评管理'
-                        },{
-                            value:'0-2',
-                            PowerChildName:'大数据认知评估管理'
-                        },{
-                            value:'0-3',
-                            PowerChildName:'学科测试管理'
-                        },]
-                    },{
-                        PowerName:'信息发布',
-                        value:'1',
-                        PowerChild:[{
-                            value:'1-0',
-                            PowerChildName:'发布新闻资讯'
-                        },{
-                            value:'1-1',
-                            PowerChildName:'发布通知'
-                        },{
-                            value:'1-2',
-                            PowerChildName:'发布问卷调查'
-                        }]
-                    },{
-                        PowerName:'平台管理',
-                        value:'2',
-                        PowerChild:[{
-                            value:'2-4',
-                            PowerChildName:'教学班管理'
-                        },{
-                            value:'2-5',
-                            PowerChildName:'课程安排管理'
-                        },{
-                            value:'2-6',
-                            PowerChildName:'系统管理'
-                        },{
-                            value:'2-7',
-                            PowerChildName:'在线用户管理'
-                        },{
-                            value:'2-8',
-                            PowerChildName:'网络访问统计'
-                        },]
-                    },{
-                        PowerName:'资源建设',
-                        value:'3',
-                        PowerChild:[{
-                            value:'3-0',
-                            PowerChildName:'网站资源管理'
-                        },{
-                            value:'3-1',
-                            PowerChildName:'应用管理'
-                        },{
-                            value:'3-2',
-                            PowerChildName:'资源库管理'
-                        }]
-                    },]
-                }
-            }, {
-                key: 3,
-                Name: {
-                    Name: '蓝线',
-                    UserID: '201700121245',
-                    key: 3
-                },
-                UserName: 'ZXSTU_001',
-                Sign: '人生重要的不是所站的位置，而是所朝的方向',
-                Gender: '男',
-                UserImg: {
-                    PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
-                    PhotoPath_NOcache: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg'
-                },
-                UserContact: {
-                    QQ: '1519406168',
-                    WeiXin: 'asd1519406168',
-                    Telephone: '15626248624',
-                    weibo: '15626248624'
-                },
-                handle: {
-                    key: 3
-                }, Power: {
-                    key: 3,
-                    Powers:[{
-                        PowerName:'子系统管理',
-                        value:'0',
-                        PowerChild:[{
-                            value:'0-0',
-                            PowerChildName:'群文件夹管理'
-                        },{
-                            value:'0-1',
-                            PowerChildName:'成绩总评管理'
-                        },{
-                            value:'0-2',
-                            PowerChildName:'大数据认知评估管理'
-                        },{
-                            value:'0-3',
-                            PowerChildName:'学科测试管理'
-                        },]
-                    },{
-                        PowerName:'信息发布',
-                        value:'1',
-                        PowerChild:[{
-                            value:'1-0',
-                            PowerChildName:'发布新闻资讯'
-                        },{
-                            value:'1-1',
-                            PowerChildName:'发布通知'
-                        },{
-                            value:'1-2',
-                            PowerChildName:'发布问卷调查'
-                        }]
-                    },{
-                        PowerName:'平台管理',
-                        value:'2',
-                        PowerChild:[{
-                            value:'2-0',
-                            PowerChildName:'用户档案管理'
-                        },{
-                            value:'2-1',
-                            PowerChildName:'行政班管理'
-                        },{
-                            value:'2-2',
-                            PowerChildName:'用户账号管理'
-                        },{
-                            value:'2-3',
-                            PowerChildName:'学科管理'
-                        },{
-                            value:'2-4',
-                            PowerChildName:'教学班管理'
-                        },{
-                            value:'2-5',
-                            PowerChildName:'课程安排管理'
-                        },{
-                            value:'2-6',
-                            PowerChildName:'系统管理'
-                        },{
-                            value:'2-7',
-                            PowerChildName:'在线用户管理'
-                        },{
-                            value:'2-8',
-                            PowerChildName:'网络访问统计'
-                        },]
-                    },{
-                        PowerName:'资源建设',
-                        value:'3',
-                        PowerChild:[{
-                            value:'3-0',
-                            PowerChildName:'网站资源管理'
-                        },{
-                            value:'3-1',
-                            PowerChildName:'应用管理'
-                        },{
-                            value:'3-2',
-                            PowerChildName:'资源库管理'
-                        }]
-                    },]
-                }
-            }, {
-                key: 4,
-                Name: {
-                    Name: '张心仪',
-                    UserID: '201700121245',
-                    key: 4
-                },
-                UserName: 'ZXSTU_001',
-                Sign: '人生重要的不是所站的位置，而是所朝的方向',
-                Gender: '男',
-                UserImg: {
-                    PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
-                    PhotoPath_NOcache: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg'
-                },
-                UserContact: {
-                    QQ: '1519406168',
-                    WeiXin: 'asd1519406168',
-                    Telephone: '15626248624',
-                    weibo: '15626248624'
-                },
-                handle: {
-                    key: 4
-                }, Power: {
-                    key: 4,
-                    Powers:[{
-                        PowerName:'子系统管理',
-                        value:'0',
-                        PowerChild:[{
-                            value:'0-0',
-                            PowerChildName:'群文件夹管理'
-                        },{
-                            value:'0-1',
-                            PowerChildName:'成绩总评管理'
-                        },{
-                            value:'0-2',
-                            PowerChildName:'大数据认知评估管理'
-                        },{
-                            value:'0-3',
-                            PowerChildName:'学科测试管理'
-                        },]
-                    },{
-                        PowerName:'信息发布',
-                        value:'1',
-                        PowerChild:[{
-                            value:'1-0',
-                            PowerChildName:'发布新闻资讯'
-                        },{
-                            value:'1-1',
-                            PowerChildName:'发布通知'
-                        },{
-                            value:'1-2',
-                            PowerChildName:'发布问卷调查'
-                        }]
-                    },{
-                        PowerName:'平台管理',
-                        value:'2',
-                        PowerChild:[{
-                            value:'2-0',
-                            PowerChildName:'用户档案管理'
-                        },{
-                            value:'2-1',
-                            PowerChildName:'行政班管理'
-                        },{
-                            value:'2-2',
-                            PowerChildName:'用户账号管理'
-                        },{
-                            value:'2-3',
-                            PowerChildName:'学科管理'
-                        },{
-                            value:'2-4',
-                            PowerChildName:'教学班管理'
-                        },{
-                            value:'2-5',
-                            PowerChildName:'课程安排管理'
-                        },{
-                            value:'2-6',
-                            PowerChildName:'系统管理'
-                        },{
-                            value:'2-7',
-                            PowerChildName:'在线用户管理'
-                        },{
-                            value:'2-8',
-                            PowerChildName:'网络访问统计'
-                        },]
-                    },{
-                        PowerName:'资源建设',
-                        value:'3',
-                        PowerChild:[{
-                            value:'3-0',
-                            PowerChildName:'网站资源管理'
-                        },{
-                            value:'3-1',
-                            PowerChildName:'应用管理'
-                        },{
-                            value:'3-2',
-                            PowerChildName:'资源库管理'
-                        }]
-                    },]
-                }
-            }, {
-                key: 5,
-                Name: {
-                    Name: '张心仪',
-                    UserID: '201700121245',
-                    key: 5
-                },
-                UserName: 'ZXSTU_001',
-                Sign: '人生重要的不是所站的位置，而是所朝的方向',
-                Gender: '男',
-                UserImg: {
-                    PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
-                    PhotoPath_NOcache: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg'
-                },
-                UserContact: {
-                    QQ: '1519406168',
-                    WeiXin: '',
-                    Telephone: '15626248624',
-                    weibo: '15626248624'
-                },
-                handle: {
-                    key: 5
-                }, Power: {
-                    key: 5,
-                    Powers:[{
-                        PowerName:'子系统管理',
-                        value:'0',
-                        PowerChild:[{
-                            value:'0-0',
-                            PowerChildName:'群文件夹管理'
-                        },{
-                            value:'0-1',
-                            PowerChildName:'成绩总评管理'
-                        },{
-                            value:'0-2',
-                            PowerChildName:'大数据认知评估管理'
-                        },{
-                            value:'0-3',
-                            PowerChildName:'学科测试管理'
-                        },]
-                    },{
-                        PowerName:'信息发布',
-                        value:'1',
-                        PowerChild:[{
-                            value:'1-0',
-                            PowerChildName:'发布新闻资讯'
-                        },{
-                            value:'1-1',
-                            PowerChildName:'发布通知'
-                        },{
-                            value:'1-2',
-                            PowerChildName:'发布问卷调查'
-                        }]
-                    },{
-                        PowerName:'平台管理',
-                        value:'2',
-                        PowerChild:[{
-                            value:'2-0',
-                            PowerChildName:'用户档案管理'
-                        },{
-                            value:'2-1',
-                            PowerChildName:'行政班管理'
-                        },{
-                            value:'2-2',
-                            PowerChildName:'用户账号管理'
-                        },{
-                            value:'2-3',
-                            PowerChildName:'学科管理'
-                        },{
-                            value:'2-4',
-                            PowerChildName:'教学班管理'
-                        },{
-                            value:'2-5',
-                            PowerChildName:'课程安排管理'
-                        },{
-                            value:'2-6',
-                            PowerChildName:'系统管理'
-                        },{
-                            value:'2-7',
-                            PowerChildName:'在线用户管理'
-                        },{
-                            value:'2-8',
-                            PowerChildName:'网络访问统计'
-                        },]
-                    },{
-                        PowerName:'资源建设',
-                        value:'3',
-                        PowerChild:[{
-                            value:'3-0',
-                            PowerChildName:'网站资源管理'
-                        },{
-                            value:'3-1',
-                            PowerChildName:'应用管理'
-                        },{
-                            value:'3-2',
-                            PowerChildName:'资源库管理'
-                        }]
-                    },]
-                }
-            }, {
-                key: 6,
-                Name: {
-                    Name: '张心仪',
-                    UserID: '201700121245',
-                    key: 6
-                },
-                UserName: 'ZXSTU_001',
-                Sign: '人生重要的不是所站的位置，而是所朝的方向',
-                Gender: '男',
-                UserImg: {
-                    PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
-                    PhotoPath_NOcache: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg'
-                },
-                UserContact: {
-                    QQ: '1519406168',
-                    WeiXin: 'asd1519406168',
-                    Telephone: '15626248624',
-                    weibo: ''
-                },
-                handle: {
-                    key: 6
-                }, Power: {
-                    key: 6,
-                    Powers:[{
-                        PowerName:'子系统管理',
-                        value:'0',
-                        PowerChild:[{
-                            value:'0-0',
-                            PowerChildName:'群文件夹管理'
-                        },{
-                            value:'0-1',
-                            PowerChildName:'成绩总评管理'
-                        },{
-                            value:'0-2',
-                            PowerChildName:'大数据认知评估管理'
-                        },{
-                            value:'0-3',
-                            PowerChildName:'学科测试管理'
-                        },]
-                    },{
-                        PowerName:'信息发布',
-                        value:'1',
-                        PowerChild:[{
-                            value:'1-0',
-                            PowerChildName:'发布新闻资讯'
-                        },{
-                            value:'1-1',
-                            PowerChildName:'发布通知'
-                        },{
-                            value:'1-2',
-                            PowerChildName:'发布问卷调查'
-                        }]
-                    },{
-                        PowerName:'平台管理',
-                        value:'2',
-                        PowerChild:[{
-                            value:'2-0',
-                            PowerChildName:'用户档案管理'
-                        },{
-                            value:'2-1',
-                            PowerChildName:'行政班管理'
-                        },{
-                            value:'2-2',
-                            PowerChildName:'用户账号管理'
-                        },{
-                            value:'2-3',
-                            PowerChildName:'学科管理'
-                        },{
-                            value:'2-4',
-                            PowerChildName:'教学班管理'
-                        },{
-                            value:'2-5',
-                            PowerChildName:'课程安排管理'
-                        },{
-                            value:'2-6',
-                            PowerChildName:'系统管理'
-                        },{
-                            value:'2-7',
-                            PowerChildName:'在线用户管理'
-                        },{
-                            value:'2-8',
-                            PowerChildName:'网络访问统计'
-                        },]
-                    },{
-                        PowerName:'资源建设',
-                        value:'3',
-                        PowerChild:[{
-                            value:'3-0',
-                            PowerChildName:'网站资源管理'
-                        },{
-                            value:'3-1',
-                            PowerChildName:'应用管理'
-                        },{
-                            value:'3-2',
-                            PowerChildName:'资源库管理'
-                        }]
-                    },]
-                }
-            }, {
-                key: 7,
-                Name: {
-                    Name: '张心仪',
-                    UserID: '201700121245',
-                    key: 7
-                },
-                UserName: 'ZXSTU_001',
-                Sign: '人生重要的不是所站的位置，而是所朝的方向',
-                Gender: '男',
-                UserImg: {
-                    PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
-                    PhotoPath_NOcache: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg'
-                },
-                UserContact: {
-                    QQ: '',
-                    WeiXin: '',
-                    Telephone: '',
-                    weibo: ''
-                },
-                handle: {
-                    key: 7
-                }, Power: {
-                    key: 7,
-                    Powers:[{
-                        PowerName:'子系统管理',
-                        value:'0',
-                        PowerChild:[{
-                            value:'0-0',
-                            PowerChildName:'群文件夹管理'
-                        },{
-                            value:'0-1',
-                            PowerChildName:'成绩总评管理'
-                        },{
-                            value:'0-2',
-                            PowerChildName:'大数据认知评估管理'
-                        },{
-                            value:'0-3',
-                            PowerChildName:'学科测试管理'
-                        },]
-                    },{
-                        PowerName:'信息发布',
-                        value:'1',
-                        PowerChild:[{
-                            value:'1-0',
-                            PowerChildName:'发布新闻资讯'
-                        },{
-                            value:'1-1',
-                            PowerChildName:'发布通知'
-                        },{
-                            value:'1-2',
-                            PowerChildName:'发布问卷调查'
-                        }]
-                    },{
-                        PowerName:'平台管理',
-                        value:'2',
-                        PowerChild:[{
-                            value:'2-0',
-                            PowerChildName:'用户档案管理'
-                        },{
-                            value:'2-1',
-                            PowerChildName:'行政班管理'
-                        },{
-                            value:'2-2',
-                            PowerChildName:'用户账号管理'
-                        },{
-                            value:'2-3',
-                            PowerChildName:'学科管理'
-                        },{
-                            value:'2-4',
-                            PowerChildName:'教学班管理'
-                        },{
-                            value:'2-5',
-                            PowerChildName:'课程安排管理'
-                        },{
-                            value:'2-6',
-                            PowerChildName:'系统管理'
-                        },{
-                            value:'2-7',
-                            PowerChildName:'在线用户管理'
-                        },{
-                            value:'2-8',
-                            PowerChildName:'网络访问统计'
-                        },]
-                    },{
-                        PowerName:'资源建设',
-                        value:'3',
-                        PowerChild:[{
-                            value:'3-0',
-                            PowerChildName:'网站资源管理'
-                        },{
-                            value:'3-1',
-                            PowerChildName:'应用管理'
-                        },{
-                            value:'3-2',
-                            PowerChildName:'资源库管理'
-                        }]
-                    },]
-                }
-            }, {
-                key: 8,
-                Name: {
-                    Name: '张心仪',
-                    UserID: '201700121245',
-                    key: 8
-                },
-                UserName: 'ZXSTU_001',
-                Sign: '人生重要的不是所站的位置，而是所朝的方向',
-                Gender: '男',
-                UserImg: {
-                    PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
-                    PhotoPath_NOcache: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg'
-                },
-                UserContact: {
-                    QQ: '1519406168',
-                    WeiXin: 'asd1519406168',
-                    Telephone: '15626248624',
-                    weibo: '15626248624'
-                },
-                handle: {
-                    key: 8
-                }, Power: {
-                    key: 8,
-                    Powers:[{
-                        PowerName:'子系统管理',
-                        value:'0',
-                        PowerChild:[{
-                            value:'0-0',
-                            PowerChildName:'群文件夹管理'
-                        },{
-                            value:'0-1',
-                            PowerChildName:'成绩总评管理'
-                        },{
-                            value:'0-2',
-                            PowerChildName:'大数据认知评估管理'
-                        },{
-                            value:'0-3',
-                            PowerChildName:'学科测试管理'
-                        },]
-                    },{
-                        PowerName:'信息发布',
-                        value:'1',
-                        PowerChild:[{
-                            value:'1-0',
-                            PowerChildName:'发布新闻资讯'
-                        },{
-                            value:'1-1',
-                            PowerChildName:'发布通知'
-                        },{
-                            value:'1-2',
-                            PowerChildName:'发布问卷调查'
-                        }]
-                    },{
-                        PowerName:'平台管理',
-                        value:'2',
-                        PowerChild:[{
-                            value:'2-0',
-                            PowerChildName:'用户档案管理'
-                        },{
-                            value:'2-1',
-                            PowerChildName:'行政班管理'
-                        },{
-                            value:'2-2',
-                            PowerChildName:'用户账号管理'
-                        },{
-                            value:'2-3',
-                            PowerChildName:'学科管理'
-                        },{
-                            value:'2-4',
-                            PowerChildName:'教学班管理'
-                        },{
-                            value:'2-5',
-                            PowerChildName:'课程安排管理'
-                        },{
-                            value:'2-6',
-                            PowerChildName:'系统管理'
-                        },{
-                            value:'2-7',
-                            PowerChildName:'在线用户管理'
-                        },{
-                            value:'2-8',
-                            PowerChildName:'网络访问统计'
-                        },]
-                    },{
-                        PowerName:'资源建设',
-                        value:'3',
-                        PowerChild:[{
-                            value:'3-0',
-                            PowerChildName:'网站资源管理'
-                        },{
-                            value:'3-1',
-                            PowerChildName:'应用管理'
-                        },{
-                            value:'3-2',
-                            PowerChildName:'资源库管理'
-                        }]
-                    },]
-                }
-            }, {
-                key: 9,
-                Name: {
-                    Name: '张心仪',
-                    UserID: '201700121245',
-                    key: 9
-                },
-                UserName: 'ZXSTU_001',
-                Sign: '人生重要的不是所站的位置，而是所朝的方向',
-                Gender: '男',
-                UserImg: {
-                    PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
-                    PhotoPath_NOcache: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg'
-                },
-                UserContact: {
-                    QQ: '1519406168',
-                    WeiXin: 'asd1519406168',
-                    Telephone: '15626248624',
-                    weibo: '15626248624'
-                },
-                handle: {
-                    key: 9
-                }, Power: {
-                    key: 9,
-                    Powers:[{
-                        PowerName:'子系统管理',
-                        value:'0',
-                        PowerChild:[{
-                            value:'0-0',
-                            PowerChildName:'群文件夹管理'
-                        },{
-                            value:'0-1',
-                            PowerChildName:'成绩总评管理'
-                        },{
-                            value:'0-2',
-                            PowerChildName:'大数据认知评估管理'
-                        },{
-                            value:'0-3',
-                            PowerChildName:'学科测试管理'
-                        },]
-                    },{
-                        PowerName:'信息发布',
-                        value:'1',
-                        PowerChild:[{
-                            value:'1-0',
-                            PowerChildName:'发布新闻资讯'
-                        },{
-                            value:'1-1',
-                            PowerChildName:'发布通知'
-                        },{
-                            value:'1-2',
-                            PowerChildName:'发布问卷调查'
-                        }]
-                    },{
-                        PowerName:'平台管理',
-                        value:'2',
-                        PowerChild:[{
-                            value:'2-0',
-                            PowerChildName:'用户档案管理'
-                        },{
-                            value:'2-1',
-                            PowerChildName:'行政班管理'
-                        },{
-                            value:'2-2',
-                            PowerChildName:'用户账号管理'
-                        },{
-                            value:'2-3',
-                            PowerChildName:'学科管理'
-                        },{
-                            value:'2-4',
-                            PowerChildName:'教学班管理'
-                        },{
-                            value:'2-5',
-                            PowerChildName:'课程安排管理'
-                        },{
-                            value:'2-6',
-                            PowerChildName:'系统管理'
-                        },{
-                            value:'2-7',
-                            PowerChildName:'在线用户管理'
-                        },{
-                            value:'2-8',
-                            PowerChildName:'网络访问统计'
-                        },]
-                    },{
-                        PowerName:'资源建设',
-                        value:'3',
-                        PowerChild:[{
-                            value:'3-0',
-                            PowerChildName:'网站资源管理'
-                        },{
-                            value:'3-1',
-                            PowerChildName:'应用管理'
-                        },{
-                            value:'3-2',
-                            PowerChildName:'资源库管理'
-                        }]
-                    },]
-                }
-            }],
-            pagination: { total: 50 },
+
+            pagination: 1,
             loading: false,
             selectedAll: false,
             checkedList: [],
@@ -1187,8 +143,11 @@ class Admin extends React.Component {
             onClickKey: 0,
             userMsgKey: 0,
             keyList: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-            destroyOnCloce:true,
-            changeAdminModalVisible:false
+            destroyOnCloce: true,
+            changeAdminModalVisible: false,
+            keyword: '',
+            CancelBtnShow: 'n',
+            searchValue: ''
 
 
         }
@@ -1217,21 +176,33 @@ class Admin extends React.Component {
     }
 
 
-    AdminDropMenu = (e) => {
-        const { dispatch } = this.props;
-        dispatch(actions.UpDataState.getSubjectAdminPreview('/ArchivesAdmin?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
-    }
-
-
-
+    // 搜索
     AdminSearch = (e) => {
-        console.log(e)
+        const { dispatch } = this.props;
+        this.setState({
+            keyword: e.value,
+            CancelBtnShow: 'y'
+        })
+        if (e.value === '') {
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-warn',
+                title: "关键词不能为空",
+                ok: this.onAlertWarnOk.bind(this),
+                cancel: this.onAlertWarnClose.bind(this),
+                close: this.onAlertWarnClose.bind(this)
+            }));
+        } else {
+
+            dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=0&PageSize=10&keyword=' + e.value));
+
+        }
+    }
+    onChangeSearch = (e) => {
+        this.setState({
+            searchValue: e.target.value
+        })
     }
 
-    onSelectChange = (e) => {
-        console.log(e)
-        //this.setState({ selectedRowKeys });
-    }
 
     onUserContactClick = (UserContact) => {
         console.log(UserContact)
@@ -1248,9 +219,6 @@ class Admin extends React.Component {
     //     })
     // }
 
-    onMouseEnterName = () => {
-
-    }
     OnCheckAllChange = (e) => {
         console.log(e)
         if (e.target.checked) {
@@ -1265,6 +233,7 @@ class Admin extends React.Component {
             })
         }
     }
+    // 全选
     onCheckBoxGroupChange = (checkedList) => {
         console.log(checkedList)
         this.setState({
@@ -1284,18 +253,13 @@ class Admin extends React.Component {
             AdminModalVisible: false
         })
     }
-    ChangePwdMadalOk = (e) => {
-        console.log(e)
-        this.setState({
-            ChangePwdMadalVisible: false
-        })
-    }
-    ChangePwdMadalOk = (e) => {
-        console.log(e)
-        this.setState({
-            ChangePwdMadalVisible: false
-        })
-    }
+
+    // ChangePwdMadalOk = (e) => {
+    //     console.log(e)
+    //     this.setState({
+    //         ChangePwdMadalVisible: false
+    //     })
+    // }
 
     onDeleteAllClick = () => {
         const { dispatch } = this.props;
@@ -1315,7 +279,7 @@ class Admin extends React.Component {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-query',
                 title: "确定删除？",
-                ok: this.onAlertQueryOk.bind(this, 888888),
+                ok: this.onAlertDeleteOk.bind(this),
                 cancel: this.onAlertQueryClose.bind(this),
                 close: this.onAlertQueryClose.bind(this)
             }));
@@ -1334,10 +298,10 @@ class Admin extends React.Component {
 
     }
     onHandleClick = (key) => {
-        console.log(this.state.AdminAccountData[key])
+        //console.log(this.state.AdminAccountData[key])
         this.setState({
-            AdminChangeKey:key,
-            changeAdminModalVisible:true,
+            AdminChangeKey: key,
+            changeAdminModalVisible: true,
             userKey: 'change'
         })
     }
@@ -1360,8 +324,11 @@ class Admin extends React.Component {
         const { dispatch } = this.props;
         dispatch(actions.UpUIState.hideErrorAlert());
     }
+    // 
     onAlertQueryOk = (pwd) => {
-        const { dispatch } = this.props;
+        const { dispatch, DataState } = this.props;
+        let url = '/DeleteAdmin';
+
         dispatch(actions.UpUIState.hideErrorAlert());
         console.log(pwd);
         this.setState({
@@ -1369,13 +336,65 @@ class Admin extends React.Component {
             checkAll: false
         })
     }
-    onPagiNationChange = (e) => {
-        console.log(e)
+    // 删除
+    onAlertDeleteOk = () => {
+        const { dispatch, DataState } = this.props;
+        let url = '/DeleteAdmin';
+        let UserIDs = this.state.checkedList.map(child => {
+            return DataState.AdminPreview.newList[child].UserName.UserID
+        })
+        postData(CONFIG.UserAccountProxy + url,
+            {
+                UserIDs: UserIDs.join()
+            },
+            2).then(res => {
+                if (res.Status === '401') {
+                    console.log('错误码：' + res.Status)
+                }
+                return res.json()
+            }).then(json => {
+                if (json.Status === 400) {
+                    console.log(json.Status)
+                } else if (json.Status === 200) {
+                    dispatch(actions.UpUIState.hideErrorAlert());
+                    this.setState({
+                        checkedList: [],
+                        checkAll: false
+                    })
+                    if (this.state.searchValue !== '')
+                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=0&PageSize=10&Keyword=' + this.state.searchValue));
+                    else
+                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
+                }
+
+            });
+
     }
-    onUserNameClick = (key) => {
+    // 分页
+    onPagiNationChange = (value) => {
+        const { dispatch } = this.props;
+        this.setState({
+            pagination: value
+        })
+
+
+        let keyword = ''
+
+
+        if (this.state.keyword !== '') {
+            keyword = '&keyword=' + this.state.keyword
+        }
+        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=' + (--value) + '&PageSize=10' + keyword));
+    }
+
+
+    onUserNameClick = (UserID) => {
+        const { dispatch } = this.props;
+
+        dispatch(actions.UpDataState.getUserMsg('/GetUserDetail?userid=' + UserID))
+
         this.setState({
             AdminDetailsMsgModalVisible: true,
-            userMsgKey: key
         })
     }
     AdminDetailsMsgModalOk = () => {
@@ -1390,60 +409,269 @@ class Admin extends React.Component {
 
         })
     }
-    
+
     handleAddAdminModalOk = (e) => {
-        console.log(e)
-        this.setState({
-            addAdminModalVisible: false
-        })
-       
+        const { dispatch, UIState, DataState } = this.props;
+
+
+        if (!DataState.AdminPreview.TrasferData.isChange) {
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-warn',
+                title: "你没有修改",
+                ok: this.onAlertWarnOk.bind(this),
+                cancel: this.onAlertWarnClose.bind(this),
+                close: this.onAlertWarnClose.bind(this)
+            }));
+            return;
+        }
+        if (UIState.TipsVisible.UserIDTipsVisible || !DataState.AdminPreview.TrasferData.UserID) {
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-warn',
+                title: "工号有错误",
+                ok: this.onAlertWarnOk.bind(this),
+                cancel: this.onAlertWarnClose.bind(this),
+                close: this.onAlertWarnClose.bind(this)
+            }));
+            return;
+        }
+        if (UIState.TipsVisible.UserNameTipsVisible || !DataState.AdminPreview.TrasferData.UserName) {
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-warn',
+                title: "姓名有错误",
+                ok: this.onAlertWarnOk.bind(this),
+                cancel: this.onAlertWarnClose.bind(this),
+                close: this.onAlertWarnClose.bind(this)
+            }));
+            return;
+        }
+        let url = '/AddAdmin';
+        // let ModulesID = []
+        // DataState.AdminPreview.TrasferData.ModuleIDs.map((child) => {
+        //     console.log(child.length)
+        //     if (child.length !== 0)
+        //         ModulesID.push(child.join())
+        // })
+        postData(CONFIG.UserAccountProxy + url,
+            {
+                userID: DataState.AdminPreview.TrasferData.UserID,
+                UserName: DataState.AdminPreview.TrasferData.UserName,
+                ModuleIDs: DataState.AdminPreview.TrasferData.ModuleIDs,
+                PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
+                Pwd: DataState.AdminPreview.TrasferData.Pwd
+            },
+            2).then(res => {
+                if (res.Status === '401') {
+                    console.log('错误码：' + res.Status)
+                }
+                return res.json()
+            }).then(json => {
+                if (json.Status === 400) {
+                    console.log(json.Status)
+                } else if (json.Status === 200) {
+                    this.setState({
+                        addAdminModalVisible: false
+                    })
+                    dispatch(actions.UpDataState.setAdminPreview({
+                        isChange: false,
+                        UserID: '',
+                        UserName: '',
+                        ModuleIDs: '',
+                        PhotoPath: '',
+                        Pwd: '0'
+                    }))
+                    dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
+                }
+
+            });
+
+
     }
     handleAddAdminModalCancel = (e) => {
-        console.log(e)
+        const { dispatch, DataState } = this.props;
+        dispatch(actions.UpDataState.setAdminPreview({
+            isChange: false,
+            UserID: '',
+            UserName: '',
+            ModuleIDs: '',
+            PhotoPath: '',
+            Pwd: '0'
+        }))
         this.setState({
             addAdminModalVisible: false
         })
-        
+
     }
     handleChangeAdminModalOk = (e) => {
-        console.log(e)
-        this.setState({
-            changeAdminModalVisible: false
-        })
-        
+        const { dispatch, UIState, DataState } = this.props;
+
+
+        if (!DataState.AdminPreview.TrasferData.isChange) {
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-warn',
+                title: "你没有修改",
+                ok: this.onAlertWarnOk.bind(this),
+                cancel: this.onAlertWarnClose.bind(this),
+                close: this.onAlertWarnClose.bind(this)
+            }));
+            return;
+        }
+        if (UIState.TipsVisible.UserIDTipsVisible) {
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-warn',
+                title: "工号有错误",
+                ok: this.onAlertWarnOk.bind(this),
+                cancel: this.onAlertWarnClose.bind(this),
+                close: this.onAlertWarnClose.bind(this)
+            }));
+            return;
+        }
+        if (UIState.TipsVisible.UserNameTipsVisible) {
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-warn',
+                title: "姓名有错误",
+                ok: this.onAlertWarnOk.bind(this),
+                cancel: this.onAlertWarnClose.bind(this),
+                close: this.onAlertWarnClose.bind(this)
+            }));
+            return;
+        }
+        let url = '/EditAdmin';
+        // let ModulesID = []
+        // DataState.AdminPreview.TrasferData.ModuleIDs.map((child) => {
+        //     console.log(child.length)
+        //     if (child.length !== 0)
+        //         ModulesID.push(child.join())
+        // })
+        postData(CONFIG.UserAccountProxy + url,
+            {
+                userID: DataState.AdminPreview.TrasferData.UserID,
+                UserName: DataState.AdminPreview.TrasferData.UserName,
+                ModuleIDs: DataState.AdminPreview.TrasferData.ModuleIDs,
+                PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
+                Pwd: DataState.AdminPreview.TrasferData.Pwd
+            },
+            2).then(res => {
+                if (res.Status === '401') {
+                    console.log('错误码：' + res.Status)
+                }
+                return res.json()
+            }).then(json => {
+                if (json.Status === 400) {
+                    console.log(json.Status)
+                } else if (json.Status === 200) {
+                    this.setState({
+                        changeAdminModalVisible: false
+                    })
+                    dispatch(actions.UpDataState.setAdminPreview({
+                        isChange: false,
+                        UserID: '',
+                        UserName: '',
+                        ModuleIDs: '',
+                        PhotoPath: '',
+                        Pwd: '0'
+                    }))
+                    dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
+
+                }
+
+            });
+
+
     }
     handleChangeAdminModalCancel = (e) => {
-        console.log(e)
+        const { dispatch, DataState } = this.props;
+        dispatch(actions.UpDataState.setAdminPreview({
+            isChange: false,
+            UserID: '',
+            UserName: '',
+            ModuleIDs: '',
+            PhotoPath: '',
+            Pwd: '0'
+        }))
         this.setState({
             changeAdminModalVisible: false
         })
-       
-    }
 
-    onPwdchangeOk = (pwd) => {
-        console.log(pwd);
-        this.setState({
-            ChangePwdMadalVisible:false,
-            defaultPwd:888888
-         })
+    }
+    //修改密码
+    onPwdchangeOk = () => {
+        const { dispatch, DataState } = this.props;
+        let pwd = this.state.defaultPwd
+        if (pwd === '') {
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-warn',
+                title: "密码不能为空",
+                ok: this.onAlertWarnOk.bind(this),
+                cancel: this.onAlertWarnClose.bind(this),
+                close: this.onAlertWarnClose.bind(this)
+            }));
+            return;
+        }
+        console.log(this.state.onClickKey)
+        let url = '/ResetPwd'
+        postData(CONFIG.UserAccountProxy + url,
+            {
+                userID: DataState.AdminPreview.newList[this.state.onClickKey].UserName.UserID,
+                userType: 0,
+                newPwd: pwd
+            },
+            2).then(res => {
+                if (res.Status === '401') {
+                    console.log('错误码：' + res.Status)
+                }
+                return res.json()
+            }).then(json => {
+                if (json.Status === 400) {
+                    console.log(json.Status)
+                } else if (json.Status === 200) {
+                    this.setState({
+                        ChangePwdMadalVisible: false,
+                        defaultPwd: 888888
+                    })
+                    if (this.state.searchValue !== '')
+                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=0&PageSize=10&Keyword=' + this.state.searchValue));
+                    else
+                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
+
+                }
+
+            });
+
     }
     onPwdchangeClose = () => {
-         this.setState({
-            ChangePwdMadalVisible:false,
-            defaultPwd:888888
-         })
+        this.setState({
+            ChangePwdMadalVisible: false,
+            defaultPwd: 888888
+        })
     }
     onPwdchange = (e) => {
-        const {dispatch} = this.props;
+        const { dispatch } = this.props;
         console.log(e.target.value)
         this.setState({
-            defaultPwd:e.target.value
+            defaultPwd: e.target.value
         })
     }
 
 
-    onPowerClick = (Power) => {
-        console.log(Power)
+    // onPowerClick = (Power) => {
+    //     console.log(Power)
+    // }
+
+    //table改变，进行排序操作
+    onTableChange = (a, b, sorter) => {
+        const { DataState, dispatch } = this.props;
+        let keyword = ''
+
+
+        if (this.state.keyword !== '') {
+            keyword = '&keyword=' + this.state.keyword
+        }
+        console.log(sorter)
+        if (sorter && (sorter.columnKey === 'UserName' || sorter.columnKey === 'ShortName')) {
+            let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
+            dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageSize=10&sortFiled=' + sorter.columnKey + sortType + '&PageIndex=' + (this.state.pagination - 1) + keyword));
+
+        }
     }
     render() {
         const { UIState, DataState } = this.props;
@@ -1469,7 +697,7 @@ class Admin extends React.Component {
                         </span>
                         <div className='top-nav'>
 
-                            <span className='divide'>|</span>
+                            {/* <span className='divide'>|</span> */}
                             <span className='link' style={{ cursor: 'pointer' }} onClick={this.onAddAdmin}>添加管理员</span>
 
                         </div>
@@ -1480,6 +708,9 @@ class Admin extends React.Component {
                             <Search placeHolder='请输入关键字搜索...'
                                 onClickSearch={this.AdminSearch}
                                 height={30}
+                                Value={this.state.searchValue}
+                                onChange={this.onChangeSearch.bind(this)}
+                                CancelBtnShow={this.state.CancelBtnShow}
                             ></Search>
                         </div>
                         <div className='content-render'>
@@ -1487,6 +718,7 @@ class Admin extends React.Component {
                                 <CheckBoxGroup style={{ width: '100%' }} value={this.state.checkedList} onChange={this.onCheckBoxGroupChange.bind(this)}>
                                     <Table
                                         className='table'
+                                        onChange={this.onTableChange.bind(this)}
                                         columns={this.state.columns}
                                         pagination={false}
                                         loading={this.state.loading}
@@ -1501,7 +733,9 @@ class Admin extends React.Component {
                                 <div className='pagination-box'>
                                     <PagiNation
                                         showQuickJumper
-                                        total={this.state.pagination.total}
+                                        hideOnSinglepage={true}
+                                        current={this.state.pagination}
+                                        total={DataState.AdminPreview.Total}
                                         onChange={this.onPagiNationChange}
                                     ></PagiNation>
                                 </div>
@@ -1550,9 +784,9 @@ class Admin extends React.Component {
                     visible={this.state.addAdminModalVisible}
                     onOk={this.handleAddAdminModalOk}
                     onCancel={this.handleAddAdminModalCancel}
-                    
+
                 >
-                    <EditModal type='Admin' userKey={this.state.userKey} data = {DataState.AdminPreview.newList[this.state.AdminChangeKey]} PowerList = {DataState.AdminPreview.PowerList}></EditModal>
+                    {this.state.addAdminModalVisible ? (<EditModal type='Admin' userKey={this.state.userKey} data={DataState.AdminPreview.newList[this.state.AdminChangeKey]} PowerList={DataState.AdminPreview.PowerList}></EditModal>) : ''}
                 </Modal>
                 <Modal
                     ref='handleAdminMadal'
@@ -1562,16 +796,16 @@ class Admin extends React.Component {
                     visible={this.state.changeAdminModalVisible}
                     onOk={this.handleChangeAdminModalOk}
                     onCancel={this.handleChangeAdminModalCancel}
-                    
+
                 >
-                    {this.state.changeAdminModalVisible?(<EditModal type='Admin' userKey={this.state.userKey} data = {DataState.AdminPreview.newList[this.state.AdminChangeKey]} PowerList = {DataState.AdminPreview.PowerList}></EditModal>):''}
+                    {this.state.changeAdminModalVisible ? (<EditModal type='Admin' userKey={this.state.userKey} data={DataState.AdminPreview.newList[this.state.AdminChangeKey]} PowerList={DataState.AdminPreview.PowerList}></EditModal>) : ''}
                 </Modal>
                 <DetailsModal
                     ref='AdminDetailsMsgModal'
                     visible={this.state.AdminDetailsMsgModalVisible}
                     onOk={this.AdminDetailsMsgModalOk}
                     onCancel={this.AdminDetailsMsgModalCancel}
-                    data={data}
+                    data={DataState.GetUserMsg}
                     type='Admin'
                 >
                     <div className='modal-top'>
@@ -1596,7 +830,7 @@ class Admin extends React.Component {
                 <Alert show={this.state.ChangePwdMadalVisible}
                     type={'btn-query'}
                     abstract={<div className='alert-pwd'><span className='alert-pwd-tips'>新密码：</span><Input size='small' onChange={this.onPwdchange.bind(this)} style={{ width: 120 + 'px' }} value={this.state.defaultPwd}></Input></div>}
-                    title={this.state.ChangePwdMadalVisible?(<p className='alert-Title'>确定重置<span className='alert-Title-name'>{DataState.AdminPreview.newList[this.state.onClickKey].UserName.Name}</span><span className='alert-Title-id'>({DataState.AdminPreview.newList[this.state.onClickKey].UserName.UserID})</span> 的密码？</p>):''}
+                    title={this.state.ChangePwdMadalVisible ? (<p className='alert-Title'>确定重置<span className='alert-Title-name'>{DataState.AdminPreview.newList[this.state.onClickKey].UserName.Name}</span><span className='alert-Title-id'>({DataState.AdminPreview.newList[this.state.onClickKey].UserName.UserID})</span> 的密码？</p>) : ''}
                     onOk={this.onPwdchangeOk}
                     onCancel={this.onPwdchangeClose}
                     onClose={this.onPwdchangeClose}

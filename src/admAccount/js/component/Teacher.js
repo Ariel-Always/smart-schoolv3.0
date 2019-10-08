@@ -507,7 +507,7 @@ class Teacher extends React.Component {
         console.log(sorter)
         if (sorter && (sorter.columnKey === 'UserName' || sorter.columnKey === 'ShortName')) {
             let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
-            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&sortFiled=' + sorter.columnKey + '&PageIndex=0&PageSize=10&' + sortType + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + keyword + SubjectSelect));
+            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&sortFiled=' + sorter.columnKey + 'PageSize=10&' + sortType + '&PageIndex=' + (this.state.pagination - 1)  + keyword + SubjectSelect));
 
         }
     }

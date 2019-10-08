@@ -14,9 +14,9 @@ const AdminPreview = (state = {
 }, actions) => {
     switch (actions.type) {
         case UpDataState.GET_ADMIN_PREVIEW:
-            let { Total, ...list } = actions.data;
+            //let { Total, ...list } = actions.data;
 
-            let data = handleData(list, actions.pageIndex, actions.pageSize);
+            let data = handleData(actions.data, actions.pageIndex, actions.pageSize);
 
             return Object.assign({}, state, { ...data });
         case UpDataState.SET_ADMIN_PREVIEW:

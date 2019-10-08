@@ -8,6 +8,13 @@ const CLOSE_WARN_ALERT = 'CLOSE_WARN_ALERT';
 const SHOW_QUERY_ALERT = 'SHOW_QUERY_ALERT';
 const CLOSE_QUERY_ALERT = 'CLOSE_QUERY_ALERT';
 
+//tips提示
+const USER_NAME_TIPS_VISIBLE_CLOSE = 'USER_NAME_TIPS_VISIBLE_CLOSE';
+const USER_NAME_TIPS_VISIBLE_OPEN = 'USER_NAME_TIPS_VISIBLE_OPEN';
+const USER_ID_TIPS_VISIBLE_CLOSE = 'USER_ID_TIPS_VISIBLE_CLOSE';
+const USER_ID_TIPS_VISIBLE_OPEN = 'USER_ID_TIPS_VISIBLE_OPEN';
+
+
 //操作
 const showErrorAlert = (alertMsg)=> {
     return {type:SHOW_ERROR_ALERT,msg:alertMsg};
@@ -31,6 +38,22 @@ const hideQueryAlert = () =>{
     return {type:CLOSE_QUERY_ALERT};
 };
 
+//tip提示
+
+const UserNameTipsVisibleOpen = (alertMsg)=> {
+    return {type:USER_NAME_TIPS_VISIBLE_OPEN,msg:alertMsg};
+};
+const UserNameTipsVisibleClose = (alertMsg)=> {
+    return {type:USER_NAME_TIPS_VISIBLE_CLOSE,msg:alertMsg};
+};
+const UserIDTipsVisibleOpen = (alertMsg)=> {
+    return {type:USER_ID_TIPS_VISIBLE_OPEN,msg:alertMsg};
+};
+const UserIDTipsVisibleClose = (alertMsg)=> {
+    return {type:USER_ID_TIPS_VISIBLE_CLOSE,msg:alertMsg};
+};
+
+
 export default {
     APP_LOADING_CLOSE,
     APP_LOADING_OPEN,
@@ -45,5 +68,14 @@ export default {
     showWarnAlert,
     hideWarnAlert,
     showQueryAlert,
-    hideQueryAlert
+    hideQueryAlert,
+
+    UserNameTipsVisibleOpen,
+    UserNameTipsVisibleClose,
+    USER_NAME_TIPS_VISIBLE_OPEN,
+    USER_NAME_TIPS_VISIBLE_CLOSE,
+    USER_ID_TIPS_VISIBLE_OPEN,
+    USER_ID_TIPS_VISIBLE_CLOSE,
+    UserIDTipsVisibleOpen,
+    UserIDTipsVisibleClose
 }

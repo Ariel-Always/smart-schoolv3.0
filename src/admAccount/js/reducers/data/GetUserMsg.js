@@ -2,13 +2,29 @@ import UpDataState from '../../actions/UpDataState';
 
 function handleData(data) {
     console.log(data)
+    if (data === null) {
+        return {
+            userName: '',
+            userImg: '',
+            Gende: '',
+            userText: '',
+            userID: '',
+            subjectName: '',
+            userGrade: '',
+            userClass: '',
+            userIDCard: '',
+            userPhone: '',
+            userMail: '',
+            userAddress: ''
+        }
+    }
     return {
         userName: data.UserName,
         userImg: data.PhotoPath,
         Gende: data.Gender,
         userText: '',
         userID: data.UserID,
-        subjectName:data.SubjectNames,
+        subjectName: data.SubjectNames,
         userGrade: data.GradeName,
         userClass: data.ClassName,
         userIDCard: data.IDCardNo,
@@ -23,7 +39,7 @@ const GetUserMsg = (state = {
     Gende: '',
     userText: '',
     userID: '',
-    subjectName:'',
+    subjectName: '',
     userGrade: '',
     userClass: '',
     userIDCard: '',
