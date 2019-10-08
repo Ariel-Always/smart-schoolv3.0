@@ -19,7 +19,14 @@ import DelScheduleActions from '../actions/Manager/DelScheduleActions';
 import StopScheduleModal from './Manager/StopScheduleModal';
 import DelScheduleModal from './Manager/DelScheduleModal';
 import ABTActions from '../actions/Manager/AdjustByTeacherActions';
-import AdjustByTeacherModal from './Manager/AdjustByTeacherModal';
+
+import TeacherIndexActions from '../actions/Teacher/TeacherIndexActions';
+
+import ManagerIndexActions from '../actions/Manager/ManagerIndexActions';
+
+
+import RouterWrapper from './RouterWrapper';
+
 
 
 import '../../scss/index.scss';
@@ -45,6 +52,40 @@ class App extends Component{
         const {dispatch} = this.props;
 
         dispatch({type:PeriodWeekTermActions.PERIOD_VALUE_CHANGE,key:key});
+
+        let hash = window.location.hash.split('?')[0];
+
+        console.log(hash);
+
+        if (hash === '#/teacher/subject-teacher/subject'){
+
+            dispatch(TeacherIndexActions.STSPageInit());
+
+        }
+
+        if (hash === '#/teacher/subject-teacher/teacher'){
+
+            dispatch(TeacherIndexActions.STTPageInit());
+
+        }
+
+        if (hash === '#/teacher/mine'){
+
+            dispatch(TeacherIndexActions.TeacherPersonalInit());
+
+        }
+
+        if (hash === '#/manager/subject-teacher/subject'){
+
+            dispatch(ManagerIndexActions.STSPageInit());
+
+        }
+
+        if (hash === '#/manager/subject-teacher/teacher'){
+
+            dispatch(TeacherIndexActions.STTPageInit());
+
+        }
 
     }
     //将隐藏的adjustWrapper弹出或隐藏
@@ -144,7 +185,9 @@ class App extends Component{
 
         return (
 
-           <React.Fragment>
+            <Router>
+
+                <React.Fragment>
 
                <DocumentTitle title={ModuleSetting.moduleCnName}>
 
@@ -216,48 +259,7 @@ class App extends Component{
 
                             <div ref="frame-right-content">
 
-                                <Router>
-
-                                    <Switch>
-
-                                        <Route path="/manager/*"  component={ManagerComponent}></Route>
-
-                                        <Route path="/teacher/*"  component={TeacherComponent}></Route>
-
-                                        <Route path="/student/*"  component={StudentComponent}></Route>
-
-                                        {
-
-                                            LoginUser&&LoginUser.UserType===0?
-
-                                            <Redirect path="/*"  to={{pathname:"/manager/subject-teacher/subject"}}></Redirect>
-
-                                            :''
-
-                                        }
-
-                                        {
-
-                                            LoginUser&&LoginUser.UserType===1?
-
-                                                <Redirect path="/*" to={{pathname:"/teacher/subject-teacher/subject"}}></Redirect>
-
-                                                :''
-
-                                        }
-
-                                        {
-
-                                            LoginUser&&LoginUser.UserType===1?
-
-                                                <Redirect path="/" to={{pathname:"/student/my"}}></Redirect>
-
-                                                :''
-
-                                        }
-                                    </Switch>
-
-                                </Router>
+                                <RouterWrapper></RouterWrapper>
 
                             </div>
 
@@ -289,6 +291,8 @@ class App extends Component{
                </Alert>
 
            </React.Fragment>
+
+            </Router>
         );
     }
 }

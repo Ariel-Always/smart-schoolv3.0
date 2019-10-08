@@ -28,9 +28,44 @@ const SubjectTeacherTeacherSchedule = (state={
 
     switch (actions.type) {
 
+        case STTActions.STT_SCHEDULE_INIT:
+
+            return {
+
+                ...state,
+
+                schedule:[],
+
+                ScheduleCount:0,
+
+                loadingShow:true,
+
+                pickTeacher:'',
+
+                pickTeacherID:'',
+
+                ScheduleLoadingShow:true,
+
+                searchWrapperShow:false,
+
+                searchResult:[],
+
+                searchLoadingShow:false,
+
+                teacherList:actions.data
+
+            };
+
         case STTActions.STT_SCHEDULE_CHANGE:
 
-            return {...state,...actions.data};
+            return {
+
+                ...state,
+
+                ...actions.data
+
+
+            };
 
         case STTActions.STT_NOW_WEEK_CHANGE:
 

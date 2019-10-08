@@ -1,5 +1,7 @@
 import Method from './Method';
 
+import CONFIG from '../../../common/js/config';
+
 import AppAlertActions from './AppAlertActions';
 
 const LOGIN_USER_INFO_UPDATE = 'LOGIN_USER_INFO_UPDATE';
@@ -31,7 +33,7 @@ const getLoginUser = async ({dispatch}) => {
 
   //let res = await Method.getGetData(`/UserMgr/Login/Api/Login.ashx?method=GetUserInfo`,1,'http://192.168.129.2:10102');
 
-  let res = await Method.getGetData(`/Login?method=GetUserInfo`,1,' http://47.244.238.75:7300/mock/5d7e0519fdd0dc0457886a3c/webCloudDev');
+  let res = await Method.getGetData(`/Login2?method=GetUserInfo`,1,CONFIG.DeskTopProxy);
 
   if (res.error === 0){
 

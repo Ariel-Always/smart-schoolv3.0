@@ -1,3 +1,9 @@
+.content-wrapper{
+
+  margin:72px auto 0 auto;
+
+}
+
 .modules-row{
 
   &:nth-child(even){
@@ -11,6 +17,32 @@
     width: 1200px;
 
     margin: 0 auto;
+
+  }
+
+  .module-item{
+
+    cursor: pointer;
+
+    float: left;
+
+    margin-bottom: 20px;
+
+    &:not(:nth-child(5n+1)){
+
+      margin-left:38px;
+
+    }
+
+  }
+
+  .module-bg{
+
+    position: relative;
+
+    width: 176px;
+
+    height: 98px;
 
   }
 
@@ -32,4 +64,43 @@
 
   }
 
+  .module-icon{
+
+    position: absolute;
+
+    width: 176px;
+
+    height: 98px;
+
+    left: 0;
+
+    top:0;
+
+    background-position: center;
+
+    background-repeat: no-repeat;
+
+    @include transition(top 0.3s);
+
+    &:hover{
+
+      top: -6px;
+
+    }
+
+  }
+
+  .title{
+
+    text-align: center;
+
+    font-size: 14px;
+
+    color: #333333;
+
+    margin-top: 8px;
+
+  }
+
 }
+

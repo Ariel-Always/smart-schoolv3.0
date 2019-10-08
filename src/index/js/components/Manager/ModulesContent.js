@@ -5,7 +5,7 @@ class ModulesContent extends Component{
 
     render() {
 
-        const { Modules } = this.props;
+        const { Modules,ModuleClick } = this.props;
 
         return (
 
@@ -27,11 +27,17 @@ class ModulesContent extends Component{
 
                                         item.Modules.map((i,k)=>{
 
-                                            return <a href={i.AccessParam} className="module-item">
+                                            return <div  key={k} className="module-item" onClick={()=>{ ModuleClick({AccessType:i.AccessType,AccessParam:i.AccessParam,ModuleStatus:i.ModuleStatus})}}>
 
+                                                        <div className="module-bg">
 
+                                                            <div className="module-icon" style={{backgroundImage:`url(${i.ModuleLogoPath})`}}></div>
 
-                                            </a>
+                                                        </div>
+
+                                                        <div className="title">{i.ModuleName}</div>
+
+                                                    </div>
 
                                         })
 

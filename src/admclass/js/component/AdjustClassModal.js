@@ -51,7 +51,7 @@ class AdjustClassModal extends Component{
                     <span className="props">目标班级:</span>
 
                     <DropDown dropSelectd={gradeSelecd?gradeSelecd:''}
-                              dropList={gradeList} height={56}
+                              dropList={gradeList}
                               onChange={(e)=>gradeSelectChange(e)}
                               style={{zIndex:5}}
                               height={108}>

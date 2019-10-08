@@ -296,11 +296,11 @@ const replaceScheduleInit = () => {
 
                    }else{
 
-                       let  subject =  data.ItemSubject[0];
+                       let  subject =  data.ItemSubject[0]?data.ItemSubject[0]:{SubjectID:"none",SubjectName:"未设置"};
 
                        let subjectObj = { id:subject.SubjectID,name:subject.SubjectName };
 
-                       let classList = data.ItemClass.map(item => {
+                       let classList = data.ItemClass.length>1?data.ItemClass.map(item => {
 
                            return {
 
@@ -310,7 +310,7 @@ const replaceScheduleInit = () => {
 
                            }
 
-                       });
+                       }):[];
 
                        dispatch({type:REPLACE_SHCEDULE_CLASS_LIST_UPDATE,data:classList});
 

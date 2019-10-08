@@ -1,5 +1,7 @@
 import Method from "../Method";
 
+const STT_SCHEDULE_INIT = 'STT_SCHEDULE_INIT';
+
 const STT_NOW_WEEK_CHANGE = 'STT_NOW_WEEK_CHANGE';
 
 const SCHEDULE_LOADING_SHOW = 'SCHEDULE_LOADING_SHOW';
@@ -238,6 +240,8 @@ export default {
     SEARCH_LOADING_HIDE,
 
     SEARCH_LOADING_SHOW,
+
+    STT_SCHEDULE_INIT,
 
     STTTeacherUpdate,
 

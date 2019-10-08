@@ -17,6 +17,8 @@ const STSPageInit = () => {
 
     return (dispatch,getState) => {
 
+        dispatch({type:STSActions.LOADING_SHOW});
+
         let {PeriodWeekTerm,LoginUser} = getState();
         //如果前面获取的周次、学段信息已获得
         if (PeriodWeekTerm&&PeriodWeekTerm.ItemPeriod){
@@ -208,6 +210,7 @@ const STTPageInit = () => {
 
     return (dispatch,getState) => {
 
+        dispatch({type:STTActions.SCHEDULE_LOADING_SHOW});
 
         let {PeriodWeekTerm,LoginUser} = getState();
         //如果前面获取的周次、学段信息已获得
@@ -273,7 +276,7 @@ const STTPageInit = () => {
 
                     });
 
-                    dispatch({type:STTActions.TEACHER_LIST_UPDATE,data:leftMenuData});
+                    dispatch({type:STTActions.STT_SCHEDULE_INIT,data:leftMenuData});
 
                 }else{
 
@@ -387,7 +390,7 @@ const STTPageInit = () => {
 
                             });
 
-                            dispatch({type:STTActions.TEACHER_LIST_UPDATE,data:leftMenuData});
+                            dispatch({type:STTActions.STT_SCHEDULE_INIT,data:leftMenuData});
 
                         }else{
 
@@ -445,6 +448,9 @@ const TeacherPersonalInit = () => {
 
     return (dispatch,getState) => {
 
+        console.log(123);
+
+        dispatch({type:TPActions.TP_SCHEDULE_LOADING_SHOW});
 
         let {PeriodWeekTerm,LoginUser} = getState();
         //如果前面获取的周次、学段信息已获得
@@ -474,6 +480,8 @@ const TeacherPersonalInit = () => {
                 dispatch({type:SCGCRActions.SCGCR_INFO_INIT,data:res[0].Data});
 
                 dispatch({type:TPActions.TP_NOW_WEEK_CHANGE,data:NowWeekNo});
+
+                dispatch({type:TPActions.TP_SCHEDULE_LOADING_HIDE});
 
                 dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
 
