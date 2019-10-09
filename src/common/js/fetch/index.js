@@ -66,7 +66,7 @@ function postData(url, paramsObj = {}, SecurityLevel = 1, content_type = 'urlenc
 function getData(url, SecurityLevel = 1, mode = 'cors') {
 
     let token = sessionStorage.getItem('token') || getQueryVariable('lg_tk');
-    console.log(token,window.location)
+
 
     // if (!token && SecurityLevel !== 1) {
     //     console.log('token无效，请重新登录');//后期会进行无token的事件操作

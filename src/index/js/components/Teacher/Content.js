@@ -53,7 +53,7 @@ class Content extends Component{
 
                                                                             if (it.showDom==='img'){
 
-                                                                                return <div className={`group-item-icon ${it.BgColor}`}>
+                                                                                return <div key={kt} className={`group-item-icon ${it.BgColor}`}>
 
                                                                                             <img key={kt}
 
@@ -71,7 +71,7 @@ class Content extends Component{
 
                                                                             }else if (it.showDom === 'div'){
 
-                                                                                return <div className={`group-item-icon ${it.BgColor}`}>{it.ModuleName[0]}</div>
+                                                                                return <div key={kt} className={`group-item-icon ${it.BgColor}`}>{it.ModuleName[0]}</div>
 
                                                                             }
 
@@ -148,7 +148,7 @@ class Content extends Component{
 
                                                                                     }
 
-                                                                                    return <div className="module-detail-item" onClick={(e)=>ClickModule({ModuleStatus:it.ModuleStatus,AccessType:it.AccessType,AccessParam:it.AccessParam,Event:e})}>
+                                                                                    return <div key={kt} className="module-detail-item" onClick={(e)=>ClickModule({ModuleStatus:it.ModuleStatus,AccessType:it.AccessType,AccessParam:it.AccessParam,Event:e})}>
 
                                                                                         {
 
@@ -257,7 +257,7 @@ class Content extends Component{
 
                                                                                     ModuleIcon = <div className="module-detail-item-pic" style={{backgroundImage:`url(${it.ModuleLogoPath})`}}></div>
 
-                                                                                    return <div className="module-detail-item" onClick={(e)=>ClickModule({ModuleStatus:it.ModuleStatus,AccessType:it.AccessType,AccessParam:it.AccessParam,Event:e})}>
+                                                                                    return <div key={kt} className="module-detail-item" onClick={(e)=>ClickModule({ModuleStatus:it.ModuleStatus,AccessType:it.AccessType,AccessParam:it.AccessParam,Event:e})}>
 
                                                                                         {
 
