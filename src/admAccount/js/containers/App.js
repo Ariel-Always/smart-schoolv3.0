@@ -11,6 +11,7 @@ import logo from '../../images/admAccoHeadImg-1.png'
 //import TimeBanner from '../component/TimeBanner'
 
 import Student from '../component/Student'
+
 import Teacher from '../component/Teacher'
 import Leader from '../component/Leader'
 import Admin from '../component/Admin'
