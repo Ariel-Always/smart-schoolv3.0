@@ -95,6 +95,8 @@
 
   .module-logo{
 
+    position: relative;
+
     width: 64px;
 
     height: 64px;
@@ -112,6 +114,20 @@
     margin: 0 auto;
 
     @include border-radius(12px);
+
+    &>img{
+
+      position: absolute;
+
+      max-width: 48px;
+
+      left: 50%;
+
+      top: 50%;
+
+      @include transform(translate(-50%,-50%));
+
+    }
 
     &.blue{
 
@@ -208,6 +224,8 @@
 
   .group-item-icon{
 
+    position: relative;
+
     float: left;
 
     width: 20px;
@@ -229,6 +247,20 @@
     @include border-radius(4px);
 
     margin-bottom:4px;
+
+    &>img{
+
+      position: absolute;
+
+      max-width:16px;
+
+      left: 50%;
+
+      top: 50%;
+
+      @include transform(translate(-50%,-50%));
+
+    }
 
     &:not(:nth-child(2n+1)){
 
@@ -337,6 +369,8 @@
 
   .module-detail-item-icon{
 
+    position: relative;
+
     width: 64px;
 
     height: 64px;
@@ -348,6 +382,20 @@
     margin: 0 auto;
 
     @include border-radius(12px);
+
+    &>img{
+
+      position: absolute;
+
+      max-width: 48px;
+
+      left: 50%;
+
+      top: 50%;
+
+      @include transform(translate(-50%,-50%));
+
+    }
 
     &.blue{
 

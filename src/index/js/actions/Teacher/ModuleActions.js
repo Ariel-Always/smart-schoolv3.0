@@ -34,8 +34,6 @@ const ImgLoad = ({GroupID,PNO,CNO})=>{
 
                                         ...it,
 
-                                        show:true,
-
                                         showDom:"img"
 
                                     }
@@ -75,8 +73,6 @@ const ImgLoad = ({GroupID,PNO,CNO})=>{
                         return {
 
                             ...i,
-
-                            show:true,
 
                             showDom:"img"
 
@@ -140,19 +136,11 @@ const ImgErrorLoad = ({GroupID,PNO,CNO})=>{
 
                                     if (it.OrderNo === CNO){
 
-                                        let RandomArr = ['green','orange','blue'];
-
-                                        let bg = RandomArr[Math.floor(Math.random()*RandomArr.length)];
-
                                         return {
 
                                             ...it,
 
-                                            show:true,
-
                                             showDom:"div",
-
-                                            ShowColor:bg
 
                                         }
 
@@ -192,11 +180,7 @@ const ImgErrorLoad = ({GroupID,PNO,CNO})=>{
 
                                 ...i,
 
-                                show:true,
-
                                 showDom:"div",
-
-                                ShowColor:bg
 
                             }
 
