@@ -41,11 +41,11 @@ const GET_WILL_SIGN_UP_LOG_MSG = 'GET_WILL_SIGN_UP_LOG_MSG';
 const SET_SIGN_UP_LOG_STATUS_MSG = 'SET_SIGN_UP_LOG_STATUS_MSG'
 //操作的执行
 //获取登录用户信息
-const getLoginUser = (url) => {
-    return (dispatch) => {
-        getData(CONFIG.proxy + url).then(res => res.json()).then(json => {
-            dispatch({ type: GET_LOGIN_USER_INFO, data: json.data.result });
-        });
+const  getLoginUser = (data) => {
+    return (dispatch)=>{
+        
+           dispatch({type:GET_LOGIN_USER_INFO,data:data});
+        
     }
 };
 //获取所有用户总览信息/改

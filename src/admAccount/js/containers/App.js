@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Frame, Menu, Loading, Alert } from "../../../common";
 import { connect } from 'react-redux';
 import Introduce from '../component/Introduce'
+import { TokenCheck_Connect, TokenCheck } from '../../../common/js/disconnect'
 
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
 import history from './history'
@@ -19,7 +20,6 @@ import { getData } from '../../../common/js/fetch'
 import actions from '../actions';
 //import { urlAll, proxy } from './config'
 
-sessionStorage.setItem('token', 'null')
 class App extends Component {
     constructor(props) {
         super(props);
@@ -59,22 +59,25 @@ class App extends Component {
             }
         }
         let route = history.location.pathname;
+        // TokenCheck()
+        TokenCheck_Connect()
         //判断token是否存在
-        if (sessionStorage.getItem('token')) {
-            dispatch(actions.UpDataState.getLoginUser('/Login?method=GetUserInfo'));
-            this.requestData(route);
-
-        } else {
-            //不存在的情况下
-            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-            dispatch(actions.UpUIState.showErrorAlert({
-                type: 'btn-error',
-                title: "登录错误，请重新登录!",
-                ok: this.onAppAlertOK.bind(this),
-                cancel: this.onAppAlertCancel.bind(this),
-                close: this.onAppAlertClose.bind(this)
-            }));
-        }
+        // if (sessionStorage.getItem('token')) {
+        // dispatch(actions.UpDataState.getLoginUser('/Login?method=GetUserInfo'));
+        this.requestData(route);
+        if (sessionStorage.getItem('UserInfo'))
+            dispatch(actions.UpDataState.getLoginUser(sessionStorage.getItem('UserInfo')));
+        // } else {
+        //     //不存在的情况下
+        //     dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+        //     dispatch(actions.UpUIState.showErrorAlert({
+        //         type: 'btn-error',
+        //         title: "登录错误，请重新登录!",
+        //         ok: this.onAppAlertOK.bind(this),
+        //         cancel: this.onAppAlertCancel.bind(this),
+        //         close: this.onAppAlertClose.bind(this)
+        //     }));
+        // }
     }
 
 
@@ -151,7 +154,7 @@ class App extends Component {
             dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
         } else if (handleRoute === 'Leader') {
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-        }  else if (handleRoute === 'Admin') {
+        } else if (handleRoute === 'Admin') {
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
             dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
 

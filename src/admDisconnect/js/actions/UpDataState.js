@@ -31,11 +31,11 @@ const GET_USER_MSG = 'GET_USER_MSG'
 
 //操作的执行
 //获取登录用户信息
-const  getLoginUser = (data) => {
+const  getLoginUser = (url) => {
     return (dispatch)=>{
-        
-           dispatch({type:GET_LOGIN_USER_INFO,data:JSON.parse(data)});
-        
+        getData(CONFIG.proxy+url).then(res=>res.json()).then(json=>{
+           dispatch({type:GET_LOGIN_USER_INFO,data:json.data.result});
+        });
     }
 };
 //获取所有用户总览信息
@@ -164,7 +164,6 @@ const getAdminPreview = (url) =>{
             if(res.Status === '401'){
                 console.log('错误码：'+ res.Status)
             }
-            console.log(res)
             return res.json()}).then(json=>{
             if(json.Status === 400){
                 console.log(json.Status)
@@ -189,8 +188,6 @@ const getGradeClassMsg = (url) =>{
             if(res.Status === '401'){
                 console.log('错误：'+ res.Msg)
             }
-            console.log(res)
-
             return res.json()}).then(json=>{
             if(json.Status === 400){
                 console.log(json.Status)

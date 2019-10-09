@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Frame, Menu, Loading, Alert } from "../../../common";
 import { connect } from 'react-redux';
 import UserArchives from "../component/UserArchives";
+import { TokenCheck_Connect, TokenCheck } from '../../../common/js/disconnect'
 
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
 import history from './history'
@@ -19,7 +20,7 @@ import { getData } from '../../../common/js/fetch'
 import actions from '../actions';
 import { urlAll, proxy } from './config'
 
-sessionStorage.setItem('token', 'null')
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -29,21 +30,11 @@ class App extends Component {
         }
         let route = history.location.pathname;
         //判断token是否存在
-        if (sessionStorage.getItem('token')) {
-            dispatch(actions.UpDataState.getLoginUser('/Login?method=GetUserInfo'));
-            this.requestData(route);
+        TokenCheck_Connect()
+        this.requestData(route);
 
-        } else {
-            //不存在的情况下
-            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-            dispatch(actions.UpUIState.showErrorAlert({
-                type: 'btn-error',
-                title: "登录错误，请重新登录!",
-                ok: this.onAppAlertOK.bind(this),
-                cancel: this.onAppAlertCancel.bind(this),
-                close: this.onAppAlertClose.bind(this)
-            }));
-        }
+        if (sessionStorage.getItem('UserInfo'))
+            dispatch(actions.UpDataState.getLoginUser(sessionStorage.getItem('UserInfo')));
     }
 
 
@@ -145,8 +136,8 @@ class App extends Component {
         } else if (route.split('/')[1] === 'ImportFile') {
             //dispatch(actions.UpDataState.getAllUserPreview('/RegisterExamine'));
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-            
-        } else{
+
+        } else {
             history.push('/UserArchives/All')
         }
 
