@@ -1,6 +1,7 @@
 import ModulesActions from "./ModuleActions";
 
 import TeacherPageActions from './TeacherPageActions';
+import AppLoadingActions from "../AppLoadingActions";
 
 const TEACHER_HEADER_MENU_TOGGLE = 'TEACHER_HEADER_MENU_TOGGLE';
 
@@ -31,11 +32,84 @@ const SubjectClick = (info) => {
 
         let SubjectID = info.id;
 
+        dispatch({type:ModulesActions.TEACHER_MODULE_LOADING_SHOW});
+
         TeacherPageActions.getTeacherModules({UserID,SubjectID,dispatch}).then(data=>{
 
             if (data){
 
-                dispatch({type:ModulesActions.TEACHER_MODULE_GROUPS_UPDATE,data:data.Groups});
+                let ModuleGroups = data.Groups.map(item=>{
+
+                    return {
+
+                        ...item,
+
+                        "Modules":item.Modules.map(i=>{
+
+                            if (i.IsGroup){
+
+                                let SubGroupModules = i.SubGroupModules.map(it=>{
+
+                                    if (it.ModuleType==='website'){
+
+                                        return {
+
+                                            ...it,
+
+                                            "show":false,
+
+                                            "showDom":"img"
+
+                                        }
+
+                                    }else{
+
+                                        return it
+
+                                    }
+
+                                });
+
+                                return {
+
+                                    ...i,
+
+                                    SubGroupModules:SubGroupModules,
+
+                                    DetailShow:false
+
+                                }
+
+                            }else{
+
+                                if (i.ModuleType==='website'){
+
+                                    return {
+
+                                        ...i,
+
+                                        "showDom":"img"
+
+                                    }
+
+                                }else{
+
+                                    return i;
+
+                                }
+
+                            }
+
+                        })
+
+                    }
+
+                });
+
+                dispatch({type:ModulesActions.TEACHER_MODULE_GROUPS_UPDATE,data:ModuleGroups});
+
+                dispatch({type:ModulesActions.TEACHER_MODULE_LOADING_HIDE});
+
 
             }
 

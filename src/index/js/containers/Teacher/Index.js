@@ -8,7 +8,11 @@ import HeaderActions from '../../actions/Teacher/HeaderActions';
 
 import TeacherPageActions from '../../actions/Teacher/TeacherPageActions';
 
+import ModuleActions from '../../actions/Teacher/ModuleActions';
+
 import Header from '../../components/Teacher/Header';
+
+import Content from '../../components/Teacher/Content';
 
 import { connect } from 'react-redux';
 
@@ -56,6 +60,94 @@ class Index extends Component{
     }
 
 
+    //图片加载成功调用
+    ModuleImgLoad({GroupID,PNO,CNO}){
+
+        const { dispatch } = this.props;
+
+        dispatch(ModuleActions.ImgLoad({GroupID,PNO,CNO}));
+
+    }
+
+
+    //图片加载失败调用
+    ModuleImgErrorLoad({GroupID,PNO,CNO}){
+
+        const { dispatch } = this.props;
+
+        dispatch(ModuleActions.ImgErrorLoad({GroupID,PNO,CNO}));
+
+    }
+
+    //点击了组合
+    GroupToggle({GroupID,OrderNo,Event}){
+
+        const { dispatch } = this.props;
+
+        Event.stopPropagation();
+
+        dispatch(ModuleActions.GroupToggle({GroupID,OrderNo}));
+
+    }
+
+
+    //点击了模块
+
+    ClickModule({ModuleStatus,AccessType,AccessParam,Event}){
+
+        const { dispatch } = this.props;
+
+        Event.stopPropagation();
+
+        switch (ModuleStatus) {
+
+            case 1:
+
+               if (AccessType === 'href'){
+
+                   window.open(AccessParam);
+
+               }else{
+
+
+
+               }
+
+               break;
+
+            case 2:
+
+                dispatch(AppAlertActions.alertWarn({title:"该模块未购买，请先购买该模块"}));
+
+                break;
+
+            case 3:
+
+                dispatch(AppAlertActions.alertWarn({title:"该模块未安装，请安装该模块"}))
+
+                break;
+
+            case 4:
+
+                dispatch(AppAlertActions.alertWarn({title:"该模块维护中"}))
+
+                break;
+
+            case 5:
+
+                dispatch(AppAlertActions.alertWarn({title:"该模块已过期"}))
+
+                break;
+
+            default:
+
+                return;
+
+        }
+
+    }
+
+
 
     OutMenuEvent(e){
 
@@ -77,6 +169,7 @@ class Index extends Component{
 
         }
 
+        dispatch(ModuleActions.GroupDetailHide());
 
     }
 
@@ -92,7 +185,9 @@ class Index extends Component{
 
         const { LoginUser,Teacher } = this.props;
 
-        const { HeaderSetting } = Teacher;
+        const { HeaderSetting,Modules } = Teacher;
+
+        const { ModuleGroups,ModulesLoading } = Modules;
 
         return (
 
@@ -107,6 +202,16 @@ class Index extends Component{
                 >
 
                 </Header>
+
+                <Content ModuleGroups={ModuleGroups}
+                          ImgLoad={this.ModuleImgLoad.bind(this)}
+                          ImgErrorLoad={this.ModuleImgErrorLoad.bind(this)}
+                         GroupToggle={this.GroupToggle.bind(this)}
+                         ClickModule={this.ClickModule.bind(this)}
+                         ModulesLoading={ModulesLoading}
+                >
+
+                </Content>
 
             </div>
 

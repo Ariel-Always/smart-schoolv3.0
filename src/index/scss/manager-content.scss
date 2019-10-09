@@ -28,9 +28,9 @@
 
     margin-bottom: 20px;
 
-    &:not(:nth-child(5n+1)){
+    &:not(:nth-child(6n+1)){
 
-      margin-left:38px;
+      margin-left:28px;
 
     }
 
@@ -40,9 +40,9 @@
 
     position: relative;
 
-    width: 176px;
+    width:176px;
 
-    height: 98px;
+    height:98px;
 
   }
 
@@ -99,6 +99,10 @@
     color: #333333;
 
     margin-top: 8px;
+
+    width:176px;
+
+    @include textOverFlow;
 
   }
 
