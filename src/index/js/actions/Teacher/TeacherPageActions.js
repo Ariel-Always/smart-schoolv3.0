@@ -102,8 +102,6 @@ const PageInit = () => {
 
                                             ...i,
 
-                                            "show":false,
-
                                             "showDom":"img"
 
                                         }
@@ -123,6 +121,8 @@ const PageInit = () => {
                     });
 
                     dispatch({type:ModulesActions.TEACHER_MODULE_GROUPS_UPDATE,data:ModuleGroups});
+
+                    dispatch({type:ModulesActions.TEACHER_MODULE_LOADING_HIDE});
 
                     dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
 

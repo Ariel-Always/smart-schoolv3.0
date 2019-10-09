@@ -12,7 +12,15 @@ class Content extends Component{
 
             <div className="content-wrapper">
 
-                <Loading spinning={ModulesLoading} opacity={false}></Loading>
+                {
+
+                    ModulesLoading?
+
+                        <Loading  opacity={false}></Loading>
+
+                        :''
+
+                }
 
                     {
                         //遍历模块组合
@@ -54,7 +62,7 @@ class Content extends Component{
 
                                                                                     onError={()=>ImgErrorLoad({GroupID:item.GroupID,PNO:i.OrderNo,CNO:it.OrderNo})}
 
-                                                                                    style={{visibility:`${it.show?'':'hidden'}`}}/>
+                                                                                   />
 
                                                                     }else if (it.showDom === 'div'){
 
@@ -87,7 +95,7 @@ class Content extends Component{
                                                                              src={`${i.AccessParam}/favicon.ico`}
                                                                              onLoad={()=>ImgLoad({GroupID:item.GroupID,PNO:i.OrderNo})}
                                                                              onError={()=>ImgErrorLoad({GroupID:item.GroupID,PNO:i.OrderNo})}
-                                                                             style={{visibility:`${i.show?'':'hidden'}`}}
+
                                                         />
 
                                                     }else{

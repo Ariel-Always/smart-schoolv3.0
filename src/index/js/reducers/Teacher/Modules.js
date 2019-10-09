@@ -21,6 +21,26 @@ const Modules = (state={
 
             };
 
+        case ModuleActions.TEACHER_MODULE_LOADING_HIDE:
+
+            return {
+
+                ...state,
+
+                ModulesLoading:false
+
+            };
+
+        case ModuleActions.TEACHER_MODULE_LOADING_SHOW:
+
+            return {
+
+                ...state,
+
+                ModulesLoading:true
+
+            };
+
         default:
 
             return state;
