@@ -60,49 +60,65 @@ const PageInit = () => {
 
                             "Modules":item.Modules.map(i=>{
 
-                                if (i.IsGroup){
+                                if (item.IsWebsiteGroup){
 
-                                    let SubGroupModules = i.SubGroupModules.map(it=>{
+                                    if (i.IsGroup){
 
-                                       if (it.ModuleType==='website'){
+                                        let SubGroupModules = i.SubGroupModules.map(it=>{
 
-                                           return {
+                                            let RandomArr = ['green','orange','blue'];
 
-                                               ...it,
+                                            let bg = RandomArr[Math.floor(Math.random()*RandomArr.length)];
 
-                                               "show":false,
+                                            return {
 
-                                               "showDom":"img"
+                                                    ...it,
 
-                                           }
+                                                    "showDom":"img",
 
-                                       }else{
+                                                    "BgColor":bg
 
-                                           return it
+                                                }
 
-                                       }
-
-                                    });
-
-                                    return {
-
-                                        ...i,
-
-                                        SubGroupModules:SubGroupModules,
-
-                                        DetailShow:false
-
-                                    }
-
-                                }else{
-
-                                    if (i.ModuleType==='website'){
+                                        });
 
                                         return {
 
                                             ...i,
 
-                                            "showDom":"img"
+                                            SubGroupModules:SubGroupModules,
+
+                                            DetailShow:false
+
+                                        }
+
+                                    }else{
+
+                                        let RandomArr = ['green','orange','blue'];
+
+                                        let bg = RandomArr[Math.floor(Math.random()*RandomArr.length)];
+
+                                        return {
+
+                                            ...i,
+
+                                            "showDom":"img",
+
+                                            "BgColor":bg
+
+                                        }
+
+                                    }
+
+                                }else{
+
+                                    if (i.IsGroup){
+
+                                        return {
+
+                                            ...i,
+
+                                            DetailShow:false
 
                                         }
 
