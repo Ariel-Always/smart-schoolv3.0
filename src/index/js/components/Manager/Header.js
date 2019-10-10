@@ -49,7 +49,7 @@ class Header extends Component{
 
     render() {
 
-        const { HeaderSetting,LoginUser,HeaderMenuToggle } = this.props;
+        const { HeaderSetting,LoginUser,HeaderMenuToggle,LogOut } = this.props;
 
         const { TopVisit,OnlineUsers,SuspiciousLogin,OnlineDiskUsed,GroupFileSpaceUsed } = HeaderSetting;
 
@@ -93,7 +93,7 @@ class Header extends Component{
 
                                     <a className="help menu">帮助</a>
 
-                                    <a className="logout menu">退出登录</a>
+                                    <a className="logout menu" onClick={()=>LogOut()}>退出登录</a>
 
                                 </div>
 

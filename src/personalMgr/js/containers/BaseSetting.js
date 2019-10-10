@@ -8,6 +8,8 @@ import { Input,Tooltip } from "antd";
 
 import { connect } from 'react-redux';
 
+import $ from "jquery";
+
 class BaseSetting extends Component{
 
     constructor(props) {
@@ -382,6 +384,10 @@ class BaseSetting extends Component{
 
             UserID,
 
+            UserType,
+
+            UserClass,
+
             UserName,
 
             ShortName,
@@ -480,7 +486,7 @@ class BaseSetting extends Component{
 
                                 {
 
-                                    LoginUser.UserType === 2?
+                                    UserType === 2?
 
                                         '学号:':'工号:'
 
@@ -498,7 +504,7 @@ class BaseSetting extends Component{
 
                                 {
 
-                                    LoginUser.UserType === 0?
+                                    UserType === 0?
 
                                         '账号名称:':'姓名:'
 
@@ -538,27 +544,10 @@ class BaseSetting extends Component{
 
                         </div>
 
-                       {/* {
-
-                            LoginUser.UserType === 1?
-
-                                <div className="sex-wrapper clearfix">
-
-                                    <span className="props">性别:</span>
-
-
-                                    <span className="val">{Gender}</span>
-
-
-                                </div>
-
-                                :''
-
-                        }*/}
 
                         {
 
-                            LoginUser.UserType === 1?
+                            UserType === 1?
 
                                 <div className="subject-wrapper clearfix">
 
@@ -576,49 +565,53 @@ class BaseSetting extends Component{
 
                         <div className="role-wrapper clearfix">
 
+                            <div className="detial-wrapper"  style={{display:`${ManagerModuleShow?'block':'none'}`}}>
+
+                                {
+
+                                    Modules&&Modules.map((item,key) => {
+
+                                        let content =  item.ModuleList.map(i =>i.ModuleName);
+
+                                        return <div key={key} className="detail-item-wrapper">
+
+                                            <div className="detail-item-title">{item.ModuleGroupName}</div>
+
+                                            <div className="detail-content-wrapper">
+
+                                                {
+
+                                                    content.join(',')
+
+                                                }
+
+                                            </div>
+
+                                        </div>
+
+                                    })
+
+                                }
+
+                                <span className="close-btn" onClick={this.roleDetailClose.bind(this)}>×</span>
+
+                            </div>
+
                             <span className="props">身份:</span>
 
                             {
 
-                                LoginUser.UserType === 0?
+                                UserType === 0?
 
                                 <React.Fragment>
 
                                     <span className={`val ${Modules?'link':''}`} ref="module-detail" onClick={Modules?this.roleLook.bind(this):()=>{}}>
 
-                                        {ShortName}
+                                        {
 
-                                        <div className="detial-wrapper"  style={{display:`${ManagerModuleShow?'block':'none'}`}}>
+                                            UserClass === 1?'普通管理员':'超级管理员'
 
-                                            {
-
-                                                Modules&&Modules.map((item,key) => {
-
-                                                    let content =  item.ModuleList.map(i =>i.ModuleName);
-
-                                                    return <div key={key} className="detail-item-wrapper">
-
-                                                        <div className="detail-item-title">{item.ModuleGroupName}</div>
-
-                                                        <div className="detail-content-wrapper">
-
-                                                            {
-
-                                                                content.join(',')
-
-                                                            }
-
-                                                        </div>
-
-                                                    </div>
-
-                                                })
-
-                                            }
-
-                                            <span className="close-btn" onClick={this.roleDetailClose.bind(this)}>×</span>
-
-                                        </div>
+                                        }
 
                                      </span>
 
@@ -640,7 +633,7 @@ class BaseSetting extends Component{
 
                             {
 
-                                LoginUser.UserType===1?
+                                UserType===1?
 
                                     <React.Fragment>
 

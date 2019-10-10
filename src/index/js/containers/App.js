@@ -2,9 +2,7 @@ import React,{Component} from 'react';
 
 import { Loading,Alert } from "../../../common";
 
-import {TokenCheck_Connect, TokenCheck, getUserInfo} from "../../../common/js/disconnect";
-
-import AppAlertActions from '../actions/AppAlertActions';
+import {TokenCheck_Connect} from "../../../common/js/disconnect";
 
 import LoginUserActions from '../actions/LoginUserActions';
 
@@ -50,34 +48,8 @@ class App extends Component {
 
         }
 
-        //this.PageBefore(props);
-
     }
 
-
-
-    //界面加载前的操作
-    PageBefore(props) {
-
-
-
-    }
-
-
-
-
-
-    //拦截并获取界面参数
-
-     getQueryString(name) {
-
-        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
-
-        var r = window.location.search.substr(1).match(reg);
-
-        if (r != null) return (r[2]); return null;
-
-    }
 
 
     render() {

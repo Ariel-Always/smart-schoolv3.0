@@ -163,7 +163,7 @@
 
     @include textOverFlow;
 
-    &:after{
+    /*&:after{
 
       position: absolute;
 
@@ -195,8 +195,7 @@
 
       }
 
-    }
-
+    }*/
 
     &.up{
 
@@ -214,6 +213,44 @@
 
           border-color:transparent transparent rgba(255,255,255,0.8) transparent;
 
+
+        }
+
+      }
+
+    }
+
+    &.down{
+
+      &:after{
+
+        position: absolute;
+
+        width:0;
+
+        height: 0;
+
+        content: '';
+
+        border-width:6px;
+
+        border-style: solid;
+
+        border-color: #ffffff transparent transparent transparent;
+
+        right:14px;
+
+        top:7px;
+
+      }
+
+      &:hover{
+
+        color:rgba(255,255,255,0.8);
+
+        &:after{
+
+          border-color:rgba(255,255,255,0.8) transparent transparent transparent;
 
         }
 
