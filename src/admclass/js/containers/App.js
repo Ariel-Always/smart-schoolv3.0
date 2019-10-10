@@ -144,7 +144,7 @@ class App extends Component{
                        }else{
 
                            //向后台请求添加班级的接口
-                           dispatch(UpDataState.addClass());
+                           dispatch(UpDataState.addClass({GradeID:AddClassModal.selectValue.value,ClassName:AddClassModal.inputValue}));
 
                        }
 

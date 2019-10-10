@@ -1,5 +1,4 @@
 import config from '../config'
-import fetchJsonp from 'fetch-jsonp'
 import $ from 'jquery'
 export function TokenCheck() {
     let session_token = sessionStorage.getItem('token');

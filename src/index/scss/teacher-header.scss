@@ -16,17 +16,27 @@
 
     padding-left: 80px;
 
-    line-height: 100px;
+    height: 100px;
 
     font-size: 30px;
 
     color: #d1f9ff;
 
-    background:url("#{$image-url}/logo.png") no-repeat left center;
+    background:url("#{$image-url}/logo.png") no-repeat left 24px;
 
     @include background-size(66px);
 
     @include text-shadow(0 0 8px #003f5d);
+
+    .title-logo{
+
+      width: 320px;
+
+      height: 100px;
+
+      background: url("#{$image-url}/title.png") no-repeat left center;
+
+    }
 
   }
 
@@ -62,12 +72,17 @@
 
     line-height: 30px;
 
-    background-image:linear-gradient(0deg,
-            #005ccc 0%,
-            #081d35 100%),
+    /*background-image: linear-gradient(
+                    #368df3,
+                    #368df3),
+    linear-gradient(0deg,
+                    #0c5dc4 0%,
+                    #0561c0 100%),
     linear-gradient(
-                    #001635,
-                    #001635);
+                    #df4447,
+                    #df4447);*/
+
+    background-color:rgba(0,22,53,0.1);
 
     outline: none;
 
@@ -75,19 +90,17 @@
 
     border-width: 1px;
 
-    border-image-source: linear-gradient(0deg,
-            #00b1f4 0%,
-            #0059c7 100%);
+    border-color:#00b1f4;
 
-    @include border-radius(12px);
+    @include border-radius(15px);
 
     @include box-shadow(1.3px 1.5px 2px 0 rgba(80, 192, 253, 0.17),
-            inset 0 5px 9px 0
+            inset 0 1px 4px 0
             rgba(0, 0, 0, 0.64));
 
-    color: #ffffff;
+    color:rgba(255,255,255,0.8);
 
-    @include text-shadow(0.9px 1.8px 3px rgba(56, 64, 72, 0.92));
+    @include text-shadow(1px 2px 3px rgba(56, 64, 72, 0.92));
 
     cursor: pointer;
 

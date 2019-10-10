@@ -80,6 +80,8 @@
 
     background-repeat: no-repeat;
 
+    @include background-size(cover);
+
     @include transition(top 0.3s);
 
     &:hover{

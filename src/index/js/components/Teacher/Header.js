@@ -10,7 +10,11 @@ class Header extends Component{
 
             <div className="desk-header-wrapper clearfix">
 
-                <div className="logo-wrapper">中小学一体化学科教育云</div>
+                <div className="logo-wrapper">
+
+                    <div className="title-logo"></div>
+
+                </div>
 
                 <div className="subject-wrapper">
 

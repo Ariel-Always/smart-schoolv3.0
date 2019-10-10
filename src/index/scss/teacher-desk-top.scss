@@ -1,5 +1,7 @@
 .teacher-desk-top{
 
+  min-height: 412px;
+
   //教师桌面的头部
   @import "./teacher-header";
 
@@ -19,7 +21,7 @@
 
     top:0;
 
-    background:url("#{$image-url}/teacher-bg.png") no-repeat center;
+    background:url("#{$image-url}/teacher-bg.png") no-repeat center bottom;
 
     @include background-size(cover);
 

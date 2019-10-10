@@ -1,8 +1,8 @@
 import React,{Component} from 'react';
 
-import AppAlertActions from '../../actions/AppAlertActions';
+import $ from 'jquery';
 
-import AppLoadingActions from '../../actions/AppLoadingActions';
+import AppAlertActions from '../../actions/AppAlertActions';
 
 import HeaderActions from '../../actions/Teacher/HeaderActions';
 
@@ -38,6 +38,8 @@ class Index extends Component{
 
         dispatch({type:HeaderActions.TEACHER_HEADER_MENU_TOGGLE});
 
+        $('.content-wrapper').css("zIndex","5");
+
     }
 
    //点击学科按钮
@@ -48,6 +50,8 @@ class Index extends Component{
         const { dispatch } = this.props;
 
         dispatch({type:HeaderActions.TEACHER_SUBJECT_MENU_TOGGLE});
+
+        $('.content-wrapper').css("zIndex","5");
 
     }
 
@@ -84,9 +88,26 @@ class Index extends Component{
 
         const { dispatch } = this.props;
 
-        Event.stopPropagation();
+        //Event.stopPropagation();
 
-        dispatch(ModuleActions.GroupToggle({GroupID,OrderNo}));
+        //dispatch(ModuleActions.GroupToggle({GroupID,OrderNo}));
+
+        let itemGroup = $(Event.target).closest('.module-item.group');
+
+        let detailWrapper = itemGroup.children('.module-detail-wrapper');
+
+        //判断是否需要向下展开
+        if(itemGroup.offset().top+40-detailWrapper.height()<0){
+
+            detailWrapper.css({bottom:"auto",top:"40px"});
+
+        }
+
+        detailWrapper.slideToggle();
+
+        //将下层的zindex覆盖住上层的zindex
+        $('.content-wrapper').css("zIndex","101");
+
 
     }
 
@@ -123,13 +144,13 @@ class Index extends Component{
 
             case 3:
 
-                dispatch(AppAlertActions.alertWarn({title:"该模块未安装，请安装该模块"}))
+                dispatch(AppAlertActions.alertWarn({title:"该模块未安装，请安装该模块"}));
 
                 break;
 
             case 4:
 
-                dispatch(AppAlertActions.alertWarn({title:"该模块维护中"}))
+                dispatch(AppAlertActions.alertWarn({title:"该模块维护中"}));
 
                 break;
 
@@ -144,6 +165,10 @@ class Index extends Component{
                 return;
 
         }
+
+        //将其他的module-detail-wrapper隐藏
+
+        $('.module-item.group').children('.module-detail-wrapper').hide();
 
     }
 
@@ -169,7 +194,17 @@ class Index extends Component{
 
         }
 
-        dispatch(ModuleActions.GroupDetailHide());
+        /*dispatch(ModuleActions.GroupDetailHide());*/
+
+        $('.module-item.group').each((i,that)=>{
+
+            if (!that.contains(e.target)){
+
+                $(that).children('.module-detail-wrapper').hide();
+
+            }
+
+        });
 
     }
 
