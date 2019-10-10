@@ -60,13 +60,12 @@ const GET_COURSE_CLASS_RECORD_MSG = 'GET_COURSE_CLASS_RECORD_MSG';
 const GET_LOG_DETAILS_MSG = 'GET_LOG_DETAILS_MSG'
 //操作的执行
 //获取登录用户信息
-const getLoginUser = (url) => {
+const getLoginUser = (data) => {
     return (dispatch) => {
 
 
-        getData(CONFIG.proxy + url).then(res => res.json()).then(json => {
-            dispatch({ type: GET_LOGIN_USER_INFO, data: json.data.result });
-        });
+            dispatch({ type: GET_LOGIN_USER_INFO, data: data});
+      
     }
 };
 //获取学校学段信息

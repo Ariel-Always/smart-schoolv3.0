@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Frame, Menu, Loading, Alert } from "../../../common";
 import { connect } from 'react-redux';
+import { TokenCheck_Connect, TokenCheck, getUserInfo } from '../../../common/js/disconnect'
 
 
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
@@ -8,7 +9,7 @@ import history from './history'
 
 import logo from '../../images/SubjectLogo.png'
 //import TimeBanner from '../component/TimeBanner'
-
+import config from '../../../common/js/config'
 import Subject from '../component/Subject'
 import '../../scss/index.scss'
 import $ from 'jquery'
@@ -16,7 +17,7 @@ import { getData } from '../../../common/js/fetch'
 import actions from '../actions';
 //import { urlAll, proxy } from './config'
 
-sessionStorage.setItem('token', 'null')
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -26,20 +27,21 @@ class App extends Component {
         }
         let route = history.location.pathname;
         //判断token是否存在
-        if (sessionStorage.getItem('token')) {
-            dispatch(actions.UpDataState.getLoginUser('/Login?method=GetUserInfo'));
-            this.requestData(route);
-
-        } else {
-            //不存在的情况下
-            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-            dispatch(actions.UpUIState.showErrorAlert({
-                type: 'btn-error',
-                title: "登录错误，请重新登录!",
-                ok: this.onAppAlertOK.bind(this),
-                cancel: this.onAppAlertCancel.bind(this),
-                close: this.onAppAlertClose.bind(this)
-            }));
+        TokenCheck_Connect()
+        this.requestData(route);
+        let token = sessionStorage.getItem('token')
+        // sessionStorage.setItem('UserInfo', '')
+        if (sessionStorage.getItem('UserInfo')) {
+             //console.log(JSON.parse(sessionStorage.getItem('UserInfo')),decodeURIComponent(JSON.parse(sessionStorage.getItem('UserInfo')).data.PhotoPath))
+             let loginInfo = {}
+             for(let key in JSON.parse(sessionStorage.getItem('UserInfo')).data){
+                loginInfo[key] = decodeURIComponent(JSON.parse(sessionStorage.getItem('UserInfo')).data[key])
+             }
+            dispatch(actions.UpDataState.getLoginUser(loginInfo));
+        }
+        else {
+            getUserInfo(token, '000')
+            // dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
         }
     }
 
@@ -89,11 +91,11 @@ class App extends Component {
             //dispatch(actions.UpDataState.getAllUserPreview('/ArchivesAll'));
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
             if (!this.props.DataState.PeriodMsd)
-                dispatch(actions.UpDataState.getPeriodMsg('/AdmSubject_DropDownMenu?schoolID=sss'));
-            dispatch(actions.UpDataState.getSubjectMsg('/AdmSubject?schoolID=schoolID&periodID=null&pageSize=8&pageIndex=1'));
-            if(!this.props.DataState.SubjectMsg.addSubjectMsg)
-            dispatch(actions.UpDataState.getSubjectModalMsg('/AddSubject_DropDownMenu?schoolID=schoolID'));
-            
+                dispatch(actions.UpDataState.getPeriodMsg('/GetPeriodBySchoolID?schoolID=S0003'));
+            dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=S0003&periodID=&pageSize=8&pageIndex=1'));
+            if (!this.props.DataState.SubjectMsg.addSubjectMsg)
+                dispatch(actions.UpDataState.getSubjectModalMsg('/GetSubjectInfoForAddBySchool?schoolID=S0003'));
+
         } else {
             history.push('/')
         }
@@ -108,7 +110,7 @@ class App extends Component {
 
         return (
             <React.Fragment>
-                <Loading tip="加载中..." size="large" spinning={UIState.AppLoading.appLoading}>
+                <Loading opacity={false} tip="加载中..." size="large" spinning={UIState.AppLoading.appLoading}>
 
 
                     <Frame userInfo={{

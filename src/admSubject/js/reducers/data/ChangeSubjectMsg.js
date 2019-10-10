@@ -1,5 +1,9 @@
 import UpDataState from '../../actions/UpDataState';
-const ChangeSubjectMsg = (state = {}, actions) => {
+const ChangeSubjectMsg = (state = {
+    SubjectName:'',
+    SubjectID:'',
+    GlobalGradeIDs:''
+}, actions) => {
     switch (actions.type) {
         case UpDataState.CHANGE_SUBJECT_MODAL_MSG:
             let data = handleData(actions.data)
@@ -26,7 +30,7 @@ const ChangeSubjectMsg = (state = {}, actions) => {
 };
 function handleData(data) {
 
-    let GlobalGradeIDs = handleGrade(data.P1Grades).concat(handleGrade(data.P2Grades)).concat(handleGrade(data.P3Grades)).join();
+    let GlobalGradeIDs = handleGrade(data.P1Grade).concat(handleGrade(data.P2Grade)).concat(handleGrade(data.P3Grade)).join();
     if (GlobalGradeIDs.slice(0, 1) === ',') {
         GlobalGradeIDs = GlobalGradeIDs.slice(1)
     }

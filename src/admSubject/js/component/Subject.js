@@ -53,16 +53,16 @@ class Subject extends React.Component {
                             Teacher.map((child, index) => {
                                 let GradeName = ''
                                 if (child.Grade === 'P1') {
-                                    GradeName = '小学';
+                                    GradeName = '小学：';
                                 } else if (child.Grade === 'P2') {
-                                    GradeName = '初中';
+                                    GradeName = '初中：';
                                 } else if (child.Grade === 'P3') {
-                                    GradeName = '高中';
+                                    GradeName = '高中：';
                                 }
 
                                 return (
                                     <React.Fragment key={child.TeacherName ? child.TeacherName : '未填写'}>
-                                        <span className='Teacher' title={child.TeacherName}><span className='Teacher-tips'>{GradeName + '：'}</span><span onClick={child.TeacherName ? this.onClickTeacherName.bind(this, child.TeacherID) : this.onClickTeacherNameNo} className={child.TeacherName ? 'handleName' : 'noHandle'} >{child.TeacherName ? child.TeacherName : '未填写'}</span></span><br />
+                                        <span className='Teacher' title={child.TeacherName}><span className='Teacher-tips'>{GradeName }</span><span onClick={child.TeacherName ? this.onClickTeacherName.bind(this, child.TeacherID) : this.onClickTeacherNameNo} className={child.TeacherName ? 'handleName' : 'noHandle'} >{child.TeacherName ? child.TeacherName : '未填写'}</span></span><br />
                                     </React.Fragment>
                                 )
                             })
@@ -88,6 +88,7 @@ class Subject extends React.Component {
                     }
                 }
             ],
+            SubjectSelect:{ value: '', title: '全部学段' }
         }
     }
     // 钩子
@@ -127,7 +128,7 @@ class Subject extends React.Component {
     //操作分页
     onPagiNationChange = (value) => {
         const { dispatch } = this.props;
-        dispatch(actions.UpDataState.getSubjectMsg('/AdmSubject?schoolID=schoolID&periodID=periodID&pageSize=8&pageIndex=' + value));
+        dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=S0003&periodID=null&pageSize=8&pageIndex=' + value));
     }
 
     // 关闭信息弹窗
@@ -139,10 +140,13 @@ class Subject extends React.Component {
     AdmDropMenu = (value) => {
         const { dispatch } = this.props;
         let periodID = null;
+        this.setState({
+            SubjectSelect:value
+        })
         if (value.value !== 0) {
             periodID = 'p' + value.value
         }
-        dispatch(actions.UpDataState.getSubjectMsg('/AdmSubject?schoolID=schoolID&periodID=p' + periodID + '&pageSize=8&pageIndex=1'));
+        dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=S0003&periodID=' + periodID + '&pageSize=8&pageIndex=1'));
     }
 
     //删除
@@ -167,21 +171,22 @@ class Subject extends React.Component {
 
     onAlertWarnOk = (key) => {
         const { dispatch, DataState, UIState } = this.props;
-        let url = '/DeleteSubject';
+        let url = '/DeleteSubjectForSchoolOne';
         let userMsg = DataState.LoginUser;
         console.log(userMsg)
         dispatch(actions.UpUIState.hideErrorAlert());
-        postData(CONFIG.proxy + url, {
-            schoolID: 'schoolID',
+        postData(CONFIG.SubjectProxy + url, {
+            schoolID: 'S0003',
             subjectID: DataState.SubjectMsg.SubjectItem[key].SubjectName.SubjectID,
-            userID: userMsg.UserID,
-            userType: userMsg.UserType
-        }).then(res => {
+            userID: 'admin_S0003' || userMsg.UserID,
+            userType: '0' || userMsg.UserType
+        },2, 'json').then(res => {
             return res.json()
         }).then(json => {
             if (json.Status === 400) {
                 console.log('错误码：' + json.Status)
             } else if (json.Status === 200) {
+                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=S0003&periodID='+this.state.SubjectSelect.value+'&pageSize=8&pageIndex=1'));
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
                     title: "成功",
@@ -199,7 +204,7 @@ class Subject extends React.Component {
     }
     //编辑弹窗操作
     changeSubjectModalOk = () => {
-        let url = '/HandleSubject';
+        let url = '/UpdateSubjectForSchoolOne';
         const { dispatch, DataState } = this.props;
         let userMsg = DataState.LoginUser;
         if (DataState.ChangeSubjectMsg.GlobalGradeIDs.length === 0) {
@@ -213,13 +218,13 @@ class Subject extends React.Component {
             return;
         }
         dispatch({ type: actions.UpUIState.MODAL_LOADING_OPEN });
-        postData(CONFIG.proxy + url, {
-            schoolID: 'schoolID',
-            subjectID: DataState.ChangeSubjectMsg.SubjectID,
+        postData(CONFIG.SubjectProxy + url, {
+            schoolID: 'S0003',
+            subjectID: DataState.ChangeSubjectMsg.SubjectID||'',
             GlobalGradeIDs: DataState.ChangeSubjectMsg.GlobalGradeIDs,
-            userID: userMsg.UserID,
-            userType: userMsg.UserType
-        }, 3).then(res => {
+            userID: 'admin_S0003' || userMsg.UserID,
+            userType: '0' || userMsg.UserType
+        }, 2, 'json').then(res => {
             dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
             return res.json()
         }).then(json => {
@@ -232,6 +237,7 @@ class Subject extends React.Component {
                 console.log('错误码：' + json.Status)
             } else if (json.Status === 200) {
                 dispatch(actions.UpUIState.changeSubjectModalClose())
+                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=S0003&periodID='+this.state.SubjectSelect.value+'&pageSize=8&pageIndex=1'));
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
                     title: "成功",
@@ -248,7 +254,7 @@ class Subject extends React.Component {
     //添加弹窗操作
     AddSubjectModalOk = () => {
         const { dispatch, DataState } = this.props;
-        let url = '/AddSubject';
+        let url = '/InsertSubjectForSchoolOne';
         let userMsg = DataState.LoginUser;
         if (!DataState.ChangeSubjectMsg.SubjectName) {
             dispatch(actions.UpUIState.showErrorAlert({
@@ -271,13 +277,14 @@ class Subject extends React.Component {
             return;
         }
         dispatch({ type: actions.UpUIState.MODAL_LOADING_OPEN });
-        postData(CONFIG.proxy + url, {
-            schoolID: 'schoolID',
-            subjectID: DataState.ChangeSubjectMsg.SubjectID,
-            GlobalGradeIDs: DataState.ChangeSubjectMsg.GlobalGradeIDs,
-            userID: userMsg.UserID,
-            userType: userMsg.UserType
-        }, 3).then(res => {
+        postData(CONFIG.SubjectProxy + url, {
+            schoolID: 'S0003',
+            subjectID: DataState.ChangeSubjectMsg.SubjectID || '',
+            subjectName: DataState.ChangeSubjectMsg.SubjectName,
+            globalGradeIDs: DataState.ChangeSubjectMsg.GlobalGradeIDs,
+            userID: 'admin_S0003' || userMsg.UserID,
+            userType: '0' || userMsg.UserType
+        }, 2, 'json').then(res => {
             dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
             return res.json()
         }).then(json => {
@@ -290,6 +297,9 @@ class Subject extends React.Component {
                 console.log('错误码：' + json.Status)
             } else if (json.Status === 200) {
                 dispatch(actions.UpUIState.addSubjectModalClose())
+                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=S0003&periodID='+this.state.SubjectSelect.value+'&pageSize=8&pageIndex=1'));
+                
+
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
                     title: "成功",
@@ -323,40 +333,37 @@ class Subject extends React.Component {
     onSetTeacherClick = (key) => {
         const { dispatch, DataState } = this.props;
         let subjectTeacherMsg = DataState.SubjectMsg.oldData.SubjectItem[key];
-        dispatch(actions.UpDataState.setSubjectTeacherMsg(subjectTeacherMsg))
+        dispatch(actions.UpDataState.setSubjectTeacherMsg({isChange:false,...subjectTeacherMsg}))
         dispatch(actions.UpUIState.setSubjectTeacherModalOpen())
     }
 
     SetSubjectTeacherModalOk = () => {
         const { dispatch, DataState } = this.props;
-        let url = '/AddSubject';
+        let url = '/SetHeadOfTeachingGroup';
         let userMsg = DataState.LoginUser;
-        // if(!DataState.ChangeSubjectMsg.SubjectName){
-        //     dispatch(actions.UpUIState.showErrorAlert({
-        //         type: 'btn-error',
-        //         title: "学科名称没有选择哦~",
-        //         ok: this.onAppAlertOK.bind(this),
-        //         cancel: this.onAppAlertCancel.bind(this),
-        //         close: this.onAppAlertClose.bind(this)
-        //     }));
-        //     return;
-        // }
-        // if(DataState.ChangeSubjectMsg.GlobalGradeIDs.length === 0){
-        //     dispatch(actions.UpUIState.showErrorAlert({
-        //         type: 'btn-error',
-        //         title: "开课年级没有选择哦~",
-        //         ok: this.onAppAlertOK.bind(this),
-        //         cancel: this.onAppAlertCancel.bind(this),
-        //         close: this.onAppAlertClose.bind(this)
-        //     }));
-        //     return;
-        // }
+        if(!DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.isChange){
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-error',
+                title: "您还没有改变教研组长哦~",
+                ok: this.onAppAlertOK.bind(this),
+                cancel: this.onAppAlertCancel.bind(this),
+                close: this.onAppAlertClose.bind(this)
+            }));
+            return;
+        }
+       //教师格式P1/T0001
+       let newTeacher = DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.Teachers.split(',').map(child=>{
+           let loca = child.lastIndexOf('/');
+           return child.slice(0,loca)
+       }).join()
+
+
         dispatch({ type: actions.UpUIState.MODAL_LOADING_OPEN });
-        postData(CONFIG.proxy + url, {
-            schoolID: DataState.LoginUser.SchoolID,
+        postData(CONFIG.SubjectProxy + url, {
+            schoolID: 'S0003'||DataState.LoginUser.SchoolID,
             subjectID: DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.SubjectID,
-            teacher:DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.Teachers
-        }, 3).then(res => {
+            teacher: newTeacher
+        }, 2,'json').then(res => {
             dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
             return res.json()
         }).then(json => {
@@ -368,6 +375,7 @@ class Subject extends React.Component {
                 }));
                 console.log('错误码：' + json.Status)
             } else if (json.Status === 200) {
+                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=S0003&periodID='+this.state.SubjectSelect.value+'&pageSize=8&pageIndex=1'));
                 dispatch(actions.UpUIState.setSubjectTeacherModalClose())
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
@@ -403,7 +411,7 @@ class Subject extends React.Component {
                                     onChange={this.AdmDropMenu.bind(this)}
                                     width={120}
                                     height={96}
-                                    dropSelectd={{ value: 0, title: '全部学段' }}
+                                    dropSelectd={this.state.SubjectSelect}
                                     dropList={DataState.PeriodMsg ? DataState.PeriodMsg.value : [{ value: 0, title: '全部学段' }]}
                                 ></DropDown>
 
@@ -441,7 +449,8 @@ class Subject extends React.Component {
                 </DetailsModal>
                 <Modal
                     ref='handleTeacherMadal'
-                    bodyStyle={{ padding: 0 }}
+                    bodyStyle={{ height: 332 + 'px', padding: 0 }}
+                    width={780}
                     type='3'
                     title={'编辑学科'}
                     visible={UIState.ChangeSubjectModal.changeModalShow}
@@ -452,8 +461,9 @@ class Subject extends React.Component {
                 </Modal>
                 <Modal
                     ref='addTeacherMadal'
-                    bodyStyle={{ padding: 0 }}
+                    bodyStyle={{ height: 332 + 'px', padding: 0 }}
                     type='3'
+                    width={780}
                     title={'添加学科'}
                     visible={UIState.ChangeSubjectModal.addModalShow}
                     onOk={this.AddSubjectModalOk}

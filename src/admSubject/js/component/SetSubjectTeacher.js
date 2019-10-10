@@ -34,16 +34,33 @@ class SetSubjectTeacher extends React.Component {
 
         })
         //请求链接和参数
-        let url = '/AdmSubjectTeacher?schoolID=' + DataState.LoginUser.SchoolID + '&subjectID=' + DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.SubjectID + '&key=';
+        let url = '/GetTeacherInfoBySubjectAndKey?schoolID=S0003&subjectID=' + DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.SubjectID + '&key=';
         //获取初始全部学科信息
         dispatch(actions.UpDataState.getSubjectTeacherMsg(url, 'All', AllGrades));
         this.state = {
-            dropSelect: dropSelect
+            dropSelect: dropSelect,
+            searchOpen: false,
+            
         }
     }
     componentWillMount() {
+        const { dispatch, DataState, UIState } = this.props;
+        let dropSelect = [];
+        DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.Teachers.split(',').map((teacher, index) => {
+            let teacherArr = teacher.split('/');
+            let TeacherID = teacherArr[1];
+            let TeacherName = teacherArr[2];
+            
+            //初始下拉选择
 
-
+            if (TeacherID)
+                dropSelect[index] = { value: TeacherID, title: TeacherName }
+            else
+                dropSelect[index] = { value: '', title: '未选择' }
+        })
+        this.setState({
+            initDropSelect: dropSelect
+        })
     }
 
     componentWillUpdate() {
@@ -120,11 +137,14 @@ class SetSubjectTeacher extends React.Component {
     //search下拉菜单事件
     onDropClickSearch = (grades, index, value) => {
         const { dispatch, DataState } = this.props;
-        let url = '/AdmSubjectTeacher?schoolID=' + DataState.LoginUser.SchoolID + '&subjectID=' + DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.SubjectID + '&key=';
+        let url = '/GetTeacherInfoBySubjectAndKey?schoolID=S0003&subjectID=' + DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.SubjectID + '&key=' + value.value;
 
         console.log(grades, index, value)
         dispatch({ type: actions.UpUIState.SEARCH_LOADING_OPEN });
         dispatch(actions.UpDataState.getSubjectTeacherMsg(url, grades));
+        this.setState({
+            searchOpen: true
+        })
     }
     onMultipleChange = (grades, index, value) => {
         const { dispatch, DataState } = this.props;
@@ -137,16 +157,16 @@ class SetSubjectTeacher extends React.Component {
             dropSelect: dropSelect
         })
         let list = [];
-        for(let key in DataState.SetSubjectTeacherMsg.SubjectTeacherList){
+        for (let key in DataState.SetSubjectTeacherMsg.SubjectTeacherList) {
             list.push(key)
         }
         let Teachers = dropSelect.map((child, key) => {
             let newArr = [list[key], child.value, child.title]
             return newArr.join('/')
         }).join(',');
-        let SubjectTeacher = Object.assign({},DataState.SetSubjectTeacherMsg.SubjectTeacherMsg,{Teachers:Teachers}) 
+        let SubjectTeacher = Object.assign({}, DataState.SetSubjectTeacherMsg.SubjectTeacherMsg, {isChange:true, Teachers: Teachers })
         dispatch(actions.UpDataState.setSubjectTeacherMsg(SubjectTeacher));
-        
+
     }
     render() {
         const { DataState, UIState } = this.props;
@@ -190,11 +210,14 @@ class SetSubjectTeacher extends React.Component {
                                 GradeName = '高中';
                             }
 
+                            console.log(this.state.initDropSelect[index], this.state.dropSelect[index] )
 
+                            if (!DataState.SetSubjectTeacherMsg.SubjectTeacherList || !DataState.SetSubjectTeacherMsg.SubjectTeacherList[Grades])
+                                return
                             return (
                                 <div key={index} className='row clearfix'>
                                     <span className='culonm-1'>{GradeName}教研组长：</span>
-                                    <div className='culonm-2 culonm-3'>{
+                                    <div className='culonm-2 culonm-3'>
                                         <DropDown
                                             ref='dropMenuSubject'
                                             type='multiple'
@@ -207,16 +230,21 @@ class SetSubjectTeacher extends React.Component {
                                                 width: 400,
                                                 height: 250,
                                                 range: 1,
+                                                searchOpen: true,
                                                 searchLoadingShow: UIState.AppLoading.searchLoading,
                                                 searchPlaceholder: '请输入任课教师工号或名称进行搜索',
-                                                searchList: DataState.SetSubjectTeacherMsg.SubjectTeacherList ? DataState.SetSubjectTeacherMsg.SubjectTeacherList[Grades] : [{}],
+                                                searchList: DataState.SetSubjectTeacherMsg.SubjectTeacherList[Grades] ? DataState.SetSubjectTeacherMsg.SubjectTeacherList[Grades] : [],
                                                 dropClickSearch: this.onDropClickSearch.bind(this, Grades, index),
                                                 dropMultipleChange: this.onMultipleChange.bind(this, Grades, index)
                                             }}
                                             dropSelectd={this.state.dropSelect[index]}
 
                                         ></DropDown>
-                                    }</div>
+                                        <span className='TeacherChange' style={{ 'display': this.state.initDropSelect[index].value !== this.state.dropSelect[index].value ? 'inline-block' : 'none' }}>
+                                            {'原教研组长:' + this.state.initDropSelect[index].title}
+                                        </span>
+                                    </div>
+
                                 </div>
                             )
                         })

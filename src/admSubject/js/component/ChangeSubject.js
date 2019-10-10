@@ -15,8 +15,8 @@ class ChangeSubject extends React.Component {
             SubjectName: '',
             selectGrade: [],
             showInput: true,
-            SubjectInput:'',
-            dropSelected: { value: 0, title: '自定义',GlabalGrades:[] }
+            SubjectInput: '',
+            dropSelected: { value: 0, title: '自定义', GlabalGrades: [] }
         }
     }
     componentWillMount() {
@@ -183,39 +183,39 @@ class ChangeSubject extends React.Component {
     dropMenuSubject = (value) => {
         const { dispatch, DataState, UIState } = this.props;
         console.log(value)
-        let GlabalGrades ='';
+        let GlabalGrades = '';
         if (value.value === 0) {
             this.setState({
                 showInput: true,
-                dropSelected:value
+                dropSelected: value
             })
         } else {
             this.setState({
                 showInput: false,
-                dropSelected:value
+                dropSelected: value
             })
         }
-        DataState.SubjectMsg.addSubjectMsg.map((child,index) => {
-            if(child.value === value.value)
-            GlabalGrades = child.GlabalGrades
+        DataState.SubjectMsg.addSubjectMsg.map((child, index) => {
+            if (child.value === value.value)
+                GlabalGrades = child.GlabalGrades
         })
         dispatch(actions.UpDataState.handleSubjectNameModalMsg({
-            SubjectName:value.title,
-            SubjectID:value.value
+            SubjectName: value.title,
+            SubjectID: value.value
         }))
         dispatch(actions.UpDataState.handleSubjectModalMsg(GlabalGrades))
     }
 
     onSubjectInputChange = (e) => {
-        const {dispatch,DataState} = this.props;
-        
+        const { dispatch, DataState } = this.props;
+
         this.setState({
-            SubjectInput:e.target.value,
+            SubjectInput: e.target.value,
 
         })
         dispatch(actions.UpDataState.handleSubjectNameModalMsg({
-            SubjectName:e.target.value,
-            SubjectID:''
+            SubjectName: e.target.value,
+            SubjectID: ''
         }))
         dispatch(actions.UpDataState.handleSubjectModalMsg(''))
     }
@@ -228,17 +228,17 @@ class ChangeSubject extends React.Component {
                 <div className='chageSubject'>
                     <div className='row clearfix'>
                         <span className='culonm-1'>学科名称：</span>
-                        <span style={{ display: this.state.type === 'change' ? 'block' : 'none' }} className='culonm-2'><span className='subjectName'>{this.state.type === 'change' ?DataState.ChangeSubjectMsg.SubjectName:'错误'}</span></span>
+                        <span style={{ display: this.state.type === 'change' ? 'block' : 'none' }} className='culonm-2'><span className='subjectName'>{this.state.type === 'change' ? DataState.ChangeSubjectMsg.SubjectName : '错误'}</span></span>
                         <div className='culonm-2 dropMenuBox' style={{ display: this.state.type === 'add' ? 'block' : 'none' }}>
                             <DropDown
                                 ref='dropMenuSubject'
-                                style={{zIndex:2}}
-                                className ={'DropMenu'}
+                                style={{ zIndex: 2 }}
+                                className={'DropMenu'}
                                 onChange={this.dropMenuSubject.bind(this)}
                                 width={120}
                                 height={96}
                                 dropSelectd={this.state.dropSelected}
-                                dropList={DataState.SubjectMsg.addSubjectMsg ? DataState.SubjectMsg.addSubjectMsg : [{ value: 0, title: '自定义',GlabalGrades:[] }]}
+                                dropList={DataState.SubjectMsg.addSubjectMsg ? DataState.SubjectMsg.addSubjectMsg : [{ value: 0, title: '自定义', GlabalGrades: [] }]}
                             ></DropDown>
                             <Input type='text' width={200} onChange={this.onSubjectInputChange.bind(this)} value={this.state.SubjectInput} className='box-input' style={{ display: this.state.showInput ? 'inline-block' : 'none' }} placeholder='输入学科名称...'></Input>
                         </div>
@@ -272,16 +272,21 @@ class ChangeSubject extends React.Component {
                                 // })
                                 return (
                                     <div className='checkBoxGroup' key={index}>
-                                        <CheckBox className='checkAll' onChange={this.onCheckBoxChange.bind(this, index)} checked={checkGroup}>{child.title}</CheckBox>
+                                        <CheckBox className={`checkAll ${checkGroup ? 'select' : ''}`} onChange={this.onCheckBoxChange.bind(this, index)} checked={checkGroup}>
+                                            <span className='checkContent'>{child.title}</span>
+                                        </CheckBox>
+                                        <span className='delete'></span>
                                         <CheckBoxGroup onChange={this.onCheckBoxGroupChange.bind(this, index)} value={mySelect}>
                                             {GradesArr.map((child2, index) => {
                                                 return (
-                                                    <div key={index} className='checkBox'>
-                                                        <div className='newCheckBoxStyle'>
-                                                            <CheckBox value={child2}></CheckBox>
+                                                    <label key={index}>
+                                                        <div  className={`checkBox ${mySelect.includes(child2) ? 'select' : ''}`}>
+                                                            <div className='newCheckBoxStyle'>
+                                                                <CheckBox value={child2} onChange={this.onCheck}></CheckBox>
+                                                            </div>
+                                                            <span className='checkBox-tips'>{defaultGrades[child2]}</span>
                                                         </div>
-                                                        <span className='checkBox-tips'>{defaultGrades[child2]}</span>
-                                                    </div>
+                                                    </label>
                                                 )
 
                                             })}

@@ -19,6 +19,7 @@ import ImportFile from '../component/ImportFile'
 import LogDetails from '../component/LogDetails'
 import HandleCourseClass from '../component/HandleCourseClass'
 import AddCourseClass from '../component/AddCourseClass'
+import { TokenCheck_Connect, TokenCheck, getUserInfo } from '../../../common/js/disconnect'
 
 import CourseClassDetails from '../component/CourseClassDetails'
 import Teacher from '../component/Teacher'
@@ -51,22 +52,29 @@ class App extends Component {
         let route = history.location.pathname;
         sessionStorage.setItem('token', 'aaa')
         //判断token是否存在
-        if (sessionStorage.getItem('token')) {
-            dispatch(actions.UpDataState.getLoginUser('/Login?method=GetUserInfo'));
-            dispatch(actions.UpDataState.getCoureClassAllMsg('/CoureClass_All?schoolID=sss', this.MenuClcik));
-            this.requestData(route);
-
-        } else {
-            //不存在的情况下
-            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-            dispatch(actions.UpUIState.showErrorAlert({
-                type: 'btn-error',
-                title: "登录错误，请重新登录!",
-                ok: this.onAppAlertOK.bind(this),
-                cancel: this.onAppAlertCancel.bind(this),
-                close: this.onAppAlertClose.bind(this)
-            }));
+        TokenCheck_Connect()
+        this.requestData(route);
+        let token = sessionStorage.getItem('token')
+        // sessionStorage.setItem('UserInfo', '')
+        if (sessionStorage.getItem('UserInfo')) {
+             //console.log(JSON.parse(sessionStorage.getItem('UserInfo')),decodeURIComponent(JSON.parse(sessionStorage.getItem('UserInfo')).data.PhotoPath))
+             let loginInfo = {}
+             for(let key in JSON.parse(sessionStorage.getItem('UserInfo')).data){
+                loginInfo[key] = decodeURIComponent(JSON.parse(sessionStorage.getItem('UserInfo')).data[key])
+             }
+            dispatch(actions.UpDataState.getLoginUser(loginInfo));
         }
+        else {
+            getUserInfo(token, '000')
+            // dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
+        }
+
+        dispatch(actions.UpDataState.getCoureClassAllMsg('/CoureClass_All?schoolID=sss', this.MenuClcik));
+       
+            
+            
+
+        
 
         // 获取接口数据
 

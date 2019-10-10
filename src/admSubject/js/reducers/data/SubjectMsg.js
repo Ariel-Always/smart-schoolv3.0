@@ -11,7 +11,7 @@ import Chinese from '../../../images/Chinese.png';
 import Others from '../../../images/Others.png';
 
 
-const SubjectMsg = (state = '', actions) => {
+const SubjectMsg = (state = {}, actions) => {
     switch (actions.type) {
         case UpDataState.GET_SUBJECT_MSG:
             let { SubjectItem, ...data } = actions.data;
@@ -54,7 +54,7 @@ function handleAllGrades(grade) {
     return gradeArr2
 }
 function handleData(data) {
-
+    data = data||[]
     let newData = data.map((child, index) => {
         let SubjectName = handleSubjectName(child)
         // {
@@ -63,9 +63,9 @@ function handleData(data) {
         //     SubjectImg:SubjectImg 
         // }; 
         let Grades = {
-            P1Grades: handleGrade(child.P1Grades),
-            P2Grades: handleGrade(child.P2Grades),
-            P3Grades: handleGrade(child.P3Grades)
+            P1Grades: handleGrade(child.P1Grade),
+            P2Grades: handleGrade(child.P2Grade),
+            P3Grades: handleGrade(child.P3Grade)
         }
         let Teacher = handleTeacher(child.Teachers)
         let key = index;
@@ -128,6 +128,7 @@ function handleTeacher(teacher) {
     return allTeacherArr;
 }
 function handleGrade(grade) {
+    // console.log(grade)
     if (grade === '')
         return '';
     let GradeArr = grade.split(',');

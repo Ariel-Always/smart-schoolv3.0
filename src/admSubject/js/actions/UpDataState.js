@@ -28,21 +28,21 @@ const GET_SUBJECT_MODAL_MSG = 'GET_SUBJECT_MODAL_MSG'
 //设置教研组长
 const SET_SUBJECT_TEACHER_MSG = 'SET_SUBJECT_TEACHER_MSG'
 const GET_SUBJECT_TEACHER_MSG = 'GET_SUBJECT_TEACHER_MSG'
-
+const SET_SUBJECT_TEACHER_MSG_All = 'SET_SUBJECT_TEACHER_MSG_All'
 
 //操作的执行
 //获取登录用户信息
-const getLoginUser = (url) => {
+const getLoginUser = (data) => {
     return (dispatch) => {
-        getData(CONFIG.proxy + url).then(res => res.json()).then(json => {
-            dispatch({ type: GET_LOGIN_USER_INFO, data: json.data.result });
-        });
+        // console.log(data)
+        dispatch({ type: GET_LOGIN_USER_INFO, data: data });
+
     }
 };
 //获取学校学段信息
 const getPeriodMsg = (url) => {
     return (dispatch) => {
-        getData(CONFIG.proxy + url).then(res => {
+        getData(CONFIG.SubjectProxy + url).then(res => {
 
             return res.json()
         }).then(json => {
@@ -59,7 +59,7 @@ const getSubjectMsg = (url) => {
     return (dispatch) => {
 
         dispatch({ type: actions.UpUIState.SUBJECT_TABLE_LOADING_OPEN });
-        getData(CONFIG.proxy + url).then(res => {
+        getData(CONFIG.SubjectProxy + url).then(res => {
             dispatch({ type: actions.UpUIState.SUBJECT_TABLE_LOADING_CLOSE });
             return res.json()
         }).then(json => {
@@ -118,7 +118,7 @@ const handleSubjectNameModalMsg = (data) => {
 
 const getSubjectModalMsg = (url) => {
     return (dispatch) => {
-        getData(CONFIG.proxy + url).then(res => {
+        getData(CONFIG.SubjectProxy + url).then(res => {
             return res.json()
         }).then(json => {
             if (json.Status === 400) {
@@ -126,7 +126,7 @@ const getSubjectModalMsg = (url) => {
             } else if (json.Status === 200) {
                 console.log(json.Data)
                 dispatch({ type: GET_SUBJECT_MODAL_MSG, data: json.Data });
-                
+
             }
         });
     }
@@ -134,10 +134,10 @@ const getSubjectModalMsg = (url) => {
 
 
 //设置教研组长
-const getSubjectTeacherMsg = (url,grades,allGrades = []) => {
+const getSubjectTeacherMsg = (url, grades, allGrades = []) => {
     return (dispatch) => {
-        getData(CONFIG.proxy + url).then(res => {
-        dispatch({ type: actions.UpUIState.SEARCH_LOADING_CLOSE });
+        getData(CONFIG.SubjectProxy + url).then(res => {
+            dispatch({ type: actions.UpUIState.SEARCH_LOADING_CLOSE });
 
             return res.json()
         }).then(json => {
@@ -145,13 +145,13 @@ const getSubjectTeacherMsg = (url,grades,allGrades = []) => {
                 console.log('错误码：' + json.Status)
             } else if (json.Status === 200) {
                 console.log(json.Data)
-                if(grades==='All'){
-                    allGrades.map((child,index) => {
-                        dispatch({ type: SET_SUBJECT_TEACHER_MSG, data: {Teacher:json.Data,grades:child} });
-                    })
-                }else
-                dispatch({ type: SET_SUBJECT_TEACHER_MSG, data: {Teacher:json.Data,grades:grades} });
-                
+                if (grades === 'All') {
+
+                    dispatch({ type: SET_SUBJECT_TEACHER_MSG_All, data: { Teacher: json.Data, allGrades: allGrades } });
+
+                } else
+                    dispatch({ type: SET_SUBJECT_TEACHER_MSG, data: { Teacher: json.Data, grades: grades } });
+
             }
         });
     }
@@ -184,6 +184,7 @@ export default {
     getSubjectTeacherMsg,
     SET_SUBJECT_TEACHER_MSG,
     setSubjectTeacherMsg,
-    GET_SUBJECT_TEACHER_MSG
+    GET_SUBJECT_TEACHER_MSG,
+    SET_SUBJECT_TEACHER_MSG_All
 
 }

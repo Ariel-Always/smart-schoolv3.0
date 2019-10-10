@@ -1,7 +1,7 @@
 .chageSubject {
   position: relative;
   width: 100%;
-  
+
   .row:nth-of-type(1) {
     margin-top: 5px;
   }
@@ -19,7 +19,7 @@
     margin: 3px 0;
     //height: 40px;
     .culonm-1 {
-      width: 18%;
+      width: 15%;
       float: left;
       line-height: 40px;
       text-align: right;
@@ -35,7 +35,7 @@
 
     .culonm-2 {
       float: left;
-      width: 75%;
+      width: 85%;
       height: 40px;
       padding-left: 5px;
       vertical-align: middle;
@@ -47,7 +47,7 @@
         font-size: 16px;
         color: #333;
       }
-      .subjectName{
+      .subjectName {
         line-height: 40px;
         text-align: left;
         font-size: 16px;
@@ -90,28 +90,76 @@
         }
       }
 
-      .checkBoxGroup{
+      .checkBoxGroup {
         position: relative;
-        .checkAll{
-          display: block;
-          height: 25px;
-        }
-        .checkBox{
+        margin-bottom: 10px;
+        .checkAll,
+        .checkBox {
           display: inline-block;
+          cursor: pointer;
+
           width: 60px;
-          height: 50px;
+          height: 28px;
+          background-color: #fff;
+          border: solid 1px #bac7d9;
+
+          .ant-checkbox {
+            position: absolute;
+            opacity: 0;
+          }
+          span {
+            padding: 0 !important;
+          }
+          .checkContent,.checkBox-tips {
+            display: inline-block;
+            width: 100%;
+            height: 28px;
+            line-height: 28px;
+            text-align: center;
+            font-size: 14px;
+            color: #79879b;
+          }
+
+          .newCheckBoxStyle {
+            position: absolute;
+          }
+        }
+        .select {
+          background: #e9ffe9 url(../images/icon-select.png);
+          background-size: 14px 14px;
+          background-position: top right;
+          background-repeat: no-repeat;
+          border: solid 1px #2ba500;
+          .checkContent {
+            color: #2ba500;
+          }
+        }
+        .delete {
+          //display: inline-block;
+          width: 24px;
+          float: left;
+          height: 28px;
+          background: url(../images/icon-arrow.png) no-repeat center center;
+          background-size: 6px 8px;
+        }
+        .checkAll {
+          float: left;
+        }
+        .checkBox {
+          display: inline-block;
+          margin-right: 28px;
         }
       }
     }
-    .dropMenuBox{
-      .DropMenu{
+    .dropMenuBox {
+      .DropMenu {
         float: left;
         width: 120px;
         height: 28px;
         margin-right: 10px;
       }
-      .box-input{
-        top:50%;
+      .box-input {
+        top: 50%;
         transform: translateY(-50%);
         width: 120px;
         height: 28px;
