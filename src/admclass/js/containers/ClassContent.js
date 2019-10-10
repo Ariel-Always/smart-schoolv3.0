@@ -175,13 +175,8 @@ class ClassContent extends Component{
 
                     //做异步操作
 
-                    dispatch({type:UpDataState.THE_GRADE_CLASS_LOADING_SHOW});
+                    dispatch(UpDataState.UpdateClassName({GradeID:info.id,ClassID:ClassID,ClassName:InputText}));
 
-                    //如果成功
-
-                    dispatch({type:UpUIState.RESET_CLASS_NAME_HIDE});
-
-                    dispatch(AppAlertActions.alertSuccess('修改成功！'));
 
                 }
 

@@ -10,7 +10,7 @@ import PaginationActions from './PaginationActions';
 
 import CONFIG from '../../../common/js/config'
 
-// const CONFIG = {proxy:"http://47.244.238.75:7300/mock/5d7e0519fdd0dc0457886a3c/webCloudDev"};
+
 
 
 //操作常量
@@ -280,10 +280,25 @@ const changeStudentCheckList = (checkList) => {
 };
 
 //添加班级
-const addClass = () =>{
+const addClass = ({GradeID,ClassName}) =>{
     return dispatch => {
+
         //关闭的弹窗的时候重置一些操作
-        dispatch({type:UpUIState.ADD_CLASS_MODAL_HIDE});
+        addClassPost({GradeID,dispatch,ClassName}).then(data=>{
+
+           if (data){
+
+               dispatch({type:UpUIState.ADD_CLASS_MODAL_HIDE});
+
+               dispatch(AppAlertActions.alertSuccess('添加班级成功！'));
+
+
+
+           }
+
+        });
+
+
 
     }
 
@@ -679,54 +694,52 @@ const delSubjectTeacher = ({ClassID,SubjectID}) => {
 };
 
 
+//编辑班级
 
+const UpdateClassName = ({GradeID,ClassID,ClassName}) => {
 
-//从徐工那边获取的数据以及数据格式
- const getXuGetData =  async (url) =>{
-    try {
-        let fetchAsync = '';
-        try {
-            fetchAsync = await getData(CONFIG.proxy+url);
-        }
-        catch (e) {
-            return  e;
-        }
+  return (dispatch,getState) => {
 
-        let json = await fetchAsync.json();
+      let { SchoolID } = getState().DataState.LoginUser;
 
-        return  json;
+      editClassPost({ClassName,ClassID,dispatch}).then(data=>{
 
-    }
-    catch (e) {
+          if (data){
 
-       return e;
+              //如果成功
 
-    }
-};
-//从徐工那边调用post接口
-const postXuData = async (url,data,level) =>{
+              dispatch({type:UpUIState.RESET_CLASS_NAME_HIDE});
 
-    try {
-        let fetchAsync = '';
-        try {
-            fetchAsync = await postData(CONFIG.proxy+url,data,level);
-        }
-        catch (e) {
-            return  e;
-        }
+              dispatch(AppAlertActions.alertSuccess('修改成功！'));
 
-        let json = await fetchAsync.json();
+              dispatch({type:THE_GRADE_CLASS_LOADING_SHOW});
 
-        return  json;
+              getClassList({SchoolID,GradeID,PageSize:12,PageIndex:0,dispatch}).then(data=>{
 
-    }
-    catch (e) {
+                  if (data){
 
-        return e;
+                      dispatch({type:GET_THE_GRADE_PREVIEW,data:data});
 
-    }
+                      dispatch({type:PaginationActions.CLASS_PAGINATION_CURRENT_UPDATE,data:1});
+
+                      dispatch({type:PaginationActions.CLASS_PAGINATION_TOTAL_UPDATE,data:data.Total});
+
+                      dispatch({type:UpUIState.CLASS_LOADING_HIDE});
+
+                      dispatch({type:UpUIState.APP_LOADING_CLOSE});
+
+                  }
+
+              })
+
+          }
+
+      });
+
+  }
 
 };
+
 
 
 
@@ -737,7 +750,7 @@ const postXuData = async (url,data,level) =>{
 //获取login信息
 const getLogin = async (dispatch) => {
 
-   let res = await Method.getGetData('/Login?method=GetUserInfo');
+   let res = await Method.getGetData('/Login?method=GetUserInfo',1,CONFIG.MockLoginProxy);
 
    if (res.error === 0){
 
@@ -968,6 +981,59 @@ const adjustClass =  async ({ClassID,UserIDs,dispatch}) => {
 };
 
 
+//添加班级接口
+
+const addClassPost =  async ({GradeID,ClassName,dispatch}) => {
+
+    let res = await Method.getPostData(`/UserMgr/ClassMgr/ReSetStudentClass`,{
+
+        GradeID,ClassName
+
+    },2,CONFIG.AdmClassProxy);
+
+
+
+    if (res.StatusCode === 200){
+
+        return res;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError(res.Msg));
+
+    }
+
+
+};
+
+//编辑班级接口
+
+const editClassPost =  async ({ClassID,ClassName,dispatch}) => {
+
+    let res = await Method.getPostData(`/UserMgr/ClassMgr/ReSetStudentClass`,{
+
+        ClassID,ClassName
+
+    },2,CONFIG.AdmClassProxy);
+
+
+
+    if (res.StatusCode === 200){
+
+        return res;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError(res.Msg));
+
+    }
+
+
+};
+
+
+
+
 
 export default {
     getPageInit,
@@ -992,6 +1058,8 @@ export default {
     delSubjectTeacher,
 
     adjustClass,
+
+    UpdateClassName,
 
     GET_LOGIN_USER_INFO,
     GET_ALL_GRADE_PREVIEW,

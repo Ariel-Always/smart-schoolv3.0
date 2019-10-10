@@ -52,7 +52,9 @@ const PageInit = () => {
 
                 if (data){
 
-                    let ModuleGroups = data.Groups.map(item=>{
+                    console.log(data);
+
+                    let ModuleGroups = data.map(item=>{
 
                         return {
 
@@ -162,7 +164,7 @@ const PageInit = () => {
 
 const getTeacherSubjects = async ({UserID,dispatch}) => {
 
-    let res = await Method.getGetData(`/UserMgr/UserInfoMgr/GetUserDetail?UserID=${UserID}`,2,CONFIG.DeskTopProxy);
+    let res = await Method.getGetData(`/UserMgr/UserInfoMgr/GetUserDetail?UserID=${UserID}`,2,CONFIG.proxy);
 
     if (res.StatusCode === 200){
 

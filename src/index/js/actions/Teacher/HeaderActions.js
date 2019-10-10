@@ -38,7 +38,7 @@ const SubjectClick = (info) => {
 
             if (data){
 
-                let ModuleGroups = data.Groups.map(item=>{
+                let ModuleGroups = data.map(item=>{
 
                     return {
 

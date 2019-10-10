@@ -33,7 +33,7 @@ const getLoginUser = async ({dispatch}) => {
 
   //let res = await Method.getGetData(`/UserMgr/Login/Api/Login.ashx?method=GetUserInfo`,1,'http://192.168.129.2:10102');
 
-  let res = await Method.getGetData(`/Login2?method=GetUserInfo`,1,CONFIG.DeskTopProxy);
+  let res = await Method.getGetData(`/Login2?method=GetUserInfo`,1,CONFIG.MockLoginProxy);
 
   if (res.error === 0){
 
