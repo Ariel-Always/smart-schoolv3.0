@@ -32,7 +32,7 @@ import { postData, getData } from '../../../common/js/fetch'
 import actions from '../actions';
 //import { urlAll, proxy } from './config'
 
-sessionStorage.setItem('token', 'null')
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -50,7 +50,7 @@ class App extends Component {
     componentWillMount() {
         const { dispatch, DataState } = this.props;
         let route = history.location.pathname;
-        sessionStorage.setItem('token', 'aaa')
+        
         //判断token是否存在
         TokenCheck_Connect()
         this.requestData(route);
@@ -65,7 +65,12 @@ class App extends Component {
             dispatch(actions.UpDataState.getLoginUser(loginInfo));
         }
         else {
-            getUserInfo(token, '000')
+            getUserInfo(token, '000');
+            let loginInfo = {}
+             for(let key in JSON.parse(sessionStorage.getItem('UserInfo')).data){
+                loginInfo[key] = decodeURIComponent(JSON.parse(sessionStorage.getItem('UserInfo')).data[key])
+             }
+            dispatch(actions.UpDataState.getLoginUser(loginInfo));
             // dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
         }
 

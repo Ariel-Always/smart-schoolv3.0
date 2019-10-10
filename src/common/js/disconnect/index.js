@@ -29,9 +29,10 @@ export function TokenCheck() {
                 success: function (data) {//验证成功，则
                     let json = data;
                     // if (!sessionStorage.getItem('UserInfo'))
-                    getUserInfo(token, '000')
                     console.log(json, getQueryVariable('lg_preurl'))
                     if (json.data.result) {//result为true
+                        getUserInfo(token, '000')
+
                         if (url.split('html/')[1]) {//有就说明不在登录页
                             if (url.split('html/')[1].split('?')[0] === 'admDisconnect') {//本身在掉线界面
 
@@ -63,6 +64,12 @@ export function TokenCheck() {
 
                     } else {//验证不成功
                         //sessionStorage.setItem('token', '')
+                        //回调函数
+                        let jsoncallback = (json) => {
+
+                            console.log(json + 1);
+
+                        }
                         if (token !== url_token) {//如果第一个验证失败，判断是否用的是session的token，不是就进行url的token验证
                             //jsonp验证token
                             $.ajax(
@@ -75,10 +82,11 @@ export function TokenCheck() {
                                     success: function (data) {//验证成功，则
                                         let json = data;
                                         // if (!sessionStorage.getItem('UserInfo'))
-                                        getUserInfo(token, '000')
+
                                         console.log(json)
                                         if (json.data.result) {//result为true
                                             // if (url.split('html/')[1]) {//有就说明不在登录页
+                                            getUserInfo(token, '000')
                                             if (url.includes('html/admDisconnect')) {//本身在掉线界面
                                                 if (getQueryVariable('lg_preurl')) {//查询是否有lg_preurl,有则跳至该地址，没有则跳至桌面
                                                     window.location.href = url.split('lg_preurl=')[1];
@@ -165,7 +173,7 @@ export function getUserInfo(token, SysID) {
     //回调函数
     let jsoncallback = (json) => {
 
-        console.log(json);
+        console.log(json + 1);
 
     }
     $.ajax(
@@ -190,7 +198,7 @@ export function getUserInfo(token, SysID) {
                 sessionStorage.setItem('UserInfo', JSON.stringify(UserInfo));
                 sessionStorage.setItem('lastTime', time)
             },
-            error: function (textStatus) {
+            error: function () {
 
             }
         })
