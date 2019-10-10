@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 
 import { Loading,Alert } from "../../../common";
 
-import { TokenCheck_Connect,TokenCheck } from "../../../common/js/disconnect";
+import {TokenCheck_Connect, TokenCheck, getUserInfo} from "../../../common/js/disconnect";
 
 import AppAlertActions from '../actions/AppAlertActions';
 
@@ -21,22 +21,49 @@ class App extends Component {
 
         super(props);
 
-        TokenCheck_Connect();
+        const { dispatch } = props;
 
-        
+        TokenCheck_Connect(true);
+
+        if (sessionStorage.getItem('UserInfo')){
+
+            let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
+
+            dispatch({type:LoginUserActions.LOGIN_USER_INFO_UPDATE,data:UserInfo});
+
+        }else{
+
+
+            let getUserInfo = setInterval(()=>{
+
+                if (sessionStorage.getItem('UserInfo')){
+
+                    let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
+
+                    dispatch({type:LoginUserActions.LOGIN_USER_INFO_UPDATE,data:UserInfo});
+
+                    clearInterval(getUserInfo);
+
+                }
+
+            },20)
+
+        }
 
         //this.PageBefore(props);
 
     }
 
 
-    //界面加载前的操作
-    PageBefore(props){
 
-        const { dispatch } = props;
+    //界面加载前的操作
+    PageBefore(props) {
+
 
 
     }
+
+
 
 
 
@@ -73,7 +100,7 @@ class App extends Component {
 
                 {
 
-                    LoginUser.UserType === 0?
+                    LoginUser.UserType === "0"?
 
                         <ManagerDeskTop></ManagerDeskTop>
 
@@ -83,7 +110,7 @@ class App extends Component {
 
                 {
 
-                    LoginUser.UserType === 1?
+                    LoginUser.UserType === "1"?
 
                     <TeacherDeskTop></TeacherDeskTop>
 
