@@ -43,11 +43,24 @@ export function TokenCheck() {
                             } else {
                                 return;
                             }
-                        } else if (getQueryVariable('lg_preurl')) {//查询是否有lg_preurl,有则跳至该地址，没有则跳至桌面
+                        }else{
+
+                            return;
+
+                        }
+
+
+
+
+
+                       /* else if (getQueryVariable('lg_preurl')) {//查询是否有lg_preurl,有则跳至该地址，没有则跳至桌面
                             window.location.href = getQueryVariable('lg_preurl');
                         } else {
                             window.location.href = config.BasicProxy;
-                        }
+                        }*/
+
+
+
                     } else {//验证不成功
                         //sessionStorage.setItem('token', '')
                         if (token !== url_token) {//如果第一个验证失败，判断是否用的是session的token，不是就进行url的token验证
@@ -163,10 +176,18 @@ export function getUserInfo(token, SysID) {
             jsonp: 'callback',
             jsonpCallback: 'jsoncallback', //这里的值需要和回调函数名一样
             success: function (data) {
-                //console.log(JSON.stringify(data))
 
-                // console.log(data);
-                sessionStorage.setItem('UserInfo', JSON.stringify(data))
+                let loginInfo = data.data;
+
+                let UserInfo = {};
+
+                for(let [key,value] of Object.entries(loginInfo)){
+
+                    UserInfo[key] = decodeURIComponent(value);
+
+                }
+
+                sessionStorage.setItem('UserInfo', JSON.stringify(UserInfo));
                 sessionStorage.setItem('lastTime', time)
             },
             error: function (textStatus) {
@@ -190,10 +211,10 @@ export function TokenCheck_Connect() {
     let lastTime = sessionStorage.getItem('lastTime')
     let date = new Date();
     let time = date.getTime()
-    if (time - lastTime >= 60000) {
+ /*   if (time - lastTime >= 60000) {*/
         TokenCheck()
         sessionStorage.setItem('lastTime', time)
-    }
+    /*}*/
     setInterval(function () {
         let lastTime = sessionStorage.getItem('lastTime')
         let date = new Date();

@@ -2,6 +2,8 @@ import React,{Component} from 'react';
 
 import { Loading,Alert } from "../../../common";
 
+import { TokenCheck_Connect,TokenCheck } from "../../../common/js/disconnect";
+
 import AppAlertActions from '../actions/AppAlertActions';
 
 import LoginUserActions from '../actions/LoginUserActions';
@@ -19,7 +21,11 @@ class App extends Component {
 
         super(props);
 
-        this.PageBefore(props);
+        TokenCheck_Connect();
+
+        
+
+        //this.PageBefore(props);
 
     }
 
@@ -29,42 +35,6 @@ class App extends Component {
 
         const { dispatch } = props;
 
-        sessionStorage.setItem("token","6a547099-cc4a-4cb0-88f6-062804b42153");
-
-        //判断本地token是否存在
-        if(sessionStorage.getItem("token")){
-
-            //获取用户信息并且加载界面
-
-            dispatch(LoginUserActions.getUserInfo());
-
-        }else{
-
-            const lg_tk = this.getQueryString('lg_tk');
-
-            //判断URL中token是否存在
-
-            if (lg_tk){
-
-                //获取用户信息并且加载界面
-
-                sessionStorage.setItem("token",lg_tk);
-
-                dispatch(LoginUserActions.getUserInfo());
-
-            }else{
-
-                //弹出登录提示警告弹窗
-
-                dispatch(AppAlertActions.alertWarn(
-
-                    {title:"您还没有登录，请重新登录",ok:()=>{ return LoginUserActions.GoToLogin }}
-
-                    ));
-
-            }
-
-        }
 
     }
 
