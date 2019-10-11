@@ -1,4 +1,5 @@
 import Method from "../Method";
+import ApiActions from "../ApiActions";
 
 const STT_SCHEDULE_INIT = 'STT_SCHEDULE_INIT';
 
@@ -28,9 +29,11 @@ const STTTeacherUpdate = (pickInfo) => {
 
     return (dispatch,getState) => {
 
-        const { LoginUser,Manager } = getState();
+        const { LoginUser,Manager,PeriodWeekTerm } = getState();
 
-        let SchoolID = LoginUser.SchoolID;
+        let { SchoolID } = LoginUser;
+
+        let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;
 
         let UserID = pickInfo.catChildrenId;
 
@@ -38,15 +41,17 @@ const STTTeacherUpdate = (pickInfo) => {
 
         let NowWeekNo = Manager.SubjectTeacherTeacherSchedule.NowWeekNo;
 
-        let teacherSchedulePromise = Method.getGetData(`/scheduleSubjectTeacherTeacherSchedule?UserID=${UserID}&UserType=${UserType}&SchoolID=${SchoolID}&NowWeekNo=${NowWeekNo}`);
+        ApiActions.GetScheduleByUserID({
 
-        teacherSchedulePromise.then(json => {
+            SchoolID,PeriodID,UserType,UserID,WeekNO:NowWeekNo,dispatch
 
-            if (json.Status === 200){
+        }).then(data => {
 
-                let { ScheduleCount} = json.Data;
+            if (data){
 
-                let schedule = json.Data.ItemSchedule.map((item) => {
+                let { ScheduleCount} = data;
+
+                let schedule = data.ItemSchedule.map((item) => {
 
                     return {
 
@@ -76,10 +81,6 @@ const STTTeacherUpdate = (pickInfo) => {
                 dispatch({type:STT_SCHEDULE_CHANGE,data:{ScheduleCount,schedule,pickTeacher:pickInfo.catChildrenName,pickTeacherID:pickInfo.catChildrenId}});
 
                 dispatch({type:SCHEDULE_LOADING_HIDE});
-
-            }else {
-
-                alert(json.Msg);
 
             }
 
@@ -111,17 +112,21 @@ const STTWeekUpdate = () => {
 
             let UserType = 1;
 
+            let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;
+
             let NowWeekNo = Manager.SubjectTeacherTeacherSchedule.NowWeekNo;
 
-            let teacherSchedulePromise = Method.getGetData(`/scheduleSubjectTeacherTeacherSchedule?UserID=${UserID}&UserType=${UserType}&SchoolID=${SchoolID}&NowWeekNo=${NowWeekNo}`);
+            ApiActions.GetScheduleByUserID({
 
-            teacherSchedulePromise.then(json => {
+                SchoolID,PeriodID,UserType,UserID,WeekNO:NowWeekNo,dispatch
 
-                if (json.Status === 200){
+            }).then(data => {
 
-                    let { ScheduleCount} = json.Data;
+                if (data){
 
-                    let schedule = json.Data.ItemSchedule.map((item) => {
+                    let { ScheduleCount} = data;
+
+                    let schedule = data.ItemSchedule.map((item) => {
 
                         return {
 
@@ -152,10 +157,6 @@ const STTWeekUpdate = () => {
 
                     dispatch({type:SCHEDULE_LOADING_HIDE});
 
-                }else {
-
-                    alert(json.Msg);
-
                 }
 
             });
@@ -185,13 +186,15 @@ const STTTeacherSearch = (val) => {
 
         let Key = val;
 
-        let searchTeacherPromise = Method.getGetData(`/scheduleSubjectTeacherTeacher?SchoolID=${SchoolID}&PeriodID=${PeriodID}&SubjectID=${SubjectID}&Key=${Key}`);
+        ApiActions.GetTeacherBySubjectIDAndKey({
 
-        searchTeacherPromise.then(json => {
+            SchoolID,PeriodID,SubjectID:'',Key,dispatch
 
-           if (json.Status === 200){
+        }).then(data => {
 
-               const result = json.Data.map((item) => {
+           if (data){
+
+               const result = data.map((item) => {
 
                   return {
 
@@ -203,13 +206,9 @@ const STTTeacherSearch = (val) => {
 
                });
 
-                dispatch({type:SEARCH_TEACHER_RESULT_UPDATE,data:result})
+                dispatch({type:SEARCH_TEACHER_RESULT_UPDATE,data:result});
 
                 dispatch({type:SEARCH_LOADING_HIDE});
-
-           }else{
-
-               alert(json.Msg);
 
            }
 

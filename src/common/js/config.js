@@ -13,6 +13,7 @@ if (process.env.NODE_ENV === 'development'){
         TeachingSolutionProxy:'http://192.168.2.114:8090/SubjectResMgr/TeachingSolutionMgr/Teacher',
         AdmClassProxy:"http://192.168.2.248:8075",
         DeskTopProxy:"http://192.168.2.114:8090",
+        ScheduleProxy:"http://192.168.2.9:8082",
         Xproxy:'http://192.168.2.248:8075/UserMgr/UserInfoMgr',
         PowerProxy:'http://192.168.2.248:8075/UserMgr/PowerMgr',
         UserInfoProxy:'http://192.168.2.248:8075/UserMgr/UserInfoMgr',
@@ -38,12 +39,13 @@ if (process.env.NODE_ENV === 'production'){
         TeachingSolutionProxy:'/SubjectResMgr/TeachingSolutionMgr/Teacher',
         AdmClassProxy:"",
         DeskTopProxy:"",
+        ScheduleProxy:'',
         Xproxy:'/UserMgr/UserInfoMgr',
         PowerProxy:'/UserMgr/PowerMgr',
         UserInfoProxy:'/UserMgr/UserInfoMgr',
         BasicProxy:'http://localhost:3000',
         LoginProxy:'',
-        MockLoginProxy:'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev',
+        MockLoginProxy:'',
         PersonalProxy:""
     }
 

@@ -20,9 +20,11 @@ export function TokenCheck(IsDesk) {
 
         }else{
 
-            if (!url.includes('html/admDisconnect') && !getQueryVariable('lg_preurl'))
+            if (!url.includes('html/admDisconnect') && !getQueryVariable('lg_preurl')){
 
                 window.location.href = '/html/admDisconnect?lg_preurl=' + preUrl;
+
+            }
 
         }
 
@@ -132,7 +134,15 @@ export function TokenCheck(IsDesk) {
                                             // if (url.split('html/')[1]) {//有就说明不在登录页
                                             if (!url.includes('html/admDisconnect')) {
 
-                                                window.location.href = '/html/admDisconnect?lg_preurl=' + encodeURIComponent(url);
+                                                if (IsDesk){
+
+                                                    window.location.href = '/UserMgr/Login/Login.aspx';
+
+                                                }else {
+
+                                                    window.location.href = '/html/admDisconnect?lg_preurl=' + encodeURIComponent(url);
+
+                                                }
 
                                                 // } else {
                                                 //     return;
@@ -146,9 +156,19 @@ export function TokenCheck(IsDesk) {
                             )
                         } else {
                             // if (url.split('html/')[1]) {//有就说明不在登录页
-                            if (url.includes('html/admDisconnect')) {
+                            if (!url.includes('html/admDisconnect')) {
 
-                                window.location.href = '/html/admDisconnect?lg_preurl=' + encodeURIComponent(url);
+                                if (IsDesk){
+
+                                    window.location.href = '/UserMgr/Login/Login.aspx';
+
+
+                                }else{
+
+                                    window.location.href = '/html/admDisconnect?lg_preurl=' + encodeURIComponent(url);
+
+                                }
+
 
                                 // } else {
                                 //     return;

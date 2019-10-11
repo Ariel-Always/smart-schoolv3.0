@@ -49,7 +49,7 @@ const getManagerDesk = async ({UserID,dispatch}) => {
 
     }else{
 
-        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:'未知异常',ok:()=>{ return () =>window.location.href='/error.aspx'}}));
+        window.location.href='/error.aspx';
 
     }
 

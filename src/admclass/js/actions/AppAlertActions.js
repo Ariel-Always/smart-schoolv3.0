@@ -1,6 +1,6 @@
 import UIState from './UpUIState';
 
-const alertSuccess = (msg) => {
+const alertSuccess = ({title,hide}) => {
 
     return dispatch => {
 
@@ -12,9 +12,9 @@ const alertSuccess = (msg) => {
 
                type:"success",
 
-               title:msg,
+                title:title,
 
-               hide:closeAlert(dispatch)
+                hide:(hide?hide():closeAlert(dispatch))
 
             }
 
@@ -24,7 +24,7 @@ const alertSuccess = (msg) => {
 
 };
 
-const alertError = (msg) => {
+const alertError = ({title,cancel,close,ok}) => {
 
     return dispatch => {
 
@@ -36,13 +36,13 @@ const alertError = (msg) => {
 
                 type:"btn-error",
 
-                title:msg,
+                title:title,
 
-                cancel:closeAlert(dispatch),
+                cancel:(cancel?cancel():closeAlert(dispatch)),
 
-                close:closeAlert(dispatch),
+                close:(close?close():closeAlert(dispatch)),
 
-                ok:closeAlert(dispatch)
+                ok:(ok?ok():closeAlert(dispatch))
 
             }
 
@@ -52,7 +52,7 @@ const alertError = (msg) => {
 
 };
 
-const alertWarn = (msg) => {
+const alertWarn = ({title,cancel,ok,close}) => {
 
     return dispatch => {
 
@@ -64,13 +64,13 @@ const alertWarn = (msg) => {
 
                 type:"btn-warn",
 
-                title:msg,
+                title:title,
 
-                cancel:closeAlert(dispatch),
+                cancel:(cancel?cancel():closeAlert(dispatch)),
 
-                close:closeAlert(dispatch),
+                close:(close?close():closeAlert(dispatch)),
 
-                ok:closeAlert(dispatch)
+                ok:(ok?ok():closeAlert(dispatch))
 
             }
 
@@ -80,7 +80,33 @@ const alertWarn = (msg) => {
 
 };
 
+const alertTips = ({title,cancel,ok,close}) => {
 
+    return dispatch => {
+
+        dispatch({
+
+            type:UIState.SHOW_ERROR_ALERT,
+
+            data:{
+
+                type:"btn-tips",
+
+                title:title,
+
+                cancel:(cancel?cancel():closeAlert(dispatch)),
+
+                close:(close?close():closeAlert(dispatch)),
+
+                ok:(ok?ok():closeAlert(dispatch))
+
+            }
+
+        });
+
+    }
+
+};
 
 const closeAlert = (dispatch) => {
 
@@ -94,6 +120,8 @@ export default {
 
     alertError,
 
-    alertWarn
+    alertWarn,
+
+    alertTips
 
 }

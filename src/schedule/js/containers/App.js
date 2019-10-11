@@ -1,37 +1,56 @@
 import React,{Component} from 'react';
+
 import {Frame,Loading,Alert} from "../../../common";
+
+import {TokenCheck_Connect} from "../../../common/js/disconnect";
+
 import { connect } from 'react-redux';
+
 import {HashRouter as Router,Route,Switch,withRouter,Redirect} from 'react-router-dom';
+
 import DocumentTitle from 'react-document-title';
+
 import ManagerComponent from './Manager';
+
 import TeacherComponent from './Teacher';
+
 import StudentComponent from './Student';
+
 import AdjustBtnsWrapper from '../component/Manager/AdjustBtnsWrapper';
+
 import AddScheduleModal from './Manager/AddScheduleModal';
+
 import AdjustByTimeModal from  './Manager/AdjustByTimeModal'
+
 import ModuleCommonActions from '../actions/ModuleCommonActions';
+
 import PeriodWeekTermActions from '../actions/PeriodWeekTermActions';
+
 import AdjustBtnsActions from '../actions/Manager/AdjustBtnsActions';
+
 import ASMAction from  '../actions/Manager/AddScheduleModalActions';
+
 import ABTMActions from '../actions/Manager/AdjustByTimeModalActions';
+
 import StopScheduleActions from '../actions/Manager/StopScheduleActions'
+
 import DelScheduleActions from '../actions/Manager/DelScheduleActions';
+
 import StopScheduleModal from './Manager/StopScheduleModal';
+
 import DelScheduleModal from './Manager/DelScheduleModal';
+
 import ABTActions from '../actions/Manager/AdjustByTeacherActions';
 
 import TeacherIndexActions from '../actions/Teacher/TeacherIndexActions';
 
 import ManagerIndexActions from '../actions/Manager/ManagerIndexActions';
 
-
 import RouterWrapper from './RouterWrapper';
-
-
 
 import '../../scss/index.scss';
 
-
+import LoginUserActions from "../actions/LoginUserActions";
 
 
 
@@ -43,7 +62,36 @@ class App extends Component{
 
         const {dispatch} = props;
         //获取公共的信息
-        dispatch(ModuleCommonActions.getCommonInfo());
+
+        TokenCheck_Connect();
+
+        if (sessionStorage.getItem('UserInfo')){
+
+            let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
+
+            dispatch(ModuleCommonActions.getCommonInfo());
+
+
+        }else{
+
+
+            let getUserInfo = setInterval(()=>{
+
+                if (sessionStorage.getItem('UserInfo')){
+
+                    let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
+
+                    dispatch(ModuleCommonActions.getCommonInfo());
+
+                    clearInterval(getUserInfo);
+
+                }
+
+            },20);
+
+        }
+
+
 
     }
 

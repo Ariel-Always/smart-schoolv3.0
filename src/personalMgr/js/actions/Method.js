@@ -30,15 +30,13 @@ const getGetData =  async (url,level,api="http://192.168.2.248:8075") =>{
     }
 };
 //调用post接口
-const getPostData = async (url,data,level) =>{
-
-    let mode='no-cors';
+const getPostData = async (url,data,level,type='json',api) =>{
 
     try {
         let fetchAsync = '';
         try {
             /*fetchAsync = await postData(CONFIG.proxy+url,data,level);*/
-            fetchAsync = await postData(api+url,data,level);
+            fetchAsync = await postData(api+url,data,level,type);
 
         }
         catch (e) {

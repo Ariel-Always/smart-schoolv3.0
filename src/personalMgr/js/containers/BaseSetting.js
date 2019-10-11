@@ -690,7 +690,7 @@ class BaseSetting extends Component{
 
                                                                             <div className="detail-item-title">{title}</div>
 
-                                                                             <div className="detail-content-wrapper">
+                                                                             <div className="detail-content-wrapper" style={{width:RoleDetail[key]?(RoleDetail[key].split(',').length*80+172):172}}>
 
                                                                                 {
 

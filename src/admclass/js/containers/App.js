@@ -1,56 +1,73 @@
 import React,{Component} from 'react';
-import {Frame,Loading,Alert,LeftMenu,Modal,MenuLeftNoLink} from "../../../common";
+
+import {Frame,Loading,Alert,Modal,MenuLeftNoLink} from "../../../common";
+
+import {TokenCheck_Connect} from "../../../common/js/disconnect";
+
 import {connect} from 'react-redux';
+
 import '../../scss/index.scss';
+
 import UpUIState from '../actions/UpUIState';
+
 import UpDataState from '../actions/UpDataState';
+
 import AppAlertActions from '../actions/AppAlertActions';
+
 import logo from '../../images/logo.png';
+
 import Banner from '../component/Banner';
+
 import ContentContainer from './ContentContainer';
+
 import AddClassModal from '../component/AddClassModal';
-import {HashRouter as Router,Route,Switch} from 'react-router-dom';
 
 
 
 
 class App extends Component{
+
     constructor(props) {
+
         super(props);
 
         const {dispatch} = props;
         //判断token是否存在
-        if (sessionStorage.getItem('token')){
-            //初始化界面
+
+        TokenCheck_Connect();
+
+        if (sessionStorage.getItem('UserInfo')){
+
+            let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
+
+            dispatch({type:UpDataState.GET_LOGIN_USER_INFO,data:UserInfo});
+
             dispatch(UpDataState.getPageInit());
 
-        }else{
-            //不存在的情况下
-            dispatch({type:UpUIState.APP_LOADING_SHOW});
 
-            dispatch(UpUIState.showErrorAlert({
-                type:'btn-error',
-                title:"登录错误，请重新登录!",
-                ok:this.onAppAlertOK.bind(this),
-                cancel:this.onAppAlertCancel.bind(this),
-                close:this.onAppAlertClose.bind(this)
-            }));
+        }else{
+
+
+            let getUserInfo = setInterval(()=>{
+
+                if (sessionStorage.getItem('UserInfo')){
+
+                    let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
+
+                    dispatch({type:UpDataState.GET_LOGIN_USER_INFO,data:UserInfo});
+
+                    dispatch(UpDataState.getPageInit());
+
+                    clearInterval(getUserInfo);
+
+                }
+
+            },20);
+
         }
 
     }
-    onAppAlertOK(){
-        const {dispatch}= this.props;
-        dispatch({type:UpUIState.CLOSE_ERROR_ALERT});
-        window.location.href="/html/login"
-    }
-    onAppAlertCancel(){
-        const {dispatch}= this.props;
-        dispatch({type:UpUIState.CLOSE_ERROR_ALERT});
-    }
-    onAppAlertClose(){
-        const {dispatch}= this.props;
-        dispatch({type:UpUIState.CLOSE_ERROR_ALERT});
-    }
+
 
     addClass(e){
 
@@ -67,6 +84,7 @@ class App extends Component{
         const {value}= e;
 
         if (value===0){
+
             dispatch({type:UpUIState.ADD_CLASS_SELECT_CHANGE,selectValue:e});
 
             dispatch({type:UpUIState.ADD_CLASS_INPUT_DISABLED});
@@ -215,15 +233,36 @@ class App extends Component{
     }
 
 
+    LogOut(e){
+
+        const { dispatch } = this.props;
+
+        dispatch(AppAlertActions.alertWarn({title:"您确定要退出登录？",ok:()=>{ return ()=>this.GoOut() }}));
+
+    }
+
+
+    //GoOut
+
+    GoOut(){
+
+        sessionStorage.clear();
+
+        window.location.href='/UserMgr/Login/Login.aspx';
+
+    }
+
+
     render() {
 
         const {UIState,DataState} = this.props;
 
-        const {Grades=[]} = DataState.SchoolGradeClasses;//左侧菜单的年级和班级信息
+        const { Grades = []} = DataState.SchoolGradeClasses;//左侧菜单的年级和班级信息
 
         let Menu =[{name:"班级信息总览",link:"/",menu:"menu10",ident:"stu",id:"all",default:true}];
 
         //遍历年级和班级将menu填充
+
         Grades.map((item,key)=>{
 
             let Data = {
@@ -245,8 +284,8 @@ class App extends Component{
                 })
             }
             Menu.push(Data);
-        });
 
+        });
 
         return (
 
@@ -256,7 +295,9 @@ class App extends Component{
 
                             <Frame type="triangle" showLeftMenu={true} style={{display:`${UIState.AppLoading.show?'none':'block'}`}}
                                    userInfo={{name:DataState.LoginUser.UserName,image:DataState.LoginUser.PhotoPath}}
-                                   module={{cnname:"行政班管理",enname:"Administration class management",image:logo}}>
+                                   module={{cnname:"行政班管理",enname:"Administration class management",image:logo}}
+                                    onLogOut={this.LogOut.bind(this)}
+                            >
                                 {/*banner*/}
 
                                 <div ref="frame-time-barner">

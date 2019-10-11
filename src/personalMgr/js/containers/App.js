@@ -16,6 +16,8 @@ import MCIActions from '../actions/ModuleCommonInfoActions';
 
 import LoginUserActions from '../actions/LoginUserActions';
 
+import AppAlertActions from '../actions/AppAlertActions';
+
 import logo from "../../images/logo.png";
 
 
@@ -72,6 +74,26 @@ class App extends Component{
 
     }
 
+
+    LogOut(e){
+
+        const { dispatch } = this.props;
+
+        dispatch(AppAlertActions.alertWarn({title:"您确定要退出登录？",ok:()=>{ return ()=>this.GoOut() }}));
+
+    }
+
+
+    //GoOut
+
+    GoOut(){
+
+        sessionStorage.clear();
+
+        window.location.href='/UserMgr/Login/Login.aspx';
+
+    }
+
     render() {
 
         const { LoginUser,ModuleCommonInfo,AppAlert,AppLoading } = this.props;
@@ -106,7 +128,9 @@ class App extends Component{
                         }}
                         type="triangle"
                         showBarner={false}
-                        showLeftMenu={true}>
+                        showLeftMenu={true}
+                        onLogOut={this.LogOut.bind(this)}
+                        >
 
                         <div ref="frame-left-menu">
 
@@ -152,8 +176,6 @@ class App extends Component{
                         </div>
 
                     </Frame>
-
-
 
                </Loading>
 

@@ -12,7 +12,6 @@ import TeacherDeskTop from './Teacher/Index';
 
 import ManagerDeskTop from './Manager/Index';
 
-
 class App extends Component {
 
     constructor(props){

@@ -2,13 +2,13 @@ import HeaderActions from './HeaderActions';
 
 import Method from "../Method";
 
-import AppAlertActions from "../AppAlertActions";
-
 import AppLoadingActions from '../AppLoadingActions';
 
 import ModulesActions from './ModuleActions';
 
 import CONFIG from "../../../../common/js/config";
+
+import dynamicFile from "dynamic-file";
 
 
 const MODULES_INFO_UPDATE = 'MODULES_INFO_UPDATE';
@@ -138,6 +138,32 @@ const PageInit = () => {
 
                 dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
 
+                dynamicFile([
+
+                    'http://192.168.129.1:10103/PsnMgr/LgAssistant/css/lancoo.cp.assistant.css',
+
+                    'http://192.168.129.1:10103/PsnMgr/LgAssistant/assets/layui-v2.5.5/layui/css/layui.css',
+
+                    'http://192.168.129.1:10103/PsnMgr/LgAssistant/assets/layui-v2.5.5/layui/layui.js',
+
+                    'http://192.168.129.1:10103/PsnMgr/LgAssistant/js/jquery-1.7.2.min.js'
+
+                ]).then(()=>{
+
+                    dynamicFile([
+
+                        'http://192.168.129.1:10103/PsnMgr/LgAssistant/assets/jquery.pagination.js',
+
+                        'http://192.168.129.1:10103/PsnMgr/LgAssistant/js/lancoo.cp.assistant.js'
+
+                    ]).then(()=>{
+
+                        Agassitant();
+
+                    })
+
+                });
+
             }
 
         });
@@ -164,7 +190,7 @@ const getTeacherModules = async ({UserID,SubjectID,dispatch}) => {
 
     }else{
 
-        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:'未知异常',ok:res.Msg?'':()=>{ return ()=>window.location.href='/error.aspx'}}));
+        window.location.href='/error.aspx';
 
     }
 

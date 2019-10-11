@@ -1064,7 +1064,7 @@ class DropDown extends React.Component {
                                 onCancelSearch={this.onCancelSearch.bind(this)}
                             ></Search>
                         </div>
-                        <Scrollbars style={{ width: scrollWrapperWidth, height: scrollWrapperHeight }}>
+                        <Scrollbars autoHide={true} style={{ width: scrollWrapperWidth, height: scrollWrapperHeight }}>
 
                             <Loading spinning={mutipleOptions && mutipleOptions.dropLoadingShow ? mutipleOptions.dropLoadingShow : false}>
 
@@ -1094,7 +1094,7 @@ class DropDown extends React.Component {
 
                     <Loading spinning={dropLoadingShow ? dropLoadingShow : false}>
 
-                        <Scrollbars style={{ width: width ? width : 120, height: ClientHeight}}>
+                        <Scrollbars autoHide={true} style={{ width: width ? width : 120, height: ClientHeight}}>
                             {//dropList是否存在？dropList:''
                                 dropList ?
                                     dropList.map((item, key) => {
