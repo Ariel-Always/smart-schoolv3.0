@@ -7,19 +7,54 @@
     background-color: #eeeeee;
     display: flex;
     flex-flow: row nowrap;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     padding: 0 20px;
+    .top-content{
+      margin-right:30px;
+
+      .left{
+        font-size: 14px;
+        color:#999;
+      }
+      .right{
+        font-size: 14px;
+        color:#333;
+      }
+      .SolutionName{
+        color: #ff6600;
+      }
+    }
   }
   .main {
     position: relative;
     width: 100%;
+    padding: 0 24px;
     //height: calc(100% - 40px);
     height: 416px;
     overflow: auto;
+
+    .main-top{
+      height: 40px;
+      .top-content{
+        line-height: 40px;
+        font-size: 14px;
+        color:#999;
+        .left{
+          font-size: 14px;
+          color:#999;
+        }
+        .right{
+          font-size: 14px;
+          color:#ff0000;
+        }
+        
+      }
+    }
     .handle-btn {
-      height: 20px;
-      line-height: 20px;
+      height: 24px;
+      color: #fff;
+      line-height: 24px;
       font-size: 14px;
     }
   }
@@ -29,5 +64,8 @@
 }
 
 .ant-table-tbody > tr > td {
-  padding: 5px 21px;
+  padding: 15px 20px;
+}
+.ant-table-thead > tr > th:nth-of-type(2){
+  padding-left: 20px !important;
 }

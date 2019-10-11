@@ -3,7 +3,7 @@ import { Frame, Menu, Loading, Alert, LeftMenu, Modal } from "../../../common";
 import { connect } from 'react-redux';
 import TimeBanner from '../component/TimeBanner'
 import CONFIG from '../../../common/js/config';
-import  deepCompare  from '../../../common/js/public';
+import deepCompare from '../../../common/js/public';
 
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
 import history from './history'
@@ -40,7 +40,9 @@ class App extends Component {
         this.state = {
             MenuParams: {},
             showBarner: true,
-            showLeftMenu: true
+            showLeftMenu: true,
+            UserMsg: props.DataState.LoginUser
+
         }
 
     }
@@ -50,36 +52,32 @@ class App extends Component {
     componentWillMount() {
         const { dispatch, DataState } = this.props;
         let route = history.location.pathname;
-        
+
         //判断token是否存在
         TokenCheck_Connect()
         this.requestData(route);
         let token = sessionStorage.getItem('token')
         // sessionStorage.setItem('UserInfo', '')
         if (sessionStorage.getItem('UserInfo')) {
-             //console.log(JSON.parse(sessionStorage.getItem('UserInfo')),decodeURIComponent(JSON.parse(sessionStorage.getItem('UserInfo')).data.PhotoPath))
-             let loginInfo = {}
-             for(let key in JSON.parse(sessionStorage.getItem('UserInfo')).data){
-                loginInfo[key] = decodeURIComponent(JSON.parse(sessionStorage.getItem('UserInfo')).data[key])
-             }
-            dispatch(actions.UpDataState.getLoginUser(loginInfo));
+            dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
         }
         else {
             getUserInfo(token, '000');
-            let loginInfo = {}
-             for(let key in JSON.parse(sessionStorage.getItem('UserInfo')).data){
-                loginInfo[key] = decodeURIComponent(JSON.parse(sessionStorage.getItem('UserInfo')).data[key])
-             }
-            dispatch(actions.UpDataState.getLoginUser(loginInfo));
-            // dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
+            let timeRun = setInterval(function () {
+                if (sessionStorage.getItem('UserInfo')) {
+                    dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
+                    clearInterval(timeRun)
+                }
+            },1000)
+            //dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
         }
 
-        dispatch(actions.UpDataState.getCoureClassAllMsg('/CoureClass_All?schoolID=sss', this.MenuClcik));
-       
-            
-            
+        dispatch(actions.UpDataState.getCoureClassAllMsg('/GetCouseclassSumarry?schoolID='+this.state.UserMsg.SchoolID, this.MenuClcik));
 
-        
+
+
+
+
 
         // 获取接口数据
 
@@ -109,7 +107,7 @@ class App extends Component {
     onAppAlertOK() {
         const { dispatch } = this.props;
         dispatch(actions.UpUIState.hideErrorAlert());
-        window.location.href = "/html/login"
+        //window.location.href = "/html/login"
     }
     onAppAlertCancel() {
         const { dispatch } = this.props;
@@ -152,14 +150,14 @@ class App extends Component {
 
             dispatch({ type: actions.UpUIState.RIGHT_LOADING_OPEN });
             //if (DataState.getSubjectAllMsg[routeID] === undefined)
-            dispatch(actions.UpDataState.getSubjectAllMsg('/CoureClass_Subject?schoolID=sss', routeID));
+            dispatch(actions.UpDataState.getSubjectAllMsg('/GetSubjectCouseclassSumarry?subjectID='+routeID, routeID));
             if (!DataState.GetCoureClassAllMsg.MenuParams)
                 return;
             dispatch(actions.UpDataState.setCoureClassAllMsg(routeID));
 
         } else if (handleRoute === 'Subject' && subjectID === 'Class') {
-            dispatch(actions.UpDataState.getSubjectAllMsg('/CoureClass_Subject?schoolID=sss', routeID));
-            dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss', routeID, classID));
+            dispatch(actions.UpDataState.getSubjectAllMsg('/GetSubjectCouseclassSumarry?subjectID='+routeID, routeID));
+            dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID='+this.state.UserMsg.SchoolID+'&key=&pageIndex=1&pageSize=10&subjectID='+routeID+'&gradeID='+classID, routeID, classID));
 
             if (!DataState.GetCoureClassAllMsg.MenuParams)
                 return;
@@ -168,7 +166,7 @@ class App extends Component {
         } else if (handleRoute === 'Search') {
             // if (!DataState.GetCoureClassAllMsg.MenuParams)
             //     return;
-            dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss'));
+            dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID='+this.state.UserMsg.SchoolID+'&key=&pageIndex=1&pageSize=10&subjectID='+routeID+'&gradeID='+classID));
 
 
         } else if (handleRoute === 'Log') {
@@ -181,7 +179,7 @@ class App extends Component {
             })
 
         } else if (handleRoute === 'Teacher') {
-            dispatch(actions.UpDataState.getTeacherCourseClassMsg('/GetCourseClassByUserID?schoolID=S0003&teacherID=T0001'));
+            dispatch(actions.UpDataState.getTeacherCourseClassMsg('/GetCourseClassByUserID?schoolID='+this.state.UserMsg.SchoolID+'&userID='+this.state.UserMsg.UserID));
 
             this.setState({
                 showBarner: true,
@@ -189,13 +187,13 @@ class App extends Component {
             })
 
         } else if (handleRoute === 'ImportFile') {
-           
+
             this.setState({
                 showBarner: false,
                 showLeftMenu: false
             })
 
-        }  else {
+        } else {
             history.push('/All')
         }
 
@@ -259,10 +257,10 @@ class App extends Component {
         let courseClassStus = data.selectData.Student.map((child, index) => {
             return child.StudentID
         }).join();
-        let url = '/DeleteSubject'
+        let url = '/InsertOrEditCourseClass'
         //dispatch(actions.UpDataState.setCourseClassStudentMsg(Student))
 
-        postData(CONFIG.proxy + url, {
+        postData(CONFIG.CourseClassProxy + url, {
             userID: userMsg.UserID,
             userType: userMsg.UserType,
             schoolID: userMsg.SchoolID,
@@ -283,7 +281,7 @@ class App extends Component {
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
 
-                dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss&pageIndex=' + 1 + '&pageSize=10', routeID, classID));
+                dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID='+this.state.UserMsg.SchoolID+'&pageIndex=1&pageSize=10', routeID, classID));
 
             }
         })

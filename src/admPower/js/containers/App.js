@@ -9,11 +9,11 @@ import PowerContent from '../component/PowerContent'
 import '../../scss/index.scss'
 import $ from 'jquery'
 import { postData, getData } from '../../../common/js/fetch'
+import { TokenCheck_Connect, TokenCheck, getUserInfo } from '../../../common/js/disconnect'
 
 import actions from '../actions';
 //import { urlAll, proxy } from './config'
 
-sessionStorage.setItem('token', 'null')
 class App extends Component {
     constructor(props) {
         super(props);
@@ -30,22 +30,28 @@ class App extends Component {
         const { dispatch, DataState } = this.props;
         let route = history.location.pathname;
         //判断token是否存在
-        if (sessionStorage.getItem('token')) {
-            sessionStorage.setItem('token','test')
-            dispatch(actions.UpDataState.getLoginUser('/Login?method=GetUserInfo'));
-            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+        //判断token是否存在
+        TokenCheck_Connect()
+        let token = sessionStorage.getItem('token')
+        // sessionStorage.setItem('UserInfo', '')
+        if (sessionStorage.getItem('UserInfo')) {
+            dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
+            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });  
             dispatch({type:actions.UpUIState.RIGHT_LOADING_OPEN})
-        } else {
-            //不存在的情况下
-            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-            dispatch(actions.UpUIState.showErrorAlert({
-                type: 'btn-error',
-                title: "登录错误，请重新登录!",
-                ok: this.onAppAlertOK.bind(this),
-                cancel: this.onAppAlertCancel.bind(this),
-                close: this.onAppAlertClose.bind(this)
-            }));
         }
+        else {
+            getUserInfo(token, '000');
+            let timeRun = setInterval(function () {
+                if (sessionStorage.getItem('UserInfo')) {
+                    dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
+                    clearInterval(timeRun)
+                }
+            },1000)
+            //dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
+        }
+           
+           
+        
         
         // 获取接口数据
 
@@ -67,10 +73,11 @@ class App extends Component {
     }
     componentWillReceiveProps(nextProps) {
         const {DataState,UIState,dispatch} = nextProps;
-        console.log(DataState.LoginUser.SchoolID,!DataState.GetUserPowerMsg.Power)
-        if(DataState.LoginUser.SchoolID&& !DataState.GetUserPowerMsg.Power){
+        //console.log(DataState.LoginUser.SchoolID,'ddd',!DataState.GetUserPowerMsg.Power.student)
+        if(DataState.LoginUser.SchoolID&& !DataState.GetUserPowerMsg.Power.student){
             let school = DataState.LoginUser.SchoolID
-            dispatch(actions.UpDataState.getUserPowerMsg('/GetGlobalUserPower?SchoolID=school1'));
+     
+            dispatch(actions.UpDataState.getUserPowerMsg('/GetGlobalUserPower?SchoolID='+school));
         
             
         }

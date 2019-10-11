@@ -10,6 +10,7 @@ class ShowCardTeacher extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            UserMsg:props.DataState.LoginUser
 
         }
     }
@@ -19,7 +20,7 @@ class ShowCardTeacher extends React.Component {
         console.log(classID)
         const { dispatch, DataState, UIState } = this.props;
         dispatch(actions.UpUIState.ChangeCourseClassModalOpen())
-        dispatch(actions.UpDataState.getCourseClassDetailsHandleClassMsg('/CoureClass_studentMsg?courseClassID=' + classID))
+        dispatch(actions.UpDataState.getCourseClassDetailsHandleClassMsg('/GetCourseClassDetail?courseClassID=' + classID))
     }
     //删除教学班
     onDeleteClick = (classID) => {
@@ -55,7 +56,7 @@ class ShowCardTeacher extends React.Component {
                     title: "成功",
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
-            dispatch(actions.UpDataState.getTeacherCourseClassMsg('/GetCourseClassByUserID?schoolID=S0003&teacherID=T0001'));
+            dispatch(actions.UpDataState.getTeacherCourseClassMsg('/GetCourseClassByUserID?schoolID='+this.state.UserMsg.SchoolID+'&userID='+this.state.UserMsg.SchoolID));
                
             }
         })
@@ -79,7 +80,7 @@ class ShowCardTeacher extends React.Component {
         console.log(classID)
         const { dispatch, DataState, UIState } = this.props;
         dispatch(actions.UpUIState.CourseClassDetailsModalOpen())
-        dispatch(actions.UpDataState.getCourseClassDetailsMsg('/CoureClass_studentMsg?schoolID=sss'))
+        dispatch(actions.UpDataState.getCourseClassDetailsMsg('/GetCourseClassDetail?courseClassID='+classID))
     }
     render() {
         let To = '';

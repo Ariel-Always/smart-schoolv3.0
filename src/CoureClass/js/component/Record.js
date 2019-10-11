@@ -167,7 +167,7 @@ class Record extends React.Component {
     //查看详情
     onOperateParamsClick = (IDs) =>  {
         const { dispatch, DataState } = this.props;
-        let url = '/CourseClass_ClassIDs?courseClassIDs='+IDs;
+        let url = '/GetCourseClassByIDs?courseClassIDs='+IDs;
         dispatch(actions.UpUIState.LogDetailsModalOpen())
         dispatch(actions.UpDataState.getLogDetailsMsg(url))
 
@@ -246,7 +246,7 @@ class Record extends React.Component {
         }
         let userMsg = DataState.LoginUser;
         let handleTypeSelected = this.state.handleTypeSelected;
-        dispatch(actions.UpDataState.getCourseClassRecordMsg('/CourseClass_record?userID=' + userMsg.UserID + '&userType=' + userMsg.UserType + '&schoolID=' + userMsg.SchoolID + '&startDate=' + this.state.startTime + '&endDate=' + this.state.endTime + '&operateType=' + handleTypeSelected.value))
+        dispatch(actions.UpDataState.getCourseClassRecordMsg('/GetGourseClassLogForPage?userID=' + userMsg.UserID + '&userType=' + userMsg.UserType + '&schoolID=' + userMsg.SchoolID + '&startDate=' + this.state.startTime + '&endDate=' + this.state.endTime + '&operateType=' + handleTypeSelected.value))
     }
 
     onAppAlertOK() {
@@ -373,7 +373,7 @@ class Record extends React.Component {
 
         let userMsg = DataState.LoginUser;
         let handleTypeSelected = this.state.handleTypeSelected;
-        dispatch(actions.UpDataState.getCourseClassDynamicMsg('/CourseClass_dynamic?userID=' + userMsg.UserID + '&userType=' + userMsg.UserType + '&schoolID=' + userMsg.SchoolID + '&startDate=' + this.state.startTime + '&endDate=' + this.state.endTime + '&operateType=' + handleTypeSelected.value))
+        dispatch(actions.UpDataState.getCourseClassDynamicMsg('/GetGourseClassLogNew?userID=' + userMsg.UserID + '&userType=' + userMsg.UserType + '&schoolID=' + userMsg.SchoolID + '&startDate=' + this.state.startTime + '&endDate=' + this.state.endTime + '&operateType=' + handleTypeSelected.value))
         this.setState({
             pagination:1
         })

@@ -19,7 +19,9 @@ class SelectStudent extends React.Component {
             selectClassTab: '',
             checkAll: false,
             checkList: [],
-            show: false
+            show: false,
+            UserMsg:props.DataState.LoginUser
+
         }
     }
     componentWillMount() {
@@ -76,7 +78,7 @@ class SelectStudent extends React.Component {
         this.setState({
             show: true,
         })
-        dispatch(actions.UpDataState.searchClassStudentMsg('/CourseClass_searchStudentID?schoolID=sada&gradeID='+gradeID+'&key='+value.value))
+        dispatch(actions.UpDataState.searchClassStudentMsg('/GetStudentForAddOrEditCourseClassByKey?schoolID='+this.state.UserMsg.SchoolID+'&gradeID='+gradeID+'&key='+value.value))
 
     }
     //点击左侧
@@ -89,7 +91,7 @@ class SelectStudent extends React.Component {
         })
         let oldStudent = DataState.GetCourseClassDetailsHandleClassMsg.selectData.Student;
         dispatch(actions.UpDataState.setClassStudentTransferMsg(oldStudent))
-        dispatch(actions.UpDataState.getClassStudentMsg('/CourseClass_classID?classID=' + id))
+        dispatch(actions.UpDataState.getClassStudentMsg('/GetStudentForAddOrEditCourseClassByGroupID?schoolID='+this.state.UserMsg.SchoolID+'&classID=' + id))
 
     }
     //全选

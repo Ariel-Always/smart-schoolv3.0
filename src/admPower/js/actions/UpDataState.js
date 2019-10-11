@@ -18,11 +18,9 @@ const SET_USER_POWER_MSG = 'SET_USER_POWER_MSG';
 
 //操作的执行
 //获取登录用户信息
-const getLoginUser = (url) => {
-    return (dispatch) => {
-        getData(CONFIG.proxy + url).then(res => res.json()).then(json => {
-            dispatch({ type: GET_LOGIN_USER_INFO, data: json.data.result });
-        });
+const getLoginUser = (data) => {
+    return (dispatch) => {    
+            dispatch({ type: GET_LOGIN_USER_INFO, data: data});
     }
 };
 //获取用户权限信息

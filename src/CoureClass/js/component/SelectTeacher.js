@@ -33,7 +33,7 @@ class SelectTeacher extends React.Component {
     onClickSearch = (value) => {
         const { DataState, UIState, dispatch } = this.props;
         console.log(value.value)
-        dispatch(actions.UpDataState.getSubjectTeacherMsg('/AdmSubjectTeacher'))
+        dispatch(actions.UpDataState.getSubjectTeacherMsg('/GetTeacherInfoBySubjectAndKey?key='+value.value))
 
     }
     //选择教师

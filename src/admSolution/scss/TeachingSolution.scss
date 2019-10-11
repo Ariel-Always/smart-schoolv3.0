@@ -1,11 +1,11 @@
 
 #TeachingSolution {
   position: relative;
-  padding: 42px 62px;
+  // padding: 42px 62px;
   text-align: center;
   width: 1200px;
 //   height: 754px;
-  background: #fff;
+  //background: #fff;
   border-radius: 12px;
 
   //公用
@@ -13,7 +13,7 @@
     position: relative;
     text-align: left;
     margin: 0 auto;
-    width: 1120px;
+    // width: 1120px;
 
     .box-top {
       position: relative;
@@ -57,12 +57,13 @@
   }
   .box-content {
     width: 100%;
+    padding-top: 36px;;
     overflow: auto;
     .ShowCard{
         float: left;
-        margin-right: 58px;
-        margin-top: 34px;
-        &:nth-of-type(3n){
+        margin-right: 18px;
+        margin-bottom: 28px;
+        &:nth-of-type(4n){
             margin-right: 0;
         }
     }

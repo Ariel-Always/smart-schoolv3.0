@@ -87,7 +87,7 @@ class PowerContent extends React.Component {
         })
         postData(CONFIG.PowerProxy + url, {
             PowerID: id,
-            SchoolID: 'school1',
+            SchoolID: UserMsg.SchoolID,
             Status: value
         }, 2).then((res) => {
             this.setState({
@@ -132,6 +132,7 @@ class PowerContent extends React.Component {
     render() {
         const { DataState, UIState } = this.props;
         let Power = DataState.GetUserPowerMsg.Power;
+        console.log(Power)
         return (
             <div id='powerContent' className='powerContent'>
                 <div className='power-box'>
@@ -143,7 +144,7 @@ class PowerContent extends React.Component {
 
                     </div>
                     <hr className='power-hr' />
-                    {Power ? (<div className='power-content'>
+                    {Power.student ? (<div className='power-content'>
                         <div className='content-row clearfix'>
                             <div className='left'>
                                 <img width={108} height={116} alt='student' src={student} />

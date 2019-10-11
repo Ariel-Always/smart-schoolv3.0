@@ -6,7 +6,7 @@ import ShowCard from './ShowCard'
 import { getData, postData } from '../../../common/js/fetch'
 import actions from '../actions';
 
-sessionStorage.setItem('token', 'null')
+
 class TeachingSolution extends Component {
     constructor(props) {
         super(props);
@@ -29,12 +29,7 @@ class TeachingSolution extends Component {
         return (
             <div id='TeachingSolution'>
                 <div className='content-box'>
-                    <div className='box-top'>
-                        <span className='top-tips'>
-                            <span className='tips tip-menu'>{'教学方案管理'}</span>
-                        </span>
-                    </div>
-                    <hr className='top-hr' />
+                    
                     <div className='box-content'>
                         {DataState.GetTeachingSolutionMsg.solutionData.map((child, index) => {
                             return <ShowCard key={index} params={child}></ShowCard>
@@ -45,7 +40,7 @@ class TeachingSolution extends Component {
                     <PagiNation
                         className='pagination'
                         hideOnsinglePage={true}
-                        pageSize={9}
+                        pageSize={12}
                         showQuickJumper={true}
                         total={DataState.GetTeachingSolutionMsg.TotalPage}
                         onChange={this.onPaginationChange.bind(this)}

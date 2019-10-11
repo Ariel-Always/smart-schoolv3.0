@@ -8,8 +8,13 @@ export function TokenCheck(IsDesk) {
     let preUrl = encodeURIComponent(window.location.href);
 
     let url = window.location.href;
+<<<<<<< HEAD
+    //console.log(session_token)
+    //console.log(session_token, url_token, preUrl)
+=======
 
 
+>>>>>>> 9b953860bf87e7c49f1f61f5f7e4403c9471bc2a
     if (!session_token && !url_token) {//没有token,跳转至掉线界面
 
         //根据是否传参来判断是否是桌面方调用
@@ -40,15 +45,15 @@ export function TokenCheck(IsDesk) {
         //jsonp验证token
         $.ajax(
             {
-                url: config.LoginProxy + '/UserMgr/Login/Api/Login.ashx?token=' + token + '&method=tokenCheck&params=' + token + '&jsoncallback=jsoncallback',
+                url: config.TokenProxy + '/UserMgr/Login/Api/Login.ashx?token=' + token + '&method=tokenCheck&params=' + token + '&jsoncallback=jsoncallback',
                 type: "GET",
                 dataType: "jsonp",
-                jsonp: 'callback',
+                jsonp: 'jsoncallback',
                 jsonpCallback: 'jsoncallback', //这里的值需要和回调函数名一样
                 success: function (data) {//验证成功，则
                     let json = data;
                     // if (!sessionStorage.getItem('UserInfo'))
-                    console.log(json, getQueryVariable('lg_preurl'))
+                    // console.log(json, getQueryVariable('lg_preurl'))
                     if (json.data.result) {//result为true
 
                         getUserInfo(token, '000')
@@ -96,10 +101,10 @@ export function TokenCheck(IsDesk) {
                             //jsonp验证token
                             $.ajax(
                                 {
-                                    url: config.LoginProxy + '/UserMgr/Login/Api/Login.ashx?token=' + url_token + '&method=tokenCheck&params=' + url_token + '&jsoncallback=jsoncallback',
+                                    url: config.TokenProxy + '/UserMgr/Login/Api/Login.ashx?token=' + url_token + '&method=tokenCheck&params=' + url_token + '&jsoncallback=jsoncallback',
                                     type: "GET",
                                     dataType: "jsonp",
-                                    jsonp: 'callback',
+                                    jsonp: 'jsoncallback',
                                     jsonpCallback: 'jsoncallback', //这里的值需要和回调函数名一样
                                     success: function (data) {//验证成功，则
                                         let json = data;
@@ -224,10 +229,10 @@ export function getUserInfo(token, SysID) {
     }
     $.ajax(
         {
-            url: config.LoginProxy + '/UserMgr/Login/Api/Login.ashx?token=' + token + '&method=GetUserInfo&params=' + SysID + '&jsoncallback=jsoncallback',
+            url: config.TokenProxy + '/UserMgr/Login/Api/Login.ashx?token=' + token + '&method=GetUserInfo&params=' + SysID + '&jsoncallback=jsoncallback',
             type: "GET",
             dataType: "jsonp",
-            jsonp: 'callback',
+            jsonp: 'jsoncallback',
             jsonpCallback: 'jsoncallback', //这里的值需要和回调函数名一样
             success: function (data) {
 
