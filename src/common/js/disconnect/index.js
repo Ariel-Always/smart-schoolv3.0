@@ -1,6 +1,9 @@
 import config from '../config'
+
 import $ from 'jquery'
-export function TokenCheck(IsDesk) {
+
+export function TokenCheck(IsDesk,SysID = '000') {
+
     let session_token = sessionStorage.getItem('token');
 
     let url_token = getQueryVariable('lg_tk');//lg_tk为链接上带的token
@@ -8,13 +11,7 @@ export function TokenCheck(IsDesk) {
     let preUrl = encodeURIComponent(window.location.href);
 
     let url = window.location.href;
-<<<<<<< HEAD
-    //console.log(session_token)
-    //console.log(session_token, url_token, preUrl)
-=======
 
-
->>>>>>> 9b953860bf87e7c49f1f61f5f7e4403c9471bc2a
     if (!session_token && !url_token) {//没有token,跳转至掉线界面
 
         //根据是否传参来判断是否是桌面方调用
@@ -36,6 +33,9 @@ export function TokenCheck(IsDesk) {
 
     } else {//有token，对token进行验证
         let token = session_token || url_token;
+
+        sessionStorage.setItem('token',token);
+
         //回调函数
         let jsoncallback = (json) => {
 
@@ -45,18 +45,21 @@ export function TokenCheck(IsDesk) {
         //jsonp验证token
         $.ajax(
             {
-                url: config.TokenProxy + '/UserMgr/Login/Api/Login.ashx?token=' + token + '&method=tokenCheck&params=' + token + '&jsoncallback=jsoncallback',
+                url: config.TokenProxy + '/UserMgr/Login/Api/Login.ashx?token=' + token + '&method=tokenCheck&params=' + SysID,
                 type: "GET",
                 dataType: "jsonp",
-                jsonp: 'jsoncallback',
-                jsonpCallback: 'jsoncallback', //这里的值需要和回调函数名一样
+                jsonp:"jsoncallback",
                 success: function (data) {//验证成功，则
                     let json = data;
                     // if (!sessionStorage.getItem('UserInfo'))
                     // console.log(json, getQueryVariable('lg_preurl'))
                     if (json.data.result) {//result为true
 
-                        getUserInfo(token, '000')
+                        if (!sessionStorage.getItem('UserInfo')){
+
+                            getUserInfo(token, '000')
+
+                        }
 
                         if (url.split('html/')[1]) {//有就说明不在登录页
                             if (url.split('html/')[1].split('?')[0] === 'admDisconnect') {//本身在掉线界面
@@ -101,19 +104,25 @@ export function TokenCheck(IsDesk) {
                             //jsonp验证token
                             $.ajax(
                                 {
-                                    url: config.TokenProxy + '/UserMgr/Login/Api/Login.ashx?token=' + url_token + '&method=tokenCheck&params=' + url_token + '&jsoncallback=jsoncallback',
+                                    url: config.TokenProxy + '/UserMgr/Login/Api/Login.ashx?token=' + url_token + '&method=tokenCheck&params=' + SysID,
                                     type: "GET",
                                     dataType: "jsonp",
-                                    jsonp: 'jsoncallback',
-                                    jsonpCallback: 'jsoncallback', //这里的值需要和回调函数名一样
+                                    jsonp: 'jsoncallback', //这里的值需要和回调函数名一样
                                     success: function (data) {//验证成功，则
+
                                         let json = data;
                                         // if (!sessionStorage.getItem('UserInfo'))
 
 
                                         if (json.data.result) {//result为true
                                             // if (url.split('html/')[1]) {//有就说明不在登录页
-                                            getUserInfo(token, '000')
+
+                                            if (!sessionStorage.getItem('UserInfo')){
+
+                                                getUserInfo(token, '000');
+
+                                            }
+
                                             if (url.includes('html/admDisconnect')) {//本身在掉线界面
 
                                                 if (getQueryVariable('lg_preurl')) {//查询是否有lg_preurl,有则跳至该地址，没有则跳至桌面
@@ -179,7 +188,9 @@ export function TokenCheck(IsDesk) {
                                 //     return;
                                 // }
                             } else {
+
                                 return;
+
                             }
                         }
 
@@ -229,11 +240,10 @@ export function getUserInfo(token, SysID) {
     }
     $.ajax(
         {
-            url: config.TokenProxy + '/UserMgr/Login/Api/Login.ashx?token=' + token + '&method=GetUserInfo&params=' + SysID + '&jsoncallback=jsoncallback',
+            url: config.TokenProxy + '/UserMgr/Login/Api/Login.ashx?token=' + token + '&method=GetUserInfo&params=' + SysID ,
             type: "GET",
             dataType: "jsonp",
-            jsonp: 'jsoncallback',
-            jsonpCallback: 'jsoncallback', //这里的值需要和回调函数名一样
+            jsonp: 'jsoncallback', //这里的值需要和回调函数名一样
             success: function (data) {
 
                 let loginInfo = data.data;
@@ -271,7 +281,7 @@ export function TokenCheck_Connect(IsDesk) {
     let date = new Date();
     let time = date.getTime()
  /*   if (time - lastTime >= 60000) {*/
-        TokenCheck(IsDesk)
+        TokenCheck(IsDesk);
         sessionStorage.setItem('lastTime', time)
     /*}*/
     setInterval(function () {
@@ -284,4 +294,38 @@ export function TokenCheck_Connect(IsDesk) {
         }
 
     }, 60000)
+}
+
+
+export function LogOut(SysID='000') {
+
+    let token = sessionStorage.getItem('token') || getQueryVariable('lg_tk');
+
+    $.ajax(
+        {
+            url: config.TokenProxy + '/UserMgr/Login/Api/Login.ashx?token=' + token + '&method=Logout&params='+SysID,
+            type: "GET",
+            dataType: "jsonp",
+            jsonp: 'jsoncallback', //这里的值需要和回调函数名一样
+            success: function (data) {//验证成功，则
+                let json = data;
+
+                if (json.data.result) {//result为true
+
+                    sessionStorage.clear();
+
+                    window.location.href='/UserMgr/Login/Login.aspx';
+
+                }
+
+            },
+
+            error: function (textStatus,err) { //请求失败后调用的函数
+
+                alert(err);
+
+            }
+        }
+    )
+
 }

@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 
 import {Frame,Loading,Alert,MenuLeftNoLink} from "../../../common";
 
-import { TokenCheck_Connect } from "../../../common/js/disconnect";
+import {LogOut,TokenCheck_Connect} from "../../../common/js/disconnect";
 
 import {connect} from 'react-redux';
 
@@ -88,9 +88,7 @@ class App extends Component{
 
     GoOut(){
 
-        sessionStorage.clear();
-
-        window.location.href='/UserMgr/Login/Login.aspx';
+        LogOut();
 
     }
 

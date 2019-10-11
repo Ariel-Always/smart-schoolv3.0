@@ -72,11 +72,7 @@ const Init = () => {
 
         dispatch({type:BASE_SETTING_LOADING_SHOW});
 
-        //let { UserID,UserType } = getState().LoginUser;
-
-        let UserID = 't0001';
-
-        let UserType =1;
+        let { UserID,UserType } = getState().LoginUser;
 
         getBaseInfo({UserID,UserType,dispatch}).then(data => {
 
@@ -99,8 +95,7 @@ const Init = () => {
 const Commit = () => {
 
   return ( dispatch,getState ) => {
-
-      console.log(2);
+      
 
       let { ShortNameTipsShow, QQTipsShow, WeixinTipsShow, WeiboTipsShow, TelephoneTipsShow } = getState().BaseSetting
 
