@@ -4,7 +4,7 @@ class Header extends Component{
 
     render() {
 
-        const { HeaderSetting,LoginUser,HeaderMenuToggle,SubjectMenuToggle,SubjectClick } = this.props;
+        const { HeaderSetting,LoginUser,HeaderMenuToggle,SubjectMenuToggle,SubjectClick,LogOut } = this.props;
 
         return (
 
@@ -18,21 +18,29 @@ class Header extends Component{
 
                 <div className="subject-wrapper">
 
-                    <button id="subject-pick-btn" className={`subject-pick-btn ${HeaderSetting.SubjectMenuShow?'up':''}`} title={HeaderSetting.SubjectSelect.name} onClick={e=>{SubjectMenuToggle(e)}}>{HeaderSetting.SubjectSelect.name}</button>
+                    <button id="subject-pick-btn" className={`subject-pick-btn ${HeaderSetting.SubjectsInfo.length>1?(HeaderSetting.SubjectMenuShow?'up':'down'):''}`} title={HeaderSetting.SubjectSelect.name} onClick={e=>{SubjectMenuToggle(e)}}>{HeaderSetting.SubjectSelect.name}</button>
 
-                    <div className="subject-item-wrapper" style={{display:`${HeaderSetting.SubjectMenuShow?'block':'none'}`}}>
 
                         {
 
-                            HeaderSetting.SubjectsInfo.map((item,key)=>{
+                            HeaderSetting.SubjectsInfo.length>1?
 
-                                return <div key={key} className="subject-item" title={item.name} onClick={(e)=>SubjectClick({id:item.id,name:item.name})}>{ item.name }</div>
+                            <div className="subject-item-wrapper" style={{display:`${HeaderSetting.SubjectMenuShow?'block':'none'}`}}>
 
-                            })
+                                {
+
+                                    HeaderSetting.SubjectsInfo.map((item,key)=>{
+
+                                        return <div key={key} className="subject-item" title={item.name} onClick={(e)=>SubjectClick({id:item.id,name:item.name})}>{ item.name }</div>
+
+                                    })
+
+                                }
+                            </div>
+
+                            :""
 
                         }
-
-                    </div>
 
                 </div>
 
@@ -55,7 +63,7 @@ class Header extends Component{
 
                             <a className="help menu">帮助</a>
 
-                            <a className="logout menu">退出登录</a>
+                            <a className="logout menu" onClick={()=>LogOut()}>退出登录</a>
 
                         </div>
 

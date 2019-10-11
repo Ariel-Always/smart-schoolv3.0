@@ -1,6 +1,8 @@
 import React,{Component} from 'react';
 
-import {Frame,Loading,Alert,MenuLeftNoLink,Modal} from "../../../common";
+import {Frame,Loading,Alert,MenuLeftNoLink} from "../../../common";
+
+import { TokenCheck_Connect } from "../../../common/js/disconnect";
 
 import {connect} from 'react-redux';
 
@@ -12,7 +14,10 @@ import AuthorSetting from "./AuthorSetting";
 
 import MCIActions from '../actions/ModuleCommonInfoActions';
 
+import LoginUserActions from '../actions/LoginUserActions';
+
 import logo from "../../images/logo.png";
+
 
 
 class App extends Component{
@@ -22,6 +27,40 @@ class App extends Component{
         super(props);
 
         const { dispatch } = props;
+
+        TokenCheck_Connect();
+
+        if (sessionStorage.getItem('UserInfo')){
+
+            let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
+
+            dispatch({type:LoginUserActions.UPDATE_LOGIN_USER,data:UserInfo});
+
+            dispatch({type:MCIActions.MODULE_COMMON_INFO_MENU_CHANGE,data:"base"});
+
+
+        }else{
+
+
+            let getUserInfo = setInterval(()=>{
+
+                if (sessionStorage.getItem('UserInfo')){
+
+                    let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
+
+                    dispatch({type:LoginUserActions.UPDATE_LOGIN_USER,data:UserInfo});
+
+                    dispatch({type:MCIActions.MODULE_COMMON_INFO_MENU_CHANGE,data:"base"});
+
+                    clearInterval(getUserInfo);
+
+                }
+
+            },20);
+
+        }
+
+
 
     }
     //点击menu

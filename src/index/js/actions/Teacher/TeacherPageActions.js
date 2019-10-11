@@ -20,81 +20,47 @@ const PageInit = () => {
 
     let { UserID }  = getState().LoginUser;
 
-    getTeacherSubjects({UserID,dispatch}).then(data=>{
+        const { SubjectNames,SubjectIDs } = JSON.parse(sessionStorage.getItem("UserInfo"));
 
-        if (data){
+        const SubjectNameList = SubjectNames.split(',');
 
-            const { SubjectNames,SubjectIDs } = data;
+        const SubjectIDList = SubjectIDs.split(',');
 
-            const SubjectNameList = SubjectNames.split(',');
+        let SubjectsInfo = [];
 
-            const SubjectIDList = SubjectIDs.split(',');
+        for (let i = 0;i < SubjectNameList.length;i++){
 
-            let SubjectsInfo = [];
-            
-            for (let i = 0;i < SubjectNameList.length;i++){
+            SubjectsInfo.push({
 
-                SubjectsInfo.push({
+                id:SubjectIDList[i],
 
-                    id:SubjectIDList[i],
+                name:SubjectNameList[i]
 
-                    name:SubjectNameList[i]
+            })
 
-                })
+        }
 
-            }
+        dispatch({type:HeaderActions.TEACHER_HEADER_SUBJECTS_UPDATE,data:SubjectsInfo});
 
-            dispatch({type:HeaderActions.TEACHER_HEADER_SUBJECTS_UPDATE,data:SubjectsInfo});
+        dispatch({type:HeaderActions.TEACHER_HEADER_SUBJECTS_PICK_CHANGE,data:SubjectsInfo[0]});
 
-            dispatch({type:HeaderActions.TEACHER_HEADER_SUBJECTS_PICK_CHANGE,data:SubjectsInfo[0]});
+        getTeacherModules({UserID,SubjectID:SubjectsInfo[0].id,dispatch}).then(data=>{
 
-            getTeacherModules({UserID,SubjectID:SubjectsInfo[0].id,dispatch}).then(data=>{
+            if (data){
 
-                if (data){
+                let ModuleGroups = data.map(item=>{
 
-                    console.log(data);
+                    return {
 
-                    let ModuleGroups = data.map(item=>{
+                        ...item,
 
-                        return {
+                        "Modules":item.Modules.map(i=>{
 
-                            ...item,
+                            if (item.IsWebsiteGroup){
 
-                            "Modules":item.Modules.map(i=>{
+                                if (i.IsGroup){
 
-                                if (item.IsWebsiteGroup){
-
-                                    if (i.IsGroup){
-
-                                        let SubGroupModules = i.SubGroupModules.map(it=>{
-
-                                            let RandomArr = ['green','orange','blue'];
-
-                                            let bg = RandomArr[Math.floor(Math.random()*RandomArr.length)];
-
-                                            return {
-
-                                                    ...it,
-
-                                                    "showDom":"img",
-
-                                                    "BgColor":bg
-
-                                                }
-
-                                        });
-
-                                        return {
-
-                                            ...i,
-
-                                            SubGroupModules:SubGroupModules,
-
-                                            DetailShow:false
-
-                                        }
-
-                                    }else{
+                                    let SubGroupModules = i.SubGroupModules.map(it=>{
 
                                         let RandomArr = ['green','orange','blue'];
 
@@ -102,55 +68,79 @@ const PageInit = () => {
 
                                         return {
 
-                                            ...i,
+                                                ...it,
 
-                                            "showDom":"img",
+                                                "showDom":"img",
 
-                                            "BgColor":bg
+                                                "BgColor":bg
 
-                                        }
+                                            }
+
+                                    });
+
+                                    return {
+
+                                        ...i,
+
+                                        SubGroupModules:SubGroupModules,
+
+                                        DetailShow:false
 
                                     }
 
                                 }else{
 
-                                    if (i.IsGroup){
+                                    let RandomArr = ['green','orange','blue'];
 
-                                        return {
+                                    let bg = RandomArr[Math.floor(Math.random()*RandomArr.length)];
 
-                                            ...i,
+                                    return {
 
-                                            DetailShow:false
+                                        ...i,
 
-                                        }
+                                        "showDom":"img",
 
-                                    }else{
-
-                                        return i;
+                                        "BgColor":bg
 
                                     }
 
                                 }
 
-                            })
+                            }else{
 
-                        }
+                                if (i.IsGroup){
 
-                    });
+                                    return {
 
-                    dispatch({type:ModulesActions.TEACHER_MODULE_GROUPS_UPDATE,data:ModuleGroups});
+                                        ...i,
 
-                    dispatch({type:ModulesActions.TEACHER_MODULE_LOADING_HIDE});
+                                        DetailShow:false
 
-                    dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
+                                    }
 
-                }
+                                }else{
 
-            });
+                                    return i;
 
-        }
+                                }
 
-    });
+                            }
+
+                        })
+
+                    }
+
+                });
+
+                dispatch({type:ModulesActions.TEACHER_MODULE_GROUPS_UPDATE,data:ModuleGroups});
+
+                dispatch({type:ModulesActions.TEACHER_MODULE_LOADING_HIDE});
+
+                dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
+
+            }
+
+        });
 
   }
 
@@ -160,23 +150,6 @@ const PageInit = () => {
 
 
 
-//获取教师的学科
-
-const getTeacherSubjects = async ({UserID,dispatch}) => {
-
-    let res = await Method.getGetData(`/UserMgr/UserInfoMgr/GetUserDetail?UserID=${UserID}`,2,CONFIG.proxy);
-
-    if (res.StatusCode === 200){
-
-        return res.Data;
-
-    }else{
-
-        dispatch(AppAlertActions.alertError({title:res.Msg}));
-
-    }
-
-};
 
 
 //获取教师该学科下的模块应用
@@ -191,7 +164,7 @@ const getTeacherModules = async ({UserID,SubjectID,dispatch}) => {
 
     }else{
 
-        dispatch(AppAlertActions.alertError({title:res.Msg}));
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:'未知异常',ok:res.Msg?'':()=>{ return ()=>window.location.href='/error.aspx'}}));
 
     }
 

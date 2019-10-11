@@ -120,6 +120,23 @@ class Index extends Component{
 
     }
 
+    //退出登录
+    LogOut(){
+
+        const { dispatch } = this.props;
+
+        dispatch(AppAlertActions.alertError({title:"您确定要退出登录么?",ok:()=>{ return this.GoOut}}));
+
+    }
+
+
+    GoOut(){
+
+        sessionStorage.clear();
+
+        window.location.href='/UserMgr/Login/Login.aspx'
+
+    }
 
 
     render() {
@@ -132,7 +149,7 @@ class Index extends Component{
 
             <div className="manager-desk-top">
 
-                <Header LoginUser={LoginUser} HeaderSetting={HeaderSetting} HeaderMenuToggle={this.HeaderMenuToggle.bind(this)}></Header>
+                <Header LoginUser={LoginUser} LogOut={this.LogOut.bind(this)}   HeaderSetting={HeaderSetting} HeaderMenuToggle={this.HeaderMenuToggle.bind(this)}></Header>
 
                 <ModulesContent Modules={Modules} ModuleClick={this.ModuleClick.bind(this)}></ModulesContent>
 

@@ -256,8 +256,6 @@
 
     position: absolute;
 
-    width: max-content;
-
     font-size: 14px;
 
     border-radius: 6px;
@@ -268,9 +266,7 @@
 
     background-color: #ffffff;
 
-    left: 50%;
-
-    @include transform(translateX(-50%));
+    left:0;
 
     @include box-shadow(0 0 8px 0 rgba(0, 0, 0, 0.16));
 
@@ -332,6 +328,8 @@
 
       color: #cccccc;
 
+      cursor: pointer;
+
       &:hover{
 
         color: #ff6600;
@@ -352,7 +350,7 @@
 
       bottom: -5px;
 
-      left: 50%;
+      left:112px;
 
       @include transform(translateX(-50%) rotate(45deg));
 
@@ -384,6 +382,12 @@
       }
 
     }
+
+  }
+
+  .role-wrapper{
+
+    position: relative;
 
   }
 

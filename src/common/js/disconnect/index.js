@@ -1,15 +1,37 @@
 import config from '../config'
 import $ from 'jquery'
-export function TokenCheck() {
+export function TokenCheck(IsDesk) {
     let session_token = sessionStorage.getItem('token');
+
     let url_token = getQueryVariable('lg_tk');//lg_tk为链接上带的token
-    let preUrl = window.location.href;
+
+    let preUrl = encodeURIComponent(window.location.href);
+
     let url = window.location.href;
+<<<<<<< HEAD
     //console.log(session_token)
     //console.log(session_token, url_token, preUrl)
+=======
+
+
+>>>>>>> 9b953860bf87e7c49f1f61f5f7e4403c9471bc2a
     if (!session_token && !url_token) {//没有token,跳转至掉线界面
-        if (!url.includes('html/admDisconnect') && !getQueryVariable('lg_preurl'))
-            window.location.href = '/html/admDisconnect?lg_preurl=' + preUrl;
+
+        //根据是否传参来判断是否是桌面方调用
+
+        if (IsDesk){//如果是桌面调用
+
+            window.location.href = '/UserMgr/Login/Login.aspx';
+
+        }else{
+
+            if (!url.includes('html/admDisconnect') && !getQueryVariable('lg_preurl'))
+
+                window.location.href = '/html/admDisconnect?lg_preurl=' + preUrl;
+
+        }
+
+
     } else {//有token，对token进行验证
         let token = session_token || url_token;
         //回调函数
@@ -31,13 +53,16 @@ export function TokenCheck() {
                     // if (!sessionStorage.getItem('UserInfo'))
                     // console.log(json, getQueryVariable('lg_preurl'))
                     if (json.data.result) {//result为true
+
                         getUserInfo(token, '000')
 
                         if (url.split('html/')[1]) {//有就说明不在登录页
                             if (url.split('html/')[1].split('?')[0] === 'admDisconnect') {//本身在掉线界面
 
                                 if (getQueryVariable('lg_preurl')) {//查询是否有lg_preurl,有则跳至该地址，没有则跳至桌面
-                                    window.location.href = url.split('lg_preurl=')[1];
+
+                                    window.location.href = decodeURIComponent(url.split('lg_preurl=')[1]);
+
                                 } else {
                                     window.location.href = '/';
                                 }
@@ -83,19 +108,25 @@ export function TokenCheck() {
                                         let json = data;
                                         // if (!sessionStorage.getItem('UserInfo'))
 
-                                        console.log(json)
+
                                         if (json.data.result) {//result为true
                                             // if (url.split('html/')[1]) {//有就说明不在登录页
                                             getUserInfo(token, '000')
                                             if (url.includes('html/admDisconnect')) {//本身在掉线界面
+
                                                 if (getQueryVariable('lg_preurl')) {//查询是否有lg_preurl,有则跳至该地址，没有则跳至桌面
-                                                    window.location.href = url.split('lg_preurl=')[1];
+
+                                                    window.location.href = decodeURIComponent(url.split('lg_preurl=')[1]);
 
                                                 } else {
+
                                                     window.location.href = '/';
+
                                                 }
                                             } else {
+
                                                 return;
+
                                             }
                                             // } else if (!getQueryVariable('lg_preurl')) {//查询是否有lg_preurl,有则跳至该地址，没有则跳至桌面
                                             //     window.location.href = getQueryVariable('lg_preurl');
@@ -106,7 +137,7 @@ export function TokenCheck() {
                                             // if (url.split('html/')[1]) {//有就说明不在登录页
                                             if (!url.includes('html/admDisconnect')) {
 
-                                                window.location.href = '/html/admDisconnect?lg_preurl=' + url;;
+                                                window.location.href = '/html/admDisconnect?lg_preurl=' + encodeURIComponent(url);
 
                                                 // } else {
                                                 //     return;
@@ -122,7 +153,7 @@ export function TokenCheck() {
                             // if (url.split('html/')[1]) {//有就说明不在登录页
                             if (url.includes('html/admDisconnect')) {
 
-                                window.location.href = '/html/admDisconnect?lg_preurl=' + url;;
+                                window.location.href = '/html/admDisconnect?lg_preurl=' + encodeURIComponent(url);
 
                                 // } else {
                                 //     return;
@@ -139,7 +170,7 @@ export function TokenCheck() {
                     // if (url.split('html/')[1]) {//有就说明不在登录页
                     if (url.includes('html/admDisconnect')) {
 
-                        window.location.href = '/html/admDisconnect?lg_preurl=' + url;;
+                        window.location.href = '/html/admDisconnect?lg_preurl=' + encodeURIComponent(url);
 
                     } else {
                         return;
@@ -215,12 +246,12 @@ export function TokenCheck_Disconnect() {
     }, 60000)
 }
 
-export function TokenCheck_Connect() {
+export function TokenCheck_Connect(IsDesk) {
     let lastTime = sessionStorage.getItem('lastTime')
     let date = new Date();
     let time = date.getTime()
  /*   if (time - lastTime >= 60000) {*/
-        TokenCheck()
+        TokenCheck(IsDesk)
         sessionStorage.setItem('lastTime', time)
     /*}*/
     setInterval(function () {
@@ -228,7 +259,7 @@ export function TokenCheck_Connect() {
         let date = new Date();
         let time = date.getTime()
         if (time - lastTime >= 60000) {
-            TokenCheck()
+            TokenCheck(IsDesk)
             sessionStorage.setItem('lastTime', time)
         }
 

@@ -7,6 +7,7 @@ import {getData} from "../../../common/js/fetch";
 import LoginUserActions from "./LoginUserActions";
 
 import AppLoadingActions from './AppLoadingActions';
+import CONFIG from "../../../common/js/config";
 
 
 
@@ -71,56 +72,25 @@ const Init = () => {
 
         dispatch({type:BASE_SETTING_LOADING_SHOW});
 
-       /* let { UserID,UserType } = getState().LoginUser;*/
+        //let { UserID,UserType } = getState().LoginUser;
 
-        getData('http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev/Login').then(res=>res.json()).then(json=>{
-       // Method.getGetData('/Login').then(json => {
+        let UserID = 'admin2';
 
-            dispatch({type:LoginUserActions.UPDATE_LOGIN_USER,data:json.data.result});
+        let UserType = 0;
 
-            let data = json.data.result;
+        getBaseInfo({UserID,UserType,dispatch}).then(data => {
 
-            let UserType = data.UserType;
+            if (data){
 
-            let UserID = data.UserID;
+                dispatch({type:BASE_INFO_UPDATE,data:data});
 
-            let baseInfo =  Method.getGetData(`/UserMgr/PersonalMgr/GetBasicInfo?UserID=${UserID}&UserType=${UserType}`,2);
+                dispatch({type:BASE_SETTING_LOADING_HIDE});
 
-            baseInfo.then(json => {
+                dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
 
-                if (json.Status === 200){
-
-                    let data = json.Data;
-
-
-                    dispatch({type:BASE_INFO_UPDATE,data:data});
-
-                    dispatch({type:BASE_SETTING_LOADING_HIDE});
-
-                    dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
-
-
-                }else{
-
-                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                            type:"btn-error",
-
-                            close:hideAlert(dispatch),
-
-                            ok:hideAlert(dispatch),
-
-                            cancel:hideAlert(dispatch)
-
-                        }});
-
-                }
-
-            })
-
+            }
 
         });
-
 
     }
 
@@ -130,6 +100,8 @@ const Commit = () => {
 
   return ( dispatch,getState ) => {
 
+      console.log(2);
+
       let { ShortNameTipsShow, QQTipsShow, WeixinTipsShow, WeiboTipsShow, TelephoneTipsShow } = getState().BaseSetting
 
       let { UserID,UserType }= getState().LoginUser;
@@ -138,41 +110,20 @@ const Commit = () => {
 
       if ((!ShortNameTipsShow)&&(!QQTipsShow)&&(!WeixinTipsShow)&&(!WeiboTipsShow)&&(!TelephoneTipsShow)){
 
-            let commitPromise = Method.getPostData('/UserMgr/PersonalMgr/UpdateBasicInfo',{
+          dispatch({type:BASE_SETTING_EDITOR_CLOSE});
+
+            UpdateBasicInfo({
 
                 UserID:UserID,UserType:UserType,ShortName:ShortNameValue,QQ:QQValue,Weixin:WeixinValue,
 
-                Weibo:WeiboValue,Telephone:TelephoneValue,Sign:SignValue,PhotoPath:''
+                Weibo:WeiboValue,Telephone:TelephoneValue,Sign:SignValue,PhotoPath:'',dispatch
 
-            },2,'no-cors').then(json => {
+            }).then(data => {
 
-               if (json.Status === 200){
+               if (data){
 
-                   dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+                    dispatch(AppAlertActions.alertSuccess({title:"保存成功"}));
 
-                           type:"success",
-
-                           title:"保存成功！",
-
-                           hide:()=>{ return dispatch({type:BASE_SETTING_EDITOR_CLOSE}) }
-
-                       }});
-
-               }else{
-
-                   dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                           type:"btn-error",
-
-                           close:hideAlert(dispatch),
-
-                           ok:hideAlert(dispatch),
-
-                           cancel:hideAlert(dispatch)
-
-                       }});
-
-                   dispatch({type:BASE_SETTING_EDITOR_CLOSE});
 
                }
 
@@ -188,7 +139,56 @@ const Commit = () => {
 
 
 
-//获取登录用户信息
+
+
+
+
+
+
+//获取base信息
+
+let getBaseInfo =  async ({UserID,UserType,dispatch}) => {
+
+    let res = await Method.getGetData(`/UserMgr/PersonalMgr/GetBasicInfo?UserID=${UserID}&UserType=${UserType}`,2,CONFIG.PersonalProxy);
+
+    if (res.Status === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:'未知异常',ok:res.Msg?'':()=>{ return ()=>window.location.href='/error.aspx'}}));
+
+    }
+
+};
+
+
+
+let UpdateBasicInfo =  async ({UserID,UserType,ShortName,PhotoPath,QQ,Weixin,Telephone,Weibo,Sign,dispatch}) => {
+
+    let res = await Method.getPostData('/UserMgr/PersonalMgr/UpdateBasicInfo',{
+
+        UserID,UserType,ShortName,QQ,Weixin,
+
+        Weibo,Telephone,Sign,PhotoPath
+
+    },2,CONFIG.PersonalProxy);
+
+    if (res.StatusCode === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:'未知异常'}));
+
+    }
+
+};
+
+
+
 
 
 

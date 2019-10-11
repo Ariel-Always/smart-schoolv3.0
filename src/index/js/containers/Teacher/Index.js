@@ -215,6 +215,26 @@ class Index extends Component{
 
     }
 
+    //退出登录
+    LogOut(){
+
+        const { dispatch } = this.props;
+
+        dispatch(AppAlertActions.alertError({title:"您确定要退出登录么?",ok:()=>{ return this.GoOut}}));
+
+    }
+
+
+    GoOut(){
+
+        sessionStorage.clear();
+
+        window.location.href='/UserMgr/Login/Login.aspx'
+
+    }
+
+
+
 
     render() {
 
@@ -234,6 +254,7 @@ class Index extends Component{
                     HeaderMenuToggle={this.HeaderMenuToggle.bind(this)}
                     SubjectMenuToggle={this.SubjectMenuToggle.bind(this)}
                     SubjectClick={this.SubjectClick.bind(this)}
+                    LogOut={this.LogOut.bind(this)}
                 >
 
                 </Header>
