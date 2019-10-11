@@ -75,7 +75,7 @@ const getCoureClassAllMsg = (url, func) => {
     return (dispatch) => {
 
 
-        getData(CONFIG.proxy + url).then(res => {
+        getData(CONFIG.CourseClassProxy + url,2).then(res => {
 
             return res.json()
         }).then(json => {
@@ -102,7 +102,7 @@ const setCoureClassAllMsg = (data, subjectID = null) => {
 //获取学科总览
 const getSubjectAllMsg = (url, subject) => {
     return (dispatch) => {
-        getData(CONFIG.proxy + url).then(res => {
+        getData(CONFIG.CourseClassProxy + url,2).then(res => {
             dispatch({ type: actions.UpUIState.RIGHT_LOADING_CLOSE });
 
             return res.json()
@@ -122,7 +122,7 @@ const getClassAllMsg = (url, subject, Class) => {
     return (dispatch) => {
         dispatch({ type: actions.UpUIState.TABLE_LOADING_OPEN });
 
-        getData(CONFIG.proxy + url).then(res => {
+        getData(CONFIG.CourseClassProxy + url,2).then(res => {
             dispatch({ type: actions.UpUIState.TABLE_LOADING_CLOSE });
             return res.json()
         }).then(json => {
@@ -141,7 +141,7 @@ const getCourseClassDetailsMsg = (url) => {
     return (dispatch) => {
         dispatch({ type: actions.UpUIState.MODAL_LOADING_OPEN });
 
-        getData(CONFIG.proxy + url).then(res => {
+        getData(CONFIG.CourseClassProxy + url).then(res => {
             return res.json()
         }).then(json => {
             if (json.Status === 400) {
@@ -177,7 +177,7 @@ const getCourseClassDetailsHandleClassMsg = (url) => {
     return (dispatch) => {
         dispatch({ type: actions.UpUIState.MODAL_LOADING_OPEN });
 
-        getData(CONFIG.proxy + url).then(res => {
+        getData(CONFIG.CourseClassProxy + url).then(res => {
             return res.json()
         }).then(json => {
             if (json.Status === 400) {
@@ -201,7 +201,7 @@ const getSubjectTeacherMsg = (url) => {
     return (dispatch) => {
         dispatch({ type: actions.UpUIState.TEACHER_LOADING_MODAL_OPEN });
 
-        postData(CONFIG.proxy + url, {}).then(res => {
+        postData(CONFIG.SubjectProxy + url, {}).then(res => {
             return res.json()
         }).then(json => {
             if (json.Status === 400) {
@@ -255,7 +255,7 @@ const getGradeClassMsg = (url) => {
     return (dispatch) => {
         dispatch({ type: actions.UpUIState.STUDENT_LOADING_MODAL_OPEN });
 
-        getData(CONFIG.proxy + url).then(res => {
+        getData(CONFIG.CourseClassProxy + url).then(res => {
             return res.json()
         }).then(json => {
             if (json.Status === 400) {
@@ -273,7 +273,7 @@ const getClassStudentMsg = (url) => {
     return (dispatch) => {
         dispatch(actions.UpUIState.ClassStudentLoadingModalOpen());
 
-        getData(CONFIG.proxy + url).then(res => {
+        getData(CONFIG.CourseClassProxy + url).then(res => {
             return res.json()
         }).then(json => {
             if (json.Status === 400) {
@@ -291,7 +291,7 @@ const searchClassStudentMsg = (url) => {
     return (dispatch) => {
         dispatch(actions.UpUIState.ClassStudentLoadingModalOpen());
 
-        getData(CONFIG.proxy + url).then(res => {
+        getData(CONFIG.CourseClassProxy + url).then(res => {
             return res.json()
         }).then(json => {
             if (json.Status === 400) {
@@ -309,7 +309,7 @@ const getCourseClassDynamicMsg = (url) => {
     return (dispatch) => {
         dispatch(actions.UpUIState.CourseClassDynamicLoadingOpen());
 
-        getData(CONFIG.proxy + url).then(res => {
+        getData(CONFIG.CourseClassProxy + url).then(res => {
             return res.json()
         }).then(json => {
             if (json.Status === 400) {
@@ -327,7 +327,7 @@ const getCourseClassRecordMsg = (url) => {
     return (dispatch) => {
         dispatch(actions.UpUIState.CourseClassDynamicLoadingOpen());
 
-        getData(CONFIG.proxy + url).then(res => {
+        getData(CONFIG.CourseClassProxy + url).then(res => {
             return res.json()
         }).then(json => {
             if (json.Status === 400) {
@@ -348,7 +348,7 @@ const getLogDetailsMsg = (url) => {
         
         dispatch({ type: actions.UpUIState.MODAL_LOADING_OPEN });
 
-        getData(CONFIG.proxy + url).then(res => {
+        getData(CONFIG.CourseClassProxy + url).then(res => {
             return res.json()
         }).then(json => {
             if (json.Status === 400) {

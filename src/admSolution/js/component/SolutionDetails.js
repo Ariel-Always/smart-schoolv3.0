@@ -16,7 +16,7 @@ class SolutionDetails extends React.Component {
                     title: '序号',
                     align: 'center',
                     key: 'OrderNO',
-                    width:120,
+                    width:72,
                     dataIndex: 'OrderNO',
                     render: OrderNO => {
                         return (
@@ -29,8 +29,8 @@ class SolutionDetails extends React.Component {
                 },
                 {
                     title: '文件名',
-                    align: 'center',
-                    width:250,
+                    align: 'left',
+                    width:517,
                     dataIndex: 'FileName',
                     key: 'FileName',
                     render: FileName => {
@@ -44,13 +44,13 @@ class SolutionDetails extends React.Component {
                 {
                     title: '文件大小',
                     align: 'center',
-                    width:250,
+                    width:148,
                     dataIndex: 'FileSize',
                     key: 'FileSize',
                     render: FileSize => {
                         return (
                             <React.Fragment>
-                                <span className='FileSize'>{FileSize}</span>
+                                <span className='FileSize'>{this.setFileSize(FileSize)}</span>
                             </React.Fragment>
                         )
                     }
@@ -58,20 +58,39 @@ class SolutionDetails extends React.Component {
                 {
                     title: '操作',
                     align: 'center',
-                    width:190,
+                    width:148,
                     key: 'handle',
                     dataIndex: 'FileAccessPath',
                     render: (FileAccessPath) => {
 
                         return (
                             <div className='handle-content'>
-                                <Button color='blue' type='default' size='small' className='handle-btn'><a href={FileAccessPath} rel='files' target='_blank'>浏览</a></Button>
+                                <Button color='blue' shape='round' size='small' className='handle-btn'><a href={FileAccessPath} rel='files' target='_blank'>浏览</a></Button>
                             </div>
                         )
                     }
                 }
             ],
         }
+    }
+
+    //设置文件大小单位
+    setFileSize = (fileSize) => {
+        let unit = ['B','KB','M','G','T'];
+        let EndFileSize = fileSize+'B';
+        let i = unit.length-1;
+        let myUnit = 'B'
+        for(i;i>=0;i--){
+            if(fileSize/Math.pow(1024,i)>=1){
+                myUnit = unit[i];
+                break;
+            }
+        }
+        let str = Math.round(fileSize/Math.pow(1024,i)*100)/100;
+        let Size = str.toString()+myUnit;
+        // console.log(i,myUnit,Size)
+        return Size;
+        
     }
 
     //浏览
@@ -88,7 +107,7 @@ class SolutionDetails extends React.Component {
                 <div className='top'>
                     <span className='top-content'>
                         <span className='left'>方案名称：</span>
-                        <span className='right'>{SolutionMsg.SolutionName}</span>
+                        <span className='right SolutionName'>{SolutionMsg.SolutionName}</span>
                     </span>
                     <span className='top-content'>
                         <span className='left'>学科：</span>
@@ -98,12 +117,15 @@ class SolutionDetails extends React.Component {
                         <span className='left'>创建时间：</span>
                         <span className='right'>{SolutionMsg.CreateTime}</span>
                     </span>
-                    <span className='top-content'>
-                        <span className='left'>文件数量：</span>
-                        <span className='right'>{SolutionMsg.FilesCount}</span>
-                    </span>
+                    
                 </div>
                 <div className='main'>
+                    <div className='main-top'>
+                    <span className='top-content'>
+                        <span className='left'>文件列表[</span>
+                        <span className='right'>{SolutionMsg.FilesCount}</span>
+                        个]</span>
+                    </div>
                     <Table
                     className='table'
                     columns={this.state.columns}

@@ -130,7 +130,8 @@ class Dynamic extends React.Component {
             pageSize: 11,
             plainOptions: [],
             pagination: 1,
-            dataSource: []
+            dataSource: [],
+            UserMsg:props.DataState.LoginUser
         }
     }
 
@@ -247,7 +248,7 @@ class Dynamic extends React.Component {
         }
         let userMsg = DataState.LoginUser;
         let handleTypeSelected = this.state.handleTypeSelected;
-        dispatch(actions.UpDataState.getCourseClassDynamicMsg('/CourseClass_dynamic?userID=' + userMsg.UserID + '&userType=' + userMsg.UserType + '&schoolID=' + userMsg.SchoolID + '&startDate=' + this.state.startTime + '&endDate=' + this.state.endTime + '&operateType=' + handleTypeSelected.value))
+        dispatch(actions.UpDataState.getCourseClassDynamicMsg('/GetGourseClassLogNew?userID=' + userMsg.UserID + '&userType=' + userMsg.UserType + '&schoolID=' + userMsg.SchoolID + '&startDate=' + this.state.startTime + '&endDate=' + this.state.endTime + '&operateType=' + handleTypeSelected.value))
     }
 
     onAppAlertOK() {
@@ -374,7 +375,7 @@ class Dynamic extends React.Component {
 
         let userMsg = DataState.LoginUser;
         let handleTypeSelected = this.state.handleTypeSelected;
-        dispatch(actions.UpDataState.getCourseClassDynamicMsg('/CourseClass_dynamic?userID=' + userMsg.UserID + '&userType=' + userMsg.UserType + '&schoolID=' + userMsg.SchoolID + '&startDate=' + this.state.startTime + '&endDate=' + this.state.endTime + '&operateType=' + handleTypeSelected.value))
+        dispatch(actions.UpDataState.getCourseClassDynamicMsg('/GetGourseClassLogNew?userID=' + userMsg.UserID + '&userType=' + userMsg.UserType + '&schoolID=' + userMsg.SchoolID + '&startDate=' + this.state.startTime + '&endDate=' + this.state.endTime + '&operateType=' + handleTypeSelected.value))
         this.setState({
             pagination:1
         })

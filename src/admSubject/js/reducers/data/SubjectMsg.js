@@ -27,9 +27,9 @@ const SubjectMsg = (state = {}, actions) => {
             return state;
     }
 };
-function handleAddSubjectMsg(data){
+function handleAddSubjectMsg(data=[]){
     let initData = [{ value: 0, title: '自定义',GlabalGrades:'' }]
-    let endData = data.map((child,index) => {
+    let endData = data instanceof Array &&data.map((child,index) => {
         let value = child.SubjectID;
         let title = child.SubjectName;
 
@@ -55,7 +55,7 @@ function handleAllGrades(grade) {
 }
 function handleData(data) {
     data = data||[]
-    let newData = data.map((child, index) => {
+    let newData = data instanceof Array &&data.map((child, index) => {
         let SubjectName = handleSubjectName(child)
         // {
         //     SubjectID:child.SubjectID,
@@ -109,7 +109,7 @@ function handleSubjectName(Subject) {
 }
 function handleTeacher(teacher) {
     let teacherArr = teacher.split(',');
-    let allTeacherArr = teacherArr.map((child, index) => {
+    let allTeacherArr = teacherArr instanceof Array &&teacherArr.map((child, index) => {
         let childArr = child.split('/');
         let Grade = '';
         let TeacherID = '';
@@ -136,7 +136,7 @@ function handleGrade(grade) {
     let Grades = [];
     let returnGrade = '';
     let isSeries = true;
-    GradeArr.map((child, index) => {
+    GradeArr instanceof Array &&GradeArr.map((child, index) => {
         let childArr = child.split('-');
         sort.push(childArr[0].slice(1));
         Grades.push(childArr[1])
@@ -150,7 +150,7 @@ function handleGrade(grade) {
     if (isSeries && Grades.length !== 0) {
         returnGrade = Grades[0] + '~' + Grades[Grades.length - 1];
     } else if (!isSeries && Grades.length !== 0) {
-        Grades.map((child, index) => {
+        Grade instanceof Array &&Grades.map((child, index) => {
             if (index !== Grades.length - 1)
                 returnGrade += child + ',';
             else

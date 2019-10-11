@@ -2,7 +2,7 @@ import UpDataState from '../../actions/UpDataState';
 
 
 
-const GetUserPowerMsg = (state = '', actions) => {
+const GetUserPowerMsg = (state = {Power:{},data:[]}, actions) => {
     switch (actions.type) {
         case UpDataState.GET_USER_POWER_MSG:
 
@@ -18,7 +18,7 @@ const GetUserPowerMsg = (state = '', actions) => {
 function handleData(data) {
     console.log(data)
     let newData = {}
-    data.map((child, index) => {
+    data instanceof Array && data.map((child, index) => {
         if (!newData[child.Category]) {
             newData[child.Category] = [];
             newData[child.Category].push(child)

@@ -23,7 +23,8 @@ class AddCourseClass extends React.Component {
             Subject: { value: 0, title: '请选择学科' },
             Grade: { value: 0, title: '请选择年级' },
             SubjectSelect: { value: 0, title: '请选择学科' },
-            GradeSelect: { value: 0, title: '请选择年级' }
+            GradeSelect: { value: 0, title: '请选择年级' },
+            UserMsg: props.DataState.LoginUser
         }
     }
     componentWillMount() {
@@ -75,7 +76,7 @@ class AddCourseClass extends React.Component {
     onTeacherSelectClick = () => {
         const { DataState, UIState, dispatch } = this.props;
         dispatch(actions.UpUIState.AddTeacherModalOpen())
-        dispatch(actions.UpDataState.getSubjectTeacherMsg('/AdmSubjectTeacher'))
+        dispatch(actions.UpDataState.getSubjectTeacherMsg('/GetTeacherInfoBySubjectAndKey?key=&schoolID='+this.state.UserMsg.SchoolID+'&subjectID='+this.state.SubjectSelect.value))
     }
     //选择教师模态框
     AddTeacherModalOk = () => {
@@ -134,11 +135,12 @@ class AddCourseClass extends React.Component {
     //选择弹窗
     onSelectStudentAllClick = () => {
         const { DataState, UIState, dispatch } = this.props;
+        let UserMsg = DataState.LoginUser
         if (this.state.SubjectSelect.value === 0)
             return
         if (this.state.GradeSelect.value === 0)
             return
-        dispatch(actions.UpDataState.getGradeClassMsg('/CourseClass_GradeID'))
+        dispatch(actions.UpDataState.getGradeClassMsg('/GetStudentForAddOrEditCourseClassByInit?schoolID='+UserMsg.SchoolID+'&gradeID='+this.state.GradeSelect.value))
         dispatch(actions.UpUIState.AddStudentModalOpen())
     }
     //选择学科

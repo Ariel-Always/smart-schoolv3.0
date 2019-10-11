@@ -111,7 +111,9 @@ class Search extends React.Component{
                 }
             ],
             checkedList: [],
-            checkAll: false
+            checkAll: false,
+            UserMsg:props.DataState.LoginUser
+
         })
     }
     //钩子函数
@@ -140,7 +142,7 @@ class Search extends React.Component{
         console.log('ss' + classID)
         const { dispatch, DataState, UIState } = this.props;
         dispatch(actions.UpUIState.CourseClassDetailsModalOpen())
-        dispatch(actions.UpDataState.getCourseClassDetailsMsg('/CoureClass_studentMsg?schoolID=sss'))
+        dispatch(actions.UpDataState.getCourseClassDetailsMsg('/GetCourseClassDetail?courseClassID='+classID))
     }
     //列表操作编辑点击事件
     onHandleClassClick = (key) => {
@@ -149,7 +151,7 @@ class Search extends React.Component{
         let ClassID = DataState.GetClassAllMsg.allClass.TableData[key].CourseClass.ClassID;
         
         dispatch(actions.UpUIState.ChangeCourseClassModalOpen())
-        dispatch(actions.UpDataState.getCourseClassDetailsHandleClassMsg('/CoureClass_studentMsg?courseClassID=' + ClassID))
+        dispatch(actions.UpDataState.getCourseClassDetailsHandleClassMsg('/GetCourseClassDetail?courseClassID=' + ClassID))
 
 
     }
@@ -182,7 +184,7 @@ class Search extends React.Component{
         let routeID = pathArr[2];
         let subjectID = pathArr[3];
         let classID = pathArr[4];
-        dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss&pageIndex=' + value + '&pageSize=10', routeID, classID));
+        dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID='+this.state.UserMsg.SchoolID+'&pageIndex=' + value + '&pageSize=10', routeID, classID));
 
 
     }
@@ -290,7 +292,7 @@ class Search extends React.Component{
                     checkedList:[],
                     checkAll:false
                 })
-                dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss&pageIndex=' + 1 + '&pageSize=10', routeID, classID));
+                dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID='+this.state.UserMsg.SchoolID+'&pageIndex=' + 1 + '&pageSize=10', routeID, classID));
             }
         })
     }
@@ -318,7 +320,7 @@ class Search extends React.Component{
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
                 
-                dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss&pageIndex=' + 1 + '&pageSize=10', routeID, classID));
+                dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID='+this.state.UserMsg.SchoolID+'&pageIndex=' + 1 + '&pageSize=10', routeID, classID));
 
             }
         })

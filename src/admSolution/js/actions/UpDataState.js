@@ -18,11 +18,9 @@ const GET_TEACHING_SOLUTION_DETAILS_MSG = 'GET_TEACHING_SOLUTION_DETAILS_MSG'
 const GET_SOLUTION_ID = 'GET_SOLUTION_ID'
 //操作的执行
 //获取登录用户信息
-const getLoginUser = (url) => {
+const getLoginUser = (data) => {
     return (dispatch) => {
-        getData(CONFIG.proxy + url).then(res => res.json()).then(json => {
-            dispatch({ type: GET_LOGIN_USER_INFO, data: json.data.result });
-        });
+            dispatch({ type: GET_LOGIN_USER_INFO, data: data });
     }
 };
 
@@ -47,7 +45,7 @@ const getTeachingSolutionMsg = (url) => {
         });
     }
 }
-//设置教学方案
+//获取教学方案
 const getTeachingSolutionDetailsMsg = (url) => {
     return (dispatch) => {
         getData(CONFIG.TeachingSolutionProxy + url, 2).then(res => {

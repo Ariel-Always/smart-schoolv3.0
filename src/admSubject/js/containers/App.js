@@ -32,16 +32,17 @@ class App extends Component {
         let token = sessionStorage.getItem('token')
         // sessionStorage.setItem('UserInfo', '')
         if (sessionStorage.getItem('UserInfo')) {
-             //console.log(JSON.parse(sessionStorage.getItem('UserInfo')),decodeURIComponent(JSON.parse(sessionStorage.getItem('UserInfo')).data.PhotoPath))
-             let loginInfo = {}
-             for(let key in JSON.parse(sessionStorage.getItem('UserInfo')).data){
-                loginInfo[key] = decodeURIComponent(JSON.parse(sessionStorage.getItem('UserInfo')).data[key])
-             }
-            dispatch(actions.UpDataState.getLoginUser(loginInfo));
+            dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
         }
         else {
-            getUserInfo(token, '000')
-            // dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
+            getUserInfo(token, '000');
+            let timeRun = setInterval(function () {
+                if (sessionStorage.getItem('UserInfo')) {
+                    dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
+                    clearInterval(timeRun)
+                }
+            }, 1000)
+            //dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
         }
     }
 

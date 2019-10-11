@@ -72,13 +72,14 @@ class CourseClassDetails extends React.Component {
                     }
                 }
             ],
+            UserMsg:props.DataState.LoginUser
         });
     }
 
     //点击头部任课教师
     onTeacherNameClick = (id) => {
         const { dispatch } = this.props;
-        dispatch(actions.UpDataState.getTeacherMsg('/GetUserDetail?userID=T0001'));
+        dispatch(actions.UpDataState.getTeacherMsg('/GetUserDetail?userID='+this.state.UserMsg.UserID));
 
     }
     //关闭教师详情弹窗

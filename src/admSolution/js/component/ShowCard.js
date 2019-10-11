@@ -6,7 +6,7 @@ import { postData, getData } from '../../../common/js/fetch'
 import '../../scss/ShowCard.scss'
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
 import CONFIG from '../../../common/js/config';
-
+import {Button} from '../../../common'
 class ShowCard extends React.Component {
     constructor(props) {
         super(props);
@@ -19,13 +19,13 @@ class ShowCard extends React.Component {
     onResetNameClick = (data) => {
         console.log(data)
         const { dispatch, DataState, UIState } = this.props;
-        dispatch(actions.UpDataState.getSolutionID({SolutionID:data.SolutionID,SolutionName:data.SolutionName}))
+        dispatch(actions.UpDataState.getSolutionID({ SolutionID: data.SolutionID, SolutionName: data.SolutionName }))
         dispatch(actions.UpUIState.ResetNameModalOpen())
     }
     //删除
     onDeleteClick = (SolutionID) => {
         const { dispatch, DataState, UIState } = this.props;
-       
+
         console.log(SolutionID)
         dispatch(actions.UpUIState.showErrorAlert({
             type: 'btn-warn',
@@ -46,7 +46,7 @@ class ShowCard extends React.Component {
     //单个删除
     onAppAlertDeleteOK = (SolutionID) => {
         const { dispatch, DataState, UIState } = this.props;
-        
+
         let url = '/DeleteTeachingSolution';
         dispatch(actions.UpUIState.hideErrorAlert());
         postData(CONFIG.TeachingSolutionProxy + url, {
@@ -70,7 +70,7 @@ class ShowCard extends React.Component {
     //通用提示弹窗
     // onAppAlertDeleteAllOK(SolutionID) {
     //     const { dispatch } = this.props;
-        
+
     //     let url = '/DeleteSubject';
     //     dispatch(actions.UpUIState.hideErrorAlert());
     //     postData(CONFIG.proxy + url, {
@@ -87,7 +87,7 @@ class ShowCard extends React.Component {
     //                 onHide: this.onAlertWarnHide.bind(this)
     //             }));
     //         dispatch(actions.UpDataState.getTeacherCourseClassMsg('/GetCourseClassByUserID?schoolID=S0003&teacherID=T0001'));
-               
+
     //         }
     //     })
     //     dispatch(actions.UpUIState.hideErrorAlert());
@@ -112,47 +112,47 @@ class ShowCard extends React.Component {
     onCheckClick = (solutionID) => {
         console.log(solutionID)
         const { dispatch, DataState, UIState } = this.props;
-        dispatch(actions.UpDataState.getTeachingSolutionDetailsMsg('/GetTeachingSolution?SolutionID='+solutionID))
+        dispatch(actions.UpDataState.getTeachingSolutionDetailsMsg('/GetTeachingSolution?SolutionID=' + solutionID))
         dispatch(actions.UpUIState.TeachingSolutionDetailsModalOpen())
 
     }
     render() {
         let To = '';
-        
+
         return (
             <div className='ShowCard '>
 
-                <div className='box-3'></div>
-                <div className='box-2'></div>
+
 
                 <div className='box-main'>
                     <div className='main-content'>
                         <p className='content-tips'>{this.props.params.SolutionName}</p>
-                        <hr className='content-hr' />
+
                         <div className='content-details'>
                             <div className='details-row clearfix'>
                                 <span className='left'>学科：</span>
                                 <span className='right subjectName'>{this.props.params.SubjectName}</span>
                             </div>
-                            <div className='details-row clearfix'>
-                                <span className='left'>创建时间：</span>
-                                <span className='right'>{this.props.params.CreateTime}</span>
-                            </div>
+
                             <div className='details-row clearfix'>
                                 <span className='left'>文件数量：</span>
                                 <span className='right'>{this.props.params.FilesCount}</span>
                             </div>
+                            <div className='details-row clearfix'>
+                                <span className='left'>创建时间：</span>
+                                <span className='right'>{this.props.params.CreateTime}</span>
+                            </div>
 
                         </div>
+                        <hr className='content-hr'></hr>
+                        <div className='handle-content'>
+                            <span onClick={this.onResetNameClick.bind(this, this.props.params)} className='btn  resetName'>重命名</span>
+                            <Button shape='round' color='red' onClick={this.onDeleteClick.bind(this, this.props.params.SolutionID)} className='btn Delete' value='删除' />
+                            <Button shape='round' color='green' onClick={this.onCheckClick.bind(this, this.props.params.SolutionID)} className='btn Check' value='查看' />
+                            
+                        </div>
+                    </div>
 
-                    </div>
-                    <div className='handle-content'>
-                        <span onClick={this.onResetNameClick.bind(this, this.props.params)} className='btn left'><i className='resetName'></i><span>重命名</span></span>
-                        <span onClick={this.onDeleteClick.bind(this, this.props.params.SolutionID)} className='btn center'><i className='Delete'></i><span>删除</span></span>
-                        <span onClick={this.onCheckClick.bind(this, this.props.params.SolutionID)} className='btn right'><i className='resetName'></i><span>查看</span></span>
-                        <span className='divide-1'></span>
-                        <span className='divide-2'></span>
-                    </div>
                 </div>
             </div>
 
