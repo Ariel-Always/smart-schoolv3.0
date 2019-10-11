@@ -5,7 +5,7 @@ export function TokenCheck() {
     let url_token = getQueryVariable('lg_tk');//lg_tk为链接上带的token
     let preUrl = window.location.href;
     let url = window.location.href;
-    console.log(session_token)
+    //console.log(session_token)
     //console.log(session_token, url_token, preUrl)
     if (!session_token && !url_token) {//没有token,跳转至掉线界面
         if (!url.includes('html/admDisconnect') && !getQueryVariable('lg_preurl'))
