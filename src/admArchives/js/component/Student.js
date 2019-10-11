@@ -158,7 +158,8 @@ class Student extends React.Component {
             StudentDetailsMsgModalVisible: false,
             addStudentModalVisible: false,
             firstSelect: { value: 0, title: '全部年级' },
-            secondSelect: { value: 0, title: '全部班级' }
+            secondSelect: { value: 0, title: '全部班级' },
+            userMsg:props.DataState.LoginUser
 
         }
     }
@@ -219,11 +220,11 @@ class Student extends React.Component {
             //Classes.push(this.props.DataState.GradeClassMsg.returnData.AllClasses[e.value]);
             //this.refs.dropMenuSecond.state.dropList = Classes;]
 
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&GradeID=' + e.value + '&PageIndex=0&PageSize=10', e));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&GradeID=' + e.value + '&PageIndex=0&PageSize=10', e));
 
 
         } else {
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
 
 
         }
@@ -237,9 +238,9 @@ class Student extends React.Component {
         //     secondSelect:e
         // })
         if (e.value === 0) {
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&GradeID=' + e.value + '&PageIndex=0&PageSize=10', this.state.firstSelect));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&GradeID=' + e.value + '&PageIndex=0&PageSize=10', this.state.firstSelect));
         } else {
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&GradeID=' + this.state.firstSelect.value + '&ClassID=' + e.value + '&PageIndex=0&PageSize=10', this.state.firstSelect, e));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&GradeID=' + this.state.firstSelect.value + '&ClassID=' + e.value + '&PageIndex=0&PageSize=10', this.state.firstSelect, e));
 
         }
 
@@ -258,7 +259,7 @@ class Student extends React.Component {
             return;
         }
         console.log(e)
-        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&keyword=' + e.value + '&PageIndex=0&PageSize=10'));
+        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&keyword=' + e.value + '&PageIndex=0&PageSize=10'));
     }
 
     onSelectChange = (e) => {
@@ -340,7 +341,7 @@ class Student extends React.Component {
                     this.setState({
                         studentModalVisible: false
                     })
-                    dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
+                    dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
 
                 }
             });
@@ -427,7 +428,7 @@ class Student extends React.Component {
                     checkAll:false
                 })
                 dispatch(actions.UpUIState.hideErrorAlert());
-                dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
+                dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
 
             }
         });
@@ -452,7 +453,7 @@ class Student extends React.Component {
     onPagiNationChange = (e) => {
         const { dispatch, DataState } = this.props;
 
-        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex='+(--e)+'&PageSize=10'));
+        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex='+(--e)+'&PageSize=10'));
 
     }
     onUserNameClick = (key) => {
@@ -556,7 +557,7 @@ class Student extends React.Component {
                     this.setState({
                         addStudentModalVisible: false
                     })
-                    dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
+                    dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
 
                 }
             });
@@ -689,7 +690,7 @@ class Student extends React.Component {
         console.log(sorter)
         if(sorter&&(sorter.columnKey==='UserName'||sorter.columnKey==='UserID')){
             let sortType = sorter.order==="descend"?'SortType=DESC':sorter.order==="ascend"?'SortType=ASC':'';
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&sortFiled='+sorter.columnKey+'&PageIndex=0&PageSize=10&'+sortType));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&sortFiled='+sorter.columnKey+'&PageIndex=0&PageSize=10&'+sortType));
         }
     }
     render() {

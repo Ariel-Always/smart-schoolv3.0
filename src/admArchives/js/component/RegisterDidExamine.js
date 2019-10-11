@@ -149,7 +149,9 @@ class RegisterDidExamine extends React.Component {
             secondSelect: { value: 0, title: '全部班级' },
             handleUserMsg: [],
             pageindex: 0,
-            StudentDetailsMsgModalVisible: false
+            StudentDetailsMsgModalVisible: false,
+            userMsg:props.DataState.LoginUser
+
 
         }
 
@@ -162,6 +164,7 @@ class RegisterDidExamine extends React.Component {
 
     StudentDropMenu = (e) => {
         const { dispatch } = this.props;
+
         console.log(e);
         let Classes = [{ value: 0, title: '全部班级' }];
         this.setState({
@@ -178,13 +181,13 @@ class RegisterDidExamine extends React.Component {
             this.setState({
                 secondDropList: Classes,
             })
-            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=1&gradeID=' + e.value))
+            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=1&gradeID=' + e.value))
 
             this.setState({
                 DropMenuShow: true
             })
         } else {
-            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=1'))
+            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=1'))
 
             this.setState({
                 DropMenuShow: false,
@@ -200,9 +203,9 @@ class RegisterDidExamine extends React.Component {
             secondSelect: e
         })
         if (e.value === 0) {
-            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=1&gradeID=' + this.state.firstSelect.value))
+            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=1&gradeID=' + this.state.firstSelect.value))
         } else {
-            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=1&gradeID=' + this.state.firstSelect.value + '&classID=' + e.value))
+            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=1&gradeID=' + this.state.firstSelect.value + '&classID=' + e.value))
 
         }
     }
@@ -243,11 +246,11 @@ class RegisterDidExamine extends React.Component {
             pageindex: e - 1
         })
         if (this.state.firstSelect.value === 0) {
-            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=' + (--e) + '&PageSize=10&status=1'))
+            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=' + (--e) + '&PageSize=10&status=1'))
         } else if (this.state.secondSelect.value === 0)
-            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=' + (--e) + '&PageSize=10&status=1&gradeID=' + this.state.firstSelect.value))
+            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=' + (--e) + '&PageSize=10&status=1&gradeID=' + this.state.firstSelect.value))
         else {
-            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=' + (--e) + '&PageSize=10&status=1&gradeID=' + this.state.firstSelect.value + '&classID=' + this.state.secondSelect.value))
+            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=' + (--e) + '&PageSize=10&status=1&gradeID=' + this.state.firstSelect.value + '&classID=' + this.state.secondSelect.value))
         }
     }
     UserExamineMadalOk = (e) => {
@@ -344,7 +347,7 @@ class RegisterDidExamine extends React.Component {
         console.log(sorter)
         if (sorter && (sorter.columnKey === 'SignUpTime' || sorter.columnKey === 'UserName' || sorter.columnKey === 'UserID')) {
             let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
-            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=1&sortFiled=' + sorter.columnKey + '&PageSize=10&' + sortType))
+            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=1&sortFiled=' + sorter.columnKey + '&PageSize=10&' + sortType))
 
         }
     }
@@ -361,7 +364,7 @@ class RegisterDidExamine extends React.Component {
             }));
             return;
         } else
-            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=1&keyword=' + e.value))
+            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=1&keyword=' + e.value))
     }
     //学生详情信息
     StudentDetailsMsgModalOk = () => {

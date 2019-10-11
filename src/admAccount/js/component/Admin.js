@@ -147,7 +147,8 @@ class Admin extends React.Component {
             changeAdminModalVisible: false,
             keyword: '',
             CancelBtnShow: 'n',
-            searchValue: ''
+            searchValue: '',
+            userMsg:props.DataState.LoginUser
 
 
         }
@@ -193,7 +194,7 @@ class Admin extends React.Component {
             }));
         } else {
 
-            dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=0&PageSize=10&keyword=' + e.value));
+            dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&keyword=' + e.value));
 
         }
     }
@@ -362,9 +363,9 @@ class Admin extends React.Component {
                         checkAll: false
                     })
                     if (this.state.searchValue !== '')
-                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=0&PageSize=10&Keyword=' + this.state.searchValue));
+                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&Keyword=' + this.state.searchValue));
                     else
-                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
+                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
                 }
 
             });
@@ -384,7 +385,7 @@ class Admin extends React.Component {
         if (this.state.keyword !== '') {
             keyword = '&keyword=' + this.state.keyword
         }
-        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=' + (--value) + '&PageSize=10' + keyword));
+        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=' + (--value) + '&PageSize=10' + keyword));
     }
 
 
@@ -479,7 +480,7 @@ class Admin extends React.Component {
                         PhotoPath: '',
                         Pwd: '0'
                     }))
-                    dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
+                    dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
                 }
 
             });
@@ -570,7 +571,7 @@ class Admin extends React.Component {
                         PhotoPath: '',
                         Pwd: '0'
                     }))
-                    dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
+                    dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
 
                 }
 
@@ -629,9 +630,9 @@ class Admin extends React.Component {
                         defaultPwd: 888888
                     })
                     if (this.state.searchValue !== '')
-                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=0&PageSize=10&Keyword=' + this.state.searchValue));
+                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&Keyword=' + this.state.searchValue));
                     else
-                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
+                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
 
                 }
 
@@ -669,7 +670,7 @@ class Admin extends React.Component {
         console.log(sorter)
         if (sorter && (sorter.columnKey === 'UserName' || sorter.columnKey === 'ShortName')) {
             let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
-            dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageSize=10&sortFiled=' + sorter.columnKey + sortType + '&PageIndex=' + (this.state.pagination - 1) + keyword));
+            dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageSize=10&sortFiled=' + sorter.columnKey + sortType + '&PageIndex=' + (this.state.pagination - 1) + keyword));
 
         }
     }

@@ -88,7 +88,8 @@ class Subject extends React.Component {
                     }
                 }
             ],
-            SubjectSelect:{ value: '', title: '全部学段' }
+            SubjectSelect:{ value: '', title: '全部学段' },
+            UserMsg:props.DataState.LoginUser
         }
     }
     // 钩子
@@ -128,7 +129,7 @@ class Subject extends React.Component {
     //操作分页
     onPagiNationChange = (value) => {
         const { dispatch } = this.props;
-        dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=S0003&periodID=null&pageSize=8&pageIndex=' + value));
+        dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID='+this.state.UserMsg.SchoolID+'&periodID=null&pageSize=8&pageIndex=' + value));
     }
 
     // 关闭信息弹窗
@@ -146,7 +147,7 @@ class Subject extends React.Component {
         if (value.value !== 0) {
             periodID = 'p' + value.value
         }
-        dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=S0003&periodID=' + periodID + '&pageSize=8&pageIndex=1'));
+        dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID='+this.state.UserMsg.SchoolID+'&periodID=' + periodID + '&pageSize=8&pageIndex=1'));
     }
 
     //删除
@@ -186,7 +187,7 @@ class Subject extends React.Component {
             if (json.Status === 400) {
                 console.log('错误码：' + json.Status)
             } else if (json.Status === 200) {
-                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=S0003&periodID='+this.state.SubjectSelect.value+'&pageSize=8&pageIndex=1'));
+                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID='+this.state.UserMsg.SchoolID+'&periodID='+this.state.SubjectSelect.value+'&pageSize=8&pageIndex=1'));
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
                     title: "成功",
@@ -237,7 +238,7 @@ class Subject extends React.Component {
                 console.log('错误码：' + json.Status)
             } else if (json.Status === 200) {
                 dispatch(actions.UpUIState.changeSubjectModalClose())
-                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=S0003&periodID='+this.state.SubjectSelect.value+'&pageSize=8&pageIndex=1'));
+                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID='+this.state.UserMsg.SchoolID+'&periodID='+this.state.SubjectSelect.value+'&pageSize=8&pageIndex=1'));
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
                     title: "成功",
@@ -297,7 +298,7 @@ class Subject extends React.Component {
                 console.log('错误码：' + json.Status)
             } else if (json.Status === 200) {
                 dispatch(actions.UpUIState.addSubjectModalClose())
-                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=S0003&periodID='+this.state.SubjectSelect.value+'&pageSize=8&pageIndex=1'));
+                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID='+this.state.UserMsg.SchoolID+'&periodID='+this.state.SubjectSelect.value+'&pageSize=8&pageIndex=1'));
                 
 
                 dispatch(actions.UpUIState.showErrorAlert({
@@ -375,7 +376,7 @@ class Subject extends React.Component {
                 }));
                 console.log('错误码：' + json.Status)
             } else if (json.Status === 200) {
-                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=S0003&periodID='+this.state.SubjectSelect.value+'&pageSize=8&pageIndex=1'));
+                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID='+this.state.UserMsg.SchoolID+'&periodID='+this.state.SubjectSelect.value+'&pageSize=8&pageIndex=1'));
                 dispatch(actions.UpUIState.setSubjectTeacherModalClose())
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',

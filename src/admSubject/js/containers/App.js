@@ -23,6 +23,7 @@ class App extends Component {
         super(props);
         const { dispatch } = props;
         this.state = {
+            UserMsg: props.DataState.LoginUser
 
         }
         let route = history.location.pathname;
@@ -72,7 +73,7 @@ class App extends Component {
     onAppAlertOK() {
         const { dispatch } = this.props;
         dispatch(actions.UpUIState.hideErrorAlert());
-        window.location.href = "/html/login"
+        //window.location.href = "/html/login"
     }
     onAppAlertCancel() {
         const { dispatch } = this.props;
@@ -84,7 +85,9 @@ class App extends Component {
     }
     // 请求每个组件主要渲染的数据
     requestData = (route) => {
-        const { dispatch } = this.props;
+        const { dispatch,DataState } = this.props;
+        let UserMsg = DataState.LoginUser||sessionStorage.getItem('UserInfo');
+
         let pathArr = route.split('/');
         let handleRoute = pathArr[1];
         console.log(route)
@@ -92,10 +95,10 @@ class App extends Component {
             //dispatch(actions.UpDataState.getAllUserPreview('/ArchivesAll'));
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
             if (!this.props.DataState.PeriodMsd)
-                dispatch(actions.UpDataState.getPeriodMsg('/GetPeriodBySchoolID?schoolID=S0003'));
-            dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=S0003&periodID=&pageSize=8&pageIndex=1'));
+                dispatch(actions.UpDataState.getPeriodMsg('/GetPeriodBySchoolID?schoolID=' + UserMsg.SchoolID));
+            dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + UserMsg.SchoolID + '&periodID=&pageSize=8&pageIndex=1'));
             if (!this.props.DataState.SubjectMsg.addSubjectMsg)
-                dispatch(actions.UpDataState.getSubjectModalMsg('/GetSubjectInfoForAddBySchool?schoolID=S0003'));
+                dispatch(actions.UpDataState.getSubjectModalMsg('/GetSubjectInfoForAddBySchool?schoolID=' + UserMsg.SchoolID));
 
         } else {
             history.push('/')

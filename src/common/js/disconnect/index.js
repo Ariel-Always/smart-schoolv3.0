@@ -8,13 +8,8 @@ export function TokenCheck(IsDesk) {
     let preUrl = encodeURIComponent(window.location.href);
 
     let url = window.location.href;
-<<<<<<< HEAD
-    //console.log(session_token)
-    //console.log(session_token, url_token, preUrl)
-=======
 
 
->>>>>>> 9b953860bf87e7c49f1f61f5f7e4403c9471bc2a
     if (!session_token && !url_token) {//没有token,跳转至掉线界面
 
         //根据是否传参来判断是否是桌面方调用

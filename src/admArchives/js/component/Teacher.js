@@ -157,7 +157,8 @@ class Teacher extends React.Component {
             alertQueryTitle: '查询提示~',
             TeacherDetailsMsgModalVisible: false,
             addTeacherModalVisible: false,
-            selectSubject: { value: 'all', title: '全部' }
+            selectSubject: { value: 'all', title: '全部' },
+            userMsg:props.DataState.LoginUser
 
         }
     }
@@ -180,7 +181,7 @@ class Teacher extends React.Component {
 
 
 
-        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&SubjectIDs=' + e.value + '&PageIndex=0&PageSize=10', e));
+        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID='+this.state.userMsg.SchoolID+'&SubjectIDs=' + e.value + '&PageIndex=0&PageSize=10', e));
 
 
     }
@@ -199,7 +200,7 @@ class Teacher extends React.Component {
             }));
             return;
         } else {
-            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&PageIndex=0&PageSize=10&keyword=' + e.value));
+            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&keyword=' + e.value));
 
         }
 
@@ -323,7 +324,7 @@ class Teacher extends React.Component {
                     this.setState({
                         TeacherModalVisible: false
                     })
-                    dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&SubjectIDs=all&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
+                    dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID='+this.state.userMsg.SchoolID+'&SubjectIDs=all&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
 
 
                 }
@@ -428,7 +429,7 @@ class Teacher extends React.Component {
                         this.setState({
                             addTeacherModalVisible: false
                         })
-                        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&SubjectIDs=all&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
+                        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID='+this.state.userMsg.SchoolID+'&SubjectIDs=all&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
 
                     }
                 });
@@ -517,7 +518,7 @@ class Teacher extends React.Component {
                     checkAll: false
                 })
                 dispatch(actions.UpUIState.hideErrorAlert());
-                dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
+                dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
 
 
             }
@@ -527,7 +528,7 @@ class Teacher extends React.Component {
     onPagiNationChange = (e) => {
         const { dispatch, DataState } = this.props;
 
-        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&PageIndex=' + (--e) + '&PageSize=10'));
+        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=' + (--e) + '&PageSize=10'));
 
     }
     onUserNameClick = (key) => {
@@ -675,7 +676,7 @@ class Teacher extends React.Component {
         console.log(sorter)
         if (sorter && (sorter.columnKey === 'UserName' || sorter.columnKey === 'UserID')) {
             let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
-            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&PageIndex=0&sortFiled=' + sorter.columnKey + '&PageSize=10&' + sortType));
+            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&sortFiled=' + sorter.columnKey + '&PageSize=10&' + sortType));
         }
     }
     render() {

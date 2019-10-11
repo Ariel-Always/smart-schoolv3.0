@@ -166,6 +166,7 @@ class Teacher extends React.Component {
             SubjectSelect: { value: 0, title: '全部学科' },
             keyword: '',
             CancelBtnShow: 'n',
+            userMsg:props.DataState.LoginUser
         }
     }
     componentWillMount() {
@@ -200,7 +201,7 @@ class Teacher extends React.Component {
             pagination: 1,
             CancelBtnShow: 'n'
         })
-        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&PageIndex=0&PageSize=10&SubjectIDs=' + e.value));
+        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&SubjectIDs=' + e.value));
 
     }
 
@@ -221,7 +222,7 @@ class Teacher extends React.Component {
                 close: this.onAlertWarnClose.bind(this)
             }));
         } else {
-            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&PageIndex=0&PageSize=10&keyword=' + e.value + '&SubjectIDs=' + this.state.SubjectSelect.value));
+            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&keyword=' + e.value + '&SubjectIDs=' + this.state.SubjectSelect.value));
 
         }
     }
@@ -450,7 +451,7 @@ class Teacher extends React.Component {
         if (this.state.keyword !== '') {
             keyword = '&keyword=' + this.state.keyword
         }
-        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&PageIndex=' + (--value) + '&PageSize=10' + keyword + SubjectIDs));
+        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=' + (--value) + '&PageSize=10' + keyword + SubjectIDs));
 
     }
     onUserNameClick = (UserID) => {
@@ -507,7 +508,7 @@ class Teacher extends React.Component {
         console.log(sorter)
         if (sorter && (sorter.columnKey === 'UserName' || sorter.columnKey === 'ShortName')) {
             let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
-            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&sortFiled=' + sorter.columnKey + 'PageSize=10&' + sortType + '&PageIndex=' + (this.state.pagination - 1)  + keyword + SubjectSelect));
+            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID='+this.state.userMsg.SchoolID+'&sortFiled=' + sorter.columnKey + 'PageSize=10&' + sortType + '&PageIndex=' + (this.state.pagination - 1)  + keyword + SubjectSelect));
 
         }
     }

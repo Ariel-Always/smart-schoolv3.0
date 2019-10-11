@@ -25,7 +25,7 @@ class RegisterWillExamine extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            userMsg:props.DataState.LoginUser,
             secondDropList: [{ value: 0, title: '全部班级' }],
             DropMenuShow: false,
             columns: [
@@ -199,13 +199,13 @@ class RegisterWillExamine extends React.Component {
             this.setState({
                 secondDropList: Classes,
             })
-            dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=0&gradeID=' + e.value))
+            dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=0&gradeID=' + e.value))
 
             this.setState({
                 DropMenuShow: true
             })
         } else {
-            dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=0'))
+            dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=0'))
             this.setState({
                 DropMenuShow: false,
                 secondSelect: { value: 0, title: '全部班级' }
@@ -221,9 +221,9 @@ class RegisterWillExamine extends React.Component {
             secondSelect: e
         })
         if (e.value === 0) {
-            dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=0&gradeID=' + this.state.firstSelect.value))
+            dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=0&gradeID=' + this.state.firstSelect.value))
         } else {
-            dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=0&gradeID=' + this.state.firstSelect.value + '&classID=' + e.value))
+            dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=0&gradeID=' + this.state.firstSelect.value + '&classID=' + e.value))
 
         }
 
@@ -267,11 +267,11 @@ class RegisterWillExamine extends React.Component {
             pageindex: e - 1
         })
         if (this.state.firstSelect.value === 0) {
-            dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=' + (--e) + '&PageSize=10&status=0'))
+            dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=' + (--e) + '&PageSize=10&status=0'))
         } else if (this.state.secondSelect.value === 0)
-            dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=' + (--e) + '&PageSize=10&status=0&gradeID=' + this.state.firstSelect.value))
+            dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=' + (--e) + '&PageSize=10&status=0&gradeID=' + this.state.firstSelect.value))
         else {
-            dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=' + (--e) + '&PageSize=10&status=0&gradeID=' + this.state.firstSelect.value + '&classID=' + this.state.secondSelect.value))
+            dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=' + (--e) + '&PageSize=10&status=0&gradeID=' + this.state.firstSelect.value + '&classID=' + this.state.secondSelect.value))
         }
     }
 
@@ -361,11 +361,11 @@ class RegisterWillExamine extends React.Component {
                 // dispatch(actions.UpDataState.setSignUpLogCountMsg(++StatusCount))
 
                 if (this.state.firstSelect.value === 0) {
-                    dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=0'))
+                    dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=0'))
                 } else if (this.state.secondSelect.value === 0)
-                    dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=0&gradeID=' + this.state.firstSelect.value))
+                    dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=0&gradeID=' + this.state.firstSelect.value))
                 else {
-                    dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=0&gradeID=' + this.state.firstSelect.value + '&classID=' + this.state.secondSelect.value))
+                    dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=0&gradeID=' + this.state.firstSelect.value + '&classID=' + this.state.secondSelect.value))
                 }
             }
         });
@@ -399,11 +399,11 @@ class RegisterWillExamine extends React.Component {
                 // dispatch(actions.UpDataState.setSignUpLogCountMsg(StatusCount + logID.length));
 
                 if (this.state.firstSelect.value === 0) {
-                    dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=0'))
+                    dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=0'))
                 } else if (this.state.secondSelect.value === 0)
-                    dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=0&gradeID=' + this.state.firstSelect.value))
+                    dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=0&gradeID=' + this.state.firstSelect.value))
                 else {
-                    dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=0&gradeID=' + this.state.firstSelect.value + '&classID=' + this.state.secondSelect.value))
+                    dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=0&gradeID=' + this.state.firstSelect.value + '&classID=' + this.state.secondSelect.value))
                 }
             }
         });
@@ -451,11 +451,11 @@ class RegisterWillExamine extends React.Component {
                     UserExamineModalVisible: false,
                 })
                 if (this.state.firstSelect.value === 0) {
-                    dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=0'))
+                    dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=0'))
                 } else if (this.state.secondSelect.value === 0)
-                    dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=0&gradeID=' + this.state.firstSelect.value))
+                    dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=0&gradeID=' + this.state.firstSelect.value))
                 else {
-                    dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=0&gradeID=' + this.state.firstSelect.value + '&classID=' + this.state.secondSelect.value))
+                    dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=0&gradeID=' + this.state.firstSelect.value + '&classID=' + this.state.secondSelect.value))
                 }
             }
         });
@@ -481,11 +481,11 @@ class RegisterWillExamine extends React.Component {
                 // dispatch(actions.UpDataState.setSignUpLogCountMsg(++StatusCount));
 
                 if (this.state.firstSelect.value === 0) {
-                    dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=0'))
+                    dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=0'))
                 } else if (this.state.secondSelect.value === 0)
-                    dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=0&gradeID=' + this.state.firstSelect.value))
+                    dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=0&gradeID=' + this.state.firstSelect.value))
                 else {
-                    dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=0&gradeID=' + this.state.firstSelect.value + '&classID=' + this.state.secondSelect.value))
+                    dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=0&gradeID=' + this.state.firstSelect.value + '&classID=' + this.state.secondSelect.value))
                 }
             }
         });
@@ -504,7 +504,7 @@ class RegisterWillExamine extends React.Component {
             }));
             return;
         } else
-            dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=0&keyword=' + e.value))
+            dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=0&keyword=' + e.value))
     }
     //监听table的change进行排序操作
     onTableChange = (page, filters, sorter) => {
@@ -512,7 +512,7 @@ class RegisterWillExamine extends React.Component {
         console.log(sorter)
         if (sorter && (sorter.columnKey === 'SignUpTime' || sorter.columnKey === 'UserName' || sorter.columnKey === 'UserID')) {
             let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
-            dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID=school1&PageIndex=0&PageSize=10&status=0&sortFiled=' + sorter.columnKey + '&PageSize=10&' + sortType))
+            dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=0&sortFiled=' + sorter.columnKey + '&PageSize=10&' + sortType))
 
         }
     }

@@ -157,6 +157,7 @@ class Student extends React.Component {
                     PhotoPath_NOcache: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg'
                 }
             }],
+            userMsg:props.DataState.LoginUser
 
         }
     }
@@ -200,7 +201,7 @@ class Student extends React.Component {
             this.setState({
                 secondDropList: Classes,
             })
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10&gradeID=' + e.value));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&gradeID=' + e.value));
             this.setState({
                 DropMenuShow: true,
                 firstSelect: e,
@@ -209,7 +210,7 @@ class Student extends React.Component {
                 CancelBtnShow: 'n'
             })
         } else {
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
             this.setState({
                 DropMenuShow: false,
                 secondSelect: { value: 0, title: '全部班级' },
@@ -230,9 +231,9 @@ class Student extends React.Component {
             CancelBtnShow: 'n'
         })
         if (e.value !== 0)
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10&gradeID=' + this.state.firstSelect.value + '&classID=' + e.value));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&gradeID=' + this.state.firstSelect.value + '&classID=' + e.value));
         else
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10&gradeID=' + this.state.firstSelect.value));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&gradeID=' + this.state.firstSelect.value));
     }
     //搜索
     StudentSearch = (e) => {
@@ -250,7 +251,7 @@ class Student extends React.Component {
                 close: this.onAlertWarnClose.bind(this)
             }));
         } else {
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10&keyword=' + e.value + '&gradeID=' + this.state.firstSelect.value + '&classID=' + this.state.secondSelect.value));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&keyword=' + e.value + '&gradeID=' + this.state.firstSelect.value + '&classID=' + this.state.secondSelect.value));
         }
     }
 
@@ -475,7 +476,7 @@ class Student extends React.Component {
             keyword = '&keyword=' + this.state.keyword
         }
 
-        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=' + (--value) + '&PageSize=10' + keyword + firstSelect + secondSelect));
+        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=' + (--value) + '&PageSize=10' + keyword + firstSelect + secondSelect));
 
     }
 
@@ -497,7 +498,7 @@ class Student extends React.Component {
         console.log(sorter)
         if (sorter && (sorter.columnKey === 'UserName' || sorter.columnKey === 'ShortName')) {
             let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&sortFiled=' + sorter.columnKey + '&PageSize=10&' + sortType + '&PageIndex=' + (this.state.pagination - 1)  + keyword + firstSelect + secondSelect));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&sortFiled=' + sorter.columnKey + '&PageSize=10&' + sortType + '&PageIndex=' + (this.state.pagination - 1)  + keyword + firstSelect + secondSelect));
         }
     }
     onUserNameClick = (UserID) => {

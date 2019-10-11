@@ -30,11 +30,24 @@ class App extends Component {
         }
         let route = history.location.pathname;
         //判断token是否存在
+        
         TokenCheck_Connect()
         this.requestData(route);
-
-        if (sessionStorage.getItem('UserInfo'))
-            dispatch(actions.UpDataState.getLoginUser(sessionStorage.getItem('UserInfo')));
+        let token = sessionStorage.getItem('token')
+        // sessionStorage.setItem('UserInfo', '')
+        if (sessionStorage.getItem('UserInfo')) {
+            dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
+        }
+        else {
+            getUserInfo(token, '000');
+            let timeRun = setInterval(function () {
+                if (sessionStorage.getItem('UserInfo')) {
+                    dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
+                    clearInterval(timeRun)
+                }
+            }, 1000)
+            //dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
+        }
     }
 
 
@@ -85,10 +98,11 @@ class App extends Component {
     // 请求每个组件主要渲染的数据
     requestData = (route) => {
         const { dispatch, DataState } = this.props;
-        let userMsg = DataState.LoginUser;
+        let userMsg = DataState.LoginUser||sessionStorage.getItem('UserInfo');
         let pathArr = route.split('/');
         let handleRoute = pathArr[2];
         let ID = pathArr[3]
+        console.log('ddd')
         if (route === '/' || route.split('/')[1] === 'UserArchives') {
             dispatch(actions.UpDataState.getAllUserPreview('/GetSummary'));
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
@@ -98,20 +112,20 @@ class App extends Component {
                 if (handleRoute === 'Student') {
 
                     if (!DataState.GradeClassMsg.returnData)
-                        dispatch(actions.UpDataState.getGradeClassMsg('/GetGradeClassTree?schoolID=school1'));
+                        dispatch(actions.UpDataState.getGradeClassMsg('/GetGradeClassTree?schoolID='+userMsg.SchoolID));
 
                     if (ID === 'all') {
-                        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
+                        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+userMsg.SchoolID+'&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
                     }
                 } else if (handleRoute === 'Teacher') {
                     console.log('Teacher：' + DataState.SubjectTeacherMsg.returnData)
                     if (!DataState.SubjectTeacherMsg.returnData)
-                        dispatch(actions.UpDataState.getSubjectTeacherMsg('/GetSubject?schoolID=school1'));
+                        dispatch(actions.UpDataState.getSubjectTeacherMsg('/GetSubject?schoolID='+userMsg.SchoolID));
                     if (!DataState.TeacherTitleMsg.returnData) {
-                        dispatch(actions.UpDataState.getTeacherTitleMsg('/GetTitle?schoolID=school1'));
+                        dispatch(actions.UpDataState.getTeacherTitleMsg('/GetTitle?schoolID='+userMsg.SchoolID));
                     }
                     if (ID === 'all') {
-                        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&SubjectIDs=all&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
+                        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID='+userMsg.SchoolID+'&SubjectIDs=all&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
                     }
                 } else if (handleRoute === 'All') {
 
@@ -128,7 +142,7 @@ class App extends Component {
             //dispatch(actions.UpDataState.getAllUserPreview('/RegisterExamine'));
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
             if (!this.props.DataState.GradeClassMsg.returnData)
-                dispatch(actions.UpDataState.getGradeClassMsg('/GetGradeClassTree?schoolID=school1'));
+                dispatch(actions.UpDataState.getGradeClassMsg('/GetGradeClassTree?schoolID='+userMsg.SchoolID));
 
             if (route.split('/')[2] !== 'RegisterWillExamine' && route.split('/')[2] !== 'RegisterDidExamine') {
                 history.push('/RegisterExamine/RegisterWillExamine')

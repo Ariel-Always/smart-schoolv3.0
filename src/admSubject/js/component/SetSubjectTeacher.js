@@ -34,12 +34,13 @@ class SetSubjectTeacher extends React.Component {
 
         })
         //请求链接和参数
-        let url = '/GetTeacherInfoBySubjectAndKey?schoolID=S0003&subjectID=' + DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.SubjectID + '&key=';
+        let url = '/GetTeacherInfoBySubjectAndKey?schoolID='+DataState.LoginUser.School+'&subjectID=' + DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.SubjectID + '&key=';
         //获取初始全部学科信息
         dispatch(actions.UpDataState.getSubjectTeacherMsg(url, 'All', AllGrades));
         this.state = {
             dropSelect: dropSelect,
             searchOpen: false,
+            UserMsg:props.DataState.LoginUser
             
         }
     }
@@ -137,7 +138,7 @@ class SetSubjectTeacher extends React.Component {
     //search下拉菜单事件
     onDropClickSearch = (grades, index, value) => {
         const { dispatch, DataState } = this.props;
-        let url = '/GetTeacherInfoBySubjectAndKey?schoolID=S0003&subjectID=' + DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.SubjectID + '&key=' + value.value;
+        let url = '/GetTeacherInfoBySubjectAndKey?schoolID='+this.state.UserMsg.SchoolID+'&subjectID=' + DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.SubjectID + '&key=' + value.value;
 
         console.log(grades, index, value)
         dispatch({ type: actions.UpUIState.SEARCH_LOADING_OPEN });
