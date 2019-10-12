@@ -3253,27 +3253,45 @@ const ModalCommit = () => {
 
               }
 
+              let { SchoolID,UserID,UserType } = getState().LoginUser;
+
               let TeacherID1 = teacherOptions.dropSelectd.value;
 
               let TeacherID2 = replaceTeacherOptions.dropSelectd.value;
 
+              let SubjectID = '';
+
+              let {teacherSubject,classCheckedList} =  getState().Manager.AdjustByTeacherModal.replaceSchedule;
+
+              if (teacherSubject.dropShow){
+
+                 SubjectID = teacherSubject.select.dropSelectd.value;
+
+              }else{
+
+                  SubjectID = teacherSubject.id;
+
+              }
+
+              let ClassID = classCheckedList.join(',');
+
+
+
               dispatch({type:ADJUST_BY_TEACHER_LOADING_SHOW});
 
-              setReplaceCourse(Type,Item,TeacherID1,TeacherID2,dispatch).then((data) => {
+              ApiActions.SetSubstituteTeacher({
+
+                  Type,Item,TeacherID1,TeacherID2,dispatch,
+
+                  SchoolID,UserID,UserType,SubjectID,ClassID
+
+              }).then((data) => {
 
                   if (data){
 
                       dispatch({type:ADJUST_BY_TEACHER_HIDE});
 
-                      dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                              type:"success",
-
-                              title:"找人代课成功！",
-
-                              hide:hideAlert(dispatch)
-
-                          }});
+                      dispatch(AppAlertActions.alertSuccess({title:"找人代课成功！"}));
 
                   }
 
@@ -3295,7 +3313,6 @@ const ModalCommit = () => {
 
         let originTeacherOk,originDateOk,originScheduleOk,targetTeacherOk,targetDateOk,targetScheduleOk = false;
 
-        console.log(originDropSelectd,originDate,originScheduleDropSelectd,targetDropSelectd,targetDate,targetScheduleDropSelectd);
 
         if (originDropSelectd.value==='none'){
 
@@ -3308,9 +3325,6 @@ const ModalCommit = () => {
                 originTeacherOk = true;
 
             }
-
-
-            console.log(originDate);
 
 
           if (originDate){
@@ -3381,21 +3395,13 @@ const ModalCommit = () => {
 
               dispatch({type:ADJUST_BY_TEACHER_LOADING_SHOW});
 
-              changeSchedule(ScheduleID1,ScheduleID2,dispatch).then(data=>{
+              ApiActions.ExchangeTeacherSchedule({ScheduleID1,ScheduleID2,dispatch}).then(data=>{
 
                  if (data){
 
                      dispatch({type:ADJUST_BY_TEACHER_HIDE});
 
-                     dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                             type:"success",
-
-                             title:"与人换课成功！",
-
-                             hide:hideAlert(dispatch)
-
-                     }});
+                     dispatch(AppAlertActions.alertSuccess({title:"与人换课成功！"}));
 
                  }
 
@@ -3501,21 +3507,17 @@ const ModalCommit = () => {
 
               dispatch({type:ADJUST_BY_TEACHER_LOADING_SHOW});
 
-              changeScheduleTime(ScheduleID,ClassDate1,ClassHourNO1,ClassDate2,ClassHourNO2,ClassRoomID,dispatch).then(data=>{
+              ApiActions.EditClassDateOne({
+
+                  ScheduleID,ClassDate1,ClassHourNO1,ClassDate2,ClassHourNO2,ClassRoomID,dispatch
+
+              }).then(data=>{
 
                  if (data){
 
                      dispatch({type:ADJUST_BY_TEACHER_HIDE});
 
-                     dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                             type:"success",
-
-                             title:"调整时间成功！",
-
-                             hide:hideAlert(dispatch)
-
-                         }});
+                     dispatch(AppAlertActions.alertSuccess({title:"调整时间成功！"}));
 
                  }
 
@@ -3597,22 +3599,18 @@ const ModalCommit = () => {
 
               let ClassRoomID2 = classRoomDrop.value;
 
-              changeClassRoom(SchoolID,Type,Item,ClassRoomID1,ClassRoomID2,dispatch).then(data=>{
+              ApiActions.AdjustClassRooomOfSchedule({
+
+                  SchoolID,Type,Item,ClassRoomID1,ClassRoomID2,dispatch
+
+              }).then(data=>{
 
 
                   if (data){
 
                       dispatch({type:ADJUST_BY_TEACHER_HIDE});
 
-                      dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                              type:"success",
-
-                              title:"调整教室成功！",
-
-                              hide:hideAlert(dispatch)
-
-                          }});
+                      dispatch(AppAlertActions.alertSuccess({title:"调整教室成功！"}));
 
                   }
 
@@ -3681,22 +3679,19 @@ const ModalCommit = () => {
 
               let ScheduleIDs = ScheduleList.join(',');
 
-              stopSchedule(ScheduleIDs,dispatch).then(data=>{
+              let { SchoolID } = getState().LoginUser;
+
+              ApiActions.CloseTeacherSchedule({
+
+                  SchoolID,ScheduleIDs,dispatch
+
+              }).then(data=>{
 
                   if (data){
 
                       dispatch({type:ADJUST_BY_TEACHER_HIDE});
 
-                      dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                              type:"success",
-
-                              title:"停课成功！",
-
-                              hide:hideAlert(dispatch)
-
-                          }});
-
+                      dispatch(AppAlertActions.alertSuccess({title:"停课成功！"}))
 
                   }
 
@@ -3743,173 +3738,6 @@ Array.prototype.remove = function(val) {
 
 
 
-
-
-//设置代课
-
-const setReplaceCourse = async (Type,Item,TeacherID1,TeacherID2,dispatch) =>{
-
-    let res = await Method.getPostData(`/scheduleSetReplacec`,{Type:Type,Item:Item,TeacherID1:TeacherID1,TeacherID2:TeacherID2 });
-
-    if(res.Status === 200){
-
-        return res;
-
-    }else{
-
-        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                type:"btn-warn",
-
-                title:res.Msg,
-
-                ok:hideAlert(dispatch),
-
-                close:hideAlert(dispatch),
-
-                cancel:hideAlert(dispatch)
-
-            }});
-
-        dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
-
-    }
-
-};
-
-
-
-//教师课程互换
-
-const changeSchedule = async (ScheduleID1,ScheduleID2,dispatch) =>{
-
-    let res = await Method.getPostData(`/scheduleChangeSchedule`,{ScheduleID1:ScheduleID1,ScheduleID2:ScheduleID2});
-
-    if(res.Status === 200){
-
-        return res;
-
-    }else{
-
-        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                type:"btn-warn",
-
-                title:res.Msg,
-
-                ok:hideAlert(dispatch),
-
-                close:hideAlert(dispatch),
-
-                cancel:hideAlert(dispatch)
-
-            }});
-
-        dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
-
-    }
-
-};
-
-
-//调整上课时间
-
-const changeScheduleTime = async (ScheduleID,ClassDate1,ClassHourNO1,ClassDate2,ClassHourNO2,ClassRoomID,dispatch) =>{
-
-    let res = await Method.getPostData(`/changeScheduleTime`,{ScheduleID:ScheduleID,ClassDate1:ClassDate1,
-
-        ClassHourNO1:ClassHourNO1,ClassDate2:ClassDate2,ClassHourNO2:ClassHourNO2,ClassRoomID:ClassRoomID});
-
-
-    if(res.Status === 200){
-
-        return res;
-
-    }else{
-
-        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                type:"btn-warn",
-
-                title:res.Msg,
-
-                ok:hideAlert(dispatch),
-
-                close:hideAlert(dispatch),
-
-                cancel:hideAlert(dispatch)
-
-            }});
-
-        dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
-
-    }
-
-};
-
-//调整上课教室
-const changeClassRoom = async (SchoolID,Type,Item,ClassRoomID1,ClassRoomID2,dispatch) =>{
-
-    let res = await Method.getPostData(`/scheduleChangeClassRoom`,{SchoolID:SchoolID,Type:Type,
-
-        Item:Item,ClassRoomID1:ClassRoomID1,ClassRoomID2:ClassRoomID2});
-
-
-    if(res.Status === 200){
-
-        return res;
-
-    }else{
-
-        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                type:"btn-warn",
-
-                title:res.Msg,
-
-                ok:hideAlert(dispatch),
-
-                close:hideAlert(dispatch),
-
-                cancel:hideAlert(dispatch)
-
-            }});
-
-        dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
-
-    }
-
-};
-
-//单个停课
-const stopSchedule = async (ScheduleIDs,dispatch) =>{
-
-    let res = await Method.getPostData(`/stopSchedule`,{ScheduleIDs:ScheduleIDs});
-
-
-    if(res.Status === 200){
-
-        return res;
-
-    }else{
-
-        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                type:"btn-warn",
-
-                title:res.Msg,
-
-                ok:hideAlert(dispatch),
-
-                close:hideAlert(dispatch),
-
-                cancel:hideAlert(dispatch)
-
-            }});
-
-    }
-
-};
 
 export default {
 

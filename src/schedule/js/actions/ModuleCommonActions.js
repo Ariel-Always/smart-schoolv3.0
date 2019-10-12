@@ -2,15 +2,14 @@ import ModuleSettingActions from './ModuleSettingActions';
 
 import PeriodWeekTermActions from './PeriodWeekTermActions';
 
-import Method from "./Method";
-
 import ApiActions from './ApiActions';
+
 import LoginUserActions from "./LoginUserActions";
 
 
 const getCommonInfo = () => {
 
-    return ( dispatch,getState ) => {
+    return dispatch  => {
         //获取登录信息
 
             let UserInfo = sessionStorage.getItem('UserInfo');
@@ -44,7 +43,6 @@ const getCommonInfo = () => {
             }
 
             //获取学段等等的信息
-            let getPeriodPromise = Method.getGetData(`/schedulePeriod?SchoolID=${SchoolID}&UserID=${UserID}&UserType=${UserType}`);
 
             ApiActions.GetTermAndPeriodAndWeekNOInfo({SchoolID,UserID,UserType,dispatch}).then(data => {
 

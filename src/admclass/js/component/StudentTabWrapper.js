@@ -93,7 +93,7 @@ class StudentTabWrapper extends Component{
                                 </React.Fragment>
 
                                 :
-                                <Empty type="5"></Empty>
+                                <Empty type="5" title="没有学生哦！"></Empty>
 
 
                         }

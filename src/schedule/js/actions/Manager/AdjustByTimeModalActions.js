@@ -2,6 +2,8 @@ import Method from '../Method';
 
 import AppAlertActions from '../../actions/AppAlertActions';
 
+import ApiActions from '../../actions/ApiActions';
+
 const ADJUST_BY_TIME_SHOW = 'ADJUST_BY_TIME_SHOW';
 
 const ADJUST_BY_TIME_HIDE = 'ADJUST_BY_TIME_HIDE';
@@ -39,17 +41,16 @@ const InfoInit = () => {
 
     return (dispatch,getState) => {
 
-        let SchoolID = getState().LoginUser;
+        let { SchoolID } = getState().LoginUser;
 
         let Periods = getState().PeriodWeekTerm.ItemPeriod;
 
-        let allGradesClassHour = Method.getGetData(`/allSGWTTC?SchoolID=${SchoolID}`);
 
-        allGradesClassHour.then(json => {
+        ApiActions.GetAllOptionForAddSchedule({SchoolID,dispatch}).then(data => {
 
-            let Grades = json.Data.ItemGrade;
+            let Grades = data.ItemGrade;
 
-            let ItemClassHour = json.Data.ItemClassHour;
+            let ItemClassHour = data.ItemClassHour;
 
             let periodGrades = Periods.map(item => {
 
@@ -683,7 +684,7 @@ const newClassHourChecked = (opts) => {
 //旧日期变更
 const oldDateUpdate = (date) => {
 
-    return dispatch => {
+    return (dispatch,getState) => {
 
         dispatch({type:ADJUST_BY_TIME_OLD_DATE_UPDATE,data:date});
 
@@ -695,15 +696,18 @@ const oldDateUpdate = (date) => {
 
             dispatch({type:ADJUST_BY_TIME_OLD_WEEK_DATE_LOADING_SHOW});
 
-            let oldDatePromise = Method.getGetData('/scheduleDateUpdate');
+            let { SchoolID } = getState().LoginUser;
 
-            oldDatePromise.then(json => {
+            ApiActions.GetWeekInfoByDate({
 
-                if (json.Status === 200){
+                SchoolID,ClassDate:date,dispatch
 
-                    console.log(json.Data);
+            }).then(data => {
 
-                    const { WeekNO,WeekDay } = json.Data;
+                if (data){
+
+
+                    const { WeekNO,WeekDay } = data;
 
                     let weekDay = '';
 
@@ -761,22 +765,6 @@ const oldDateUpdate = (date) => {
 
                     dispatch({type:ADJUST_BY_TIME_OLD_WEEK_DATE_LOADING_HIDE});
 
-                }else{
-
-                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                            type:"btn-error",
-
-                            title:json.Msg,
-
-                            ok:hideAlert(dispatch),
-
-                            cancel:hideAlert(dispatch),
-
-                            close:hideAlert(dispatch)
-
-                        }})
-
                 }
 
             })
@@ -802,13 +790,11 @@ const newDateUpdate = (date) => {
 
             dispatch({type:ADJUST_BY_TIME_NEW_WEEK_DATE_LOADING_SHOW});
 
-            let newDatePromise = Method.getGetData('/scheduleDateUpdate');
+            let { SchoolID } = getState().LoginUser;
 
-            newDatePromise.then(json => {
+            ApiActions.GetWeekInfoByDate({SchoolID,ClassDate:date,dispatch}).then(data => {
 
-                if (json.Status === 200){
-
-                    console.log(json.Data);
+                if (data){
 
                     const { WeekNO,WeekDay } = json.Data;
 
@@ -867,22 +853,6 @@ const newDateUpdate = (date) => {
                     dispatch({type:ADJUST_BY_TIME_NEW_WEEK_DATE_UPDATE,data:{weekDay:weekDay,weekNo:WeekNO}});
 
                     dispatch({type:ADJUST_BY_TIME_NEW_WEEK_DATE_LOADING_HIDE});
-
-                }else{
-
-                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                            type:"btn-error",
-
-                            title:json.Msg,
-
-                            ok:hideAlert(dispatch),
-
-                            cancel:hideAlert(dispatch),
-
-                            close:hideAlert(dispatch)
-
-                        }})
 
                 }
 
@@ -990,19 +960,7 @@ const commitInfo = () => {
 
         if (!gradeChecked){
 
-            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                    type:"btn-warn",
-
-                    title:"请选择需要调整的年级！",
-
-                    ok:hideAlert(dispatch),
-
-                    cancel:hideAlert(dispatch),
-
-                    close:hideAlert(dispatch)
-
-                }});
+            dispatch(AppAlertActions.alertWarn({title:"请选择需要调整的年级！"}));
 
             dispatch({type:ADJUST_BY_TIME_LOADING_HIDE});
 
@@ -1010,19 +968,7 @@ const commitInfo = () => {
 
         if (!oldClassHourChecked){
 
-            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                    type:"btn-warn",
-
-                    title:"请选择调整前课时！",
-
-                    ok:hideAlert(dispatch),
-
-                    cancel:hideAlert(dispatch),
-
-                    close:hideAlert(dispatch)
-
-                }})
+            dispatch(AppAlertActions.alertWarn({title:"请选择调整前课时！"}));
 
             dispatch({type:ADJUST_BY_TIME_LOADING_HIDE});
 
@@ -1030,19 +976,7 @@ const commitInfo = () => {
 
         if (!newClassHourChecked){
 
-            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                    type:"btn-warn",
-
-                    title:"请选择调整后课时！",
-
-                    ok:hideAlert(dispatch),
-
-                    cancel:hideAlert(dispatch),
-
-                    close:hideAlert(dispatch)
-
-                }})
+            dispatch(AppAlertActions.alertWarn({title:"请选择调整后课时！"}));
 
             dispatch({type:ADJUST_BY_TIME_LOADING_HIDE});
 
@@ -1050,19 +984,7 @@ const commitInfo = () => {
 
         if (oldDate === ''){
 
-            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                    type:"btn-warn",
-
-                    title:"请选择调整前日期！",
-
-                    ok:hideAlert(dispatch),
-
-                    cancel:hideAlert(dispatch),
-
-                    close:hideAlert(dispatch)
-
-                }});
+            dispatch(AppAlertActions.alertWarn({title:"请选择调整前日期！"}));
 
             dispatch({type:ADJUST_BY_TIME_LOADING_HIDE});
 
@@ -1070,19 +992,8 @@ const commitInfo = () => {
 
         if (newDate === ''){
 
-            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+            dispatch(AppAlertActions.alertWarn({title:"请选择调整后日期！"}));
 
-                    type:"btn-warn",
-
-                    title:"请选择调整后日期！",
-
-                    ok:hideAlert(dispatch),
-
-                    cancel:hideAlert(dispatch),
-
-                    close:hideAlert(dispatch)
-
-                }});
 
             dispatch({type:ADJUST_BY_TIME_LOADING_HIDE});
 
@@ -1090,19 +1001,7 @@ const commitInfo = () => {
 
         if (oldClassHourCheckedLength !== newClassHourCheckedLength){
 
-            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                    type:"btn-warn",
-
-                    title:"调整前课时和调整后课时数量不一致！",
-
-                    ok:hideAlert(dispatch),
-
-                    cancel:hideAlert(dispatch),
-
-                    close:hideAlert(dispatch)
-
-                }});
+            dispatch(AppAlertActions.alertWarn({title:"调整前课时和调整后课时数量不一致！"}));
 
             dispatch({type:ADJUST_BY_TIME_LOADING_HIDE});
 
@@ -1157,39 +1056,17 @@ const commitInfo = () => {
 
             }).filter(i => i!==undefined).join(',');
 
-            let commitPromise = Method.getPostData('/scheduleAdjusrtTimeCommit',{ClassDate1,ClassDate2,ClassHours1,ClassHours2,Grades});
+            ApiActions.BatchEditClassDate(
 
-            commitPromise.then(res => {
+                {ClassDate1,ClassDate2,ClassHours1,ClassHours2,Grades}
 
-               if (res.Status === 200){
+            ).then(data => {
+
+               if (data){
 
                    dispatch({type:ADJUST_BY_TIME_HIDE});
 
-                   dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                           type:"success",
-
-                           title:"调整成功！",
-
-                           hide:hideAlert(dispatch)
-
-                       }});
-
-               }else{
-
-                   dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                           type:"btn-error",
-
-                           title:res.Msg?res.Msg:'错误',
-
-                           ok:hideAlert(dispatch),
-
-                           cancel:hideAlert(dispatch),
-
-                           close:hideAlert(dispatch)
-
-                       }});
+                   dispatch(AppAlertActions.alertSuccess({title:"调整成功！"}));
 
                }
 

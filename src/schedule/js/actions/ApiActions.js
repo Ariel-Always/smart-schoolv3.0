@@ -62,7 +62,7 @@ const GetAllOptionByPeriodID = async ({SchoolID,PeriodID,UserID,UserType,dispatc
 
 //分页获取学科教师总课表（包含全学科和单学科）
 
-const GetAllScheduleOfTeachersBySubjectIDForPage = async ({SchoolID,PeriodID,SubjectID,WeekNO,PageIndex,PageSize,dispatch}) => {
+const GetAllScheduleOfTeachersBySubjectIDForPage = async ({SchoolID,PeriodID,SubjectID='',WeekNO=0,PageIndex,PageSize,dispatch}) => {
 
     let res = await Method.getGetData(`/Schedule/api/GetAllScheduleOfTeachersBySubjectIDForPage
     ?SchoolID=${SchoolID}
@@ -126,7 +126,7 @@ const GetTeacherBySubjectIDAndKey = async ({SchoolID,PeriodID='',SubjectID='',Ke
 
 //获取单个教师或学生的课表信息
 
-const GetScheduleByUserID = async ({SchoolID,PeriodID,UserType,UserID,WeekNO,dispatch}) => {
+const GetScheduleByUserID = async ({SchoolID,PeriodID,UserType,UserID,WeekNO=0,dispatch}) => {
 
     let res = await Method.getGetData(`/Schedule/api/GetScheduleByUserID
     ?SchoolID=${SchoolID}
@@ -411,7 +411,7 @@ const InsertSchedule =  async ({ SchoolID,SubjectID,WeekNO,WeeDay,ClassHourNO,Te
 
         SchoolID,SubjectID,WeekNO,WeeDay,ClassHourNO,TeacherID,ClassID,ClassRoomID,UserType,UserID
 
-    },2,CONFIG.AdmClassProxy);
+    },2,CONFIG.ScheduleProxy);
 
     if (res.Status === 200){
 
@@ -430,11 +430,35 @@ const InsertSchedule =  async ({ SchoolID,SubjectID,WeekNO,WeeDay,ClassHourNO,Te
 
 const SetSubstituteTeacher =  async ({ ClassID,ClassName,UserID,UserType,SchoolID,SubjectID,Type,Item,TeacherID1,TeacherID2,dispatch}) => {
 
-    let res = await Method.getPostData(`/Schedule/api/InsertSchedule`,{
+    let res = await Method.getPostData(`/Schedule/api/SetSubstituteTeacher`,{
 
         ClassID,ClassName,UserID,UserType,SchoolID,SubjectID,Type,Item,TeacherID1,TeacherID2
 
-    },2,CONFIG.AdmClassProxy);
+    },2,CONFIG.ScheduleProxy);
+
+    if (res.Status === 200){
+
+        return res;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
+
+
+//教师课程互换
+
+const ExchangeTeacherSchedule =  async ({ ScheduleID1,ScheduleID2,dispatch}) => {
+
+    let res = await Method.getPostData(`/Schedule/api/ExchangeTeacherSchedule`,{
+
+        ScheduleID1,ScheduleID2
+
+    },2,CONFIG.ScheduleProxy);
 
     if (res.Status === 200){
 
@@ -451,7 +475,146 @@ const SetSubstituteTeacher =  async ({ ClassID,ClassName,UserID,UserType,SchoolI
 
 
 
+//批量调整上课时间
+const BatchEditClassDate =  async ({ ClassDate1,ClassHours1,ClassDate2,ClassHours2,Grades,dispatch}) => {
 
+    let res = await Method.getPostData(`/Schedule/api/BatchEditClassDate`,{
+
+        ClassDate1,ClassHours1,ClassDate2,ClassHours2,Grades
+
+    },2,CONFIG.ScheduleProxy);
+
+    if (res.Status === 200){
+
+        return res;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
+
+
+//单个调整上课时间
+
+const EditClassDateOne =  async ({ ScheduleID,ClassDate1,ClassHourNO1,ClassDate2,ClassHourNO2,ClassRoomID,dispatch}) => {
+
+    let res = await Method.getPostData(`/Schedule/api/EditClassDateOne`,{
+
+        ScheduleID,ClassDate1,ClassHourNO1,ClassDate2,ClassHourNO2,ClassRoomID
+
+    },2,CONFIG.ScheduleProxy);
+
+    if (res.Status === 200){
+
+        return res;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
+
+//调整上课教室
+
+const AdjustClassRooomOfSchedule =  async ({ ScheduleID,Type,Item,ClassRoomID1,ClassRoomID2,dispatch}) => {
+
+    let res = await Method.getPostData(`/Schedule/api/AdjustClassRooomOfSchedule`,{
+
+        ScheduleID,Type,Item,ClassRoomID1,ClassRoomID2
+
+    },2,CONFIG.ScheduleProxy);
+
+    if (res.Status === 200){
+
+        return res;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
+
+
+//按教师调整课程-停课
+
+const CloseTeacherSchedule =  async ({ UserID,UserType,ScheduleIDs,dispatch}) => {
+
+    let res = await Method.getPostData(`/Schedule/api/CloseTeacherSchedule`,{
+
+        UserID,UserType,ScheduleIDs
+
+    },2,CONFIG.ScheduleProxy);
+
+    if (res.Status === 200){
+
+        return res;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
+
+
+//批量停课
+
+const BatchCloseSchedule =  async ({ UserID,UserType,ClassDate,ClassHours,Grades,dispatch}) => {
+
+    let res = await Method.getPostData(`/Schedule/api/BatchCloseSchedule`,{
+
+        UserID,UserType,ClassDate,ClassHours,Grades
+
+    },2,CONFIG.ScheduleProxy);
+
+    if (res.Status === 200){
+
+        return res;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
+
+
+//清除课表
+
+const DeleteScheduleByGrades =  async ({ SchoolID,GradeIDs,dispatch}) => {
+
+    let res = await Method.getPostData(`/Schedule/api/DeleteScheduleByGrades`,{
+
+        SchoolID,GradeIDs
+
+    },2,CONFIG.ScheduleProxy);
+
+    if (res.Status === 200){
+
+        return res;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
 
 
 
@@ -489,6 +652,20 @@ export default {
 
     ClassRoomIsUseded,
 
-    SetSubstituteTeacher
+    SetSubstituteTeacher,
+
+    ExchangeTeacherSchedule,
+
+    BatchEditClassDate,
+
+    EditClassDateOne,
+
+    AdjustClassRooomOfSchedule,
+
+    CloseTeacherSchedule,
+
+    BatchCloseSchedule,
+
+    DeleteScheduleByGrades
 
 }
