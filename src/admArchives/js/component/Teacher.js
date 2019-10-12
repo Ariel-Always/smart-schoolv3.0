@@ -23,15 +23,15 @@ class Teacher extends React.Component {
             columns: [
                 {
                     title: '',
-                    dataIndex: 'key',
-                    key: 'key',
+                    dataIndex: 'OrderNo',
+                    key: 'OrderNo',
                     width: 68,
                     align: 'left',
                     render: key => {
                         return (
                             <div className='registerTime-content'>
-                                <CheckBox value={key} onChange={this.onCheckChange}></CheckBox>
-                                <span className='key-content'>{key + 1 >= 10 ? key + 1 : '0' + (key + 1)}</span>
+                                <CheckBox value={key.key} onChange={this.onCheckChange}></CheckBox>
+                                <span className='key-content'>{key.OrderNo + 1 >= 10 ? key.OrderNo + 1 : '0' + (key.OrderNo + 1)}</span>
                             </div>
                         )
                     }
@@ -157,7 +157,8 @@ class Teacher extends React.Component {
             alertQueryTitle: '查询提示~',
             TeacherDetailsMsgModalVisible: false,
             addTeacherModalVisible: false,
-            selectSubject: { value: 'all', title: '全部' }
+            selectSubject: { value: 'all', title: '全部' },
+            userMsg: props.DataState.LoginUser
 
         }
     }
@@ -165,7 +166,7 @@ class Teacher extends React.Component {
         const { DataState, UIState } = nextProps;
         let SubjectTeacherPreview = DataState.SubjectTeacherPreview;
         this.setState({
-            selectSubject: SubjectTeacherPreview.SubjectID
+            selectSubject: SubjectTeacherPreview.SubjectID||{ value: 'all', title: '全部' }
         })
 
 
@@ -180,7 +181,7 @@ class Teacher extends React.Component {
 
 
 
-        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&SubjectIDs=' + e.value + '&PageIndex=0&PageSize=10', e));
+        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&SubjectIDs=' + e.value + '&PageIndex=0&PageSize=10', e));
 
 
     }
@@ -199,7 +200,11 @@ class Teacher extends React.Component {
             }));
             return;
         } else {
-            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&PageIndex=0&PageSize=10&keyword=' + e.value));
+            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&SubjectIDs=' + this.state.selectSubject.value + '&PageIndex=0&PageSize=10&keyword=' + e.value, this.state.selectSubject));
+            this.setState({
+                checkedList: [],
+                checkAll: false
+            })
 
         }
 
@@ -255,7 +260,7 @@ class Teacher extends React.Component {
         // }, 2, 'json').then(res => {
         //     return res.json()
         // }).then(json => {
-        //     if (json.Status !== 200) {
+        //     if (json.StatusCode !== 200) {
         //         dispatch(actions.UpUIState.showErrorAlert({
         //             type: 'btn-error',
         //             title: json.Message,
@@ -263,7 +268,7 @@ class Teacher extends React.Component {
         //             cancel: this.onAppAlertCancel.bind(this),
         //             close: this.onAppAlertClose.bind(this)
         //         }));
-        //     } else if (json.Status === 200) {
+        //     } else if (json.StatusCode === 200) {
 
         //         this.setState({
         //             TeacherModalVisible: false
@@ -310,7 +315,7 @@ class Teacher extends React.Component {
             }, 2).then(res => {
                 return res.json()
             }).then(json => {
-                if (json.Status !== 200) {
+                if (json.StatusCode !== 200) {
                     dispatch(actions.UpUIState.showErrorAlert({
                         type: 'btn-error',
                         title: json.Message,
@@ -318,13 +323,16 @@ class Teacher extends React.Component {
                         cancel: this.onAppAlertCancel.bind(this),
                         close: this.onAppAlertClose.bind(this)
                     }));
-                } else if (json.Status === 200) {
+                } else if (json.StatusCode === 200) {
 
                     this.setState({
                         TeacherModalVisible: false
                     })
-                    dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&SubjectIDs=all&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
-
+                    dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&SubjectIDs=' + this.state.selectSubject.value + '&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC', this.state.selectSubject));
+                    this.setState({
+                        checkedList: [],
+                        checkAll: false
+                    })
 
                 }
             });
@@ -411,7 +419,7 @@ class Teacher extends React.Component {
                 }, 2).then(res => {
                     return res.json()
                 }).then(json => {
-                    if (json.Status !== 200) {
+                    if (json.StatusCode !== 200) {
                         dispatch(actions.UpUIState.showErrorAlert({
                             type: 'btn-error',
                             title: json.Msg,
@@ -419,7 +427,7 @@ class Teacher extends React.Component {
                             cancel: this.onAppAlertCancel.bind(this),
                             close: this.onAppAlertClose.bind(this)
                         }));
-                    } else if (json.Status === 200) {
+                    } else if (json.StatusCode === 200) {
 
                         console.log(json.Data)
                         this.setState({
@@ -428,8 +436,11 @@ class Teacher extends React.Component {
                         this.setState({
                             addTeacherModalVisible: false
                         })
-                        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&SubjectIDs=all&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
-
+                        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&SubjectIDs=' + this.state.selectSubject.value + '&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC', this.state.selectSubject));
+                        this.setState({
+                            checkedList: [],
+                            checkAll: false
+                        })
                     }
                 });
             }
@@ -509,26 +520,32 @@ class Teacher extends React.Component {
         }, 2).then(res => {
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
+            if (json.StatusCode === 400) {
                 console.log('错误码：400' + json)
-            } else if (json.Status === 200) {
+            } else if (json.StatusCode === 200) {
                 this.setState({
                     checkedList: [],
                     checkAll: false
                 })
                 dispatch(actions.UpUIState.hideErrorAlert());
-                dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
-
+                dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&SubjectIDs=' + this.state.selectSubject.value + '&PageIndex=0&PageSize=10', this.state.selectSubject));
+                this.setState({
+                    checkedList: [],
+                    checkAll: false
+                })
 
             }
         });
-        
+
     }
     onPagiNationChange = (e) => {
         const { dispatch, DataState } = this.props;
-
-        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&PageIndex=' + (--e) + '&PageSize=10'));
-
+        console.log(this.state.selectSubject)
+        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&SubjectIDs=' + this.state.selectSubject.value + '&PageIndex=' + (--e) + '&PageSize=10', this.state.selectSubject));
+        this.setState({
+            checkedList: [],
+            checkAll: false
+        })
     }
     onUserNameClick = (key) => {
         const { DataState } = this.props
@@ -675,7 +692,11 @@ class Teacher extends React.Component {
         console.log(sorter)
         if (sorter && (sorter.columnKey === 'UserName' || sorter.columnKey === 'UserID')) {
             let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
-            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&PageIndex=0&sortFiled=' + sorter.columnKey + '&PageSize=10&' + sortType));
+            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&SubjectIDs=' + this.state.selectSubject.value + '&PageIndex=0&sortFiled=' + sorter.columnKey + '&PageSize=10&' + sortType, this.state.selectSubject));
+            this.setState({
+                checkedList: [],
+                checkAll: false
+            })
         }
     }
     render() {
@@ -738,10 +759,10 @@ class Teacher extends React.Component {
 
                                     </Table>
                                 </CheckBoxGroup>
-                                <CheckBox className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
+                                {DataState.SubjectTeacherPreview.Total ? (<CheckBox className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
                                     全选
                                     <Button onClick={this.onDeleteAllClick} className='deleteAll' color='blue'>删除</Button>
-                                </CheckBox>
+                                </CheckBox>) : ''}
                                 <div className='pagination-box'>
                                     <PagiNation
                                         showQuickJumper

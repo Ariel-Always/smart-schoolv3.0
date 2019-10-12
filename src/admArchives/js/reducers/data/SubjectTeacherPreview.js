@@ -5,14 +5,17 @@ const SubjectTeacherPreview = (state = {}, actions) => {
         case UpDataState.GET_SUBJECT_TEACHER_PREVIEW:
             let { Total, ...list } = actions.data;
 
-            let List = handleData(list);
-            
-            return Object.assign({}, state, { Total, ...List, loading: false,SubjectID:actions.SubjectID });
+            let List = handleData(list,actions.pageIndex,actions.pageSize);
+
+            return Object.assign({}, state, { Total, ...List, loading: false });
+        case UpDataState.SET_SUBJECTID:
+            return Object.assign({}, state, { SubjectID: actions.SubjectID });
+
         default:
             return state;
     }
 };
-function handleData(data) {
+function handleData(data,pageIndex,pageSize) {
     let keyList = [];
     let pensonalList = [];
     let newList = data.List.map((child, index) => {
@@ -21,6 +24,7 @@ function handleData(data) {
         list.UserID = child.UserID;
         list.UserImgs = { key: index, UserName: child.UserName, UserImg: child.PhotoPath, UserImg_Nocache: child.PhotoPath_Nocache };
         list.Gender = child.Gender;
+        list.OrderNo = { key: index, OrderNo: index + pageIndex * pageSize };
         list.key = index;
         keyList.push(list.key);
 
@@ -31,24 +35,24 @@ function handleData(data) {
         //let {UserID,Grader,GradeName,ClassName,PhotoPath,UserName,...others} = child;
         list.handleMsg = { ...child, key: index, ...NewSubject };
         let person = {
-            userName:child.UserName,
-            userImg:child.PhotoPath,
-            Gende:child.Gender,
-            userText:'',
-            subjectName:child.SubjectNames,
-            userID:child.UserID,
-            userGrade:child.GradeName,
-            userClass:child.ClassName,
-            userIDCard:child.IDCardNo,
-            userPhone:child.Telephone,
-            userMail:child.Email,
-            userAddress:child.HomeAddress
+            userName: child.UserName,
+            userImg: child.PhotoPath,
+            Gende: child.Gender,
+            userText: '',
+            subjectName: child.SubjectNames,
+            userID: child.UserID,
+            userGrade: child.GradeName,
+            userClass: child.ClassName,
+            userIDCard: child.IDCardNo,
+            userPhone: child.Telephone,
+            userMail: child.Email,
+            userAddress: child.HomeAddress
         }
-        pensonalList.push(person)        
-        return {...list,child}
+        pensonalList.push(person)
+        return { ...list, child }
 
     })
-    return { newList, keyList, pensonalList};
+    return { newList, keyList, pensonalList };
 }
 function handleSubject(name = '', id = '') {
     let nameArr = name.split(',');
@@ -60,7 +64,7 @@ function handleSubject(name = '', id = '') {
         else
             showTwo += child
     })
-    
+
     let newSubjects = [];
     let SubjectArr = [];
     nameArr.map((name, index) => {
@@ -68,7 +72,7 @@ function handleSubject(name = '', id = '') {
         SubjectArr.push(idArr[index])
     })
 
-    return { showTwo: showTwo, newSubjects: newSubjects,SubjectArr:SubjectArr }
+    return { showTwo: showTwo, newSubjects: newSubjects, SubjectArr: SubjectArr }
 }
 
 export default SubjectTeacherPreview;

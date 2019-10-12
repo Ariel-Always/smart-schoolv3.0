@@ -34,7 +34,7 @@ const GET_USER_MSG = 'GET_USER_MSG'
 const  getLoginUser = (data) => {
     return (dispatch)=>{
         
-           dispatch({type:GET_LOGIN_USER_INFO,data:JSON.parse(data)});
+           dispatch({type:GET_LOGIN_USER_INFO,data:data});
         
     }
 };
@@ -42,7 +42,7 @@ const  getLoginUser = (data) => {
 const getAllUserPreview = (url) =>{
     return (dispatch)=>{
         // console.log(CONFIG.proxy+url);
-        getData(CONFIG.proxy+url,2).then(res=>{
+        getData(CONFIG.UserAccountProxy+url,2).then(res=>{
             if(res.status === '401'){
                 console.log('错误码：'+ res.status)
             }
@@ -74,13 +74,13 @@ const getGradeStudentPreview = (url) =>{
         dispatch({ type: UpUIState.APP_LOADING_OPEN });
 
         getData(CONFIG.UserAccountProxy+url,2).then(res=>{
-            if(res.Status === '401'){
-                console.log('错误码：'+ res.Status)
+            if(res.StatusCode === '401'){
+                console.log('错误码：'+ res.StatusCode)
             }
             return res.json()}).then(json=>{
-            if(json.Status === 400){
-                console.log(json.Status)
-            }else if(json.Status === 200){
+            if(json.StatusCode === 400){
+                console.log(json.StatusCode)
+            }else if(json.StatusCode === 200){
                 dispatch({type:GET_GRADE_STUDENT_PREVIEW,data:json.Data,pageIndex:pageIndex,pageSize:pageSize});
                 dispatch({ type: UpUIState.APP_LOADING_CLOSE });
             }
@@ -104,13 +104,13 @@ const getSubjectTeacherPreview = (url) =>{
     return (dispatch)=>{
         dispatch({ type: UpUIState.APP_LOADING_OPEN });
         getData(CONFIG.UserAccountProxy+url,2).then(res=>{
-            if(res.Status === '401'){
-                console.log('错误码：'+ res.Status)
+            if(res.StatusCode === '401'){
+                console.log('错误码：'+ res.StatusCode)
             }
             return res.json()}).then(json=>{
-            if(json.Status === 400){
-                console.log(json.Status)
-            }else if(json.Status === 200){
+            if(json.StatusCode === 400){
+                console.log(json.StatusCode)
+            }else if(json.StatusCode === 200){
                 dispatch({type:GET_SUBJECT_TEACHER_PREVIEW,data:json.Data,pageIndex:pageIndex,pageSize:pageSize});
                 dispatch({ type: UpUIState.APP_LOADING_CLOSE });
             }
@@ -132,7 +132,7 @@ const getSchoolLeaderPreview = (url) =>{
     }
     return (dispatch)=>{
         console.log(CONFIG.proxy+url);
-        getData(CONFIG.proxy+url,2).then(res=>{
+        getData(CONFIG.UserAccountProxy+url,2).then(res=>{
             if(res.status === '401'){
                 console.log('错误码：'+ res.status)
             }
@@ -161,14 +161,14 @@ const getAdminPreview = (url) =>{
     return (dispatch)=>{
         dispatch({ type: UpUIState.APP_LOADING_OPEN });
         getData(CONFIG.UserAccountProxy+url,2).then(res=>{
-            if(res.Status === '401'){
-                console.log('错误码：'+ res.Status)
+            if(res.StatusCode === '401'){
+                console.log('错误码：'+ res.StatusCode)
             }
             console.log(res)
             return res.json()}).then(json=>{
-            if(json.Status === 400){
-                console.log(json.Status)
-            }else if(json.Status === 200){
+            if(json.StatusCode === 400){
+                console.log(json.StatusCode)
+            }else if(json.StatusCode === 200){
                 dispatch({type:GET_ADMIN_PREVIEW,data:json.Data,pageIndex:pageIndex,pageSize:pageSize});
                 dispatch({ type: UpUIState.APP_LOADING_CLOSE });
             }
@@ -186,15 +186,15 @@ const setAdminPreview = (data) =>{
 const getGradeClassMsg = (url) =>{
     return (dispatch)=>{
         getData(CONFIG.UserInfoProxy+url,2).then(res=>{
-            if(res.Status === '401'){
+            if(res.StatusCode === '401'){
                 console.log('错误：'+ res.Msg)
             }
             console.log(res)
 
             return res.json()}).then(json=>{
-            if(json.Status === 400){
-                console.log(json.Status)
-            }else if(json.Status === 200){
+            if(json.StatusCode === 400){
+                console.log(json.StatusCode)
+            }else if(json.StatusCode === 200){
                 dispatch({type:GET_GRADE_CLASS_MSG,data:json.Data});
             }
            
@@ -205,13 +205,13 @@ const getGradeClassMsg = (url) =>{
 const getSubjectTeacherMsg = (url) =>{
     return (dispatch)=>{
         getData(CONFIG.UserInfoProxy+url,2).then(res=>{
-            if(res.Status === '401'){
-                console.log('错误码：'+ res.Status)
+            if(res.StatusCode === '401'){
+                console.log('错误码：'+ res.StatusCode)
             }
             return res.json()}).then(json=>{
-            if(json.Status === 400){
-                console.log(json.Status)
-            }else if(json.Status === 200){
+            if(json.StatusCode === 400){
+                console.log(json.StatusCode)
+            }else if(json.StatusCode === 200){
                 dispatch({type:GET_SUBJECT_TEACHER_MSG,data:json.Data});
             }
            
@@ -226,13 +226,13 @@ const getChangeInputValue = (value) =>{
 const getUserMsg = (url) =>{
     return (dispatch)=>{
         getData(CONFIG.UserInfoProxy+url,2).then(res=>{
-            if(res.Status === '401'){
+            if(res.StatusCode === '401'){
                 console.log('错误：'+ res.Msg)
             }
             return res.json()}).then(json=>{
-            if(json.Status === 400){
-                console.log(json.Status)
-            }else if(json.Status === 200){
+            if(json.StatusCode === 400){
+                console.log(json.StatusCode)
+            }else if(json.StatusCode === 200){
                 dispatch({type:GET_USER_MSG,data:json.Data});
             }
            

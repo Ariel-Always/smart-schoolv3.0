@@ -61,24 +61,24 @@ class App extends Component {
         }
         let route = history.location.pathname;
         // TokenCheck()
-        TokenCheck_Connect()
         //判断token是否存在
-        // if (sessionStorage.getItem('token')) {
-        // dispatch(actions.UpDataState.getLoginUser('/Login?method=GetUserInfo'));
+        TokenCheck_Connect()
         this.requestData(route);
-        if (sessionStorage.getItem('UserInfo'))
-            dispatch(actions.UpDataState.getLoginUser(sessionStorage.getItem('UserInfo')));
-        // } else {
-        //     //不存在的情况下
-        //     dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-        //     dispatch(actions.UpUIState.showErrorAlert({
-        //         type: 'btn-error',
-        //         title: "登录错误，请重新登录!",
-        //         ok: this.onAppAlertOK.bind(this),
-        //         cancel: this.onAppAlertCancel.bind(this),
-        //         close: this.onAppAlertClose.bind(this)
-        //     }));
-        // }
+        let token = sessionStorage.getItem('token')
+        // sessionStorage.setItem('UserInfo', '')
+        if (sessionStorage.getItem('UserInfo')) {
+            dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
+        }
+        else {
+            getUserInfo(token, '000');
+            let timeRun = setInterval(function () {
+                if (sessionStorage.getItem('UserInfo')) {
+                    dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
+                    clearInterval(timeRun)
+                }
+            }, 1000)
+            //dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
+        }
     }
 
 
@@ -131,10 +131,11 @@ class App extends Component {
     }
     // 请求每个组件主要渲染的数据
     requestData = (route) => {
-        const { dispatch } = this.props;
+        const { dispatch,DataState } = this.props;
         let pathArr = route.split('/');
         let handleRoute = pathArr[1];
-
+        console.log(DataState.LoginUser,JSON.parse(sessionStorage.getItem('UserInfo')))
+        let userMsg = DataState.LoginUser.SchoolID?DataState.LoginUser:JSON.parse(sessionStorage.getItem('UserInfo'))
         if (route === '/') {
             //dispatch(actions.UpDataState.getAllUserPreview('/ArchivesAll'));
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
@@ -145,19 +146,19 @@ class App extends Component {
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
             if (!this.props.DataState.GradeClassMsg.returnData.grades)
                 dispatch(actions.UpDataState.getGradeClassMsg('/GetGradeClassTree'));
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
 
         } else if (handleRoute === 'Teacher') {
 
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
             if (!this.props.DataState.SubjectTeacherMsg.returnData)
                 dispatch(actions.UpDataState.getSubjectTeacherMsg('/GetSubject'));
-            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
+            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID='+userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
         } else if (handleRoute === 'Leader') {
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
         } else if (handleRoute === 'Admin') {
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-            dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
+            dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
 
         } else {
             history.push('/')
@@ -202,7 +203,7 @@ class App extends Component {
 
         return (
             <React.Fragment>
-                <Loading tip="加载中..." size="large" spinning={UIState.AppLoading.appLoading}>
+                <Loading tip="加载中..." opacity={false} size="large" spinning={UIState.AppLoading.appLoading}>
 
 
                     <Frame userInfo={{

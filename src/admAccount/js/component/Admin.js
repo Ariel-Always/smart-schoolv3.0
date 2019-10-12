@@ -147,7 +147,8 @@ class Admin extends React.Component {
             changeAdminModalVisible: false,
             keyword: '',
             CancelBtnShow: 'n',
-            searchValue: ''
+            searchValue: '',
+            userMsg:props.DataState.LoginUser
 
 
         }
@@ -193,7 +194,7 @@ class Admin extends React.Component {
             }));
         } else {
 
-            dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=0&PageSize=10&keyword=' + e.value));
+            dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&keyword=' + e.value));
 
         }
     }
@@ -348,23 +349,23 @@ class Admin extends React.Component {
                 UserIDs: UserIDs.join()
             },
             2).then(res => {
-                if (res.Status === '401') {
-                    console.log('错误码：' + res.Status)
+                if (res.StatusCode === '401') {
+                    console.log('错误码：' + res.StatusCode)
                 }
                 return res.json()
             }).then(json => {
-                if (json.Status === 400) {
-                    console.log(json.Status)
-                } else if (json.Status === 200) {
+                if (json.StatusCode === 400) {
+                    console.log(json.StatusCode)
+                } else if (json.StatusCode === 200) {
                     dispatch(actions.UpUIState.hideErrorAlert());
                     this.setState({
                         checkedList: [],
                         checkAll: false
                     })
                     if (this.state.searchValue !== '')
-                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=0&PageSize=10&Keyword=' + this.state.searchValue));
+                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&Keyword=' + this.state.searchValue));
                     else
-                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
+                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
                 }
 
             });
@@ -384,7 +385,7 @@ class Admin extends React.Component {
         if (this.state.keyword !== '') {
             keyword = '&keyword=' + this.state.keyword
         }
-        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=' + (--value) + '&PageSize=10' + keyword));
+        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=' + (--value) + '&PageSize=10' + keyword));
     }
 
 
@@ -460,14 +461,14 @@ class Admin extends React.Component {
                 Pwd: DataState.AdminPreview.TrasferData.Pwd
             },
             2).then(res => {
-                if (res.Status === '401') {
-                    console.log('错误码：' + res.Status)
+                if (res.StatusCode === '401') {
+                    console.log('错误码：' + res.StatusCode)
                 }
                 return res.json()
             }).then(json => {
-                if (json.Status === 400) {
-                    console.log(json.Status)
-                } else if (json.Status === 200) {
+                if (json.StatusCode === 400) {
+                    console.log(json.StatusCode)
+                } else if (json.StatusCode === 200) {
                     this.setState({
                         addAdminModalVisible: false
                     })
@@ -479,7 +480,7 @@ class Admin extends React.Component {
                         PhotoPath: '',
                         Pwd: '0'
                     }))
-                    dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
+                    dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
                 }
 
             });
@@ -551,14 +552,14 @@ class Admin extends React.Component {
                 Pwd: DataState.AdminPreview.TrasferData.Pwd
             },
             2).then(res => {
-                if (res.Status === '401') {
-                    console.log('错误码：' + res.Status)
+                if (res.StatusCode === '401') {
+                    console.log('错误码：' + res.StatusCode)
                 }
                 return res.json()
             }).then(json => {
-                if (json.Status === 400) {
-                    console.log(json.Status)
-                } else if (json.Status === 200) {
+                if (json.StatusCode === 400) {
+                    console.log(json.StatusCode)
+                } else if (json.StatusCode === 200) {
                     this.setState({
                         changeAdminModalVisible: false
                     })
@@ -570,7 +571,7 @@ class Admin extends React.Component {
                         PhotoPath: '',
                         Pwd: '0'
                     }))
-                    dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
+                    dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
 
                 }
 
@@ -616,22 +617,22 @@ class Admin extends React.Component {
                 newPwd: pwd
             },
             2).then(res => {
-                if (res.Status === '401') {
-                    console.log('错误码：' + res.Status)
+                if (res.StatusCode === '401') {
+                    console.log('错误码：' + res.StatusCode)
                 }
                 return res.json()
             }).then(json => {
-                if (json.Status === 400) {
-                    console.log(json.Status)
-                } else if (json.Status === 200) {
+                if (json.StatusCode === 400) {
+                    console.log(json.StatusCode)
+                } else if (json.StatusCode === 200) {
                     this.setState({
                         ChangePwdMadalVisible: false,
                         defaultPwd: 888888
                     })
                     if (this.state.searchValue !== '')
-                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=0&PageSize=10&Keyword=' + this.state.searchValue));
+                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&Keyword=' + this.state.searchValue));
                     else
-                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageIndex=0&PageSize=10'));
+                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
 
                 }
 
@@ -669,7 +670,7 @@ class Admin extends React.Component {
         console.log(sorter)
         if (sorter && (sorter.columnKey === 'UserName' || sorter.columnKey === 'ShortName')) {
             let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
-            dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=school1&PageSize=10&sortFiled=' + sorter.columnKey + sortType + '&PageIndex=' + (this.state.pagination - 1) + keyword));
+            dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageSize=10&sortFiled=' + sorter.columnKey + sortType + '&PageIndex=' + (this.state.pagination - 1) + keyword));
 
         }
     }

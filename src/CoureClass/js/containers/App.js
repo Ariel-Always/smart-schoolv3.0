@@ -121,6 +121,9 @@ class App extends Component {
     requestData = (route) => {
 
         const { dispatch, DataState } = this.props;
+        let UserMsg = DataState.LoginUser.SchoolID?DataState.LoginUser:JSON.parse(sessionStorage.getItem('UserInfo'))
+        
+
         let pathArr = route.split('/');
         let handleRoute = pathArr[1];
         let routeID = pathArr[2];
@@ -157,7 +160,7 @@ class App extends Component {
 
         } else if (handleRoute === 'Subject' && subjectID === 'Class') {
             dispatch(actions.UpDataState.getSubjectAllMsg('/GetSubjectCouseclassSumarry?subjectID='+routeID, routeID));
-            dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID='+this.state.UserMsg.SchoolID+'&key=&pageIndex=1&pageSize=10&subjectID='+routeID+'&gradeID='+classID, routeID, classID));
+            dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID='+UserMsg.SchoolID+'&key=&pageIndex=1&pageSize=10&subjectID='+routeID+'&gradeID='+classID, routeID, classID));
 
             if (!DataState.GetCoureClassAllMsg.MenuParams)
                 return;
@@ -166,7 +169,7 @@ class App extends Component {
         } else if (handleRoute === 'Search') {
             // if (!DataState.GetCoureClassAllMsg.MenuParams)
             //     return;
-            dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID='+this.state.UserMsg.SchoolID+'&key=&pageIndex=1&pageSize=10&subjectID='+routeID+'&gradeID='+classID));
+            dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID='+UserMsg.SchoolID+'&key=&pageIndex=1&pageSize=10&subjectID='+routeID+'&gradeID='+classID));
 
 
         } else if (handleRoute === 'Log') {
@@ -179,7 +182,7 @@ class App extends Component {
             })
 
         } else if (handleRoute === 'Teacher') {
-            dispatch(actions.UpDataState.getTeacherCourseClassMsg('/GetCourseClassByUserID?schoolID='+this.state.UserMsg.SchoolID+'&userID='+this.state.UserMsg.UserID));
+            dispatch(actions.UpDataState.getTeacherCourseClassMsg('/GetCourseClassByUserID?schoolID='+UserMsg.SchoolID+'&userID='+UserMsg.UserID));
 
             this.setState({
                 showBarner: true,
@@ -335,7 +338,7 @@ class App extends Component {
         }
         return (
             <React.Fragment>
-                <Loading tip="加载中..." size="large" spinning={UIState.AppLoading.appLoading}>
+                <Loading tip="加载中..." opacity={false} size="large" spinning={UIState.AppLoading.appLoading}>
 
 
                     <Frame userInfo={{
