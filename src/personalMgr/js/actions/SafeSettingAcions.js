@@ -276,7 +276,7 @@ const getQuestions = () =>{
 
                 let questionsList = [{value:"self",title:"自定义密保问题"}];
 
-                let arr = json.Data.map((item,key)=>{
+                let arr = data.map((item,key)=>{
 
                     return {
 
@@ -957,7 +957,7 @@ let GetSecurityInfo =  async ({UserID,dispatch}) => {
 
     let res = await Method.getGetData(`/UserMgr/PersonalMgr/GetSecurityInfo?UserID=${UserID}`,2,CONFIG.PersonalProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
@@ -1078,11 +1078,11 @@ let EditSecQA =  async ({UserID,ID,Question,Answer,Pwd,dispatch}) => {
 
     } else {
 
-        if (json.Data === -2){
+        if (res.ErrorCode === -2){
 
             dispatch({type:SAFE_SETTING_EDIT_QUESTIONS_TIPS_SHOW,data:{type:'pwd',tips:"密码不正确！"}});
 
-        }else if (json.Data === -3){
+        }else if (res.ErrorCode === -3){
 
             dispatch(AppAlertActions.alertError({title:"已存在相同问题！"}));
 
@@ -1113,11 +1113,11 @@ let DeleteSecQA =  async ({UserID,ID,Pwd,dispatch}) => {
 
     } else {
 
-        if (json.Data === -2){
+        if (res.ErrorCode === -2){
 
             dispatch({type:SAFE_SETTING_DEL_QUESTIONS_PWD_TIPS_SHOW,data:"密码不正确"});
 
-        }else if (json.Data === -3){
+        }else if (res.ErrorCode === -3){
 
            dispatch(AppAlertActions.alertError({title:"原问题已不存在！"}));
 

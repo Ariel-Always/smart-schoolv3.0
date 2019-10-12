@@ -91,7 +91,7 @@ const  getPageInit = () => {
     return (dispatch,getState) => {
 
 
-        let SchoolID = getState().DataState.LoginUser;
+        let { SchoolID } = getState().DataState.LoginUser;
 
          GetGradeClassTree(SchoolID,dispatch).then(data=>{
 

@@ -138,6 +138,16 @@ const PageInit = () => {
 
                 dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
 
+                let token = sessionStorage.getItem('token');
+
+                var host = `http://${window.location.host}/`;
+
+                sessionStorage.setItem('PsnMgrToken',token);
+
+                sessionStorage.setItem("PsnMgrMainServerAddr",host);
+
+                sessionStorage.setItem("PsnMgrLgAssistantAddr",'http://192.168.129.1:10103/');
+
                 dynamicFile([
 
                     'http://192.168.129.1:10103/PsnMgr/LgAssistant/css/lancoo.cp.assistant.css',

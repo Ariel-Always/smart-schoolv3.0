@@ -32,9 +32,10 @@ export function TokenCheck(IsDesk,SysID = '000') {
 
 
     } else {//有token，对token进行验证
+
         let token = session_token || url_token;
 
-        sessionStorage.setItem('token',token);
+
 
         //回调函数
         let jsoncallback = (json) => {
@@ -54,6 +55,8 @@ export function TokenCheck(IsDesk,SysID = '000') {
                     // if (!sessionStorage.getItem('UserInfo'))
                     // console.log(json, getQueryVariable('lg_preurl'))
                     if (json.data.result) {//result为true
+
+                        sessionStorage.setItem('token',token);
 
                         if (!sessionStorage.getItem('UserInfo')){
 
@@ -99,9 +102,12 @@ export function TokenCheck(IsDesk,SysID = '000') {
 
                             console.log(json + 1);
 
-                        }
+                        };
                         if (token !== url_token) {//如果第一个验证失败，判断是否用的是session的token，不是就进行url的token验证
                             //jsonp验证token
+
+
+
                             $.ajax(
                                 {
                                     url: config.TokenProxy + '/UserMgr/Login/Api/Login.ashx?token=' + url_token + '&method=tokenCheck&params=' + SysID,
@@ -116,6 +122,9 @@ export function TokenCheck(IsDesk,SysID = '000') {
 
                                         if (json.data.result) {//result为true
                                             // if (url.split('html/')[1]) {//有就说明不在登录页
+
+                                            sessionStorage.setItem('token',url_token);
+
 
                                             if (!sessionStorage.getItem('UserInfo')){
 
