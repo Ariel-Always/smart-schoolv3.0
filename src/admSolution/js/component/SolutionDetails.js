@@ -6,7 +6,30 @@ import '../../scss/SolutionDetails.scss'
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
 import CONFIG from '../../../common/js/config';
 import { Table ,Button} from "../../../common";
-
+import doc from '../../images/doc.png'
+import docx from '../../images/docx.png'
+import excel from '../../images/excel.png'
+import html from '../../images/html.png'
+import jpg from '../../images/jpg.png'
+import mp3 from '../../images/mp3.png'
+import mp4 from '../../images/mp4.png'
+import png from '../../images/png.png'
+import txt from '../../images/txt.png'
+import url from '../../images/url.png'
+import Default from '../../images/default.png'
+let FileType = {
+    doc:doc,
+    docx:docx,
+    excel:excel,
+    html:html,
+    jpg:jpg,
+    mp3:mp3,
+    mp4:mp4,
+    png:png,
+    txt:txt,
+    url:url,
+    Default:Default
+}
 class SolutionDetails extends React.Component {
     constructor(props) {
         super(props);
@@ -33,10 +56,10 @@ class SolutionDetails extends React.Component {
                     width:517,
                     dataIndex: 'FileName',
                     key: 'FileName',
-                    render: FileName => {
+                    render: FileName => { 
                         return (
                             <React.Fragment>
-                                <span  className='FileName'>{FileName}</span>
+                                <span  className='FileName'><img width={15} height={17} style={{marginRight:10+'px'}} alt={FileName} src={FileType[FileName.slice(FileName.lastIndexOf('.')+1)]||FileType['Default']}></img>{FileName}</span>
                             </React.Fragment>
                         )
                     }
