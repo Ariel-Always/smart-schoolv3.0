@@ -1,21 +1,23 @@
 import ModuleSettingActions from './ModuleSettingActions';
 
-import LoginUserActions from './LoginUserActions';
-
 import PeriodWeekTermActions from './PeriodWeekTermActions';
 
-import Mock from 'mockjs';
-
 import Method from "./Method";
+
+import ApiActions from './ApiActions';
+import LoginUserActions from "./LoginUserActions";
 
 
 const getCommonInfo = () => {
 
     return ( dispatch,getState ) => {
         //获取登录信息
-        Method.getGetData(`/Login?method=GetUserInfo`).then(json => {
 
-            switch (json.data.result.UserType) {
+            let UserInfo = sessionStorage.getItem('UserInfo');
+
+            let {SchoolID,UserID,UserType} = UserInfo;
+
+            switch (UserType) {
 
                 case 0:
 
@@ -41,40 +43,34 @@ const getCommonInfo = () => {
 
             }
 
-            dispatch({type:LoginUserActions.UPDATE_LOGIN_USER,data:json.data.result});
-
-            let {LoginUser} = getState();
-
-            let SchoolID = LoginUser.SchoolID;
-
-            let UserID = LoginUser.UserID;
-
-            let UserType = LoginUser.UserType;
-
             //获取学段等等的信息
             let getPeriodPromise = Method.getGetData(`/schedulePeriod?SchoolID=${SchoolID}&UserID=${UserID}&UserType=${UserType}`);
 
-            getPeriodPromise.then(json => {
+            ApiActions.GetTermAndPeriodAndWeekNOInfo({SchoolID,UserID,UserType,dispatch}).then(data => {
 
-                if ( UserType === 1 ){
+                if (data){
 
-                    if ( json.Data.ItemPeriod.length  <= 1 ){
+                    if ( UserType === 1 ){
 
-                        dispatch({type:ModuleSettingActions.TIME_BARNER_HIDE});
+                        if ( data.ItemPeriod.length  <= 1 ){
 
-                    }else{
+                            dispatch({type:ModuleSettingActions.TIME_BARNER_HIDE});
 
-                        dispatch({type:ModuleSettingActions.TIME_BARNER_SHOW});
+                        }else{
+
+                            dispatch({type:ModuleSettingActions.TIME_BARNER_SHOW});
+
+                        }
 
                     }
 
+                    dispatch({type:PeriodWeekTermActions.UPDATE_PERIOD_TERM_WEEK,data:data});
+
+                    dispatch({type:LoginUserActions.UPDATE_LOGIN_USER,data:UserInfo});
+
                 }
 
-                dispatch({type:PeriodWeekTermActions.UPDATE_PERIOD_TERM_WEEK,data:json.Data});
-
             });
-
-        });
 
     }
 

@@ -52,7 +52,7 @@ function AESEncryptionUrl(url, CRYPTOJSKEY = COMMONKEY, SecurityLevel) {//加密
 
 //请求安全，根据安全级别SecurityLevel返回token+签名
 function requestSecure(params, securityKey, SecurityLevel = 1) {
-    let token = sessionStorage.getItem('token');
+    let token = sessionStorage.getItem('token')||getQueryVariable('lg_tk');
     let Autorization = null;
 
     if (!token && SecurityLevel !== 1) {
@@ -217,6 +217,19 @@ function handleParam(params) {
     return param;
 }
 
+
+//获取url参数
+function getQueryVariable(variable) {
+    var query = window.location.search.substring(1) || window.location.href.split('?')[1]||window.location.href;
+
+    console.log(query)
+    var vars = query.split("&");
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split("=");
+        if (pair[0] === variable) { return pair[1]; }
+    }
+    return (false);
+}
 
 export {
     requestSecure,

@@ -72,11 +72,7 @@ const Init = () => {
 
         dispatch({type:BASE_SETTING_LOADING_SHOW});
 
-        //let { UserID,UserType } = getState().LoginUser;
-
-        let UserID = 'admin2';
-
-        let UserType = 0;
+        let { UserID,UserType } = getState().LoginUser;
 
         getBaseInfo({UserID,UserType,dispatch}).then(data => {
 
@@ -99,8 +95,7 @@ const Init = () => {
 const Commit = () => {
 
   return ( dispatch,getState ) => {
-
-      console.log(2);
+      
 
       let { ShortNameTipsShow, QQTipsShow, WeixinTipsShow, WeiboTipsShow, TelephoneTipsShow } = getState().BaseSetting
 
@@ -124,6 +119,16 @@ const Commit = () => {
 
                     dispatch(AppAlertActions.alertSuccess({title:"保存成功"}));
 
+                   getBaseInfo({UserID,UserType,dispatch}).then(data => {
+
+                       if (data){
+
+                           dispatch({type:BASE_INFO_UPDATE,data:data});
+
+
+                       }
+
+                   });
 
                }
 
@@ -151,7 +156,7 @@ let getBaseInfo =  async ({UserID,UserType,dispatch}) => {
 
     let res = await Method.getGetData(`/UserMgr/PersonalMgr/GetBasicInfo?UserID=${UserID}&UserType=${UserType}`,2,CONFIG.PersonalProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
@@ -164,7 +169,7 @@ let getBaseInfo =  async ({UserID,UserType,dispatch}) => {
 };
 
 
-
+//更新信息
 let UpdateBasicInfo =  async ({UserID,UserType,ShortName,PhotoPath,QQ,Weixin,Telephone,Weibo,Sign,dispatch}) => {
 
     let res = await Method.getPostData('/UserMgr/PersonalMgr/UpdateBasicInfo',{
@@ -174,6 +179,8 @@ let UpdateBasicInfo =  async ({UserID,UserType,ShortName,PhotoPath,QQ,Weixin,Tel
         Weibo,Telephone,Sign,PhotoPath
 
     },2,CONFIG.PersonalProxy);
+
+
 
     if (res.StatusCode === 200){
 

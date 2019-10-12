@@ -4,6 +4,8 @@ import React from 'react';
 
 import AppAlertActions from '../../actions/AppAlertActions'
 
+import ApiActions from '../../actions/ApiActions';
+
 
 
 const ADD_SCHEDULE_MODAL_SHOW = 'ADJUST_SCHEDULE_MODAL_SHOW';
@@ -106,20 +108,22 @@ const InfoInit = () => {
 
     return (dispatch,getState) => {
 
-        let getPromise =  Method.getGetData('/allSGWTTC');
-
         let {NowWeekNo} = getState().PeriodWeekTerm;
 
-        getPromise.then(json => {
+        let { SchoolID } = getState().LoginUser;
 
-           if (json.Status === 200){
+        ApiActions.GetAllOptionForAddSchedule({
 
-               let res = json.Data;
+            SchoolID,dispatch
+
+        }).then(data => {
+
+           if (data){
 
                 //组织年级班级信息
-               let gradeClass = res.ItemGrade.map((item) => {
+               let gradeClass = data.ItemGrade.map((item) => {
 
-                   let list =  res.ItemClass.map((i) => {
+                   let list =  data.ItemClass.map((i) => {
 
                       if (item.GradeID === i.GradeID){
 
@@ -152,7 +156,7 @@ const InfoInit = () => {
 
                //组织学科信息
 
-               let subject = res.ItemSubject.map((item) => {
+               let subject = data.ItemSubject.map((item) => {
 
                    return {
 
@@ -164,9 +168,9 @@ const InfoInit = () => {
 
                });
                 //组织教师信息
-               let teachers = res.ItemSubject.map((item) => {
+               let teachers = data.ItemSubject.map((item) => {
 
-                  let list = res.ItemTeacher.map((i) => {
+                  let list = data.ItemTeacher.map((i) => {
 
                       if (i.SubjectID === item.SubjectID){
 
@@ -199,7 +203,7 @@ const InfoInit = () => {
                });
 
                //组织周次信息
-               let week = res.ItemWeek.map((item) => {
+               let week = data.ItemWeek.map((item) => {
 
                   return{
 
@@ -279,7 +283,7 @@ const InfoInit = () => {
                }
 
                //组织课时信息
-               let classHour = res.ItemClassHour.map((item) => {
+               let classHour = data.ItemClassHour.map((item) => {
 
                    let classHourType = '';
 
@@ -322,9 +326,9 @@ const InfoInit = () => {
                }) ;
 
                //组织教室信息
-               let classRoom = res.ItemClassRoomType.map(item => {
+               let classRoom = data.ItemClassRoomType.map(item => {
 
-                  let list = res.ItemClassRoom.map((i) => {
+                  let list = data.ItemClassRoom.map((i) => {
 
                       if (i.ClassRoomTypeID === item.ClassRoomTypeID){
 
@@ -360,10 +364,6 @@ const InfoInit = () => {
 
                dispatch({type:ADD_SHEDULE_MODAL_LOADING_HIDE});
 
-           }else{
-
-            alert(json.Msg);
-
            }
 
         });
@@ -386,13 +386,11 @@ const classSearch = (key) => {
 
         dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_LOADING_SHOW});
 
-        let searchClassPromise = Method.getGetData(`/scheduleSearchClass?SchoolID=${SchoolID}&key=${key}`);
+          ApiActions.GetClassByGradeIDAndKey({SchoolID,Key:key,dispatch}).then(data => {
 
-        searchClassPromise.then(json => {
+            if (data){
 
-            if (json.Status === 200){
-
-                let classSearchList = json.Data.map(item => {
+                let classSearchList = data.map(item => {
 
                     return{
 
@@ -408,45 +406,17 @@ const classSearch = (key) => {
 
                 dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_LOADING_HIDE});
 
-            }else{
-
-                dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                        type:"btn-warn",
-
-                        title:json.Msg,
-
-                        ok:alertHide(dispatch),
-
-                        close:alertHide(dispatch),
-
-                        cancel:alertHide(dispatch)
-
-                    }});
-
             }
 
         });
 
         }else{
 
-            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                    type:"btn-warn",
-
-                    title:"搜索的内容不能为空！",
-
-                    ok:alertHide(dispatch),
-
-                    close:alertHide(dispatch),
-
-                    cancel:alertHide(dispatch)
-
-                }});
+            dispatch(AppAlertActions.alertWarn({title:"搜索的内容不能为空！"}));
 
         }
 
-  }
+  };
 
 };
 
@@ -462,6 +432,7 @@ const classSearchClose = () => {
 };
 
 //点击教师搜索
+
 const teacherSearch = (key) => {
 
     return (dispatch,getState) => {
@@ -474,13 +445,15 @@ const teacherSearch = (key) => {
 
             dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_LOADING_SHOW});
 
-            let searchTeacherPromise = Method.getGetData(`/scheduleSubjectTeacherTeacher?SchoolID=${SchoolID}&key=${key}`);
+            ApiActions.GetTeacherBySubjectIDAndKey({
 
-            searchTeacherPromise.then(json => {
+                SchoolID,Key:key,dispatch
 
-                if (json.Status === 200){
+            }).then(data => {
 
-                    let teacherSearchList = json.Data.map(item => {
+                if (data){
+
+                    let teacherSearchList = data.map(item => {
 
                         return{
 
@@ -496,41 +469,13 @@ const teacherSearch = (key) => {
 
                     dispatch({type:ADD_SCHEDULE_MODAL_TEACHER_SEARCH_LOADING_HIDE});
 
-                }else{
-
-                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                            type:"btn-warn",
-
-                            title:json.Msg,
-
-                            ok:alertHide(dispatch),
-
-                            close:alertHide(dispatch),
-
-                            cancel:alertHide(dispatch)
-
-                        }});
-
                 }
 
             });
 
         }else{
 
-            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                    type:"btn-warn",
-
-                    title:"搜索的内容不能为空！",
-
-                    ok:alertHide(dispatch),
-
-                    close:alertHide(dispatch),
-
-                    cancel:alertHide(dispatch)
-
-                }});
+            dispatch(AppAlertActions.alertWarn({title:"搜索的内容不能为空！"}));
 
         }
 
@@ -565,11 +510,15 @@ const classRoomSearch = (key) => {
 
             let searchClassRoomPromise = Method.getGetData(`/scheduleSearchClassRoom?SchoolID=${SchoolID}&key=${key}`);
 
-            searchClassRoomPromise.then(json => {
+            ApiActions.GetClassRoomByClassTypeAndKey({
 
-                if (json.Status === 200){
+                SchoolID,Key:key,dispatch
 
-                    let classRoomSearchList = json.Data.map(item => {
+            }).then(data => {
+
+                if (data){
+
+                    let classRoomSearchList = data.map(item => {
 
                         return{
 
@@ -585,41 +534,13 @@ const classRoomSearch = (key) => {
 
                     dispatch({type:ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LOADING_HIDE});
 
-                }else{
-
-                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                            type:"btn-warn",
-
-                            title:json.Msg,
-
-                            ok:alertHide(dispatch),
-
-                            close:alertHide(dispatch),
-
-                            cancel:alertHide(dispatch)
-
-                        }});
-
                 }
 
             });
 
         }else{
 
-            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                    type:"btn-warn",
-
-                    title:"搜索的内容不能为空！",
-
-                    ok:alertHide(dispatch),
-
-                    close:alertHide(dispatch),
-
-                    cancel:alertHide(dispatch)
-
-                }});
+            dispatch(AppAlertActions.alertWarn({title:'搜索的内容不能为空！'}));
 
         }
 
@@ -647,6 +568,8 @@ const commitInfo = () => {
 
         dispatch({type:ADD_SHEDULE_MODAL_LOADING_SHOW});
 
+        let { SchoolID,UserID,UserType } = getState().LoginUser;
+
         let { AddScheduleModal } = getState().Manager;
 
         let SubjectID = AddScheduleModal.checkedSubject.value;
@@ -663,43 +586,22 @@ const commitInfo = () => {
 
         let ClassRoomID = AddScheduleModal.checkedClassRoom.value;
 
-        let addSchedulePromise = Method.getPostData('/scheduleAddSchedule',{
 
-            SubjectID, WeekNO, WeekDay, ClassHourNO, TeacherID, ClassID,ClassRoomID
+        ApiActions.InsertSchedule({
 
-        });
+            SubjectID, WeekNO, WeekDay, ClassHourNO, TeacherID, ClassID,ClassRoomID,
 
-        addSchedulePromise.then((json) => {
+            SchoolID,UserID,UserType
 
-            if (json.Status === 200){
+
+        }).then((data) => {
+
+            if (data){
 
                 dispatch({type:ADD_SCHEDULE_MODAL_HIDE});
 
-                dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+                dispatch(AppAlertActions.alertSuccess({title:"添加临时课程成功!"}));
 
-                    type:"success",
-
-                    title:"添加临时课程成功！",
-
-                    hide: alertHide(dispatch)
-
-                    }});
-
-            }else{
-
-                dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                        type:"btn-warn",
-
-                        title:jso.Msg,
-
-                        ok:alertHide(dispatch),
-
-                        close:alertHide(dispatch),
-
-                        cancel:alertHide(dispatch)
-
-                    }});
             }
 
         });
@@ -708,6 +610,8 @@ const commitInfo = () => {
     }
 
 };
+
+
 
 const alertHide = (dispatch) => {
 

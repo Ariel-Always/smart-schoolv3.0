@@ -84,7 +84,6 @@ const alertWarn = ({title,cancel,ok,close}) => {
 
 };
 
-
 const alertTips = ({title,cancel,ok,close}) => {
 
     return dispatch => {

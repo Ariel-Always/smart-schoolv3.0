@@ -1,5 +1,7 @@
 import Method from "../Method";
 
+import ApiActions from '../ApiActions';
+
 const SUBJECT_TEACHER_SCHEDULE_INIT = 'SUBJECT_TEACHER_SCHEDULE_INIT';
 
 const SUBJECT_TEACHER_SCHEDULE_UPDATE = 'SUBJECT_TEACHER_SCHEDULE_UPDATE';
@@ -23,7 +25,7 @@ const STSPageUpdate = (opt) => {
 
         const {PeriodWeekTerm,LoginUser,Manager} = getState();
         //获取需要传递的参数
-        let SchoolID =LoginUser.SchoolID;
+        let  {SchoolID} = LoginUser;
 
         let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;
 
@@ -47,75 +49,83 @@ const STSPageUpdate = (opt) => {
 
         let getSTSPromise = Method.getGetData(`/scheduleSubjectTeacherSubject?PageSize=10&SubjectID=${SubjectID}&SchoolID=${SchoolID}&PeriodID=${PeriodID}&WeekNO=${NowWeekNo}&PageIndex=${PageIndex}`);
 
-        getSTSPromise.then(json => {
+        ApiActions.GetAllScheduleOfTeachersBySubjectIDForPage({
 
-            let SubjectTeacherSchedule =  json.Data.ItemTeacher.map((item) => {
+            PeriodID,SchoolID,SubjectID,NowWeekNo,PageIndex,PageSize:10,dispatch
 
-                let teacherObj = {
+        }).then(data => {
 
-                    id:item.TeacherID,
+            if (data){
 
-                    name:item.TeacherName,
+                let SubjectTeacherSchedule =  data.ItemTeacher.map((item) => {
 
-                    active:false
+                    let teacherObj = {
 
-                };
+                        id:item.TeacherID,
 
-                let list = json.Data.ItemSchedule.map((i) => {
+                        name:item.TeacherName,
 
-                    if (i.TeacherID === item.TeacherID){
+                        active:false
 
-                        return {
+                    };
 
-                            type:i.ScheduleType,
+                    let list = data.ItemSchedule.map((i) => {
 
-                            title:(i.ClassName!==''?i.ClassName:CourseClassName),
+                        if (i.TeacherID === item.TeacherID){
 
-                            titleID:(i.ClassName!==''?i.ClassID:CourseClassID),
+                            return {
 
-                            secondTitle:i.SubjectName,
+                                type:i.ScheduleType,
 
-                            secondTitleID:i.SubjectID,
+                                title:(i.ClassName!==''?i.ClassName:CourseClassName),
 
-                            thirdTitle:i.ClassRoomName,
+                                titleID:(i.ClassName!==''?i.ClassID:CourseClassID),
 
-                            thirdTitleID:i.ClassRoomID,
+                                secondTitle:i.SubjectName,
 
-                            WeekDay:i.WeekDay,
+                                secondTitleID:i.SubjectID,
 
-                            ClassHourNO:i.ClassHourNO,
+                                thirdTitle:i.ClassRoomName,
 
-                        };
+                                thirdTitleID:i.ClassRoomID,
 
-                    }else{
+                                WeekDay:i.WeekDay,
 
-                        return;
+                                ClassHourNO:i.ClassHourNO,
 
-                    }
+                            };
 
-                }).filter(i => {return i!==undefined});
+                        }else{
 
-                teacherObj['list'] = list;
+                            return;
 
-                return teacherObj;
+                        }
 
-            });
-            //判断操作是否是下一页操作
-            if (opt&&opt.nextPage){
+                    }).filter(i => {return i!==undefined});
 
-                schedule.push(...SubjectTeacherSchedule);
+                    teacherObj['list'] = list;
 
-                dispatch({type:SUBJECT_TEACHER_SCHEDULE_UPDATE,data:schedule});
+                    return teacherObj;
 
-                dispatch({type:STS_PAGE_ADD});
+                });
+                //判断操作是否是下一页操作
+                if (opt&&opt.nextPage){
 
-            }else{
+                    schedule.push(...SubjectTeacherSchedule);
 
-                dispatch({type:SUBJECT_TEACHER_SCHEDULE_UPDATE,data:SubjectTeacherSchedule});
+                    dispatch({type:SUBJECT_TEACHER_SCHEDULE_UPDATE,data:schedule});
+
+                    dispatch({type:STS_PAGE_ADD});
+
+                }else{
+
+                    dispatch({type:SUBJECT_TEACHER_SCHEDULE_UPDATE,data:SubjectTeacherSchedule});
+
+                }
+
+                dispatch({type:LOADING_HIDE});
 
             }
-
-            dispatch({type:LOADING_HIDE});
 
         });
 

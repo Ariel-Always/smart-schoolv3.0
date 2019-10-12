@@ -4,13 +4,13 @@ import AppAlertActions from '../../actions/AppAlertActions';
 
 import ManagerPageActions from '../../actions/Manager/ManagerPageActions';
 
-import AppLoadingActions from '../../actions/AppLoadingActions';
-
 import HeaderActions from '../../actions/Manager/HeaderActions';
 
 import Header from '../../components/Manager/Header';
 
 import ModulesContent from '../../components/Manager/ModulesContent';
+
+import { LogOut } from "../../../../common/js/disconnect";
 
 import { connect } from 'react-redux';
 
@@ -132,9 +132,7 @@ class Index extends Component{
 
     GoOut(){
 
-        sessionStorage.clear();
-
-        window.location.href='/UserMgr/Login/Login.aspx'
+        LogOut();
 
     }
 

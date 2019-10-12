@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 
 import {Frame,Loading,Alert,MenuLeftNoLink} from "../../../common";
 
-import { TokenCheck_Connect } from "../../../common/js/disconnect";
+import {LogOut,TokenCheck_Connect} from "../../../common/js/disconnect";
 
 import {connect} from 'react-redux';
 
@@ -15,6 +15,8 @@ import AuthorSetting from "./AuthorSetting";
 import MCIActions from '../actions/ModuleCommonInfoActions';
 
 import LoginUserActions from '../actions/LoginUserActions';
+
+import AppAlertActions from '../actions/AppAlertActions';
 
 import logo from "../../images/logo.png";
 
@@ -72,6 +74,24 @@ class App extends Component{
 
     }
 
+
+    LogOut(e){
+
+        const { dispatch } = this.props;
+
+        dispatch(AppAlertActions.alertWarn({title:"您确定要退出登录？",ok:()=>{ return ()=>this.GoOut() }}));
+
+    }
+
+
+    //GoOut
+
+    GoOut(){
+
+        LogOut();
+
+    }
+
     render() {
 
         const { LoginUser,ModuleCommonInfo,AppAlert,AppLoading } = this.props;
@@ -106,7 +126,9 @@ class App extends Component{
                         }}
                         type="triangle"
                         showBarner={false}
-                        showLeftMenu={true}>
+                        showLeftMenu={true}
+                        onLogOut={this.LogOut.bind(this)}
+                        >
 
                         <div ref="frame-left-menu">
 
@@ -152,8 +174,6 @@ class App extends Component{
                         </div>
 
                     </Frame>
-
-
 
                </Loading>
 

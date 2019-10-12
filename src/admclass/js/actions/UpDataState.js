@@ -90,28 +90,23 @@ const  getPageInit = () => {
 
     return (dispatch,getState) => {
 
-        getLogin(dispatch).then(data => {
 
-            if (data){
+        let SchoolID = getState().DataState.LoginUser;
 
-                dispatch({type:GET_LOGIN_USER_INFO,data:data.result});
+         GetGradeClassTree(SchoolID,dispatch).then(data=>{
 
-                let SchoolID = data.result.SchoolID;
+             if (data){
 
-                 getGradeClass(SchoolID,dispatch).then(data=>{
+                 console.log(data);
 
-                     if (data){
+                 dispatch({type:GET_SHCOOL_GRADE_CLASSES,data:data});
 
-                         dispatch({type:GET_SHCOOL_GRADE_CLASSES,data:data});
+                 dispatch({type:UpUIState.CHANGE_STU_ACTIVE});
 
+             }
 
-                     }
+         });
 
-                 });
-
-            }
-
-        });
     }
 };
 
@@ -124,53 +119,22 @@ const getAllGradePreview = () => {
 
         let { SchoolID } = getState().DataState.LoginUser;
 
-        if (SchoolID){
+        //let SchoolID = 'school1';
 
-            getSchoolData(SchoolID,dispatch).then(data=>{
+        GetSummary(SchoolID,dispatch).then(data=>{
 
-                if (data){
+            if (data){
 
-                    dispatch({type:GET_ALL_GRADE_PREVIEW,data:data});
+                dispatch({type:GET_ALL_GRADE_PREVIEW,data:data});
 
-                    dispatch({type:UpUIState.GRADE_LOADING_HIDE});
+                dispatch({type:UpUIState.GRADE_LOADING_HIDE});
 
-                    dispatch({type:UpUIState.APP_LOADING_CLOSE});
+                dispatch({type:UpUIState.APP_LOADING_CLOSE});
 
-                }
+            }
 
-            });
+        });
 
-        }else{
-
-            let waitUser = setInterval(()=>{
-
-                let { SchoolID } = getState().DataState.LoginUser;
-
-                let Grades = getState().DataState.SchoolGradeClasses.Grades;
-
-                if (Grades){
-
-                    clearInterval(waitUser);
-
-                    getSchoolData(SchoolID,dispatch).then(data=>{
-
-                        if (data){
-
-                            dispatch({type:GET_ALL_GRADE_PREVIEW,data:data});
-
-                            dispatch({type:UpUIState.GRADE_LOADING_HIDE});
-
-                            dispatch({type:UpUIState.APP_LOADING_CLOSE});
-
-                        }
-
-                    });
-
-                }
-
-            },50);
-
-        }
 
     }
 
@@ -747,38 +711,20 @@ const UpdateClassName = ({GradeID,ClassID,ClassName}) => {
 //接口
 
 
-//获取login信息
-const getLogin = async (dispatch) => {
 
-   let res = await Method.getGetData('/Login?method=GetUserInfo',1,CONFIG.MockLoginProxy);
+//获取年级班级信息
 
-   if (res.error === 0){
-
-       return res.data;
-
-   }else{
-
-    dispatch(AppAlertActions.alertError(res.Msg));
-
-   }
-
-};
-
-
-
-//获取所有的年级班级信息
-
-const getGradeClass = async (SchoolID,dispatch) => {
+const GetGradeClassTree = async (SchoolID,dispatch) => {
 
     let res = await Method.getGetData(`/UserMgr/UserInfoMgr/GetGradeClassTree?SchoolID=${SchoolID}`,2,CONFIG.AdmClassProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
     }else{
 
-        dispatch(AppAlertActions.alertError(res.Msg));
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常",ok:()=>{ return ()=>window.location.href='error.aspx' }}));
 
     }
 
@@ -789,17 +735,17 @@ const getGradeClass = async (SchoolID,dispatch) => {
 
 //获取班级总览数据
 
-const getSchoolData = async (SchoolID,dispatch) => {
+const GetSummary = async (SchoolID,dispatch) => {
 
     let res = await Method.getGetData(`/UserMgr/ClassMgr/GetSummary?SchoolID=${SchoolID}`,2,CONFIG.AdmClassProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
     }else{
 
-        dispatch(AppAlertActions.alertError(res.Msg));
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常",ok:()=>{ return ()=>window.location.href='error.aspx' }}));
 
     }
 
@@ -813,13 +759,14 @@ const getClassList = async ({SchoolID,PageIndex,PageSize,dispatch,Keyword,GradeI
 
     let res = await Method.getGetData(`/UserMgr/ClassMgr/GetGradeSummary?SchoolID=${SchoolID}&PageIndex=${PageIndex}&PageSize=${PageSize}${Keyword?`&Keyword=${Keyword}`:''}${GradeID?`&GradeID=${GradeID}`:''}`,2,CONFIG.AdmClassProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
     }else{
 
-        dispatch(AppAlertActions.alertError(res.Msg));
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
 
     }
 
@@ -834,13 +781,13 @@ const getTeachers = async ({ClassID,dispatch}) => {
 
     let res = await Method.getGetData(`/UserMgr/ClassMgr/GetClassTeacher?ClassID=${ClassID}`,2,CONFIG.AdmClassProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
     }else{
 
-        dispatch(AppAlertActions.alertError(res.Msg));
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
 
     }
 
@@ -855,13 +802,13 @@ const getStudents = async ({ClassID,dispatch,Keyword,PageIndex,PageSize}) => {
 
     let res = await Method.getGetData(`/UserMgr/UserInfoMgr/GetStudentToPage?ClassID=${ClassID}&PageIndex=${PageIndex}&PageSize=${PageSize}${Keyword?`&Keyword=${Keyword}`:''}`,2,CONFIG.AdmClassProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
     }else{
 
-        dispatch(AppAlertActions.alertError(res.Msg));
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
 
     }
 
@@ -874,13 +821,13 @@ const getSubjects = async ({ClassID,dispatch}) => {
 
     let res = await Method.getGetData(`/UserMgr/ClassMgr/GetSubject?ClassID=${ClassID}`,2,CONFIG.AdmClassProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
     }else{
 
-        dispatch(AppAlertActions.alertError(res.Msg));
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
 
     }
 
@@ -894,13 +841,13 @@ const getAllTeacher = async ({SchoolID,SubjectIDs='',Keyword,UserID,dispatch}) =
 
     let res = await Method.getGetData(`/UserMgr/ClassMgr/GetTeacherToPage?SchoolID=${SchoolID}&SubjectIDs=${SubjectIDs}${Keyword?`&Keyword=${Keyword}`:''}${UserID?`&UserID=${UserID}`:''}`,2,CONFIG.AdmClassProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
     }else{
 
-        dispatch(AppAlertActions.alertError(res.Msg));
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
 
     }
 
@@ -917,13 +864,13 @@ const setGengar =  async ({ClassID,UserID='',dispatch}) => {
 
     },2,CONFIG.AdmClassProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCodee === 200){
 
         return res;
 
     }else{
 
-        dispatch(AppAlertActions.alertError(res.Msg));
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
 
     }
 
@@ -941,15 +888,13 @@ const setTeacher =  async ({ClassID,SubjectID,UserID='',dispatch}) => {
 
     },2,CONFIG.AdmClassProxy);
 
-
-
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res;
 
     }else{
 
-        dispatch(AppAlertActions.alertError(res.Msg));
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
 
     }
 
@@ -967,13 +912,13 @@ const adjustClass =  async ({ClassID,UserIDs,dispatch}) => {
 
 
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res;
 
     }else{
 
-        dispatch(AppAlertActions.alertError(res.Msg));
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
 
     }
 
@@ -999,7 +944,7 @@ const addClassPost =  async ({GradeID,ClassName,dispatch}) => {
 
     }else{
 
-        dispatch(AppAlertActions.alertError(res.Msg));
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
 
     }
 
@@ -1024,7 +969,7 @@ const editClassPost =  async ({ClassID,ClassName,dispatch}) => {
 
     }else{
 
-        dispatch(AppAlertActions.alertError(res.Msg));
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
 
     }
 

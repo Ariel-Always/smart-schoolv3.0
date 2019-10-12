@@ -154,7 +154,7 @@ class AddScheduleModal extends Component{
 
         ){
 
-            dispatch(ASMActions.commitInfo())
+            dispatch(ASMActions.commitInfo());
 
         }
 

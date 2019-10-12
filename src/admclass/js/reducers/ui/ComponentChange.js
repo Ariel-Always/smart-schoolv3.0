@@ -2,7 +2,11 @@ import UpUIState from '../../actions/UpUIState';
 
 const ComponentChange = (state={
 
-    stu:true,class:false,grade:false,
+    stu:false,
+
+    class:false,
+
+    grade:false,
 
     stuInfo:{id:'',name:''},
 

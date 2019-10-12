@@ -16,6 +16,8 @@ import Content from '../../components/Teacher/Content';
 
 import { connect } from 'react-redux';
 
+import {LogOut} from "../../../../common/js/disconnect";
+
 class Index extends Component{
 
     constructor(props) {
@@ -227,9 +229,7 @@ class Index extends Component{
 
     GoOut(){
 
-        sessionStorage.clear();
-
-        window.location.href='/UserMgr/Login/Login.aspx'
+        LogOut();
 
     }
 
