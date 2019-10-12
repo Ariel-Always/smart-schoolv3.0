@@ -124,7 +124,23 @@ function getQueryVariable(variable) {
     }
     return (false);
 }
+
+//获取url参数
+function getUrlQueryVariable(url,variable) {
+    if(!url){
+        return;
+    }
+    var query = url.split('?')[1];
+    
+    var vars = query.split("&");
+    for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split("=");
+        if (pair[0] === variable) { return pair[1]; }
+    }
+    return (false);
+}
 export default {
     deepCompare,
-    getQueryVariable
+    getQueryVariable,
+    getUrlQueryVariable
 }

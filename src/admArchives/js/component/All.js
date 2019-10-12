@@ -27,7 +27,7 @@ class All extends React.Component {
     }
     componentWillReceiveProps(nextProps) {
         const { DataState, UIState,dispatch } = nextProps;
-
+        let userMsg = DataState.LoginUser;
         let userData = DataState.AllUserPreview;
         if (JSON.stringify(userData) !== '{}')
             if (userData && this.state.refresh) {
@@ -184,7 +184,7 @@ class All extends React.Component {
                 Chart_student.on('click', function (params) {
                     let grade = DataState.AllUserPreview.NewGrades[params.name];
                     history.push('/UserArchives/Student/'+grade.GradeID)
-                    dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&GradeID='+grade.GradeID +'&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC',{value:grade.GradeID,title:grade.GradeName}));
+                    dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+userMsg.SchoolID+'&GradeID='+grade.GradeID +'&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC',{value:grade.GradeID,title:grade.GradeName}));
 
                    
                 })
@@ -252,7 +252,7 @@ class All extends React.Component {
                 Chart_teacher.on('click', function (params) {
                     let subject = DataState.AllUserPreview.NewSubjects[params.name];
                     history.push('/UserArchives/Teacher/'+subject.SubjectID)
-                    dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID='+this.state.userMsg.SchoolID+'&SubjectIDs='+subject.SubjectID +'&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC',{value:subject.SubjectID,title:subject.SubjectName}));
+                    dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID='+userMsg.SchoolID+'&SubjectIDs='+subject.SubjectID +'&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC',{value:subject.SubjectID,title:subject.SubjectName}));
                    
                 })
             }

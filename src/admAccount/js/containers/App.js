@@ -134,7 +134,8 @@ class App extends Component {
         const { dispatch,DataState } = this.props;
         let pathArr = route.split('/');
         let handleRoute = pathArr[1];
-        let userMsg = DataState.LoginUser||sessionStorage.getItem('UserInfo')
+        console.log(DataState.LoginUser,JSON.parse(sessionStorage.getItem('UserInfo')))
+        let userMsg = DataState.LoginUser.SchoolID?DataState.LoginUser:JSON.parse(sessionStorage.getItem('UserInfo'))
         if (route === '/') {
             //dispatch(actions.UpDataState.getAllUserPreview('/ArchivesAll'));
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
@@ -202,7 +203,7 @@ class App extends Component {
 
         return (
             <React.Fragment>
-                <Loading tip="加载中..." size="large" spinning={UIState.AppLoading.appLoading}>
+                <Loading tip="加载中..." opacity={false} size="large" spinning={UIState.AppLoading.appLoading}>
 
 
                     <Frame userInfo={{

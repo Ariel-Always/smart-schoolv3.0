@@ -86,7 +86,8 @@ class App extends Component {
     // 请求每个组件主要渲染的数据
     requestData = (route) => {
         const { dispatch,DataState } = this.props;
-        let UserMsg = DataState.LoginUser||sessionStorage.getItem('UserInfo');
+        let UserMsg = DataState.LoginUser.SchoolID?DataState.LoginUser:JSON.parse(sessionStorage.getItem('UserInfo'))
+        
 
         let pathArr = route.split('/');
         let handleRoute = pathArr[1];

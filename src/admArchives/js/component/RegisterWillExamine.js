@@ -334,23 +334,23 @@ class RegisterWillExamine extends React.Component {
     onPassQueryOk = () => {
         const { dispatch, DataState } = this.props;
         let checkList = this.state.checkedList;
-        let StatusCount = DataState.GetSignUpLog.newStatus;
+        let StatusCodeCount = DataState.GetSignUpLog.newStatusCode;
         let logID = checkList.map((child, index) => {
             return DataState.GetSignUpLog.WillData.returnData[child - 1].UserMsg.logID;
         })
         let url = '/SignUpLogAudit'
-        dispatch(actions.UpDataState.setSignUpLogCountMsg(StatusCount + logID.length));
-        console.log(StatusCount)
+        dispatch(actions.UpDataState.setSignUpLogCountMsg(StatusCodeCount + logID.length));
+        console.log(StatusCodeCount)
         postData(CONFIG.UserInfoProxy + url, {
             LogID: logID.join(),
-            Status: 1
+            StatusCode: 1
         }, 2).then(res => {
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
+            if (json.StatusCode === 400) {
                 console.log('错误码：400' + json);
                 dispatch(actions.UpUIState.hideErrorAlert());
-            } else if (json.Status === 200) {
+            } else if (json.StatusCode === 200) {
                 dispatch(actions.UpUIState.hideErrorAlert());
 
                 this.setState({
@@ -358,7 +358,7 @@ class RegisterWillExamine extends React.Component {
                     checkList: []
                 })
 
-                // dispatch(actions.UpDataState.setSignUpLogCountMsg(++StatusCount))
+                // dispatch(actions.UpDataState.setSignUpLogCountMsg(++StatusCodeCount))
 
                 if (this.state.firstSelect.value === 0) {
                     dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=0'))
@@ -377,26 +377,26 @@ class RegisterWillExamine extends React.Component {
         let logID = checkList.map((child, index) => {
             return DataState.GetSignUpLog.WillData.returnData[child - 1].UserMsg.logID;
         })
-        let StatusCount = DataState.GetSignUpLog.newStatus;
+        let StatusCodeCount = DataState.GetSignUpLog.newStatusCode;
         let url = '/SignUpLogAudit'
-        dispatch(actions.UpDataState.setSignUpLogCountMsg(StatusCount + logID.length));
+        dispatch(actions.UpDataState.setSignUpLogCountMsg(StatusCodeCount + logID.length));
 
         postData(CONFIG.UserInfoProxy + url, {
             LogID: logID.join(),
-            Status: 2
+            StatusCode: 2
         }, 2).then(res => {
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
+            if (json.StatusCode === 400) {
                 console.log('错误码：400' + json)
-            } else if (json.Status === 200) {
+            } else if (json.StatusCode === 200) {
                 dispatch(actions.UpUIState.hideErrorAlert());
 
                 this.setState({
                     checkAll: false,
                     checkList: []
                 })
-                // dispatch(actions.UpDataState.setSignUpLogCountMsg(StatusCount + logID.length));
+                // dispatch(actions.UpDataState.setSignUpLogCountMsg(StatusCodeCount + logID.length));
 
                 if (this.state.firstSelect.value === 0) {
                     dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=0'))
@@ -434,19 +434,19 @@ class RegisterWillExamine extends React.Component {
     //不通过
     UserExamineMadalFail = (userMsg) => {
         const { dispatch,DataState } = this.props;
-        let StatusCount = DataState.GetSignUpLog.newStatus;
+        let StatusCodeCount = DataState.GetSignUpLog.newStatusCode;
         let url = '/SignUpLogAudit'
-        dispatch(actions.UpDataState.setSignUpLogCountMsg(++StatusCount));
+        dispatch(actions.UpDataState.setSignUpLogCountMsg(++StatusCodeCount));
 
         postData(CONFIG.UserInfoProxy + url, {
             LogID: userMsg.logID,
-            Status: 2
+            StatusCode: 2
         }, 2).then(res => {
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
+            if (json.StatusCode === 400) {
                 console.log('错误码：400' + json)
-            } else if (json.Status === 200) {
+            } else if (json.StatusCode === 200) {
                 this.setState({
                     UserExamineModalVisible: false,
                 })
@@ -464,21 +464,21 @@ class RegisterWillExamine extends React.Component {
     UserExamineMadalOk = (userMsg) => {
         const { dispatch,DataState } = this.props;
         let url = '/SignUpLogAudit'
-        let StatusCount = DataState.GetSignUpLog.newStatus;
-        dispatch(actions.UpDataState.setSignUpLogCountMsg(++StatusCount));
+        let StatusCodeCount = DataState.GetSignUpLog.newStatusCode;
+        dispatch(actions.UpDataState.setSignUpLogCountMsg(++StatusCodeCount));
         postData(CONFIG.UserInfoProxy + url, {
             LogID: userMsg.logID,
-            Status: 1
+            StatusCode: 1
         }, 2).then(res => {
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
+            if (json.StatusCode === 400) {
                 console.log('错误码：400' + json)
-            } else if (json.Status === 200) {
+            } else if (json.StatusCode === 200) {
                 this.setState({
                     UserExamineModalVisible: false,
                 })
-                // dispatch(actions.UpDataState.setSignUpLogCountMsg(++StatusCount));
+                // dispatch(actions.UpDataState.setSignUpLogCountMsg(++StatusCodeCount));
 
                 if (this.state.firstSelect.value === 0) {
                     dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=0'))
@@ -591,12 +591,12 @@ class RegisterWillExamine extends React.Component {
                             </Table>
                         </CheckBoxGroup>
                     </Loading>
-                    <CheckBox className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
+                    {DataState.GetSignUpLog.WillData.Total?(<CheckBox className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
                         全选
 
                         <Button key='agree' className='agreeAll' color='blue' onClick={this.onAgreeAll.bind(this)}>通过</Button>
                         <Button key='refuse' className='refuseAll' color='red' onClick={this.RefuseAll.bind(this)}>不通过</Button>
-                    </CheckBox>
+                    </CheckBox>):''}
                     <div className='pagination-box'>
                         <PagiNation
                             showQuickJumper

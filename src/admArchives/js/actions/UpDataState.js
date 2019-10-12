@@ -1,5 +1,6 @@
 import { postData, getData } from "../../../common/js/fetch";
 import UpUIState from './UpUIState';
+import Public from '../../../common/js/public'
 import CONFIG from '../../../common/js/config';
 import 'whatwg-fetch';
 import actions from './index'
@@ -39,6 +40,11 @@ const GET_DID_SIGN_UP_LOG_MSG = 'GET_DID_SIGN_UP_LOG_MSG';
 const GET_WILL_SIGN_UP_LOG_MSG = 'GET_WILL_SIGN_UP_LOG_MSG';
 //审核状态
 const SET_SIGN_UP_LOG_STATUS_MSG = 'SET_SIGN_UP_LOG_STATUS_MSG'
+
+// 设置学科选择
+const SET_SUBJECTID = 'SET_SUBJECTID'
+//设置年级选择
+const SET_GRADEID = 'SET_GRADEID'
 //操作的执行
 //获取登录用户信息
 const  getLoginUser = (data) => {
@@ -54,14 +60,14 @@ const getAllUserPreview = (url) => {
         // console.log(CONFIG.proxy+url);
         dispatch(actions.UpUIState.RightLoadingOpen());
         getData(CONFIG.UserInfoProxy + url, 2).then(res => {
-            if (res.Status === '401') {
-                console.log('错误码：' + res.Status)
+            if (res.StatusCode === '401') {
+                console.log('错误码：' + res.StatusCode)
             }
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log(json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log(json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 dispatch({ type: GET_ALL_USER_PREVIEW, data: json.Data });
                 dispatch(actions.UpUIState.RightLoadingClose());
                 dispatch({ type: UpUIState.APP_LOADING_CLOSE });
@@ -73,18 +79,21 @@ const getAllUserPreview = (url) => {
 
 //获取学生档案信息/改
 const getGradeStudentPreview = (url, GradeID = { value: 0, title: '全部年级' }, ClassID = { value: 0, title: '全部班级' }) => {
+    console.log(GradeID,ClassID)
+    let pageIndex = Public.getUrlQueryVariable(url,'PageIndex');
+    let pageSize = Public.getUrlQueryVariable(url,'PageSize');
     return (dispatch) => {
         dispatch(actions.UpUIState.TableLoadingOpen());
         getData(CONFIG.UserInfoProxy + url, 2).then(res => {
-            if (res.Status === '401') {
-                console.log('错误码：' + res.Status)
+            if (res.StatusCode === '401') {
+                console.log('错误码：' + res.StatusCode)
             }
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log(json.Status)
-            } else if (json.Status === 200) {
-                dispatch({ type: GET_GRADE_STUDENT_PREVIEW, data: json.Data, GradeID: GradeID, ClassID: ClassID });
+            if (json.StatusCode === 400) {
+                console.log(json.StatusCode)
+            } else if (json.StatusCode === 200) {
+                dispatch({ type: GET_GRADE_STUDENT_PREVIEW, data: json.Data, GradeID: GradeID, ClassID: ClassID,pageIndex:pageIndex,pageSize:pageSize });
                 dispatch(actions.UpUIState.TableLoadingClose());
             }
 
@@ -93,19 +102,23 @@ const getGradeStudentPreview = (url, GradeID = { value: 0, title: '全部年级'
 }
 
 //获取教师档案信息/改
-const getSubjectTeacherPreview = (url, SubjectID = { value: 'all', title: '全部' }) => {
+const getSubjectTeacherPreview = (url, SubjectID) => {
+    let pageIndex = Public.getUrlQueryVariable(url,'PageIndex');
+    let pageSize = Public.getUrlQueryVariable(url,'PageSize');
     return (dispatch) => {
         dispatch(actions.UpUIState.TableLoadingOpen());
         getData(CONFIG.UserInfoProxy + url, 2).then(res => {
-            if (res.Status === '401') {
-                console.log('错误码：' + res.Status)
+            if (res.StatusCode === '401') {
+                console.log('错误码：' + res.StatusCode)
             }
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log(json.Status)
-            } else if (json.Status === 200) {
-                dispatch({ type: GET_SUBJECT_TEACHER_PREVIEW, data: json.Data, SubjectID: SubjectID });
+            if (json.StatusCode === 400) {
+                console.log(json.StatusCode)
+            } else if (json.StatusCode === 200) {
+                dispatch({ type: GET_SUBJECT_TEACHER_PREVIEW, data: json.Data,pageIndex:pageIndex,pageSize:pageSize});
+                if(SubjectID)
+                dispatch({type:SET_SUBJECTID,SubjectID: SubjectID})
                 dispatch(actions.UpUIState.TableLoadingClose());
             }
 
@@ -135,14 +148,14 @@ const getSchoolLeaderPreview = (url) => {
 const getGradeClassMsg = (url) => {
     return (dispatch) => {
         getData(CONFIG.UserInfoProxy + url, 2).then(res => {
-            if (res.Status === '401') {
-                console.log('错误码：' + res.Status)
+            if (res.StatusCode === '401') {
+                console.log('错误码：' + res.StatusCode)
             }
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log(json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log(json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 dispatch({ type: GET_GRADE_CLASS_MSG, data: json.Data });
             }
 
@@ -150,19 +163,31 @@ const getGradeClassMsg = (url) => {
     }
 }
 //获取学科信息/改
-const getSubjectTeacherMsg = (url) => {
-    return (dispatch) => {
+const getSubjectTeacherMsg = (url,SubjectID='all') => {
+    return (dispatch,getState) => {
 
         getData(CONFIG.UserInfoProxy + url, 2).then(res => {
-            if (res.Status === '401') {
+            if (res.StatusCode === '401') {
                 console.log('错误码：' + res.status)
             }
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log(json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log(json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 dispatch({ type: GET_SUBJECT_TEACHER_MSG, data: json.Data });
+                if(SubjectID!=='all'){
+                    let state = getState();
+                    let SubjectList = state.DataState.SubjectTeacherMsg.returnData.SubjectList;
+                    let subject = {};
+                    SubjectList.map((child,index) => {
+                        if(child.value===SubjectID){
+                            subject = child
+                        }
+                    })
+                    dispatch({type:SET_SUBJECTID,SubjectID:subject})
+                }
+                
             }
 
         });
@@ -173,14 +198,14 @@ const getTeacherTitleMsg = (url) => {
     return (dispatch) => {
 
         getData(CONFIG.UserInfoProxy + url, 2).then(res => {
-            if (res.Status === '401') {
-                console.log('错误码：' + res.Status)
+            if (res.StatusCode === '401') {
+                console.log('错误码：' + res.StatusCode)
             }
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log(json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log(json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 dispatch({ type: GET_TEACHER_TITLE_MSG, data: json.Data });
             }
 
@@ -219,14 +244,14 @@ const getDidSignUpLog = (url) => {
         dispatch(actions.UpUIState.TableLoadingOpen());
 
         getData(CONFIG.UserInfoProxy + url, 2).then(res => {
-            if (res.Status === '401') {
-                console.log('错误码：' + res.Status)
+            if (res.StatusCode === '401') {
+                console.log('错误码：' + res.StatusCode)
             }
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log(json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log(json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 dispatch({ type: GET_DID_SIGN_UP_LOG_MSG, data: json.Data });
                 dispatch(actions.UpUIState.TableLoadingClose());
 
@@ -241,14 +266,14 @@ const getWillSignUpLog = (url) => {
         dispatch(actions.UpUIState.TableLoadingOpen());
 
         getData(CONFIG.UserInfoProxy + url, 2).then(res => {
-            if (res.Status === '401') {
-                console.log('错误码：' + res.Status)
+            if (res.StatusCode === '401') {
+                console.log('错误码：' + res.StatusCode)
             }
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log(json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log(json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 dispatch({ type: GET_WILL_SIGN_UP_LOG_MSG, data: json.Data });
                 dispatch(actions.UpUIState.TableLoadingClose());
 
@@ -298,4 +323,7 @@ export default {
     getWillSignUpLog,
     setSignUpLogCountMsg,
     SET_SIGN_UP_LOG_STATUS_MSG
+
+    ,SET_SUBJECTID,
+    SET_GRADEID 
 }

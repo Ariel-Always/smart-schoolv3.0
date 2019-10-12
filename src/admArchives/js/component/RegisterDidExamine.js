@@ -123,13 +123,13 @@ class RegisterDidExamine extends React.Component {
                 {
                     title: '状态',
                     align: 'center',
-                    dataIndex: 'Status',
-                    key: 'Status',
-                    render: (Status) => {
+                    dataIndex: 'StatusCode',
+                    key: 'StatusCode',
+                    render: (StatusCode) => {
 
                         return (
                             <div className='handle-content'>
-                                <span className={`handle-tips `}>{Status.Status === 1 ? '审核通过' : Status.Status === 2 ? '审核未通过' : '未审核'}</span>
+                                <span className={`handle-tips `}>{StatusCode.StatusCode === 1 ? '审核通过' : StatusCode.StatusCode === 2 ? '审核未通过' : '未审核'}</span>
                             </div>
                         )
                     }

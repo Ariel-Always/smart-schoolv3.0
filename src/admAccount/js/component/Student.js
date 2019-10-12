@@ -383,14 +383,14 @@ class Student extends React.Component {
                     newPwd: this.state.defaultPwd
                 },
                 2).then(res => {
-                    if (res.Status === '401') {
-                        console.log('错误码：' + res.Status)
+                    if (res.StatusCode === '401') {
+                        console.log('错误码：' + res.StatusCode)
                     }
                     return res.json()
                 }).then(json => {
-                    if (json.Status === 400) {
-                        console.log(json.Status)
-                    } else if (json.Status === 200) {
+                    if (json.StatusCode === 400) {
+                        console.log(json.StatusCode)
+                    } else if (json.StatusCode === 200) {
                         this.setState({
                             ChangePwdMadalVisible: false,
                             defaultPwd: 888888
@@ -440,14 +440,14 @@ class Student extends React.Component {
                 newPwd: this.state.defaultPwd
             },
             2).then(res => {
-                if (res.Status === '401') {
-                    console.log('错误码：' + res.Status)
+                if (res.StatusCode === '401') {
+                    console.log('错误码：' + res.StatusCode)
                 }
                 return res.json()
             }).then(json => {
-                if (json.Status === 400) {
-                    console.log(json.Status)
-                } else if (json.Status === 200) {
+                if (json.StatusCode === 400) {
+                    console.log(json.StatusCode)
+                } else if (json.StatusCode === 200) {
                     this.setState({
                         checkedList: [],
                         checkAll: false

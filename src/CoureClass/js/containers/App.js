@@ -121,7 +121,8 @@ class App extends Component {
     requestData = (route) => {
 
         const { dispatch, DataState } = this.props;
-        let UserMsg = DataState.LoginUser||sessionStorage.getItem('UserInfo');
+        let UserMsg = DataState.LoginUser.SchoolID?DataState.LoginUser:JSON.parse(sessionStorage.getItem('UserInfo'))
+        
 
         let pathArr = route.split('/');
         let handleRoute = pathArr[1];
@@ -337,7 +338,7 @@ class App extends Component {
         }
         return (
             <React.Fragment>
-                <Loading tip="加载中..." size="large" spinning={UIState.AppLoading.appLoading}>
+                <Loading tip="加载中..." opacity={false} size="large" spinning={UIState.AppLoading.appLoading}>
 
 
                     <Frame userInfo={{
