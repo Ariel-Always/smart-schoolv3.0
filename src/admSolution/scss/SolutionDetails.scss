@@ -69,3 +69,11 @@
 .ant-table-thead > tr > th:nth-of-type(2){
   padding-left: 20px !important;
 }
+.FileName{
+  line-height: 17px;
+  height: 17px;
+  img{
+    //height: 25px;
+    vertical-align: sub;
+  }
+}
