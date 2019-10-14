@@ -8,6 +8,8 @@ import TeacherComponent from "./Teacher";
 
 import StudentComponent from "./Student";
 
+import Import from './Import';
+
 import { connect } from 'react-redux';
 
 
@@ -30,6 +32,8 @@ class RouterWrapper extends Component{
                     <Route path="/teacher/*"  component={TeacherComponent}></Route>
 
                     <Route path="/student/*"  component={StudentComponent}></Route>
+
+                    <Route path="/Import*" component={Import}></Route>
 
                     {
 

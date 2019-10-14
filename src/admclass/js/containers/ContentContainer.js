@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import GradeContent from "./GradeContent";
 import ClassContent from "./ClassContent";
 import StudentContent from "./StudentContent";
-import {withRouter,Route,Switch} from 'react-router-dom';
+
 import {connect} from 'react-redux';
 
 

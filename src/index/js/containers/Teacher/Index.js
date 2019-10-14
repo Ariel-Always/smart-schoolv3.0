@@ -215,6 +215,12 @@ class Index extends Component{
 
         addEventListener('click',this.OutMenuEvent.bind(this));
 
+        $(document).scroll((e)=>{
+
+            this.EmptyLoad();
+
+        });
+
     }
 
     //退出登录
@@ -232,6 +238,24 @@ class Index extends Component{
         LogOut();
 
     }
+
+
+    EmptyLoad(){
+
+       let WHeight  = $(window).height();
+
+       let ScrollTop = $(window).scrollTop();
+
+       $('.teacher-empty').each((index,that)=>{
+
+            let OffSetTop = $(that).offset().top;
+
+            //console.log(ScrollTop);
+
+       });
+
+    }
+
 
 
 
@@ -265,6 +289,7 @@ class Index extends Component{
                          GroupToggle={this.GroupToggle.bind(this)}
                          ClickModule={this.ClickModule.bind(this)}
                          ModulesLoading={ModulesLoading}
+                         EmptyLoad={this.EmptyLoad.bind(this)}
                 >
 
                 </Content>

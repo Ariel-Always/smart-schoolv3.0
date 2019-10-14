@@ -8,7 +8,18 @@ import { Input,Tooltip } from "antd";
 
 import { connect } from 'react-redux';
 
-import $ from "jquery";
+
+
+/*import '../../../common/js/PicUpload/Cropper/cropper.css';
+
+import '../../../common/js/PicUpload/photoUpload.css';
+
+import '../../../common/js/PicUpload/Cropper/cropper';
+
+const jQuery = require("jquery");
+
+require('../../../common/js/PicUpload/juqery.cp.picUploader');*/
+
 
 class BaseSetting extends Component{
 
@@ -269,7 +280,22 @@ class BaseSetting extends Component{
 
     componentDidMount(){
 
-        addEventListener('click',this.hideDetail.bind(this))
+        addEventListener('click',this.hideDetail.bind(this));
+
+        const { dispatch,LoginUser } = this.props;
+
+        var option = {
+
+            token: sessionStorage.getItem('token'),
+            resWebUrl: "http://www.baidu.com", //资源站点地址
+            userType: "Admin",   //用户类型，可选值Admin、Student、Teacher、SchoolLeader
+            userID:LoginUser.UserID, //新增时传空字符串、编辑时传相应UserID
+            curImgPath: "" //用户当前头像，新增时可不传
+
+        };
+
+
+        //$("#picUpload").picUploader(option);
 
     }
 
@@ -473,6 +499,8 @@ class BaseSetting extends Component{
                             <div className="user-photo-wrapper clearfix">
 
                                 <span className="props">头像:</span>
+
+                                <span id="PicUpload"></span>
 
                             </div>
 

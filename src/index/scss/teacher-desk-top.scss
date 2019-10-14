@@ -29,4 +29,22 @@
 
   }
 
+  //空数据状态
+
+  .teacher-empty{
+
+    background: url("#{$image-url}/teacher-empty.png") no-repeat center 0px;
+
+    text-align: center;
+
+    height: 112px;
+
+    padding-top: 64px;
+
+    color:rgba(255,255,255,0.5);
+
+    font-size: 14px;
+
+  }
+
 }

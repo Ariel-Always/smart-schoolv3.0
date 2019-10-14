@@ -37,7 +37,15 @@ class Content extends Component{
 
                                         <div className="module-group-wrapper clearfix">
 
+                                            {
 
+                                                item.Modules.length<1?
+
+                                                    <div className="teacher-empty">暂时还没有资源,请定制添加</div>
+
+                                                    :''
+
+                                            }
 
                                             {
 
@@ -194,6 +202,16 @@ class Content extends Component{
 
                                         <div className="module-group-wrapper clearfix">
 
+
+                                            {
+
+                                                item.Modules.length<1?
+
+                                                    <div className="teacher-empty">暂时还没有资源,请定制添加</div>
+
+                                                    :''
+
+                                            }
 
                                             {
 
