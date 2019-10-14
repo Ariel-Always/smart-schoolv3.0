@@ -720,74 +720,77 @@ const classHourDateChecked = (date) => {
 
         let { SchoolID } = getState().LoginUser;
 
-        ApiActions.GetWeekInfoByDate({SchoolID,ClassDate:date,dispatch}).then(data => {
+        if (date){
 
-           if (data){
+            ApiActions.GetWeekInfoByDate({SchoolID,ClassDate:date,dispatch}).then(data => {
 
-                let WeekNO = data.WeekNO;
+                if (data){
 
-                let weekDay = data.WeekDay;
+                    let WeekNO = data.WeekNO;
 
-                let WeekDay = '';
+                    let weekDay = data.WeekDay;
 
-               switch (weekDay) {
+                    let WeekDay = '';
 
-                   case 0:
+                    switch (weekDay) {
 
-                       WeekDay = '星期一';
+                        case 0:
 
-                       break;
+                            WeekDay = '星期一';
 
-                   case 1:
+                            break;
 
-                       WeekDay = '星期二';
+                        case 1:
 
-                       break;
+                            WeekDay = '星期二';
 
-                   case 2:
+                            break;
 
-                       WeekDay = '星期三';
+                        case 2:
 
-                       break;
+                            WeekDay = '星期三';
 
-                   case 3:
+                            break;
 
-                       WeekDay = '星期四';
+                        case 3:
 
-                       break;
+                            WeekDay = '星期四';
 
-                   case 4:
+                            break;
 
-                       WeekDay = '星期五';
+                        case 4:
 
-                       break;
+                            WeekDay = '星期五';
 
-                   case 5:
+                            break;
 
-                       WeekDay = '星期六';
+                        case 5:
 
-                       break;
+                            WeekDay = '星期六';
 
-                   case 6:
+                            break;
 
-                       WeekDay = '星期日';
+                        case 6:
 
-                       break;
+                            WeekDay = '星期日';
 
-                   default:
+                            break;
 
-                       WeekDay = '星期一';
+                        default:
 
-               }
+                            WeekDay = '星期一';
 
-               dispatch({type:REPLACE_SHCEDULE_CLASSHOUR_WEEK_DATE_UPDATE,data:{WeekNO,WeekDay}});
+                    }
 
-               dispatch({type:REPLACE_SHCEDULE_CLASSHOUR_WEEK_DATE_LOADING_HIDE});
+                    dispatch({type:REPLACE_SHCEDULE_CLASSHOUR_WEEK_DATE_UPDATE,data:{WeekNO,WeekDay}});
 
-           }
+                    dispatch({type:REPLACE_SHCEDULE_CLASSHOUR_WEEK_DATE_LOADING_HIDE});
 
-        });
+                }
 
+            });
+
+        }
 
     }
 
@@ -3679,11 +3682,11 @@ const ModalCommit = () => {
 
               let ScheduleIDs = ScheduleList.join(',');
 
-              let { SchoolID } = getState().LoginUser;
+              let { UserID,UserType } = getState().LoginUser;
 
               ApiActions.CloseTeacherSchedule({
 
-                  SchoolID,ScheduleIDs,dispatch
+                  UserID,UserType ,ScheduleIDs,dispatch
 
               }).then(data=>{
 

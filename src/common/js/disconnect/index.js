@@ -16,6 +16,8 @@ export function TokenCheck(IsDesk,SysID = '000') {
 
         //根据是否传参来判断是否是桌面方调用
 
+        sessionStorage.clear();
+
         if (IsDesk){//如果是桌面调用
 
             window.location.href = '/UserMgr/Login/Login.aspx';
@@ -155,6 +157,9 @@ export function TokenCheck(IsDesk,SysID = '000') {
                                             // }
                                         } else {//验证不成功
                                             // if (url.split('html/')[1]) {//有就说明不在登录页
+
+                                            sessionStorage.clear();
+
                                             if (!url.includes('html/admDisconnect')) {
 
                                                 if (IsDesk){
@@ -178,6 +183,9 @@ export function TokenCheck(IsDesk,SysID = '000') {
                                 }
                             )
                         } else {
+
+                            sessionStorage.clear();
+
                             // if (url.split('html/')[1]) {//有就说明不在登录页
                             if (!url.includes('html/admDisconnect')) {
 

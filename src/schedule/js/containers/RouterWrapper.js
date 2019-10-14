@@ -33,7 +33,7 @@ class RouterWrapper extends Component{
 
                     {
 
-                        LoginUser&&LoginUser.UserType===0?
+                        LoginUser&&parseInt(LoginUser.UserType)===0?
 
                             <Redirect path="/*"  to={{pathname:"/manager/subject-teacher/subject"}}></Redirect>
 
@@ -43,7 +43,7 @@ class RouterWrapper extends Component{
 
                     {
 
-                        LoginUser&&LoginUser.UserType===1?
+                        LoginUser&&parseInt(LoginUser.UserType)===1?
 
                             <Redirect path="/*" to={{pathname:"/teacher/subject-teacher/subject"}}></Redirect>
 
@@ -53,7 +53,7 @@ class RouterWrapper extends Component{
 
                     {
 
-                        LoginUser&&LoginUser.UserType===1?
+                        LoginUser&&parseInt(LoginUser.UserType)===1?
 
                             <Redirect path="/" to={{pathname:"/student/my"}}></Redirect>
 

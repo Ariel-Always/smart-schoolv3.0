@@ -22,7 +22,7 @@ const GetTermAndPeriodAndWeekNOInfo = async ({SchoolID,UserID,UserType,dispatch}
 
         CONFIG.ScheduleProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 

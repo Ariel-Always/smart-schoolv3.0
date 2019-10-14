@@ -12,9 +12,11 @@ const getCommonInfo = () => {
     return dispatch  => {
         //获取登录信息
 
-            let UserInfo = sessionStorage.getItem('UserInfo');
+            let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
 
             let {SchoolID,UserID,UserType} = UserInfo;
+
+            console.log(SchoolID,UserID,UserType);
 
             switch (UserType) {
 

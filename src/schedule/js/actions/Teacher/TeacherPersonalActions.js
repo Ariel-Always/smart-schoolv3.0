@@ -1,5 +1,7 @@
 import Method from "../Method";
 
+import ApiActions from '../ApiActions';
+
 const TP_NOW_WEEK_CHANGE = 'TP_NOW_WEEK_CHANGE';
 
 const TEACHER_PERSONAL_SCHEDULE_INIT = 'TEACHER_PERSONAL_SCHEDULE_INIT';
@@ -18,21 +20,17 @@ const TPSUpdate = () => {
 
         const { LoginUser,Teacher } = getState();
 
-        let SchoolID = LoginUser.SchoolID;
-
-        let UserID = LoginUser.UserID;
-
-        let UserType = LoginUser.UserType;
+        let {SchoolID,UserID,UserType} = LoginUser;
 
         let NowWeekNo = Teacher.PersonalSchedule.NowWeekNo;
 
         let teacherSchedulePromise = Method.getGetData(`/scheduleSubjectTeacherTeacherSchedule?UserID=${UserID}&UserType=${UserType}&SchoolID=${SchoolID}&NowWeekNo=${NowWeekNo}`);
 
-        teacherSchedulePromise.then(json => {
+        ApiActions.GetScheduleByUserID({SchoolID,UserType,UserID,WeekNO:NowWeekNo,dispatch}).then(data=>{
 
-            if (json.Status === 200){
+            if (data){
 
-                let schedule = json.Data.ItemSchedule.map((item) => {
+                let schedule = data.ItemSchedule.map((item) => {
 
                     return {
 
@@ -63,9 +61,6 @@ const TPSUpdate = () => {
 
                 dispatch({type:TP_SCHEDULE_LOADING_HIDE});
 
-            }else {
-
-                alert(json.Msg);
 
             }
 

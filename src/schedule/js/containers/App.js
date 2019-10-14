@@ -6,15 +6,9 @@ import {TokenCheck_Connect} from "../../../common/js/disconnect";
 
 import { connect } from 'react-redux';
 
-import {HashRouter as Router,Route,Switch,withRouter,Redirect} from 'react-router-dom';
+import {HashRouter as Router} from 'react-router-dom';
 
 import DocumentTitle from 'react-document-title';
-
-import ManagerComponent from './Manager';
-
-import TeacherComponent from './Teacher';
-
-import StudentComponent from './Student';
 
 import AdjustBtnsWrapper from '../component/Manager/AdjustBtnsWrapper';
 
@@ -49,8 +43,6 @@ import ManagerIndexActions from '../actions/Manager/ManagerIndexActions';
 import RouterWrapper from './RouterWrapper';
 
 import '../../scss/index.scss';
-
-import LoginUserActions from "../actions/LoginUserActions";
 
 
 
