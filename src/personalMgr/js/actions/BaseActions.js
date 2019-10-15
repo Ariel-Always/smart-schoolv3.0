@@ -92,7 +92,7 @@ const Init = () => {
 
 };
 
-const Commit = () => {
+const Commit = (dom) => {
 
   return ( dispatch,getState ) => {
       
@@ -107,32 +107,41 @@ const Commit = () => {
 
           dispatch({type:BASE_SETTING_EDITOR_CLOSE});
 
-            UpdateBasicInfo({
+          if($(dom).picUploader.uploadSubmit()){
 
-                UserID:UserID,UserType:UserType,ShortName:ShortNameValue,QQ:QQValue,Weixin:WeixinValue,
+              let PhotoPath =  $(dom).picUploader.getCurImgPath();
 
-                Weibo:WeiboValue,Telephone:TelephoneValue,Sign:SignValue,PhotoPath:'',dispatch
+              UpdateBasicInfo({
 
-            }).then(data => {
+                  UserID,UserType,ShortName:ShortNameValue?ShortNameValue:'',QQ:QQValue?QQValue:'',Weixin:WeixinValue?WeixinValue:'',
 
-               if (data){
+                  Weibo:WeiboValue?WeiboValue:'',Telephone:TelephoneValue?TelephoneValue:'',Sign:SignValue?SignValue:'',PhotoPath,dispatch
 
-                    dispatch(AppAlertActions.alertSuccess({title:"保存成功"}));
+              }).then(data => {
 
-                   getBaseInfo({UserID,UserType,dispatch}).then(data => {
+                  if (data==='success'){
 
-                       if (data){
+                      dispatch(AppAlertActions.alertSuccess({title:"保存成功"}));
 
-                           dispatch({type:BASE_INFO_UPDATE,data:data});
+                      getBaseInfo({UserID,UserType,dispatch}).then(data => {
+
+                          if (data){
+
+                              dispatch({type:BASE_INFO_UPDATE,data:data});
 
 
-                       }
 
-                   });
+                          }
 
-               }
+                      });
 
-            });
+                  }
+
+              });
+
+          }
+
+
 
       }
 
@@ -184,7 +193,7 @@ let UpdateBasicInfo =  async ({UserID,UserType,ShortName,PhotoPath,QQ,Weixin,Tel
 
     if (res.StatusCode === 200){
 
-        return res.Data;
+        return res.Msg;
 
     }else{
 

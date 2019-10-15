@@ -1,25 +1,28 @@
 import React,{Component} from 'react';
 
+import { findDOMNode } from 'react-dom';
+
 import BaseActions from '../actions/BaseActions';
 
-import { Loading } from "../../../common";
+import { Loading,Modal } from "../../../common";
 
 import { Input,Tooltip } from "antd";
 
 import { connect } from 'react-redux';
 
+import $ from "jquery";
 
+import '../../../common/js/PicUpload/Cropper/cropper.css';
 
-/*import '../../../common/js/PicUpload/Cropper/cropper.css';
-
-import '../../../common/js/PicUpload/photoUpload.css';
+import '../../../common/js/PicUpload/photoUpload.scss';
 
 import '../../../common/js/PicUpload/Cropper/cropper';
 
-const jQuery = require("jquery");
+window.$ = $;
 
-require('../../../common/js/PicUpload/juqery.cp.picUploader');*/
+window.jQuery = $;
 
+require ('../../../common/js/PicUpload/juqery.cp.picUploader');
 
 class BaseSetting extends Component{
 
@@ -30,6 +33,7 @@ class BaseSetting extends Component{
         const { dispatch } = props;
 
         dispatch(BaseActions.Init());
+
 
     }
 
@@ -49,6 +53,8 @@ class BaseSetting extends Component{
         }
 
     }
+
+
 
     //用户名变更
     ShortNameChange(e){
@@ -196,7 +202,7 @@ class BaseSetting extends Component{
 
         const { dispatch } = this.props;
 
-        dispatch(BaseActions.Commit());
+        dispatch(BaseActions.Commit(this.PicUpload));
 
     }
 
@@ -284,18 +290,48 @@ class BaseSetting extends Component{
 
         const { dispatch,LoginUser } = this.props;
 
+        const { UserType,UserID,PhotoPath } = LoginUser;
+
+        let userType = '';
+
+        switch (UserType) {
+
+            case 0:
+
+                userType = 'Admin';
+
+                break;
+
+            case 1:
+
+                userType = 'Teacher';
+
+                break;
+
+            case 2:
+
+                userType = 'Student';
+
+                break;
+
+            default:
+
+                userType = 'Admin';
+
+        }
+
         var option = {
 
             token: sessionStorage.getItem('token'),
-            resWebUrl: "http://www.baidu.com", //资源站点地址
-            userType: "Admin",   //用户类型，可选值Admin、Student、Teacher、SchoolLeader
-            userID:LoginUser.UserID, //新增时传空字符串、编辑时传相应UserID
-            curImgPath: "" //用户当前头像，新增时可不传
+            resWebUrl: "http://192.168.129.1:30101/lgftp/", //资源站点地址
+            userType:userType,   //用户类型，可选值Admin、Student、Teacher、SchoolLeader
+            userID:UserID, //新增时传空字符串、编辑时传相应UserID
+            curImgPath:PhotoPath, //用户当前头像，新增时可不传
+            size:"small"
 
         };
 
-
-        //$("#picUpload").picUploader(option);
+        $(this.PicUpload).picUploader(option);
 
     }
 
@@ -398,6 +434,7 @@ class BaseSetting extends Component{
 
 
 
+
     render() {
 
         const { BaseSetting,LoginUser } = this.props;
@@ -466,6 +503,9 @@ class BaseSetting extends Component{
 
         } = BaseSetting;
 
+
+
+
         return (
 
             <Loading spinning={loadingShow}>
@@ -492,21 +532,13 @@ class BaseSetting extends Component{
 
                     <div className="content-wrapper">
 
-                        {
+                        <div className="user-photo-wrapper clearfix" style={{display:`${editorStatus?'block':'none'}`}}>
 
-                            editorStatus?
+                            <span className="props">头像:</span>
 
-                            <div className="user-photo-wrapper clearfix">
+                            <div ref={r=>this.PicUpload=r} id="PicUpload"></div>
 
-                                <span className="props">头像:</span>
-
-                                <span id="PicUpload"></span>
-
-                            </div>
-
-                            :''
-
-                        }
+                        </div>
 
                         <div className="user-id-wrapper clearfix">
 
@@ -916,6 +948,18 @@ class BaseSetting extends Component{
                     </div>
 
             </div>
+
+               {/* <Modal type={1}
+                       visible={true}
+                       title="添加临时课程"
+                       width={680}
+                       bodyStyle={{height:286}}
+                       mask={true}
+                       maskClosable={true} ref={modal=>this.Modal=modal}>
+
+                        <div ref={div=>this.PicUpLoad=div} id="PicUpLoad"></div>
+
+                </Modal>*/}
 
             </Loading>
 

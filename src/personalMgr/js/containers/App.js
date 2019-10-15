@@ -96,7 +96,9 @@ class App extends Component{
 
     render() {
 
-        const { LoginUser,ModuleCommonInfo,AppAlert,AppLoading } = this.props;
+        let { LoginUser,ModuleCommonInfo,AppAlert,AppLoading } = this.props;
+
+        let BaseSettings  = this.props.BaseSetting;
 
         let Component = '';
 
@@ -124,7 +126,7 @@ class App extends Component{
                         }}
                         userInfo={{
                             name:LoginUser.UserName,
-                            image:LoginUser.PhotoPath
+                            image:BaseSettings.PhotoPath_NoCache?BaseSettings.PhotoPath_NoCache:LoginUser.PhotoPath_NoCache
                         }}
                         type="triangle"
                         showBarner={false}
@@ -136,7 +138,7 @@ class App extends Component{
 
                             <div className="frame_left_menu_pic clearfix">
 
-                                <div className="header-pic" style={{backgroundImage:`url(${LoginUser.PhotoPath})`}}></div>
+                                <div className="header-pic" style={{backgroundImage:`url(${BaseSettings.PhotoPath_NoCache?BaseSettings.PhotoPath_NoCache:LoginUser.PhotoPath_NoCache})`}}></div>
 
                                 <div className="user-name">{LoginUser.UserName}</div>
 
@@ -197,7 +199,7 @@ class App extends Component{
 
 const mapStateToProps = (state) => {
 
-    const { LoginUser,ModuleCommonInfo,AppAlert,AppLoading } = state;
+    const { LoginUser,ModuleCommonInfo,AppAlert,AppLoading,BaseSetting } = state;
 
     return {
 
@@ -207,7 +209,9 @@ const mapStateToProps = (state) => {
 
         AppAlert,
 
-        AppLoading
+        AppLoading,
+
+        BaseSetting
 
     }
 

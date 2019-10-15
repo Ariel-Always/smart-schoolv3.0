@@ -3,13 +3,12 @@ $img_url:'#{$image_url}/frame';
 //界面框架整体
 
 .frame-drag-flag{
-  width: 100%;
+  min-width: 1200px;
   background-color:#f5f5f5;
 }
 //界面框架头部
 .frame-header-wrapper{
   position: relative;
-  max-width: 1920px;
   min-width: 1200px;
   margin: 0 auto;
   height: 150px;
@@ -225,7 +224,6 @@ $img_url:'#{$image_url}/frame';
   position: relative;
   min-width: 1200px;
   margin: 0 auto;
-  max-width: 1920px;
   height: 40px;
   line-height: 40px;
   background: rgba(0, 0, 0, 0.2);

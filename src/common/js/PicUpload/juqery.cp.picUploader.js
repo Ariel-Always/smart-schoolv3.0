@@ -18,8 +18,9 @@
     };
 
     $.fn.extend({
+
         "picUploader": function (options) {
-            var html = '<div class="up_area">'
+            var html = '<div class="up_area '+(options.size?options.size:"big")+'">'
                 + '			<div class="up_img_container">'
                 + '				<div id="UserPhoto_Current" data-src="" class="up_img_current" title="当前头像" ></div>'
                 + '				<div ID="up_img_preview" class="up_img_preview" style="display: none;" title="预览头像" ></div>'
@@ -73,12 +74,13 @@
                 + '           </div>'
                 + '        </div>'
                 + '    </div>'
-                + '</div>';
+                + '</div>'
+                + '<div class="frame_mask" style="z-index:1000;display: none"></div>';
             $(this).html(html);
 
             _userPhoto_reset(options);
 
-            _userPhoto_checkH5();
+            //_userPhoto_checkH5();
 
             if (!_up_obj.allowLoad) {
                 $("#up_btn_container").hide();
@@ -86,18 +88,35 @@
             }
 
             $("#btn_close_cut,#btn_close_cut2").click(function () {
-                $("#modal_photoCut").hide();
-            })
+
+                $('.modal_dialog').removeClass('frame_modal_open').addClass('frame_modal_close');
+
+
+                setTimeout(()=>{
+
+                    $("#modal_photoCut").hide();
+
+                },200);
+
+                $('.frame_mask').hide();
+
+            });
 
             $("#up_btn_load").click(function () {
+
+                $('.modal_dialog').removeClass('frame_modal_close').addClass('frame_modal_open');
+
                 _userPhoto_appendFileInput();
+
                 if (_up_obj.crop === true) {
                     $("#crop_img").next().hide();
                     $("#preview_large_wrap img").hide();
                     $("#crop_zoomIn,#crop_zoomOut").hide();
                     $('#btn_openCut').click();
-
                     $("#modal_photoCut").show();
+
+                    $('.frame_mask').show();
+
                 } else {
                     $('#up_file').click();
                 }
@@ -246,7 +265,9 @@
             }
 
             $("#btn_cut").click(function () {
+
                 var cas = $('#crop_img').cropper('getCroppedCanvas', { width: 352, height: 441 });
+                
                 var base64url = cas.toDataURL('image/png');
                 $("#btn_close_cut").click();
                 //$('.up_img_current').hide();
@@ -297,6 +318,7 @@
                     },
                     complete: function () {
                         $("#up_loading").hide();
+                        $('.frame_mask').hide();
                     }
                 });
 
@@ -325,8 +347,6 @@
             if (_up_obj.crop && $("#btn_openCut").length > 0) {
                 $("#btn_close_cut").click();
                 $("#crop_zoomIn,#crop_zoomOut").hide();
-            } else {
-                _up_obj.crop = false;
             }
         }
     });
@@ -451,8 +471,6 @@
         if (_up_obj.crop && $("#btn_openCut").length > 0) {
             $("#btn_close_cut").click();
             $("#crop_zoomIn,#crop_zoomOut").hide();
-        } else {
-            _up_obj.crop = false;
         }
 
         if (_up_obj.curImgPath === '') {
@@ -465,6 +483,7 @@
 
     //动态插入input file标签
     function _userPhoto_appendFileInput() {
+
         if ($('#up_file').length === 0) {
             $('.up_btn_container').append("<input id='up_file' accept='image/jpg,image/jpeg,image/gif,image/bmp,image/png' style='display:none' type='file' />");
         }
@@ -626,7 +645,13 @@
         _userPhoto_reset();
     }
 
+    function _userPhoto_getCurImgFullPath(){
+        return _up_obj.resWebUrl+_userPhoto_getCurImgPath();
+    }
+
     $.fn.picUploader.getCurImgPath = _userPhoto_getCurImgPath;
+
+    $.fn.picUploader.getCurImgFullPath = _userPhoto_getCurImgFullPath;
     $.fn.picUploader.isChanged = _userPhoto_isChanged;
     $.fn.picUploader.uploadSubmit = _userPhoto_uploadSubmit;
     $.fn.picUploader.setGender = _userPhoto_setGender;

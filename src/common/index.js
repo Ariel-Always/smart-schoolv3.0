@@ -1804,8 +1804,8 @@ class Frame extends React.Component {
                             <div className="frame-home-header-menus">
                                 <div className="frame-home-header-menu">
                                     <input className="frame-home-logout" title="退出" type="button" onClick={this.LogOut.bind(this)} value="" />
-                                    <a href="/html/personalMgr" rel="noopener noreferrer" target="_blank" className="frame-home-username" title={userInfo && userInfo.name?userInfo.name:""}>{userInfo && userInfo.name ? userInfo.name : ''}</a>
-                                    <a href="/html/personalMgr" rel="noopener noreferrer" target="_blank" className="frame-home-userpic" style={{ backgroundImage: `url(${userInfo && userInfo.image ? userInfo.image : ''})` }}></a>
+                                    <a href="/html/personalMgr"  target="_blank" className="frame-home-username" title={userInfo && userInfo.name?userInfo.name:""}>{userInfo && userInfo.name ? userInfo.name : ''}</a>
+                                    <a href="/html/personalMgr"  target="_blank" className="frame-home-userpic" style={{ backgroundImage: `url(${userInfo && userInfo.image ? userInfo.image : ''})` }}></a>
                                 </div>
                                 <div className="frame-home-header-menu">
                                     <a href="http://www.baidu.com" rel="noopener noreferrer" target="_blank" className={`frame-home-msg-menu ${msg ? 'msg' : ''}`} title="我的消息"></a>
