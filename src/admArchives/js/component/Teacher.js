@@ -280,7 +280,7 @@ class Teacher extends React.Component {
         // });
         this.setState({
             checkedList,
-            checkAll: checkedList === this.props.DataState.SubjectTeacherPreview.keyList ? true : false
+            checkAll: checkedList.length === this.props.DataState.SubjectTeacherPreview.keyList.length ? true : false
         })
     }
     handleTeacherModalOk = (e) => {
@@ -516,7 +516,7 @@ class Teacher extends React.Component {
 
         postData(CONFIG.UserInfoProxy + url, {
             userIDs: UserIDListString,
-            schoolID: 'school1'
+            schoolID: this.state.userMsg.SchoolID
         }, 2).then(res => {
             return res.json()
         }).then(json => {

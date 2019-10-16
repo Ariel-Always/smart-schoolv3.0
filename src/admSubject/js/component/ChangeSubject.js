@@ -59,7 +59,8 @@ class ChangeSubject extends React.Component {
         //         selectGrade: selectGrade
         //     })
         // }
-        DataState.PeriodMsg.value.map((child, index) => {
+        // console.log(DataState.PeriodMsg.value  instanceof Array)
+        DataState.PeriodMsg.value instanceof Array && DataState.PeriodMsg.value.map((child, index) => {
             console.log(child)
             if (index === 0)
                 return;
@@ -102,7 +103,7 @@ class ChangeSubject extends React.Component {
             })
         let selectGrade = [];
 
-        DataState.PeriodMsg.value.map((child, index) => {
+        DataState.PeriodMsg.value instanceof Array && DataState.PeriodMsg.value.map((child, index) => {
             //console.log(child)
             if (index === 0)
                 return;
@@ -154,7 +155,7 @@ class ChangeSubject extends React.Component {
         let selectGrade = this.state.selectGrade;
         let checkValue = []
 
-        DataState.PeriodMsg.value.map((child, key) => {
+        DataState.PeriodMsg.value instanceof Array && DataState.PeriodMsg.value.map((child, key) => {
             if (index === key)
                 checkValue = child.Grades;
         })
@@ -195,7 +196,7 @@ class ChangeSubject extends React.Component {
                 dropSelected: value
             })
         }
-        DataState.SubjectMsg.addSubjectMsg.map((child, index) => {
+        DataState.SubjectMsg.addSubjectMsg instanceof Array && DataState.SubjectMsg.addSubjectMsg.map((child, index) => {
             if (child.value === value.value)
                 GlabalGrades = child.GlabalGrades
         })
@@ -247,7 +248,7 @@ class ChangeSubject extends React.Component {
                     <div className='row clearfix'>
                         <span className='culonm-1'>开课年级：</span>
                         <div className='culonm-2 culonm-3'>{
-                            DataState.PeriodMsg.value.map((child, index) => {
+                            DataState.PeriodMsg.value instanceof Array && DataState.PeriodMsg.value.map((child, index) => {
 
                                 if (index === 0)
                                     return;
@@ -277,7 +278,7 @@ class ChangeSubject extends React.Component {
                                         </CheckBox>
                                         <span className='delete'></span>
                                         <CheckBoxGroup onChange={this.onCheckBoxGroupChange.bind(this, index)} value={mySelect}>
-                                            {GradesArr.map((child2, index) => {
+                                            {GradesArr instanceof Array && GradesArr.map((child2, index) => {
                                                 return (
                                                     <label key={index}>
                                                         <div  className={`checkBox ${mySelect.includes(child2) ? 'select' : ''}`}>

@@ -255,7 +255,7 @@ export function getUserInfo(token, SysID) {
                     UserInfo[key] = decodeURIComponent(value);
 
                 }
-
+                // console.log(JSON.stringify(UserInfo))
                 sessionStorage.setItem('UserInfo', JSON.stringify(UserInfo));
                 sessionStorage.setItem('lastTime', time)
             },

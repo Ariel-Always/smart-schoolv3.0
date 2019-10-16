@@ -211,7 +211,8 @@ class Teacher extends React.Component {
         const { dispatch } = this.props;
         this.setState({
             keyword: e.value,
-            CancelBtnShow: 'y'
+            CancelBtnShow: 'y',
+            pagination: 1
         })
         if (e.value === '') {
             dispatch(actions.UpUIState.showErrorAlert({

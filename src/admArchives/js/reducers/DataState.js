@@ -10,6 +10,10 @@ import SetStudentMsg from './data/SetStudentMsg';
 import SetTeacherMsg from './data/SetTeacherMsg';
 import TeacherTitleMsg from './data/TeacherTitleMsg';
 import GetSignUpLog from './data/GetSignUpLog';
+import SetLeaderMsg from './data/SetLeaderMsg';
+import GetGraduateGradeClassMsg from './data/GetGraduateGradeClassMsg';
+import GetGraduatePreview from './data/GetGraduatePreview';
+import GetGraduateMsg from './data/GetGraduateMsg';
 const DataState=combineReducers(
     {
         LoginUser,
@@ -22,6 +26,10 @@ const DataState=combineReducers(
         SetStudentMsg,
         SetTeacherMsg,
         TeacherTitleMsg,
-        GetSignUpLog
+        GetSignUpLog,
+        SetLeaderMsg,
+        GetGraduateGradeClassMsg,
+        GetGraduatePreview,
+        GetGraduateMsg
     });
 export default DataState;

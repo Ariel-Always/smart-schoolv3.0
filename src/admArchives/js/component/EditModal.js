@@ -43,6 +43,7 @@ class EditModal extends React.Component {
             changeSubjectVisible: false,
             TitleIDTipsTitle: '请选择职称',
             TitleIDVisible: false,
+            PositionTipsTitle:'请选择行政职称'
 
         }
     }
@@ -77,7 +78,7 @@ class EditModal extends React.Component {
                     gradeID: Select.child.GradeID,
                     classID: Select.child.ClassID,
                     // photoPath: Select.child.PhotoPath,
-                    photoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
+                    photoPath: Select.child.PhotoPath || Select.child.PhotoPath_Nocache,
                     IDCardNo: Select.child.IDCardNo,
                     email: Select.child.Email,
                     telephone: Select.child.Telephone,
@@ -154,7 +155,7 @@ class EditModal extends React.Component {
                     titleID: Select.child.TitleID,
                     subjectIDs: Select.child.SubjectIDs,
                     // photoPath: Select.child.PhotoPath,
-                    photoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
+                    photoPath: Select.child.PhotoPath || Select.child.PhotoPath_Nocache,
                     IDCardNo: Select.child.IDCardNo,
                     email: Select.child.Email,
                     telephone: Select.child.Telephone,
@@ -198,6 +199,81 @@ class EditModal extends React.Component {
                 checkedList: this.state.UserKey === 'add' ? [] : Select.SubjectNames.SubjectArr,
                 plainOptions: plainOptions,
                 SubjectChange: this.state.UserKey === 'add' ? '' : Select.SubjectNames.SubjectArr,
+                IDCardChange: this.state.UserKey === 'add' ? '' : Select.child.IDCardNo,
+                PhoneChange: this.state.UserKey === 'add' ? '' : Select.child.Telephone,
+                MailChange: this.state.UserKey === 'add' ? '' : Select.child.Email,
+                AddressChange: this.state.UserKey === 'add' ? '' : Select.child.HomeAddress,
+                UserIDChange: this.state.UserKey === 'add' ? '' : Select.child.UserID,
+
+            })
+        } else if (this.state.type === 'leader') {
+            let Select = DataState.SchoolLeaderPreview.newList[UserKey];
+            //let SubjectListChange = DataState.SubjectTeacherMsg.returnData.SubjectListChange;
+            let LeaderChangeMsg = {};
+            // let plainOptions = SubjectListChange.map((child, index) => {
+            //     return child.SubjectID;
+            // })
+
+            let LeaderPosition = [
+                { value: 1, title: '校长' },
+                { value: 2, title: '副校长' },
+                { value: 3, title: '教务主任' },
+            ];
+            let position = {value:0,title:'请选择行政职务'}
+            Select&&LeaderPosition.map((child,index) => {
+                if(child.title===Select.child.Position){
+                    position = child;
+                }
+                console.log(child.title,position)
+
+            })
+            if (UserKey !== 'add') {
+                //ClassArr = DataState.GradeClassMsg.returnData.AllClasses[Select.child.GradeID];
+
+                // for (let child in ClassArr) {
+                //     Classes.push(ClassArr[child]);
+                // }
+                LeaderChangeMsg = {
+                    userID: Select.child.UserID,
+                    userName: Select.child.UserName,
+                    gender: Select.child.Gender,
+                    position:position,
+                    // photoPath: Select.child.PhotoPath,
+                    photoPath: Select.child.PhotoPath || Select.child.PhotoPath_Nocache,
+                    IDCardNo: Select.child.IDCardNo,
+                    email: Select.child.Email,
+                    telephone: Select.child.Telephone,
+                    homeAddress: Select.child.HomeAddress
+                }
+            } else {
+
+                LeaderChangeMsg = {
+                    userID: '',
+                    userName: '',
+                    gender: '',
+                    position:'',
+                    photoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
+                    // photoPath: '',
+                    IDCardNo: '',
+                    email: '',
+                    telephone: '',
+                    homeAddress: ''
+                }
+            }
+            // console.log(position,Select.child.Position)
+            //改变reduce教师中转数据
+            dispatch(actions.UpDataState.setInitLeaderMsg(LeaderChangeMsg))
+            this.setState({
+                defaultUserName: this.state.UserKey === 'add' ? '' : DataState.SchoolLeaderPreview.newList ? DataState.SchoolLeaderPreview.newList[this.state.UserKey].UserName.UserName : '',
+                GendeChange: this.state.UserKey === 'add' ? {
+                    value: 0,
+                    title: '请选择性别'
+                } : {
+                        value: Select.child.Gender === '男' ? 1 : 0,
+                        title: Select.child.Gender
+                    },
+                LeaderPositionList: LeaderPosition,
+                PositionChange: this.state.UserKey === 'add' ? {value:0,title:'请选择行政职务'}: LeaderChangeMsg.position,
                 IDCardChange: this.state.UserKey === 'add' ? '' : Select.child.IDCardNo,
                 PhoneChange: this.state.UserKey === 'add' ? '' : Select.child.Telephone,
                 MailChange: this.state.UserKey === 'add' ? '' : Select.child.Email,
@@ -254,7 +330,11 @@ class EditModal extends React.Component {
             } else if (this.state.type === 'student') {
                 //改变reduce学生中转数据
                 dispatch(actions.UpDataState.setStudentMsg({ userID: e.target.value }))
+            }else if (this.state.type === 'leader') {
+                //改变reduce领导中转数据
+                dispatch(actions.UpDataState.setLeaderMsg({ userID: e.target.value }))
             }
+
 
         }
 
@@ -285,6 +365,10 @@ class EditModal extends React.Component {
             } else if (this.state.type === 'student') {
                 //改变reduce学生中转数据
                 dispatch(actions.UpDataState.setStudentMsg({ userName: value }))
+            }else if (this.state.type === 'leader') {
+                console.log('ddd')
+                //改变reduce领导中转数据
+                dispatch(actions.UpDataState.setLeaderMsg({ userName: value }))
             }
 
         }
@@ -304,6 +388,9 @@ class EditModal extends React.Component {
         } else if (this.state.type === 'student') {
             //改变reduce学生中转数据
             dispatch(actions.UpDataState.setStudentMsg({ gender: e.title }))
+        }else if (this.state.type === 'leader') {
+            //改变reduce领导中转数据
+            dispatch(actions.UpDataState.setLeaderMsg({ gender: e.title }))
         }
 
     }
@@ -356,6 +443,18 @@ class EditModal extends React.Component {
         //改变reduce学生中转数据
         dispatch(actions.UpDataState.setTeacherMsg({ titleID: e.value }))
     }
+    //行政职务
+    onEditPositionChange = (e) => {
+        const { dispatch } = this.props
+        this.setState({
+            PositionChange: e
+        })
+        dispatch(actions.UpUIState.editModalTipsVisible({
+            PositionTipsVisible: false
+        }))
+        //改变reduce领导中转数据
+        dispatch(actions.UpDataState.setLeaderMsg({ position: e.title }))
+    }
     //身份证
     onEditIDCardChange = (e) => {
         const { dispatch } = this.props
@@ -379,6 +478,9 @@ class EditModal extends React.Component {
             } else if (this.state.type === 'student') {
                 //改变reduce学生中转数据
                 dispatch(actions.UpDataState.setStudentMsg({ IDCardNo: value }))
+            }else if (this.state.type === 'leader') {
+                //改变reduce领导中转数据
+                dispatch(actions.UpDataState.setLeaderMsg({ IDCardNo: value }))
             }
 
         }
@@ -405,6 +507,9 @@ class EditModal extends React.Component {
             } else if (this.state.type === 'student') {
                 //改变reduce学生中转数据
                 dispatch(actions.UpDataState.setStudentMsg({ telephone: value }))
+            }else if (this.state.type === 'leader') {
+                //改变reduce领导中转数据
+                dispatch(actions.UpDataState.setLeaderMsg({ telephone: value }))
             }
 
         }
@@ -437,6 +542,9 @@ class EditModal extends React.Component {
             } else if (this.state.type === 'student') {
                 //改变reduce学生中转数据
                 dispatch(actions.UpDataState.setStudentMsg({ email: value }))
+            }else if (this.state.type === 'leader') {
+                //改变reduce领导中转数据
+                dispatch(actions.UpDataState.setLeaderMsg({ email: value }))
             }
 
         }
@@ -462,6 +570,9 @@ class EditModal extends React.Component {
             } else if (this.state.type === 'student') {
                 //改变reduce学生中转数据
                 dispatch(actions.UpDataState.setStudentMsg({ homeAddress: value }))
+            }else if (this.state.type === 'leader') {
+                //改变reduce领导中转数据
+                dispatch(actions.UpDataState.setLeaderMsg({ homeAddress: value }))
             }
 
         }
@@ -470,7 +581,7 @@ class EditModal extends React.Component {
     changeCheckBox = (checkedList) => {
         const { dispatch } = this.props
 
-        if (checkedList.length === 0){
+        if (checkedList.length === 0) {
             return;
         }
         this.setState({
@@ -512,18 +623,18 @@ class EditModal extends React.Component {
     render() {
         const { UIState, DataState } = this.props;
         let EditModalTipsVisible = UIState.EditModalTipsVisible;
-        console.log(EditModalTipsVisible)
+        // console.log(EditModalTipsVisible)
         return (
             <div className='EditModal'>
                 <div className='Left'></div>
                 <div className='Right'>
                     <div className="row clearfix" style={{ marginTop: this.state.type === 'student' || !this.state.type ? 18 + 'px' : 5 + 'px' }}>
                         <span className='culonm-1'>
-                            {this.state.type === 'student' ? '学号：' : this.state.type === 'teacher' ? '工号：' : '学号：'}
+                            {this.state.type === 'student' ? '学号：' :  '工号：'}
                         </span>
                         <div className='culonm-2'>
                             <span style={{ display: this.state.UserKey !== 'add' ? 'block' : 'none' }} className='UserID-text'>{this.state.UserIDChange}</span>
-                            <Tips  visible={EditModalTipsVisible.UserIDTipsVisible} title={(this.state.type === 'student' ? '学号' : this.state.type === 'teacher' ? '工号' : '学号') + this.state.UserIDTipsTitle} >
+                            <Tips visible={EditModalTipsVisible.UserIDTipsVisible} title={(this.state.type === 'student' ? '学号' : this.state.type === 'teacher' ? '工号' : '学号') + this.state.UserIDTipsTitle} >
                                 <Input maxLength={24} id="123" style={{ display: this.state.UserKey === 'add' ? 'block' : 'none' }} className='UserName-input'
                                     type='text'
                                     name='EditID'
@@ -612,22 +723,22 @@ class EditModal extends React.Component {
                         </span>
                         <div className='culonm-2'>
 
-                        <Tips visible={EditModalTipsVisible.TitleIDVisible} title={this.state.TitleIDTipsTitle} >
+                            <Tips visible={EditModalTipsVisible.TitleIDVisible} title={this.state.TitleIDTipsTitle} >
 
-                            <DropDown
-                                style={{ zIndex: 2 }}
-                                dropSelectd={ this.state.TitleChange }
-                                dropList={this.state.TeacherTitle}
-                                width={200}
-                                height={72}
-                                onChange={this.onEditTitleChange}
-                            >
+                                <DropDown
+                                    style={{ zIndex: 2 }}
+                                    dropSelectd={this.state.TitleChange}
+                                    dropList={this.state.TeacherTitle}
+                                    width={200}
+                                    height={72}
+                                    onChange={this.onEditTitleChange}
+                                >
 
-                            </DropDown>
-</Tips>
+                                </DropDown>
+                            </Tips>
                         </div>
                     </div>
-                    <div className="row clearfix" style={{ display: this.state.type !== 'teacher' ? 'block' : 'none' }}>
+                    <div className="row clearfix" style={{ display: this.state.type === 'student' ? 'block' : 'none' }}>
                         <span className='culonm-1'>
                             <span className='must-icon'>*</span>班级：
                         </span>
@@ -635,7 +746,7 @@ class EditModal extends React.Component {
                             <Tips visible={EditModalTipsVisible.ClassTipsVisible} title={this.state.ClassTipsTitle} >
                                 <DropDown
                                     style={{ zIndex: 1 }}
-                                    disabled={this.state.type !== 'teacher' ? this.state.GradeChange.value === 0 ? true : false : false}
+                                    disabled={this.state.type === 'student' ? this.state.GradeChange.value === 0 ? true : false : false}
                                     dropSelectd={this.state.ClassChange}
                                     dropList={this.state.Classes}
                                     width={200}
@@ -653,8 +764,26 @@ class EditModal extends React.Component {
                         <div className='culonm-2'>
                             <Tips visible={EditModalTipsVisible.changeSubjectTipsVisible} title={this.state.changeSubjectTipsTitle} >
                                 <CheckBoxGroup onChange={this.changeCheckBox} className={'checkedBoxGroupMap'} value={this.state.checkedList}>
-                                    {this.state.type==='teacher' ?this.MapPlainOptions(this.state.plainOptions):''}
+                                    {this.state.type === 'teacher' ? this.MapPlainOptions(this.state.plainOptions) : ''}
                                 </CheckBoxGroup>
+                            </Tips>
+                        </div>
+                    </div>
+                    <div className="row clearfix row-position" style={{ display: this.state.type === 'leader' ? 'block' : 'none' }}>
+                        <span className='culonm-1'>
+                            <span className='must-icon'>*</span>行政职务：
+                        </span>
+                        <div className='culonm-2'>
+                            <Tips visible={EditModalTipsVisible.PositionTipsVisible} title={this.state.PositionTipsTitle} >
+                                <DropDown
+                                    style={{ zIndex: 1 }}
+                                    dropSelectd={this.state.PositionChange}
+                                    dropList={this.state.LeaderPositionList}
+                                    width={200}
+                                    height={72}
+                                    onChange={this.onEditPositionChange}
+                                >
+                                </DropDown>
                             </Tips>
                         </div>
                     </div>

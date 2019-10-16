@@ -23,7 +23,7 @@ class App extends Component {
         super(props);
         const { dispatch } = props;
         this.state = {
-            UserMsg: props.DataState.LoginUser
+            UserMsg: JSON.parse(sessionStorage.getItem('UserInfo'))
 
         }
         let route = history.location.pathname;
@@ -31,7 +31,7 @@ class App extends Component {
         TokenCheck_Connect()
         this.requestData(route);
         let token = sessionStorage.getItem('token')
-        // sessionStorage.setItem('UserInfo', '')
+        console.log(sessionStorage.getItem('UserInfo'))
         if (sessionStorage.getItem('UserInfo')) {
             dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
         }
@@ -87,7 +87,7 @@ class App extends Component {
     requestData = (route) => {
         const { dispatch,DataState } = this.props;
         let UserMsg = DataState.LoginUser.SchoolID?DataState.LoginUser:JSON.parse(sessionStorage.getItem('UserInfo'))
-        
+        console.log(DataState.LoginUser.SchoolID,UserMsg)
 
         let pathArr = route.split('/');
         let handleRoute = pathArr[1];

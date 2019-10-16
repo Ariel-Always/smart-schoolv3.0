@@ -254,9 +254,9 @@ class Class extends React.Component {
         }).then(res => {
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
                     title: "成功",
@@ -286,9 +286,9 @@ class Class extends React.Component {
         }).then(res => {
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
                     title: "成功",
