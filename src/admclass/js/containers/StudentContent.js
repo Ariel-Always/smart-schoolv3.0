@@ -75,7 +75,7 @@ class StudentContent extends Component{
         //判断是否有选中的项
         if (StudentsCheckList.length===0){
 
-            dispatch(AppAlertActions.alertWarn('您还没有选中任何学生，请先选择学生！'));
+            dispatch(AppAlertActions.alertWarn({title:"您还没有选中任何学生，请先选择学生！"}));
 
         }else{
             //弹出弹窗
@@ -118,11 +118,11 @@ class StudentContent extends Component{
 
             UpDataState.adjustClass({ClassID:AdjustClassModal.classChecked.value,UserIDs:stuIDList.join(','),dispatch}).then(data=>{
 
-                if (data){
+                if (data === 'success'){
 
                     dispatch({type:UpUIState.ADJUST_CLASS_MODAL_HIDE});
 
-                    dispatch(AppAlertActions.alertSuccess("调班成功"));
+                    dispatch(AppAlertActions.alertSuccess({title:"调班成功"}));
 
                     UpDataState.getStudents({ClassID:info.id,PageIndex:0,PageSize:8,dispatch}).then(data=>{
 
@@ -324,7 +324,7 @@ class StudentContent extends Component{
 
         }else{//如果等于空的时候弹框警告
 
-           dispatch(AppAlertActions.alertWarn('请输入搜索的内容！'));
+           dispatch(AppAlertActions.alertWarn({title:"请输入搜索的内容！"}));
         }
 
     }
@@ -365,7 +365,7 @@ class StudentContent extends Component{
 
         }else{
 
-            dispatch(AppAlertActions.alertWarn('请选中一个教师！'));
+            dispatch(AppAlertActions.alertWarn({title:"请选中一个教师！"}));
 
         }
 
@@ -383,7 +383,7 @@ class StudentContent extends Component{
 
         }else{
 
-            dispatch(AppAlertActions.alertWarn("搜索不能为空！"));
+            dispatch(AppAlertActions.alertWarn({title:"搜索不能为空！"}));
 
         }
 
@@ -418,22 +418,24 @@ class StudentContent extends Component{
 
         const { dispatch,info } = this.props;
 
-        dispatch({type:UpUIState.SHOW_ERROR_ALERT,data:{
+        dispatch(AppAlertActions.alertQuery({title:"您确定要删除该班主任么？",ok:()=>{
 
-                type:"btn-query",
+                return this.delGangerActions.bind(this,info)
 
-                title:"您确定要删除该班主任么？",
-
-                ok:()=>{  return dispatch(UpDataState.delGanger({ClassID:info.id}));},
-
-                cancel:()=>dispatch({type:UpUIState.CLOSE_ERROR_ALERT}),
-
-                close:()=>dispatch({type:UpUIState.CLOSE_ERROR_ALERT})
-
-        }});
-
+            }}));
 
     }
+
+    delGangerActions(info){
+
+        const { dispatch } = this.props;
+
+        console.log(info);
+
+        dispatch(UpDataState.delGanger({ClassID:info.id}));
+
+    }
+
 
     //删除教师
 
@@ -458,7 +460,19 @@ class StudentContent extends Component{
     }
 
 
+    MonitorClick({UserID,isMonitor}){
 
+        const { info,dispatch } = this.props;
+
+        if (isMonitor){
+
+            UserID = '';
+
+        }
+
+        dispatch(UpDataState.SetMonitorAction({UserID,ClassID:info.id}));
+
+    }
 
 
 
@@ -521,7 +535,9 @@ class StudentContent extends Component{
 
                         StudentPagination={StudentPagination}
 
-                        StudentPageChange={this.StudentPageChange.bind(this)}>
+                        StudentPageChange={this.StudentPageChange.bind(this)}
+
+                        MonitorClick={this.MonitorClick.bind(this)}>
 
                     </StudentTabWrapper>
 

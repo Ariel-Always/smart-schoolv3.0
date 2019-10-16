@@ -54,7 +54,7 @@ class ClassContent extends Component{
 
         }else {
 
-            dispatch(AppAlertActions.alertWarn("搜索不能为空！"));
+            dispatch(AppAlertActions.alertWarn({title:"搜索不能为空!"}));
 
         }
 
@@ -208,24 +208,35 @@ class ClassContent extends Component{
 
         Event.stopPropagation();
 
-        const { dispatch } = this.props;
+        const { dispatch,info } = this.props;
 
-        dispatch({type:UpUIState.SHOW_ERROR_ALERT,data:{
-
-                type:"btn-query",
-
-                title:"您要删除该班级么？",
-
-                ok:()=>{  },
-
-                cancel:()=>{ dispatch({type:UpUIState.CLOSE_ERROR_ALERT}) },
-
-                close:()=>{ dispatch({type:UpUIState.CLOSE_ERROR_ALERT}) }
-
-            }});
+        dispatch(AppAlertActions.alertQuery({title:"您要删除该班级么？",ok:()=>{ return this.delClassActions.bind(this,{GradeID:info.id,ClassID})}}));
 
     }
 
+    delClassActions({ClassID,GradeID}){
+
+        const { dispatch,DataState } = this.props;
+
+        let { SchoolID } = DataState.LoginUser;
+
+        dispatch({type:UpUIState.CLOSE_ERROR_ALERT});
+
+        UpDataState.delClassPost({ClassIDs:ClassID,GradeID:GradeID,dispatch}).then(data=>{
+
+            if (data==='success'){
+
+                dispatch(AppAlertActions.alertSuccess({title:"删除班级成功！"}));
+
+                dispatch(UpDataState.getTheGradePreview(GradeID));
+
+                dispatch(UpDataState.UpGradeClassTree(SchoolID));
+
+            }
+
+        })
+
+    }
 
 
     //班级名称检测函数

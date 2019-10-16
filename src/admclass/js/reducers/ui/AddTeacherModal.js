@@ -1,5 +1,8 @@
 import UpUIState from '../../actions/UpUIState';
+
 import UpDataState from '../../actions/UpDataState';
+
+import defaultPick from '../../../images/default-teacher.png';
 
 const  AddTeacherModal = (state={
 
@@ -65,7 +68,7 @@ const  AddTeacherModal = (state={
 
                 modalTitle:(actions.options&&actions.options.modalTitle)?actions.options.modalTitle:'添加任课教师',
 
-                newPickTeacher:(actions.options&&actions.options.newPickTeacher)?actions.options.newPickTeacher:{id:'',name:'未选择',photo:'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg'},
+                newPickTeacher:(actions.options&&actions.options.newPickTeacher)?actions.options.newPickTeacher:{id:'',name:'未选择',photo:defaultPick},
 
                 type:(actions.options&&actions.options.type)?actions.options.type:1,
 

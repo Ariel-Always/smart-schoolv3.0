@@ -93,22 +93,39 @@ const  getPageInit = () => {
 
         let { SchoolID } = getState().DataState.LoginUser;
 
-         GetGradeClassTree(SchoolID,dispatch).then(data=>{
+        GetGradeClassTree(SchoolID,dispatch).then(data=>{
 
-             if (data){
+            if (data){
 
-                 console.log(data);
+                dispatch({type:GET_SHCOOL_GRADE_CLASSES,data:data});
 
-                 dispatch({type:GET_SHCOOL_GRADE_CLASSES,data:data});
+                dispatch({type:UpUIState.CHANGE_STU_ACTIVE});
 
-                 dispatch({type:UpUIState.CHANGE_STU_ACTIVE});
+            }
 
-             }
-
-         });
+        });
 
     }
 };
+
+const UpGradeClassTree = (SchoolID)=>{
+
+  return dispatch => {
+
+      GetGradeClassTree(SchoolID,dispatch).then(data=>{
+
+          if (data){
+
+              dispatch({type:GET_SHCOOL_GRADE_CLASSES,data:data});
+
+          }
+
+      });
+
+  }
+
+};
+
 
 //获取所有的年纪总览数据
 const getAllGradePreview = () => {
@@ -245,18 +262,26 @@ const changeStudentCheckList = (checkList) => {
 
 //添加班级
 const addClass = ({GradeID,ClassName}) =>{
-    return dispatch => {
+
+    return (dispatch,getState) => {
+
+        let { SchoolID } = getState().DataState.LoginUser;
+
 
         //关闭的弹窗的时候重置一些操作
-        addClassPost({GradeID,dispatch,ClassName}).then(data=>{
+        addClassPost({GradeID,ClassName,dispatch}).then(data=>{
 
-           if (data){
+           if (data==='success'){
 
                dispatch({type:UpUIState.ADD_CLASS_MODAL_HIDE});
 
-               dispatch(AppAlertActions.alertSuccess('添加班级成功！'));
+               dispatch(AppAlertActions.alertSuccess({title:'添加班级成功！'}));
 
+               dispatch(UpGradeClassTree(SchoolID));
 
+               dispatch(getAllGradePreview());
+
+               dispatch(getTheGradePreview(GradeID));
 
            }
 
@@ -387,7 +412,7 @@ const  teacherSearchBtnClick = () => {
 
       }
 
-      getAllTeacher({SchoolID,SubjectIDs:SubjectID,UserID,Keyword:inputContent}).then(data=>{
+      getAllTeacher({SchoolID,SubjectIDs:SubjectID,UserID,Keyword:inputContent,dispatch}).then(data=>{
 
           if (data){
 
@@ -455,8 +480,6 @@ const updateGenger = (classInfo) =>{
 
     return (dispatch,getState) => {
 
-        console.log(classInfo);
-
         const newTeacherId = getState().UIState.AddTeacherModal.newPickTeacher.id;
 
         const classId = classInfo.ClassID;
@@ -487,9 +510,9 @@ const updateGenger = (classInfo) =>{
 
         setGengar({ClassID:classId,UserID:newTeacherId,dispatch}).then(data=>{
 
-            if (data){
+            if (data==='success'){
 
-                dispatch(AppAlertActions.alertSuccess(tips));
+                dispatch(AppAlertActions.alertSuccess({title:tips}));
 
                 getTeachers({ClassID:classId,dispatch}).then(data=>{
 
@@ -521,9 +544,9 @@ const delGanger = ({ClassID}) => {
 
       setGengar({ClassID,dispatch}).then(data=>{
 
-          if (data){
+          if (data==='success'){
 
-            dispatch(AppAlertActions.alertSuccess("删除班主任成功"));
+            dispatch(AppAlertActions.alertSuccess({title:"删除班主任成功"}));
 
               getTeachers({ClassID,dispatch}).then(data=>{
 
@@ -570,7 +593,7 @@ const updateTeacher = (classInfo) => {
         if (SubjectID === 'all'){
 
 
-            dispatch(AppAlertActions.alertWarn("请选择学科"));
+            dispatch(AppAlertActions.alertWarn({title:"请选择学科"}));
 
 
             return;
@@ -601,15 +624,13 @@ const updateTeacher = (classInfo) => {
 
         setTeacher({ClassID,SubjectID,UserID:newTeacherId,dispatch}).then(data=>{
 
-            console.log(ClassID,SubjectID,newTeacherId);
+            if (data==='success'){
 
-            if (data){
-
-                dispatch(AppAlertActions.alertSuccess(tips));
+                dispatch(AppAlertActions.alertSuccess({title:tips}));
 
             }
 
-            getTeachers({ClassID}).then(data=>{
+            getTeachers({ClassID,dispatch}).then(data=>{
 
                 if (data){
 
@@ -637,11 +658,11 @@ const delSubjectTeacher = ({ClassID,SubjectID}) => {
 
             if (data){
 
-                dispatch(AppAlertActions.alertSuccess("删除成功！"));
+                dispatch(AppAlertActions.alertSuccess({title:"删除成功！"}));
 
             }
 
-            getTeachers({ClassID}).then(data=>{
+            getTeachers({ClassID,dispatch}).then(data=>{
 
                 if (data){
 
@@ -668,33 +689,17 @@ const UpdateClassName = ({GradeID,ClassID,ClassName}) => {
 
       editClassPost({ClassName,ClassID,dispatch}).then(data=>{
 
-          if (data){
+          if (data==='success'){
 
               //如果成功
 
               dispatch({type:UpUIState.RESET_CLASS_NAME_HIDE});
 
-              dispatch(AppAlertActions.alertSuccess('修改成功！'));
+              dispatch(AppAlertActions.alertSuccess({title:"'修改成功！'"}));
 
-              dispatch({type:THE_GRADE_CLASS_LOADING_SHOW});
+              dispatch(getTheGradePreview(GradeID));
 
-              getClassList({SchoolID,GradeID,PageSize:12,PageIndex:0,dispatch}).then(data=>{
-
-                  if (data){
-
-                      dispatch({type:GET_THE_GRADE_PREVIEW,data:data});
-
-                      dispatch({type:PaginationActions.CLASS_PAGINATION_CURRENT_UPDATE,data:1});
-
-                      dispatch({type:PaginationActions.CLASS_PAGINATION_TOTAL_UPDATE,data:data.Total});
-
-                      dispatch({type:UpUIState.CLASS_LOADING_HIDE});
-
-                      dispatch({type:UpUIState.APP_LOADING_CLOSE});
-
-                  }
-
-              })
+              dispatch(UpGradeClassTree(SchoolID));
 
           }
 
@@ -703,6 +708,52 @@ const UpdateClassName = ({GradeID,ClassID,ClassName}) => {
   }
 
 };
+
+
+const SetMonitorAction = ({UserID='',ClassID}) =>{
+
+    return dispatch => {
+
+        SetMonitor({UserID,ClassID,dispatch}).then(data=>{
+
+            if (data==='success'){
+
+                if (UserID){
+
+                    dispatch(AppAlertActions.alertSuccess({title:"成功取消班长!"}));
+
+                }else{
+
+                    dispatch(AppAlertActions.alertSuccess({title:"成功设置班长!"}));
+
+                }
+
+                getStudents({ClassID,PageIndex:0,PageSize:12,dispatch}).then(data=>{
+
+                    if (data){
+
+                        dispatch({type:GET_THE_CLASS_STUDENTS,data:data});
+
+                        dispatch({type:PaginationActions.STUDENT_PAGINATION_CURRENT_UPDATE,data:1});
+
+                        dispatch({type:PaginationActions.STUDENT_PAGINATION_TOTAL_UPDATE,data:data.Total});
+
+                    }
+
+
+                })
+
+            }
+
+        });
+
+    }
+
+};
+
+
+
+
 
 
 
@@ -864,9 +915,9 @@ const setGengar =  async ({ClassID,UserID='',dispatch}) => {
 
     },2,CONFIG.AdmClassProxy);
 
-    if (res.StatusCodee === 200){
+    if (res.StatusCode === 200){
 
-        return res;
+        return res.Msg;
 
     }else{
 
@@ -890,7 +941,7 @@ const setTeacher =  async ({ClassID,SubjectID,UserID='',dispatch}) => {
 
     if (res.StatusCode === 200){
 
-        return res;
+        return res.Msg;
 
     }else{
 
@@ -914,7 +965,7 @@ const adjustClass =  async ({ClassID,UserIDs,dispatch}) => {
 
     if (res.StatusCode === 200){
 
-        return res;
+        return res.Msg;
 
     }else{
 
@@ -930,7 +981,7 @@ const adjustClass =  async ({ClassID,UserIDs,dispatch}) => {
 
 const addClassPost =  async ({GradeID,ClassName,dispatch}) => {
 
-    let res = await Method.getPostData(`/UserMgr/ClassMgr/ReSetStudentClass`,{
+    let res = await Method.getPostData(`/UserMgr/ClassMgr/AddClass`,{
 
         GradeID,ClassName
 
@@ -940,7 +991,7 @@ const addClassPost =  async ({GradeID,ClassName,dispatch}) => {
 
     if (res.StatusCode === 200){
 
-        return res;
+        return res.Msg;
 
     }else{
 
@@ -955,7 +1006,7 @@ const addClassPost =  async ({GradeID,ClassName,dispatch}) => {
 
 const editClassPost =  async ({ClassID,ClassName,dispatch}) => {
 
-    let res = await Method.getPostData(`/UserMgr/ClassMgr/ReSetStudentClass`,{
+    let res = await Method.getPostData(`/UserMgr/ClassMgr/EditClass`,{
 
         ClassID,ClassName
 
@@ -965,7 +1016,56 @@ const editClassPost =  async ({ClassID,ClassName,dispatch}) => {
 
     if (res.StatusCode === 200){
 
-        return res;
+        return res.Msg;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
+
+//删除班级
+const delClassPost = async ({GradeID,ClassIDs,dispatch}) => {
+
+    let res = await Method.getPostData(`/UserMgr/ClassMgr/DeleteClass`,{
+
+        GradeID,ClassIDs
+
+    },2,CONFIG.AdmClassProxy);
+
+
+
+    if (res.StatusCode === 200){
+
+        return res.Msg;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
+
+//设置取消班长
+
+const SetMonitor = async ({UserID,ClassID,dispatch}) => {
+
+    let res = await Method.getPostData(`/UserMgr/ClassMgr/SetMonitor`,{
+
+        UserID,ClassID
+
+    },2,CONFIG.AdmClassProxy);
+
+
+
+    if (res.StatusCode === 200){
+
+        return res.Msg;
 
     }else{
 
@@ -979,7 +1079,6 @@ const editClassPost =  async ({ClassID,ClassName,dispatch}) => {
 
 
 
-
 export default {
     getPageInit,
     getAllGradePreview,
@@ -989,7 +1088,9 @@ export default {
     addClass,
     getAddTeacherData,
     teacherModalSelectChange,
+
     teacherSearchBtnClick,
+
     teacherSearchClose,
     updateGenger,
     updateTeacher,
@@ -1004,7 +1105,13 @@ export default {
 
     adjustClass,
 
+    delClassPost,
+
+    UpGradeClassTree,
+
     UpdateClassName,
+
+    SetMonitorAction,
 
     GET_LOGIN_USER_INFO,
     GET_ALL_GRADE_PREVIEW,

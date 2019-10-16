@@ -7,7 +7,29 @@ class StudentTabWrapper extends Component{
 
     render() {
 
-        const {StudentPageChange,StudentPagination,StudentWrapperLoading,StudentList,CheckList,onCheckChange,allChecked,onChangeAll,adjustBtnClick} = this.props;
+        const {
+
+            StudentPageChange,
+
+            StudentPagination,
+
+            StudentWrapperLoading,
+
+            StudentList,
+
+            CheckList,
+
+            onCheckChange,
+
+            allChecked,
+
+            onChangeAll,
+
+            adjustBtnClick,
+
+            MonitorClick
+
+        } = this.props;
 
         return (
 
@@ -65,7 +87,7 @@ class StudentTabWrapper extends Component{
 
                                                         <div className="cooperate">
 
-                                                            <div>{isMonitor?'取消班长':'设为班长'}</div>
+                                                            <div onClick={()=>{MonitorClick({UserID:item.UserID,isMonitor})}}>{isMonitor?'取消班长':'设为班长'}</div>
 
                                                         </div>
 
