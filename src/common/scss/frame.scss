@@ -425,7 +425,7 @@ $img_url:'#{$image_url}/frame';
   }
 }
 .frame-content-rightside{
-  float: left;
+  float: right;
   width: 944px;
   min-height: 626px;
   background-color: #ffffff;
@@ -436,14 +436,23 @@ $img_url:'#{$image_url}/frame';
   }
 }
 .frame-content-leftside{
-  float: left;
+  float:left;
   width: 240px;
   min-height: 80px;
-  margin-right: 16px;
+
   border-radius: 12px 12px 0 0;
   &.frame-hide{
     display: none;
   }
+
+  &.fix{
+
+    position: fixed;
+
+    top:0;
+
+  }
+
 }
 //脚部
 .frame-bottom{

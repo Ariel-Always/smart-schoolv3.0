@@ -10,12 +10,18 @@ import {
     Pagination as AntPagination, Button as AntdButton, Input as AntdInput,
     Modal as AntdModal, Icon, ConfigProvider, Spin, Tooltip
 } from 'antd';
+
 import { Scrollbars } from 'react-custom-scrollbars';
+
 import zhCN from 'antd/es/locale/zh_CN';
+
 import moment from 'moment';
+
 import CONFIG from './js/config';
+
 import 'moment/locale/zh-cn';
-import Password from 'antd/lib/input/Password';
+
+
 const $ = require('jquery');
 
 moment.locale('zh-cn');
@@ -1546,6 +1552,8 @@ class Menu extends React.Component {
 
 class MenuLeft extends React.Component {
 
+
+
     render() {
         //传递的参数的数据
         const { Menu, Icon } = this.props;
@@ -1560,63 +1568,69 @@ class MenuLeft extends React.Component {
                     <div className={`frame_left_menu_pic ${Icon ? Icon : 'pic1'}`}></div>
 
                     <div id="frame_left_menu_container" className="frame_left_menu_container">
+
+                        <Scrollbars autoHeight autoHide autoHeightMax={window.innerHeight-80} style={{ width: 240}}>
+
                         {
-                            Menu && Menu.map((item, key) => {
-                                //如果有第二级别
-                                if (item.List) {
-                                    //active状态的类名
-                                    let activeClass = '';
+                                Menu && Menu.map((item, key) => {
+                                    //如果有第二级别
+                                    if (item.List) {
+                                        //active状态的类名
+                                        let activeClass = '';
 
-                                    if (pathname === `${item.link}`) {
+                                        if (pathname === `${item.link}`) {
 
-                                        activeClass = "active selected";
+                                            activeClass = "active selected";
 
-                                    } else if (pathname.indexOf(`${item.link}`) === 0) {
+                                        } else if (pathname.indexOf(`${item.link}`) === 0) {
 
-                                        activeClass = 'selected';
+                                            activeClass = 'selected';
 
-                                    }
+                                        }
 
-                                    return <React.Fragment key={key}>
-                                        {/* {第二级别块}*/}
-                                        <div className={`frame_leftmenu_mainitem ${activeClass}`}>
+                                        return <React.Fragment key={key}>
+                                            {/* {第二级别块}*/}
+                                            <div className={`frame_leftmenu_mainitem ${activeClass}`}>
+
+                                                <NavLink exact to={{ pathname: item.link, params: { id: item.id, name: item.name } }} className={`frame_leftmenu_mainitem_name ${item.menu ? item.menu : ''}`}>{item.name}</NavLink>
+
+                                                <span className={`frame_leftmenu_arrow ${activeClass === 'selected' ? 'spread' : ''}`}></span>
+
+                                            </div>
+                                            <div className="frame_leftmenu_nextgrade_container" style={{ display: `${activeClass === 'selected' ? 'block' : 'none'}` }}>
+
+                                                <ul className="frame_leftmenu_onegrade_ul">
+                                                    {
+                                                        item.List && item.List.map((i, k) => {
+
+                                                            return <li key={k} className={`clearfix ${pathname.indexOf(i.link) === 0 ? 'active' : ''}`}>
+
+                                                                <span className={`frame_leftmenu_point ${pathname.indexOf(i.link) === 0 ? 'active' : ''}`}></span>
+
+                                                                <NavLink to={{ pathname: i.link, params: { id: i.id, name: i.name } }} className={`frame_leftmenu_onegrade_name frame_ellipsis ${pathname.indexOf(i.link) === 0 ? 'active' : ''}`}>{i.name}</NavLink>
+
+                                                            </li>
+                                                        })
+                                                    }
+                                                </ul>
+
+                                            </div>
+
+                                        </React.Fragment>
+
+                                    } else {
+                                        //如果没有第二级直接返回，同时pathname和NavLink的参数相同处于活动状态
+                                        return <div key={key} className={`frame_leftmenu_mainitem no_child ${pathname === item.link ? "active selected" : ''}`}>
 
                                             <NavLink exact to={{ pathname: item.link, params: { id: item.id, name: item.name } }} className={`frame_leftmenu_mainitem_name ${item.menu ? item.menu : ''}`}>{item.name}</NavLink>
 
-                                            <span className={`frame_leftmenu_arrow ${activeClass === 'selected' ? 'spread' : ''}`}></span>
-
                                         </div>
-                                        <div className="frame_leftmenu_nextgrade_container" style={{ display: `${activeClass === 'selected' ? 'block' : 'none'}` }}>
+                                    }
+                                })
+                            }
 
-                                            <ul className="frame_leftmenu_onegrade_ul">
-                                                {
-                                                    item.List && item.List.map((i, k) => {
+                        </Scrollbars>
 
-                                                        return <li key={k} className={`clearfix ${pathname.indexOf(i.link) === 0 ? 'active' : ''}`}>
-
-                                                            <span className={`frame_leftmenu_point ${pathname.indexOf(i.link) === 0 ? 'active' : ''}`}></span>
-
-                                                            <NavLink to={{ pathname: i.link, params: { id: i.id, name: i.name } }} className={`frame_leftmenu_onegrade_name frame_ellipsis ${pathname.indexOf(i.link) === 0 ? 'active' : ''}`}>{i.name}</NavLink>
-
-                                                        </li>
-                                                    })
-                                                }
-                                            </ul>
-
-                                        </div>
-
-                                    </React.Fragment>
-
-                                } else {
-                                    //如果没有第二级直接返回，同时pathname和NavLink的参数相同处于活动状态
-                                    return <div key={key} className={`frame_leftmenu_mainitem no_child ${pathname === item.link ? "active selected" : ''}`}>
-
-                                        <NavLink exact to={{ pathname: item.link, params: { id: item.id, name: item.name } }} className={`frame_leftmenu_mainitem_name ${item.menu ? item.menu : ''}`}>{item.name}</NavLink>
-
-                                    </div>
-                                }
-                            })
-                        }
                     </div>
 
                 </div>
@@ -1628,16 +1642,21 @@ class MenuLeft extends React.Component {
 
 class MenuLeftNoLink extends React.Component {
 
+
     render() {
         //menu和icon图标
         const { Menu, Icon, menuClick } = this.props;
 
         return (
+
             <div className="frame_left_menu_pin">
 
                 <div className={`frame_left_menu_pic ${Icon ? Icon : 'pic1'}`}></div>
 
                 <div id="frame_left_menu_container" className="frame_left_menu_container">
+
+                    <Scrollbars autoHeight autoHide autoHeightMax={window.innerHeight-80} style={{ width: 240}}>
+
                     {
                         Menu && Menu.map((item, key) => {
                             //如果有第二级别
@@ -1684,6 +1703,9 @@ class MenuLeftNoLink extends React.Component {
                             }
                         })
                     }
+
+                    </Scrollbars>
+
                 </div>
 
             </div>
@@ -1696,6 +1718,40 @@ class MenuLeftNoLink extends React.Component {
 
 /*界面框架*/
 class Frame extends React.Component {
+
+
+    constructor(props) {
+
+        super(props);
+
+        this.state = {
+
+          fixed:false
+
+        };
+
+    }
+
+
+    componentDidMount(){
+
+       $(window).scroll(()=>{
+
+           let scrollTop = $(window).scrollTop();
+
+           if (scrollTop>216){
+
+               this.setState({fixed:true});
+
+           }else{
+
+               this.setState({fixed:false});
+
+           }
+
+       });
+
+    }
 
     render() {
         const { children, type, module, userInfo, msg, showLeftMenu, showBarner = true,onLogOut, ...reset } = this.props;
@@ -1821,7 +1877,7 @@ class Frame extends React.Component {
                         : ''
                 }
                 <div className={`frame-content-wrapper clearfix ${showBarner ? '' : 'barnerHide'}`}>
-                    <div className={`frame-content-leftside ${showLeftMenu ? '' : 'frame-hide'}`}>
+                    <div className={`frame-content-leftside ${showLeftMenu ? '' : 'frame-hide'} ${this.state.fixed?'fix':''}`}>
                         {leftMenu}
                     </div>
                     <div className={`frame-content-rightside ${showLeftMenu ? '' : 'frame-fluid'}`}>

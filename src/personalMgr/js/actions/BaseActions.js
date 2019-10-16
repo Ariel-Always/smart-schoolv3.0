@@ -90,8 +90,6 @@ const Init = () => {
 
                 }
 
-                console.log(data);
-
                 dispatch({type:BASE_INFO_UPDATE,data:data});
 
                 const { PhotoPath_NoCache } = data;
