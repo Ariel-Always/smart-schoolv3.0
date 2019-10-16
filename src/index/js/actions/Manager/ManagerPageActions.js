@@ -49,9 +49,7 @@ const getManagerDesk = async ({UserID,dispatch}) => {
 
     }else{
 
-        //window.location.href='/error.aspx';
-
-        alert(res.Msg);
+        window.location.href='/error.aspx';
 
     }
 

@@ -218,9 +218,21 @@ class BaseSetting extends Component{
     //点击弹出模块权限详情
     roleLook(e){
 
-        const { dispatch } = this.props;
+        const { dispatch,BaseSetting } = this.props;
 
-        dispatch({type:BaseActions.BASE_SETTING_MANAGER_MODULES_SHOW})
+        const { ManagerModuleShow } = BaseSetting;
+
+        if(ManagerModuleShow){
+
+            dispatch({type:BaseActions.BASE_SETTING_MANAGER_MODULES_HIDE});
+
+        }else{
+
+            dispatch({type:BaseActions.BASE_SETTING_MANAGER_MODULES_SHOW});
+
+        }
+
+
 
     }
     //将模块权限详情关闭
@@ -287,51 +299,6 @@ class BaseSetting extends Component{
     componentDidMount(){
 
         addEventListener('click',this.hideDetail.bind(this));
-
-        const { dispatch,LoginUser } = this.props;
-
-        const { UserType,UserID,PhotoPath } = LoginUser;
-
-        let userType = '';
-
-        switch (UserType) {
-
-            case 0:
-
-                userType = 'Admin';
-
-                break;
-
-            case 1:
-
-                userType = 'Teacher';
-
-                break;
-
-            case 2:
-
-                userType = 'Student';
-
-                break;
-
-            default:
-
-                userType = 'Admin';
-
-        }
-
-        var option = {
-
-            token: sessionStorage.getItem('token'),
-            resWebUrl: "http://192.168.129.1:30101/lgftp/", //资源站点地址
-            userType:userType,   //用户类型，可选值Admin、Student、Teacher、SchoolLeader
-            userID:UserID, //新增时传空字符串、编辑时传相应UserID
-            curImgPath:PhotoPath, //用户当前头像，新增时可不传
-            size:"small"
-
-        };
-
-        $(this.PicUpload).picUploader(option);
 
     }
 
@@ -504,8 +471,6 @@ class BaseSetting extends Component{
         } = BaseSetting;
 
 
-
-
         return (
 
             <Loading spinning={loadingShow}>
@@ -536,7 +501,7 @@ class BaseSetting extends Component{
 
                             <span className="props">头像:</span>
 
-                            <div ref={r=>this.PicUpload=r} id="PicUpload"></div>
+                            <div id="PicUpload"></div>
 
                         </div>
 
@@ -627,9 +592,12 @@ class BaseSetting extends Component{
 
                             <div className="detial-wrapper"  style={{display:`${ManagerModuleShow?'block':'none'}`}}>
 
+
                                 {
 
-                                    Modules&&Modules.map((item,key) => {
+                                    Modules&&Modules.length>0?
+
+                                    Modules.map((item,key) => {
 
                                         let content =  item.ModuleList.map(i =>i.ModuleName);
 
@@ -650,6 +618,10 @@ class BaseSetting extends Component{
                                         </div>
 
                                     })
+
+                                    :
+
+                                    <div className="no-permission">您还没有任何权限！</div>
 
                                 }
 
@@ -703,11 +675,15 @@ class BaseSetting extends Component{
 
                                                 let title = '';
 
+                                                let emptyContent = '';
+
                                                 switch (key) {
 
                                                     case 0:
 
                                                         title = '任课班级';
+
+                                                        emptyContent = '您还没有任课班级！';
 
                                                         break;
 
@@ -715,11 +691,15 @@ class BaseSetting extends Component{
 
                                                         title = '所管班级';
 
+                                                        emptyContent = '您还没有所管班级！';
+
                                                         break;
 
                                                     case 2:
 
                                                         title = '所管教研组';
+
+                                                        emptyContent = '您还没有所管教研组！';
 
                                                         break;
 
@@ -754,7 +734,13 @@ class BaseSetting extends Component{
 
                                                                                 {
 
-                                                                                    RoleDetail[key]
+                                                                                    RoleDetail[key]===''?
+
+                                                                                        emptyContent
+
+                                                                                        :
+
+                                                                                        RoleDetail[key]
 
                                                                                 }
 

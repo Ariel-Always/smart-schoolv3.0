@@ -200,9 +200,7 @@ const getTeacherModules = async ({UserID,SubjectID,dispatch}) => {
 
     }else{
 
-       // window.location.href='/error.aspx';
-
-        alert(res.Msg);
+       window.location.href='/error.aspx';
 
     }
 

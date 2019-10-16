@@ -851,7 +851,7 @@
     if (isValidNumber(width) && isValidNumber(height)) {
       var adjustedWidth = height * aspectRatio;
 
-      if (type === 'contain' && adjustedWidth > width || type === 'cover' && adjustedWidth < width) {
+      if ((type === 'contain' && adjustedWidth > width) || (type === 'cover' && adjustedWidth < width)) {
         height = width / aspectRatio;
       } else {
         width = height * aspectRatio;
@@ -2081,7 +2081,7 @@
 
         // Resize crop box
         case ACTION_EAST:
-          if (range.x >= 0 && (right >= maxWidth || aspectRatio && (top <= minTop || bottom >= maxHeight))) {
+          if (range.x >= 0 && (right >= maxWidth || (aspectRatio && (top <= minTop || bottom >= maxHeight)))) {
             renderable = false;
             break;
           }
@@ -2102,7 +2102,7 @@
           break;
 
         case ACTION_NORTH:
-          if (range.y <= 0 && (top <= minTop || aspectRatio && (left <= minLeft || right >= maxWidth))) {
+          if (range.y <= 0 && (top <= minTop || (aspectRatio && (left <= minLeft || right >= maxWidth)))) {
             renderable = false;
             break;
           }
@@ -2124,7 +2124,7 @@
           break;
 
         case ACTION_WEST:
-          if (range.x <= 0 && (left <= minLeft || aspectRatio && (top <= minTop || bottom >= maxHeight))) {
+          if (range.x <= 0 && (left <= minLeft || (aspectRatio && (top <= minTop || bottom >= maxHeight)))) {
             renderable = false;
             break;
           }
@@ -2146,7 +2146,7 @@
           break;
 
         case ACTION_SOUTH:
-          if (range.y >= 0 && (bottom >= maxHeight || aspectRatio && (left <= minLeft || right >= maxWidth))) {
+          if (range.y >= 0 && (bottom >= maxHeight || (aspectRatio && (left <= minLeft || right >= maxWidth)))) {
             renderable = false;
             break;
           }

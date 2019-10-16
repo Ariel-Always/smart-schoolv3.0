@@ -1697,15 +1697,8 @@ class MenuLeftNoLink extends React.Component {
 /*界面框架*/
 class Frame extends React.Component {
 
-    LogOut() {
-        const { onLogOut } = this.props;
-        if (onLogOut) {
-            onLogOut()
-        }
-    }
-
     render() {
-        const { children, type, module, userInfo, msg, showLeftMenu, showBarner = true, ...reset } = this.props;
+        const { children, type, module, userInfo, msg, showLeftMenu, showBarner = true,onLogOut, ...reset } = this.props;
 
         let bgAnimateDom = '';
         let beyondAnimateDom = '';
@@ -1798,12 +1791,12 @@ class Frame extends React.Component {
                     <div className="frame-home-header">
                         <div className="frame-home-header-content">
                             <div className="frame-home-logo" style={{ backgroundImage: `url(${CONFIG.logo})` }}>
-                                <a href="#" rel="noopener noreferrer">{CONFIG.name}</a>
+                                <a href="/">{CONFIG.name}</a>
                             </div>
 
                             <div className="frame-home-header-menus">
                                 <div className="frame-home-header-menu">
-                                    <input className="frame-home-logout" title="退出" type="button" onClick={this.LogOut.bind(this)} value="" />
+                                    <input className="frame-home-logout" title="退出" type="button" onClick={onLogOut?()=>onLogOut():()=>{}} value="" />
                                     <a href="/html/personalMgr"  target="_blank" className="frame-home-username" title={userInfo && userInfo.name?userInfo.name:""}>{userInfo && userInfo.name ? userInfo.name : ''}</a>
                                     <a href="/html/personalMgr"  target="_blank" className="frame-home-userpic" style={{ backgroundImage: `url(${userInfo && userInfo.image ? userInfo.image : ''})` }}></a>
                                 </div>

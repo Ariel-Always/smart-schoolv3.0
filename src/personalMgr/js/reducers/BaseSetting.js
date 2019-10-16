@@ -48,7 +48,23 @@ const BaseSetting = (state={
 
         }
 
-    ]
+    ],
+
+    PicUploader:{
+
+        token:'',
+
+        resWebUrl: "http://192.168.129.1:30101/lgftp/", //资源站点地址
+
+        userType:'Admin',   //用户类型，可选值Admin、Student、Teacher、SchoolLeader
+
+        userID:'', //新增时传空字符串、编辑时传相应UserID
+
+        curImgPath:'', //用户当前头像，新增时可不传
+
+        size:"small"
+
+    }
 
 },actions) => {
 
@@ -56,7 +72,7 @@ const BaseSetting = (state={
 
         case BaseActions.BASE_INFO_UPDATE:
 
-            return {...state, ...actions.data};
+            return {...state,editorStatus:false, ...actions.data};
 
         case BaseActions.BASE_SETTING_EDITOR_OPEN:
 
@@ -175,6 +191,10 @@ const BaseSetting = (state={
         case BaseActions.BASE_SETTING_LOADING_HIDE:
 
             return { ...state,loadingShow:false };
+
+        case BaseActions.PICUPLOADER_OPTIONS_UPDATE:
+
+            return { ...state,PicUploader:{ ...state.PicUploader,...actions.data} };
 
         default:
 
