@@ -243,10 +243,11 @@ class AddScheduleModal extends Component{
                    width={680}
                    bodyStyle={{height:286}}
                    mask={true}
-                   maskClosable={true}
+                   maskClosable={false}
                    cancelText="取消"
                    onOk={this.ok.bind(this)}
-                   onCancel={this.cancel.bind(this)} >
+                   onCancel={this.cancel.bind(this)}
+                   destroyOnClose={true}>
 
                 <div className="ModalContent">
 
@@ -302,7 +303,8 @@ class AddScheduleModal extends Component{
                                             searchList:AddScheduleModal.classSearchList,
                                             searchPlaceholder:"请输入班级名称进行搜索...",
                                             searchOpen:AddScheduleModal.classSearchOpen,
-                                            searchLoadingShow:AddScheduleModal.classSearchLoadingShow
+                                            searchLoadingShow:AddScheduleModal.classSearchLoadingShow,
+                                            CancelBtnShow:AddScheduleModal.classSearchCancelShow
                                         }}
                                         style={{zIndex:9}}>
 
@@ -331,12 +333,12 @@ class AddScheduleModal extends Component{
                                             dropMultipleList:AddScheduleModal.teachers,
                                             dropMultipleChange:this.teacherChange.bind(this),
                                             dropClickSearch:this.teacherSearchClick.bind(this),
-
                                             searchList:AddScheduleModal.teacherSearchList,
                                             dropCancelSearch:this.teacherSearchClose.bind(this),
                                             searchOpen:AddScheduleModal.teacherSearchOpen,
                                             searchPlaceholder:"请输入教师工号或者教师姓名进行搜索...",
-                                            searchLoadingShow:AddScheduleModal.teacherSearchLoadingShow
+                                            searchLoadingShow:AddScheduleModal.teacherSearchLoadingShow,
+                                            CancelBtnShow:AddScheduleModal.teacherSearchCancelShow
                                         }}
                                         style={{zIndex:8}}>
 
@@ -427,6 +429,7 @@ class AddScheduleModal extends Component{
                                             searchLoadingShow:AddScheduleModal.classRoomSearchLoadingShow,
                                             dropCancelSearch:this.classRoomSearchClose.bind(this),
                                             searchOpen:AddScheduleModal.classRoomSearchOpen,
+                                            CancelBtnShow:AddScheduleModal.classRoomSearchCancelShow
                                         }}
                                         style={{zIndex:6}}>
 

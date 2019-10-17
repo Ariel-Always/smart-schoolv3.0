@@ -27,6 +27,7 @@ $MenuSelect: linear-gradient(90deg,
   display: -moz-flex;
   display: -ms-flex;
   display: -webkit-flex;
+  display: -ms-flexbox;
 }
 @mixin justify-content($dir){
   justify-content: $dir;

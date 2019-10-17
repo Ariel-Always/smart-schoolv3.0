@@ -47,8 +47,6 @@ const STSPageUpdate = (opt) => {
 
         }
 
-        let getSTSPromise = Method.getGetData(`/scheduleSubjectTeacherSubject?PageSize=10&SubjectID=${SubjectID}&SchoolID=${SchoolID}&PeriodID=${PeriodID}&WeekNO=${NowWeekNo}&PageIndex=${PageIndex}`);
-
         ApiActions.GetAllScheduleOfTeachersBySubjectIDForPage({
 
             PeriodID,SchoolID,SubjectID,NowWeekNo,PageIndex,PageSize:10,dispatch

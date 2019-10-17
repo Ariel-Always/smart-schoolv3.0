@@ -27,99 +27,104 @@ const STSPageInit = () => {
 
             let {SchoolID,UserID,UserType} =LoginUser;//需要的参数后期加入
 
-            let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;//所需的参数
+            if (PeriodWeekTerm.ItemPeriod.length>0){
 
-            let getSCGCPromise = Method.getGetData(`/scheduleSubjectGrade-teacher?SchoolID=${SchoolID}&PeriodID=${PeriodID}`);
+                let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;//所需的参数
 
-            let GetAllOptionByPeriodID = ApiActions.GetAllOptionByPeriodID({
+                let GetAllOptionByPeriodID = ApiActions.GetAllOptionByPeriodID({
 
-                SchoolID,PeriodID,UserID,UserType,dispatch
-
-            });
-
-            let GetAllScheduleOfTeachersBySubjectIDForPage = ApiActions.GetAllScheduleOfTeachersBySubjectIDForPage({
-
-                SchoolID, PeriodID,PageIndex:1,PageSize:10,dispatch
+                    SchoolID,PeriodID,UserID,UserType,dispatch
 
                 });
 
-            let getSTSPromise = Method.getGetData(`/scheduleSubjectTeacherSubject?PageSize=10&SchoolID=${SchoolID}&PeriodID=${PeriodID}&SubjectID=''&WeekNO=0&PageIndex=1`);
+                let GetAllScheduleOfTeachersBySubjectIDForPage = ApiActions.GetAllScheduleOfTeachersBySubjectIDForPage({
 
-
-            Promise.all([GetAllOptionByPeriodID,GetAllScheduleOfTeachersBySubjectIDForPage]).then((res)=>{
-                //将课程、学期、等等放到redux中
-                // res[0].Data['NowWeekNo'] = PeriodWeekTerm.NowWeekNo;
-
-                let NowWeekNo = PeriodWeekTerm.NowWeekNo;
-
-                dispatch({type:SCGCRActions.SCGCR_INFO_INIT,data:res[0]});
-
-                dispatch({type:STSActions.STS_NOW_WEEK_CHANGE,data:NowWeekNo});
-
-                //组织课表的信息存放到redux中
-                const json = res[1];
-
-                let SubjectTeacherSchedule =  json.ItemTeacher.map((item) => {
-
-                    let teacherObj = {
-
-                        id:item.TeacherID,
-
-                        name:item.TeacherName
-
-                    };
-
-                    let list = json.ItemSchedule.map((i) => {
-
-                        if (i.TeacherID === item.TeacherID){
-
-                            return {
-
-                                type:i.ScheduleType,
-
-                                title:(i.ClassName!==''?i.ClassName:CourseClassName),
-
-                                titleID:(i.ClassName!==''?i.ClassID:CourseClassID),
-
-                                secondTitle:i.SubjectName,
-
-                                secondTitleID:i.SubjectID,
-
-                                thirdTitle:i.ClassRoomName,
-
-                                thirdTitleID:i.ClassRoomID,
-
-                                WeekDay:i.WeekDay,
-
-                                ClassHourNO:i.ClassHourNO
-
-                            };
-
-                        }else {
-
-                            return ;
-
-                        }
-
-                    }).filter(i => {return i!==undefined});
-
-                    teacherObj['list'] = list;
-
-                    return teacherObj;
+                    SchoolID, PeriodID,PageIndex:1,PageSize:10,dispatch
 
                 });
 
-                dispatch({type:STSActions.SUBJECT_TEACHER_SCHEDULE_INIT,data:SubjectTeacherSchedule});
+                Promise.all([GetAllOptionByPeriodID,GetAllScheduleOfTeachersBySubjectIDForPage]).then((res)=>{
+                    //将课程、学期、等等放到redux中
+                    // res[0].Data['NowWeekNo'] = PeriodWeekTerm.NowWeekNo;
 
-                dispatch({type:STSActions.LOADING_HIDE});
+                    let NowWeekNo = PeriodWeekTerm.WeekNO;
 
-                dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
+                    dispatch({type:SCGCRActions.SCGCR_INFO_INIT,data:res[0]});
 
-            });
+                    dispatch({type:STSActions.STS_NOW_WEEK_CHANGE,data:NowWeekNo});
+
+                    //组织课表的信息存放到redux中
+                    const json = res[1];
+
+                    let SubjectTeacherSchedule =  json.ItemTeacher.map((item) => {
+
+                        let teacherObj = {
+
+                            id:item.TeacherID,
+
+                            name:item.TeacherName
+
+                        };
+
+                        let list = json.ItemSchedule.map((i) => {
+
+                            if (i.TeacherID === item.TeacherID){
+
+                                return {
+
+                                    type:i.ScheduleType,
+
+                                    title:(i.ClassName!==''?i.ClassName:CourseClassName),
+
+                                    titleID:(i.ClassName!==''?i.ClassID:CourseClassID),
+
+                                    secondTitle:i.SubjectName,
+
+                                    secondTitleID:i.SubjectID,
+
+                                    thirdTitle:i.ClassRoomName,
+
+                                    thirdTitleID:i.ClassRoomID,
+
+                                    WeekDay:i.WeekDay,
+
+                                    ClassHourNO:i.ClassHourNO
+
+                                };
+
+                            }else {
+
+                                return ;
+
+                            }
+
+                        }).filter(i => {return i!==undefined});
+
+                        teacherObj['list'] = list;
+
+                        return teacherObj;
+
+                    });
+
+                    dispatch({type:STSActions.SUBJECT_TEACHER_SCHEDULE_INIT,data:SubjectTeacherSchedule});
+
+                    dispatch({type:STSActions.LOADING_HIDE});
+
+                    dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
+
+                });
+
+
+            }else{
+
+                window.location.href='/error.aspx';
+
+            }
+
 
         }else{//如果前面获取的周次、学段信息没获得，等待获得。
 
-           window.location.href='/html/schedule/';
+           window.location.href='/html/schedule';
 
         }
 
@@ -153,7 +158,7 @@ const STTPageInit = () => {
             Promise.all([GetAllOptionByPeriodID,GetTeacherBySubjectIDAndKey]).then(res => {
 
 
-                let NowWeekNo = PeriodWeekTerm.NowWeekNo;
+                let NowWeekNo = PeriodWeekTerm.WeekNO;
 
                 //将课程、学期、等等放到redux中
 
@@ -286,7 +291,7 @@ const TeacherPersonalInit = () => {
             Promise.all([GetAllOptionByPeriodID,GetScheduleByUserID]).then(res => {
 
 
-                let NowWeekNo = PeriodWeekTerm.NowWeekNo;
+                let NowWeekNo = PeriodWeekTerm.WeekNO;
 
 
 

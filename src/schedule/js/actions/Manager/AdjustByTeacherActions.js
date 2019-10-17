@@ -366,21 +366,26 @@ const teacherClickSearch = (key) => {
 
             ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,Key:key,dispatch}).then(data=>{
 
-                let teacherSearchList = data.map(item => {
+                if (data){
 
-                    return{
+                    let teacherSearchList = data.map(item => {
 
-                        id:item.Teacher,
+                        return{
 
-                        name:item.TeacherName
+                            id:item.Teacher,
 
-                    };
+                            name:item.TeacherName
 
-                });
+                        };
 
-                dispatch({type:REPLACE_SHCEDULE_TEACHER_SEARCH_LIST_UPDATE,data:teacherSearchList});
+                    });
 
-                dispatch({type:REPLACE_SHCEDULE_TEACHER_SEARCH_LOADING_HIDE});
+                    dispatch({type:REPLACE_SHCEDULE_TEACHER_SEARCH_LIST_UPDATE,data:teacherSearchList});
+
+                    dispatch({type:REPLACE_SHCEDULE_TEACHER_SEARCH_LOADING_HIDE});
+
+                }
+
 
             });
 
@@ -433,21 +438,27 @@ const replaceTeacherClickSearch = (key) => {
 
             ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,Key:key,dispatch}).then(data=>{
 
-                let teacherSearchList = data.map(item => {
+                if (data){
 
-                    return{
+                    console.log(data);
 
-                        id:item.Teacher,
+                    let teacherSearchList = data.map(item => {
 
-                        name:item.TeacherName
+                        return{
 
-                    };
+                            id:item.Teacher,
 
-                });
+                            name:item.TeacherName
 
-                dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LIST_UPDATE,data:teacherSearchList});
+                        };
 
-                dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LOADING_HIDE});
+                    });
+
+                    dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LIST_UPDATE,data:teacherSearchList});
+
+                    dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LOADING_HIDE});
+
+                }
 
             });
 

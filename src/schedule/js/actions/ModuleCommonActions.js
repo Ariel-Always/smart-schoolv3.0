@@ -16,8 +16,6 @@ const getCommonInfo = () => {
 
             let {SchoolID,UserID,UserType} = UserInfo;
 
-            console.log(SchoolID,UserID,UserType);
-
             switch (UserType) {
 
                 case 0:

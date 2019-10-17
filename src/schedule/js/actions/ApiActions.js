@@ -46,7 +46,7 @@ const GetAllOptionByPeriodID = async ({SchoolID,PeriodID,UserID,UserType,dispatc
 
         CONFIG.ScheduleProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
@@ -64,20 +64,13 @@ const GetAllOptionByPeriodID = async ({SchoolID,PeriodID,UserID,UserType,dispatc
 
 const GetAllScheduleOfTeachersBySubjectIDForPage = async ({SchoolID,PeriodID,SubjectID='',WeekNO=0,PageIndex,PageSize,dispatch}) => {
 
-    let res = await Method.getGetData(`/Schedule/api/GetAllScheduleOfTeachersBySubjectIDForPage
-    ?SchoolID=${SchoolID}
-    &SubjectID=${SubjectID}
-    &PeriodID=${PeriodID}
-    &WeekNO=${WeekNO}
-    &PageIndex=${PageIndex}
-    &PageSize=${PageSize}
-    `,
+    let res = await Method.getGetData(`/Schedule/api/GetAllScheduleOfTeachersBySubjectIDForPage?SchoolID=${SchoolID}&SubjectID=${SubjectID}&PeriodID=${PeriodID}&WeekNO=${WeekNO}&PageIndex=${PageIndex}&PageSize=${PageSize}`,
 
         2,
 
         CONFIG.ScheduleProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
@@ -97,18 +90,13 @@ const GetAllScheduleOfTeachersBySubjectIDForPage = async ({SchoolID,PeriodID,Sub
 
 const GetTeacherBySubjectIDAndKey = async ({SchoolID,PeriodID='',SubjectID='',Key='',dispatch}) => {
 
-    let res = await Method.getGetData(`/Schedule/api/GetTeacherBySubjectIDAndKey
-    ?SchoolID=${SchoolID}
-    &SubjectID=${SubjectID}
-    &PeriodID=${PeriodID}
-    &Key=${Key}
-    `,
+    let res = await Method.getGetData(`/Schedule/api/GetTeacherBySubjectIDAndKey?SchoolID=${SchoolID}&PeriodID=${PeriodID}&SubjectID=${SubjectID}&Key=${Key}`,
 
         2,
 
         CONFIG.ScheduleProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
@@ -140,7 +128,7 @@ const GetScheduleByUserID = async ({SchoolID,PeriodID,UserType,UserID,WeekNO=0,d
 
         CONFIG.ScheduleProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
@@ -165,7 +153,7 @@ const GetAllOptionForAddSchedule = async ({SchoolID,dispatch}) => {
 
         CONFIG.ScheduleProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
@@ -182,19 +170,13 @@ const GetAllOptionForAddSchedule = async ({SchoolID,dispatch}) => {
 
 const GetClassByGradeIDAndKey = async ({SchoolID,PeriodID='',GradeID='',Key='',dispatch}) => {
 
-    let res = await Method.getGetData(`/Schedule/api/GetClassByGradeIDAndKey
-    
-    ?SchoolID=${SchoolID}
-    &PeriodID=${PeriodID}
-    &GradeID=${GradeID}
-    &Key=${Key}
-    `,
+    let res = await Method.getGetData(`/Schedule/api/GetClassByGradeIDAndKey?SchoolID=${SchoolID}&PeriodID=${PeriodID}&GradeID=${GradeID}&Key=${Key}`,
 
         2,
 
         CONFIG.ScheduleProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
@@ -212,18 +194,13 @@ const GetClassByGradeIDAndKey = async ({SchoolID,PeriodID='',GradeID='',Key='',d
 
 const GetClassRoomByClassTypeAndKey = async ({SchoolID,PeriodID='',ClassRoomTypeID='',GradeID='',Key='',dispatch}) => {
 
-    let res = await Method.getGetData(`/Schedule/api/GetClassRoomByClassTypeAndKey
-    ?SchoolID=${SchoolID}
-    &PeriodID=${PeriodID}
-    &ClassRoomTypeID=${ClassRoomTypeID}
-    &Key=${Key}
-    `,
+    let res = await Method.getGetData(`/Schedule/api/GetClassRoomByClassTypeAndKey?SchoolID=${SchoolID}&PeriodID=${PeriodID}&ClassRoomTypeID=${ClassRoomTypeID}&Key=${Key}`,
 
         2,
 
         CONFIG.ScheduleProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
@@ -248,7 +225,7 @@ const GetSubjectAndClassInfoByTeacherID = async ({TeacherID,dispatch}) => {
 
         CONFIG.ScheduleProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
@@ -264,15 +241,13 @@ const GetSubjectAndClassInfoByTeacherID = async ({TeacherID,dispatch}) => {
 //获取未结束上课的月、周、节次信息
 const GetAllDateTimeInfo = async ({SchoolID,dispatch}) => {
 
-    let res = await Method.getGetData(`/Schedule/api/GetAllDateTimeInfo
-    ?SchoolID=${SchoolID}
-    `,
+    let res = await Method.getGetData(`/Schedule/api/GetAllDateTimeInfo?SchoolID=${SchoolID}`,
 
         2,
 
         CONFIG.ScheduleProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
@@ -288,16 +263,13 @@ const GetAllDateTimeInfo = async ({SchoolID,dispatch}) => {
 //根据上课日期获取周次、星期信息
 const GetWeekInfoByDate = async ({SchoolID,ClassDate,dispatch}) => {
 
-    let res = await Method.getGetData(`/Schedule/api/GetWeekInfoByDate
-    ?SchoolID=${SchoolID}
-    &ClassDate=${ClassDate}
-    `,
+    let res = await Method.getGetData(`/Schedule/api/GetWeekInfoByDate?SchoolID=${SchoolID}&ClassDate=${ClassDate}`,
 
         2,
 
         CONFIG.ScheduleProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
@@ -314,16 +286,13 @@ const GetWeekInfoByDate = async ({SchoolID,ClassDate,dispatch}) => {
 
 const GetScheduleByTeacherIDAndDate = async ({TeacherID,ClassDate,dispatch}) => {
 
-    let res = await Method.getGetData(`/Schedule/api/GetScheduleByTeacherIDAndDate
-    ?TeacherID=${TeacherID}
-    &ClassDate=${ClassDate}
-    `,
+    let res = await Method.getGetData(`/Schedule/api/GetScheduleByTeacherIDAndDate?TeacherID=${TeacherID}&ClassDate=${ClassDate}`,
 
         2,
 
         CONFIG.ScheduleProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
@@ -339,16 +308,13 @@ const GetScheduleByTeacherIDAndDate = async ({TeacherID,ClassDate,dispatch}) => 
 
 const GetClassRoomIsNotBusy = async ({ClassDate,ClassHourNO,dispatch}) => {
 
-    let res = await Method.getGetData(`/Schedule/api/GetClassRoomIsNotBusy
-    ?ClassDate=${ClassDate}
-    &ClassHourNO=${ClassHourNO}
-    `,
+    let res = await Method.getGetData(`/Schedule/api/GetClassRoomIsNotBusy?ClassDate=${ClassDate}&ClassHourNO=${ClassHourNO}`,
 
         2,
 
         CONFIG.ScheduleProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
@@ -365,17 +331,13 @@ const GetClassRoomIsNotBusy = async ({ClassDate,ClassHourNO,dispatch}) => {
 
 const ClassRoomIsUseded = async ({ClassRoomID,ClassDate,ClassHourNO,dispatch}) => {
 
-    let res = await Method.getGetData(`/Schedule/api/ClassRoomIsUseded
-    ?ClassRoomID=${ClassRoomID}
-    &ClassDate=${ClassDate}
-    &ClassHourNO=${ClassHourNO}
-    `,
+    let res = await Method.getGetData(`/Schedule/api/ClassRoomIsUseded?ClassRoomID=${ClassRoomID}&ClassDate=${ClassDate}&ClassHourNO=${ClassHourNO}`,
 
         2,
 
         CONFIG.ScheduleProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 

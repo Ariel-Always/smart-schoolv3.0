@@ -729,6 +729,11 @@ class Search extends React.Component {
     }//键盘enter事件
     render() {
         const { width, select, placeHolder, selectOptions, onClickSearch, onCancelSearch, className,CancelBtnShow,Value,onChange } = this.props;
+
+        let CancelBtnDisplay =  CancelBtnShow?(CancelBtnShow==='y'?'block':'none'):(this.state.cancleShow === true ? 'block' : 'none');
+
+        console.log(CancelBtnShow,CancelBtnDisplay);
+
         return (
             <div className={`search_container ${className ? className : ''}`} style={{
                 width: width ? width : '',
@@ -812,7 +817,7 @@ class Search extends React.Component {
 
                                         }
                                     }
-                                    style={{ display:CancelBtnShow?(CancelBtnShow==='y'?'block':'none'):(this.state.cancleShow === true ? 'block' : 'none')}} />
+                                    style={{ display:CancelBtnDisplay}} />
                             </td>
                             <td className="search_right_td">
                                 <input className="search_btn_input" type="button"
@@ -980,7 +985,6 @@ class DropDown extends React.Component {
 
         } = this.props;
 
-
         let dropContainer = '';
 
         let selectUlWidth = (mutipleOptions && mutipleOptions.width ? mutipleOptions.width : 540);
@@ -1008,8 +1012,12 @@ class DropDown extends React.Component {
 
                     <Loading tip="加载中..." spinning={mutipleOptions && mutipleOptions.searchLoadingShow ? mutipleOptions.searchLoadingShow : false}>
 
-                        {mutipleOptions.searchList.map((item, ks) => {
-                            return <li key={ks} className={`dropdown_item3_li ${item.id === this.state.range2ListActive ? 'active' : ''}`}
+                        {
+                            mutipleOptions.searchList.length>0?
+
+                            mutipleOptions.searchList.map((item, ks) => {
+
+                                return <li key={ks} className={`dropdown_item3_li ${item.id === this.state.range2ListActive ? 'active' : ''}`}
                                 onClick={this.onMultipleRang2DropChange.bind(this, {
                                     name: item.name,
                                     id: item.id,
@@ -1018,38 +1026,58 @@ class DropDown extends React.Component {
                                 title={item.name}>
                                 <span className="dropdown_item3_name">{item.name}</span>
                             </li>
-                        })}
+
+                            })
+
+                            :
+
+                            <Empty type="5"></Empty>
+
+                        }
 
                     </Loading>
 
                 </ul>
 
         } else if (mutipleOptions && mutipleOptions.range === 2) { //如果range的等级为2
-            dropMultipleList = mutipleOptions.dropMultipleList && mutipleOptions.dropMultipleList.map((item1, k1) => {//遍历第一个数组
-                return <li key={k1} className="dropdown_list_item1">
-                    <div
-                        className={`dropdown_item1_name ${this.state.range2ListShow === k1 ? 'slide' : ''}`} //判断是否是活动状态
-                        title={item1.name} onClick={this.onRange2ListShow.bind(this, k1)}>{item1.name}</div>
-                    <ul ref={`dropdown_list_ul3_${k1}`} className={`dropdown_list_ul3 clearfix`} style={{ display: `${this.state.range2ListShow === k1 ? 'block' : 'none'}` }}>
-                        {//遍历第二个数组
-                            item1.list.map((item2, k2) => {
-                                return <li key={k2}
-                                    className={`dropdown_item3_li ${this.state.range2ListActive === item2.id ? 'active' : ''}`} //判断是否是active
-                                    title={item2.name}
-                                    onClick={this.onMultipleRang2DropChange.bind(this, {
-                                        name: item2.name,
-                                        id: item2.id,
-                                        onChange: mutipleOptions.dropMultipleChange
-                                    })}//绑定点击事件
-                                >
-                                    <span className="dropdown_item3_name">{item2.name}</span>
-                                </li>
-                            })
-                        }
-                    </ul>
-                </li>
 
-            });
+            //内容是否为空
+            if (mutipleOptions.dropMultipleList&&(mutipleOptions.dropMultipleList.length>0)){
+
+                dropMultipleList =  mutipleOptions.dropMultipleList.map((item1, k1) => {//遍历第一个数组
+
+                    return <li key={k1} className="dropdown_list_item1">
+                        <div
+                            className={`dropdown_item1_name ${this.state.range2ListShow === k1 ? 'slide' : ''}`} //判断是否是活动状态
+                            title={item1.name} onClick={this.onRange2ListShow.bind(this, k1)}>{item1.name}</div>
+                        <ul ref={`dropdown_list_ul3_${k1}`} className={`dropdown_list_ul3 clearfix`} style={{ display: `${this.state.range2ListShow === k1 ? 'block' : 'none'}` }}>
+                            {//遍历第二个数组
+                                item1.list.map((item2, k2) => {
+                                    return <li key={k2}
+                                               className={`dropdown_item3_li ${this.state.range2ListActive === item2.id ? 'active' : ''}`} //判断是否是active
+                                               title={item2.name}
+                                               onClick={this.onMultipleRang2DropChange.bind(this, {
+                                                   name: item2.name,
+                                                   id: item2.id,
+                                                   onChange: mutipleOptions.dropMultipleChange
+                                               })}//绑定点击事件
+                                    >
+                                        <span className="dropdown_item3_name">{item2.name}</span>
+                                    </li>
+                                })
+                            }
+                        </ul>
+                    </li>
+
+                });
+
+            }else{
+
+                dropMultipleList = <Empty type="3"></Empty>
+
+            }
+
+
 
 
         } else if (mutipleOptions && mutipleOptions.range === 3) {
@@ -1060,17 +1088,23 @@ class DropDown extends React.Component {
 
             dropContainer =
                 <div ref="dropdown_select_ul" className="dropdown_select_ul"
-                    style={{ width: selectUlWidth, height: selectUlHeight }}>
+                    style={{ width: selectUlWidth}}>
                     <div className="dropdown_multiple_container">
                         <div className="dropdown_search_wrapper">
+
                             <Search
                                 placeHolder={mutipleOptions && mutipleOptions.searchPlaceholder ? mutipleOptions.searchPlaceholder : null}
                                 width={searchWidth}
                                 onClickSearch={this.onClickSearch.bind(this)}
                                 onCancelSearch={this.onCancelSearch.bind(this)}
-                            ></Search>
+                                CancelBtnShow={mutipleOptions.CancelBtnShow}
+                            >
+
+                            </Search>
+
                         </div>
-                        <Scrollbars autoHide={true} style={{ width: scrollWrapperWidth, height: scrollWrapperHeight }}>
+
+                        <Scrollbars autoHide autoHeight autoHeightMax={scrollWrapperHeight} style={{ width: scrollWrapperWidth }} >
 
                             <Loading spinning={mutipleOptions && mutipleOptions.dropLoadingShow ? mutipleOptions.dropLoadingShow : false}>
 
@@ -1100,7 +1134,7 @@ class DropDown extends React.Component {
 
                     <Loading spinning={dropLoadingShow ? dropLoadingShow : false}>
 
-                        <Scrollbars autoHide={true} style={{ width: width ? width : 120, height: ClientHeight}}>
+                        <Scrollbars autoHide style={{ width: width ? width : 120, height: ClientHeight}}>
                             {//dropList是否存在？dropList:''
                                 dropList ?
                                     dropList.map((item, key) => {
