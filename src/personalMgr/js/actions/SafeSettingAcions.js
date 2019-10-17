@@ -1,10 +1,11 @@
 import AppAlertActions from './AppAlertActions';
 
-import AppLoadingActions from './AppLoadingActions';
+import {LogOut} from '../../../common/js/disconnect';
 
 import Method from './Method';
 
 import md5 from 'md5';
+
 import CONFIG from "../../../common/js/config";
 
 
@@ -240,17 +241,15 @@ const commitPwd = () => {
 
             UpdatePwd({UserID:UserID,UserType:UserType,OldPwd:OldPwd,NewPwd:NewPwd,dispatch}).then(data => {
 
-               if (data){
+               if (data === 'success'){
 
-                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+                    dispatch(AppAlertActions.alertSuccess({title:"修改密码成功,将跳转到登录界面！",hide:()=>{
 
-                        type:"success",
+                            return ()=>LogOut();
 
-                        title:"修改密码成功,将跳转到登录界面！",
+                        }}));
 
-                        hide:()=>{ return  window.location.href='/UserMgr/Login/Login.aspx';}
 
-                        }});
 
                }
 
@@ -276,7 +275,7 @@ const getQuestions = () =>{
 
                 let questionsList = [{value:"self",title:"自定义密保问题"}];
 
-                let arr = json.Data.map((item,key)=>{
+                let arr = data.map((item,key)=>{
 
                     return {
 
@@ -410,7 +409,7 @@ const commitQuestion = () => {
 
               AddSecQA({ UserID:UserID, Question:selfQa,Answer:answer,Pwd:pwd,dispatch}).then(data => {
 
-                 if (data){
+                 if (data==='success'){
 
                     dispatch(AppAlertActions.alertSuccess({title:"密保问题添加成功"}));
 
@@ -520,9 +519,9 @@ const commitDelQuestion = () => {
 
               pwd = md5(pwd);
 
-              DeleteSecQA({ UserID:UserID,ID:question.id,Pwd:pwd}).then(data => {
+              DeleteSecQA({ UserID:UserID,ID:question.id,Pwd:pwd,dispatch}).then(data => {
 
-                 if (data){
+                 if (data==='success'){
 
                     dispatch(AppAlertActions.alertSuccess({title:"删除成功"}));
 
@@ -668,9 +667,9 @@ const commitEditQuestion = () => {
                     dispatch
                 }).then(data => {
 
-                    if (data){
+                    if (data==='success'){
 
-                        dispatch(AppAlertActions.alertSuccess({title:"密保问题添加成功"}));
+                        dispatch(AppAlertActions.alertSuccess({title:"密保问题修改成功"}));
 
                         dispatch({type:SAFE_SETTING_EDIT_QUESTIONS_MODAL_HIDE});
 
@@ -834,9 +833,9 @@ const emailCommit = () => {
           pwd = md5(pwd);
 
 
-          SetSecEmail({UserID:UserID,Pwd:pwd,Email:newEmail}).then(data => {
+          SetSecEmail({UserID:UserID,Pwd:pwd,Email:newEmail,dispatch}).then(data => {
 
-              if (data){
+              if (data==='success'){
 
                   dispatch(AppAlertActions.alertSuccess({title:"邮箱添加成功"}));
 
@@ -957,7 +956,7 @@ let GetSecurityInfo =  async ({UserID,dispatch}) => {
 
     let res = await Method.getGetData(`/UserMgr/PersonalMgr/GetSecurityInfo?UserID=${UserID}`,2,CONFIG.PersonalProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
         return res.Data;
 
@@ -981,7 +980,7 @@ let UpdatePwd =  async ({UserID,UserType,OldPwd,NewPwd,dispatch}) => {
 
     if (res.StatusCode === 200) {
 
-        return res.Data;
+        return res.Msg;
 
     } else {
 
@@ -1029,7 +1028,7 @@ let GetSystemSecQA =  async ({UserID,dispatch}) => {
 
 let AddSecQA =  async ({UserID,Question,Answer,Pwd,dispatch}) => {
 
-    let res = await Method.getPostData(`/UserMgr/PersonalMgr/UpdatePwd`, {
+    let res = await Method.getPostData(`/UserMgr/PersonalMgr/AddSecQA`, {
 
         UserID,Question,Answer,Pwd
 
@@ -1037,7 +1036,7 @@ let AddSecQA =  async ({UserID,Question,Answer,Pwd,dispatch}) => {
 
     if (res.StatusCode === 200) {
 
-        return res.Data;
+        return res.Msg;
 
     } else {
 
@@ -1074,15 +1073,15 @@ let EditSecQA =  async ({UserID,ID,Question,Answer,Pwd,dispatch}) => {
 
     if (res.StatusCode === 200) {
 
-        return res.Data;
+        return res.Msg;
 
     } else {
 
-        if (json.Data === -2){
+        if (res.ErrorCode === -2){
 
             dispatch({type:SAFE_SETTING_EDIT_QUESTIONS_TIPS_SHOW,data:{type:'pwd',tips:"密码不正确！"}});
 
-        }else if (json.Data === -3){
+        }else if (res.ErrorCode === -3){
 
             dispatch(AppAlertActions.alertError({title:"已存在相同问题！"}));
 
@@ -1109,15 +1108,15 @@ let DeleteSecQA =  async ({UserID,ID,Pwd,dispatch}) => {
 
     if (res.StatusCode === 200) {
 
-        return res.Data;
+        return res.Msg;
 
     } else {
 
-        if (json.Data === -2){
+        if (res.ErrorCode === -2){
 
             dispatch({type:SAFE_SETTING_DEL_QUESTIONS_PWD_TIPS_SHOW,data:"密码不正确"});
 
-        }else if (json.Data === -3){
+        }else if (res.ErrorCode === -3){
 
            dispatch(AppAlertActions.alertError({title:"原问题已不存在！"}));
 
@@ -1146,13 +1145,13 @@ let SetSecEmail =  async ({UserID,Email,Pwd,dispatch}) => {
 
     if (res.StatusCode === 200) {
 
-        return res.Data;
+        return res.Msg;
 
     } else {
 
         if (res.ErrCode === -2){
 
-            dispatch({type:SAFE_SETTING_EMAIL_TIPS_SHOW,data:{type:'pwd',tips:"密码不正确！"}});
+            dispatch({type:SAFE_SETTING_EMAIL_TIPS_SHOW,data:{type:'pwd',value:"密码不正确！"}});
 
         }else if (res.ErrCode === -3){
 
@@ -1180,6 +1179,9 @@ const hideAlert = (dispatch) => {
   return () => dispatch({type:AppAlertActions.APP_ALERT_HIDE});
 
 };
+
+
+
 
 export default{
 

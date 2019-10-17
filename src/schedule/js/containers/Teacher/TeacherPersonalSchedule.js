@@ -75,6 +75,14 @@ class TeacherPersonalSchedule extends Component{
 
     }
 
+    //导入课表
+
+    Import(){
+
+        window.location.href='/html/schedule/#/Import';
+
+    }
+
 
     render() {
 
@@ -98,7 +106,7 @@ class TeacherPersonalSchedule extends Component{
 
             <div className="teacher-mine-wrapper">
 
-                <TopButtons AdjustScheduleShow={this.AdjustScheduleShow.bind(this)}></TopButtons>
+                <TopButtons AdjustScheduleShow={this.AdjustScheduleShow.bind(this)} Import={this.Import.bind(this)}></TopButtons>
 
                 <TermPick
 

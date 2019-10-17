@@ -2,6 +2,8 @@ import React,{Component} from 'react';
 
 import {Frame,Loading,Alert,Modal,MenuLeftNoLink} from "../../../common";
 
+import { HashRouter as Router,Route,Switch} from 'react-router-dom';
+
 import {TokenCheck_Connect,LogOut} from "../../../common/js/disconnect";
 
 import {connect} from 'react-redux';
@@ -14,6 +16,8 @@ import UpDataState from '../actions/UpDataState';
 
 import AppAlertActions from '../actions/AppAlertActions';
 
+import RouterSetActions from '../actions/RouterSetActions';
+
 import logo from '../../images/logo.png';
 
 import Banner from '../component/Banner';
@@ -21,6 +25,8 @@ import Banner from '../component/Banner';
 import ContentContainer from './ContentContainer';
 
 import AddClassModal from '../component/AddClassModal';
+
+import Import from "./Import";
 
 
 
@@ -32,9 +38,12 @@ class App extends Component{
         super(props);
 
         const {dispatch} = props;
+
         //判断token是否存在
 
         TokenCheck_Connect();
+
+        const hash = location.hash;
 
         if (sessionStorage.getItem('UserInfo')){
 
@@ -42,8 +51,17 @@ class App extends Component{
 
             dispatch({type:UpDataState.GET_LOGIN_USER_INFO,data:UserInfo});
 
-            dispatch(UpDataState.getPageInit());
+            if (hash.includes('Import')){//导入界面
 
+                dispatch({type:RouterSetActions.ROUTER_SET_TO_IMPORT});
+
+            }else{//非导入界面
+
+                dispatch({type:RouterSetActions.ROUTER_SET_TO_DEFAULT});
+
+                dispatch(UpDataState.getPageInit());
+
+            }
 
         }else{
 
@@ -56,7 +74,17 @@ class App extends Component{
 
                     dispatch({type:UpDataState.GET_LOGIN_USER_INFO,data:UserInfo});
 
-                    dispatch(UpDataState.getPageInit());
+                    if (hash.includes('Import')){//导入界面
+
+                        dispatch({type:RouterSetActions.ROUTER_SET_TO_IMPORT});
+
+                    }else{//非导入界面
+
+                        dispatch({type:RouterSetActions.ROUTER_SET_TO_DEFAULT});
+
+                        dispatch(UpDataState.getPageInit());
+
+                    }
 
                     clearInterval(getUserInfo);
 
@@ -250,10 +278,31 @@ class App extends Component{
 
     }
 
+    //点击导入
+
+    Import(type){
+
+        if (type===1){
+
+            window.open('/html/admclass/#/Import/Teacher');
+
+        }
+
+        if (type===2){
+
+            window.open('/html/admclass/#/Import/Genger');
+
+        }
+
+
+
+    }
+
+
 
     render() {
 
-        const {UIState,DataState} = this.props;
+        const {UIState,DataState,RouterSet} = this.props;
 
         const { Grades = []} = DataState.SchoolGradeClasses;//左侧菜单的年级和班级信息
 
@@ -287,20 +336,28 @@ class App extends Component{
 
         return (
 
-                    <React.Fragment>
+
+                <Router>
                     {/*loading包含Frame*/}
+
                         <Loading className="AppLoading" tip="加载中..." size="large" delay={200} spinning={UIState.AppLoading.show}>
 
-                            <Frame type="triangle" showLeftMenu={true} style={{display:`${UIState.AppLoading.show?'none':'block'}`}}
+                            <Frame type="triangle"
+                                   showLeftMenu={RouterSet.router==='/'?true:false}
+                                   showBarner={RouterSet.router==='/'?true:false}
+                                   style={{display:`${UIState.AppLoading.show?'none':'block'}`}}
                                    userInfo={{name:DataState.LoginUser.UserName,image:DataState.LoginUser.PhotoPath}}
                                    module={{cnname:"行政班管理",enname:"Administration class management",image:logo}}
-                                    onLogOut={this.LogOut.bind(this)}
+                                   onLogOut={this.LogOut.bind(this)}
                             >
                                 {/*banner*/}
 
                                 <div ref="frame-time-barner">
 
-                                    <Banner addClass={this.addClass.bind(this)}></Banner>
+                                    <Banner addClass={this.addClass.bind(this)}
+                                            Import={this.Import.bind(this)}>
+
+                                    </Banner>
 
                                 </div>
 
@@ -318,7 +375,17 @@ class App extends Component{
                                 {/*右侧内容区域，Router变化区域*/}
                                 <div ref="frame-right-content">
 
-                                    <ContentContainer></ContentContainer>
+
+
+                                        <Switch>
+
+                                            <Route path="/Import*" component={Import}></Route>
+
+                                            <Route path="/*" exact component={ContentContainer}></Route>
+
+                                        </Switch>
+
+
 
                                 </div>
 
@@ -361,7 +428,7 @@ class App extends Component{
                         </Modal>
 
 
-                    </React.Fragment>
+                </Router>
 
 
         );
@@ -369,13 +436,15 @@ class App extends Component{
 }
 const  mapStateToProps = (state) => {
 
-    let {UIState,DataState} = state;
+    let {UIState,DataState,RouterSet} = state;
 
     return {
 
         UIState,
 
-        DataState
+        DataState,
+
+        RouterSet
 
     }
 

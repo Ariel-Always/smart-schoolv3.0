@@ -24,93 +24,102 @@ const STSPageInit = () => {
 
             let {SchoolID,UserID,UserType} =LoginUser;//需要的参数后期加入
 
-            let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;//所需的参数
 
-            let GetAllOptionByPeriodID = ApiActions.GetAllOptionByPeriodID({SchoolID,PeriodID,UserID,UserType,dispatch});
+            if (PeriodWeekTerm.ItemPeriod.length>0){
 
-            let GetAllScheduleOfTeachersBySubjectIDForPage = ApiActions.GetAllScheduleOfTeachersBySubjectIDForPage({
+                let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;//所需的参数
 
-                PeriodID,SchoolID,SubjectID:'',WeekNO:0,PageIndex:1,PageSize:10,dispatch
+                let GetAllOptionByPeriodID = ApiActions.GetAllOptionByPeriodID({SchoolID,PeriodID,UserID,UserType,dispatch});
 
-            });
+                let GetAllScheduleOfTeachersBySubjectIDForPage = ApiActions.GetAllScheduleOfTeachersBySubjectIDForPage({
 
-
-            Promise.all([GetAllOptionByPeriodID,GetAllScheduleOfTeachersBySubjectIDForPage]).then((res)=>{
-                //将课程、学期、等等放到redux中
-                // res[0].Data['NowWeekNo'] = PeriodWeekTerm.NowWeekNo;
-
-                let NowWeekNo = PeriodWeekTerm.NowWeekNo;
-
-                dispatch({type:SCGCRActions.SCGCR_INFO_INIT,data:res[0]});
-
-                dispatch({type:STSActions.STS_NOW_WEEK_CHANGE,data:NowWeekNo});
-
-                //组织课表的信息存放到redux中
-                const json = res[1];
-
-                let SubjectTeacherSchedule =  json.ItemTeacher.map((item) => {
-
-                    let teacherObj = {
-
-                        id:item.TeacherID,
-
-                        name:item.TeacherName,
-
-                        active:false
-
-                    };
-
-                    let list = json.ItemSchedule.map((i) => {
-
-                        if (i.TeacherID === item.TeacherID){
-
-                            return {
-
-                                type:i.ScheduleType,
-
-                                title:(i.ClassName!==''?i.ClassName:CourseClassName),
-
-                                titleID:(i.ClassName!==''?i.ClassID:CourseClassID),
-
-                                secondTitle:i.SubjectName,
-
-                                secondTitleID:i.SubjectID,
-
-                                thirdTitle:i.ClassRoomName,
-
-                                thirdTitleID:i.ClassRoomID,
-
-                                WeekDay:i.WeekDay,
-
-                                ClassHourNO:i.ClassHourNO
-
-                            };
-
-                        }else {
-
-                            return ;
-
-                        }
-
-                    }).filter(i => {return i!==undefined});
-
-                    teacherObj['list'] = list;
-
-                    return teacherObj;
+                    PeriodID,SchoolID,SubjectID:'',WeekNO:0,PageIndex:1,PageSize:10,dispatch
 
                 });
 
-                dispatch({type:STSActions.SUBJECT_TEACHER_SCHEDULE_INIT,data:SubjectTeacherSchedule});
+                Promise.all([GetAllOptionByPeriodID,GetAllScheduleOfTeachersBySubjectIDForPage]).then((res)=>{
+                    //将课程、学期、等等放到redux中
+                    // res[0].Data['NowWeekNo'] = PeriodWeekTerm.NowWeekNo;
 
-                dispatch({type:STSActions.LOADING_HIDE});
+                    let NowWeekNo = PeriodWeekTerm.NowWeekNo;
 
-                dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
+                    dispatch({type:SCGCRActions.SCGCR_INFO_INIT,data:res[0]});
 
-            });
+                    dispatch({type:STSActions.STS_NOW_WEEK_CHANGE,data:NowWeekNo});
+
+                    //组织课表的信息存放到redux中
+                    const json = res[1];
+
+                    let SubjectTeacherSchedule =  json.ItemTeacher.map((item) => {
+
+                        let teacherObj = {
+
+                            id:item.TeacherID,
+
+                            name:item.TeacherName,
+
+                            active:false
+
+                        };
+
+                        let list = json.ItemSchedule.map((i) => {
+
+                            if (i.TeacherID === item.TeacherID){
+
+                                return {
+
+                                    type:i.ScheduleType,
+
+                                    title:(i.ClassName!==''?i.ClassName:CourseClassName),
+
+                                    titleID:(i.ClassName!==''?i.ClassID:CourseClassID),
+
+                                    secondTitle:i.SubjectName,
+
+                                    secondTitleID:i.SubjectID,
+
+                                    thirdTitle:i.ClassRoomName,
+
+                                    thirdTitleID:i.ClassRoomID,
+
+                                    WeekDay:i.WeekDay,
+
+                                    ClassHourNO:i.ClassHourNO
+
+                                };
+
+                            }else {
+
+                                return ;
+
+                            }
+
+                        }).filter(i => {return i!==undefined});
+
+                        teacherObj['list'] = list;
+
+                        return teacherObj;
+
+                    });
+
+                    dispatch({type:STSActions.SUBJECT_TEACHER_SCHEDULE_INIT,data:SubjectTeacherSchedule});
+
+                    dispatch({type:STSActions.LOADING_HIDE});
+
+                    dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
+
+                });
+
+            }else{
+
+                window.location.href='/error.aspx';
+
+            }
+
 
         }else{//如果前面获取的周次、学段信息没获得跳转到课表首页。
 
-            window.location.href='html/schedule#/';
+            window.location.href='/html/schedule#/';
 
         }
 

@@ -6,15 +6,9 @@ import {TokenCheck_Connect} from "../../../common/js/disconnect";
 
 import { connect } from 'react-redux';
 
-import {HashRouter as Router,Route,Switch,withRouter,Redirect} from 'react-router-dom';
+import {HashRouter as Router} from 'react-router-dom';
 
 import DocumentTitle from 'react-document-title';
-
-import ManagerComponent from './Manager';
-
-import TeacherComponent from './Teacher';
-
-import StudentComponent from './Student';
 
 import AdjustBtnsWrapper from '../component/Manager/AdjustBtnsWrapper';
 
@@ -50,7 +44,7 @@ import RouterWrapper from './RouterWrapper';
 
 import '../../scss/index.scss';
 
-import LoginUserActions from "../actions/LoginUserActions";
+import RouterSetActions from "../actions/RouterSetActions";
 
 
 
@@ -65,12 +59,23 @@ class App extends Component{
 
         TokenCheck_Connect();
 
+        const Hash = location.hash;
+
         if (sessionStorage.getItem('UserInfo')){
 
             let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
 
             dispatch(ModuleCommonActions.getCommonInfo());
 
+            if (Hash.includes('Import')){
+
+                dispatch({type:RouterSetActions.ROUTER_SET_TO_IMPORT})
+
+            }else{
+
+                dispatch({type:RouterSetActions.ROUTER_SET_TO_DEFAULT})
+
+            }
 
         }else{
 
@@ -82,6 +87,16 @@ class App extends Component{
                     let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
 
                     dispatch(ModuleCommonActions.getCommonInfo());
+
+                    if (Hash.includes('Import')){
+
+                        dispatch({type:RouterSetActions.ROUTER_SET_TO_IMPORT})
+
+                    }else{
+
+                        dispatch({type:RouterSetActions.ROUTER_SET_TO_DEFAULT})
+
+                    }
 
                     clearInterval(getUserInfo);
 
@@ -216,6 +231,15 @@ class App extends Component{
     }
 
 
+    //导入课表
+
+    Import(){
+
+        window.location.href='/html/schedule#/Import';
+
+    }
+
+
     componentDidMount(){
 
         addEventListener('click',this.clickOthers.bind(this));
@@ -223,11 +247,13 @@ class App extends Component{
     }
 
 
+
+
     render() {
 
         const {state} = this.props;
 
-        const { LoginUser,AppLoading,ModuleSetting,Manager,PeriodWeekTerm,AppAlert } = state;
+        const { LoginUser,AppLoading,ModuleSetting,Manager,PeriodWeekTerm,AppAlert,RouterSet } = state;
 
         const { AdjustBtns } = Manager;
 
@@ -250,7 +276,7 @@ class App extends Component{
                                 name:LoginUser.UserName,
                                 image:LoginUser.PhotoPath
                             }}
-                            showBarner={ModuleSetting.timeBar}
+                            showBarner={RouterSet.router==='/'?ModuleSetting.timeBar:false}
 
                             type="circle"
 
@@ -295,7 +321,9 @@ class App extends Component{
 
                                             delScheduleShow = {this.delScheduleShow.bind(this)}
 
-                                            adjustByTeacherShow = {this.adjustByTeacherShow.bind(this)}>
+                                            adjustByTeacherShow = {this.adjustByTeacherShow.bind(this)}
+
+                                            Import={this.Import.bind(this)}>
 
                                         </AdjustBtnsWrapper>
 

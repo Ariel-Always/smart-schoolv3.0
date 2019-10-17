@@ -316,6 +316,20 @@
 
   }
 
+    .no-permission{
+
+      color: #999999;
+
+      height: 40px;
+
+      padding-right: 20px;
+
+      padding-top: 0px;
+
+      line-height: 40px;
+
+    }
+
     .close-btn{
 
       position: absolute;
@@ -360,9 +374,6 @@
 
     }
 
-
-
-
     &.teacher{
 
       padding:0;
@@ -371,7 +382,7 @@
 
       .detail-item-title{
 
-        padding:10px 80px 10px 12px;
+        padding:10px 48px 10px 12px;
 
         border-bottom: 1px solid #dddddd;
 
@@ -379,9 +390,9 @@
 
       .detail-content-wrapper{
 
-        padding:10px 80px 10px 12px;
+        padding:10px 48px 10px 12px;
 
-        min-width:172px;
+        min-width:186px;
 
         max-width: 400px;
 
@@ -401,6 +412,16 @@
   .role-wrapper{
 
     position: relative;
+
+  }
+
+  .user-photo-wrapper{
+
+    .props{
+
+      margin-top: 100px;
+
+    }
 
   }
 

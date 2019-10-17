@@ -2,6 +2,8 @@ import Method from '../Method';
 
 import AppAlertActions from '../AppAlertActions'
 
+import ApiActions from '../ApiActions';
+
 //停课弹窗
 const STOP_SCHEDULE_SHOW = 'STOP_SCHEDULE_SHOW';
 
@@ -40,11 +42,11 @@ const dateChange = (date) => {
 
                 dispatch({type:STOP_SCHEDULE_WEEK_DATE_LOADING_SHOW});
 
-                let datePromise = Method.getGetData('/scheduleDateUpdate');
+                let { SchoolID } = getState().LoginUser;
 
-                datePromise.then(json => {
+                ApiActions.GetWeekInfoByDate({SchoolID,ClassDate:date,dispatch}).then(data => {
 
-                    if (json.Status === 200){
+                    if (data){
 
                         const { WeekNO,WeekDay } = json.Data;
 
@@ -104,22 +106,6 @@ const dateChange = (date) => {
 
                         dispatch({type:STOP_SCHEDULE_WEEK_DATE_LOADING_HIDE});
 
-                    }else{
-
-                        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                                type:"btn-error",
-
-                                title:json.Msg,
-
-                                ok:hideAlert(dispatch),
-
-                                cancel:hideAlert(dispatch),
-
-                                close:hideAlert(dispatch)
-
-                            }})
-
                     }
 
                 })
@@ -137,17 +123,15 @@ const InfoInit = () => {
 
         dispatch({type:STOP_SCHEDULE_LOADING_SHOW});
 
-        let SchoolID = getState().LoginUser;
+        let { SchoolID } = getState().LoginUser;
 
         let Periods = getState().PeriodWeekTerm.ItemPeriod;
 
-        let allGradesClassHour = Method.getGetData(`/allSGWTTC?SchoolID=${SchoolID}`);
+        ApiActions.GetAllOptionForAddSchedule({SchoolID,dispatch}).then(data => {
 
-        allGradesClassHour.then(json => {
+            let Grades = data.ItemGrade;
 
-            let Grades = json.Data.ItemGrade;
-
-            let ItemClassHour = json.Data.ItemClassHour;
+            let ItemClassHour = data.ItemClassHour;
 
             let periodGrades = Periods.map(item => {
 
@@ -684,19 +668,7 @@ const commitInfo = () => {
 
         if (!gradeChecked){
 
-            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                    type:"btn-warn",
-
-                    title:"请选择需要停课的年级！",
-
-                    ok:hideAlert(dispatch),
-
-                    cancel:hideAlert(dispatch),
-
-                    close:hideAlert(dispatch)
-
-                }})
+            dispatch(AppAlertActions.alertWarn({title:"请选择需要停课的年级！"}));
 
             dispatch({type:STOP_SCHEDULE_LOADING_HIDE});
 
@@ -704,19 +676,7 @@ const commitInfo = () => {
 
         if (!classHoursChecked){
 
-            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                    type:"btn-warn",
-
-                    title:"请选择需要暂停的课时！",
-
-                    ok:hideAlert(dispatch),
-
-                    cancel:hideAlert(dispatch),
-
-                    close:hideAlert(dispatch)
-
-                }})
+            dispatch(AppAlertActions.alertWarn({title:"请选择需要暂停的课时！"}));
 
             dispatch({type:STOP_SCHEDULE_LOADING_HIDE});
 
@@ -724,19 +684,8 @@ const commitInfo = () => {
 
         if (date === ''){
 
-            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+            dispatch(AppAlertActions.alertWarn({title:"请选择需要停课的日期！"}));
 
-                    type:"btn-warn",
-
-                    title:"请选择需要停课的日期！",
-
-                    ok:hideAlert(dispatch),
-
-                    cancel:hideAlert(dispatch),
-
-                    close:hideAlert(dispatch)
-
-                }});
 
             dispatch({type:STOP_SCHEDULE_LOADING_HIDE});
 
@@ -774,39 +723,19 @@ const commitInfo = () => {
 
             }).filter(i => i!==undefined).join(',');
 
-            let commitPromise = Method.getPostData('/scheduleStopSchedule',{ClassDate,ClassHours,Grades});
+            let { UserID,UserType } = getState().LoginUser;
 
-            commitPromise.then(res => {
+            ApiActions.BatchCloseSchedule({
 
-                if (res.Status === 200){
+                UserID,UserType,ClassHours,ClassDate,Grades,dispatch
+
+            }).then(data => {
+
+                if (data){
 
                     dispatch({type:STOP_SCHEDULE_HIDE});
 
-                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                            type:"success",
-
-                            title:"停课成功！",
-
-                            hide:hideAlert(dispatch)
-
-                        }});
-
-                }else{
-
-                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                            type:"btn-error",
-
-                            title:res.Msg?res.Msg:'错误',
-
-                            ok:hideAlert(dispatch),
-
-                            cancel:hideAlert(dispatch),
-
-                            close:hideAlert(dispatch)
-
-                        }});
+                   dispatch(AppAlertActions.alertSuccess({title:"停课成功！"}));
 
                 }
 

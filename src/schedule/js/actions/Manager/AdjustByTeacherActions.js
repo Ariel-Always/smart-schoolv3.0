@@ -4,6 +4,8 @@ import Method from '../Method';
 
 import AppAlertActions from '../AppAlertActions';
 
+import ApiActions from '../ApiActions';
+
 //关于弹窗公共部分
 const ADJUST_BY_TEACHER_SHOW = 'ADJUST_BY_TEACHER_SHOW';
 
@@ -202,93 +204,25 @@ const replaceScheduleInit = () => {
 
     return ( dispatch,getState ) => {
 
-        let getAllGradePromise = Method.getGetData('/scheduleSubjectGrade');
+        let {LoginUser} = getState();
 
-        let getTeacherPromise = Method.getGetData('/scheduleSubjectTeacherTeacher');
+        let { SchoolID } = LoginUser;
 
-        Promise.all([getAllGradePromise,getTeacherPromise]).then(res => {
+        ApiActions.GetAllOptionForAddSchedule({SchoolID,dispatch}).then(data => {
 
-           let teacherList = res[0].Data.ItemSubject.map(item => {
+            if (data){
 
-              let list =  res[1].Data.map(i => {
+                let teacherList = data.ItemSubject.map(item => {
 
-                 if (i.SubjectID === item.SubjectID){
+                    let list =  data.ItemTeacher.map(i => {
 
-                        return{
+                        if (i.SubjectID === item.SubjectID){
 
-                            name:i.TeacherName,
+                            return{
 
-                            id:i.Teacher
+                                name:i.TeacherName,
 
-                        }
-
-                 }else{
-
-                     return;
-
-                 }
-
-              }).filter(itm => itm!==undefined);
-
-              return {
-
-                  id:item.SubjectID,
-
-                  name:item.SubjectName,
-
-                  list
-
-              }
-
-           });
-
-           dispatch({type:ADJUST_BY_TEACHER_TEACHER_LIST_UPDATE,data:teacherList});
-
-            dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
-
-        });
-
-    };
-
-};
-
-//教师选择
-const teacherDropChange = (info) => {
-
-
-    return ( dispatch,getState ) => {
-
-        dispatch({type:REPLACE_SHCEDULE_TEACHER_DROP_CHANGE,data:{value:info.id,title:info.value}});
-
-        let teacherInfoPromise = Method.getGetData('/scheduleReplaceTeacherSelectd');
-
-        teacherInfoPromise.then(json => {
-
-            if (json.Status === 200){
-
-                if (json.Data.ItemSubject.length > 1){
-
-                    let  list = json.Data.ItemSubject.map(item => {
-
-                        return {
-
-                            value:item.SubjectID,
-
-                            title:item.SubjectName
-
-                        }
-
-                    });
-
-                    let classList = json.Data.ItemClass.map(item => {
-
-                        if (item.SubjectID === list[0].value){
-
-                            return {
-
-                                id:item.ClassID,
-
-                                name:item.ClasstName
+                                id:i.Teacher
 
                             }
 
@@ -298,25 +232,60 @@ const teacherDropChange = (info) => {
 
                         }
 
-                    }).filter(i => i!==undefined);
+                    }).filter(itm => itm!==undefined);
 
-                    dispatch({type:REPLACE_SHCEDULE_CLASS_LIST_UPDATE,data:classList});
+                    return {
 
-                    dispatch({type:REPLACE_SHCEDULE_TEACHER_SSUBJECT_DROP_SHOW,data:{
+                        id:item.SubjectID,
 
-                            dropSelectd:{value:list[0].value,title:list[0].title},
+                        name:item.SubjectName,
 
-                            dropList:list
+                        list
 
-                        }});
+                    }
 
-                }else{
+                });
 
-                    let  subject =  json.Data.ItemSubject[0]?json.Data.ItemSubject[0]:{SubjectID:"none",SubjectName:"未设置"};
+                dispatch({type:ADJUST_BY_TEACHER_TEACHER_LIST_UPDATE,data:teacherList});
 
-                    let subjectObj = { id:subject.SubjectID,name:subject.SubjectName };
+                dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
 
-                    let classList = json.Data.ItemClass.length>0?json.Data.ItemClass.map(item => {
+            }
+
+        });
+
+    };
+
+};
+
+
+
+//教师选择
+const teacherDropChange = (info) => {
+
+    return ( dispatch,getState ) => {
+
+        dispatch({type:REPLACE_SHCEDULE_TEACHER_DROP_CHANGE,data:{value:info.id,title:info.value}});
+
+        ApiActions.GetSubjectAndClassInfoByTeacherID({TeacherID:info.id,dispatch}).then(data=>{
+
+            if (data.ItemSubject.length > 1){
+
+                let  list = data.ItemSubject.map(item => {
+
+                    return {
+
+                        value:item.SubjectID,
+
+                        title:item.SubjectName
+
+                    }
+
+                });
+
+                let classList = data.ItemClass.map(item => {
+
+                    if (item.SubjectID === list[0].value){
 
                         return {
 
@@ -326,33 +295,49 @@ const teacherDropChange = (info) => {
 
                         }
 
-                    }):[];
+                    }else{
 
-                    dispatch({type:REPLACE_SHCEDULE_CLASS_LIST_UPDATE,data:classList});
+                        return;
 
-                    dispatch({type:REPLACE_SHCEDULE_TEACHER_SSUBJECT_DROP_HIDE,data:{
+                    }
 
-                            id:subjectObj.id,
+                }).filter(i => i!==undefined);
 
-                            name:subjectObj.name
+                dispatch({type:REPLACE_SHCEDULE_CLASS_LIST_UPDATE,data:classList});
 
-                        }});
+                dispatch({type:REPLACE_SHCEDULE_TEACHER_SSUBJECT_DROP_SHOW,data:{
 
-                }
+                        dropSelectd:{value:list[0].value,title:list[0].title},
+
+                        dropList:list
+
+                    }});
 
             }else{
 
-                dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+                let  subject =  data.ItemSubject[0]?data.ItemSubject[0]:{SubjectID:"none",SubjectName:"未设置"};
 
-                        type:"btn-error",
+                let subjectObj = { id:subject.SubjectID,name:subject.SubjectName };
 
-                        title:json.Msg,
+                let classList = data.ItemClass.length>0?data.ItemClass.map(item => {
 
-                        ok:hideAlert(dispatch),
+                    return {
 
-                        close:hideAlert(dispatch),
+                        id:item.ClassID,
 
-                        cancel:hideAlert(dispatch)
+                        name:item.ClasstName
+
+                    }
+
+                }):[];
+
+                dispatch({type:REPLACE_SHCEDULE_CLASS_LIST_UPDATE,data:classList});
+
+                dispatch({type:REPLACE_SHCEDULE_TEACHER_SSUBJECT_DROP_HIDE,data:{
+
+                        id:subjectObj.id,
+
+                        name:subjectObj.name
 
                     }});
 
@@ -364,6 +349,8 @@ const teacherDropChange = (info) => {
 
 };
 
+
+
 //教师搜索
 const teacherClickSearch = (key) => {
 
@@ -371,69 +358,36 @@ const teacherClickSearch = (key) => {
 
         if (key !== ''){
 
-            let SchoolID = getState().LoginUser;
+            let {SchoolID} = getState().LoginUser;
 
             dispatch({type:REPLACE_SHCEDULE_TEACHER_SEARCH_OPEN});
 
             dispatch({type:REPLACE_SHCEDULE_TEACHER_SEARCH_LOADING_SHOW});
 
-            let searchTeacherPromise = Method.getGetData(`/scheduleSubjectTeacherTeacher?SchoolID=${SchoolID}&key=${key}`);
+            ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,Key:key,dispatch}).then(data=>{
 
-            searchTeacherPromise.then(json => {
+                let teacherSearchList = data.map(item => {
 
-                if (json.Status === 200){
+                    return{
 
-                    let teacherSearchList = json.Data.map(item => {
+                        id:item.Teacher,
 
-                        return{
+                        name:item.TeacherName
 
-                            id:item.Teacher,
+                    };
 
-                            name:item.TeacherName
+                });
 
-                        };
+                dispatch({type:REPLACE_SHCEDULE_TEACHER_SEARCH_LIST_UPDATE,data:teacherSearchList});
 
-                    });
-
-                    dispatch({type:REPLACE_SHCEDULE_TEACHER_SEARCH_LIST_UPDATE,data:teacherSearchList});
-
-                    dispatch({type:REPLACE_SHCEDULE_TEACHER_SEARCH_LOADING_HIDE});
-
-                }else{
-
-                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                            type:"btn-warn",
-
-                            title:json.Msg,
-
-                            ok:hideAlert(dispatch),
-
-                            close:hideAlert(dispatch),
-
-                            cancel:hideAlert(dispatch)
-
-                        }});
-
-                }
+                dispatch({type:REPLACE_SHCEDULE_TEACHER_SEARCH_LOADING_HIDE});
 
             });
 
+
         }else{
 
-            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                    type:"btn-warn",
-
-                    title:"搜索的内容不能为空！",
-
-                    ok:hideAlert(dispatch),
-
-                    close:hideAlert(dispatch),
-
-                    cancel:hideAlert(dispatch)
-
-                }});
+           dispatch(AppAlertActions.alertWarn({title:"搜索的内容不能为空！"}));
 
         }
 
@@ -456,7 +410,6 @@ const teacherSearchClose = () => {
 //教师选择
 const replaceTeacherDropChange = (info) => {
 
-
     return ( dispatch,getState ) => {
 
         dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_DROP_CHANGE,data:{value:info.id,title:info.value}});
@@ -472,69 +425,35 @@ const replaceTeacherClickSearch = (key) => {
 
         if (key !== ''){
 
-            let SchoolID = getState().LoginUser;
-
             dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_OPEN});
 
             dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LOADING_SHOW});
 
-            let searchTeacherPromise = Method.getGetData(`/scheduleSubjectTeacherTeacher?SchoolID=${SchoolID}&key=${key}`);
+            let {SchoolID} = getState().LoginUser;
 
-            searchTeacherPromise.then(json => {
+            ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,Key:key,dispatch}).then(data=>{
 
-                if (json.Status === 200){
+                let teacherSearchList = data.map(item => {
 
-                    let teacherSearchList = json.Data.map(item => {
+                    return{
 
-                        return{
+                        id:item.Teacher,
 
-                            id:item.Teacher,
+                        name:item.TeacherName
 
-                            name:item.TeacherName
+                    };
 
-                        };
+                });
 
-                    });
+                dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LIST_UPDATE,data:teacherSearchList});
 
-                    dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LIST_UPDATE,data:teacherSearchList});
-
-                    dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LOADING_HIDE});
-
-                }else{
-
-                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                            type:"btn-warn",
-
-                            title:json.Msg,
-
-                            ok:hideAlert(dispatch),
-
-                            close:hideAlert(dispatch),
-
-                            cancel:hideAlert(dispatch)
-
-                        }});
-
-                }
+                dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LOADING_HIDE});
 
             });
 
         }else{
 
-            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                    type:"btn-warn",
-
-                    title:"搜索的内容不能为空！",
-
-                    ok:hideAlert(dispatch),
-
-                    close:hideAlert(dispatch),
-
-                    cancel:hideAlert(dispatch)
-
-                }});
+            dispatch(AppAlertActions.alertWarn({title:"搜索的内容不能为空！"}));
 
         }
 
@@ -592,19 +511,19 @@ const classChecked = (id) => {
 //radio变化
 const radioChange = (id) => {
 
-    return dispatch => {
+    return (dispatch,getState) => {
 
       dispatch({type:REPLACE_SHCEDULE_RADIO_CHANGE,data:id});
 
-        let getMWC = Method.getGetData('/scheduleUnEndMonths');
+        let { SchoolID } = getState().LoginUser;
 
-        getMWC.then(json => {
+        ApiActions.GetAllDateTimeInfo({SchoolID,dispatch}).then(data => {
 
-            if (json.StatusCode === 200){
+            if (data) {
 
                 if (id === 'month') {
 
-                    const {ItemMoth} = json.Data;
+                    const {ItemMoth} = data;
 
                     let list = ItemMoth.map(item => {
 
@@ -621,25 +540,25 @@ const radioChange = (id) => {
                     dispatch({type: REPLACE_SHCEDULE_MONTHS_LIST_UPDATE, data: list});
                 }
 
-                if (id === 'week'){
+                if (id === 'week') {
 
-                    const { ItemWeek } = json.Data;
+                    const {ItemWeek} = data;
 
-                    let  list = ItemWeek.map(item => item.WeekNO);
+                    let list = ItemWeek.map(item => item.WeekNO);
 
-                    dispatch({type:REPLACE_SHCEDULE_WEEK_LIST_UPDATE,data:list});
+                    dispatch({type: REPLACE_SHCEDULE_WEEK_LIST_UPDATE, data: list});
 
                 }
 
-                if (id === 'classHour'){
+                if (id === 'classHour') {
 
-                    let morning = { id:1,name:"上午",list:[] };
+                    let morning = {id: 1, name: "上午", list: []};
 
-                    let afternoon = { id:2,name:"下午" ,list:[]};
-                    
-                    let night = { id:3,name:"晚上" ,list:[]};
+                    let afternoon = {id: 2, name: "下午", list: []};
 
-                    json.Data.ItemClassHour.map(item => {
+                    let night = {id: 3, name: "晚上", list: []};
+
+                    data.ItemClassHour.map(item => {
 
                         switch (item.ClassHourType) {
 
@@ -671,19 +590,19 @@ const radioChange = (id) => {
 
                     let classHourList = [];
 
-                    if (morning.list.length>0){
+                    if (morning.list.length > 0) {
 
                         classHourList.push(morning);
 
                     }
 
-                    if (afternoon.list.length>0){
+                    if (afternoon.list.length > 0) {
 
                         classHourList.push(afternoon);
 
                     }
 
-                    if (night.list.length>0){
+                    if (night.list.length > 0) {
 
                         classHourList.push(night);
 
@@ -691,43 +610,30 @@ const radioChange = (id) => {
 
                     let classHourPlainOpts = JSON.parse(JSON.stringify(classHourList));
 
-                    let classHourCheckedList = classHourList.map(item =>{
+                    let classHourCheckedList = classHourList.map(item => {
 
-                        return{
+                        return {
 
-                            id:item.id,
+                            id: item.id,
 
-                            name:item.name,
+                            name: item.name,
 
-                            checked:false,
+                            checked: false,
 
-                            list:[]
+                            list: []
 
                         }
 
                     });
 
-                    dispatch({type:REPLACE_SHCEDULE_CLASSHOUR_LIST_CHANGE,data:{classHourList,classHourPlainOpts,classHourCheckedList}});
+                    dispatch({
+                        type: REPLACE_SHCEDULE_CLASSHOUR_LIST_CHANGE,
+                        data: {classHourList, classHourPlainOpts, classHourCheckedList}
+                    });
 
-                    dispatch({type:REPLACE_SHCEDULE_CLASSHOUR_LOADING_HIDE});
+                    dispatch({type: REPLACE_SHCEDULE_CLASSHOUR_LOADING_HIDE});
 
                 }
-
-            }else{
-
-                dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                        type:"btn-warn",
-
-                        title:json.Msg,
-
-                        ok:hideAlert(dispatch),
-
-                        close:hideAlert(dispatch),
-
-                        cancel:hideAlert(dispatch)
-
-                    }});
 
             }
 
@@ -806,102 +712,91 @@ const dateChecked = (date) => {
 //课时日期选取
 const classHourDateChecked = (date) => {
 
-    return dispatch => {
+    return (dispatch,getState) => {
 
         dispatch({type:REPLACE_SHCEDULE_CLASSHOUR_DATE_CHECKED,data:date});
 
         dispatch({type:REPLACE_SHCEDULE_CLASSHOUR_WEEK_DATE_LOADING_SHOW});
 
-        let getDatePromise = Method.getGetData(`/scheduleDateUpdate?ClassDate=${date}`);
+        let { SchoolID } = getState().LoginUser;
 
-        getDatePromise.then(json => {
+        if (date){
 
-           if (json.Status === 200){
+            ApiActions.GetWeekInfoByDate({SchoolID,ClassDate:date,dispatch}).then(data => {
 
-                let WeekNO = json.Data.WeekNO;
+                if (data){
 
-                let weekDay = json.Data.WeekDay;
+                    let WeekNO = data.WeekNO;
 
-                let WeekDay = '';
+                    let weekDay = data.WeekDay;
 
-               switch (weekDay) {
+                    let WeekDay = '';
 
-                   case 0:
+                    switch (weekDay) {
 
-                       WeekDay = '星期一';
+                        case 0:
 
-                       break;
+                            WeekDay = '星期一';
 
-                   case 1:
+                            break;
 
-                       WeekDay = '星期二';
+                        case 1:
 
-                       break;
+                            WeekDay = '星期二';
 
-                   case 2:
+                            break;
 
-                       WeekDay = '星期三';
+                        case 2:
 
-                       break;
+                            WeekDay = '星期三';
 
-                   case 3:
+                            break;
 
-                       WeekDay = '星期四';
+                        case 3:
 
-                       break;
+                            WeekDay = '星期四';
 
-                   case 4:
+                            break;
 
-                       WeekDay = '星期五';
+                        case 4:
 
-                       break;
+                            WeekDay = '星期五';
 
-                   case 5:
+                            break;
 
-                       WeekDay = '星期六';
+                        case 5:
 
-                       break;
+                            WeekDay = '星期六';
 
-                   case 6:
+                            break;
 
-                       WeekDay = '星期日';
+                        case 6:
 
-                       break;
+                            WeekDay = '星期日';
 
-                   default:
+                            break;
 
-                       WeekDay = '星期一';
+                        default:
 
-               }
+                            WeekDay = '星期一';
 
-               dispatch({type:REPLACE_SHCEDULE_CLASSHOUR_WEEK_DATE_UPDATE,data:{WeekNO,WeekDay}});
+                    }
 
-               dispatch({type:REPLACE_SHCEDULE_CLASSHOUR_WEEK_DATE_LOADING_HIDE});
+                    dispatch({type:REPLACE_SHCEDULE_CLASSHOUR_WEEK_DATE_UPDATE,data:{WeekNO,WeekDay}});
 
-           }else{
+                    dispatch({type:REPLACE_SHCEDULE_CLASSHOUR_WEEK_DATE_LOADING_HIDE});
 
-               dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
+                }
 
-                       type:"btn-warn",
+            });
 
-                       title:json.Msg,
-
-                       ok:hideAlert(dispatch),
-
-                       close:hideAlert(dispatch),
-
-                       cancel:hideAlert(dispatch)
-
-                   }});
-
-           }
-
-        });
-
+        }
 
     }
 
 };
+
+
 //课时选取
 const classHourChecked = (opts) => {
 
@@ -1048,6 +943,8 @@ const classHourChecked = (opts) => {
 
 };
 
+
+
 //与人换课
 //点击原始教师选项
 const originTeacherDropChange = (info) => {
@@ -1064,13 +961,11 @@ const originTeacherDropChange = (info) => {
 
             let ClassDate = originDate;
 
-            let getChangeSchedulePromise = Method.getGetData(`/scheduleChangeTeacherSchedule?TeacherID${TeacherID}&ClassDate=${ClassDate}`);
+            ApiActions.GetScheduleByTeacherIDAndDate({TeacherID,ClassDate,dispatch}).then(data => {
 
-            getChangeSchedulePromise.then(json => {
+                if (data){
 
-                if (json.StatusCode === 200 ){
-
-                    let list = json.Data.map(item => {
+                    let list = data.map(item => {
 
                         let noon = '';
 
@@ -1117,22 +1012,6 @@ const originTeacherDropChange = (info) => {
 
                     dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_LIST_UPDATE,data:list})
 
-                }else{
-
-                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                            type:"btn-warn",
-
-                            title:json.Msg,
-
-                            ok:hideAlert(dispatch),
-
-                            close:hideAlert(dispatch),
-
-                            cancel:hideAlert(dispatch)
-
-                        }});
-
                 }
 
             });
@@ -1142,6 +1021,8 @@ const originTeacherDropChange = (info) => {
         }
 
 };
+
+
 //搜索原始教师
 const originTeacherClickSearch = (key) => {
 
@@ -1149,19 +1030,17 @@ const originTeacherClickSearch = (key) => {
 
         if (key !== ''){
 
-            let SchoolID = getState().LoginUser;
+            let {SchoolID} = getState().LoginUser;
 
             dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SEARCH_OPEN});
 
             dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SEARCH_LOADING_SHOW});
 
-            let searchTeacherPromise = Method.getGetData(`/scheduleSubjectTeacherTeacher?SchoolID=${SchoolID}&key=${key}`);
+            ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,Key:key,dispatch}).then(data => {
 
-            searchTeacherPromise.then(json => {
+                if (data){
 
-                if (json.Status === 200){
-
-                    let teacherSearchList = json.Data.map(item => {
+                    let teacherSearchList = data.map(item => {
 
                         return{
 
@@ -1177,41 +1056,13 @@ const originTeacherClickSearch = (key) => {
 
                     dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SEARCH_LOADING_HIDE});
 
-                }else{
-
-                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                            type:"btn-warn",
-
-                            title:json.Msg,
-
-                            ok:hideAlert(dispatch),
-
-                            close:hideAlert(dispatch),
-
-                            cancel:hideAlert(dispatch)
-
-                        }});
-
                 }
 
             });
 
         }else{
 
-            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                    type:"btn-warn",
-
-                    title:"搜索的内容不能为空！",
-
-                    ok:hideAlert(dispatch),
-
-                    close:hideAlert(dispatch),
-
-                    cancel:hideAlert(dispatch)
-
-                }});
+            dispatch(AppAlertActions.alertWarn({title:'搜索的内容不能为空！'}));
 
         }
 
@@ -1246,13 +1097,11 @@ const originDateChecked = (date) => {
 
                 let ClassDate = date;
 
-                let getChangeSchedulePromise = Method.getGetData(`/scheduleChangeTeacherSchedule?TeacherID${TeacherID}&ClassDate=${ClassDate}`);
+                ApiActions.GetScheduleByTeacherIDAndDate({TeacherID,ClassDate,dispatch}).then(data => {
 
-                getChangeSchedulePromise.then(json => {
+                   if (data){
 
-                   if (json.StatusCode === 200 ){
-
-                        let list = json.Data.map(item => {
+                        let list = data.map(item => {
 
                             let noon = '';
 
@@ -1299,22 +1148,6 @@ const originDateChecked = (date) => {
 
                         dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_LIST_UPDATE,data:list})
 
-                   }else{
-
-                       dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                               type:"btn-warn",
-
-                               title:json.Msg,
-
-                               ok:hideAlert(dispatch),
-
-                               close:hideAlert(dispatch),
-
-                               cancel:hideAlert(dispatch)
-
-                           }});
-
                    }
 
                 });
@@ -1360,13 +1193,11 @@ const targetTeacherDropChange = (info) => {
 
             let ClassDate = targetDate;
 
-            let getChangeSchedulePromise = Method.getGetData(`/scheduleChangeTeacherSchedule?TeacherID${TeacherID}&ClassDate=${ClassDate}`);
+            ApiActions.GetScheduleByTeacherIDAndDate({ClassDate,TeacherID,dispatch}).then(data => {
 
-            getChangeSchedulePromise.then(json => {
+                if (data){
 
-                if (json.StatusCode === 200 ){
-
-                    let list = json.Data.map(item => {
+                    let list = data.map(item => {
 
                         let noon = '';
 
@@ -1413,22 +1244,6 @@ const targetTeacherDropChange = (info) => {
 
                     dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_LIST_UPDATE,data:list})
 
-                }else{
-
-                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                            type:"btn-warn",
-
-                            title:json.Msg,
-
-                            ok:hideAlert(dispatch),
-
-                            close:hideAlert(dispatch),
-
-                            cancel:hideAlert(dispatch)
-
-                        }});
-
                 }
 
             });
@@ -1438,6 +1253,9 @@ const targetTeacherDropChange = (info) => {
     }
 
 };
+
+
+
 //搜索待选教师
 const targetTeacherClickSearch = (key) => {
 
@@ -1445,19 +1263,17 @@ const targetTeacherClickSearch = (key) => {
 
         if (key !== ''){
 
-            let SchoolID = getState().LoginUser;
+            let {SchoolID} = getState().LoginUser;
 
             dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_OPEN});
 
             dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LOADING_SHOW});
 
-            let searchTeacherPromise = Method.getGetData(`/scheduleSubjectTeacherTeacher?SchoolID=${SchoolID}&key=${key}`);
+            ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,Key:key,dispatch}).then(data => {
 
-            searchTeacherPromise.then(json => {
+                if (data){
 
-                if (json.Status === 200){
-
-                    let teacherSearchList = json.Data.map(item => {
+                    let teacherSearchList = data.map(item => {
 
                         return{
 
@@ -1473,41 +1289,13 @@ const targetTeacherClickSearch = (key) => {
 
                     dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LOADING_HIDE});
 
-                }else{
-
-                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                            type:"btn-warn",
-
-                            title:json.Msg,
-
-                            ok:hideAlert(dispatch),
-
-                            close:hideAlert(dispatch),
-
-                            cancel:hideAlert(dispatch)
-
-                        }});
-
                 }
 
             });
 
         }else{
 
-            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                    type:"btn-warn",
-
-                    title:"搜索的内容不能为空！",
-
-                    ok:hideAlert(dispatch),
-
-                    close:hideAlert(dispatch),
-
-                    cancel:hideAlert(dispatch)
-
-                }});
+            dispatch(AppAlertActions.alertWarn({title:'搜索的内容不能为空！'}));
 
         }
 
@@ -1542,13 +1330,11 @@ const targetDateChecked = (date) => {
 
                 let ClassDate = date;
 
-                let getChangeSchedulePromise = Method.getGetData(`/scheduleChangeTeacherSchedule?TeacherID${TeacherID}&ClassDate=${ClassDate}`);
+                ApiActions.GetScheduleByTeacherIDAndDate({ClassDate,TeacherID,dispatch}).then(data => {
 
-                getChangeSchedulePromise.then(json => {
+                    if (data){
 
-                    if (json.StatusCode === 200 ){
-
-                        let list = json.Data.map(item => {
+                        let list = data.map(item => {
 
                             let noon = '';
 
@@ -1594,22 +1380,6 @@ const targetDateChecked = (date) => {
                         dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_ABLED});
 
                         dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_LIST_UPDATE,data:list})
-
-                    }else{
-
-                        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                                type:"btn-warn",
-
-                                title:json.Msg,
-
-                                ok:hideAlert(dispatch),
-
-                                close:hideAlert(dispatch),
-
-                                cancel:hideAlert(dispatch)
-
-                            }});
 
                     }
 
@@ -1660,13 +1430,11 @@ const changeTimeTeacherDropChange = (info) => {
 
             let ClassDate = originDate;
 
-            let getChangeTimePromise = Method.getGetData(`/scheduleChangeTeacherSchedule?TeacherID${TeacherID}&ClassDate=${ClassDate}`);
+            ApiActions.GetScheduleByTeacherIDAndDate({TeacherID,ClassDate,dispatch}).then(data => {
 
-            getChangeTimePromise.then(json => {
+                if (data ){
 
-                if (json.StatusCode === 200 ){
-
-                    let list = json.Data.map(item => {
+                    let list = data.map(item => {
 
                         let noon = '';
 
@@ -1711,7 +1479,7 @@ const changeTimeTeacherDropChange = (info) => {
 
                     });
 
-                    let classRoomList = json.Data.map(item => {
+                    let classRoomList = data.map(item => {
 
                         return {
 
@@ -1733,22 +1501,6 @@ const changeTimeTeacherDropChange = (info) => {
                     dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:"oldClassRoomListChange",value:classRoomList}});
 
 
-                }else{
-
-                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                            type:"btn-warn",
-
-                            title:json.Msg,
-
-                            ok:hideAlert(dispatch),
-
-                            close:hideAlert(dispatch),
-
-                            cancel:hideAlert(dispatch)
-
-                        }});
-
                 }
 
             });
@@ -1767,19 +1519,17 @@ const changeTimeTeacherClickSearch = (key) => {
 
         if (key !== ''){
 
-            let SchoolID = getState().LoginUser;
+            let {SchoolID} = getState().LoginUser;
 
             dispatch({type:CHANGE_TIME_TEACHER_DROP_CHANGE,data:{type:"search"}});
 
             dispatch({type:CHANGE_TIME_TEACHER_DROP_CHANGE,data:{type:"searchLoadingShow"}});
 
-            let searchTeacherPromise = Method.getGetData(`/scheduleSubjectTeacherTeacher?SchoolID=${SchoolID}&key=${key}`);
+            ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,Key:key,dispatch}).then(data => {
 
-            searchTeacherPromise.then(json => {
+                if (data){
 
-                if (json.Status === 200){
-
-                    let teacherSearchList = json.Data.map(item => {
+                    let teacherSearchList = data.map(item => {
 
                         return{
 
@@ -1795,41 +1545,13 @@ const changeTimeTeacherClickSearch = (key) => {
 
                     dispatch({type:CHANGE_TIME_TEACHER_DROP_CHANGE,data:{type:"searchLoadingHide"}});
 
-                }else{
-
-                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                            type:"btn-warn",
-
-                            title:json.Msg,
-
-                            ok:hideAlert(dispatch),
-
-                            close:hideAlert(dispatch),
-
-                            cancel:hideAlert(dispatch)
-
-                        }});
-
                 }
 
             });
 
         }else{
 
-            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                    type:"btn-warn",
-
-                    title:"搜索的内容不能为空！",
-
-                    ok:hideAlert(dispatch),
-
-                    close:hideAlert(dispatch),
-
-                    cancel:hideAlert(dispatch)
-
-                }});
+           dispatch(AppAlertActions.alertWarn({title:"搜索的内容不能为空！"}));
 
         }
 
@@ -1851,8 +1573,11 @@ const changeTimeTeacherSearchClose = () => {
 //调整时间日期变化
 const changeTimeOriginDate = (date) => {
 
-
     return (dispatch,getState) => {
+
+        let { SchoolID } = getState().LoginUser;
+
+        let ClassDate = date;
 
         dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:"date",value:date}});
 
@@ -1864,24 +1589,21 @@ const changeTimeOriginDate = (date) => {
 
                 let TeacherID = teacherDrop.value;
 
-                let ClassDate = date;
+                let GetScheduleByTeacherIDAndDate = ApiActions.GetScheduleByTeacherIDAndDate({TeacherID,ClassDate,dispatch});
 
-                let getChangeTimePromise = Method.getGetData(`/scheduleChangeTeacherSchedule?TeacherID${TeacherID}&ClassDate=${ClassDate}`);
+                let GetWeekInfoByDate = ApiActions.GetWeekInfoByDate({SchoolID,ClassDate,dispatch});
 
-                let getDatePromise = Method.getGetData(`/scheduleDateUpdate?ClassDate=${date}`);
-
-                Promise.all([getChangeTimePromise,getDatePromise]).then(res => {
+                Promise.all([GetScheduleByTeacherIDAndDate,GetWeekInfoByDate]).then(res => {
 
                     const json1 = res[0];
 
                     const json2 = res[1];
 
-                    console.log(res);
 
                     //第一个异步
-                    if (json1.StatusCode === 200 ){
+                    if (json1){
 
-                        let list = json1.Data.map(item => {
+                        let list = json1.map(item => {
 
                             let noon = '';
 
@@ -1926,7 +1648,7 @@ const changeTimeOriginDate = (date) => {
 
                         });
 
-                        let classRoomList = json1.Data.map(item => {
+                        let classRoomList = json1.map(item => {
 
                             return {
 
@@ -1947,32 +1669,16 @@ const changeTimeOriginDate = (date) => {
 
                         dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:"oldClassRoomListChange",value:classRoomList}});
 
-                    }else{
-
-                        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                                type:"btn-warn",
-
-                                title:json1.Msg,
-
-                                ok:hideAlert(dispatch),
-
-                                close:hideAlert(dispatch),
-
-                                cancel:hideAlert(dispatch)
-
-                            }});
-
                     }
 
 
                     //第二个异步
 
-                    if (json2.Status === 200){
+                    if (json2){
 
-                        let WeekNO = json2.Data.WeekNO;
+                        let WeekNO = json2.WeekNO;
 
-                        let weekDay = json2.Data.WeekDay;
+                        let weekDay = json2.WeekDay;
 
                         let WeekDay = '';
 
@@ -2028,39 +1734,20 @@ const changeTimeOriginDate = (date) => {
 
                         dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:'weekChange',value:{WeekNO,WeekDay}}});
 
-                    }else{
-
-                        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                                type:"btn-warn",
-
-                                title:json2.Msg,
-
-                                ok:hideAlert(dispatch),
-
-                                close:hideAlert(dispatch),
-
-                                cancel:hideAlert(dispatch)
-
-                            }});
-
                     }
-
 
                 });
 
 
             }else{
 
-                let getDatePromise = Method.getGetData(`/scheduleDateUpdate?ClassDate=${date}`);
+                ApiActions.GetWeekInfoByDate({SchoolID,ClassDate,dispatch}).then(data => {
 
-                getDatePromise.then(json => {
+                    if (data){
 
-                    if (json.Status === 200){
+                        let WeekNO = json.WeekNO;
 
-                        let WeekNO = json.Data.WeekNO;
-
-                        let weekDay = json.Data.WeekDay;
+                        let weekDay = json.WeekDay;
 
                         let WeekDay = '';
 
@@ -2116,22 +1803,6 @@ const changeTimeOriginDate = (date) => {
 
 
                         dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:'weekChange',value:{WeekNO,WeekDay}}});
-
-                    }else{
-
-                        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                                type:"btn-warn",
-
-                                title:json.Msg,
-
-                                ok:hideAlert(dispatch),
-
-                                close:hideAlert(dispatch),
-
-                                cancel:hideAlert(dispatch)
-
-                            }});
 
                     }
 
@@ -2194,22 +1865,26 @@ const changeTimeNewTimeChange = (date) => {
 
             let { SchoolID } = getState().LoginUser;
 
-            let getDatePromise = Method.getGetData(`/scheduleDateUpdate?ClassDate=${date}`);
+            let { teacherDrop } = getState().Manager.AdjustByTeacherModal.changeTime;
 
-            let getClassHourPromise = Method.getGetData(`/scheduleAllPeriodClassHour?SchoolID=${SchoolID}`);
+            let TeacherID = teacherDrop.value;
 
-            Promise.all([getDatePromise,getClassHourPromise]).then(res => {
+            let GetScheduleByTeacherIDAndDate = ApiActions.GetScheduleByTeacherIDAndDate({TeacherID,ClassDate:date,dispatch});
+
+            let GetWeekInfoByDate = ApiActions.GetWeekInfoByDate({SchoolID,ClassDate:date,dispatch});
+
+            Promise.all([GetWeekInfoByDate,GetScheduleByTeacherIDAndDate]).then(res => {
 
 
                 const json1 = res[0];
 
                 const json2 = res[1];
 
-                if (json1.Status === 200){
+                if (json1){
 
-                    let WeekNO = json1.Data.WeekNO;
+                    let WeekNO = json1.WeekNO;
 
-                    let weekDay = json1.Data.WeekDay;
+                    let weekDay = json1.WeekDay;
 
                     let WeekDay = '';
 
@@ -2265,30 +1940,14 @@ const changeTimeNewTimeChange = (date) => {
 
                     dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:'weekChange',value:{WeekNO,WeekDay}}});
 
-                }else{
-
-                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                            type:"btn-warn",
-
-                            title:json.Msg,
-
-                            ok:hideAlert(dispatch),
-
-                            close:hideAlert(dispatch),
-
-                            cancel:hideAlert(dispatch)
-
-                        }});
-
                 }
 
 
-                if (json2.Status === 200){
+                if (json2){
 
                     let { newWeek } = getState().Manager.AdjustByTeacherModal.changeTime;
 
-                    let data = json2.Data;
+                    let data = json2;
 
                     let ClassHour = data.ItemClassHour.map(item => {
 
@@ -2338,27 +1997,9 @@ const changeTimeNewTimeChange = (date) => {
 
                     dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"classHourAbled"}});
 
-                }else{
-
-                    dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                            type:"btn-warn",
-
-                            title:json.Msg,
-
-                            ok:hideAlert(dispatch),
-
-                            close:hideAlert(dispatch),
-
-                            cancel:hideAlert(dispatch)
-
-                        }});
-
                 }
 
-
             });
-
 
 
         }else{
@@ -2379,6 +2020,7 @@ const changeTimeNewTimeChange = (date) => {
 
 };
 
+
 //新的课时的选取
 const changeTimeNewClassHourPick = (info) => {
 
@@ -2392,11 +2034,15 @@ const changeTimeNewClassHourPick = (info) => {
 
       let getClassRoom = Method.getGetData('/scheduleEmptyClassRoom');
 
-      getClassRoom.then(json => {
+      let ClassHourNO = info.value;
 
-          if (json.Status === 200){
+      let ClassDate = getState().Manager.AdjustByTeacherModal.changeTime.newDate;
 
-              let classRoomList = json.Data.map(item => {
+      ApiActions.GetClassRoomIsNotBusy({ClassDate,ClassHourNO,dispatch}).then(data => {
+
+          if (data){
+
+              let classRoomList = data.map(item => {
 
                   return {
 
@@ -2418,7 +2064,15 @@ const changeTimeNewClassHourPick = (info) => {
               if (newClassRoomDrop.value !== 'none'){
 
 
-                  isOccoputy(newClassRoomDrop.value,newDate,newClassHourDrop.value,dispatch).then(data=>{
+                  ApiActions.ClassRoomIsUseded({
+
+                      ClassHourNO:newClassHourDrop.value,
+
+                      ClassDate:newDate,
+
+                      ClassRoomID:newClassRoomDrop.value
+
+                  }).then(data=>{
 
                         //是否被占用的接口
 
@@ -2441,22 +2095,6 @@ const changeTimeNewClassHourPick = (info) => {
 
               }
 
-
-          }else{
-
-              dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                      type:"btn-warn",
-
-                      title:json.Msg,
-
-                      ok:hideAlert(dispatch),
-
-                      close:hideAlert(dispatch),
-
-                      cancel:hideAlert(dispatch)
-
-                  }});
 
           }
 
@@ -2505,7 +2143,11 @@ const changeClassRoomTeacherPick = (info) => {
             let ClassDate = date;
 
 
-            getTeacherDaySchedule(TeacherID,ClassDate,dispatch).then(data => {
+            ApiActions.GetScheduleByTeacherIDAndDate({
+
+                dispatch,TeacherID,ClassDate
+
+            }).then(data => {
 
                 if (data){
 
@@ -2609,7 +2251,7 @@ const changeClassRoomDatePick = (date) => {
 
             let { teacherDrop } = getState().Manager.AdjustByTeacherModal.ChangeClassRoom;
 
-            getWeekDayTime(SchoolID,date,dispatch).then(data=>{
+            ApiActions.GetWeekInfoByDate({SchoolID,ClassDate:date,dispatch}).then(data=>{
 
                 if (data){
 
@@ -2676,13 +2318,14 @@ const changeClassRoomDatePick = (date) => {
 
             });
 
+
             if (teacherDrop.value !== 'none'){
 
                 let TeacherID = teacherDrop.value;
 
                 let ClassDate = date;
 
-                getTeacherDaySchedule(TeacherID,ClassDate,dispatch).then(data => {
+                ApiActions.GetScheduleByTeacherIDAndDate({TeacherID,ClassDate,dispatch}).then(data => {
 
                   if (data){
 
@@ -2757,7 +2400,6 @@ const changeClassRoomDatePick = (date) => {
 
                   }
 
-
                 });
 
             }
@@ -2781,6 +2423,8 @@ const changeClassRoomDatePick = (date) => {
     }
 
 };
+
+
 
 
 
@@ -2809,7 +2453,7 @@ const changeClassRoomClassHourPick = (info) => {
 
         let no = classHourList.find(item=>{return item.value===value}).NO;
 
-        getEmptyClassRoomByDate(date,no,dispatch).then(data=>{
+        ApiActions.GetClassRoomIsNotBusy({ClassDate:date,ClassHourNO:no,dispatch}).then(data=>{
 
            if (data){
 
@@ -2843,13 +2487,13 @@ const changeClassRoomTeacherSearch = (key) => {
 
         if (key !== ''){
 
-            let SchoolID = getState().LoginUser;
+            let {SchoolID} = getState().LoginUser;
 
             dispatch({type:CHANGE_CLASS_ROOM_TEACHER_CHANGE,data:{type:"search"}});
 
             dispatch({type:CHANGE_CLASS_ROOM_TEACHER_CHANGE,data:{type:"searchLoadingShow"}});
 
-            getTeacherBySearch(SchoolID,key,dispatch).then(data=>{
+            ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,Key:key,dispatch}).then(data=>{
 
                if (data){
 
@@ -2875,19 +2519,7 @@ const changeClassRoomTeacherSearch = (key) => {
 
         }else{
 
-            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                    type:"btn-warn",
-
-                    title:"搜索的内容不能为空！",
-
-                    ok:hideAlert(dispatch),
-
-                    close:hideAlert(dispatch),
-
-                    cancel:hideAlert(dispatch)
-
-                }});
+           dispatch(AppAlertActions.alertWarn({title:"搜索的内容不能为空！"}));
 
         }
 
@@ -2941,7 +2573,7 @@ const stopScheduleTeacherPick = (info) => {
 
               let ClassDate = date;
 
-              getTeacherDaySchedule(TeacherID,ClassDate,dispatch).then(data=>{
+              ApiActions.GetScheduleByTeacherIDAndDate({ClassDate,TeacherID,dispatch}).then(data=>{
 
                  if (data){
 
@@ -3052,7 +2684,7 @@ const stopScheduleTeacherClickSearch = (key) => {
 
             dispatch({type:STOP_SCHEDULE_TEACHER_CHANGE,data:{type:"searchLoadingShow"}});
 
-            getTeacherBySearch(SchoolID,key,dispatch).then(data => {
+            ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,Key:key,dispatch}).then(data => {
 
                 if (data){
 
@@ -3078,19 +2710,7 @@ const stopScheduleTeacherClickSearch = (key) => {
 
         }else{
 
-            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                    type:"btn-warn",
-
-                    title:"搜索的内容不能为空！",
-
-                    ok:hideAlert(dispatch),
-
-                    close:hideAlert(dispatch),
-
-                    cancel:hideAlert(dispatch)
-
-                }});
+           dispatch(AppAlertActions.alertWarn({title:"搜索的内容不能为空！"}))
 
         }
 
@@ -3131,7 +2751,7 @@ const stopScheduleDateChange = (date) => {
 
                 let ClassDate = date;
 
-                getTeacherDaySchedule(TeacherID,ClassDate,dispatch).then(data=>{
+                ApiActions.GetScheduleByTeacherIDAndDate({TeacherID,ClassDate,dispatch}).then(data=>{
 
                     if (data){
 
@@ -3636,27 +3256,45 @@ const ModalCommit = () => {
 
               }
 
+              let { SchoolID,UserID,UserType } = getState().LoginUser;
+
               let TeacherID1 = teacherOptions.dropSelectd.value;
 
               let TeacherID2 = replaceTeacherOptions.dropSelectd.value;
 
+              let SubjectID = '';
+
+              let {teacherSubject,classCheckedList} =  getState().Manager.AdjustByTeacherModal.replaceSchedule;
+
+              if (teacherSubject.dropShow){
+
+                 SubjectID = teacherSubject.select.dropSelectd.value;
+
+              }else{
+
+                  SubjectID = teacherSubject.id;
+
+              }
+
+              let ClassID = classCheckedList.join(',');
+
+
+
               dispatch({type:ADJUST_BY_TEACHER_LOADING_SHOW});
 
-              setReplaceCourse(Type,Item,TeacherID1,TeacherID2,dispatch).then((data) => {
+              ApiActions.SetSubstituteTeacher({
+
+                  Type,Item,TeacherID1,TeacherID2,dispatch,
+
+                  SchoolID,UserID,UserType,SubjectID,ClassID
+
+              }).then((data) => {
 
                   if (data){
 
                       dispatch({type:ADJUST_BY_TEACHER_HIDE});
 
-                      dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                              type:"success",
-
-                              title:"找人代课成功！",
-
-                              hide:hideAlert(dispatch)
-
-                          }});
+                      dispatch(AppAlertActions.alertSuccess({title:"找人代课成功！"}));
 
                   }
 
@@ -3678,7 +3316,6 @@ const ModalCommit = () => {
 
         let originTeacherOk,originDateOk,originScheduleOk,targetTeacherOk,targetDateOk,targetScheduleOk = false;
 
-        console.log(originDropSelectd,originDate,originScheduleDropSelectd,targetDropSelectd,targetDate,targetScheduleDropSelectd);
 
         if (originDropSelectd.value==='none'){
 
@@ -3691,9 +3328,6 @@ const ModalCommit = () => {
                 originTeacherOk = true;
 
             }
-
-
-            console.log(originDate);
 
 
           if (originDate){
@@ -3764,21 +3398,13 @@ const ModalCommit = () => {
 
               dispatch({type:ADJUST_BY_TEACHER_LOADING_SHOW});
 
-              changeSchedule(ScheduleID1,ScheduleID2,dispatch).then(data=>{
+              ApiActions.ExchangeTeacherSchedule({ScheduleID1,ScheduleID2,dispatch}).then(data=>{
 
                  if (data){
 
                      dispatch({type:ADJUST_BY_TEACHER_HIDE});
 
-                     dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                             type:"success",
-
-                             title:"与人换课成功！",
-
-                             hide:hideAlert(dispatch)
-
-                     }});
+                     dispatch(AppAlertActions.alertSuccess({title:"与人换课成功！"}));
 
                  }
 
@@ -3884,21 +3510,17 @@ const ModalCommit = () => {
 
               dispatch({type:ADJUST_BY_TEACHER_LOADING_SHOW});
 
-              changeScheduleTime(ScheduleID,ClassDate1,ClassHourNO1,ClassDate2,ClassHourNO2,ClassRoomID,dispatch).then(data=>{
+              ApiActions.EditClassDateOne({
+
+                  ScheduleID,ClassDate1,ClassHourNO1,ClassDate2,ClassHourNO2,ClassRoomID,dispatch
+
+              }).then(data=>{
 
                  if (data){
 
                      dispatch({type:ADJUST_BY_TEACHER_HIDE});
 
-                     dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                             type:"success",
-
-                             title:"调整时间成功！",
-
-                             hide:hideAlert(dispatch)
-
-                         }});
+                     dispatch(AppAlertActions.alertSuccess({title:"调整时间成功！"}));
 
                  }
 
@@ -3980,22 +3602,18 @@ const ModalCommit = () => {
 
               let ClassRoomID2 = classRoomDrop.value;
 
-              changeClassRoom(SchoolID,Type,Item,ClassRoomID1,ClassRoomID2,dispatch).then(data=>{
+              ApiActions.AdjustClassRooomOfSchedule({
+
+                  SchoolID,Type,Item,ClassRoomID1,ClassRoomID2,dispatch
+
+              }).then(data=>{
 
 
                   if (data){
 
                       dispatch({type:ADJUST_BY_TEACHER_HIDE});
 
-                      dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                              type:"success",
-
-                              title:"调整教室成功！",
-
-                              hide:hideAlert(dispatch)
-
-                          }});
+                      dispatch(AppAlertActions.alertSuccess({title:"调整教室成功！"}));
 
                   }
 
@@ -4064,22 +3682,19 @@ const ModalCommit = () => {
 
               let ScheduleIDs = ScheduleList.join(',');
 
-              stopSchedule(ScheduleIDs,dispatch).then(data=>{
+              let { UserID,UserType } = getState().LoginUser;
+
+              ApiActions.CloseTeacherSchedule({
+
+                  UserID,UserType ,ScheduleIDs,dispatch
+
+              }).then(data=>{
 
                   if (data){
 
                       dispatch({type:ADJUST_BY_TEACHER_HIDE});
 
-                      dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                              type:"success",
-
-                              title:"停课成功！",
-
-                              hide:hideAlert(dispatch)
-
-                          }});
-
+                      dispatch(AppAlertActions.alertSuccess({title:"停课成功！"}))
 
                   }
 
@@ -4124,341 +3739,8 @@ Array.prototype.remove = function(val) {
 
 
 
-//判断教室是否被占用
 
-const isOccoputy = async (ClassRoomID,ClassDate,ClassHourNO,dispatch) =>{
 
-  let res = await Method.getGetData(`/scheduleIsClassRoomOccupy?ClassRoomID=${ClassRoomID}&ClassDate=${ClassDate}&ClassHourNO=${ClassHourNO}`);
-
-  if(res.Status === 200){
-
-      console.log(res.Data);
-
-      return res.Data;
-
-  }else{
-
-      dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-              type:"btn-warn",
-
-              title:res.Msg,
-
-              ok:hideAlert(dispatch),
-
-              close:hideAlert(dispatch),
-
-              cancel:hideAlert(dispatch)
-
-          }});
-
-      dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
-
-  }
-
-};
-
-
-//根据教师和日期获取当天课程
-const getTeacherDaySchedule = async (TeacherID,ClassDate,dispatch) =>{
-
-    let res = await Method.getGetData(`/scheduleChangeTeacherSchedule?TeacherID=${TeacherID}&ClassDate=${ClassDate}`);
-
-    if(res.StatusCode === 200){
-
-        return res.Data;
-
-    }else{
-
-        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                type:"btn-warn",
-
-                title:res.Msg,
-
-                ok:hideAlert(dispatch),
-
-                close:hideAlert(dispatch),
-
-                cancel:hideAlert(dispatch)
-
-            }});
-
-        dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
-
-    }
-
-};
-
-
-
-//根据日期和节次获取空教室
-
-const getEmptyClassRoomByDate = async (ClassDate,ClassHourNO,dispatch) => {
-
-    let res = await Method.getGetData(`/scheduleEmptyClassRoom?ClassDate=${ClassDate}&ClassHourNO=${ClassHourNO}`);
-
-    if(res.Status === 200){
-
-        return res.Data;
-
-    }else{
-
-        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                type:"btn-warn",
-
-                title:res.Msg,
-
-                ok:hideAlert(dispatch),
-
-                close:hideAlert(dispatch),
-
-                cancel:hideAlert(dispatch)
-
-            }});
-
-        dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
-
-    }
-
-};
-
-
-
-
-//获取搜索后的教师列表
-
-const getTeacherBySearch = async (SchoolID,key,dispatch) => {
-
-    let res = await Method.getGetData(`/scheduleSubjectTeacherTeacher?SchoolID=${SchoolID}&key=${key}`);
-
-    if(res.Status === 200){
-
-        return res.Data;
-
-    }else{
-
-        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                type:"btn-warn",
-
-                title:res.Msg,
-
-                ok:hideAlert(dispatch),
-
-                close:hideAlert(dispatch),
-
-                cancel:hideAlert(dispatch)
-
-            }});
-
-        dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
-
-    }
-
-};
-
-
-
-//根据日期获取当天的周次和星期
-
-const getWeekDayTime = async (SchoolID,ClassDate,dispatch) =>{
-
-    let res = await Method.getGetData(`/scheduleDateUpdate?SchoolID=${SchoolID}&ClassDate=${ClassDate}`);
-
-    if(res.Status === 200){
-
-        return res.Data;
-
-    }else{
-
-        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                type:"btn-warn",
-
-                title:res.Msg,
-
-                ok:hideAlert(dispatch),
-
-                close:hideAlert(dispatch),
-
-                cancel:hideAlert(dispatch)
-
-            }});
-
-        dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
-
-    }
-
-};
-
-
-//设置代课
-
-const setReplaceCourse = async (Type,Item,TeacherID1,TeacherID2,dispatch) =>{
-
-    let res = await Method.getPostData(`/scheduleSetReplacec`,{Type:Type,Item:Item,TeacherID1:TeacherID1,TeacherID2:TeacherID2 });
-
-    if(res.Status === 200){
-
-        return res;
-
-    }else{
-
-        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                type:"btn-warn",
-
-                title:res.Msg,
-
-                ok:hideAlert(dispatch),
-
-                close:hideAlert(dispatch),
-
-                cancel:hideAlert(dispatch)
-
-            }});
-
-        dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
-
-    }
-
-};
-
-
-
-//教师课程互换
-
-const changeSchedule = async (ScheduleID1,ScheduleID2,dispatch) =>{
-
-    let res = await Method.getPostData(`/scheduleChangeSchedule`,{ScheduleID1:ScheduleID1,ScheduleID2:ScheduleID2});
-
-    if(res.Status === 200){
-
-        return res;
-
-    }else{
-
-        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                type:"btn-warn",
-
-                title:res.Msg,
-
-                ok:hideAlert(dispatch),
-
-                close:hideAlert(dispatch),
-
-                cancel:hideAlert(dispatch)
-
-            }});
-
-        dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
-
-    }
-
-};
-
-
-//调整上课时间
-
-const changeScheduleTime = async (ScheduleID,ClassDate1,ClassHourNO1,ClassDate2,ClassHourNO2,ClassRoomID,dispatch) =>{
-
-    let res = await Method.getPostData(`/changeScheduleTime`,{ScheduleID:ScheduleID,ClassDate1:ClassDate1,
-
-        ClassHourNO1:ClassHourNO1,ClassDate2:ClassDate2,ClassHourNO2:ClassHourNO2,ClassRoomID:ClassRoomID});
-
-
-    if(res.Status === 200){
-
-        return res;
-
-    }else{
-
-        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                type:"btn-warn",
-
-                title:res.Msg,
-
-                ok:hideAlert(dispatch),
-
-                close:hideAlert(dispatch),
-
-                cancel:hideAlert(dispatch)
-
-            }});
-
-        dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
-
-    }
-
-};
-
-//调整上课教室
-const changeClassRoom = async (SchoolID,Type,Item,ClassRoomID1,ClassRoomID2,dispatch) =>{
-
-    let res = await Method.getPostData(`/scheduleChangeClassRoom`,{SchoolID:SchoolID,Type:Type,
-
-        Item:Item,ClassRoomID1:ClassRoomID1,ClassRoomID2:ClassRoomID2});
-
-
-    if(res.Status === 200){
-
-        return res;
-
-    }else{
-
-        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                type:"btn-warn",
-
-                title:res.Msg,
-
-                ok:hideAlert(dispatch),
-
-                close:hideAlert(dispatch),
-
-                cancel:hideAlert(dispatch)
-
-            }});
-
-        dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
-
-    }
-
-};
-
-//单个停课
-const stopSchedule = async (ScheduleIDs,dispatch) =>{
-
-    let res = await Method.getPostData(`/stopSchedule`,{ScheduleIDs:ScheduleIDs});
-
-
-    if(res.Status === 200){
-
-        return res;
-
-    }else{
-
-        dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                type:"btn-warn",
-
-                title:res.Msg,
-
-                ok:hideAlert(dispatch),
-
-                close:hideAlert(dispatch),
-
-                cancel:hideAlert(dispatch)
-
-            }});
-
-    }
-
-};
 
 export default {
 

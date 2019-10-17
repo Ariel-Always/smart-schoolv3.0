@@ -14,6 +14,8 @@ import PeriodWeekTerm from "./PeriodWeekTerm";
 
 import AppAlert from './AppAlert';
 
+import RouterSet from './RouterSet';
+
 export let initialState = {};
 
 let rootReducers = combineReducers({
@@ -30,7 +32,9 @@ let rootReducers = combineReducers({
 
     PeriodWeekTerm,
 
-    AppAlert
+    AppAlert,
+
+    RouterSet
 
 });
 

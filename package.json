@@ -104,7 +104,8 @@
       "array-callback-return": "off",
       "no-extend-native": "off",
       "no-useless-escape": "off",
-      "no-unreachable": "off"
+      "no-unreachable": "off",
+      "no-useless-concat":"off"
     }
   },
   "browserslist": {

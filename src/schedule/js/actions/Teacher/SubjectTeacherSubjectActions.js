@@ -1,5 +1,7 @@
 import Method from "../Method";
 
+import ApiActions from '../ApiActions';
+
 const SUBJECT_TEACHER_SCHEDULE_INIT = 'SUBJECT_TEACHER_SCHEDULE_INIT';
 
 const SUBJECT_TEACHER_SCHEDULE_UPDATE = 'SUBJECT_TEACHER_SCHEDULE_UPDATE';
@@ -23,7 +25,7 @@ const STSPageUpdate = (opt) => {
 
         const {PeriodWeekTerm,LoginUser,Teacher} = getState();
         //获取需要传递的参数
-        let SchoolID =LoginUser.SchoolID;
+        let {SchoolID} =LoginUser;
 
         let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;
 
@@ -45,11 +47,13 @@ const STSPageUpdate = (opt) => {
 
         }
 
-        let getSTSPromise = Method.getGetData(`/scheduleSubjectTeacherSubject?PageSize=10&SubjectID=${SubjectID}&SchoolID=${SchoolID}&PeriodID=${PeriodID}&WeekNO=${NowWeekNo}&PageIndex=${PageIndex}`);
+        ApiActions.GetAllScheduleOfTeachersBySubjectIDForPage({
 
-        getSTSPromise.then(json => {
+            PeriodID,SchoolID,WeekNO:NowWeekNo,PageIndex,PageSize:10,SubjectID
 
-            let SubjectTeacherSchedule =  json.Data.ItemTeacher.map((item) => {
+        }).then(data => {
+
+            let SubjectTeacherSchedule =  data.ItemTeacher.map((item) => {
 
                 let teacherObj = {
 
@@ -59,7 +63,7 @@ const STSPageUpdate = (opt) => {
 
                 };
 
-                let list = json.Data.ItemSchedule.map((i) => {
+                let list = data.ItemSchedule.map((i) => {
 
                     if (i.TeacherID === item.TeacherID){
 

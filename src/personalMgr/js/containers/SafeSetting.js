@@ -622,85 +622,120 @@ class SafeSetting extends Component{
 
                                 <span className={`add-question-drop ${addQaShow?'up':''}`} onClick={this.addQuestion.bind(this)}>添加密保问题</span>
 
-                                <span className="can-set-tips">(您还可以设置{Questions?3-Questions.length:3}个)</span>
+
+                                {
+
+                                    Questions&&(3-Questions.length>0)?
+
+                                        <span className="can-set-tips">(您还可以设置{Questions?3-Questions.length:3}个)</span>
+
+                                        :
+
+                                        <span className="can-set-tips">请删除一个问题再进行添加！</span>
+
+                                }
 
                             </div>
 
-                            <div className="safe-qa-setting-content" ref="add-qa-wrapper">
+                            {
 
-                                <table className="safe-setting-table safe-qa-table">
+                                Questions && (3 - Questions.length > 0) ?
 
-                                    <tbody>
+                                    <div className="safe-qa-setting-content" ref="add-qa-wrapper">
 
-                                    <tr>
+                                        <table className="safe-setting-table safe-qa-table">
 
-                                        <td className="col1">新密保问题:</td>
-
-                                        <td className="col2">
-
-                                            <DropDown width={240} height={108}
-                                                      dropSelectd={qaSelectd}
-                                                      dropList={questionsList}
-                                                      style={{zIndex:8}}
-                                                      onChange={this.questionPickChange.bind(this)}  >
-
-                                            </DropDown>
-
-                                        </td>
-
-                                        <td className="col3"></td>
-
-                                    </tr>
-
-                                    {
-                                        qaSelectd&&qaSelectd.value==='self'?
+                                            <tbody>
 
                                             <tr>
 
-                                                <td className="col1">自定义问题:</td>
+                                                <td className="col1">新密保问题:</td>
 
-                                                <td className="col2"><Input  maxLength={30} value={qaValue.selfQa} onChange={e=>{this.questionInputChange(e,'self')}}/></td>
+                                                <td className="col2">
 
-                                                <td className="col3"><span className="error-tips" style={{display:`${qaErrorTips.self?'block':'none'}`}}>{qaErrorTips.selfTips}</span></td>
+                                                    <DropDown width={240} height={108}
+                                                              dropSelectd={qaSelectd}
+                                                              dropList={questionsList}
+                                                              style={{zIndex: 8}}
+                                                              onChange={this.questionPickChange.bind(this)}>
+
+                                                    </DropDown>
+
+                                                </td>
+
+                                                <td className="col3"></td>
 
                                             </tr>
 
-                                            :<React.Fragment></React.Fragment>
-                                    }
+                                            {
+                                                qaSelectd && qaSelectd.value === 'self' ?
 
-                                    <tr>
+                                                    <tr>
 
-                                        <td className="col1">密保答案:</td>
+                                                        <td className="col1">自定义问题:</td>
 
-                                        <td className="col2"><Input  value={qaValue.answer}  onChange={e=>this.questionInputChange(e,'answer')} maxLength={30}/></td>
+                                                        <td className="col2"><Input maxLength={30}
+                                                                                    value={qaValue.selfQa}
+                                                                                    onChange={e => {
+                                                                                        this.questionInputChange(e, 'self')
+                                                                                    }}/></td>
 
-                                        <td className="col3"><span className="error-tips" style={{display:`${qaErrorTips.answer?'block':'none'}`}}>{qaErrorTips.answerTips}</span></td>
+                                                        <td className="col3"><span className="error-tips"
+                                                                                   style={{display: `${qaErrorTips.self ? 'block' : 'none'}`}}>{qaErrorTips.selfTips}</span>
+                                                        </td>
 
-                                    </tr>
+                                                    </tr>
 
-                                    <tr>
+                                                    : <React.Fragment></React.Fragment>
+                                            }
 
-                                        <td className="col1">登录密码:</td>
+                                            <tr>
 
-                                        <td className="col2"><Input type="password" value={qaValue.pwd} onChange={e=>this.questionInputChange(e,'pwd')} maxLength={20}/></td>
+                                                <td className="col1">密保答案:</td>
 
-                                        <td className="col3"><span className="error-tips" style={{display:`${qaErrorTips.pwd?'block':'none'}`}}>{qaErrorTips.pwdTips}</span></td>
+                                                <td className="col2"><Input value={qaValue.answer}
+                                                                            onChange={e => this.questionInputChange(e, 'answer')}
+                                                                            maxLength={30}/></td>
 
-                                    </tr>
+                                                <td className="col3"><span className="error-tips"
+                                                                           style={{display: `${qaErrorTips.answer ? 'block' : 'none'}`}}>{qaErrorTips.answerTips}</span>
+                                                </td>
 
-                                    </tbody>
+                                            </tr>
 
-                                </table>
+                                            <tr>
 
-                                <div className="btn-wrapper">
+                                                <td className="col1">登录密码:</td>
 
-                                    <input className="commit" type="button" value="确定" onClick={this.commitQuestion.bind(this)}/>
+                                                <td className="col2"><Input type="password" value={qaValue.pwd}
+                                                                            onChange={e => this.questionInputChange(e, 'pwd')}
+                                                                            maxLength={20}/></td>
 
-                                    <input type="button" className="cancel" value="取消" onClick={this.addQuestion.bind(this)}/>
+                                                <td className="col3"><span className="error-tips"
+                                                                           style={{display: `${qaErrorTips.pwd ? 'block' : 'none'}`}}>{qaErrorTips.pwdTips}</span>
+                                                </td>
 
-                                </div>
+                                            </tr>
 
-                            </div>
+                                            </tbody>
+
+                                        </table>
+
+                                        <div className="btn-wrapper">
+
+                                            <input className="commit" type="button" value="确定"
+                                                   onClick={this.commitQuestion.bind(this)}/>
+
+                                            <input type="button" className="cancel" value="取消"
+                                                   onClick={this.addQuestion.bind(this)}/>
+
+                                        </div>
+
+                                    </div>
+
+                                    :''
+
+                            }
 
                         </div>
 
@@ -751,7 +786,7 @@ class SafeSetting extends Component{
 
                                     <td className="col1">新邮箱:</td>
 
-                                    <td className="col2"><Input onChange={e=>this.emailInputChange(e,'new')} maxLength={20}/></td>
+                                    <td className="col2"><Input value={emailValue.newEmail} onChange={e=>this.emailInputChange(e,'new')} maxLength={20}/></td>
 
                                     <td className="col3"><span className="error-tips" style={{display:`${emailErrorTips.newEmail?'block':'none'}`}}>{emailErrorTips.newEmailTips}</span></td>
 
@@ -761,7 +796,7 @@ class SafeSetting extends Component{
 
                                     <td className="col1">登录密码:</td>
 
-                                    <td className="col2"><Input type="password" onChange={e=>this.emailInputChange(e,'pwd')} maxLength={20}/></td>
+                                    <td className="col2"><Input type="password" value={emailValue.pwd} onChange={e=>this.emailInputChange(e,'pwd')} maxLength={20}/></td>
 
                                     <td className="col3">
 
@@ -811,7 +846,7 @@ class SafeSetting extends Component{
 
                         <div className="del-answer-wrapper clearfix">
 
-                            <span className="props">密保答案:</span>
+                            <span className="props">密码:</span>
 
 
                             <Input type="password" className="answer-content" maxLength={20} value={delQuestionsModal.pwd} onChange={this.delQaInputChange.bind(this)}/>

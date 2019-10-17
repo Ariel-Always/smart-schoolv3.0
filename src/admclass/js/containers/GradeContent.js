@@ -42,7 +42,7 @@ class GradeContent extends Component{
 
         }else{
 
-            dispatch(AppAlertActions.alertWarn("搜索内容不能为空!"));
+            dispatch(AppAlertActions.alertWarn({title:"搜索内容不能为空!"}));
 
         }
 
@@ -87,6 +87,40 @@ class GradeContent extends Component{
             if ($(that).attr('data-id')===id){
 
                 $(that).addClass('active','selectd');
+
+            }
+
+        })
+
+    }
+
+    ClassClick({id,name}){
+
+        const { dispatch} = this.props;
+
+
+
+        $('.frame_leftmenu_mainitem').removeClass('active');
+
+        $('.frame_leftmenu_mainitem').removeClass('selected');
+
+        $(`.frame_leftmenu_onegrade_ul li`).each((index,that)=>{
+
+            if ($(that).attr('data-id')===id){
+
+                let GradeDom = $(that).closest('.frame_leftmenu_nextgrade_container').prev();
+
+                $(that).addClass('active');
+
+                $(that).children('.frame_leftmenu_onegrade_name').addClass('active');
+
+                GradeDom.addClass('selected');
+
+                let preId = GradeDom.attr('data-id');
+
+                let preName = GradeDom.children('.frame_leftmenu_mainitem_name').html();
+
+                dispatch({type:UpUIState.CHANGE_CLASS_ACTIVE,info:{id,name,preName,preId}});
 
             }
 
@@ -143,7 +177,8 @@ class GradeContent extends Component{
                                 <Loading spinning={AllGradePreview.ClassLoading}>
 
                                 <PartData type="class"
-                                          PartDataList={AllGradePreview.ClassInfo.List}>
+                                          PartDataList={AllGradePreview.ClassInfo.List}
+                                          ClassClick={this.ClassClick.bind(this)}>
 
                                 </PartData>
 

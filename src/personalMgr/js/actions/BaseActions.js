@@ -57,6 +57,7 @@ const BASE_SETTING_TEACHER_ROAL_DETAILS_STATUS_SHOW = 'BASE_SETTING_TEACHER_ROAL
 
 const BASE_SETTING_TEACHER_ROAL_DETAILS_STATUS_HIDE = 'BASE_SETTING_TEACHER_ROAL_DETAILS_STATUS_HIDE';
 
+const PICUPLOADER_OPTIONS_UPDATE = 'PICUPLOADER_OPTIONS_UPDATE';
 
 
 
@@ -74,11 +75,72 @@ const Init = () => {
 
         let { UserID,UserType } = getState().LoginUser;
 
+        let { BaseSetting } = getState();
+
         getBaseInfo({UserID,UserType,dispatch}).then(data => {
 
             if (data){
 
+
+                if (data.PhotoPath===BaseSetting.PhotoPath) {//不需要刷新photo头像
+
+                    delete data.PhotoPath;
+
+                    delete data.PhotoPath_NoCache;
+
+                }
+
                 dispatch({type:BASE_INFO_UPDATE,data:data});
+
+                const { PhotoPath_NoCache } = data;
+
+                let userType = '';
+
+                switch (UserType) {
+
+                    case 0:
+
+                        userType = 'Admin';
+
+                        break;
+
+                    case 1:
+
+                        userType = 'Teacher';
+
+                        break;
+
+                    case 2:
+
+                        userType = 'Student';
+
+                        break;
+
+                    default:
+
+                        userType = 'Admin';
+
+                }
+
+                var option = {
+
+                    token: sessionStorage.getItem('token'),
+
+                    resWebUrl: "http://192.168.129.1:30101/lgftp/", //资源站点地址
+
+                    userType:userType,   //用户类型，可选值Admin、Student、Teacher、SchoolLeader
+
+                    userID:UserID, //新增时传空字符串、编辑时传相应UserID
+
+                    curImgPath:PhotoPath_NoCache?PhotoPath_NoCache:BaseSetting.PhotoPath_NoCache, //用户当前头像，新增时可不传
+
+                    size:"small"
+
+                };
+
+                dispatch({type:PICUPLOADER_OPTIONS_UPDATE,data:option});
+
+                $('#PicUpload').picUploader(option);
 
                 dispatch({type:BASE_SETTING_LOADING_HIDE});
 
@@ -92,7 +154,7 @@ const Init = () => {
 
 };
 
-const Commit = () => {
+const Commit = (dom) => {
 
   return ( dispatch,getState ) => {
       
@@ -107,32 +169,51 @@ const Commit = () => {
 
           dispatch({type:BASE_SETTING_EDITOR_CLOSE});
 
-            UpdateBasicInfo({
+          if($(dom).picUploader.uploadSubmit()){
 
-                UserID:UserID,UserType:UserType,ShortName:ShortNameValue,QQ:QQValue,Weixin:WeixinValue,
+              let PhotoPath =  $(dom).picUploader.getCurImgPath();
 
-                Weibo:WeiboValue,Telephone:TelephoneValue,Sign:SignValue,PhotoPath:'',dispatch
+              UpdateBasicInfo({
 
-            }).then(data => {
+                  UserID,UserType,ShortName:ShortNameValue?ShortNameValue:'',QQ:QQValue?QQValue:'',Weixin:WeixinValue?WeixinValue:'',
 
-               if (data){
+                  Weibo:WeiboValue?WeiboValue:'',Telephone:TelephoneValue?TelephoneValue:'',Sign:SignValue?SignValue:'',PhotoPath,dispatch
 
-                    dispatch(AppAlertActions.alertSuccess({title:"保存成功"}));
+              }).then(data => {
 
-                   getBaseInfo({UserID,UserType,dispatch}).then(data => {
+                  if (data==='success'){
 
-                       if (data){
+                      dispatch(AppAlertActions.alertSuccess({title:"保存成功"}));
 
-                           dispatch({type:BASE_INFO_UPDATE,data:data});
+                      getBaseInfo({UserID,UserType,dispatch}).then(data => {
+
+                          if (data){
+
+                              dispatch({type:BASE_INFO_UPDATE,data:data});
+
+                              let option = getState().BaseSetting.PicUploader;
+
+                              option.curImgPath = data.PhotoPath_NoCache;
+
+                              dispatch({type:PICUPLOADER_OPTIONS_UPDATE,data:option});
+
+                              $('#PicUpload').picUploader.reset(option);
+
+                          }
+
+                      });
+
+                  }
+
+              });
+
+          }else{
+
+              dispatch(AppAlertActions.alertError({title:"头像上传出错！"}));
+
+          }
 
 
-                       }
-
-                   });
-
-               }
-
-            });
 
       }
 
@@ -184,7 +265,7 @@ let UpdateBasicInfo =  async ({UserID,UserType,ShortName,PhotoPath,QQ,Weixin,Tel
 
     if (res.StatusCode === 200){
 
-        return res.Data;
+        return res.Msg;
 
     }else{
 
@@ -257,6 +338,8 @@ export default {
     BASE_SETTING_LOADING_HIDE,
 
     BASE_SETTING_LOADING_SHOW,
+
+    PICUPLOADER_OPTIONS_UPDATE,
 
     Init,
 

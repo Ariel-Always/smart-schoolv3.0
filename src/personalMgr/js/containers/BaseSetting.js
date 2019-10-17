@@ -1,14 +1,28 @@
 import React,{Component} from 'react';
 
+import { findDOMNode } from 'react-dom';
+
 import BaseActions from '../actions/BaseActions';
 
-import { Loading } from "../../../common";
+import { Loading,Modal } from "../../../common";
 
 import { Input,Tooltip } from "antd";
 
 import { connect } from 'react-redux';
 
 import $ from "jquery";
+
+import '../../../common/js/PicUpload/Cropper/cropper.css';
+
+import '../../../common/js/PicUpload/photoUpload.scss';
+
+import '../../../common/js/PicUpload/Cropper/cropper';
+
+window.$ = $;
+
+window.jQuery = $;
+
+require ('../../../common/js/PicUpload/juqery.cp.picUploader');
 
 class BaseSetting extends Component{
 
@@ -19,6 +33,7 @@ class BaseSetting extends Component{
         const { dispatch } = props;
 
         dispatch(BaseActions.Init());
+
 
     }
 
@@ -38,6 +53,8 @@ class BaseSetting extends Component{
         }
 
     }
+
+
 
     //用户名变更
     ShortNameChange(e){
@@ -185,7 +202,7 @@ class BaseSetting extends Component{
 
         const { dispatch } = this.props;
 
-        dispatch(BaseActions.Commit());
+        dispatch(BaseActions.Commit(this.PicUpload));
 
     }
 
@@ -201,9 +218,21 @@ class BaseSetting extends Component{
     //点击弹出模块权限详情
     roleLook(e){
 
-        const { dispatch } = this.props;
+        const { dispatch,BaseSetting } = this.props;
 
-        dispatch({type:BaseActions.BASE_SETTING_MANAGER_MODULES_SHOW})
+        const { ManagerModuleShow } = BaseSetting;
+
+        if(ManagerModuleShow){
+
+            dispatch({type:BaseActions.BASE_SETTING_MANAGER_MODULES_HIDE});
+
+        }else{
+
+            dispatch({type:BaseActions.BASE_SETTING_MANAGER_MODULES_SHOW});
+
+        }
+
+
 
     }
     //将模块权限详情关闭
@@ -269,7 +298,7 @@ class BaseSetting extends Component{
 
     componentDidMount(){
 
-        addEventListener('click',this.hideDetail.bind(this))
+        addEventListener('click',this.hideDetail.bind(this));
 
     }
 
@@ -372,6 +401,7 @@ class BaseSetting extends Component{
 
 
 
+
     render() {
 
         const { BaseSetting,LoginUser } = this.props;
@@ -440,6 +470,7 @@ class BaseSetting extends Component{
 
         } = BaseSetting;
 
+
         return (
 
             <Loading spinning={loadingShow}>
@@ -466,19 +497,13 @@ class BaseSetting extends Component{
 
                     <div className="content-wrapper">
 
-                        {
+                        <div className="user-photo-wrapper clearfix" style={{display:`${editorStatus?'block':'none'}`}}>
 
-                            editorStatus?
+                            <span className="props">头像:</span>
 
-                            <div className="user-photo-wrapper clearfix">
+                            <div id="PicUpload"></div>
 
-                                <span className="props">头像:</span>
-
-                            </div>
-
-                            :''
-
-                        }
+                        </div>
 
                         <div className="user-id-wrapper clearfix">
 
@@ -567,9 +592,12 @@ class BaseSetting extends Component{
 
                             <div className="detial-wrapper"  style={{display:`${ManagerModuleShow?'block':'none'}`}}>
 
+
                                 {
 
-                                    Modules&&Modules.map((item,key) => {
+                                    Modules&&Modules.length>0?
+
+                                    Modules.map((item,key) => {
 
                                         let content =  item.ModuleList.map(i =>i.ModuleName);
 
@@ -590,6 +618,10 @@ class BaseSetting extends Component{
                                         </div>
 
                                     })
+
+                                    :
+
+                                    <div className="no-permission">您还没有任何权限！</div>
 
                                 }
 
@@ -643,11 +675,15 @@ class BaseSetting extends Component{
 
                                                 let title = '';
 
+                                                let emptyContent = '';
+
                                                 switch (key) {
 
                                                     case 0:
 
                                                         title = '任课班级';
+
+                                                        emptyContent = '您还没有任课班级！';
 
                                                         break;
 
@@ -655,11 +691,15 @@ class BaseSetting extends Component{
 
                                                         title = '所管班级';
 
+                                                        emptyContent = '您还没有所管班级！';
+
                                                         break;
 
                                                     case 2:
 
                                                         title = '所管教研组';
+
+                                                        emptyContent = '您还没有所管教研组！';
 
                                                         break;
 
@@ -694,7 +734,13 @@ class BaseSetting extends Component{
 
                                                                                 {
 
-                                                                                    RoleDetail[key]
+                                                                                    RoleDetail[key]===''?
+
+                                                                                        emptyContent
+
+                                                                                        :
+
+                                                                                        RoleDetail[key]
 
                                                                                 }
 
@@ -888,6 +934,18 @@ class BaseSetting extends Component{
                     </div>
 
             </div>
+
+               {/* <Modal type={1}
+                       visible={true}
+                       title="添加临时课程"
+                       width={680}
+                       bodyStyle={{height:286}}
+                       mask={true}
+                       maskClosable={true} ref={modal=>this.Modal=modal}>
+
+                        <div ref={div=>this.PicUpLoad=div} id="PicUpLoad"></div>
+
+                </Modal>*/}
 
             </Loading>
 

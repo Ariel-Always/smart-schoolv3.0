@@ -1,5 +1,7 @@
 import Method from "../Method";
 
+import ApiActions from '../ApiActions';
+
 const STT_SCHEDULE_INIT = 'STT_SCHEDULE_INIT';
 
 const STT_NOW_WEEK_CHANGE = 'STT_NOW_WEEK_CHANGE';
@@ -34,25 +36,31 @@ const STTTeacherUpdate = (pickInfo) => {
 
     return (dispatch,getState) => {
 
-        const { LoginUser,Manager } = getState();
+        const { LoginUser,Teacher,PeriodWeekTerm } = getState();
 
-        let SchoolID = LoginUser.SchoolID;
+        let {SchoolID} = LoginUser;
 
         let UserID = pickInfo.catChildrenId;
 
-        let UserType = LoginUser.UserType;
+        let UserType = 1;
 
-        let NowWeekNo = Manager.SubjectTeacherTeacherSchedule.NowWeekNo;
+        let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;
+
+        let NowWeekNo = Teacher.SubjectTeacherTeacherSchedule.NowWeekNo;
 
         let teacherSchedulePromise = Method.getGetData(`/scheduleSubjectTeacherTeacherSchedule?UserID=${UserID}&UserType=${UserType}&SchoolID=${SchoolID}&NowWeekNo=${NowWeekNo}`);
 
-        teacherSchedulePromise.then(json => {
+        ApiActions.GetScheduleByUserID({
 
-            if (json.Status === 200){
+            PeriodID,SchoolID,UserType,UserID,WeekNO:NowWeekNo,dispatch
 
-                let { ScheduleCount} = json.Data;
+        }).then(data => {
 
-                let schedule = json.Data.ItemSchedule.map((item) => {
+            if (data){
+
+                let { ScheduleCount} = data;
+
+                let schedule = data.ItemSchedule.map((item) => {
 
                     return {
 
@@ -83,10 +91,6 @@ const STTTeacherUpdate = (pickInfo) => {
 
                 dispatch({type:SCHEDULE_LOADING_HIDE});
 
-            }else {
-
-                alert(json.Msg);
-
             }
 
         });
@@ -99,9 +103,9 @@ const STTWeekUpdate = () => {
 
     return (dispatch,getState) => {
 
-        const { Manager,LoginUser } = getState();
+        const { Teacher,LoginUser,PeriodWeekTerm } = getState();
 
-        const { pickTeacher,pickTeacherID } = Manager.SubjectTeacherTeacherSchedule;
+        const { pickTeacher,pickTeacherID } = Teacher.SubjectTeacherTeacherSchedule;
         //当没有选择教师的时候就不请求后台接口。
         if (pickTeacher === ''){
 
@@ -111,23 +115,29 @@ const STTWeekUpdate = () => {
 
         }else{
 
-            let SchoolID = LoginUser.SchoolID;
+            let {SchoolID} = LoginUser;
 
             let UserID = pickTeacherID;
 
             let UserType = 1;
 
-            let NowWeekNo = Manager.SubjectTeacherTeacherSchedule.NowWeekNo;
+            let NowWeekNo = Teacher.SubjectTeacherTeacherSchedule.NowWeekNo;
+
+            let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;
 
             let teacherSchedulePromise = Method.getGetData(`/scheduleSubjectTeacherTeacherSchedule?UserID=${UserID}&UserType=${UserType}&SchoolID=${SchoolID}&NowWeekNo=${NowWeekNo}`);
 
-            teacherSchedulePromise.then(json => {
+            ApiActions.GetScheduleByUserID({
 
-                if (json.Status === 200){
+            SchoolID,UserID,UserType,WeekNO:NowWeekNo,PeriodID,dispatch
 
-                    let { ScheduleCount} = json.Data;
+            }).then(data => {
 
-                    let schedule = json.Data.ItemSchedule.map((item) => {
+                if (data){
+
+                    let { ScheduleCount} = data;
+
+                    let schedule = data.ItemSchedule.map((item) => {
 
                         return {
 
@@ -158,10 +168,6 @@ const STTWeekUpdate = () => {
 
                     dispatch({type:SCHEDULE_LOADING_HIDE});
 
-                }else {
-
-                    alert(json.Msg);
-
                 }
 
             });
@@ -181,7 +187,7 @@ const STTTeacherSearch = (val) => {
 
         dispatch({type:SEARCH_TEACHER_RESULT_SHOW});
 
-        let { LoginUser,Manager,PeriodWeekTerm } = getState();
+        let { LoginUser,Teacher,PeriodWeekTerm } = getState();
 
         let SchoolID = LoginUser.SchoolID;
 
@@ -193,11 +199,16 @@ const STTTeacherSearch = (val) => {
 
         let searchTeacherPromise = Method.getGetData(`/scheduleSubjectTeacherTeacher?SchoolID=${SchoolID}&PeriodID=${PeriodID}&SubjectID=${SubjectID}&Key=${Key}`);
 
-        searchTeacherPromise.then(json => {
 
-           if (json.Status === 200){
+        ApiActions.GetTeacherBySubjectIDAndKey({
 
-               const result = json.Data.map((item) => {
+            SchoolID,PeriodID,SubjectID,Key,dispatch
+
+        }).then(data => {
+
+           if (data === 200){
+
+               const result = data.map((item) => {
 
                   return {
 
@@ -212,10 +223,6 @@ const STTTeacherSearch = (val) => {
                 dispatch({type:SEARCH_TEACHER_RESULT_UPDATE,data:result})
 
                 dispatch({type:SEARCH_LOADING_HIDE});
-
-           }else{
-
-               alert(json.Msg);
 
            }
 
@@ -244,11 +251,15 @@ const cancelSearch = () => {
             //如果学科提示语存在,重新请求后台接口。
             let getSTTMenuPromise = Method.getGetData(`/scheduleSubjectTeacherTeacher-teacher?SchoolID=${SchoolID}&PeriodID=${PeriodID}`);
 
-            getSTTMenuPromise.then(json => {
+            ApiActions.GetTeacherBySubjectIDAndKey({
 
-                if (json.Status === 200){
+                SchoolID,PeriodID
 
-                    let list = json.Data.map((i) => {
+            }).then(data => {
+
+                if (data){
+
+                    let list = data.map((i) => {
 
                         return {
 
@@ -263,10 +274,6 @@ const cancelSearch = () => {
                     dispatch({type:SEARCH_TEACHER_RESULT_UPDATE,data:list});
 
                     dispatch({type:SEARCH_LOADING_HIDE});
-
-                }else{
-
-                    alert(json.Msg);
 
                 }
 

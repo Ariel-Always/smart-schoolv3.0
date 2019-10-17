@@ -1,6 +1,7 @@
 import Method from '../Method';
 
 import AppAlertActions from '../AppAlertActions'
+import ApiActions from "../ApiActions";
 
 //停课弹窗
 const DEL_SCHEDULE_SHOW = 'DEL_SCHEDULE_SHOW';
@@ -21,15 +22,15 @@ const InfoInit = () => {
 
     return (dispatch,getState) => {
 
-        let SchoolID = getState().LoginUser;
+        let {SchoolID} = getState().LoginUser;
 
         let Periods = getState().PeriodWeekTerm.ItemPeriod;
 
         let allGrades = Method.getGetData(`/allSGWTTC?SchoolID=${SchoolID}`);
 
-        allGrades.then(json => {
+        ApiActions.GetAllOptionForAddSchedule({SchoolID,dispatch}).then(data => {
 
-            let Grades = json.Data.ItemGrade;
+            let Grades = data.ItemGrade;
 
             let periodGrades = Periods.map(item => {
 
@@ -316,19 +317,7 @@ const commitInfo = () => {
 
         if (!gradeChecked){
 
-            dispatch({type:AppAlertActions.APP_ALERT_SHOW,data:{
-
-                    type:"btn-warn",
-
-                    title:"请选择需要删除课程的年级！",
-
-                    ok:hideAlert(dispatch),
-
-                    cancel:hideAlert(dispatch),
-
-                    close:hideAlert(dispatch)
-
-                }});
+            dispatch(AppAlertActions.alertWarn({title:"请选择需要删除课程的年级！"}));
 
             dispatch({type:DEL_SCHEDULE_LOADING_HIDE});
 
@@ -350,42 +339,15 @@ const commitInfo = () => {
 
             }).filter(i => i!==undefined).join(',');
 
-            let commitPromise = Method.getPostData('/scheduleDelSchedule',{SchoolID,GradeIDs});
 
-            commitPromise.then(res => {
 
-                if (res.Status === 200) {
+            ApiActions.DeleteScheduleByGrades({SchoolID,GradeIDs,dispatch}).then(data => {
+
+                if (data) {
 
                     dispatch({type:DEL_SCHEDULE_HIDE});
 
-                    dispatch({
-                        type: AppAlertActions.APP_ALERT_SHOW, data: {
-
-                            type: "success",
-
-                            title: "停课成功！",
-
-                            hide: hideAlert(dispatch)
-
-                        }
-                    });
-                }else {
-
-                    dispatch({
-                        type: AppAlertActions.APP_ALERT_SHOW, data: {
-
-                            type: "btn-warn",
-
-                            title: res.Msg?res.Msg:'错误！',
-
-                            close: hideAlert(dispatch),
-
-                            ok: hideAlert(dispatch),
-
-                            cancel: hideAlert(dispatch)
-
-                        }
-                    });
+                    dispatch(AppAlertActions.alertSuccess({title:"删除课程成功！"}))
 
                 }
 
