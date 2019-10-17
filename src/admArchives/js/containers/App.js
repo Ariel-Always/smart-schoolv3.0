@@ -85,7 +85,7 @@ class App extends Component {
     onAppAlertOK() {
         const { dispatch } = this.props;
         dispatch(actions.UpUIState.hideErrorAlert());
-        window.location.href = "/html/login"
+        // window.location.href = "/html/login"
     }
     onAppAlertCancel() {
         const { dispatch } = this.props;
@@ -105,7 +105,7 @@ class App extends Component {
         let ID = pathArr[3]
         // console.log('ddd')
         if (route === '/' || route.split('/')[1] === 'UserArchives') {
-            dispatch(actions.UpDataState.getAllUserPreview('/GetSummary'));
+            // dispatch(actions.UpDataState.getAllUserPreview('/GetSummary'));
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
             if (handleRoute) {
                 //dispatch(actions.UpDataState.getAllUserPreview('/Archives' + handleRoute));
@@ -117,24 +117,30 @@ class App extends Component {
 
                     if (ID === 'all') {
                         dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + userMsg.SchoolID + '&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
-                    }else{
+                    } else {
                         console.log('sss')
-                    dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+userMsg.SchoolID+'&GradeID='+ID +'&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC',''));
+                        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + userMsg.SchoolID + '&GradeID=' + ID + '&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC', ''));
 
                     }
                 } else if (handleRoute === 'Teacher') {
                     console.log('Teacher：' + DataState.SubjectTeacherMsg.returnData)
-                    if (!DataState.SubjectTeacherMsg.returnData||ID !== 'all')
-                        dispatch(actions.UpDataState.getSubjectTeacherMsg('/GetSubject?schoolID=' + userMsg.SchoolID,ID));
-                    if (!DataState.TeacherTitleMsg.returnData) {
+                    if (!DataState.SubjectTeacherMsg.returnData || ID !== 'all')//学科信息
+                        dispatch(actions.UpDataState.getSubjectTeacherMsg('/GetSubject?schoolID=' + userMsg.SchoolID, ID));
+                    if (!DataState.TeacherTitleMsg.returnData) {//职称
                         dispatch(actions.UpDataState.getTeacherTitleMsg('/GetTitle?schoolID=' + userMsg.SchoolID));
                     }
                     if (ID === 'all') {
                         dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + userMsg.SchoolID + '&SubjectIDs=all&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
-                    }else{
-                        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + userMsg.SchoolID + '&SubjectIDs='+ID+'&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
+                    } else {
+                        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + userMsg.SchoolID + '&SubjectIDs=' + ID + '&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
 
                     }
+                } else if (handleRoute === 'Leader') {
+                    dispatch(actions.UpDataState.getSchoolLeaderPreview('/GetSchoolLeader?SchoolID=' + userMsg.SchoolID + '&SortFiled=UserID&SortType=ASC'));
+                } else if (handleRoute === 'Graduate') {
+                    if(DataState.GetGraduateGradeClassMsg.Grade.length<=1)
+                    dispatch(actions.UpDataState.getGraduateGradeClassMsg('/GetGradeClassOfGraduate?SchoolID=' + userMsg.SchoolID ));
+                    dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?PageIndex=0&PageSize=10&schoolID='+userMsg.SchoolID))
                 } else if (handleRoute === 'All') {
                     dispatch(actions.UpDataState.getAllUserPreview('/GetSummary'));
                     dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
@@ -205,6 +211,7 @@ class App extends Component {
                     type={UIState.AppAlert.type}
                     title={UIState.AppAlert.title}
                     onOk={UIState.AppAlert.onOk}
+                    onHide={UIState.AppAlert.onHide}
                     onCancel={UIState.AppAlert.onCancel}
                     onClose={UIState.AppAlert.onClose}
                 ></Alert>

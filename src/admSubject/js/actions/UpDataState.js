@@ -46,9 +46,9 @@ const getPeriodMsg = (url) => {
 
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 dispatch({ type: GET_PERIOD_MSG, data: json.Data });
             }
         });
@@ -63,9 +63,9 @@ const getSubjectMsg = (url) => {
             dispatch({ type: actions.UpUIState.SUBJECT_TABLE_LOADING_CLOSE });
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 dispatch({ type: GET_SUBJECT_MSG, data: json.Data });
             }
         });
@@ -78,9 +78,9 @@ const getTeacherMsg = (url) => {
 
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 console.log(json.Data)
 
                 dispatch({ type: GET_TEACHER_MSG, data: json.Data });
@@ -121,9 +121,9 @@ const getSubjectModalMsg = (url) => {
         getData(CONFIG.SubjectProxy + url).then(res => {
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 console.log(json.Data)
                 dispatch({ type: GET_SUBJECT_MODAL_MSG, data: json.Data });
 
@@ -141,9 +141,9 @@ const getSubjectTeacherMsg = (url, grades, allGrades = []) => {
 
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 console.log(json.Data)
                 if (grades === 'All') {
 

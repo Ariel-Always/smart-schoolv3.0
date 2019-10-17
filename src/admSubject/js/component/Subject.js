@@ -62,7 +62,7 @@ class Subject extends React.Component {
 
                                 return (
                                     <React.Fragment key={child.TeacherName ? child.TeacherName : '未填写'}>
-                                        <span className='Teacher' title={child.TeacherName}><span className='Teacher-tips'>{GradeName }</span><span onClick={child.TeacherName ? this.onClickTeacherName.bind(this, child.TeacherID) : this.onClickTeacherNameNo} className={child.TeacherName ? 'handleName' : 'noHandle'} >{child.TeacherName ? child.TeacherName : '未填写'}</span></span><br />
+                                        <span className='Teacher' title={child.TeacherName}><span className='Teacher-tips'>{GradeName}</span><span onClick={child.TeacherName ? this.onClickTeacherName.bind(this, child.TeacherID) : this.onClickTeacherNameNo} className={child.TeacherName ? 'handleName' : 'noHandle'} >{child.TeacherName ? child.TeacherName : '未填写'}</span></span><br />
                                     </React.Fragment>
                                 )
                             })
@@ -88,8 +88,8 @@ class Subject extends React.Component {
                     }
                 }
             ],
-            SubjectSelect:{ value: '', title: '全部学段' },
-            UserMsg:props.DataState.LoginUser
+            SubjectSelect: { value: '', title: '全部学段' },
+            UserMsg: props.DataState.LoginUser
         }
     }
     // 钩子
@@ -116,6 +116,8 @@ class Subject extends React.Component {
         if (!DataState.ChangeSubjectMsg) {
             return;
         }
+        if (!DataState.PeriodMsd)
+            dispatch(actions.UpDataState.getPeriodMsg('/GetPeriodBySchoolID?schoolID=' + this.state.UserMsg.SchoolID));
         dispatch(actions.UpDataState.addSubjectModalMsg([]))
         dispatch(actions.UpUIState.addSubjectModalOpen())
     }
@@ -129,7 +131,7 @@ class Subject extends React.Component {
     //操作分页
     onPagiNationChange = (value) => {
         const { dispatch } = this.props;
-        dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID='+this.state.UserMsg.SchoolID+'&periodID=null&pageSize=8&pageIndex=' + value));
+        dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID=null&pageSize=8&pageIndex=' + value));
     }
 
     // 关闭信息弹窗
@@ -142,12 +144,12 @@ class Subject extends React.Component {
         const { dispatch } = this.props;
         let periodID = null;
         this.setState({
-            SubjectSelect:value
+            SubjectSelect: value
         })
         if (value.value !== 0) {
             periodID = 'p' + value.value
         }
-        dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID='+this.state.UserMsg.SchoolID+'&periodID=' + periodID + '&pageSize=8&pageIndex=1'));
+        dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID=' + periodID + '&pageSize=8&pageIndex=1'));
     }
 
     //删除
@@ -181,13 +183,13 @@ class Subject extends React.Component {
             subjectID: DataState.SubjectMsg.SubjectItem[key].SubjectName.SubjectID,
             userID: 'admin_S0003' || userMsg.UserID,
             userType: '0' || userMsg.UserType
-        },2, 'json').then(res => {
+        }, 2, 'json').then(res => {
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
-                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID='+this.state.UserMsg.SchoolID+'&periodID='+this.state.SubjectSelect.value+'&pageSize=8&pageIndex=1'));
+            if (json.StatusCode === 400) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
+                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID=' + this.state.SubjectSelect.value + '&pageSize=8&pageIndex=1'));
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
                     title: "成功",
@@ -221,7 +223,7 @@ class Subject extends React.Component {
         dispatch({ type: actions.UpUIState.MODAL_LOADING_OPEN });
         postData(CONFIG.SubjectProxy + url, {
             schoolID: 'S0003',
-            subjectID: DataState.ChangeSubjectMsg.SubjectID||'',
+            subjectID: DataState.ChangeSubjectMsg.SubjectID || '',
             GlobalGradeIDs: DataState.ChangeSubjectMsg.GlobalGradeIDs,
             userID: 'admin_S0003' || userMsg.UserID,
             userType: '0' || userMsg.UserType
@@ -229,16 +231,16 @@ class Subject extends React.Component {
             dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
+            if (json.StatusCode === 400) {
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'error',
                     title: "失败",
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 dispatch(actions.UpUIState.changeSubjectModalClose())
-                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID='+this.state.UserMsg.SchoolID+'&periodID='+this.state.SubjectSelect.value+'&pageSize=8&pageIndex=1'));
+                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID=' + this.state.SubjectSelect.value + '&pageSize=8&pageIndex=1'));
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
                     title: "成功",
@@ -289,17 +291,17 @@ class Subject extends React.Component {
             dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
+            if (json.StatusCode === 400) {
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'error',
                     title: "失败",
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 dispatch(actions.UpUIState.addSubjectModalClose())
-                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID='+this.state.UserMsg.SchoolID+'&periodID='+this.state.SubjectSelect.value+'&pageSize=8&pageIndex=1'));
-                
+                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID=' + this.state.SubjectSelect.value + '&pageSize=8&pageIndex=1'));
+
 
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
@@ -334,7 +336,7 @@ class Subject extends React.Component {
     onSetTeacherClick = (key) => {
         const { dispatch, DataState } = this.props;
         let subjectTeacherMsg = DataState.SubjectMsg.oldData.SubjectItem[key];
-        dispatch(actions.UpDataState.setSubjectTeacherMsg({isChange:false,...subjectTeacherMsg}))
+        dispatch(actions.UpDataState.setSubjectTeacherMsg({ isChange: false, ...subjectTeacherMsg }))
         dispatch(actions.UpUIState.setSubjectTeacherModalOpen())
     }
 
@@ -342,7 +344,7 @@ class Subject extends React.Component {
         const { dispatch, DataState } = this.props;
         let url = '/SetHeadOfTeachingGroup';
         let userMsg = DataState.LoginUser;
-        if(!DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.isChange){
+        if (!DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.isChange) {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-error',
                 title: "您还没有改变教研组长哦~",
@@ -352,31 +354,31 @@ class Subject extends React.Component {
             }));
             return;
         }
-       //教师格式P1/T0001
-       let newTeacher = DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.Teachers.split(',').map(child=>{
-           let loca = child.lastIndexOf('/');
-           return child.slice(0,loca)
-       }).join()
+        //教师格式P1/T0001
+        let newTeacher = DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.Teachers.split(',').map(child => {
+            let loca = child.lastIndexOf('/');
+            return child.slice(0, loca)
+        }).join()
 
 
         dispatch({ type: actions.UpUIState.MODAL_LOADING_OPEN });
         postData(CONFIG.SubjectProxy + url, {
-            schoolID: 'S0003'||DataState.LoginUser.SchoolID,
+            schoolID: 'S0003' || DataState.LoginUser.SchoolID,
             subjectID: DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.SubjectID,
             teacher: newTeacher
-        }, 2,'json').then(res => {
+        }, 2, 'json').then(res => {
             dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
+            if (json.StatusCode === 400) {
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'error',
                     title: "失败",
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
-                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID='+this.state.UserMsg.SchoolID+'&periodID='+this.state.SubjectSelect.value+'&pageSize=8&pageIndex=1'));
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
+                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID=' + this.state.SubjectSelect.value + '&pageSize=8&pageIndex=1'));
                 dispatch(actions.UpUIState.setSubjectTeacherModalClose())
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',

@@ -1976,21 +1976,45 @@ class DetailsModal extends React.Component {
                     <div className='content-box'>
                         <div className='row'>
                             <span className='col-left'>
-                                {type === 'student' ? '学号' : '工号'}
+                                {type === 'student'|| type === 'graduate'? '学号' : '工号'}
                             </span>
                             <span className='col-right'>{data.userID ? data.userID : <span className='content-null'>未填写</span>}</span>
                         </div>
-                        <div className='row' >
+                        <div className='row' style={{ display: type === 'graduate' ? 'block' : 'none' }}>
                             <span className='col-left'>
-                                {type === 'student'||type==='examine' ? '班级' : '所教学科'}
+                                {'毕业年份'}
                             </span>
-                            <span className='col-right'>{type === 'student'||type==='examine' ? data.userGrade && data.userClass ? (data.userGrade + ' > ' + data.userClass) : <span className='content-null'>未填写</span> : data.subjectName ? data.subjectName : <span className='content-null'>未填写</span>}</span>
+                            <span className='col-right'>{data.year ? data.year+'年' : <span className='content-null'>未填写</span>}</span>
+                        </div>
+                        <div className='row' style={{ display: type === 'graduate' ? 'block' : 'none' }}>
+                            <span className='col-left'>
+                                {'班级'}
+                            </span>
+                            <span className='col-right'>{data.userClass ? data.userClass : <span className='content-null'>未填写</span>}</span>
+                        </div>
+                        <div className='row' style={{ display: type !== 'leader'&&type !== 'graduate' ? 'block' : 'none' }}>
+                            <span className='col-left'>
+                                {type === 'student'||type==='examine'? '班级' : '所教学科'}
+                            </span>
+                            <span className='col-right'>{type === 'student'||type==='examine'? data.userGrade && data.userClass ? (data.userGrade + ' > ' + data.userClass) : <span className='content-null'>未填写</span> : data.subjectName ? data.subjectName : <span className='content-null'>未填写</span>}</span>
                         </div>
                         <div className='row' style={{ display: type === 'teacher' ? 'block' : 'none' }}>
                             <span className='col-left'>
                                 {'职称'}
                             </span>
                             <span className='col-right'>{data.titleName ? data.titleName : <span className='content-null'>未填写</span>}</span>
+                        </div>
+                        <div className='row' style={{ display: type === 'leader' ? 'block' : 'none' }}>
+                            <span className='col-left'>
+                                {'行政职务'}
+                            </span>
+                            <span className='col-right'>{data.Position ? data.Position : <span className='content-null'>未填写</span>}</span>
+                        </div>
+                        <div className='row' style={{ display: type === 'graduate' ? 'block' : 'none' }}>
+                            <span className='col-left'>
+                                {'毕业去向'}
+                            </span>
+                            <span className='col-right'>{data.hasTrack ? (<span><span style={{marginRight:10+'px'}}>{data.jobType}</span><span>{data.discription}</span></span>) : <span className='content-null'>--</span>}</span>
                         </div>
                         <div className='row' style={{ marginTop: 20 + 'px' }}>
                             <span className='col-left'>

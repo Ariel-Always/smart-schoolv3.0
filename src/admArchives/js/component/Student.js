@@ -323,7 +323,7 @@ class Student extends React.Component {
         console.log(checkedList)
         this.setState({
             checkedList,
-            checkAll: checkedList === this.props.DataState.GradeStudentPreview.keyList ? true : false
+            checkAll: checkedList.length === this.props.DataState.GradeStudentPreview.keyList.length ? true : false
         })
     }
     handleStudentModalOk = (e) => {
@@ -438,7 +438,7 @@ class Student extends React.Component {
         
         postData(CONFIG.UserInfoProxy + url, {
             userIDs:UserIDListString,
-            schoolID:'school1'
+            schoolID:this.state.userMsg.SchoolID
         }, 2).then(res => {
             return res.json()
         }).then(json => {
@@ -754,8 +754,8 @@ class Student extends React.Component {
                             <span className='tips menu39 '>学生档案管理</span>
                         </span>
                         <div className='top-nav'>
-                            {/* <Link className='link' to='/GraduteArchives' replace>查看毕业生档案</Link>
-                            <span className='divide'>|</span> */}
+                            <Link className='link' to='/UserArchives/Graduate' target='_blank' replace>查看毕业生档案</Link>
+                            <span className='divide'>|</span>
                             <Link className='link' target='_blank' to='/RegisterExamine' replace>学生注册审核</Link>
                             <span className='divide'>|</span>
                             <span className='link' style={{ cursor: 'pointer' }} onClick={this.onAddStudent}>添加学生</span>
@@ -870,10 +870,6 @@ class Student extends React.Component {
                     data={this.state.detailData ? this.state.detailData : []}
                     type='student'
                 >
-                    <div className='modal-top'>
-
-                    </div>
-                    <div className='modal-content'></div>
                 </DetailsModal>
                 {/* 提示框 */}
 

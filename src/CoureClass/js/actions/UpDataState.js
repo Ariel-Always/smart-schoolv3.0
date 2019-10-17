@@ -79,9 +79,9 @@ const getCoureClassAllMsg = (url, func) => {
 
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
                 dispatch({ type: GET_COURE_CLASS_ALL_MSG, data: json.Data, func: func });
             }
@@ -107,9 +107,9 @@ const getSubjectAllMsg = (url, subject) => {
 
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 console.log(json.Data)
                 dispatch({ type: GET_SUBJECT_ALL_MSG, data: json.Data, subject: subject });
 
@@ -126,9 +126,9 @@ const getClassAllMsg = (url, subject, Class) => {
             dispatch({ type: actions.UpUIState.TABLE_LOADING_CLOSE });
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 console.log(json.Data)
                 dispatch({ type: GET_CLASS_ALL_MSG, data: json.Data, subject: subject, Class: Class });
 
@@ -144,9 +144,9 @@ const getCourseClassDetailsMsg = (url) => {
         getData(CONFIG.CourseClassProxy + url).then(res => {
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 console.log(json.Data)
                 dispatch({ type: GET_COURSE_CLASS_DETAILS_MSG, data: json.Data });
                 dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
@@ -161,9 +161,9 @@ const getTeacherMsg = (url) => {
 
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 console.log(json.Data)
 
                 dispatch({ type: GET_TEACHER_MSG, data: json.Data });
@@ -180,9 +180,9 @@ const getCourseClassDetailsHandleClassMsg = (url) => {
         getData(CONFIG.CourseClassProxy + url).then(res => {
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 console.log(json.Data)
                 dispatch({ type: GET_COURSE_CLASS_DETAILS_HANDEL_CLASS_MSG, data: json.Data });
                 dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
@@ -204,9 +204,9 @@ const getSubjectTeacherMsg = (url) => {
         postData(CONFIG.SubjectProxy + url, {}).then(res => {
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 console.log(json.Data)
                 dispatch({ type: GET_SUBJECT_TEACHER_MSG, data: json.Data.data });
                 dispatch({ type: actions.UpUIState.TEACHER_LOADING_MODAL_COLSE });
@@ -258,9 +258,9 @@ const getGradeClassMsg = (url) => {
         getData(CONFIG.CourseClassProxy + url).then(res => {
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 console.log(json.Data)
                 dispatch({ type: GET_GRADE_CLASS_MSG, data: json.Data });
                 dispatch({ type: actions.UpUIState.STUDENT_LOADING_MODAL_COLSE });
@@ -276,9 +276,9 @@ const getClassStudentMsg = (url) => {
         getData(CONFIG.CourseClassProxy + url).then(res => {
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 console.log(json.Data)
                 dispatch({ type: GET_CLASS_STUDENT_MSG, data: json.Data });
                 dispatch(actions.UpUIState.ClassStudentLoadingModalClose());
@@ -294,9 +294,9 @@ const searchClassStudentMsg = (url) => {
         getData(CONFIG.CourseClassProxy + url).then(res => {
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 console.log(json.Data)
                 dispatch({ type: SEARCH_CLASS_STUDENT_MSG, data: json.Data });
                 dispatch(actions.UpUIState.ClassStudentLoadingModalClose());
@@ -312,9 +312,9 @@ const getCourseClassDynamicMsg = (url) => {
         getData(CONFIG.CourseClassProxy + url).then(res => {
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 console.log(json.Data)
                 dispatch({ type: GET_COURSE_CLASS_DYNAMIC_MSG, data: json.Data });
                 dispatch(actions.UpUIState.CourseClassDynamicLoadingClose());
@@ -330,9 +330,9 @@ const getCourseClassRecordMsg = (url) => {
         getData(CONFIG.CourseClassProxy + url).then(res => {
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 console.log(json.Data)
                 dispatch({ type: GET_COURSE_CLASS_RECORD_MSG, data: json.Data });
                 dispatch(actions.UpUIState.CourseClassDynamicLoadingClose());
@@ -351,9 +351,9 @@ const getLogDetailsMsg = (url) => {
         getData(CONFIG.CourseClassProxy + url).then(res => {
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 console.log(json.Data)
                 dispatch({ type: GET_LOG_DETAILS_MSG, data: json.Data });
                 dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });

@@ -109,7 +109,7 @@ class All extends React.Component {
                             data: [
                                 { value: userData.Student, name: '学生人数' },
                                 { value: userData.Teacher, name: '教师人数' },
-                                // { value: userData.Leader, name: '领导人数' },
+                                { value: userData.SchoolLeader, name: '领导人数' },
 
                             ]
                         }
@@ -275,7 +275,7 @@ class All extends React.Component {
                             <p className='tips-1'>{'总人数：' + DataState.AllUserPreview.Total}</p>
                             <p className='tips-2'><span className='tips-icon-1'></span>{'学生人数：' + DataState.AllUserPreview.Student}</p>
                             <p className='tips-2'><span className='tips-icon-2'></span>{'教师人数：' + DataState.AllUserPreview.Teacher}</p>
-                            {/* <p className='tips-2'><span className='tips-icon-3'></span>{'领导人数：'+ DataState.AllUserPreview.Leader}</p> */}
+                            <p className='tips-2'><span className='tips-icon-3'></span>{'领导人数：'+ DataState.AllUserPreview.SchoolLeader }</p>
                         </div>
                     </div>
                 </div>

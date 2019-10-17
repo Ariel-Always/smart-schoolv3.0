@@ -11,6 +11,8 @@ const EditModalTipsVisible = (state = {
     GenderTipsVisible: false,
     changeSubjectTipsVisible: false,
     TitleIDVisible: false,
+    PositionTipsVisible:false,
+    GraduateJobTypeVisible:false
 }, actions) => {
     switch (actions.type) {
         case UpUIState.EDIT_MODAL_TIPS_VISIBLE:

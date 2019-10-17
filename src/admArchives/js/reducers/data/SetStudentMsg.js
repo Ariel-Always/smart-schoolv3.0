@@ -1,7 +1,7 @@
 import UpDataState from '../../actions/UpDataState';
 
 
-const SetStudentMsg = (state = {}, actions) => {
+const SetStudentMsg = (state = {initStudentMsg:{},changeStudentMsg:{}}, actions) => {
     switch (actions.type) {
         case UpDataState.SET_INIT_STUDENT_MSG:
             return Object.assign({}, state, { initStudentMsg:actions.data,changeStudentMsg:actions.data });

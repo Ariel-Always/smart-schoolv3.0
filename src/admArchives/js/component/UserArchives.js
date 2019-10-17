@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import logo from '../../images/admAriHeadImg-1.png'
 import { Frame, Menu, Loading, Alert } from "../../../common";
-import { HashRouter as Router,  Route, Link, BrowserRouter } from 'react-router-dom';
+import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
 import history from '../containers/history'
 import TimeBanner from './TimeBanner'
 import All from './All'
 import Student from './Student'
 import Teacher from './Teacher'
 import Leader from './Leader'
+import Graduate from './Graduate'
 import $ from 'jquery'
 import '../../scss/index.scss'
 import { getData } from '../../../common/js/fetch'
@@ -47,14 +48,17 @@ class UserArchives extends React.Component {
                     icon: 'menu33',
                     onTitleClick: this.handleClick,
                 },
-                    // {
-                    //     key: 'Leader',
-                    //     title: '领导档案',
-                    //     icon: 'menu35',
-                    //     onTitleClick: this.handleClick,
-                    // }
+                {
+                    key: 'Leader',
+                    title: '领导档案',
+                    icon: 'menu35',
+                    onTitleClick: this.handleClick,
+                }
                 ]
-            }
+            },
+            showLeftMenu: true,
+            showBarner: true,
+            route:false
         }
 
     }
@@ -64,11 +68,45 @@ class UserArchives extends React.Component {
         let route = history.location.pathname;
         // 获取接口数据
         //this.requestData(route)
-
+        //let route = history.location.pathname;
+        // let userMsg = DataState.LoginUser.SchoolID ? DataState.LoginUser : JSON.parse(sessionStorage.getItem('UserInfo'))
+        let pathArr = route.split('/');
+        let handleRoute = pathArr[2];
+        let ID = pathArr[3]
+         // 获取接口数据
+         if (handleRoute === 'Graduate') {
+            this.setState({
+                showLeftMenu: false,
+                showBarner: true,
+                route:true
+            })
+        } else {
+            this.setState({
+                showLeftMenu: true,
+                showBarner: true,
+                route:false
+            })
+        }
         history.listen(() => {//路由监听
             let route = history.location.pathname;
+           
+            let pathArr = route.split('/');
+            let handleRoute = pathArr[2];
+            let ID = pathArr[3]
             // 获取接口数据
-
+            if (handleRoute === 'Graduate') {
+                this.setState({
+                    showLeftMenu: false,
+                    showBarner: true,
+                    route:true
+                })
+            } else {
+                this.setState({
+                    showLeftMenu: true,
+                    showBarner: true,
+                    route:false
+                })
+            }
 
             $('.frame_leftmenu_mainitem').removeClass('selected active');
             $('.frame_leftmenu_mainitem').children('*').removeClass('active');
@@ -102,10 +140,10 @@ class UserArchives extends React.Component {
     //左侧菜单每项的点击事件
     handleClick = (key) => {
         console.log(key)
-        if(key!=='All')
-        history.push('/UserArchives/' + key+'/all');
-        else{
-        history.push('/UserArchives/' + key);
+        if (key !== 'All')
+            history.push('/UserArchives/' + key + '/all');
+        else {
+            history.push('/UserArchives/' + key);
 
         }
     }
@@ -129,15 +167,16 @@ class UserArchives extends React.Component {
                         enname: "User profile management",
                         image: logo
                     }}
-                    type="circle" showLeftMenu={true} showBarner={false}>
-                    <div ref="frame-time-barner"><TimeBanner /></div>
+                    type="circle" showLeftMenu={this.state.showLeftMenu} showBarner={this.state.showBarner}>
+                    <div ref="frame-time-barner"><TimeBanner route={this.state.route} /></div>
                     <div ref="frame-left-menu"><Menu params={this.state.MenuParams}></Menu></div>
                     <div ref="frame-right-content">
                         <Loading size={'large'} opacity={false} spinning={UIState.AppLoading.RightLoading}>
-                            <Route path='/UserArchives/All'  history={history} component={All}></Route>
-                            <Route path='/UserArchives/Student/:GradeID'  history={history} component={Student}></Route>
-                            <Route path='/UserArchives/Teacher/:SubjectID'  history={history} component={Teacher}></Route>
+                            <Route path='/UserArchives/All' history={history} component={All}></Route>
+                            <Route path='/UserArchives/Student/:GradeID' history={history} component={Student}></Route>
+                            <Route path='/UserArchives/Teacher/:SubjectID' history={history} component={Teacher}></Route>
                             <Route path='/UserArchives/Leader' history={history} component={Leader}></Route>
+                            <Route path='/UserArchives/Graduate' history={history} component={Graduate}></Route>
                         </Loading>
                     </div>
                 </Frame>

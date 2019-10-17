@@ -41,7 +41,7 @@ class App extends Component {
             MenuParams: {},
             showBarner: true,
             showLeftMenu: true,
-            UserMsg: props.DataState.LoginUser
+            UserMsg: JSON.parse(sessionStorage.getItem('UserInfo'))
 
         }
 
@@ -52,6 +52,7 @@ class App extends Component {
     componentWillMount() {
         const { dispatch, DataState } = this.props;
         let route = history.location.pathname;
+        let UserMsg = DataState.LoginUser.SchoolID ? DataState.LoginUser : JSON.parse(sessionStorage.getItem('UserInfo'))
 
         //判断token是否存在
         TokenCheck_Connect()
@@ -68,11 +69,11 @@ class App extends Component {
                     dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
                     clearInterval(timeRun)
                 }
-            },1000)
+            }, 1000)
             //dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
         }
 
-        dispatch(actions.UpDataState.getCoureClassAllMsg('/GetCouseclassSumarry?schoolID='+this.state.UserMsg.SchoolID, this.MenuClcik));
+        dispatch(actions.UpDataState.getCoureClassAllMsg('/GetCouseclassSumarry?schoolID=' + UserMsg.SchoolID, this.MenuClcik));
 
 
 
@@ -98,7 +99,7 @@ class App extends Component {
 
     }
     componentWillReceiveProps(nextProps) {
-
+        //console.log(this.state.UserMsg)
         this.setState({
             MenuParams: nextProps.DataState.GetCoureClassAllMsg.MenuParams
         })
@@ -121,8 +122,8 @@ class App extends Component {
     requestData = (route) => {
 
         const { dispatch, DataState } = this.props;
-        let UserMsg = DataState.LoginUser.SchoolID?DataState.LoginUser:JSON.parse(sessionStorage.getItem('UserInfo'))
-        
+        let UserMsg = DataState.LoginUser.SchoolID ? DataState.LoginUser : JSON.parse(sessionStorage.getItem('UserInfo'))
+
 
         let pathArr = route.split('/');
         let handleRoute = pathArr[1];
@@ -153,14 +154,14 @@ class App extends Component {
 
             dispatch({ type: actions.UpUIState.RIGHT_LOADING_OPEN });
             //if (DataState.getSubjectAllMsg[routeID] === undefined)
-            dispatch(actions.UpDataState.getSubjectAllMsg('/GetSubjectCouseclassSumarry?subjectID='+routeID, routeID));
+            dispatch(actions.UpDataState.getSubjectAllMsg('/GetSubjectCouseclassSumarry?subjectID=' + routeID, routeID));
             if (!DataState.GetCoureClassAllMsg.MenuParams)
                 return;
             dispatch(actions.UpDataState.setCoureClassAllMsg(routeID));
 
         } else if (handleRoute === 'Subject' && subjectID === 'Class') {
-            dispatch(actions.UpDataState.getSubjectAllMsg('/GetSubjectCouseclassSumarry?subjectID='+routeID, routeID));
-            dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID='+UserMsg.SchoolID+'&key=&pageIndex=1&pageSize=10&subjectID='+routeID+'&gradeID='+classID, routeID, classID));
+            dispatch(actions.UpDataState.getSubjectAllMsg('/GetSubjectCouseclassSumarry?subjectID=' + routeID, routeID));
+            dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + UserMsg.SchoolID + '&key=&pageIndex=1&pageSize=10&subjectID=' + routeID + '&gradeID=' + classID, routeID, classID));
 
             if (!DataState.GetCoureClassAllMsg.MenuParams)
                 return;
@@ -169,7 +170,7 @@ class App extends Component {
         } else if (handleRoute === 'Search') {
             // if (!DataState.GetCoureClassAllMsg.MenuParams)
             //     return;
-            dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID='+UserMsg.SchoolID+'&key=&pageIndex=1&pageSize=10&subjectID='+routeID+'&gradeID='+classID));
+            dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + UserMsg.SchoolID + '&key=&pageIndex=1&pageSize=10&subjectID=' + routeID + '&gradeID=' + classID));
 
 
         } else if (handleRoute === 'Log') {
@@ -182,7 +183,7 @@ class App extends Component {
             })
 
         } else if (handleRoute === 'Teacher') {
-            dispatch(actions.UpDataState.getTeacherCourseClassMsg('/GetCourseClassByUserID?schoolID='+UserMsg.SchoolID+'&userID='+UserMsg.UserID));
+            dispatch(actions.UpDataState.getTeacherCourseClassMsg('/GetCourseClassByUserID?schoolID=' + UserMsg.SchoolID + '&userID=' + UserMsg.UserID));
 
             this.setState({
                 showBarner: true,
@@ -275,16 +276,16 @@ class App extends Component {
         }).then(res => {
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.Status === 200) {
+            if (json.StatusCode === 400) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
                     title: "成功",
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
 
-                dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID='+this.state.UserMsg.SchoolID+'&pageIndex=1&pageSize=10', routeID, classID));
+                dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=1&pageSize=10', routeID, classID));
 
             }
         })
