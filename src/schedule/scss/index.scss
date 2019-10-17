@@ -32,6 +32,17 @@ $image-url:'../images';
 //root
 #root{
   height:100%;
+
+  &>.ant-spin-nested-loading{
+
+    .ant-spin-container:after{
+
+      z-index:999;
+
+    }
+
+  }
+
 }
 
 

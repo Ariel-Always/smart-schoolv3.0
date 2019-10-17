@@ -46,6 +46,8 @@ import '../../scss/index.scss';
 
 import RouterSetActions from "../actions/RouterSetActions";
 
+import $ from 'jquery';
+
 
 
 class App extends Component{
@@ -118,33 +120,31 @@ class App extends Component{
 
         let hash = window.location.hash.split('?')[0];
 
-        console.log(hash);
-
-        if (hash === '#/teacher/subject-teacher/subject'){
+        if (hash.includes('#/teacher/subject-teacher/subject')){
 
             dispatch(TeacherIndexActions.STSPageInit());
 
         }
 
-        if (hash === '#/teacher/subject-teacher/teacher'){
+        if (hash.includes('#/teacher/subject-teacher/teacher')){
 
             dispatch(TeacherIndexActions.STTPageInit());
 
         }
 
-        if (hash === '#/teacher/mine'){
+        if (hash.includes('#/teacher/mine')){
 
             dispatch(TeacherIndexActions.TeacherPersonalInit());
 
         }
 
-        if (hash === '#/manager/subject-teacher/subject'){
+        if (hash.includes('#/manager/subject-teacher/subject')){
 
             dispatch(ManagerIndexActions.STSPageInit());
 
         }
 
-        if (hash === '#/manager/subject-teacher/teacher'){
+        if (hash.includes('#/manager/subject-teacher/teacher')){
 
             dispatch(TeacherIndexActions.STTPageInit());
 
@@ -183,6 +183,14 @@ class App extends Component{
         const {dispatch} = this.props;
 
         dispatch({type:ASMAction.ADD_SCHEDULE_MODAL_SHOW});
+
+        $('.add-schedule-modal-wrapper .dropdown_list_ul3').hide();
+
+        $('.add-schedule-modal-wrapper .dropdown_item1_name').removeClass('slide');
+
+        $('.add-schedule-modal-wrapper .dropdown_item3_li').removeClass('active');
+
+        console.log($('.add-schedule-modal-wrapper .search_text_input').val(''));
 
         dispatch(ASMAction.InfoInit());
 
@@ -235,7 +243,7 @@ class App extends Component{
 
     Import(){
 
-        window.location.href='/html/schedule#/Import';
+        window.open('/html/schedule#/Import');
 
     }
 
@@ -305,7 +313,7 @@ class App extends Component{
 
                                 {
 
-                                    LoginUser.UserType === 0?
+                                    parseInt(LoginUser.UserType) === 0?
 
                                         <AdjustBtnsWrapper
 

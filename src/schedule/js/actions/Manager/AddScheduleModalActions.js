@@ -103,6 +103,23 @@ const ADD_SCHEDULE_MODAL_TEACHER_SEARCH_OPEN = 'ADD_SCHEDULE_MODAL_TEACHER_SEARC
 
 const ADD_SCHEDULE_MODAL_TEACHER_SEARCH_CLOSE = 'ADD_SCHEDULE_MODAL_TEACHER_SEARCH_CLOSE';
 
+
+//取消按钮消失与否
+
+const ADD_SCHEDULE_MODAL_CLASS_SEARCH_CANCEL_SHOW = 'ADD_SCHEDULE_MODAL_CLASS_SEARCH_CANCEL_SHOW';
+
+const ADD_SCHEDULE_MODAL_CLASS_SEARCH_CANCEL_HIDE = 'ADD_SCHEDULE_MODAL_CLASS_SEARCH_CANCEL_HIDE';
+
+const ADD_SCHEDULE_MODAL_TEACHER_SEARCH_CANCEL_SHOW = 'ADD_SCHEDULE_MODAL_TEACHER_SEARCH_CANCEL_SHOW';
+
+const ADD_SCHEDULE_MODAL_TEACHER_SEARCH_CANCEL_HIDE = 'ADD_SCHEDULE_MODAL_TEACHER_SEARCH_CANCEL_HIDE';
+
+const ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_CANCEL_SHOW = 'ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_CANCEL_SHOW';
+
+const ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_CANCEL_HIDE = 'ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_CANCEL_HIDE';
+
+
+
 //初始化弹窗信息的方法
 const InfoInit = () => {
 
@@ -380,9 +397,11 @@ const classSearch = (key) => {
 
       if (key !== ''){
 
-        let SchoolID = getState().LoginUser;
+        let {SchoolID} = getState().LoginUser;
 
         dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_OPEN});
+
+        dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_CANCEL_SHOW});
 
         dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_LOADING_SHOW});
 
@@ -427,6 +446,8 @@ const classSearchClose = () => {
 
         dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_CLOSE});
 
+        dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_CANCEL_HIDE});
+
     }
 
 };
@@ -439,9 +460,11 @@ const teacherSearch = (key) => {
 
         if (key !== ''){
 
-            let SchoolID = getState().LoginUser;
+            let {SchoolID} = getState().LoginUser;
 
             dispatch({type:ADD_SCHEDULE_MODAL_TEACHER_SEARCH_OPEN});
+
+            dispatch({type:ADD_SCHEDULE_MODAL_TEACHER_SEARCH_CANCEL_SHOW});
 
             dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_LOADING_SHOW});
 
@@ -490,6 +513,8 @@ const teacherSearchClose = () => {
 
         dispatch({type:ADD_SCHEDULE_MODAL_TEACHER_SEARCH_CLOSE});
 
+        dispatch({type:ADD_SCHEDULE_MODAL_TEACHER_SEARCH_CANCEL_HIDE});
+
     }
 
 };
@@ -502,13 +527,13 @@ const classRoomSearch = (key) => {
 
         if(key !== ''){
 
-            let SchoolID = getState().LoginUser;
+            let {SchoolID} = getState().LoginUser;
 
             dispatch({type:ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_OPEN});
 
-            dispatch({type:ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LOADING_SHOW});
+            dispatch({type:ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_CANCEL_SHOW});
 
-            let searchClassRoomPromise = Method.getGetData(`/scheduleSearchClassRoom?SchoolID=${SchoolID}&key=${key}`);
+            dispatch({type:ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LOADING_SHOW});
 
             ApiActions.GetClassRoomByClassTypeAndKey({
 
@@ -554,6 +579,8 @@ const classRoomSearchClose = () => {
     return dispatch =>{
 
         dispatch({type:ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_CLOSE});
+
+        dispatch({type:ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_CANCEL_HIDE});
 
     }
 
@@ -712,7 +739,20 @@ ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LIST_UPDATE,
 
     ADD_SCHEDULE_MODAL_TEACHER_SEARCH_CLOSE,
 
-  InfoInit,
+ADD_SCHEDULE_MODAL_CLASS_SEARCH_CANCEL_SHOW,
+
+ADD_SCHEDULE_MODAL_CLASS_SEARCH_CANCEL_HIDE,
+
+ADD_SCHEDULE_MODAL_TEACHER_SEARCH_CANCEL_SHOW,
+
+ADD_SCHEDULE_MODAL_TEACHER_SEARCH_CANCEL_HIDE,
+
+ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_CANCEL_SHOW,
+
+ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_CANCEL_HIDE,
+
+
+InfoInit,
 
     classSearch,
 

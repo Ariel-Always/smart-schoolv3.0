@@ -44,11 +44,17 @@ const AddScheduleModal = (state={
 
     classRoomSearchList:[],
 
-    classSearchLoadingShow:true,
+    classSearchCancelShow:false,
+
+    classSearchLoadingShow:'n',
 
     teacherSearchLoadingShow:true,
 
+    teacherSearchCancelShow:'n',
+
     classRoomSearchLoadingShow:true,
+
+    classRoomSearchCancelShow:'n',
 
     classSearchOpen:false,
 
@@ -108,11 +114,17 @@ const AddScheduleModal = (state={
 
                 classRoomSearchList:[],
 
-                classSearchLoadingShow:true,
+                classSearchCancelShow:'n',
+
+                classSearchLoadingShow:false,
 
                 teacherSearchLoadingShow:true,
 
+                teacherSearchCancelShow:'n',
+
                 classRoomSearchLoadingShow:true,
+
+                classRoomSearchCancelShow:'n',
 
                 classSearchOpen:false,
 
@@ -124,7 +136,27 @@ const AddScheduleModal = (state={
 
         case ASMActions.ADD_SCHEDULE_MODAL_HIDE:
 
-            return {...state,show:false};
+            return {
+
+                ...state,
+
+                show:false,
+
+                subjectErrorShow:false,
+
+                classErrorShow:false,
+
+                teacherErrorShow:false,
+
+                weekErrorShow:false,
+
+                dateErrorShow:false,
+
+                classHourErrorShow:false,
+
+                classRoomErrorShow:false,
+
+            };
 
         case ASMActions.ADD_SHEDULE_MODAL_INFO_UPDATE:
 
@@ -297,6 +329,32 @@ const AddScheduleModal = (state={
         case ASMActions.ADD_SCHEDULE_MODAL_TEACHER_SEARCH_CLOSE:
 
             return {...state,teacherSearchOpen:false};
+
+        case ASMActions.ADD_SCHEDULE_MODAL_CLASS_SEARCH_CANCEL_SHOW:
+
+            return {...state,classSearchCancelShow:'y'};
+
+        case ASMActions.ADD_SCHEDULE_MODAL_CLASS_SEARCH_CANCEL_HIDE:
+
+            return {...state,classSearchCancelShow:'n'};
+
+        case ASMActions.ADD_SCHEDULE_MODAL_TEACHER_SEARCH_CANCEL_SHOW:
+
+            return {...state,teacherSearchCancelShow:'y'};
+
+        case ASMActions.ADD_SCHEDULE_MODAL_TEACHER_SEARCH_CANCEL_HIDE:
+
+            return {...state,teacherSearchCancelShow:'n'};
+
+        case ASMActions.ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_CANCEL_SHOW:
+
+            return {...state,classRoomSearchCancelShow:'y'};
+
+        case ASMActions.ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_CANCEL_HIDE:
+
+            return {...state,classRoomSearchCancelShow:'n'};
+
+
 
         default:
 

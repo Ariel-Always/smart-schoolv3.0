@@ -152,8 +152,6 @@ class Subject extends Component{
 
         }
 
-        dropList.unshift({value:0,title:"全部学科"});
-
         let ItemWeek = [];
         //封装获取到的周次
         if (PeriodWeekTerm.ItemWeek) {
