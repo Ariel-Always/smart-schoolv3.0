@@ -1,4 +1,9 @@
-.frame-nav-content{
-    position: relative;
-    
+.frame-nav-content {
+  position: relative;
+}
+.frame-fluid {
+  position: relative;
+  //   padding: 0;
+  padding: 25px 42px !important;
+  background: #fff !important;
 }

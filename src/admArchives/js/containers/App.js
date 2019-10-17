@@ -141,8 +141,11 @@ class App extends Component {
                     if(DataState.GetGraduateGradeClassMsg.Grade.length<=1)
                     dispatch(actions.UpDataState.getGraduateGradeClassMsg('/GetGradeClassOfGraduate?SchoolID=' + userMsg.SchoolID ));
                     dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?PageIndex=0&PageSize=10&schoolID='+userMsg.SchoolID))
-                } else if (handleRoute === 'All') {
-                    dispatch(actions.UpDataState.getAllUserPreview('/GetSummary'));
+                }  else if (handleRoute === 'LogDynamic') {
+                    
+                    dispatch(actions.UpDataState.getUnreadLogPreview('/GetUnreadLogToPage?OperationType=-1&PageIndex=0&PageSize=10&OnlineUserID='+userMsg.UserID))
+                }else if (handleRoute === 'All') {
+                    dispatch(actions.UpDataState.getAllUserPreview('/GetSummary',));
                     dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
                 } else {
                     history.push('/UserArchives/All')

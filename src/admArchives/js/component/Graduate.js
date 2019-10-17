@@ -300,7 +300,7 @@ class Graduate extends React.Component {
     HandleContact = (key) => {
         console.log(key)
         const { dispatch, DataState } = this.props;
-        let data = DataState.GetGraduatePreview.newList[key].handleMsggit
+        let data = DataState.GetGraduatePreview.newList[key].handleMsg
         let GraduateMsg = {
             UserID: data.UserID,
             Email: data.Email,

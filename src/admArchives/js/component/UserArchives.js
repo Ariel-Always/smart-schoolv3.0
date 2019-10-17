@@ -10,6 +10,7 @@ import Student from './Student'
 import Teacher from './Teacher'
 import Leader from './Leader'
 import Graduate from './Graduate'
+import LogDynamic from './LogDynamic'
 import $ from 'jquery'
 import '../../scss/index.scss'
 import { getData } from '../../../common/js/fetch'
@@ -80,6 +81,12 @@ class UserArchives extends React.Component {
                 showBarner: true,
                 route:true
             })
+        }else if (handleRoute === 'LogDynamic') {
+            this.setState({
+                showLeftMenu: false,
+                showBarner: false,
+                route:false
+            })
         } else {
             this.setState({
                 showLeftMenu: true,
@@ -99,6 +106,12 @@ class UserArchives extends React.Component {
                     showLeftMenu: false,
                     showBarner: true,
                     route:true
+                })
+            }else if (handleRoute === 'LogDynamic') {
+                this.setState({
+                    showLeftMenu: false,
+                    showBarner: false,
+                    route:false
                 })
             } else {
                 this.setState({
@@ -177,6 +190,7 @@ class UserArchives extends React.Component {
                             <Route path='/UserArchives/Teacher/:SubjectID' history={history} component={Teacher}></Route>
                             <Route path='/UserArchives/Leader' history={history} component={Leader}></Route>
                             <Route path='/UserArchives/Graduate' history={history} component={Graduate}></Route>
+                            <Route path='/UserArchives/LogDynamic' history={history} component={LogDynamic}></Route>
                         </Loading>
                     </div>
                 </Frame>

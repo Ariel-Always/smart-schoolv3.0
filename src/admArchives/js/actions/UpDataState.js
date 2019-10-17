@@ -59,6 +59,12 @@ const SET_GRADUATE_MSG = 'SET_GRADUATE_MSG'
 // 编辑联系方式
 const GET_GRADUATE_CONTACT_MSG = 'GET_GRADUATE_CONTACT_MSG'
 const SET_GRADUATE_CONTACT_MSG = 'SET_GRADUATE_CONTACT_MSG'
+// 获取未读的档案变更数量
+const GET_UNREAD_LOG_COUNT_PREVIEW = 'GET_UNREAD_LOG_COUNT_PREVIEW'
+// 分页获取最近档案动态
+const GET_UNREAD_LOG_PREVIEW = 'GET_UNREAD_LOG_PREVIEW'
+// 获取用户信息
+const GET_USER_MSG = 'GET_USER_MSG'
 //操作的执行
 //获取登录用户信息
 const getLoginUser = (data) => {
@@ -83,10 +89,14 @@ const getAllUserPreview = (url) => {
                 console.log(json.StatusCode)
             } else if (json.StatusCode === 200) {
                 dispatch({ type: GET_ALL_USER_PREVIEW, data: json.Data });
-                dispatch(actions.UpUIState.RightLoadingClose());
-                dispatch({ type: UpUIState.APP_LOADING_CLOSE });
+               
             }
 
+        }).then(()=> {
+            dispatch(getUnreadLogCountPreview(()=>{
+                dispatch(actions.UpUIState.RightLoadingClose());
+                dispatch({ type: UpUIState.APP_LOADING_CLOSE });
+            }))
         });
     }
 }
@@ -108,9 +118,12 @@ const getGradeStudentPreview = (url, GradeID = { value: 0, title: '全部年级'
                 console.log(json.StatusCode)
             } else if (json.StatusCode === 200) {
                 dispatch({ type: GET_GRADE_STUDENT_PREVIEW, data: json.Data, GradeID: GradeID, ClassID: ClassID, pageIndex: pageIndex, pageSize: pageSize });
-                dispatch(actions.UpUIState.TableLoadingClose());
             }
 
+        }).then(()=> {
+            dispatch(getUnreadLogCountPreview(()=>{
+                dispatch(actions.UpUIState.TableLoadingClose());
+            }))
         });
     }
 }
@@ -133,17 +146,21 @@ const getSubjectTeacherPreview = (url, SubjectID) => {
                 dispatch({ type: GET_SUBJECT_TEACHER_PREVIEW, data: json.Data, pageIndex: pageIndex, pageSize: pageSize });
                 if (SubjectID)
                     dispatch({ type: SET_SUBJECTID, SubjectID: SubjectID })
-                dispatch(actions.UpUIState.TableLoadingClose());
             }
 
+        }).then(()=> {
+            dispatch(getUnreadLogCountPreview(()=>{
+                dispatch(actions.UpUIState.TableLoadingClose());
+            }))
         });
     }
 }
 //获取领导档案信息
 const getSchoolLeaderPreview = (url) => {
     return (dispatch) => {
-        console.log(CONFIG.XTestProxy + url);
-        getData(CONFIG.XTestProxy + url).then(res => {
+        dispatch(actions.UpUIState.TableLoadingOpen());
+        // console.log(CONFIG.XTestProxy + url);
+        getData(CONFIG.XTestProxy + url,2).then(res => {
             if (res.StatusCode === '401') {
                 console.log('错误码：' + res.StatusCode)
             }
@@ -152,9 +169,13 @@ const getSchoolLeaderPreview = (url) => {
             if (json.StatusCode === 400) {
             } else if (json.StatusCode === 200) {
                 dispatch({ type: GET_SCHOOL_LEADER_PREVIEW, data: json.Data });
-                dispatch({ type: UpUIState.APP_LOADING_CLOSE });
             }
 
+        }).then(()=> {
+            dispatch(getUnreadLogCountPreview(()=>{
+                dispatch({ type: UpUIState.APP_LOADING_CLOSE });
+                dispatch(actions.UpUIState.TableLoadingClose());
+            }))
         });
     }
 }
@@ -396,6 +417,66 @@ const setGraduateContactMsg = (data) => {
         dispatch({ type: SET_GRADUATE_CONTACT_MSG, data: data })
     }
 }
+// 获取未读的档案变更数量
+const getUnreadLogCountPreview = (func,url='/GetUnreadLogCount?OnlineUserID=') => {
+    return (dispatch,getState) => {
+        // console.log(getState())
+        url += getState().DataState.LoginUser.UserID
+        getData(CONFIG.proxy + url, 2).then(res => {
+            if (res.StatusCode === '401') {
+                console.log('错误码：' + res.StatusCode)
+            }
+            return res.json()
+        }).then(json => {
+            if (json.StatusCode === 400) {
+                console.log(json.StatusCode)
+            } else if (json.StatusCode === 200) {
+                dispatch({ type: GET_UNREAD_LOG_COUNT_PREVIEW, data: json.Data});
+                func()
+            }
+
+        });
+    }
+}
+// 分页获取最近档案动态
+const getUnreadLogPreview = (url) => {
+    let pageIndex = Public.getUrlQueryVariable(url, 'PageIndex');
+    let pageSize = Public.getUrlQueryVariable(url, 'PageSize');
+    return (dispatch,getState) => {
+        // console.log(getState())
+        //url += getState().DataState.LoginUser.UserID
+        getData(CONFIG.proxy + url, 2).then(res => {
+            if (res.StatusCode === '401') {
+                console.log('错误码：' + res.StatusCode)
+            }
+            return res.json()
+        }).then(json => {
+            if (json.StatusCode === 400) {
+                console.log(json.StatusCode)
+            } else if (json.StatusCode === 200) {
+                dispatch({ type: GET_UNREAD_LOG_PREVIEW, data: json.Data,pageIndex:pageIndex,pageSize:pageSize});
+            }
+
+        });
+    }
+}
+//获取用户信息
+const getUserMsg = (url) => {
+    return (dispatch) => {
+        getData(CONFIG.Xproxy + url,2).then(res => {
+
+            return res.json()
+        }).then(json => {
+            if (json.StatusCode === 400) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
+                
+                dispatch({ type: GET_USER_MSG, data: json.Data });
+                dispatch({ type: actions.UpUIState.USER_INFO_MODAL_OPEN });
+            }
+        });
+    }
+}
 export default {
     getLoginUser,
     getAllUserPreview,
@@ -453,6 +534,11 @@ export default {
     SET_GRADUATE_CONTACT_MSG,
     GET_GRADUATE_CONTACT_MSG,
     setGraduateContactMsg,
-    getGraduateContactMsg
-
+    getGraduateContactMsg,
+    GET_UNREAD_LOG_COUNT_PREVIEW,
+    getUnreadLogCountPreview,
+    getUnreadLogPreview,
+    GET_UNREAD_LOG_PREVIEW,
+    getUserMsg,
+    GET_USER_MSG
 }

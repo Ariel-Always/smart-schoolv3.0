@@ -38,6 +38,9 @@ const MODAL_LOADING_CLOSE = 'MODAL_LOADING_CLOSE'
 // 毕业生去向tip
 const GRADUATE_JOBTYPE_VISIBLE_OPEN = 'GRADUATE_JOBTYPE_VISIBLE_OPEN'
 const GRADUATE_JOBTYPE_VISIBLE_CLOSE = 'GRADUATE_JOBTYPE_VISIBLE_CLOSE'
+// 用户详情弹窗
+const USER_INFO_MODAL_OPEN = 'USER_INFO_MODAL_OPEN'
+const USER_INFO_MODAL_CLOSE = 'USER_INFO_MODAL_CLOSE'
 //操作 
 const showErrorAlert = (alertMsg) => {
     return { type: SHOW_ERROR_ALERT, msg: alertMsg };
@@ -123,6 +126,13 @@ const GraduateJobTypeVisibleOpen = () => {
 const GraduateJobTypeVisibleClose = () => {
     return { type: GRADUATE_JOBTYPE_VISIBLE_Close }
 }
+// 用户详情
+const UserInfoModalOpen = () => {
+    return { type: USER_INFO_MODAL_OPEN }
+}
+const UserInfoModalClose = () => {
+    return { type: USER_INFO_MODAL_CLOSE }
+}
 export default {
     APP_LOADING_CLOSE,
     APP_LOADING_OPEN,
@@ -178,6 +188,10 @@ export default {
     GRADUATE_JOBTYPE_VISIBLE_CLOSE,
     GRADUATE_JOBTYPE_VISIBLE_OPEN,
     GraduateJobTypeVisibleClose,
-    GraduateJobTypeVisibleOpen
+    GraduateJobTypeVisibleOpen,
+    USER_INFO_MODAL_OPEN,
+    USER_INFO_MODAL_CLOSE,
+    UserInfoModalOpen,
+    UserInfoModalClose
 
 }
