@@ -1,6 +1,8 @@
 import React,{Component} from 'react';
 
-import {Frame,Loading,Alert,Modal,MenuLeftNoLink} from "../../../common";
+import {Loading,Alert,Modal,MenuLeftNoLink} from "../../../common";
+
+import Frame from '../../../common/Frame';
 
 import { HashRouter as Router,Route,Switch} from 'react-router-dom';
 

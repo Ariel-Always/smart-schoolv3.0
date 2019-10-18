@@ -103,7 +103,7 @@ class Header extends Component{
 
                             <div className="frame-home-header-menu">
 
-                                <a className="frame-home-msg-menu" title="我的消息"></a>
+                                <span id="Assistant_infoCenter" className="frame-home-msg-menu" title="我的消息"></span>
 
                             </div>
 

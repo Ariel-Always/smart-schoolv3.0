@@ -10,19 +10,7 @@ import { Input,Tooltip } from "antd";
 
 import { connect } from 'react-redux';
 
-import $ from "jquery";
 
-import '../../../common/js/PicUpload/Cropper/cropper.css';
-
-import '../../../common/js/PicUpload/photoUpload.scss';
-
-import '../../../common/js/PicUpload/Cropper/cropper';
-
-window.$ = $;
-
-window.jQuery = $;
-
-require ('../../../common/js/PicUpload/juqery.cp.picUploader');
 
 class BaseSetting extends Component{
 

@@ -1,6 +1,8 @@
 import React,{Component} from 'react';
 
-import {Frame,Loading,Alert} from "../../../common";
+import {Loading,Alert} from "../../../common";
+
+import Frame from '../../../common/Frame';
 
 import {TokenCheck_Connect} from "../../../common/js/disconnect";
 

@@ -1,6 +1,8 @@
 import React,{Component} from 'react';
 
-import {Frame,Loading,Alert,MenuLeftNoLink} from "../../../common";
+import {Loading,Alert,MenuLeftNoLink} from "../../../common";
+
+import Frame from '../../../common/Frame';
 
 import {LogOut,TokenCheck_Connect} from "../../../common/js/disconnect";
 

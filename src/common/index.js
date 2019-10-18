@@ -1706,6 +1706,7 @@ class MenuLeftNoLink extends React.Component {
                                         <span className={`frame_leftmenu_arrow`}></span>
 
                                     </div>
+
                                     <div className="frame_leftmenu_nextgrade_container" style={{ display: "none" }}>
 
                                         <ul className="frame_leftmenu_onegrade_ul">
@@ -1891,7 +1892,7 @@ class Frame extends React.Component {
                                     <a href="/html/personalMgr"  target="_blank" className="frame-home-userpic" style={{ backgroundImage: `url(${userInfo && userInfo.image ? userInfo.image : ''})` }}></a>
                                 </div>
                                 <div className="frame-home-header-menu">
-                                    <a href="http://www.baidu.com" rel="noopener noreferrer" target="_blank" className={`frame-home-msg-menu ${msg ? 'msg' : ''}`} title="我的消息"></a>
+                                    <span  id="Assistant_infoCenter" className={`frame-home-msg-menu ${msg ? 'msg' : ''}`} title="我的消息"></span>
                                 </div>
                             </div>
                         </div>

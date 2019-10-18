@@ -1,3 +1,23 @@
+#root{
+
+  &>.ant-spin-nested-loading{
+
+    z-index: 10100;
+
+    .ant-spin-container{
+
+      &:after{
+
+        z-index: 10100;
+
+      }
+
+    }
+
+  }
+
+}
+
 .frame-block-wrapper{
 
   background-position: 32px 27px;
