@@ -7,7 +7,7 @@
 
 $image-url: "../images";
 @import "./images.scss";
-.LogDynamic {
+.LogRecord {
   position: relative;
   //   padding: 22px 33px;
   text-align: center;
@@ -45,7 +45,7 @@ $image-url: "../images";
         float: right;
         text-decoration: underline;
         font-size: 14px;
-        line-height: 38px;
+        line-height: 25px;
         color: #0099ff;
       }
       .top-nav {
@@ -114,6 +114,18 @@ $image-url: "../images";
         .firstDropMenu {
           margin-right: 36px;
         }
+        .handleTimeSelect {
+          display: inline-block;
+          .ant-calendar-picker {
+            margin: 0 5px;
+          }
+          .ant-input {
+            line-height: 28px;
+            padding-top: 0;
+            padding-bottom: 0;
+            height: 28px;
+          }
+        }
         .dropdown_select_ul {
           z-index: 2;
         }
@@ -180,14 +192,14 @@ $image-url: "../images";
             font-size: 14px;
             cursor: pointer;
           }
-          .UserID {
+          .UserID,
+          .OperationType_Txt.LogTime {
             display: block;
             text-align: left;
             font-size: 14px;
             color: #999;
           }
           .UserType_Txt,
-          .OperationType_Txt,
           .OperationCount {
             color: #333;
             font-size: 14px;
@@ -203,6 +215,7 @@ $image-url: "../images";
               white-space: nowrap; //强制不换行
               vertical-align: middle;
             }
+
             .Logs-more {
               margin-left: 3px;
               color: #0099ff;
@@ -210,6 +223,30 @@ $image-url: "../images";
               cursor: pointer;
               font-size: 14px;
               text-decoration: underline;
+            }
+          }
+          .OperatorDetail {
+            color: #0099ff;
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 14px;
+            &:hover,
+            :active {
+              color: #ff6600;
+            }
+          }
+          .OperatorDetail-null {
+            color: #333;
+            font-size: 14px;
+          }
+          .Operator {
+            .OperatorID {
+              font-size: 14px;
+              color: #999;
+            }
+            .OperatorName {
+              font-size: 14px;
+              color: #333;
             }
           }
           .Grader {
@@ -281,7 +318,7 @@ $image-url: "../images";
         }
         .pagination-box {
           margin-top: 10px;
-          float: right;
+
           display: flex;
           flex-flow: row nowrap;
           justify-content: center;

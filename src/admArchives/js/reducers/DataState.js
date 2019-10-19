@@ -16,6 +16,7 @@ import GetGraduatePreview from './data/GetGraduatePreview';
 import GetGraduateMsg from './data/GetGraduateMsg';
 import LogPreview from './data/LogPreview';
 import UserMsg from './data/UserMsg';
+import LogRecordPreview from './data/LogRecordPreview';
 const DataState=combineReducers(
     {
         LoginUser,
@@ -34,6 +35,7 @@ const DataState=combineReducers(
         GetGraduatePreview,
         GetGraduateMsg,
         LogPreview,
-        UserMsg
+        UserMsg,
+        LogRecordPreview
     });
 export default DataState;
