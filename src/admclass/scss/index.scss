@@ -13,6 +13,7 @@ $image-url:'../images';
   display:-moz-flex;
   display:-ms-flex;
   display:-webkit-flex;
+  display: -ms-flexbox;
 }
 @mixin justify-content($dir){
   justify-content: $dir;
@@ -32,6 +33,33 @@ $image-url:'../images';
 //root
 #root{
   height:100%;
+
+  &>.ant-spin{
+
+    position: fixed;
+
+    left: 0;
+
+    right: 0;
+
+    bottom: 0;
+
+    top: 0;
+
+    background-color: #ffffff;
+
+    @include flex;
+
+    @include flex-direction(column);
+
+    @include justify-content(center);
+
+    @include align-items(center);
+
+    z-index: 10100;
+
+  }
+
 }
 
 

@@ -1,6 +1,8 @@
 import React,{Component} from 'react';
 
-import {Frame,Loading,Alert,MenuLeftNoLink} from "../../../common";
+import {Loading,Alert,MenuLeftNoLink} from "../../../common";
+
+import Frame from '../../../common/Frame';
 
 import {LogOut,TokenCheck_Connect} from "../../../common/js/disconnect";
 
@@ -116,70 +118,76 @@ class App extends Component{
 
            <React.Fragment>
 
-               <Loading size="large" tip="加载中..." spinning={AppLoading.show} opacity={false}>
+               {
 
-                        <Frame
-                        module={{
-                            cnname: "个人账号管理",
-                            enname: "Personal Account Management",
-                            image: logo
-                        }}
-                        userInfo={{
-                            name:LoginUser.UserName,
-                            image:BaseSettings.PhotoPath_NoCache?BaseSettings.PhotoPath_NoCache:LoginUser.PhotoPath_NoCache
-                        }}
-                        type="triangle"
-                        showBarner={false}
-                        showLeftMenu={true}
-                        onLogOut={this.LogOut.bind(this)}
-                        >
+                   AppLoading.show?
 
-                        <div ref="frame-left-menu">
+                       <Loading size="large" tip="加载中..."  opacity={false}></Loading>
 
-                            <div className="frame_left_menu_pic clearfix">
+                       :''
 
-                                <div className="header-pic" style={{backgroundImage:`url(${BaseSettings.PhotoPath_NoCache?BaseSettings.PhotoPath_NoCache:LoginUser.PhotoPath_NoCache})`}}></div>
+               }
 
-                                <div className="user-name">{LoginUser.UserName}</div>
+                <Frame
+                module={{
+                    cnname: "个人账号管理",
+                    enname: "Personal Account Management",
+                    image: logo
+                }}
+                userInfo={{
+                    name:LoginUser.UserName,
+                    image:BaseSettings.PhotoPath_NoCache?BaseSettings.PhotoPath_NoCache:LoginUser.PhotoPath_NoCache
+                }}
+                type="triangle"
+                showBarner={false}
+                showLeftMenu={true}
+                onLogOut={this.LogOut.bind(this)}
+                >
 
-                            </div>
+                <div ref="frame-left-menu">
 
-                            <MenuLeftNoLink Menu={Menu} menuClick={this.menuClick.bind(this)}></MenuLeftNoLink>
+                    <div className="frame_left_menu_pic clearfix">
 
-                        </div>
+                        <div className="header-pic" style={{backgroundImage:`url(${BaseSettings.PhotoPath_NoCache?BaseSettings.PhotoPath_NoCache:LoginUser.PhotoPath_NoCache})`}}></div>
+
+                        <div className="user-name">{LoginUser.UserName}</div>
+
+                    </div>
+
+                    <MenuLeftNoLink Menu={Menu} menuClick={this.menuClick.bind(this)}></MenuLeftNoLink>
+
+                </div>
 
 
-                        <div ref="frame-right-content">
+                <div ref="frame-right-content">
 
-                            {
+                    {
 
-                                ModuleCommonInfo.menuActive==='base'?
+                        ModuleCommonInfo.menuActive==='base'?
 
-                                    <BaseSetting></BaseSetting>:''
+                            <BaseSetting></BaseSetting>:''
 
-                            }
+                    }
 
-                            {
+                    {
 
-                                ModuleCommonInfo.menuActive==='safe'?
+                        ModuleCommonInfo.menuActive==='safe'?
 
-                                    <SafeSetting></SafeSetting>:''
+                            <SafeSetting></SafeSetting>:''
 
-                            }
+                    }
 
-                            {
+                    {
 
-                                ModuleCommonInfo.menuActive==='author'?
+                        ModuleCommonInfo.menuActive==='author'?
 
-                                    <AuthorSetting></AuthorSetting>:''
+                            <AuthorSetting></AuthorSetting>:''
 
-                            }
+                    }
 
-                        </div>
+                </div>
 
-                    </Frame>
-
-               </Loading>
+            </Frame>
 
                <Alert
                    show={AppAlert.show}

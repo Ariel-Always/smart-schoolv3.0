@@ -1,6 +1,8 @@
 import React,{Component} from 'react';
 
-import {Frame,Loading,Alert,Modal,MenuLeftNoLink} from "../../../common";
+import {Loading,Alert,Modal,MenuLeftNoLink} from "../../../common";
+
+import Frame from '../../../common/Frame';
 
 import { HashRouter as Router,Route,Switch} from 'react-router-dom';
 
@@ -340,58 +342,65 @@ class App extends Component{
                 <Router>
                     {/*loading包含Frame*/}
 
-                        <Loading className="AppLoading" tip="加载中..." size="large" delay={200} spinning={UIState.AppLoading.show}>
+                    {
 
-                            <Frame type="triangle"
-                                   showLeftMenu={RouterSet.router==='/'?true:false}
-                                   showBarner={RouterSet.router==='/'?true:false}
-                                   style={{display:`${UIState.AppLoading.show?'none':'block'}`}}
-                                   userInfo={{name:DataState.LoginUser.UserName,image:DataState.LoginUser.PhotoPath}}
-                                   module={{cnname:"行政班管理",enname:"Administration class management",image:logo}}
-                                   onLogOut={this.LogOut.bind(this)}
-                            >
-                                {/*banner*/}
+                        UIState.AppLoading.show?
 
-                                <div ref="frame-time-barner">
+                            <Loading className="AppLoading" tip="加载中..." size="large" delay={200}></Loading>
 
-                                    <Banner addClass={this.addClass.bind(this)}
-                                            Import={this.Import.bind(this)}>
+                            :''
 
-                                    </Banner>
+                    }
 
-                                </div>
+                        <Frame type="triangle"
+                               showLeftMenu={RouterSet.router==='/'?true:false}
+                               showBarner={RouterSet.router==='/'?true:false}
+                               style={{display:`${UIState.AppLoading.show?'none':'block'}`}}
+                               userInfo={{name:DataState.LoginUser.UserName,image:DataState.LoginUser.PhotoPath}}
+                               module={{cnname:"行政班管理",enname:"Administration class management",image:logo}}
+                               onLogOut={this.LogOut.bind(this)}
+                        >
+                            {/*banner*/}
 
+                            <div ref="frame-time-barner">
 
-                                {/*左侧菜单*/}
+                                <Banner addClass={this.addClass.bind(this)}
+                                        Import={this.Import.bind(this)}>
 
-                                <div ref="frame-left-menu">
+                                </Banner>
 
-                                   {/* <LeftMenu Menu={Menu} Icon="pic3"></LeftMenu>*/}
-
-                                    <MenuLeftNoLink Menu={Menu} menuClick={this.menuClick.bind(this)} Icon="pic3"></MenuLeftNoLink>
-
-                                </div>
-
-                                {/*右侧内容区域，Router变化区域*/}
-                                <div ref="frame-right-content">
+                            </div>
 
 
+                            {/*左侧菜单*/}
 
-                                        <Switch>
+                            <div ref="frame-left-menu">
 
-                                            <Route path="/Import*" component={Import}></Route>
+                               {/* <LeftMenu Menu={Menu} Icon="pic3"></LeftMenu>*/}
 
-                                            <Route path="/*" exact component={ContentContainer}></Route>
+                                <MenuLeftNoLink Menu={Menu} menuClick={this.menuClick.bind(this)} Icon="pic3"></MenuLeftNoLink>
 
-                                        </Switch>
+                            </div>
+
+                            {/*右侧内容区域，Router变化区域*/}
+                            <div ref="frame-right-content">
 
 
 
-                                </div>
+                                    <Switch>
 
-                            </Frame>
+                                        <Route path="/Import*" component={Import}></Route>
 
-                        </Loading>
+                                        <Route path="/*" exact component={ContentContainer}></Route>
+
+                                    </Switch>
+
+
+
+                            </div>
+
+                        </Frame>
+
                             {/*提示弹出框组件*/}
                         <Alert  show={UIState.AppAlert.show}  type={UIState.AppAlert.type} title={UIState.AppAlert.title}
                         onOk={UIState.AppAlert.ok} onCancel={UIState.AppAlert.cancel} onClose={UIState.AppAlert.close}

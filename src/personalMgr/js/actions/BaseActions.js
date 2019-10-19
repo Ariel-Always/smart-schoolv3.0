@@ -7,8 +7,22 @@ import {getData} from "../../../common/js/fetch";
 import LoginUserActions from "./LoginUserActions";
 
 import AppLoadingActions from './AppLoadingActions';
+
 import CONFIG from "../../../common/js/config";
 
+import '../../../common/js/PicUpload/Cropper/cropper.css';
+
+import '../../../common/js/PicUpload/photoUpload.scss';
+
+import '../../../common/js/PicUpload/Cropper/cropper';
+
+import $ from 'jquery';
+
+window.$ = $;
+
+window.jQuery = $;
+
+require ('../../../common/js/PicUpload/juqery.cp.picUploader');
 
 
 const BASE_INFO_UPDATE = 'BASE_INFO_UPDATE';

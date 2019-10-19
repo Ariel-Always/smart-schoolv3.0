@@ -228,6 +228,8 @@ $img_url:'#{$image_url}/frame';
   line-height: 40px;
   background: rgba(0, 0, 0, 0.2);
   @include box-shadow(0 0 1px rgba(0, 0, 0, 0.2) inset);
+  z-index:1080;
+
 }
 .frame-home-header-content{
   position: relative;
@@ -349,7 +351,6 @@ $img_url:'#{$image_url}/frame';
   width: 16px;
   height: 16px;
   margin-left: 12px;
-  background: url("#{$img_url}/msg.png") no-repeat center top;
   &.msg{
     &:after{
       position: absolute;
@@ -362,9 +363,6 @@ $img_url:'#{$image_url}/frame';
       top: -2px;
       @include border-radius(50%);
     }
-  }
-  &:hover{
-    opacity: 0.8;
   }
 }
 

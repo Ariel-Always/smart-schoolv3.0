@@ -1102,7 +1102,9 @@ const originDateChecked = (date) => {
 
             let { originDropSelectd } = getState().Manager.AdjustByTeacherModal.changeSchedule;
 
-            if (originDropSelectd.value){
+
+
+            if (originDropSelectd.value!=='none'){
 
                 let TeacherID = originDropSelectd.value;
 
@@ -1335,7 +1337,7 @@ const targetDateChecked = (date) => {
 
             let { targetDropSelectd } = getState().Manager.AdjustByTeacherModal.changeSchedule;
 
-            if (targetDropSelectd.value){
+            if (targetDropSelectd.value!=='none'){
 
                 let TeacherID = targetDropSelectd.value;
 

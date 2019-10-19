@@ -140,7 +140,7 @@ const PageInit = () => {
 
                 let token = sessionStorage.getItem('token');
 
-                var host = `http://${window.location.host}/`;
+                let host = `http://${window.location.host}/`;
 
                 sessionStorage.setItem('PsnMgrToken',token);
 

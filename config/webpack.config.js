@@ -127,12 +127,27 @@ module.exports = function(webpackEnv) {
 
   const  modulehtmls = paths.htmlArray.map(function (v) { //设置其他模块的入口index.html
       let arr = v.split('/');
-      return new HtmlWebpackPlugin({
-          template:v,
-          filename:`html/${arr[arr.length-2]}/index.html`,
-          inject:true,
-          chunks:[arr[arr.length-2]]
-      })
+      if(arr[arr.length-2]==='index'){
+
+         return new HtmlWebpackPlugin({
+              inject:true,
+              chunks:['index'],
+              template:paths.appHtml,
+              filename:'index.html'
+          })
+
+      }else{
+
+          return new HtmlWebpackPlugin({
+              template:v,
+              filename:`html/${arr[arr.length-2]}/index.html`,
+              inject:true,
+              chunks:[arr[arr.length-2]]
+          })
+
+      }
+
+
   });
 
   return {
@@ -563,12 +578,12 @@ module.exports = function(webpackEnv) {
             : undefined
         )
       ),*/
-      new HtmlWebpackPlugin({
+     /* new HtmlWebpackPlugin({
           inject:true,
           chunks:['index'],
          template:paths.appHtml,
           filename:'index.html'
-      }), //整个工程的主界面打包
+      }), //整个工程的主界面打包*/
       ...modulehtmls, //其他模块的主界面打包
       // Inlines the webpack runtime script. This script is too small to warrant
       // a network request.

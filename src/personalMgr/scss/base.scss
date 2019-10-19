@@ -1,3 +1,58 @@
+@mixin textOverFlow() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@mixin flex{
+  display: flex!important;
+  display:-moz-flex!important;
+  display:-ms-flexbox!important;
+  display:-webkit-flex!important;
+}
+@mixin justify-content($dir){
+  justify-content: $dir;
+  -ms-flex-pack: $dir;
+}
+@mixin flex-direction($dir){
+  flex-direction:$dir;
+  -ms-flex-direction:$dir;
+}
+@mixin align-items($dir){
+  align-items: $dir;
+  -ms-flex-align: $dir;
+}
+
+
+#root{
+
+  &>.ant-spin{
+
+    position: fixed;
+
+    left:0;
+
+    right: 0;
+
+    top: 0;
+
+    bottom: 0;
+
+    z-index:8888;
+
+    background-color: #ffffff;
+
+    @include flex;
+
+    @include flex-direction(column);
+
+    @include justify-content(center);
+
+    @include align-items(center);
+
+  }
+
+}
+
 .frame-block-wrapper{
 
   background-position: 32px 27px;
