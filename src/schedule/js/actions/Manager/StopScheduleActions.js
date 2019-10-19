@@ -30,7 +30,7 @@ const STOP_SCHEDULE_PERIOD_GRADE_CHECKED = 'STOP_SCHEDULE_PERIOD_GRADE_CHECKED';
 //日期变更
 const dateChange = (date) => {
 
-        return dispatch => {
+        return (dispatch,getState) => {
 
             dispatch({type:STOP_SCHEDULE_DATE_CHANGE,data:date});
 

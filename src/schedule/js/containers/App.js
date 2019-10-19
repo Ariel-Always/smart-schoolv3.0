@@ -275,83 +275,94 @@ class App extends Component{
 
                <DocumentTitle title={ModuleSetting.moduleCnName}>
 
-                   <Loading opacity={false} spinning={AppLoading.show} size="large" tip="加载中...">
+                   <React.Fragment>
 
-                        <Frame
-                            module={{
-                                cnname:ModuleSetting.moduleCnName,
-                                enname:ModuleSetting.moduleEnName,
-                                image:ModuleSetting.logo}}
-                            userInfo={{
-                                name:LoginUser.UserName,
-                                image:LoginUser.PhotoPath
-                            }}
-                            showBarner={RouterSet.router==='/'?ModuleSetting.timeBar:false}
+                   {
 
-                            type="circle"
+                       AppLoading.show?
 
-                        >
+                           <Loading opacity={false} size="large" tip="加载中..."></Loading>
 
-                            <div ref="frame-time-barner">
+                           :''
+
+                   }
 
 
-                                <div className="schedule-period-tab clearfix">
+                   <Frame
+                        module={{
+                            cnname:ModuleSetting.moduleCnName,
+                            enname:ModuleSetting.moduleEnName,
+                            image:ModuleSetting.logo}}
+                        userInfo={{
+                            name:LoginUser.UserName,
+                            image:LoginUser.PhotoPath
+                        }}
+                        showBarner={RouterSet.router==='/'?ModuleSetting.timeBar:false}
 
-                                    {
+                        type="circle"
 
-                                        (PeriodWeekTerm.ItemPeriod&&PeriodWeekTerm.ItemPeriod.length>1)&&PeriodWeekTerm.ItemPeriod.map((item,key) => {
+                    >
 
-                                            return <div key={key} onClick={this.periodChange.bind(this,key)} className={`schedule-period-item ${PeriodWeekTerm.defaultPeriodIndex===key?'active':''}`}>
+                        <div ref="frame-time-barner">
 
-                                                        {item.PeriodName}
 
-                                                    </div>
-
-                                        })
-
-                                    }
-
-                                </div>
+                            <div className="schedule-period-tab clearfix">
 
                                 {
 
-                                    parseInt(LoginUser.UserType) === 0?
+                                    (PeriodWeekTerm.ItemPeriod&&PeriodWeekTerm.ItemPeriod.length>1)&&PeriodWeekTerm.ItemPeriod.map((item,key) => {
 
-                                        <AdjustBtnsWrapper
+                                        return <div key={key} onClick={this.periodChange.bind(this,key)} className={`schedule-period-item ${PeriodWeekTerm.defaultPeriodIndex===key?'active':''}`}>
 
-                                            adjustBtnsToggle={this.adjustBtnsToggle.bind(this)}
+                                                    {item.PeriodName}
 
-                                            adjustBtns={AdjustBtns}
+                                                </div>
 
-                                            addScheduleModalShow={this.addScheduleModalShow.bind(this)}
-
-                                            adjustByTimeModalShow = {this.adjustByTimeModalShow.bind(this)}
-
-                                            stopScheduleShow={this.stopScheduleShow.bind(this)}
-
-                                            delScheduleShow = {this.delScheduleShow.bind(this)}
-
-                                            adjustByTeacherShow = {this.adjustByTeacherShow.bind(this)}
-
-                                            Import={this.Import.bind(this)}>
-
-                                        </AdjustBtnsWrapper>
-
-                                        :''
+                                    })
 
                                 }
 
                             </div>
 
-                            <div ref="frame-right-content">
+                            {
 
-                                <RouterWrapper></RouterWrapper>
+                                parseInt(LoginUser.UserType) === 0?
 
-                            </div>
+                                    <AdjustBtnsWrapper
 
-                        </Frame>
+                                        adjustBtnsToggle={this.adjustBtnsToggle.bind(this)}
 
-                   </Loading>
+                                        adjustBtns={AdjustBtns}
+
+                                        addScheduleModalShow={this.addScheduleModalShow.bind(this)}
+
+                                        adjustByTimeModalShow = {this.adjustByTimeModalShow.bind(this)}
+
+                                        stopScheduleShow={this.stopScheduleShow.bind(this)}
+
+                                        delScheduleShow = {this.delScheduleShow.bind(this)}
+
+                                        adjustByTeacherShow = {this.adjustByTeacherShow.bind(this)}
+
+                                        Import={this.Import.bind(this)}>
+
+                                    </AdjustBtnsWrapper>
+
+                                    :''
+
+                            }
+
+                        </div>
+
+                        <div ref="frame-right-content">
+
+                            <RouterWrapper></RouterWrapper>
+
+                        </div>
+
+                    </Frame>
+
+                   </React.Fragment>
 
                </DocumentTitle>
 
