@@ -143,7 +143,10 @@ class App extends Component {
                     dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?PageIndex=0&PageSize=10&schoolID='+userMsg.SchoolID))
                 }  else if (handleRoute === 'LogDynamic') {
                     
-                    dispatch(actions.UpDataState.getUnreadLogPreview('/GetUnreadLogToPage?OperationType=-1&PageIndex=0&PageSize=10&OnlineUserID='+userMsg.UserID))
+                    dispatch(actions.UpDataState.getUnreadLogPreview('/GetUnreadLogToPage?UserType=-1&OperationType=-1&PageIndex=0&PageSize=10&OnlineUserID='+userMsg.UserID))
+                } else if (handleRoute === 'LogRecord') {
+                    
+                    dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID='+userMsg.SchoolID+'&UserType=-1&OperationType=-1&PageIndex=0&PageSize=10'))
                 }else if (handleRoute === 'All') {
                     dispatch(actions.UpDataState.getAllUserPreview('/GetSummary',));
                     dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });

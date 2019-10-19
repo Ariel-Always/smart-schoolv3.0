@@ -63,6 +63,8 @@ const SET_GRADUATE_CONTACT_MSG = 'SET_GRADUATE_CONTACT_MSG'
 const GET_UNREAD_LOG_COUNT_PREVIEW = 'GET_UNREAD_LOG_COUNT_PREVIEW'
 // 分页获取最近档案动态
 const GET_UNREAD_LOG_PREVIEW = 'GET_UNREAD_LOG_PREVIEW'
+// 分页获取所有档案变更记录
+const GET_LOG_RECORD_PREVIEW = 'GET_LOG_RECORD_PREVIEW'
 // 获取用户信息
 const GET_USER_MSG = 'GET_USER_MSG'
 //操作的执行
@@ -460,6 +462,28 @@ const getUnreadLogPreview = (url) => {
         });
     }
 }
+// 分页获取所有档案变更记录
+const getLogRecordPreview = (url) => {
+    let pageIndex = Public.getUrlQueryVariable(url, 'PageIndex');
+    let pageSize = Public.getUrlQueryVariable(url, 'PageSize');
+    return (dispatch,getState) => {
+        // console.log(getState())
+        //url += getState().DataState.LoginUser.UserID
+        getData(CONFIG.proxy + url, 2).then(res => {
+            if (res.StatusCode === '401') {
+                console.log('错误码：' + res.StatusCode)
+            }
+            return res.json()
+        }).then(json => {
+            if (json.StatusCode === 400) {
+                console.log(json.StatusCode)
+            } else if (json.StatusCode === 200) {
+                dispatch({ type: GET_LOG_RECORD_PREVIEW, data: json.Data,pageIndex:pageIndex,pageSize:pageSize});
+            }
+
+        });
+    }
+}
 //获取用户信息
 const getUserMsg = (url) => {
     return (dispatch) => {
@@ -540,5 +564,7 @@ export default {
     getUnreadLogPreview,
     GET_UNREAD_LOG_PREVIEW,
     getUserMsg,
-    GET_USER_MSG
+    GET_USER_MSG,
+    GET_LOG_RECORD_PREVIEW,
+    getLogRecordPreview
 }

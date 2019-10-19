@@ -2,34 +2,37 @@ import React from 'react'
 import { connect } from 'react-redux';
 import { DetailsModal, DropDown, PagiNation, Search, Table, Button, CheckBox, CheckBoxGroup, Modal, Loading } from '../../../common/index'
 //import '../../../common/scss/_left_menu.scss'
+import locale from 'antd/es/date-picker/locale/zh_CN'
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
-import { Tooltip } from 'antd'
+import { Tooltip, DatePicker, Input } from 'antd'
 import CONFIG from '../../../common/js/config';
 import { postData, getData } from "../../../common/js/fetch";
 import history from '../containers/history'
 import IconLocation from '../../images/icon-location.png'
 import actions from '../actions';
-import '../../scss/LogDynamic.scss'
+import '../../scss/LogRecord.scss'
 import Public from '../../../common/js/public'
 import TipsLog from './TipsLog'
+import moment from 'moment';
 
 
-class LogDynamic extends React.Component {
+class LogRecord extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             columns: [
                 {
-                    title: '',
-                    dataIndex: 'OrderNo',
-                    key: 'OrderNo',
-                    width: 68,
+                    title: '编号',
+                    dataIndex: 'LogID',
+                    key: 'LogID',
+                    width: 130,
+                    sorter: true,
                     align: 'center',
-                    render: key => {
+                    render: LogID => {
                         return (
                             <div className='registerTime-content'>
-                                <CheckBox value={key.key} onChange={this.onCheckChange}></CheckBox>
-                                <span className='key-content'>{key.OrderNo + 1 >= 10 ? key.OrderNo + 1 : '0' + (key.OrderNo + 1)}</span>
+                                {/* <CheckBox value={key.key} onChange={this.onCheckChange}></CheckBox> */}
+                                <span className='key-content'>{LogID}</span>
                             </div>
                         )
                     }
@@ -52,7 +55,7 @@ class LogDynamic extends React.Component {
                 {
                     title: '用户档案',
                     align: 'left',
-                    width: 100,
+                    width: 130,
                     key: 'UserName',
                     dataIndex: 'UserName',
                     sorter: true,
@@ -91,50 +94,59 @@ class LogDynamic extends React.Component {
                     }
                 },
                 {
-                    title: '操作次数',
+                    title: '变更内容',
                     width: 130,
                     align: 'center',
-                    key: 'OperationCount',
-                    dataIndex: 'OperationCount',
-                    render: OperationCount => {
+                    key: 'OperatorDetail',
+                    dataIndex: 'OperatorDetail',
+                    render: OperatorDetail => {
                         return (
-                            <span className='OperationCount'>{OperationCount ? OperationCount : '--'}</span>
-                        )
-                    }
-                },
-                {
-                    title: '操作内容',
-                    width: 450,
-                    align: 'left',
-                    key: 'Logs',
-                    dataIndex: 'Logs',
-                    render: Logs => {
-                        if (!Logs[0]) {
-                            return;
-                        }
-                        return (
-                            <div className='Logs-box'>
-                                <span className='Logs-tips' title={Logs[0].LogTime + ' ' + Logs[0].Content}>{Logs[0].LogTime + ' ' + Logs[0].Content}</span>
-                                <Tooltip placement='top' trigger='click' arrowPointAtCenter={true} title={<TipsLog data={Logs}></TipsLog>}>
-                                    <span className='Logs-more' style={{ display: Logs.length > 1 ? 'inline-block' : 'none' }}>查看更多</span>
-                                </Tooltip>
+                            <Tooltip placement='top' trigger='click' arrowPointAtCenter={true} title={<TipsLog data={OperatorDetail}></TipsLog>}>
+                                {OperatorDetail.length > 0 ? <span  className='OperatorDetail'>>></span>
+                                    : <span className='OperatorDetail-null'>{'--'}</span>}
+                            </Tooltip>
 
-                            </div>
                         )
                     }
                 },
                 {
-                    title: '操作',
+                    title: <span>姓名<br></br>工号</span>,
+                    width: 170,
                     align: 'center',
-                    width: 130,
-                    key: 'handle',
-                    dataIndex: 'key',
-                    render: (key) => {
+                    key: 'Operator',
+                    dataIndex: 'Operator',
+                    render: Operator => {
+                        return (
+                            <span className='Operator'>
+                                <span className='OperatorName'>{Operator.OperatorName}</span><br></br>
+                                <span className='OperatorID'>{Operator.OperatorID}</span>
+                            </span>
+                        )
+                    }
+                },
+                {
+                    title: '操作时间',
+                    align: 'center',
+                    width: 230,
+                    key: 'LogTime',
+                    dataIndex: 'LogTime',
+                    render: (LogTime) => {
                         // console.log(key)
                         return (
-                            <div className='handle-content'>
-                                <Button color='blue' onClick={this.LogSignReaded.bind(this, key)} className='handle-btn'>标记已读</Button>
-                            </div>
+                            <span className='LogTime'>{LogTime}</span>
+                        )
+                    }
+                },
+                {
+                    title: '操作者IP',
+                    align: 'center',
+                    width: 170,
+                    key: 'OperatorIP',
+                    dataIndex: 'OperatorIP',
+                    render: (OperatorIP) => {
+                        // console.log(key)
+                        return (
+                            <span className='OperatorIP'>{OperatorIP}</span>
                         )
                     }
                 }
@@ -159,13 +171,19 @@ class LogDynamic extends React.Component {
             pagination: 1,
             SortType: '',
             UserType: '',
-            UserTypeList: { 1: 'teacher', 2: 'student', 7: 'leader' }
+            UserTypeList: { 1: 'teacher', 2: 'student', 7: 'leader' },
+            startTime: null,
+            endTime: null,
+            startMomentTime: null,
+            endtMomentTime: null,
+            endOpen: false,
+            sortFiled:''
         }
     }
     FileTypeDropMenu = (e) => {
         const { DataState, dispatch } = this.props;
 
-        dispatch(actions.UpDataState.getUnreadLogPreview('/GetUnreadLogToPage?OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + e.value + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&OnlineUserID=' + this.state.userMsg.UserID + this.state.SortType))
+        dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&UserType=-1&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + e.value + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + this.state.SortType + this.state.sortFiled))
         this.setState({
             checkedList: [],
             checkAll: false,
@@ -175,7 +193,7 @@ class LogDynamic extends React.Component {
     HandleTypeDropMenu = (e) => {
         const { DataState, dispatch } = this.props;
 
-        dispatch(actions.UpDataState.getUnreadLogPreview('/GetUnreadLogToPage?OperationType=' + e.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&OnlineUserID=' + this.state.userMsg.UserID + this.state.SortType))
+        dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&UserType=-1&OperationType=' + e.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + this.state.SortType + this.state.sortFiled))
         this.setState({
             checkedList: [],
             checkAll: false,
@@ -207,7 +225,7 @@ class LogDynamic extends React.Component {
                     title: "成功",
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
-                dispatch(actions.UpDataState.getUnreadLogPreview('/GetUnreadLogToPage?OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=0&PageSize=10&OnlineUserID=' + this.state.userMsg.UserID))
+                dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&UserType=-1&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=0&PageSize=10'))
                 this.setState({
                     checkedList: [],
                     checkAll: false,
@@ -221,7 +239,7 @@ class LogDynamic extends React.Component {
     LogSignReaded = (key) => {
         // console.log(key)
         const { DataState, dispatch } = this.props;
-        let userInfo = DataState.LogPreview.unreadLog.List.newList[key];
+        let userInfo = DataState.LogRecordPreview.LogRecord.List.newList[key];
         let url = '/LogSignReaded'
         let LogIDs = userInfo.Logs instanceof Array && userInfo.Logs.map((child, index) => {
             return child.LogID
@@ -245,7 +263,7 @@ class LogDynamic extends React.Component {
                     title: "成功",
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
-                dispatch(actions.UpDataState.getUnreadLogPreview('/GetUnreadLogToPage?OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=0&PageSize=10&OnlineUserID=' + this.state.userMsg.UserID))
+                dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&UserType=-1&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=0&PageSize=10'))
                 this.setState({
                     checkedList: [],
                     checkAll: false,
@@ -259,7 +277,7 @@ class LogDynamic extends React.Component {
     // 显示用户详情
     onUserNameClick = (key) => {
         const { DataState, dispatch } = this.props;
-        let userInfo = DataState.LogPreview.unreadLog.List.newList[key];
+        let userInfo = DataState.LogRecordPreview.LogRecord.List.newList[key];
         this.setState({
             UserType: userInfo.UserType
         })
@@ -277,7 +295,7 @@ class LogDynamic extends React.Component {
         console.log(e)
         if (e.target.checked) {
             this.setState({
-                checkedList: this.props.DataState.LogPreview.unreadLog.List.keyList,
+                checkedList: this.props.DataState.LogRecordPreview.LogRecord.List.keyList,
                 checkAll: e.target.checked
             })
         } else {
@@ -293,7 +311,7 @@ class LogDynamic extends React.Component {
         console.log(checkedList)
         this.setState({
             checkedList,
-            checkAll: checkedList.length === DataState.LogPreview.unreadLog.List.keyList.length ? true : false
+            checkAll: checkedList.length === DataState.LogRecordPreview.LogRecord.List.keyList.length ? true : false
         })
     }
     // 点击删除全部
@@ -360,7 +378,7 @@ class LogDynamic extends React.Component {
         const { dispatch, DataState } = this.props;
         let url = '/LogSignReaded'
         let checkList = this.state.checkedList;
-        let dataList = DataState.LogPreview.unreadLog.List.newList;
+        let dataList = DataState.LogRecordPreview.LogRecord.List.newList;
         let LogIDList = checkList.map((child, index) => {
             return dataList[child].Logs instanceof Array && dataList[child].Logs.map((child, index) => {
                 return child.LogID
@@ -382,7 +400,7 @@ class LogDynamic extends React.Component {
                     checkAll: false
                 })
                 dispatch(actions.UpUIState.hideErrorAlert());
-                dispatch(actions.UpDataState.getUnreadLogPreview('/GetUnreadLogToPage?OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=0&PageSize=10&OnlineUserID=' + this.state.userMsg.UserID))
+                dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&UserType=-1&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=0&PageSize=10'))
                 this.setState({
                     checkedList: [],
                     checkAll: false,
@@ -397,20 +415,23 @@ class LogDynamic extends React.Component {
     onTableChange = (page, filters, sorter) => {
         const { DataState, dispatch } = this.props;
         // console.log(sorter)
-        if (sorter && (sorter.columnKey === 'UserName')) {
+        if (sorter && (sorter.columnKey === 'UserName' || sorter.columnKey === 'LogID')) {
+            let sortFiled = sorter.columnKey === 'UserName' ? '&sortFiled=UserID' : '&sortFiled=LogID'
             let sortType = sorter.order === "descend" ? '&SortType=DESC' : sorter.order === "ascend" ? '&SortType=ASC' : '';
-            dispatch(actions.UpDataState.getUnreadLogPreview('/GetUnreadLogToPage?OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&OnlineUserID=' + this.state.userMsg.UserID + sortType))
+            dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&UserType=-1&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + sortType + sortFiled))
             this.setState({
                 checkedList: [],
                 checkAll: false,
-                SortType: sortType
+                SortType: sortType,
+                sortFiled: sortFiled
             })
         } else if (sorter && !sorter.columnKey) {
-            dispatch(actions.UpDataState.getUnreadLogPreview('/GetUnreadLogToPage?OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&OnlineUserID=' + this.state.userMsg.UserID))
+            dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&UserType=-1&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10'))
             this.setState({
                 checkedList: [],
                 checkAll: false,
-                SortType: ''
+                SortType: '',
+                sortFiled: ''
             })
         }
     }
@@ -418,44 +439,81 @@ class LogDynamic extends React.Component {
     onPagiNationChange = (value) => {
         const { DataState, dispatch } = this.props;
 
-        dispatch(actions.UpDataState.getUnreadLogPreview('/GetUnreadLogToPage?OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=' + (value - 1) + '&PageSize=10&OnlineUserID=' + this.state.userMsg.UserID + this.state.SortType))
+        dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&UserType=-1&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=' + (value - 1) + '&PageSize=10&' + this.state.SortType + this.state.sortFiled))
         this.setState({
             checkedList: [],
             checkAll: false,
             pagination: value
         })
     }
+    //操作时间
+    disabledStartDate = (current) => {
+        const { endMomentTime } = this.state;
+        if (!current || !endMomentTime) {
+            return current && current > moment().endOf('day');
+        }
+        return current && (current.valueOf() > endMomentTime.valueOf() || current > moment().endOf('day'));
+    }
+    disabledEndDate = (current) => {
+        const { startMomentTime } = this.state;
+        if (!startMomentTime || !current) {
+            return current && current > moment().endOf('day');
+        }
 
+        return current && (current.valueOf() < startMomentTime.valueOf() || current > moment().endOf('day'));
+    }
+    //操作时间事件
+    onStartTimeSelectOk = (Moment, time) => {
+        // console.log(time,Moment)
+        const { DataState, dispatch } = this.props;
+        //console.log(time.valueOf())
+        dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&UserType=-1&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=0&PageSize=10'))
+        
+    }
+    onStartTimeSelectChange = (Moment, time) => {
+        this.setState({
+            startTime: time,
+            startMomentTime: Moment
+        })
+    }
+    onEndTimeSelectOk = (Moment, time) => {
+        const { DataState, dispatch } = this.props;
+        // console.log(time)
+        dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&UserType=-1&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=0&PageSize=10'))
+
+        
+    }
+    onEndTimeSelectChange = (Moment, time) => {
+        this.setState({
+            endMomentTime: Moment,
+            endTime: time,
+        })
+    }
+    //时间面板打开，开始的选择结束控制结束的面板打开
+    handleStartOpenChange = open => {
+        if (!open) {
+            this.setState({ endOpen: true });
+        }
+    };
+
+    handleEndOpenChange = open => {
+        this.setState({ endOpen: open });
+    }
     render() {
         const { DataState, UIState } = this.props;
-        let data = DataState.LogPreview.unreadLog;
+        let data = DataState.LogRecordPreview.LogRecord;
         return (
-            <div id='LogDynamic' className='LogDynamic'>
+            <div id='LogRecord' className='LogRecord'>
                 <div className='Graduate-box'>
                     <div className='Graduate-top'>
                         <span className='top-tips'>
-                            <span className='tips menu-location '>最近档案动态</span>
+                            <span className='tips menu-location '>档案变更记录</span>
                         </span>
-                        <Link to='/UserArchives/LogRecord' target='_blank' className='link-record'>查看全部变更记录</Link>
+                        {/* <Link to='/UserArchives/LogRecord' target='_blank' className='link-record'>查看全部变更记录</Link> */}
                     </div>
                     <hr className='Graduate-hr' />
                     <div className='Graduate-content'>
                         <div className='content-top'>
-                            <p className='top-tips'>
-                                最近有
-                            <span className='Total'>{data.Total}</span>
-                                份用户档案发生变更，其中录入
-                            <span className='Add'>{data.Add}</span>
-                                份，更新
-                            <span className='Edit'>{data.Edit}</span>
-                                份，删除
-                            <span className='Delete'>{data.Delete}</span>
-                                份，
-                            <span onClick={this.LogSignAllReaded.bind(this)} className='LogSignAllReaded'>
-                                    点击此处
-                                </span>
-                                可全部标记已读。
-                            </p>
                             <div className='dropMenu-box'>
                                 <DropDown
                                     ref='dropMenuFirst'
@@ -469,6 +527,7 @@ class LogDynamic extends React.Component {
                                 ></DropDown>
                                 <DropDown
                                     ref='dropMenuSecond'
+                                    className='firstDropMenu'
                                     title='操作类型：'
                                     width={120}
                                     height={96}
@@ -476,29 +535,50 @@ class LogDynamic extends React.Component {
                                     dropList={this.state.HandleTypeList}
                                     onChange={this.HandleTypeDropMenu}
                                 ></DropDown>
+
+                                <div className='handleTimeSelect'>
+                                    <span className='time-tips'>操作时间：</span>
+                                    <DatePicker
+                                        locale={locale}
+                                        showTime={{ format: 'HH:mm' }}
+                                        value={this.state.startMomentTime}
+                                        placeholder="请选择开始时间"
+                                        onOk={this.onStartTimeSelectOk.bind(this)}
+                                        onChange={this.onStartTimeSelectChange.bind(this)}
+                                        disabledDate={this.disabledStartDate}
+                                        format={'YYYY-MM-DD HH:mm'}
+                                        onOpenChange={this.handlestartOpenChange}
+                                    />
+                                    <span className='time-to' >至</span>
+                                    <DatePicker
+                                        locale={locale}
+                                        showTime={{ format: 'HH:mm' }}
+                                        value={this.state.endMomentTime}
+                                        placeholder="请选择结束时间"
+                                        onOk={this.onEndTimeSelectOk.bind(this)}
+                                        onChange={this.onEndTimeSelectChange.bind(this)}
+                                        disabledDate={this.disabledEndDate}
+                                        format={'YYYY-MM-DD HH:mm'}
+                                        open={this.state.endOpen}
+                                        onOpenChange={this.handleEndOpenChange}
+                                    />
+                                    {/* <Button onClick={this.onCheckClick} className='check-btn' color='blue'>查询</Button> */}
+                                </div>
                             </div>
 
                         </div>
                         <div className='content-render'>
 
-                            <CheckBoxGroup
-                                style={{ width: '100%' }}
-                                value={this.state.checkedList}
-                                onChange={this.onCheckBoxGroupChange.bind(this)}>
-                                <Table
-                                    className='table'
-                                    loading={UIState.AppLoading.TableLoading}
-                                    columns={this.state.columns}
-                                    pagination={false}
-                                    onChange={this.onTableChange.bind(this)}
-                                    dataSource={data.List.newList} >
 
-                                </Table>
-                            </CheckBoxGroup>
-                            {data.Total > 0 ? (<CheckBox className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
-                                全选
-                                    <Button onClick={this.onDeleteAllClick} className='deleteAll' color='blue'>删除</Button>
-                            </CheckBox>) : ''}
+                            <Table
+                                className='table'
+                                loading={UIState.AppLoading.TableLoading}
+                                columns={this.state.columns}
+                                pagination={false}
+                                onChange={this.onTableChange.bind(this)}
+                                dataSource={data.List.newList} >
+
+                            </Table>
                             <div className='pagination-box'>
                                 <PagiNation
                                     showQuickJumper
@@ -533,4 +613,4 @@ const mapStateToProps = (state) => {
         DataState
     }
 };
-export default connect(mapStateToProps)(LogDynamic)
+export default connect(mapStateToProps)(LogRecord)
