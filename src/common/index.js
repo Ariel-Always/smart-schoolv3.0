@@ -732,8 +732,6 @@ class Search extends React.Component {
 
         let CancelBtnDisplay =  CancelBtnShow?(CancelBtnShow==='y'?'block':'none'):(this.state.cancleShow === true ? 'block' : 'none');
 
-        console.log(CancelBtnShow,CancelBtnDisplay);
-
         return (
             <div className={`search_container ${className ? className : ''}`} style={{
                 width: width ? width : '',

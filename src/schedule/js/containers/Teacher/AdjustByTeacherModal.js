@@ -18,7 +18,7 @@ import ChangeClassRoom from './ChangeClassRoom';
 
 import StopSchedule from './StopSchedule';
 
-import '../../../scss/teacher-adjust-schedule.scss'
+import '../../../scss/teacher/teacher-adjust-schedule.scss'
 
 
 const { TabPane  } = Tabs;

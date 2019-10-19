@@ -8,6 +8,8 @@ import HeaderRouter from '../../component/HeaderRouter';
 
 import SubjectTeacher from './SubjectTeacher';
 
+import ClassTotalSingle from './ClassTotalSingle';
+
 import AdjustByTeacherModal from "./AdjustByTeacherModal";
 
 
@@ -44,6 +46,11 @@ class Index extends Component{
                         <Route path="/manager/subject-teacher/*" component={SubjectTeacher}></Route>
 
                         <Redirect path="/manager/subject-teacher*" to={{pathname:"/manager/subject-teacher/subject"}}></Redirect>
+
+                        <Route path="/manager/class/*" component={ClassTotalSingle}></Route>
+
+                        <Redirect path="/manager/class*" to={{pathname:"/manager/class/total"}}></Redirect>
+
 
                     </Switch>
 

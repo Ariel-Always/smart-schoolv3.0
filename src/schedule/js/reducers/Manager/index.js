@@ -19,6 +19,10 @@ import DelScheduleModal from  './DelScheduleModal';
 
 import AdjustByTeacherModal from "./AdjustByTeacherModal";
 
+import ClassTotal from './ClassTotal';
+
+import ClassSingle from './ClassSingle';
+
 //管理员角色的reduce
 
 const Index = combineReducers({
@@ -39,7 +43,11 @@ const Index = combineReducers({
 
     DelScheduleModal,
 
-    AdjustByTeacherModal
+    AdjustByTeacherModal,
+
+    ClassTotal,
+
+    ClassSingle
 
 });
 
