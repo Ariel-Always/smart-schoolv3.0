@@ -1584,7 +1584,11 @@ class Menu extends React.Component {
 
 class MenuLeft extends React.Component {
 
+    componentDidMount(){
 
+
+
+    }
 
     render() {
         //传递的参数的数据

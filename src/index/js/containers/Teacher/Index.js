@@ -16,7 +16,7 @@ import Content from '../../components/Teacher/Content';
 
 import { connect } from 'react-redux';
 
-import {LogOut} from "../../../../common/js/disconnect";
+import {getQueryVariable, LogOut} from "../../../../common/js/disconnect";
 
 class Index extends Component{
 
@@ -116,7 +116,7 @@ class Index extends Component{
 
     //点击了模块
 
-    ClickModule({ModuleStatus,AccessType,AccessParam,Event}){
+    ClickModule({ModuleStatus,AccessType,AccessParam,SysID,Event}){
 
         const { dispatch } = this.props;
 
@@ -128,7 +128,17 @@ class Index extends Component{
 
                if (AccessType === 'href'){
 
-                   window.open(AccessParam);
+                   if (SysID!=='000'){
+
+                       let lg_tk = getQueryVariable('lg_tk')||sessionStorage.getItem('token');
+
+                       window.open(`${AccessParam}?lg_tk=${lg_tk}`);
+
+                   }else{
+
+                       window.open(AccessParam);
+
+                   }
 
                }else{
 
