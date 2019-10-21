@@ -14,9 +14,9 @@ const SubjectTeacherTeacherSchedule = (state={
 
     ClassList:[],
 
-    PickTeacher:'',
+    PickClass:'',
 
-    PickTeacherID:'',
+    PickClassID:'',
 
     ScheduleLoadingShow:true,
 
@@ -44,9 +44,9 @@ const SubjectTeacherTeacherSchedule = (state={
 
                 LoadingShow:true,
 
-                PickTeacher:'',
+                PickClass:'',
 
-                PickTeacherID:'',
+                PickClassID:'',
 
                 ScheduleLoadingShow:true,
 
@@ -64,7 +64,7 @@ const SubjectTeacherTeacherSchedule = (state={
 
             return { ...state,ClassList:actions.data };
 
-     /*   case STTActions.STT_SCHEDULE_CHANGE:
+        case CSActions.MANAGER_CLASS_SINGLE_SCHEDULE_UPDATE:
 
             return {
 
@@ -72,36 +72,19 @@ const SubjectTeacherTeacherSchedule = (state={
 
                 ...actions.data
 
+            };
 
-            };*/
+        case CSActions.MANAGER_CLASS_SINGLE_SEARCHLIST_UPDATE:
+
+            return { ...state,SearchResult:actions.data };
 
         case CSActions.MANAGER_CLASS_SINGLE_WEEK_CHANGE:
 
             return {...state,WeekNO:actions.data};
 
-     /*   case STTActions.TEACHER_LIST_UPDATE:
+        case CSActions.MANAGER_CLASS_SINGLE_WEEK_LIST_UPDATE:
 
-            return {...state,teacherList:actions.data};
-
-        case STTActions.SEARCH_TEACHER_RESULT_UPDATE:
-
-            return {...state,searchResult:actions.data};
-
-        case STTActions.SEARCH_TEACHER_RESULT_SHOW:
-
-            return {...state,searchWrapperShow:true};
-
-        case STTActions.SEARCH_TEACHER_RESULT_HIDE:
-
-            return {...state,searchWrapperShow:false};
-
-        case STTActions.SEARCH_LOADING_SHOW:
-
-            return {...state,searchLoadingShow:true};
-
-        case STTActions.SEARCH_LOADING_HIDE:
-
-            return {...state,searchLoadingShow:false};*/
+            return {...state,WeekList:actions.data};
 
         case CSActions.MANAGER_CLASS_SINGLE_SCHEDULE_LOADING_HIDE:
 
@@ -110,6 +93,22 @@ const SubjectTeacherTeacherSchedule = (state={
         case CSActions.MANAGER_CLASS_SINGLE_SCHEDULE_LOADING_SHOW:
 
             return {...state,ScheduleLoadingShow:true};
+
+        case CSActions.MANAGER_CLASS_SINGLE_SEARCH_LOADING_SHOW:
+
+            return {...state,SearchLoadingShow:true};
+
+        case CSActions.MANAGER_CLASS_SINGLE_SEARCH_LOADING_HIDE:
+
+            return {...state,SearchLoadingShow:false};
+
+        case CSActions.MANAGER_CLASS_SINGLE_SEARCH_RESULT_SHOW:
+
+            return {...state,SearchWrapperShow:true};
+
+        case CSActions.MANAGER_CLASS_SINGLE_SEARCH_RESULT_HIDE:
+
+            return {...state,SearchWrapperShow:false};
 
         default:
 

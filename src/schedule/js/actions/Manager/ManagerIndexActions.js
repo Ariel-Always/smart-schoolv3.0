@@ -419,12 +419,27 @@ const ClassSingleInit = () => {
 
                 console.log(res[0]);
 
-                dispatch({type:CSActions.MANAGER_CLASS_SINGLE_WEEK_CHANGE,data:NowWeekNo});
                 //将课程、学期、等等放到redux中
 
                 if (res[0]){
 
                     dispatch({type:SCGCRActions.SCGCR_INFO_INIT,data:res[0]});
+
+                    let WeekList = [];
+
+                    PeriodWeekTerm.ItemWeek.map(item=>{
+
+                       WeekList.push({
+
+                           value:item.WeekNO,
+
+                           title:item.WeekNO
+
+                       });
+
+                    });
+
+                    dispatch({type:CSActions.MANAGER_CLASS_SINGLE_WEEK_LIST_UPDATE,data:WeekList});
 
                 }
 
@@ -470,6 +485,8 @@ const ClassSingleInit = () => {
                     dispatch({type:CSActions.MANAGER_CLASS_SINGLE_INIT});
 
                     dispatch({type:CSActions.MANAGER_CLASS_SINGLE_CLASS_LIST_UPDATE,data:leftMenuData});
+
+                    dispatch({type:CSActions.MANAGER_CLASS_SINGLE_WEEK_CHANGE,data:NowWeekNo});
 
                     dispatch({type:CSActions.MANAGER_CLASS_SINGLE_SCHEDULE_LOADING_HIDE});
 

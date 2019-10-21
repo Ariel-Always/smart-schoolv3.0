@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 
 import $ from 'jquery';
 
-import {Search,Loading} from "../../../common";
+import {Search,Loading,Empty} from "../../../common";
 
 class LeftMenu extends Component{
 
@@ -95,7 +95,9 @@ class LeftMenu extends Component{
 
                             {
 
-                                searchResult.map((item,key) => {
+                                searchResult&&searchResult.length>0?
+
+                                    searchResult.map((item,key) => {
 
                                     return <div key={key} className={`cat-item ${item.id===this.state.searchActive?'active':''}`} data-id={item.id}>
 
@@ -109,6 +111,10 @@ class LeftMenu extends Component{
 
                                 })
 
+                                    :
+
+                                    <Empty type="5"></Empty>
+
                             }
 
                         </div>
@@ -120,40 +126,47 @@ class LeftMenu extends Component{
 
                             {
 
-                                pickList&&pickList.map((item,key) => {
+                                pickList&&pickList.length>0?
 
-                                    return  <div key={key} className="pick-item">
 
-                                        <div className={`cat-wrapper`} data-id={item.id}>
+                                    pickList.map((item,key) => {
 
-                                            <span className={`cat-name`} onClick={(e)=>this.catNameClick(item.id,e)} title={item.name}>{item.name}</span>
+                                        return  <div key={key} className="pick-item">
 
+                                            <div className={`cat-wrapper`} data-id={item.id}>
+
+                                                <span className={`cat-name`} onClick={(e)=>this.catNameClick(item.id,e)} title={item.name}>{item.name}</span>
+
+                                            </div>
+
+                                            <div className={`cat-children-wrapper`} ref={item.id} data-children-id={item.id}>
+
+                                                {
+
+                                                    item.list.map((i,k) => {
+
+                                                        return  <div key={k} className={`cat-item ${((item.id===this.state.catActive)&&(this.state.catChildrenActive===i.id))?'active':''}`} data-id={i.id}>
+
+                                                                    <span className="cat-children-name" title={i.name} onClick={this.onPick.bind(this,{catId:item.id,catChildrenId:i.id,catChildrenName:i.name,catName:item.name})}>
+
+                                                                        {i.name}
+
+                                                                    </span>
+
+                                                        </div>
+
+                                                    })
+
+                                                }
+
+                                            </div>
                                         </div>
 
-                                        <div className={`cat-children-wrapper`} ref={item.id} data-children-id={item.id}>
+                                    })
 
-                                            {
+                                    :
 
-                                                item.list.map((i,k) => {
-
-                                                    return  <div key={k} className={`cat-item ${((item.id===this.state.catActive)&&(this.state.catChildrenActive===i.id))?'active':''}`} data-id={i.id}>
-
-                                                                <span className="cat-children-name" title={i.name} onClick={this.onPick.bind(this,{catId:item.id,catChildrenId:i.id,catChildrenName:i.name,catName:item.name})}>
-
-                                                                    {i.name}
-
-                                                                </span>
-
-                                                    </div>
-
-                                                })
-
-                                            }
-
-                                        </div>
-                                    </div>
-
-                                })
+                                    <Empty type="3" title="没有数据"></Empty>
 
                             }
 

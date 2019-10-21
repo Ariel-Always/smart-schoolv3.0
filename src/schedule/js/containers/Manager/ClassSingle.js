@@ -6,6 +6,8 @@ import ManagerIndexActions from "../../actions/Manager/ManagerIndexActions";
 
 import CSActions from '../../actions/Manager/ClassSingleActions';
 
+import AppAlertActions from '../../actions/AppAlertActions';
+
 import LeftMenu from "../../component/LeftMenu";
 
 import TermPick from "../../component/TermPick";
@@ -36,7 +38,7 @@ class ClassSingle extends Component{
 
         dispatch({type:CSActions.MANAGER_CLASS_SINGLE_SCHEDULE_LOADING_SHOW});
 
-       // dispatch(CSActions.STTWeekUpdate());
+       dispatch(CSActions.WeekUpdate());
 
     }
 
@@ -49,9 +51,9 @@ class ClassSingle extends Component{
 
         dispatch({type:CSActions.MANAGER_CLASS_SINGLE_WEEK_CHANGE,data:(WeekNO+1)});
 
-        dispatch({type:CSActions.MANAGER_CLASS_SINGLE_SCHEDULE_LOADING_HIDE});
+        dispatch({type:CSActions.MANAGER_CLASS_SINGLE_SCHEDULE_LOADING_SHOW});
 
-        //dispatch(STTActions.STTWeekUpdate());
+        dispatch(CSActions.WeekUpdate());
 
     }
 
@@ -64,7 +66,7 @@ class ClassSingle extends Component{
 
         dispatch({type:CSActions.MANAGER_CLASS_SINGLE_WEEK_CHANGE,data:(WeekNO-1)});
 
-        //dispatch(STTActions.STTWeekUpdate());
+        dispatch(CSActions.WeekUpdate());
 
     }
     //左侧菜单选取某一个班级
@@ -84,7 +86,15 @@ class ClassSingle extends Component{
 
         const {dispatch} = this.props;
 
-        //dispatch(CSActions.STTTeacherSearch(e.value));
+        if (e.value===''){
+
+            dispatch(AppAlertActions.alertWarn({title:"搜索不能为空！"}));
+
+        }else{
+
+            dispatch(CSActions.ClassSearch(e.value));
+
+        }
 
     }
 
@@ -93,7 +103,7 @@ class ClassSingle extends Component{
 
         const {dispatch} = this.props;
 
-        //dispatch({type:CSActions.SEARCH_TEACHER_RESULT_HIDE});
+        dispatch({type:CSActions.MANAGER_CLASS_SINGLE_SEARCH_RESULT_HIDE});
 
     }
 
@@ -112,7 +122,7 @@ class ClassSingle extends Component{
             <div className="subject-teacher-teacher-content clearfix">
 
                 <LeftMenu
-                    title="教师列表"
+                    title="班级列表"
                     type="class"
                     pickList={ClassSingle.ClassList}
                     pickClick={this.menuPickClick.bind(this)}
@@ -126,13 +136,13 @@ class ClassSingle extends Component{
 
                 {
 
-                    ClassSingle.PickTeacher===''?
+                    ClassSingle.PickClass===''?
 
                         '':
 
                         <div className="pick-teacher-wrapper">
 
-                            <span className="teacher-name">{ClassSingle.PickTeacher}</span>
+                            <span className="teacher-name">{ClassSingle.PickClass}</span>
 
                             <span className="course-count"> (本周共<span className="count">{ClassSingle.ScheduleCount}</span>节课)</span>
 
