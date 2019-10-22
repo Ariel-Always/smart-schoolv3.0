@@ -32,6 +32,7 @@ $image-url:'../images';
 
 //root
 #root{
+
   height:100%;
 
   &>.ant-spin{
@@ -50,15 +51,21 @@ $image-url:'../images';
 
     z-index: 10100;
 
+    @include flex;
+
+    @include flex-direction(column);
+
+    @include align-items(center);
+
+    @include justify-content(center);
+
   }
 
 }
 
 
 //loading
-.ant-spin-nested-loading{
-  height:100%;
-}
+
 
 //左侧菜单
 .frame-content-leftside{

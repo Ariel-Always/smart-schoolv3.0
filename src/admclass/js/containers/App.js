@@ -31,8 +31,6 @@ import AddClassModal from '../component/AddClassModal';
 import Import from "./Import";
 
 
-
-
 class App extends Component{
 
     constructor(props) {
@@ -296,9 +294,11 @@ class App extends Component{
 
         }
 
-
-
     }
+
+
+
+
 
 
 
@@ -335,6 +335,9 @@ class App extends Component{
             Menu.push(Data);
 
         });
+
+
+
 
         return (
 
