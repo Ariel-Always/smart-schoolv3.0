@@ -24,8 +24,6 @@ const TPSUpdate = () => {
 
         let NowWeekNo = Teacher.PersonalSchedule.NowWeekNo;
 
-        let teacherSchedulePromise = Method.getGetData(`/scheduleSubjectTeacherTeacherSchedule?UserID=${UserID}&UserType=${UserType}&SchoolID=${SchoolID}&NowWeekNo=${NowWeekNo}`);
-
         ApiActions.GetScheduleByUserID({SchoolID,UserType,UserID,WeekNO:NowWeekNo,dispatch}).then(data=>{
 
             if (data){

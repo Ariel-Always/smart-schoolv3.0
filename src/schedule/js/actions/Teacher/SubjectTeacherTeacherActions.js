@@ -48,7 +48,6 @@ const STTTeacherUpdate = (pickInfo) => {
 
         let NowWeekNo = Teacher.SubjectTeacherTeacherSchedule.NowWeekNo;
 
-        let teacherSchedulePromise = Method.getGetData(`/scheduleSubjectTeacherTeacherSchedule?UserID=${UserID}&UserType=${UserType}&SchoolID=${SchoolID}&NowWeekNo=${NowWeekNo}`);
 
         ApiActions.GetScheduleByUserID({
 
@@ -125,8 +124,6 @@ const STTWeekUpdate = () => {
 
             let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;
 
-            let teacherSchedulePromise = Method.getGetData(`/scheduleSubjectTeacherTeacherSchedule?UserID=${UserID}&UserType=${UserType}&SchoolID=${SchoolID}&NowWeekNo=${NowWeekNo}`);
-
             ApiActions.GetScheduleByUserID({
 
             SchoolID,UserID,UserType,WeekNO:NowWeekNo,PeriodID,dispatch
@@ -197,16 +194,13 @@ const STTTeacherSearch = (val) => {
 
         let Key = val;
 
-        let searchTeacherPromise = Method.getGetData(`/scheduleSubjectTeacherTeacher?SchoolID=${SchoolID}&PeriodID=${PeriodID}&SubjectID=${SubjectID}&Key=${Key}`);
-
-
         ApiActions.GetTeacherBySubjectIDAndKey({
 
             SchoolID,PeriodID,SubjectID,Key,dispatch
 
         }).then(data => {
 
-           if (data === 200){
+           if (data){
 
                const result = data.map((item) => {
 

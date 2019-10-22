@@ -1,7 +1,5 @@
 import React,{Component} from 'react';
 
-import {connect} from  'react-redux';
-
 import {HashRouter as Router,Route,Switch,Redirect} from  'react-router-dom';
 
 import HeaderRouter from '../../component/HeaderRouter';
