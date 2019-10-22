@@ -114,11 +114,13 @@ class StudentContent extends Component{
 
             let stuIDList = StudentsCheckList.map((item) => { return JSON.parse(item).id});
 
-            dispatch({type:UpDataState.STUDENT_WRAPPER_LOADING_SHOW});
+
 
             UpDataState.adjustClass({ClassID:AdjustClassModal.classChecked.value,UserIDs:stuIDList.join(','),dispatch}).then(data=>{
 
-                if (data === 'success'){
+                if (data ===0 ){
+
+                    dispatch({type:UpDataState.STUDENT_WRAPPER_LOADING_SHOW});
 
                     dispatch({type:UpUIState.ADJUST_CLASS_MODAL_HIDE});
 
@@ -129,6 +131,10 @@ class StudentContent extends Component{
                         if (data){
 
                             dispatch({type:UpDataState.GET_THE_CLASS_STUDENTS,data:data});
+
+                            dispatch({type:UpDataState.STUDENT_WRAPPER_LOADING_HIDE});
+
+                        }else{
 
                             dispatch({type:UpDataState.STUDENT_WRAPPER_LOADING_HIDE});
 
@@ -174,6 +180,8 @@ class StudentContent extends Component{
         let classList =  gradeSelect.Classes.filter((item) => {return item.ClassID !== ClassID});
 
         dispatch({type:UpUIState.ADJUST_CLASS_GRADE_CHANGE,checked:e});
+
+        dispatch({type:UpUIState.ADJUST_CLASS_CLASS_CHANGE,checked:{value:"none",title:"请选择班级"}});
 
         dispatch({type:UpUIState.ADJUST_CLASS_CLASS_LIST_UPDATE,list:classList});
 

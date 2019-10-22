@@ -56,7 +56,7 @@ const  AddTeacherModal = (state={
 
                 subjectsSelect:{value:'all',title:"全部教师"},
 
-                colseShow:false,
+                closeShow:false,
 
                 originTeacherShow:(actions.options&&actions.options.originTeacherShow)?actions.options.originTeacherShow:false,
 

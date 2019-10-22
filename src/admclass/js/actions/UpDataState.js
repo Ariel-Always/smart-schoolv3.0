@@ -420,6 +420,10 @@ const  teacherSearchBtnClick = () => {
 
               dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
 
+          }else{
+
+              dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_SHOW});
+
           }
 
       });
@@ -695,7 +699,7 @@ const UpdateClassName = ({GradeID,ClassID,ClassName}) => {
 
               dispatch({type:UpUIState.RESET_CLASS_NAME_HIDE});
 
-              dispatch(AppAlertActions.alertSuccess({title:"'修改成功！'"}));
+              dispatch(AppAlertActions.alertSuccess({title:"修改成功！"}));
 
               dispatch(getTheGradePreview(GradeID));
 
@@ -720,11 +724,11 @@ const SetMonitorAction = ({UserID='',ClassID}) =>{
 
                 if (UserID){
 
-                    dispatch(AppAlertActions.alertSuccess({title:"成功取消班长!"}));
+                    dispatch(AppAlertActions.alertSuccess({title:"成功设置班长!"}));
 
                 }else{
 
-                    dispatch(AppAlertActions.alertSuccess({title:"成功设置班长!"}));
+                    dispatch(AppAlertActions.alertSuccess({title:"成功取消班长!"}));
 
                 }
 
@@ -965,7 +969,7 @@ const adjustClass =  async ({ClassID,UserIDs,dispatch}) => {
 
     if (res.StatusCode === 200){
 
-        return res.Msg;
+        return res.ErrorCode;
 
     }else{
 

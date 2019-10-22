@@ -1,5 +1,9 @@
 import React,{Component} from 'react';
+
 import {CheckBoxGroup} from "../../../common";
+
+import headerImg from '../../images/default-teacher.png'
+
 
 class TeacherTabWrapper extends Component{
 
@@ -44,7 +48,7 @@ class TeacherTabWrapper extends Component{
 
                     <div className="admclass-teacher-ganger clearfix">
 
-                        <div className="admclass-teacher-photo" style={{backgroundImage:`url(${Teachers.Ganger&&Teachers.Ganger.PhotoPath})`}}></div>
+                        <div className="admclass-teacher-photo" style={{backgroundImage:`url(${Teachers.Ganger&&Teachers.Ganger.PhotoPath?Teachers.Ganger.PhotoPath:headerImg})`}}></div>
 
                         <div className="admclass-teacher-info">
 
