@@ -56,7 +56,8 @@ class TimeBanner extends React.Component {
                     {handleRoute !== 'Teacher' ? (
                         <div>
                             <span className='timeBanner_tips'>当前共有{DataState.GetCoureClassAllMsg.newData ? DataState.GetCoureClassAllMsg.newData.LastLogCount : 0}条更新记录
-                       <Link to='Log/Dynamic'
+                       <Link
+                                    to='/Log/Dynamic'
                                     target='_blank'
                                     rel='tips_handle'
                                     onClick={this.onCheckLogClick.bind(this)}

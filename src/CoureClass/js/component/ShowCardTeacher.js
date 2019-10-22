@@ -43,9 +43,9 @@ class ShowCardTeacher extends React.Component {
         
         let url = '/DeleteSubject';
         dispatch(actions.UpUIState.hideErrorAlert());
-        postData(CONFIG.proxy + url, {
+        postData(CONFIG.CourseClassProxy + url, {
             courseClassID: id
-        }).then(res => {
+        },2,'json').then(res => {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {

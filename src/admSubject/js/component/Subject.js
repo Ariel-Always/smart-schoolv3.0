@@ -61,7 +61,7 @@ class Subject extends React.Component {
                                 }
 
                                 return (
-                                    <React.Fragment key={child.TeacherName ? child.TeacherName : '未填写'}>
+                                    <React.Fragment key={child.TeacherName ? child.TeacherName : index}>
                                         <span className='Teacher' title={child.TeacherName}><span className='Teacher-tips'>{GradeName}</span><span onClick={child.TeacherName ? this.onClickTeacherName.bind(this, child.TeacherID) : this.onClickTeacherNameNo} className={child.TeacherName ? 'handleName' : 'noHandle'} >{child.TeacherName ? child.TeacherName : '未填写'}</span></span><br />
                                     </React.Fragment>
                                 )
@@ -131,7 +131,7 @@ class Subject extends React.Component {
     //操作分页
     onPagiNationChange = (value) => {
         const { dispatch } = this.props;
-        dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID=null&pageSize=8&pageIndex=' + value));
+        dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID='+(this.state.SubjectSelect.value?this.state.SubjectSelect.value:'')+'&pageSize=8&pageIndex=' + value));
     }
 
     // 关闭信息弹窗
@@ -142,12 +142,12 @@ class Subject extends React.Component {
     //操作下拉菜单，选择学段
     AdmDropMenu = (value) => {
         const { dispatch } = this.props;
-        let periodID = null;
+        let periodID = '';
         this.setState({
             SubjectSelect: value
         })
         if (value.value !== 0) {
-            periodID = 'p' + value.value
+            periodID =  value.value
         }
         dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID=' + periodID + '&pageSize=8&pageIndex=1'));
     }
@@ -179,10 +179,10 @@ class Subject extends React.Component {
         console.log(userMsg)
         dispatch(actions.UpUIState.hideErrorAlert());
         postData(CONFIG.SubjectProxy + url, {
-            schoolID: 'S0003',
+            schoolID: this.state.UserMsg.SchoolID,
             subjectID: DataState.SubjectMsg.SubjectItem[key].SubjectName.SubjectID,
-            userID: 'admin_S0003' || userMsg.UserID,
-            userType: '0' || userMsg.UserType
+            userID: this.state.UserMsg.UserID || userMsg.UserID,
+            userType:  userMsg.UserType
         }, 2, 'json').then(res => {
             return res.json()
         }).then(json => {
@@ -222,11 +222,12 @@ class Subject extends React.Component {
         }
         dispatch({ type: actions.UpUIState.MODAL_LOADING_OPEN });
         postData(CONFIG.SubjectProxy + url, {
-            schoolID: 'S0003',
+            schoolID: this.state.UserMsg.SchoolID,
             subjectID: DataState.ChangeSubjectMsg.SubjectID || '',
-            GlobalGradeIDs: DataState.ChangeSubjectMsg.GlobalGradeIDs,
-            userID: 'admin_S0003' || userMsg.UserID,
-            userType: '0' || userMsg.UserType
+            globalGradeIDs: DataState.ChangeSubjectMsg.GlobalGradeIDs,
+            userID: this.state.UserMsg.UserID || userMsg.UserID,
+            subjectName:DataState.ChangeSubjectMsg.SubjectName || '',
+            userType:  userMsg.UserType
         }, 2, 'json').then(res => {
             dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
             return res.json()
@@ -281,12 +282,12 @@ class Subject extends React.Component {
         }
         dispatch({ type: actions.UpUIState.MODAL_LOADING_OPEN });
         postData(CONFIG.SubjectProxy + url, {
-            schoolID: 'S0003',
+            schoolID: this.state.UserMsg.SchoolID,
             subjectID: DataState.ChangeSubjectMsg.SubjectID || '',
             subjectName: DataState.ChangeSubjectMsg.SubjectName,
             globalGradeIDs: DataState.ChangeSubjectMsg.GlobalGradeIDs,
-            userID: 'admin_S0003' || userMsg.UserID,
-            userType: '0' || userMsg.UserType
+            userID: this.state.UserMsg.UserID || userMsg.UserID,
+            userType:  userMsg.UserType
         }, 2, 'json').then(res => {
             dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
             return res.json()
@@ -363,9 +364,10 @@ class Subject extends React.Component {
 
         dispatch({ type: actions.UpUIState.MODAL_LOADING_OPEN });
         postData(CONFIG.SubjectProxy + url, {
-            schoolID: 'S0003' || DataState.LoginUser.SchoolID,
+            schoolID: this.state.UserMsg.SchoolID || DataState.LoginUser.SchoolID,
             subjectID: DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.SubjectID,
-            teacher: newTeacher
+            teacher: newTeacher,
+            userID:this.state.UserMsg.UserID || DataState.LoginUser.UserID
         }, 2, 'json').then(res => {
             dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
             return res.json()
@@ -395,6 +397,7 @@ class Subject extends React.Component {
     }
     render() {
         const { DataState, UIState } = this.props;
+        console.log(UIState.SetSubjectTeacher.setSubjectTeacherModalShow)
 
         return (
             <React.Fragment>
@@ -460,7 +463,7 @@ class Subject extends React.Component {
                     onOk={this.changeSubjectModalOk}
                     onCancel={this.changeSubjectModalCancel}
                 >
-                    <ChangeSubject type='change'></ChangeSubject>
+                    {UIState.ChangeSubjectModal.changeModalShow?<ChangeSubject type='change'></ChangeSubject>:''}
                 </Modal>
                 <Modal
                     ref='addTeacherMadal'
@@ -472,7 +475,7 @@ class Subject extends React.Component {
                     onOk={this.AddSubjectModalOk}
                     onCancel={this.AddSubjectModalCancel}
                 >
-                    <ChangeSubject type='add'></ChangeSubject>
+                    {UIState.ChangeSubjectModal.addModalShow?<ChangeSubject type='add'></ChangeSubject>:''}
                 </Modal>
                 <Modal
                     ref='addTeacherMadal'
@@ -482,9 +485,9 @@ class Subject extends React.Component {
                     visible={UIState.SetSubjectTeacher.setSubjectTeacherModalShow}
                     onOk={this.SetSubjectTeacherModalOk}
                     onCancel={this.SetSubjectTeacherModalCancel}
+                    destroyOnClose={true}
                 >
                     {
-
                         UIState.SetSubjectTeacher.setSubjectTeacherModalShow ?
                             <SetSubjectTeacher ></SetSubjectTeacher> : ''
 

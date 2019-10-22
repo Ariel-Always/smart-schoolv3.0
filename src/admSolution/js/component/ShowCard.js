@@ -51,7 +51,7 @@ class ShowCard extends React.Component {
         dispatch(actions.UpUIState.hideErrorAlert());
         postData(CONFIG.TeachingSolutionProxy + url, {
             SolutionID: SolutionID
-        }).then(res => {
+        },2).then(res => {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {

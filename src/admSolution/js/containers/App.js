@@ -94,7 +94,7 @@ class App extends Component {
             SolutionID: DataState.GetSolutionID.Solution.SolutionID,
             UserID: UserMsg.UserID,
             SolutionName: this.state.resetName
-        }).then(res => {
+        },2).then(res => {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {

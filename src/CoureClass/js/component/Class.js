@@ -249,9 +249,9 @@ class Class extends React.Component {
         let classID = pathArr[4];
         let url = '/DeleteSubject';
         dispatch(actions.UpUIState.hideErrorAlert());
-        postData(CONFIG.proxy + url, {
+        postData(CONFIG.CourseClassProxy + url, {
             courseClassID: id
-        }).then(res => {
+        },2,'json').then(res => {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
@@ -281,9 +281,9 @@ class Class extends React.Component {
         let classID = pathArr[4];
         let url = '/DeleteSubject';
         dispatch(actions.UpUIState.hideErrorAlert());
-        postData(CONFIG.proxy + url, {
+        postData(CONFIG.CourseClassProxy + url, {
             courseClassID: id
-        }).then(res => {
+        },2,'json').then(res => {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
@@ -309,6 +309,7 @@ class Class extends React.Component {
     render() {
         const { DataState, UIState } = this.props;
         let tips = DataState.GetClassAllMsg.allClass && DataState.GetCoureClassAllMsg.Subjects ? DataState.GetCoureClassAllMsg.Subjects[DataState.GetClassAllMsg.allClass.subject].subjectName + '教学班>' + DataState.GetCoureClassAllMsg.Subjects[DataState.GetClassAllMsg.allClass.subject][DataState.GetClassAllMsg.allClass.Class] : '';
+        let Total = DataState.GetClassAllMsg.allClass ? DataState.GetClassAllMsg.allClass.CourseClassCount : 0
         return (
             <div className='Class'>
                 <div className='Class-box'>
@@ -329,10 +330,10 @@ class Class extends React.Component {
                                 dataSource={DataState.GetClassAllMsg.allClass ? DataState.GetClassAllMsg.allClass.TableData : []}
                             ></Table>
                         </CheckBoxGroup>
-                        <CheckBox className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
-                            全选
-                                    <Button onClick={this.onDeleteAllClick} className='deleteAll' color='blue'>删除</Button>
-                        </CheckBox>
+                    {Total?(<CheckBox className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
+                        全选
+                                <Button onClick={this.onDeleteAllClick} className='deleteAll' color='blue'>删除</Button>
+                    </CheckBox>):''}
 
                         <div className='pagination-box'>
                             <PagiNation

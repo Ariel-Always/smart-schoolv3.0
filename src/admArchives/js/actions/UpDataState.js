@@ -91,13 +91,13 @@ const getAllUserPreview = (url) => {
                 console.log(json.StatusCode)
             } else if (json.StatusCode === 200) {
                 dispatch({ type: GET_ALL_USER_PREVIEW, data: json.Data });
-               
+
             }
 
-        }).then(()=> {
-            dispatch(getUnreadLogCountPreview(()=>{
+        }).then(() => {
+            dispatch(getUnreadLogCountPreview(() => {
                 dispatch(actions.UpUIState.RightLoadingClose());
-                dispatch({ type: UpUIState.APP_LOADING_CLOSE });
+                dispatch(actions.UpUIState.TableLoadingClose());
             }))
         });
     }
@@ -122,8 +122,9 @@ const getGradeStudentPreview = (url, GradeID = { value: 0, title: '全部年级'
                 dispatch({ type: GET_GRADE_STUDENT_PREVIEW, data: json.Data, GradeID: GradeID, ClassID: ClassID, pageIndex: pageIndex, pageSize: pageSize });
             }
 
-        }).then(()=> {
-            dispatch(getUnreadLogCountPreview(()=>{
+        }).then(() => {
+            dispatch(getUnreadLogCountPreview(() => {
+                dispatch(actions.UpUIState.RightLoadingClose());
                 dispatch(actions.UpUIState.TableLoadingClose());
             }))
         });
@@ -150,9 +151,11 @@ const getSubjectTeacherPreview = (url, SubjectID) => {
                     dispatch({ type: SET_SUBJECTID, SubjectID: SubjectID })
             }
 
-        }).then(()=> {
-            dispatch(getUnreadLogCountPreview(()=>{
+        }).then(() => {
+            dispatch(getUnreadLogCountPreview(() => {
+                dispatch(actions.UpUIState.RightLoadingClose());
                 dispatch(actions.UpUIState.TableLoadingClose());
+
             }))
         });
     }
@@ -162,7 +165,7 @@ const getSchoolLeaderPreview = (url) => {
     return (dispatch) => {
         dispatch(actions.UpUIState.TableLoadingOpen());
         // console.log(CONFIG.XTestProxy + url);
-        getData(CONFIG.XTestProxy + url,2).then(res => {
+        getData(CONFIG.XTestProxy + url, 2).then(res => {
             if (res.StatusCode === '401') {
                 console.log('错误码：' + res.StatusCode)
             }
@@ -173,9 +176,9 @@ const getSchoolLeaderPreview = (url) => {
                 dispatch({ type: GET_SCHOOL_LEADER_PREVIEW, data: json.Data });
             }
 
-        }).then(()=> {
-            dispatch(getUnreadLogCountPreview(()=>{
-                dispatch({ type: UpUIState.APP_LOADING_CLOSE });
+        }).then(() => {
+            dispatch(getUnreadLogCountPreview(() => {
+                dispatch(actions.UpUIState.RightLoadingClose());
                 dispatch(actions.UpUIState.TableLoadingClose());
             }))
         });
@@ -420,8 +423,8 @@ const setGraduateContactMsg = (data) => {
     }
 }
 // 获取未读的档案变更数量
-const getUnreadLogCountPreview = (func,url='/GetUnreadLogCount?OnlineUserID=') => {
-    return (dispatch,getState) => {
+const getUnreadLogCountPreview = (func, url = '/GetUnreadLogCount?OnlineUserID=') => {
+    return (dispatch, getState) => {
         // console.log(getState())
         url += getState().DataState.LoginUser.UserID
         getData(CONFIG.proxy + url, 2).then(res => {
@@ -433,10 +436,10 @@ const getUnreadLogCountPreview = (func,url='/GetUnreadLogCount?OnlineUserID=') =
             if (json.StatusCode === 400) {
                 console.log(json.StatusCode)
             } else if (json.StatusCode === 200) {
-                dispatch({ type: GET_UNREAD_LOG_COUNT_PREVIEW, data: json.Data});
-                func()
-            }
+                dispatch({ type: GET_UNREAD_LOG_COUNT_PREVIEW, data: json.Data });
 
+            }
+            func()
         });
     }
 }
@@ -444,7 +447,7 @@ const getUnreadLogCountPreview = (func,url='/GetUnreadLogCount?OnlineUserID=') =
 const getUnreadLogPreview = (url) => {
     let pageIndex = Public.getUrlQueryVariable(url, 'PageIndex');
     let pageSize = Public.getUrlQueryVariable(url, 'PageSize');
-    return (dispatch,getState) => {
+    return (dispatch, getState) => {
         // console.log(getState())
         //url += getState().DataState.LoginUser.UserID
         getData(CONFIG.proxy + url, 2).then(res => {
@@ -456,7 +459,7 @@ const getUnreadLogPreview = (url) => {
             if (json.StatusCode === 400) {
                 console.log(json.StatusCode)
             } else if (json.StatusCode === 200) {
-                dispatch({ type: GET_UNREAD_LOG_PREVIEW, data: json.Data,pageIndex:pageIndex,pageSize:pageSize});
+                dispatch({ type: GET_UNREAD_LOG_PREVIEW, data: json.Data, pageIndex: pageIndex, pageSize: pageSize });
             }
 
         });
@@ -466,7 +469,7 @@ const getUnreadLogPreview = (url) => {
 const getLogRecordPreview = (url) => {
     let pageIndex = Public.getUrlQueryVariable(url, 'PageIndex');
     let pageSize = Public.getUrlQueryVariable(url, 'PageSize');
-    return (dispatch,getState) => {
+    return (dispatch, getState) => {
         // console.log(getState())
         //url += getState().DataState.LoginUser.UserID
         getData(CONFIG.proxy + url, 2).then(res => {
@@ -478,7 +481,7 @@ const getLogRecordPreview = (url) => {
             if (json.StatusCode === 400) {
                 console.log(json.StatusCode)
             } else if (json.StatusCode === 200) {
-                dispatch({ type: GET_LOG_RECORD_PREVIEW, data: json.Data,pageIndex:pageIndex,pageSize:pageSize});
+                dispatch({ type: GET_LOG_RECORD_PREVIEW, data: json.Data, pageIndex: pageIndex, pageSize: pageSize });
             }
 
         });
@@ -487,14 +490,14 @@ const getLogRecordPreview = (url) => {
 //获取用户信息
 const getUserMsg = (url) => {
     return (dispatch) => {
-        getData(CONFIG.Xproxy + url,2).then(res => {
+        getData(CONFIG.Xproxy + url, 2).then(res => {
 
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
                 console.log('错误码：' + json.StatusCode)
             } else if (json.StatusCode === 200) {
-                
+
                 dispatch({ type: GET_USER_MSG, data: json.Data });
                 dispatch({ type: actions.UpUIState.USER_INFO_MODAL_OPEN });
             }

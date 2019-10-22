@@ -14,11 +14,12 @@ const GetCourseClassRecordMsg = (state = {}, actions) => {
 };
 
 function handleData(data) {
-    let newData = data.map((child,index) => {
+    console.log(data )
+    let newData = data instanceof Array &&data.map((child,index) => {
         let {Flag,OperateParams,CourseClassIDs,...Data} = child
         let params = OperateParams.split('-');
         let OperateContent = '';
-        params.map((param,key) => {
+        params instanceof Array && params.map((param,key) => {
             if(key%2){
                 
                 OperateContent += `<span className='key-params'>${param}</span>`

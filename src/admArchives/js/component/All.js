@@ -29,11 +29,12 @@ class All extends React.Component {
         const { DataState, UIState,dispatch } = nextProps;
         let userMsg = DataState.LoginUser;
         let userData = DataState.AllUserPreview;
-        if (JSON.stringify(userData) !== '{}')
+        // if (JSON.stringify(userData) !== '{}')
             if (userData && this.state.refresh) {
-                this.setState({
-                    refresh: false
-                })
+                // this.setState({
+                //     refresh: false
+                // })
+                // console.log(userData)
                 // 基于准备好的dom，初始化echarts实例
                 let Chart_user = echarts.init(document.getElementById('all-user-content'));
                 // 绘制图表

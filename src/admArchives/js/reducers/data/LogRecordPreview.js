@@ -35,7 +35,7 @@ function handleData(data, pageIndex, pageSize) {
         list.LogTime = child.LogTime;
         list.OperatorIP = child.OperatorIP;
         list.OperatorDetail=[]
-        list.OperatorDetail.push({Content:child.OperatorName+'（'+child.OperatorID+'）'+child.OperatorDetail,OperatorName:child.OperatorName,OperatorID:child.OperatorID});
+        list.OperatorDetail.push({Content:child.OperationDetail});
         list.Operator = {OperatorName:child.OperatorName,OperatorID:child.OperatorID};
         list.key = index;
         keyList.push(list.key);

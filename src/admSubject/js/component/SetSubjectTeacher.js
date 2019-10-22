@@ -34,8 +34,9 @@ class SetSubjectTeacher extends React.Component {
 
         })
         //请求链接和参数
-        let url = '/GetTeacherInfoBySubjectAndKey?schoolID='+DataState.LoginUser.School+'&subjectID=' + DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.SubjectID + '&key=';
+        let url = '/GetTeacherInfoBySubjectAndKey?schoolID='+DataState.LoginUser.SchoolID+'&subjectID=' + DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.SubjectID + '&key=';
         //获取初始全部学科信息
+        console.log(url)
         dispatch(actions.UpDataState.getSubjectTeacherMsg(url, 'All', AllGrades));
         this.state = {
             dropSelect: dropSelect,
@@ -138,6 +139,7 @@ class SetSubjectTeacher extends React.Component {
     //search下拉菜单事件
     onDropClickSearch = (grades, index, value) => {
         const { dispatch, DataState } = this.props;
+        // console.log(this.state.UserMsg.SchoolID)
         let url = '/GetTeacherInfoBySubjectAndKey?schoolID='+this.state.UserMsg.SchoolID+'&subjectID=' + DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.SubjectID + '&key=' + value.value;
 
         console.log(grades, index, value)
@@ -197,7 +199,7 @@ class SetSubjectTeacher extends React.Component {
                     </div> */}
 
                     {
-                        DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.Teachers.split(',').map((teacher, index) => {
+                        DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.Teachers.split(',') instanceof Array && DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.Teachers.split(',').map((teacher, index) => {
                             let teacherArr = teacher.split('/');
                             let Grades = teacherArr[0];
                             let TeacherID = teacherArr[1];
@@ -241,7 +243,7 @@ class SetSubjectTeacher extends React.Component {
                                             dropSelectd={this.state.dropSelect[index]}
 
                                         ></DropDown>
-                                        <span className='TeacherChange' style={{ 'display': this.state.initDropSelect[index].value !== this.state.dropSelect[index].value ? 'inline-block' : 'none' }}>
+                                        <span className='TeacherChange' style={{ 'display': this.state.initDropSelect[index].value && this.state.initDropSelect[index].value !== this.state.dropSelect[index].value ? 'inline-block' : 'none' }}>
                                             {'原教研组长:' + this.state.initDropSelect[index].title}
                                         </span>
                                     </div>

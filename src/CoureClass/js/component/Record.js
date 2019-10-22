@@ -26,10 +26,10 @@ class Record extends React.Component {
                 { value: 2, title: '删除教学班' },
                 { value: 3, title: '调整教学班' },
             ],
-            startTime: null,
-            endTime: null,
-            startMomentTime: null,
-            endtMomentTime: null,
+            startTime: '',
+            endTime: '',
+            startMomentTime: '',
+            endtMomentTime: '',
             endOpen: false,
             columns: [
                 {
@@ -131,6 +131,11 @@ class Record extends React.Component {
             pagination: 1,
             dataSource: []
         }
+        const { dispatch, DataState, UIState } = this.props;
+
+
+        let userMsg = DataState.LoginUser;
+        dispatch(actions.UpDataState.getCourseClassRecordMsg('/GetGourseClassLogForPage?userID=' + userMsg.UserID + '&userType=' + userMsg.UserType + '&schoolID=' + userMsg.SchoolID + '&startDate=' + this.state.startTime + '&endDate=' + this.state.endTime + '&operateType=0'))
     }
 
     //钩子
@@ -336,11 +341,11 @@ class Record extends React.Component {
             }));
             return
         }
-        postData(CONFIG.proxy + url, {
+        postData(CONFIG.CourseClassProxy + url, {
             userID: userMsg.UserID,
             userType: userMsg.UserType,
             logIDs: LogID
-        }).then(res => {
+        },2,'json').then(res => {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {

@@ -8,7 +8,7 @@ import { Scrollbars } from 'react-custom-scrollbars'
 import history from '../containers/history'
 import { Input, } from 'antd'
 import CONFIG from '../../../common/js/config';
-import { Search, Loading, CheckBox, CheckBoxGroup } from "../../../common";
+import { Search, Loading, CheckBox, CheckBoxGroup,Empty } from "../../../common";
 
 
 class SelectStudent extends React.Component {
@@ -280,12 +280,12 @@ class SelectStudent extends React.Component {
                         ></Search>
                     </div>
                     <Loading spinning={UIState.AppLoading.studentLoading}>
-                        <div className='box-content'>
+                        {!ClassList.length&&!propStudent.length?(<div className='box-content'>
                             <Scrollbars
-                                style={{ width: 177 + 'px', height: 437 + 'px', float: 'left' }}
+                                style={{ width: 177 + 'px', height: 437 + 'px', float: 'left',margin:0 }}
                             >
                                 <ul className='selectClassBox'
-                                    style={{ width: 177 + 'px', height: 437 + 'px' }}
+                                    style={{ width: 177 + 'px', height: 437 + 'px',margin:0 }}
                                 >
                                     {
                                         ClassList.map((child, index) => {
@@ -302,13 +302,13 @@ class SelectStudent extends React.Component {
                             </Scrollbars>
                             <Loading spinning={UIState.AppLoading.classStudentLoading}>
                                 <ul className='selectStudent' style={{ width: 475 + 'px', height: 437 + 'px', display: this.state.show ? 'block' : 'none' }}>
-                                    <li className='selectAllBox'>
+                                {propStudent.length?<li className='selectAllBox'>
                                         <CheckBox
                                             className='selectAll'
                                             onClick={this.onSelectAllClick.bind(this)}
                                             checked={this.state.checkAll}
                                         >全选</CheckBox>
-                                    </li>
+                                    </li>:<Empty type='4' noTitle style={{marginTop:50+'%',transform:translateY(-50+'%')}}></Empty>}
                                     <Scrollbars
                                         style={{ width: 100 + '%', height: 387 + 'px' }}
                                     >
@@ -331,8 +331,7 @@ class SelectStudent extends React.Component {
                                     </Scrollbars>
                                 </ul>
                             </Loading>
-                        </div>
-
+                        </div>):<Empty type='4' noTitle style={{marginTop:50+'%',transform:translateY(-50+'%')}}></Empty>}
                     </Loading>
 
                 </div>

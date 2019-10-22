@@ -64,14 +64,14 @@ class AddCourseClass extends React.Component {
         // })
     }
 
-    //学科选择
-    onSelectSubjectChange = (value) => {
-        console.log(value)
-    }
-    //年级选择
-    onSelectGradeChange = (value) => {
-        console.log(value)
-    }
+    // //学科选择
+    // onSelectSubjectChange = (value) => {
+    //     console.log(value)
+    // }
+    // //年级选择
+    // onSelectGradeChange = (value) => {
+    //     console.log(value)
+    // }
     //选择教师
     onTeacherSelectClick = () => {
         const { DataState, UIState, dispatch } = this.props;
@@ -145,11 +145,14 @@ class AddCourseClass extends React.Component {
     }
     //选择学科
     onSelectSubjectChange = (value) => {
+        const { DataState, UIState, dispatch } = this.props;
         console.log(value)
         this.setState({
             Subject: value,
             SubjectSelect: value
         })
+        dispatch(actions.UpDataState.setCourseClassDataMsg({ Subject: value }))
+
     }
     //选择年级
     onSelectGradeChange = (value) => {
@@ -157,8 +160,10 @@ class AddCourseClass extends React.Component {
         console.log(value)
         this.setState({
             GradeSelect: value,
-            SubjectSelect: value
+            // SubjectSelect: value
         })
+        dispatch(actions.UpDataState.setCourseClassDataMsg({ Grade: value }))
+
         // if(this.state.Subject.value===0){
         //     dispatch(actions.UpUIState.showErrorAlert({
         //         type: 'btn-error',
@@ -236,6 +241,7 @@ class AddCourseClass extends React.Component {
                             <span className='right '>
                                 <DropDown
                                     width={150}
+                                    height={98}
                                     type='simple'
                                     dropList={SubjectDropList}
                                     dropSelectd={this.state.SubjectSelect}
@@ -252,9 +258,10 @@ class AddCourseClass extends React.Component {
                             <span className='right '>
                                 <DropDown
                                     disabled={this.state.Subject.value === 0 ? true : false}
+                                    height={98}
                                     width={180}
                                     type='simple'
-                                    dropSelectd={{ value: 0, title: '请选择年级' }}
+                                    dropSelectd={this.state.GradeSelect}
                                     dropList={this.state.Subject.value === 0 ? [] : GradeDropList[this.state.Subject.value]}
                                     onChange={this.onSelectGradeChange.bind(this)}
                                 ></DropDown>

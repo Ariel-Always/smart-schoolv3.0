@@ -1,7 +1,7 @@
 import UpDataState from '../../actions/UpDataState';
 import { Children } from 'react';
 
-const AllUserPreview = (state={},actions)=>{
+const AllUserPreview = (state={Student:'',Teacher:'',SchoolLeader:'',Total:''},actions)=>{
     switch (actions.type) {
         case UpDataState.GET_ALL_USER_PREVIEW:
             let newData = handleData(actions.data)

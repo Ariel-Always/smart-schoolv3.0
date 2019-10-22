@@ -7,7 +7,10 @@ const GetCourseClassDetailsHandleClassMsg = (state = {}, actions) => {
         case UpDataState.GET_COURSE_CLASS_DETAILS_HANDEL_CLASS_MSG:
             let data = handleData(actions.data)
             return Object.assign({}, state, { ...data });
-
+        case UpDataState.SET_COURSE_CLASS_DATA:
+            // console.log(actions.data)
+            let courseClassData = Object.assign({}, state.selectData, { ...actions.data });
+            return Object.assign({}, state, { selectData: courseClassData });
         case UpDataState.SET_COURSE_CLASS_NAME:
             let courseClass = Object.assign({}, state.selectData, { CourseClass: actions.data });
             return Object.assign({}, state, { selectData: courseClass });
@@ -30,7 +33,7 @@ const GetCourseClassDetailsHandleClassMsg = (state = {}, actions) => {
         case UpDataState.SET_COURSE_CLASS_STUDENT_MSG:
             let selectDataStudent = Object.assign({}, state.selectData, { Student: actions.data });
             let transferStudent2 = Object.assign({}, state.transfer, { Student: actions.data });
-            return Object.assign({}, state, { selectData: selectDataStudent,transfer:transferStudent2 });
+            return Object.assign({}, state, { selectData: selectDataStudent, transfer: transferStudent2 });
 
         case UpDataState.SET_COURSE_CLASS_STUDENT_DEFAULT_MSG:
             return Object.assign({}, state, { TableSource: actions.data });

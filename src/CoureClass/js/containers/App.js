@@ -178,7 +178,7 @@ class App extends Component {
             //     return;
             //dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss'));
             this.setState({
-                showBarner: true,
+                showBarner: false,
                 showLeftMenu: false
             })
 
@@ -319,8 +319,118 @@ class App extends Component {
     AddCourseClassModalOk = () => {
         const { dispatch, DataState } = this.props;
         let Student = DataState.GetCourseClassDetailsHandleClassMsg.selectData.Student;
+        console.log(Student)
         //dispatch(actions.UpDataState.setCourseClassStudentMsg(Student))
+        let userMsg = DataState.LoginUser;
+        let data = DataState.GetCourseClassDetailsHandleClassMsg;
+        let route = history.location.pathname;
+        let pathArr = route.split('/');
+        let handleRoute = pathArr[1];
+        let routeID = pathArr[2];
+        let subjectID = pathArr[3];
+        let classID = pathArr[4];
+
+        // if (data.selectData.Teacher.value === data.TeacherID && data.selectData.CourseClass.CourseClassName === data.CourseClassName && deepCompare.deepCompare(data.selectData.Student, data.TableSource)) {
+        //     dispatch(actions.UpUIState.showErrorAlert({
+        //         type: 'btn-error',
+        //         title: "您还没有选择哦~",
+        //         ok: this.onAppAlertOK.bind(this),
+        //         cancel: this.onAppAlertCancel.bind(this),
+        //         close: this.onAppAlertClose.bind(this)
+        //     }));
+        //     return;
+        // }
+        if(!data.selectData.CourseClass.CourseClassName){
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-error',
+                title: "您还没填写教学班名称哦~",
+                ok: this.onAppAlertOK.bind(this),
+                cancel: this.onAppAlertCancel.bind(this),
+                close: this.onAppAlertClose.bind(this)
+            }));
+            return;
+        }
+        if(!data.selectData.Subject.value){
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-error',
+                title: "您还没选择学科哦~",
+                ok: this.onAppAlertOK.bind(this),
+                cancel: this.onAppAlertCancel.bind(this),
+                close: this.onAppAlertClose.bind(this)
+            }));
+            return;
+        }
+        if(!data.selectData.Grade.value){
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-error',
+                title: "您还没选择年级哦~",
+                ok: this.onAppAlertOK.bind(this),
+                cancel: this.onAppAlertCancel.bind(this),
+                close: this.onAppAlertClose.bind(this)
+            }));
+            return;
+        }
+        // if(!data.selectData.Teacher.value){
+        //     dispatch(actions.UpUIState.showErrorAlert({
+        //         type: 'btn-error',
+        //         title: "您还没选择教师哦~",
+        //         ok: this.onAppAlertOK.bind(this),
+        //         cancel: this.onAppAlertCancel.bind(this),
+        //         close: this.onAppAlertClose.bind(this)
+        //     }));
+        //     return;
+        // }
+        // if(!data.selectData.Student.length){
+        //     dispatch(actions.UpUIState.showErrorAlert({
+        //         type: 'btn-error',
+        //         title: "您还没选择学生哦~",
+        //         ok: this.onAppAlertOK.bind(this),
+        //         cancel: this.onAppAlertCancel.bind(this),
+        //         close: this.onAppAlertClose.bind(this)
+        //     }));
+        //     return;
+        // }
+        // console.log(data.selectData.Student,data.TableSource,deepCompare.deepCompare(data.selectData.Student, data.TableSource))
+        let courseClassStus = data.selectData.Student.map((child, index) => {
+            return child.StudentID
+        }).join();
+        let url = '/InsertOrEditCourseClass'
+        //dispatch(actions.UpDataState.setCourseClassStudentMsg(Student))
+
+        postData(CONFIG.CourseClassProxy + url, {
+            userID: userMsg.UserID,
+            userType: userMsg.UserType,
+            schoolID: userMsg.SchoolID,
+            courseClassName: data.selectData.CourseClass.CourseClassName,
+            teacherID: data.selectData.Teacher.value,
+            gradeID: data.selectData.Grade.value,
+            subjectID: data.selectData.Subject.value,
+            courseClassStus: courseClassStus
+        }).then(res => {
+            return res.json()
+        }).then(json => {
+            if (json.StatusCode === 400) {
+                console.log('错误码：' + json.StatusCode)
+            } else if (json.StatusCode === 200) {
+                dispatch(actions.UpUIState.showErrorAlert({
+                    type: 'success',
+                    title: "成功",
+                    onHide: this.onAlertWarnHide.bind(this)
+                }));
+
+                dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=1&pageSize=10', routeID, classID));
+
+            }
+        })
         dispatch(actions.UpUIState.AddCourseClassModalClose())
+
+        // dispatch(actions.UpUIState.ChangeCourseClassModalClose())
+        dispatch(actions.UpDataState.setCourseClassName([]))
+        dispatch(actions.UpDataState.setCourseClassStudentMsg([]))
+        dispatch(actions.UpDataState.setSubjectTeacherMsg([]))
+        dispatch(actions.UpDataState.setClassStudentTransferMsg([]))
+        dispatch(actions.UpDataState.setSubjectTeacherTransferMsg([]))
+
     }
     AddCourseClassModalCancel = () => {
         const { dispatch, DataState } = this.props;

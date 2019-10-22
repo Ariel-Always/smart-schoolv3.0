@@ -61,13 +61,13 @@ class ChangeSubject extends React.Component {
         // }
         // console.log(DataState.PeriodMsg.value  instanceof Array)
         DataState.PeriodMsg.value instanceof Array && DataState.PeriodMsg.value.map((child, index) => {
-            console.log(child)
+            // console.log(child)
             if (index === 0)
                 return;
             let GradesArr = child.Grades.split(',');
 
             let selectGrades = DataState.ChangeSubjectMsg.GlobalGradeIDs.split(',');
-            console.log(selectGrades)
+            // console.log(selectGrades)
             let mySelect = [];
 
             GradesArr.map((child2, index) => {

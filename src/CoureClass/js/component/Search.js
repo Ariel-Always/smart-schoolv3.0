@@ -7,15 +7,15 @@ import { postData, getData } from '../../../common/js/fetch'
 import CONFIG from '../../../common/js/config';
 import '../../scss/Search.scss'
 
-class Search extends React.Component{
-    constructor(props){
+class Search extends React.Component {
+    constructor(props) {
         super(props);
-        this.state=({
+        this.state = ({
             columns: [
                 {
                     title: '序号',
                     align: 'center',
-                    width:70,
+                    width: 70,
                     key: 'OrderNO',
                     dataIndex: 'OrderNO',
                     render: OrderNO => {
@@ -112,7 +112,7 @@ class Search extends React.Component{
             ],
             checkedList: [],
             checkAll: false,
-            UserMsg:props.DataState.LoginUser
+            UserMsg: props.DataState.LoginUser
 
         })
     }
@@ -142,14 +142,14 @@ class Search extends React.Component{
         console.log('ss' + classID)
         const { dispatch, DataState, UIState } = this.props;
         dispatch(actions.UpUIState.CourseClassDetailsModalOpen())
-        dispatch(actions.UpDataState.getCourseClassDetailsMsg('/GetCourseClassDetail?courseClassID='+classID))
+        dispatch(actions.UpDataState.getCourseClassDetailsMsg('/GetCourseClassDetail?courseClassID=' + classID))
     }
     //列表操作编辑点击事件
     onHandleClassClick = (key) => {
         const { dispatch, DataState, UIState } = this.props;
         console.log(key)
         let ClassID = DataState.GetClassAllMsg.allClass.TableData[key].CourseClass.ClassID;
-        
+
         dispatch(actions.UpUIState.ChangeCourseClassModalOpen())
         dispatch(actions.UpDataState.getCourseClassDetailsHandleClassMsg('/GetCourseClassDetail?courseClassID=' + ClassID))
 
@@ -184,7 +184,7 @@ class Search extends React.Component{
         let routeID = pathArr[2];
         let subjectID = pathArr[3];
         let classID = pathArr[4];
-        dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID='+this.state.UserMsg.SchoolID+'&pageIndex=' + value + '&pageSize=10', routeID, classID));
+        dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=' + value + '&pageSize=10', routeID, classID));
 
 
     }
@@ -224,7 +224,7 @@ class Search extends React.Component{
         let source = DataState.GetClassAllMsg.allClass.TableData;
         checkedList.map((child, index) => {
             if (index !== len - 1)
-            courseClassID += source[child].CourseClass.ClassID + '-';
+                courseClassID += source[child].CourseClass.ClassID + '-';
             else
                 courseClassID += source[child].CourseClass.ClassID;
 
@@ -275,9 +275,9 @@ class Search extends React.Component{
         let classID = pathArr[4];
         let url = '/DeleteSubject';
         dispatch(actions.UpUIState.hideErrorAlert());
-        postData(CONFIG.proxy + url, {
+        postData(CONFIG.CourseClassProxy + url, {
             courseClassID: id
-        }).then(res => {
+        }, 2, 'json').then(res => {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
@@ -289,10 +289,10 @@ class Search extends React.Component{
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
                 this.setState({
-                    checkedList:[],
-                    checkAll:false
+                    checkedList: [],
+                    checkAll: false
                 })
-                dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID='+this.state.UserMsg.SchoolID+'&pageIndex=' + 1 + '&pageSize=10', routeID, classID));
+                dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=' + 1 + '&pageSize=10', routeID, classID));
             }
         })
     }
@@ -306,11 +306,11 @@ class Search extends React.Component{
         let classID = pathArr[4];
         let url = '/DeleteSubject';
         dispatch(actions.UpUIState.hideErrorAlert());
-        postData(CONFIG.proxy + url, {
+        postData(CONFIG.CourseClassProxy + url, {
             courseClassID: id
         }).then(res => {
             return res.json()
-        }).then(json => {
+        }, 2, 'json').then(json => {
             if (json.StatusCode === 400) {
                 console.log('错误码：' + json.StatusCode)
             } else if (json.StatusCode === 200) {
@@ -319,36 +319,36 @@ class Search extends React.Component{
                     title: "成功",
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
-                
-                dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID='+this.state.UserMsg.SchoolID+'&pageIndex=' + 1 + '&pageSize=10', routeID, classID));
+
+                dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=' + 1 + '&pageSize=10', routeID, classID));
 
             }
         })
     }
     //关闭
     onAlertWarnHide = () => {
-        const { dispatch,DataState,UIState } = this.props;
+        const { dispatch, DataState, UIState } = this.props;
         dispatch(actions.UpUIState.hideErrorAlert())
     }
-    render(){
-        const { dispatch,DataState,UIState } = this.props;
-        let searchData = DataState.GetClassAllMsg.allClass? DataState.GetClassAllMsg.allClass.TableData:[];
-
+    render() {
+        const { dispatch, DataState, UIState } = this.props;
+        let searchData = DataState.GetClassAllMsg.allClass ? DataState.GetClassAllMsg.allClass.TableData : [];
+        let Total = DataState.GetClassAllMsg.allClass ? DataState.GetClassAllMsg.allClass.CourseClassCount : 0;
         return (
             <div className='Search'>
                 <div className='Search-box'>
                     <div className='Search-top'>
                         <span className='top-tips'>
-                            <span className='tips '>{'搜索结果: 共找到'+(DataState.GetClassAllMsg.allClass ? DataState.GetClassAllMsg.allClass.CourseClassCount : 0)+'个教学班'}</span>
+                            <span className='tips '>{'搜索结果: 共找到' + (DataState.GetClassAllMsg.allClass ? DataState.GetClassAllMsg.allClass.CourseClassCount : 0) + '个教学班'}</span>
                         </span>
 
                     </div>
                     <hr className='Search-hr' />
                     <div className='Search-content'>
-                        <CheckBoxGroup 
-                        style={{ width: '100%' }} 
-                        value={this.state.checkedList} 
-                        onChange={this.onCheckBoxGroupChange.bind(this)}>
+                        <CheckBoxGroup
+                            style={{ width: '100%' }}
+                            value={this.state.checkedList}
+                            onChange={this.onCheckBoxGroupChange.bind(this)}>
                             <Table
                                 className='table'
                                 loading={UIState.AppLoading.TableLoading}
@@ -357,10 +357,10 @@ class Search extends React.Component{
                                 dataSource={DataState.GetClassAllMsg.allClass ? DataState.GetClassAllMsg.allClass.TableData : []}
                             ></Table>
                         </CheckBoxGroup>
-                        <CheckBox className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
+                        {Total ? (<CheckBox className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
                             全选
                                     <Button onClick={this.onDeleteAllClick} className='deleteAll' color='blue'>删除</Button>
-                        </CheckBox>
+                        </CheckBox>) :''}
 
                         <div className='pagination-box'>
                             <PagiNation
@@ -375,7 +375,7 @@ class Search extends React.Component{
 
                     </div>
                 </div>
-            
+
             </div>
         )
     }

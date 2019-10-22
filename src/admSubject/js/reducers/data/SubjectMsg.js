@@ -128,10 +128,11 @@ function handleTeacher(teacher) {
     return allTeacherArr;
 }
 function handleGrade(grade) {
-    // console.log(grade)
+    
     if (grade === '')
         return '';
     let GradeArr = grade.split(',');
+    console.log(grade,GradeArr)
     let sort = [];
     let Grades = [];
     let returnGrade = '';
@@ -150,7 +151,7 @@ function handleGrade(grade) {
     if (isSeries && Grades.length !== 0) {
         returnGrade = Grades[0] + '~' + Grades[Grades.length - 1];
     } else if (!isSeries && Grades.length !== 0) {
-        Grade instanceof Array &&Grades.map((child, index) => {
+        Grades instanceof Array &&Grades.map((child, index) => {
             if (index !== Grades.length - 1)
                 returnGrade += child + ',';
             else
