@@ -86,8 +86,6 @@ class SafeSetting extends Component{
 
                     dispatch({ type:SafeSettingActions.SAFE_SETTING_CONTENT_SLIDE_DOWN,data:type});
 
-                    dispatch(SafeSettingActions.getQuestions());
-
                 }
 
                 break;

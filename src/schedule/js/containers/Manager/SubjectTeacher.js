@@ -6,9 +6,7 @@ import {HashRouter as Router,Route,Switch} from 'react-router-dom';
 
 import Subject from './Subject';
 
-import Teacher from './Teacher'
-
-import {connect} from 'react-redux';
+import Teacher from './Teacher';
 
 
 class SubjectTeacher extends Component{
@@ -49,12 +47,5 @@ class SubjectTeacher extends Component{
 
 }
 
-const mapStateToProps = (state) =>{
 
-    return{
-        state
-    }
-
-};
-
-export default connect(mapStateToProps)(SubjectTeacher);
+export default SubjectTeacher;

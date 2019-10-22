@@ -211,4 +211,17 @@
   }
 
 }
+
+.ant-spin{
+
+  @include flex;
+
+  @include flex-direction(center);
+
+  @include justify-content(center);
+
+  @include  align-items(center);
+
+}
+
 /*组件：loading end*/

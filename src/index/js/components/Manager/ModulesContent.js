@@ -1,11 +1,14 @@
 import React,{Component} from 'react';
 
 
+
 class ModulesContent extends Component{
 
     render() {
 
         const { Modules,ModuleClick } = this.props;
+
+
 
         return (
 
@@ -27,7 +30,7 @@ class ModulesContent extends Component{
 
                                         item.Modules.map((i,k)=>{
 
-                                            return <div  key={k} className="module-item" onClick={()=>{ ModuleClick({AccessType:i.AccessType,AccessParam:i.AccessParam,ModuleStatus:i.ModuleStatus})}}>
+                                            return <div  key={k} className="module-item" onClick={()=>{ ModuleClick({AccessType:i.AccessType,AccessParam:i.AccessParam,ModuleStatus:i.ModuleStatus,SysID:i.SysID})}}>
 
                                                         <div className="module-bg">
 

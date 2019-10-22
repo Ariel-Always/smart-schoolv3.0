@@ -10,7 +10,7 @@ import Header from '../../components/Manager/Header';
 
 import ModulesContent from '../../components/Manager/ModulesContent';
 
-import { LogOut } from "../../../../common/js/disconnect";
+import { LogOut,getQueryVariable } from "../../../../common/js/disconnect";
 
 import { connect } from 'react-redux';
 
@@ -65,7 +65,7 @@ class Index extends Component{
 
 
     //点击模块的时候调用
-    ModuleClick({AccessType,AccessParam,ModuleStatus}){
+    ModuleClick({AccessType,AccessParam,ModuleStatus,SysID}){
 
         const { dispatch } = this.props;
 
@@ -73,7 +73,17 @@ class Index extends Component{
 
             if (ModuleStatus===1){
 
-                window.open(AccessParam);
+                if (SysID!=='000'){
+
+                    let lg_tk = getQueryVariable('lg_tk')||sessionStorage.getItem('token');
+
+                    window.open(`${AccessParam}?lg_tk=${lg_tk}`);
+
+                }else{
+
+                    window.open(AccessParam);
+
+                }
 
             }else{
                 

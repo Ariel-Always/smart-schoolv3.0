@@ -220,17 +220,32 @@ class SingleDoubleTable extends Component{
 
                                         tds.push(<td key={`${i}${ky}`} className={`shedule${i} `} style={{height:commonHeight,width:commonWidth}}>
 
-                                            <div className={`scheduleDiv ${i === weekDay?'active':''}`} style={{width:'100%'}}>
+                                            <div className={`scheduleDiv ${i === weekDay?'active':''}  ${it.IsShift?'isShift':''}`} style={{width:'100%'}}>
 
-                                                <div className={`title ${it.ScheduleType===1?'':'active'}`} title={it.title} data-id={it.titleID}>{it.title}</div>
 
-                                                <div className="second-title" title={it.secondTitle} data-id={it.secondTitleID}>{it.secondTitle}</div>
+                                                {
 
-                                                <div className="third-title" title={it.thirdTitle} data-id={it.thirdTitleID}>{it.thirdTitle}</div>
+                                                    it.IsShift?
+
+                                                        <a className="shift-wrapper">走班课程</a>
+
+                                                        :
+
+                                                        <React.Fragment>
+
+                                                            <div className={`title ${it.ScheduleType===1?'':'active'}`} title={it.title} data-id={it.titleID}>{it.title}</div>
+
+                                                            <div className="second-title" title={it.secondTitle} data-id={it.secondTitleID}>{it.secondTitle}</div>
+
+                                                            <div className="third-title" title={it.thirdTitle} data-id={it.thirdTitleID}>{it.thirdTitle}</div>
+
+                                                        </React.Fragment>
+
+                                                }
 
                                             </div>
 
-                                    </td>)
+                                    </td>);
 
                                         hasCourse = true;
 
@@ -279,7 +294,7 @@ class SingleDoubleTable extends Component{
 
                                 <td className={`course-time course${key+1}`} style={{height:commonHeight}}>
 
-                                    <div className="course-time-title" style={{width:leftTwoWidth}}>{item.ClassHourName}</div>
+                                    <div className="course-time-title" style={{width:leftTwoWidth}}>第{item.ClassHourNO}节</div>
 
                                     <div className="course-time-time">{item.StartTime}-{item.EndTime}</div>
 

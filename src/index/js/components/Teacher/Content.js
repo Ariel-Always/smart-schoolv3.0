@@ -124,7 +124,7 @@ class Content extends Component{
 
                                                                 className={`module-item ${i.IsGroup?'group':''}`}
 
-                                                                onClick={i.IsGroup?(e)=>GroupToggle({GroupID:item.GroupID,OrderNo:i.OrderNo,Event:e}):(e)=>ClickModule({ModuleStatus:i.ModuleStatus,AccessType:i.AccessType,AccessParam:i.AccessParam,Event:e})}>
+                                                                onClick={i.IsGroup?(e)=>GroupToggle({GroupID:item.GroupID,OrderNo:i.OrderNo,Event:e}):(e)=>ClickModule({ModuleStatus:i.ModuleStatus,AccessType:i.AccessType,AccessParam:i.AccessParam,SysID:i.SysID,Event:e})}>
 
                                                         {
 
@@ -160,7 +160,7 @@ class Content extends Component{
 
                                                                                 }
 
-                                                                                return <div key={kt} className="module-detail-item" onClick={(e)=>ClickModule({ModuleStatus:it.ModuleStatus,AccessType:it.AccessType,AccessParam:it.AccessParam,Event:e})}>
+                                                                                return <div key={kt} className="module-detail-item" onClick={(e)=>ClickModule({ModuleStatus:it.ModuleStatus,AccessType:it.AccessType,AccessParam:it.AccessParam,SysID:i.SysID,Event:e})}>
 
                                                                                     {
 
@@ -252,7 +252,7 @@ class Content extends Component{
 
                                                                 className={`module-item ${i.IsGroup?'group':''}`}
 
-                                                                onClick={i.IsGroup?(e)=>GroupToggle({GroupID:item.GroupID,OrderNo:i.OrderNo,Event:e}):(e)=>ClickModule({ModuleStatus:i.ModuleStatus,AccessType:i.AccessType,AccessParam:i.AccessParam,Event:e})}>
+                                                                onClick={i.IsGroup?(e)=>GroupToggle({GroupID:item.GroupID,OrderNo:i.OrderNo,Event:e}):(e)=>ClickModule({ModuleStatus:i.ModuleStatus,AccessType:i.AccessType,AccessParam:i.AccessParam,SysID:i.SysID,Event:e})}>
 
                                                         {
 
@@ -280,7 +280,7 @@ class Content extends Component{
 
                                                                                 ModuleIcon = <div className="module-detail-item-pic" style={{backgroundImage:`url(${it.ModuleLogoPath})`}}></div>
 
-                                                                                return <div key={kt} className="module-detail-item" onClick={(e)=>ClickModule({ModuleStatus:it.ModuleStatus,AccessType:it.AccessType,AccessParam:it.AccessParam,Event:e})}>
+                                                                                return <div key={kt} className="module-detail-item" onClick={(e)=>ClickModule({ModuleStatus:it.ModuleStatus,AccessType:it.AccessType,AccessParam:it.AccessParam,SysID:i.SysID,Event:e})}>
 
                                                                                     {
 

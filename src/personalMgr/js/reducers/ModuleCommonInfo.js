@@ -2,7 +2,7 @@ import MCIActions from '../actions/ModuleCommonInfoActions';
 
 const ModuleCommonInfo = (state={
 
-    menuActive:'base'
+    menuActive:''
 
 },actions) => {
 

@@ -48,14 +48,6 @@ $image-url:'../images';
 
     background-color: #ffffff;
 
-    @include flex;
-
-    @include flex-direction(column);
-
-    @include justify-content(center);
-
-    @include align-items(center);
-
     z-index: 10100;
 
   }

@@ -235,7 +235,7 @@ export function TokenCheck(IsDesk,SysID = '000') {
 
 }
 //获取url参数
-function getQueryVariable(variable) {
+export function getQueryVariable(variable) {
     var query = window.location.search.substring(1) || window.location.href.split('?')[1] || window.location.href;
 
     var vars = query.split("&");

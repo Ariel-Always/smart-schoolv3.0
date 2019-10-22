@@ -732,8 +732,6 @@ class Search extends React.Component {
 
         let CancelBtnDisplay =  CancelBtnShow?(CancelBtnShow==='y'?'block':'none'):(this.state.cancleShow === true ? 'block' : 'none');
 
-        console.log(CancelBtnShow,CancelBtnDisplay);
-
         return (
             <div className={`search_container ${className ? className : ''}`} style={{
                 width: width ? width : '',
@@ -1586,7 +1584,11 @@ class Menu extends React.Component {
 
 class MenuLeft extends React.Component {
 
+    componentDidMount(){
 
+
+
+    }
 
     render() {
         //传递的参数的数据

@@ -46,6 +46,8 @@ const GetAllOptionByPeriodID = async ({SchoolID,PeriodID,UserID,UserType,dispatc
 
         CONFIG.ScheduleProxy);
 
+    //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+
     if (res.StatusCode === 200){
 
         return res.Data;
@@ -85,6 +87,57 @@ const GetAllScheduleOfTeachersBySubjectIDForPage = async ({SchoolID,PeriodID,Sub
 
 
 
+//分页获取班级总课表
+
+const GetAllScheduleOfClassByGradeIDForPage = async ({SchoolID,PeriodID,GradeID='',WeekNO=0,PageIndex,PageSize,dispatch}) => {
+
+    let res = await Method.getGetData(`/Schedule/api/GetAllScheduleOfClassByGradeIDForPage?SchoolID=${SchoolID}&GradeID=${GradeID}&PeriodID=${PeriodID}&WeekNO=${WeekNO}&PageIndex=${PageIndex}&PageSize=${PageSize}`,
+
+        2,
+
+        CONFIG.ScheduleProxy);
+        //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+
+    if (res.StatusCode === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
+
+
+//获取单个班级课表
+
+const GetScheduleOfClassOne = async ({SchoolID,ClassID,WeekNO=0,dispatch}) => {
+
+    let res = await Method.getGetData(`/schedule/api/GetScheduleOfClassOne?SchoolID=${SchoolID}&ClassID=${ClassID}&WeekNO=${WeekNO}`,
+
+        2,
+
+        CONFIG.ScheduleProxy);
+        //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+
+    if (res.StatusCode === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
+
+
+
 
 //获取课表教师信息（含搜索）
 
@@ -116,13 +169,7 @@ const GetTeacherBySubjectIDAndKey = async ({SchoolID,PeriodID='',SubjectID='',Ke
 
 const GetScheduleByUserID = async ({SchoolID,PeriodID,UserType,UserID,WeekNO=0,dispatch}) => {
 
-    let res = await Method.getGetData(`/Schedule/api/GetScheduleByUserID
-    ?SchoolID=${SchoolID}
-    &PeriodID=${PeriodID}
-    &UserType=${UserType}
-    &UserID=${UserID}
-    &WeekNO=${WeekNO}
-    `,
+    let res = await Method.getGetData(`/Schedule/api/GetScheduleByUserID?SchoolID=${SchoolID}&PeriodID=${PeriodID}&UserType=${UserType}&UserID=${UserID}&WeekNO=${WeekNO}`,
 
         2,
 
@@ -176,6 +223,8 @@ const GetClassByGradeIDAndKey = async ({SchoolID,PeriodID='',GradeID='',Key='',d
 
         CONFIG.ScheduleProxy);
 
+        //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+
     if (res.StatusCode === 200){
 
         return res.Data;
@@ -217,9 +266,7 @@ const GetClassRoomByClassTypeAndKey = async ({SchoolID,PeriodID='',ClassRoomType
 
 const GetSubjectAndClassInfoByTeacherID = async ({TeacherID,dispatch}) => {
 
-    let res = await Method.getGetData(`/Schedule/api/GetSubjectAndClassInfoByTeacherID
-    ?TeacherID=${TeacherID}
-    `,
+    let res = await Method.getGetData(`/Schedule/api/GetSubjectAndClassInfoByTeacherID?TeacherID=${TeacherID}`,
 
         2,
 
@@ -628,6 +675,10 @@ export default {
 
     BatchCloseSchedule,
 
-    DeleteScheduleByGrades
+    DeleteScheduleByGrades,
+
+    GetAllScheduleOfClassByGradeIDForPage,
+
+    GetScheduleOfClassOne
 
 }

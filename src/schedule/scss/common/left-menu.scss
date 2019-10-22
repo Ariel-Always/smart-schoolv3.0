@@ -6,6 +6,28 @@
 
   width: 236px;
 
+  .emptyBox{
+
+    .empty{
+
+      width: 236px;
+
+      height: 64px;
+
+      @include background-size(236px 64px);
+
+      &.tips-error-5{
+
+        height: 100px;
+
+        @include background-size(236px 128px);
+
+      }
+
+    }
+
+  }
+
   .left-menu-title{
 
     height:42px;
@@ -182,6 +204,38 @@
 
     }
 
+    &.class{
+
+      .cat-item{
+
+        &.active{
+
+          .cat-children-name{
+
+            background-image:url("#{$image-url}/left-menu-class-active.png");
+
+          }
+
+        }
+
+      }
+
+      .cat-children-name{
+
+        background-image:url("#{$image-url}/left-menu-class.png");
+
+        &:hover{
+
+          background-image:url("#{$image-url}/left-menu-class-active.png");
+
+          color: #8a400f;
+
+        }
+
+      }
+
+    }
+
   }
 
   .left-menu-search-wrapper{
@@ -246,6 +300,23 @@
         &:hover{
 
           background-image: url("#{$image-url}/left-menu-person-active.png");
+
+        }
+
+      }
+
+    }
+
+    &.class{
+
+
+      .cat-children-name{
+
+        background-image: url("#{$image-url}/left-menu-class.png");
+
+        &:hover{
+
+          background-image: url("#{$image-url}/left-menu-class-active.png");
 
         }
 

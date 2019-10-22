@@ -90,12 +90,76 @@ const Init = () => {
 
         let { UserID } = getState().LoginUser;
 
+        let SecurityInfo =  GetSecurityInfo({UserID,dispatch});
+
+        let SystemSecQA = GetSystemSecQA({UserID,dispatch});
+
+        /*GetSystemSecQA({UserID,dispatch}).then(data => {
+
+            if (data){
+
+                let questionsList = [{value:"self",title:"自定义密保问题"}];
+
+                let arr = data.map((item,key)=>{
+
+                    return {
+
+                        value:key,
+
+                        title:item
+
+                    }
+
+                });
+
+                questionsList.push(...arr);
+
+                dispatch({type:SAFE_SETTING_QUESTIONS_LIST_UPDATE,data:questionsList});
+
+            }
+
+        })
+
 
         GetSecurityInfo({UserID,dispatch}).then(data => {
 
             if (data){
 
                 dispatch({type:SAFE_SETTING_INIT_DATA_UPDATE,data:data});
+
+                dispatch({type:SAFE_SETTING_LOADING_HIDE});
+
+            }
+
+        });*/
+
+        Promise.all([SecurityInfo,SystemSecQA]).then(res=>{
+
+           if (res[1]){
+
+               let questionsList = [{value:"self",title:"自定义密保问题"}];
+
+               let arr = res[1].map((item,key)=>{
+
+                   return {
+
+                       value:key,
+
+                       title:item
+
+                   }
+
+               });
+
+               questionsList.push(...arr);
+
+               dispatch({type:SAFE_SETTING_QUESTIONS_LIST_UPDATE,data:questionsList});
+
+           }
+
+            if (res[0]){
+
+                dispatch({type:SAFE_SETTING_INIT_DATA_UPDATE,data:res[0]});
 
                 dispatch({type:SAFE_SETTING_LOADING_HIDE});
 
@@ -261,43 +325,8 @@ const commitPwd = () => {
 
 };
 
-//获取系统预设密保问题
-const getQuestions = () =>{
-
-  return (dispatch,getState) => {
-
-        let { UserID } = getState().LoginUser;
 
 
-      GetSystemSecQA({UserID,dispatch}).then(data => {
-
-            if (data){
-
-                let questionsList = [{value:"self",title:"自定义密保问题"}];
-
-                let arr = data.map((item,key)=>{
-
-                    return {
-
-                        value:key,
-
-                        title:item
-
-                    }
-
-                });
-
-                questionsList.push(...arr);
-
-                dispatch({type:SAFE_SETTING_QUESTIONS_LIST_UPDATE,data:questionsList});
-
-            }
-
-        })
-
-  }
-
-};
 
 //提交密保问题
 const commitQuestion = () => {
@@ -409,7 +438,11 @@ const commitQuestion = () => {
 
               AddSecQA({ UserID:UserID, Question:selfQa,Answer:answer,Pwd:pwd,dispatch}).then(data => {
 
-                 if (data==='success'){
+                  console.log(data);
+
+                 if (data===0){
+
+                     console.log(data);
 
                     dispatch(AppAlertActions.alertSuccess({title:"密保问题添加成功"}));
 
@@ -479,7 +512,7 @@ const commitQuestion = () => {
 
               AddSecQA({UserID:UserID, Question:qaSelectd.title,Answer:answer,Pwd:pwd,dispatch}).then(data => {
 
-                  if (data === 200){
+                  if (data === 0){
 
                       dispatch(AppAlertActions.alertSuccess({title:'密保问题添加成功'}));
 
@@ -746,7 +779,7 @@ const commitEditQuestion = () => {
 
                     if (data){
 
-                        dispatch(AppAlertActions.alertSuccess({title:"密保问题添加成功"}));
+                        dispatch(AppAlertActions.alertSuccess({title:"密保问题修改成功"}));
 
                         dispatch({type:SAFE_SETTING_EDIT_QUESTIONS_MODAL_HIDE});
 
@@ -1036,7 +1069,7 @@ let AddSecQA =  async ({UserID,Question,Answer,Pwd,dispatch}) => {
 
     if (res.StatusCode === 200) {
 
-        return res.Msg;
+        return res.ErrCode;
 
     } else {
 
@@ -1250,8 +1283,6 @@ export default{
     Init,
 
     commitPwd,
-
-    getQuestions,
 
     commitQuestion,
 
