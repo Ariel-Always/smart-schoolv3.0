@@ -250,7 +250,7 @@ class StudentContent extends Component{
 
                         originTeacherShow:false,
 
-                        modalTitle:"添加班主任",
+                        modalTitle:"设置班主任",
 
                         newTeacherTitle:"班主任",
 
@@ -286,7 +286,7 @@ class StudentContent extends Component{
 
         }
         //初始化所有的教师和学科的数据
-        dispatch(UpDataState.getAddTeacherData({type:opt.type,ClassID:info.id}));
+        dispatch(UpDataState.getAddTeacherData({ClassID:info.id,...opt}));
 
     }
 
@@ -355,25 +355,31 @@ class StudentContent extends Component{
 
         const {AddTeacherModal} = UIState;
 
-        console.log(AddTeacherModal);
-
         //先判断是否选中一个新的教师
 
-        if (AddTeacherModal.newPickTeacher.id){
+        if (AddTeacherModal.subjectsSelect.value!=='none'){
 
-            if (AddTeacherModal.type===3||AddTeacherModal.type===4){ //是修改的班主任
+            if (AddTeacherModal.newPickTeacher.id){
 
-                dispatch(UpDataState.updateGenger({ClassID:info.id}));
+                if (AddTeacherModal.type===3||AddTeacherModal.type===4){ //是修改的班主任
 
-            }else{//是修改的任课教师
+                    dispatch(UpDataState.updateGenger({ClassID:info.id}));
 
-                dispatch(UpDataState.updateTeacher({ClassID:info.id}));
+                }else{//是修改的任课教师
+
+                    dispatch(UpDataState.updateTeacher({ClassID:info.id}));
+
+                }
+
+            }else{
+
+                dispatch(AppAlertActions.alertWarn({title:"请先选择一个老师！"}));
 
             }
 
         }else{
 
-            dispatch(AppAlertActions.alertWarn({title:"请选中一个教师！"}));
+            dispatch(AppAlertActions.alertWarn({title:"请先选择一个学科！"}));
 
         }
 
@@ -664,6 +670,8 @@ class StudentContent extends Component{
                             emptyShow = {UIState.AddTeacherModal.emptyShow}
 
                             searchClose = {this.teacherSearchClose.bind(this)}
+
+                            subjectDropDisabled={UIState.AddTeacherModal.subjectDropDisabled}
 
                             >
 

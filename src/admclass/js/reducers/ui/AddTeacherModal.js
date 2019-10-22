@@ -14,6 +14,8 @@ const  AddTeacherModal = (state={
 
     subjects:[],
 
+    subjectDropDisabled:false,
+
     subjectsSelect:{value:'all',title:"全部教师"},
 
     colseShow:false,
@@ -54,7 +56,9 @@ const  AddTeacherModal = (state={
 
                 teacherList:[],
 
-                subjectsSelect:{value:'all',title:"全部教师"},
+                subjectDropDisabled:false,
+
+                subjectsSelect:{value:'none',title:"全部教师"},
 
                 closeShow:false,
 
@@ -131,6 +135,14 @@ const  AddTeacherModal = (state={
         case UpUIState.ADD_TEACHER_LIST_LOADING_HIDE:
 
             return {...state,teacherLoadingShow:false};
+
+        case UpUIState.ADD_TEACHER_SUBJECTS_SELECT_DISABLED:
+
+            return {...state,subjectDropDisabled:true};
+
+        case UpUIState.ADD_TEACHER_SUBJECTS_SELECT_ABLED:
+
+            return {...state,subjectDropDisabled:false};
 
         case UpUIState.ADD_TEACHER_SUBJECTS_SELECT_CHANGE:
 

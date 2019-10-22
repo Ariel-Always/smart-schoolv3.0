@@ -106,7 +106,7 @@ class FrameContainer extends Component{
 
     render() {
 
-        const { children, type, module, userInfo, msg, showLeftMenu, showBarner = true,onLogOut, ...reset } = this.props;
+        const { children, type, module, userInfo, msg, showLeftMenu, showBarner,contentShow,onLogOut, ...reset } = this.props;
 
         return (
 
@@ -125,6 +125,8 @@ class FrameContainer extends Component{
                 showBarner={showBarner}
 
                 onLogOut={this.Logout.bind(this)}
+
+                contentShow={contentShow}
 
                 {...reset}
 

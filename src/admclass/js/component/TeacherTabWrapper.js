@@ -136,11 +136,11 @@ class TeacherTabWrapper extends Component{
 
                                            </div>
 
-                                           <div className={`admclass-teacher-project ${projects}`}>{item.SubjectName}</div>
+                                           <div className={`admclass-teacher-project ${projects}`} title={item.SubjectName}>{item.SubjectName}</div>
 
                                            <div className="cooperate">
 
-                                               <div className="reset" onClick={() => addTeacherModalShow({type:2,originTeacherInfo:{id:item.UserID,name:item.UserName,photo:item.PhotoPath,SubjectID:item.SubjectID}})}>更改</div>
+                                               <div className="reset" onClick={() => addTeacherModalShow({type:2,originTeacherInfo:{id:item.UserID,name:item.UserName,photo:item.PhotoPath,SubjectID:item.SubjectID,SubjectName:item.SubjectName}})}>更改</div>
 
                                                <div className="line"></div>
 

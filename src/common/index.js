@@ -1823,7 +1823,7 @@ class Frame extends React.Component {
     }
 
     render() {
-        const { children, type, module, userInfo, msg, showLeftMenu, showBarner = true,onLogOut, ...reset } = this.props;
+        const { children, type, module, userInfo, msg, showLeftMenu, showBarner = true,onLogOut,contentShow=true, ...reset } = this.props;
 
         let bgAnimateDom = '';
         let beyondAnimateDom = '';
@@ -1949,9 +1949,22 @@ class Frame extends React.Component {
                     <div className={`frame-content-leftside ${showLeftMenu ? '' : 'frame-hide'} ${this.state.fixed?'fix':''}`}>
                         {leftMenu}
                     </div>
-                    <div className={`frame-content-rightside ${showLeftMenu ? '' : 'frame-fluid'}`}>
-                        {rightContent}
-                    </div>
+
+                    {
+
+                        contentShow?
+
+                            <div className={`frame-content-rightside ${showLeftMenu ? '' : 'frame-fluid'}`}>
+
+                                {rightContent}
+
+                            </div>
+
+                            :""
+
+                    }
+
+
                 </div>
                 <div className="frame-bottom">{CONFIG.footer}</div>
             </div>
