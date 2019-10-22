@@ -214,6 +214,8 @@ const replaceScheduleInit = () => {
 
                 let teacherList = data.ItemSubject.map(item => {
 
+                    console.log(data.ItemTeacher);
+
                     let list =  data.ItemTeacher.map(i => {
 
                         if (i.SubjectID === item.SubjectID){
@@ -222,7 +224,7 @@ const replaceScheduleInit = () => {
 
                                 name:i.TeacherName,
 
-                                id:i.Teacher
+                                id:i.TeacherID
 
                             }
 
@@ -372,7 +374,7 @@ const teacherClickSearch = (key) => {
 
                         return{
 
-                            id:item.Teacher,
+                            id:item.TeacherID,
 
                             name:item.TeacherName
 
@@ -446,7 +448,7 @@ const replaceTeacherClickSearch = (key) => {
 
                         return{
 
-                            id:item.Teacher,
+                            id:item.TeacherID,
 
                             name:item.TeacherName
 
@@ -1055,7 +1057,7 @@ const originTeacherClickSearch = (key) => {
 
                         return{
 
-                            id:item.Teacher,
+                            id:item.TeacherID,
 
                             name:item.TeacherName
 
@@ -1196,6 +1198,8 @@ const targetTeacherDropChange = (info) => {
 
     return ( dispatch,getState ) => {
 
+        console.log(info);
+
         let { targetDate } = getState().Manager.AdjustByTeacherModal.changeSchedule;
 
         dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_DROP_CHANGE,data:{value:info.id,title:info.value}});
@@ -1290,7 +1294,7 @@ const targetTeacherClickSearch = (key) => {
 
                         return{
 
-                            id:item.Teacher,
+                            id:item.TeacherID,
 
                             name:item.TeacherName
 
@@ -1546,7 +1550,7 @@ const changeTimeTeacherClickSearch = (key) => {
 
                         return{
 
-                            id:item.Teacher,
+                            id:item.TeacherID,
 
                             name:item.TeacherName
 
@@ -1956,7 +1960,9 @@ const changeTimeNewTimeChange = (date) => {
                 }
 
 
-                if (json2){
+                if (json2.length>0){
+
+                    console.log(json2);
 
                     let { newWeek } = getState().Manager.AdjustByTeacherModal.changeTime;
 
@@ -2004,7 +2010,6 @@ const changeTimeNewTimeChange = (date) => {
                         }
 
                     });
-
 
                     dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"classHourListChange",value:ClassHour}});
 
@@ -2514,7 +2519,7 @@ const changeClassRoomTeacherSearch = (key) => {
 
                        return{
 
-                           id:item.Teacher,
+                           id:item.TeacherID,
 
                            name:item.TeacherName
 
@@ -2705,7 +2710,7 @@ const stopScheduleTeacherClickSearch = (key) => {
 
                         return{
 
-                            id:item.Teacher,
+                            id:item.TeacherID,
 
                             name:item.TeacherName
 

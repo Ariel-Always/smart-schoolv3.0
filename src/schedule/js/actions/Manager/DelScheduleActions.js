@@ -26,8 +26,6 @@ const InfoInit = () => {
 
         let Periods = getState().PeriodWeekTerm.ItemPeriod;
 
-        let allGrades = Method.getGetData(`/allSGWTTC?SchoolID=${SchoolID}`);
-
         ApiActions.GetAllOptionForAddSchedule({SchoolID,dispatch}).then(data => {
 
             let Grades = data.ItemGrade;
@@ -348,6 +346,10 @@ const commitInfo = () => {
                     dispatch({type:DEL_SCHEDULE_HIDE});
 
                     dispatch(AppAlertActions.alertSuccess({title:"删除课程成功！"}))
+
+                }else{
+
+                    dispatch({type:DEL_SCHEDULE_LOADING_HIDE});
 
                 }
 

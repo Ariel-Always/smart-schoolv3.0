@@ -1,6 +1,8 @@
 import React,{Component} from 'react';
 
-import {Frame} from './index.js';
+import {Frame,Alert} from './index.js';
+
+import { LogOut } from "./js/disconnect";
 
 import dynamicFile from 'dynamic-file';
 
@@ -10,6 +12,12 @@ class FrameContainer extends Component{
     constructor(props) {
 
         super(props);
+
+        this.state={
+
+            LoadingShow:false
+
+        }
 
     }
 
@@ -37,7 +45,7 @@ class FrameContainer extends Component{
 
     }
 
-
+    //集成消息模块函数
     IntegrateMsg(){
 
         let token = sessionStorage.getItem('token');
@@ -72,13 +80,39 @@ class FrameContainer extends Component{
 
     }
 
+
+    //点击退出登录
+    AlertOk(){
+
+        LogOut();
+
+    }
+
+    //点击退出登录弹窗取消
+
+    AlertClose(){
+
+        this.setState({LoadingShow:false});
+
+    }
+
+    //退出登录
+    Logout(){
+
+        this.setState({LoadingShow:true});
+
+    }
+
+
     render() {
 
         const { children, type, module, userInfo, msg, showLeftMenu, showBarner = true,onLogOut, ...reset } = this.props;
 
         return (
 
-            <Frame
+            <React.Fragment>
+
+                <Frame
 
                 type={type}
 
@@ -90,7 +124,7 @@ class FrameContainer extends Component{
 
                 showBarner={showBarner}
 
-                onLogOut={onLogOut}
+                onLogOut={this.Logout.bind(this)}
 
                 {...reset}
 
@@ -99,6 +133,19 @@ class FrameContainer extends Component{
                 { children }
 
             </Frame>
+
+                <Alert
+                    type="btn-warn"
+                    title="您确定要退出登录么?"
+                    show={this.state.LoadingShow}
+                    onOk={this.AlertOk.bind(this)}
+                    onCancel={this.AlertClose.bind(this)}
+                    onClose={this.AlertClose.bind(this)}
+                >
+
+                </Alert>
+
+            </React.Fragment>
 
         );
 

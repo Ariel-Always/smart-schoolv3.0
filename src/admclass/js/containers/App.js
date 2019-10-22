@@ -260,24 +260,6 @@ class App extends Component{
 
     }
 
-
-    LogOut(e){
-
-        const { dispatch } = this.props;
-
-        dispatch(AppAlertActions.alertWarn({title:"您确定要退出登录？",ok:()=>{ return ()=>this.GoOut() }}));
-
-    }
-
-
-    //GoOut
-
-    GoOut(){
-
-        LogOut();
-
-    }
-
     //点击导入
 
     Import(type){
@@ -361,7 +343,6 @@ class App extends Component{
                                style={{display:`${UIState.AppLoading.show?'none':'block'}`}}
                                userInfo={{name:DataState.LoginUser.UserName,image:DataState.LoginUser.PhotoPath}}
                                module={{cnname:"行政班管理",enname:"Administration class management",image:logo}}
-                               onLogOut={this.LogOut.bind(this)}
                         >
                             {/*banner*/}
 

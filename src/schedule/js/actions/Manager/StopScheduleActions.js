@@ -48,7 +48,7 @@ const dateChange = (date) => {
 
                     if (data){
 
-                        const { WeekNO,WeekDay } = json.Data;
+                        const { WeekNO,WeekDay } = data;
 
                         let weekDay = '';
 
@@ -103,6 +103,10 @@ const dateChange = (date) => {
                         }
 
                         dispatch({type:STOP_SCHEDULE_WEEK_DATE_CHANGE,data:{weekDay:weekDay,weekNO:WeekNO}});
+
+                        dispatch({type:STOP_SCHEDULE_WEEK_DATE_LOADING_HIDE});
+
+                    }else{
 
                         dispatch({type:STOP_SCHEDULE_WEEK_DATE_LOADING_HIDE});
 
