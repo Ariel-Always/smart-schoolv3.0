@@ -164,8 +164,8 @@ const getSubjectTeacherPreview = (url, SubjectID) => {
 const getSchoolLeaderPreview = (url) => {
     return (dispatch) => {
         dispatch(actions.UpUIState.TableLoadingOpen());
-        // console.log(CONFIG.XTestProxy + url);
-        getData(CONFIG.XTestProxy + url, 2).then(res => {
+        // console.log(CONFIG.UserInfoProxy + url);
+        getData(CONFIG.UserInfoProxy + url, 2).then(res => {
             if (res.StatusCode === '401') {
                 console.log('错误码：' + res.StatusCode)
             }
@@ -348,7 +348,7 @@ const getGraduateGradeClassMsg = (url) => {
     return (dispatch) => {
         dispatch(actions.UpUIState.RightLoadingOpen());
 
-        getData(CONFIG.XTestProxy + url, 2).then(res => {
+        getData(CONFIG.UserInfoProxy + url, 2).then(res => {
             if (res.StatusCode === '401') {
                 console.log('错误码：' + res.StatusCode)
             }
@@ -372,7 +372,7 @@ const getGraduatePreview = (url) => {
     return (dispatch) => {
         dispatch(actions.UpUIState.TableLoadingOpen());
 
-        getData(CONFIG.XTestProxy + url, 2).then(res => {
+        getData(CONFIG.UserInfoProxy + url, 2).then(res => {
             if (res.StatusCode === '401') {
                 console.log('错误码：' + res.StatusCode)
             }
@@ -427,7 +427,7 @@ const getUnreadLogCountPreview = (func, url = '/GetUnreadLogCount?OnlineUserID='
     return (dispatch, getState) => {
         // console.log(getState())
         url += getState().DataState.LoginUser.UserID
-        getData(CONFIG.proxy + url, 2).then(res => {
+        getData(CONFIG.UserInfoProxy + url, 2).then(res => {
             if (res.StatusCode === '401') {
                 console.log('错误码：' + res.StatusCode)
             }
@@ -450,7 +450,7 @@ const getUnreadLogPreview = (url) => {
     return (dispatch, getState) => {
         // console.log(getState())
         //url += getState().DataState.LoginUser.UserID
-        getData(CONFIG.proxy + url, 2).then(res => {
+        getData(CONFIG.UserInfoProxy + url, 2).then(res => {
             if (res.StatusCode === '401') {
                 console.log('错误码：' + res.StatusCode)
             }
@@ -472,7 +472,7 @@ const getLogRecordPreview = (url) => {
     return (dispatch, getState) => {
         // console.log(getState())
         //url += getState().DataState.LoginUser.UserID
-        getData(CONFIG.proxy + url, 2).then(res => {
+        getData(CONFIG.UserInfoProxy + url, 2).then(res => {
             if (res.StatusCode === '401') {
                 console.log('错误码：' + res.StatusCode)
             }

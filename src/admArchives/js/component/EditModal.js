@@ -634,7 +634,7 @@ class EditModal extends React.Component {
                         </span>
                         <div className='culonm-2'>
                             <span style={{ display: this.state.UserKey !== 'add' ? 'block' : 'none' }} className='UserID-text'>{this.state.UserIDChange}</span>
-                            <Tips visible={EditModalTipsVisible.UserIDTipsVisible} title={(this.state.type === 'student' ? '学号' : this.state.type === 'teacher' ? '工号' : '学号') + this.state.UserIDTipsTitle} >
+                            <Tips overlayClassName='tips' visible={EditModalTipsVisible.UserIDTipsVisible} title={(this.state.type === 'student' ? '学号' : this.state.type === 'teacher' ? '工号' : '学号') + this.state.UserIDTipsTitle} >
                                 <Input maxLength={24} id="123" style={{ display: this.state.UserKey === 'add' ? 'block' : 'none' }} className='UserName-input'
                                     type='text'
                                     name='EditID'
@@ -648,7 +648,7 @@ class EditModal extends React.Component {
                             <span className='must-icon'>*</span>姓名：
                         </span>
                         <div className='culonm-2'>
-                            <Tips visible={EditModalTipsVisible.UserNameTipsVisible} title={this.state.UserNameTipsTitle} >
+                            <Tips overlayClassName='tips' visible={EditModalTipsVisible.UserNameTipsVisible} title={this.state.UserNameTipsTitle} >
                                 <Input className='UserName-input'
                                     maxLength={20}
                                     type='text'
@@ -672,7 +672,7 @@ class EditModal extends React.Component {
                                 <Radio value='女'>女</Radio>
                                 <Radio value='保密'>保密</Radio>
                             </RadioGroup> */}
-                            <Tips visible={EditModalTipsVisible.GenderTipsVisible} title={this.state.GenderTipsTitle} >
+                            <Tips overlayClassName='tips' visible={EditModalTipsVisible.GenderTipsVisible} title={this.state.GenderTipsTitle} >
                                 <DropDown
                                     style={{ zIndex: 3 }}
                                     dropSelectd={this.state.GendeChange}
@@ -703,7 +703,7 @@ class EditModal extends React.Component {
                             <span className='must-icon'>*</span>年级：
                         </span>
                         <div className='culonm-2'>
-                            <Tips visible={EditModalTipsVisible.GradeTipsVisible} title={this.state.GradeTipsTitle} >
+                            <Tips overlayClassName='tips' visible={EditModalTipsVisible.GradeTipsVisible} title={this.state.GradeTipsTitle} >
                                 <DropDown
                                     style={{ zIndex: 2 }}
                                     dropSelectd={this.state.GradeChange}
@@ -723,7 +723,7 @@ class EditModal extends React.Component {
                         </span>
                         <div className='culonm-2'>
 
-                            <Tips visible={EditModalTipsVisible.TitleIDVisible} title={this.state.TitleIDTipsTitle} >
+                            <Tips overlayClassName='tips' visible={EditModalTipsVisible.TitleIDVisible} title={this.state.TitleIDTipsTitle} >
 
                                 <DropDown
                                     style={{ zIndex: 2 }}
@@ -743,7 +743,7 @@ class EditModal extends React.Component {
                             <span className='must-icon'>*</span>班级：
                         </span>
                         <div className='culonm-2'>
-                            <Tips visible={EditModalTipsVisible.ClassTipsVisible} title={this.state.ClassTipsTitle} >
+                            <Tips overlayClassName='tips' visible={EditModalTipsVisible.ClassTipsVisible} title={this.state.ClassTipsTitle} >
                                 <DropDown
                                     style={{ zIndex: 1 }}
                                     disabled={this.state.type === 'student' ? this.state.GradeChange.value === 0 ? true : false : false}
@@ -762,7 +762,7 @@ class EditModal extends React.Component {
                             <span className='must-icon'>*</span>所教学科：
                         </span>
                         <div className='culonm-2'>
-                            <Tips visible={EditModalTipsVisible.changeSubjectTipsVisible} title={this.state.changeSubjectTipsTitle} >
+                            <Tips overlayClassName='tips' visible={EditModalTipsVisible.changeSubjectTipsVisible} title={this.state.changeSubjectTipsTitle} >
                                 <CheckBoxGroup onChange={this.changeCheckBox} className={'checkedBoxGroupMap'} value={this.state.checkedList}>
                                     {this.state.type === 'teacher' ? this.MapPlainOptions(this.state.plainOptions) : ''}
                                 </CheckBoxGroup>
@@ -774,7 +774,7 @@ class EditModal extends React.Component {
                             <span className='must-icon'>*</span>行政职务：
                         </span>
                         <div className='culonm-2'>
-                            <Tips visible={EditModalTipsVisible.PositionTipsVisible} title={this.state.PositionTipsTitle} >
+                            <Tips overlayClassName='tips' visible={EditModalTipsVisible.PositionTipsVisible} title={this.state.PositionTipsTitle} >
                                 <DropDown
                                     style={{ zIndex: 1 }}
                                     dropSelectd={this.state.PositionChange}
@@ -792,7 +792,7 @@ class EditModal extends React.Component {
                             身份证号码：
                         </span>
                         <div className='culonm-2'>
-                            <Tips visible={EditModalTipsVisible.IDCardNoTipsVisible} title={this.state.IDCardNoTipsTitle} >
+                            <Tips overlayClassName='tips' visible={EditModalTipsVisible.IDCardNoTipsVisible} title={this.state.IDCardNoTipsTitle} >
                                 <Input
                                     className='input'
                                     value={this.state.IDCardChange}
@@ -809,7 +809,7 @@ class EditModal extends React.Component {
                             联系电话：
                         </span>
                         <div className='culonm-2'>
-                            <Tips visible={EditModalTipsVisible.TelephoneTipsVisible} title={this.state.TelephoneTipsTitle} >
+                            <Tips overlayClassName='tips' visible={EditModalTipsVisible.TelephoneTipsVisible} title={this.state.TelephoneTipsTitle} >
                                 <Input
                                     className='input'
                                     maxLength={11}
@@ -826,7 +826,7 @@ class EditModal extends React.Component {
                             电子邮箱：
                         </span>
                         <div className='culonm-2'>
-                            <Tips visible={EditModalTipsVisible.EmailTipsVisible} title={this.state.EmailTipsTitle} >
+                            <Tips overlayClassName='tips' visible={EditModalTipsVisible.EmailTipsVisible} title={this.state.EmailTipsTitle} >
                                 <Input
                                     className='input'
                                     type='text'
@@ -842,7 +842,7 @@ class EditModal extends React.Component {
                             家庭住址：
                         </span>
                         <div className='culonm-2'>
-                            <Tips visible={EditModalTipsVisible.HomeAdressTipsVisible} title={this.state.HomeAdressTipsTitle} >
+                            <Tips overlayClassName='tips' visible={EditModalTipsVisible.HomeAdressTipsVisible} title={this.state.HomeAdressTipsTitle} >
                                 <Input.TextArea
                                     className='inputarea'
                                     rows='2'

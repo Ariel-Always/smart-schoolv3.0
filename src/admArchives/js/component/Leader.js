@@ -304,9 +304,9 @@ class Leader extends React.Component {
             }));
             return;
         } else {
-            
-            postData(CONFIG.XTestProxy + url, {
-                ...changeLeaderMsg
+            let {position,...data} = changeLeaderMsg
+            postData(CONFIG.UserInfoProxy + url, {
+                ...data,position:position.title
             }, 2).then(res => {
                 return res.json()
             }).then(json => {
@@ -396,7 +396,7 @@ class Leader extends React.Component {
             if(haveMistake){
                 return ;
             }
-            postData(CONFIG.XTestProxy + url, {
+            postData(CONFIG.UserInfoProxy + url, {
                 ...changeLeaderMsg
             }, 2).then(res => {
                 return res.json()
