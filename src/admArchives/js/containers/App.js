@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Frame, Menu, Loading, Alert } from "../../../common";
 import { connect } from 'react-redux';
 import UserArchives from "../component/UserArchives";
-import { TokenCheck_Connect, TokenCheck } from '../../../common/js/disconnect'
+import { TokenCheck_Connect, TokenCheck, getUserInfo } from '../../../common/js/disconnect'
 
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
 import history from './history'
@@ -56,8 +56,15 @@ class App extends Component {
         this.handleMenu()
         let route = history.location.pathname;
         // 获取接口数据
-        //this.requestData(route)
-
+        this.requestData(route)
+        if (history.location.pathname === '/' || history.location.pathname === '/UserArchives') {
+            history.push('/UserArchives/All')
+            // console.log(this.state)
+        }
+        if (history.location.pathname === '/RegisterExamine') {
+            history.push('/RegisterExamine/RegisterWillExamine')
+            // console.log(this.state)
+        }
         history.listen(() => {//路由监听
             let route = history.location.pathname;
             // 获取接口数据
@@ -138,17 +145,17 @@ class App extends Component {
                 } else if (handleRoute === 'Leader') {
                     dispatch(actions.UpDataState.getSchoolLeaderPreview('/GetSchoolLeader?SchoolID=' + userMsg.SchoolID + '&SortFiled=UserID&SortType=ASC'));
                 } else if (handleRoute === 'Graduate') {
-                    if(DataState.GetGraduateGradeClassMsg.Grade.length<=1)
-                    dispatch(actions.UpDataState.getGraduateGradeClassMsg('/GetGradeClassOfGraduate?SchoolID=' + userMsg.SchoolID ));
-                    dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?PageIndex=0&PageSize=10&schoolID='+userMsg.SchoolID))
-                }  else if (handleRoute === 'LogDynamic') {
-                    
-                    dispatch(actions.UpDataState.getUnreadLogPreview('/GetUnreadLogToPage?UserType=-1&OperationType=-1&PageIndex=0&PageSize=10&OnlineUserID='+userMsg.UserID))
+                    if (DataState.GetGraduateGradeClassMsg.Grade.length <= 1)
+                        dispatch(actions.UpDataState.getGraduateGradeClassMsg('/GetGradeClassOfGraduate?SchoolID=' + userMsg.SchoolID));
+                    dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?PageIndex=0&PageSize=10&schoolID=' + userMsg.SchoolID))
+                } else if (handleRoute === 'LogDynamic') {
+
+                    dispatch(actions.UpDataState.getUnreadLogPreview('/GetUnreadLogToPage?UserType=-1&OperationType=-1&PageIndex=0&PageSize=10&OnlineUserID=' + userMsg.UserID))
                 } else if (handleRoute === 'LogRecord') {
-                    
-                    dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID='+userMsg.SchoolID+'&UserType=-1&OperationType=-1&PageIndex=0&PageSize=10'))
-                }else if (handleRoute === 'All') {
-                    dispatch(actions.UpDataState.getAllUserPreview('/GetSummary',));
+
+                    dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + userMsg.SchoolID + '&UserType=-1&OperationType=-1&PageIndex=0&PageSize=10'))
+                } else if (handleRoute === 'All') {
+                    dispatch(actions.UpDataState.getAllUserPreview('/GetSummary'));
                     dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
                 } else {
                     history.push('/UserArchives/All')

@@ -61,7 +61,7 @@ class Subject extends React.Component {
                                 }
 
                                 return (
-                                    <React.Fragment key={child.TeacherName ? child.TeacherName : index}>
+                                    <React.Fragment key={ index}>
                                         <span className='Teacher' title={child.TeacherName}><span className='Teacher-tips'>{GradeName}</span><span onClick={child.TeacherName ? this.onClickTeacherName.bind(this, child.TeacherID) : this.onClickTeacherNameNo} className={child.TeacherName ? 'handleName' : 'noHandle'} >{child.TeacherName ? child.TeacherName : '未填写'}</span></span><br />
                                     </React.Fragment>
                                 )
