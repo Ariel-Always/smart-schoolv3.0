@@ -30,7 +30,9 @@ const ClassSingle = (state={
 
     OptionalClassLoading:true,
 
-    OptionalClassData:[]
+    OptionalClassData:[],
+
+    OptionalClassCurrentPage:1
 
 },actions) => {
 
@@ -64,11 +66,7 @@ const ClassSingle = (state={
 
                 ClassList:[],
 
-                OptionalClassShow:false,
-
-                OptionalClassLoading:true,
-
-                OptionalClassData:[]
+                OptionalClassShow:false
 
             };
 
@@ -121,6 +119,42 @@ const ClassSingle = (state={
         case CSActions.MANAGER_CLASS_SINGLE_SEARCH_RESULT_HIDE:
 
             return {...state,SearchWrapperShow:false};
+
+        case CSActions.MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_MODAL_SHOW:
+
+            return {
+
+                ...state,
+
+                OptionalClassShow:true,
+
+                OptionalClassLoading:true,
+
+                OptionalClassData:[],
+
+                OptionalClassCurrentPage:1
+
+            };
+
+        case CSActions.MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_MODAL_HIDE:
+
+            return {...state,OptionalClassShow:false};
+
+        case CSActions.MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_LOADING_HIDE:
+
+            return {...state,OptionalClassLoading:false};
+
+        case CSActions.MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_LOADING_SHOW:
+
+            return {...state,OptionalClassLoading:true};
+
+        case CSActions.MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_DATA_UPDATE:
+
+            return {...state,OptionalClassData:actions.data};
+
+        case CSActions.MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_PAGE_CHANGE:
+
+            return {...state,OptionalClassCurrentPage:actions.data};
 
         default:
 

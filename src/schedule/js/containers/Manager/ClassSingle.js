@@ -109,13 +109,36 @@ class ClassSingle extends Component{
 
     }
 
+    //走班详情弹窗打开
+
     OptionalClassShow({ClassHourNO,WeekDay}){
 
         const { dispatch,ClassSingle } = this.props;
 
         let { PickClassID,WeekNO } = ClassSingle;
 
-        dispatch(CSActions.getDetaiModal)
+        dispatch(CSActions.OptionalClassInit({ClassHourNO,WeekDay,ClassID:PickClassID,WeekNO}))
+
+    }
+
+    //走班详情弹窗关闭
+
+    OptionalClassModalClose(){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:CSActions.MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_MODAL_HIDE});
+
+
+    }
+
+
+    //走班详情页码变化
+    OptionalClassPageChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:CSActions.MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_PAGE_CHANGE,data:e});
 
     }
 
@@ -199,7 +222,10 @@ class ClassSingle extends Component{
                     <OptionalClassModal
                         Show={ClassSingle.OptionalClassShow}
                         LoadingShow={ClassSingle.OptionalClassLoading}
-                        DataSource={ClassSingle.OptionalClassData}>
+                        DataSource={ClassSingle.OptionalClassData}
+                        Close={this.OptionalClassModalClose.bind(this)}
+                        PageChange={this.OptionalClassPageChange.bind(this)}
+                        CurrentPage={ClassSingle.OptionalClassCurrentPage}>
 
 
 

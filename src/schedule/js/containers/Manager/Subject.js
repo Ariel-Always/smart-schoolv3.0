@@ -92,9 +92,15 @@ class Subject extends Component{
 
     scrollToBottom(e){
 
-        const {dispatch} = this.props;
+        const {dispatch,Manager} = this.props;
 
-        dispatch(STSAction.STSPageUpdate({nextPage:true}));
+        const { pageIndex,TeacherCount } = Manager.SubjectTeacherSchedule;
+
+        if (pageIndex < Math.ceil(TeacherCount/10) ){
+
+            dispatch(STSAction.STSPageUpdate({nextPage:true}));
+
+        }
 
     }
 

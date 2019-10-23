@@ -24,6 +24,18 @@ const MANAGER_CLASS_SINGLE_SEARCH_LOADING_HIDE = 'MANAGER_CLASS_SINGLE_SEARCH_LO
 
 const MANAGER_CLASS_SINGLE_SEARCHLIST_UPDATE = 'MANAGER_CLASS_SINGLE_SEARCHLIST_UPDATE';
 
+const MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_MODAL_SHOW = 'MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_MODAL_SHOW';
+
+const MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_MODAL_HIDE = 'MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_MODAL_HIDE';
+
+const MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_LOADING_SHOW = 'MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_LOADING_SHOW';
+
+const MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_LOADING_HIDE = 'MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_LOADING_HIDE';
+
+const MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_DATA_UPDATE = 'MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_DATA_UPDATE';
+
+const MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_PAGE_CHANGE= 'MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_PAGE_CHANGE';
+
 
 const ClassSingleScheduleUpdate = (pickInfo) =>{
 
@@ -247,6 +259,48 @@ const ClassSearch = (val) => {
 
 };
 
+//走班课程显示弹窗
+
+const OptionalClassInit = ({ClassHourNO,WeekDay,ClassID,WeekNO}) => {
+
+    return dispatch => {
+
+        dispatch({type:MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_MODAL_SHOW});
+
+        ApiActions.GetCourseClassInfo({ClassID,ClassHourNO,WeekNO,WeekDayNO:WeekDay,dispatch}).then(data=>{
+
+           if (data){
+
+               let DataSource = [];
+
+               if (data.length>0){
+
+                   DataSource = data.map((item,key)=>{
+
+                       return {
+
+                           key:key,
+
+                           ...item,
+
+                       }
+
+                   })
+
+               }
+
+               dispatch({type:MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_DATA_UPDATE,data:DataSource});
+
+           }
+
+           dispatch({type:MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_LOADING_HIDE});
+
+        });
+
+    }
+
+};
+
 
 export default {
 
@@ -274,11 +328,25 @@ export default {
 
     MANAGER_CLASS_SINGLE_SEARCH_RESULT_HIDE,
 
+    MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_MODAL_SHOW,
+
+    MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_MODAL_HIDE,
+
+    MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_LOADING_SHOW,
+
+    MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_LOADING_HIDE,
+
+    MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_DATA_UPDATE,
+
+    MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_PAGE_CHANGE,
+
     ClassSingleScheduleUpdate,
 
     WeekUpdate,
 
-    ClassSearch
+    ClassSearch,
+
+    OptionalClassInit
 
 }
 

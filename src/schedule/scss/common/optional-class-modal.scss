@@ -1,0 +1,23 @@
+.optional-class-modal{
+
+  .ant-modal-body{
+
+    padding:0;
+
+  }
+
+  .ant-table-pagination.ant-pagination{
+
+    margin-right: 50%;
+
+    @include transform(translate(50%));
+
+  }
+  
+  .ant-table-tbody{
+
+    color: #333333;
+    
+  }
+
+}
