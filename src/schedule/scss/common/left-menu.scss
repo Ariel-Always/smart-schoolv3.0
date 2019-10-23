@@ -236,6 +236,38 @@
 
     }
 
+    &.classroom{
+
+      .cat-item{
+
+        &.active{
+
+          .cat-children-name{
+
+            background-image:url("#{$image-url}/left-menu-class-room-active.png");
+
+          }
+
+        }
+
+      }
+
+      .cat-children-name{
+
+        background-image:url("#{$image-url}/left-menu-class-room.png");
+
+        &:hover{
+
+          background-image:url("#{$image-url}/left-menu-class-room-active.png");
+
+          color: #8a400f;
+
+        }
+
+      }
+
+    }
+
   }
 
   .left-menu-search-wrapper{
@@ -317,6 +349,23 @@
         &:hover{
 
           background-image: url("#{$image-url}/left-menu-class-active.png");
+
+        }
+
+      }
+
+    }
+
+    &.classroom{
+
+
+      .cat-children-name{
+
+        background-image: url("#{$image-url}/left-menu-class-room.png");
+
+        &:hover{
+
+          background-image: url("#{$image-url}/left-menu-class-room-active.png");
 
         }
 

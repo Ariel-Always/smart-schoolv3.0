@@ -7,7 +7,7 @@ import {DropDown, Loading} from "../../../../common";
 
 import ManagerIndexActions from "../../actions/Manager/ManagerIndexActions";
 
-import CTActions from '../../actions/Manager/ClassTotalActions';
+import CRTActions from '../../actions/Manager/ClassRoomTotalActions';
 
 import TermPick from "../../component/TermPick";
 
@@ -16,8 +16,7 @@ import $ from "jquery";
 import DoubleSingleTable from "../../component/DoubleSingleTable";
 
 
-
-class ClassTotal extends Component{
+class ClassRoomTotal extends Component{
 
     constructor(props){
 
@@ -25,14 +24,14 @@ class ClassTotal extends Component{
 
         const {dispatch} = this.props;
 
-        dispatch(ManagerIndexActions.ClassTotalInit());
+        dispatch(ManagerIndexActions.ClassRoomTotalInit());
 
     }
 
 
     //年级下拉改变
 
-    GradeChange(e){
+    RoomTypeChange(e){
 
         const {dispatch} = this.props;
 
@@ -44,11 +43,11 @@ class ClassTotal extends Component{
 
         }
 
-        dispatch({type:CTActions.MANAGER_CLASS_TOTAL_GRADE_SELECT_CHANGE,data:data});
+        dispatch({type:CRTActions.MANAGER_CLASS_ROOM_TOTAL_ROOMTYPE_SELECT_CHANGE,data:data});
 
         $('#tb').find('div.ant-table-body').scrollTop(0);
 
-        dispatch(CTActions.ClassTotalPageUpdate());
+        dispatch(CRTActions.ClassTotalPageUpdate());
 
     }
 
@@ -57,41 +56,41 @@ class ClassTotal extends Component{
 
         const {dispatch} = this.props;
 
-        dispatch({type:CTActions.MANAGER_CLASS_TOTAL_WEEK_CHANGE,data:e.value});
+        dispatch({type:CRTActions.MANAGER_CLASS_ROOM_TOTAL_WEEK_CHANGE,data:e.value});
 
         $('#tb').find('div.ant-table-body').scrollTop(0);
 
-        dispatch(CTActions.ClassTotalPageUpdate());
+        dispatch(CRTActions.ClassTotalPageUpdate());
 
     }
 
     //选择下一周次
     weekNextEvent(){
 
-        const {dispatch,ClassTotal} = this.props;
+        const {dispatch,ClassRoomTotal} = this.props;
 
-        const {WeekNO} = ClassTotal;
+        const {WeekNO} = ClassRoomTotal;
 
-        dispatch({type:CTActions.MANAGER_CLASS_TOTAL_WEEK_CHANGE,data:(WeekNO+1)});
+        dispatch({type:CRTActions.MANAGER_CLASS_ROOM_TOTAL_WEEK_CHANGE,data:(WeekNO+1)});
 
         $('#tb').find('div.ant-table-body').scrollTop(0);
 
-        dispatch(CTActions.ClassTotalPageUpdate());
+        dispatch(CRTActions.ClassTotalPageUpdate());
 
     }
 
     //选择上一周次
     weekPrevEvent(){
 
-        const {dispatch,ClassTotal} = this.props;
+        const {dispatch,ClassRoomTotal} = this.props;
 
-        const {WeekNO} = ClassTotal;
+        const {WeekNO} = ClassRoomTotal;
 
-        dispatch({type:CTActions.MANAGER_CLASS_TOTAL_WEEK_CHANGE,data:(WeekNO-1)});;
+        dispatch({type:CRTActions.MANAGER_CLASS_ROOM_TOTAL_WEEK_CHANGE,data:(WeekNO-1)});
 
         $('#tb').find('div.ant-table-body').scrollTop(0);
 
-        dispatch(CTActions.ClassTotalPageUpdate());
+        dispatch(CRTActions.ClassTotalPageUpdate());
 
     }
 
@@ -99,18 +98,24 @@ class ClassTotal extends Component{
 
     scrollToBottom(e){
 
-        const {dispatch} = this.props;
+        const {dispatch,ClassRoomTotal} = this.props;
 
-        dispatch(CTActions.ClassTotalPageUpdate({nextPage:true}));
+        const { PageIndex,ClassRoomCount } = ClassRoomTotal;
+
+        if (PageIndex < Math.ceil(ClassRoomCount/10)){
+
+            dispatch(CRTActions.ClassTotalPageUpdate({nextPage:true}));
+
+        }
 
     }
 
     //表格点击某一行
     clickRow(record){
 
-        const { ClassTotal,dispatch } = this.props;
+        const { ClassRoomTotal,dispatch } = this.props;
 
-        const { Schedule } = ClassTotal;
+        const { Schedule } = ClassRoomTotal;
 
         let rID  = record.id;
 
@@ -128,28 +133,28 @@ class ClassTotal extends Component{
 
         });
 
-        dispatch({type:CTActions.MANAGER_CLASS_TOTAL_SCHEDULE_UPDATE,data:Schedule});
+        dispatch({type:CRTActions.MANAGER_CLASS_ROOM_TOTAL_SCHEDULE_UPDATE,data:Schedule});
 
     }
 
 
     render(){
 
-        const { PeriodWeekTerm,SubjectCourseGradeClassRoom,ClassTotal } = this.props;
+        const { PeriodWeekTerm,SubjectCourseGradeClassRoom,ClassRoomTotal } = this.props;
 
         return <div className="class-total-content">
 
             <DropDown
 
-                dropSelectd={ClassTotal.GradeDropSelectd}
+                dropSelectd={ClassRoomTotal.RoomTypeDropSelectd}
 
-                dropList={ClassTotal.GradeDropList}
+                dropList={ClassRoomTotal.RoomTypeDropList}
 
                 style={{zIndex:5}}
 
                 height={108}
 
-                onChange={this.GradeChange.bind(this)}>
+                onChange={this.RoomTypeChange.bind(this)}>
 
             </DropDown>
 
@@ -157,9 +162,9 @@ class ClassTotal extends Component{
 
                 ItemTermName={PeriodWeekTerm.ItemTerm?PeriodWeekTerm.ItemTerm.TermName:''}
 
-                NowWeekNo={ClassTotal.WeekNO}
+                NowWeekNo={ClassRoomTotal.WeekNO}
 
-                ItemWeek ={ClassTotal.WeekList}
+                ItemWeek ={ClassRoomTotal.WeekList}
 
                 weekPickEvent = {this.weekPickEvent.bind(this)}
 
@@ -172,7 +177,7 @@ class ClassTotal extends Component{
 
             <div className="double-single-table-wrapper">
 
-                <Loading spinning={ClassTotal.LoadingShow} tip="正在为您查找，请稍后...">
+                <Loading spinning={ClassRoomTotal.LoadingShow} tip="正在为您查找，请稍后...">
 
                     <DoubleSingleTable
                     ItemClassHourCount={SubjectCourseGradeClassRoom.ItemClassHourCount}
@@ -184,7 +189,7 @@ class ClassTotal extends Component{
                     rowOneHeight={46}
                     rowTowHeight={64}
                     commonRowHeight={90}
-                    schedule={ClassTotal.Schedule}
+                    schedule={ClassRoomTotal.Schedule}
                     onClickRow={(record) => this.clickRow.bind(this,record)}
                     scrollToBottom={this.scrollToBottom.bind(this)}
                 >
@@ -205,14 +210,14 @@ const  mapStateToProps = (state) => {
 
     let { PeriodWeekTerm,Manager } = state;
 
-    let { ClassTotal,SubjectCourseGradeClassRoom } = Manager;
+    let { ClassRoomTotal,SubjectCourseGradeClassRoom } = Manager;
 
     return {
 
-        PeriodWeekTerm,ClassTotal,SubjectCourseGradeClassRoom
+        PeriodWeekTerm,ClassRoomTotal,SubjectCourseGradeClassRoom
 
     }
 
 };
 
-export default connect(mapStateToProps)(ClassTotal);
+export default connect(mapStateToProps)(ClassRoomTotal);

@@ -10,7 +10,9 @@ const SubjectTeacherSchedule = (state={
 
     pageIndex:1,
 
-    loadingShow:true
+    loadingShow:true,
+
+    TeacherCount:0
 
 },actions) => {
 
@@ -31,6 +33,10 @@ const SubjectTeacherSchedule = (state={
                 schedule:actions.data
 
             };
+
+        case STSActions.SUBJECT_TEACHER_SCHEDULE_TEACHER_COUNT:
+
+            return { ...state,TeacherCount:actions.data };
 
         case STSActions.STS_SUBJECT_CHANGE:
 

@@ -23,6 +23,10 @@ import ClassTotal from './ClassTotal';
 
 import ClassSingle from './ClassSingle';
 
+import ClassRoomTotal from './ClassRoomTotal';
+
+import ClassRoomSingle from './ClassRoomSingle';
+
 //管理员角色的reduce
 
 const Index = combineReducers({
@@ -47,7 +51,11 @@ const Index = combineReducers({
 
     ClassTotal,
 
-    ClassSingle
+    ClassSingle,
+
+    ClassRoomTotal,
+
+    ClassRoomSingle
 
 });
 

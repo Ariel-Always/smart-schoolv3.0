@@ -1800,15 +1800,19 @@ class Frame extends React.Component {
 
         let leftHeight = $('.frame_left_menu_container').height();
 
-        if (contentHeight!==0||(contentHeight<defalutHeight)){
+        if (contentHeight!==0&&(contentHeight<defalutHeight)){
 
             maxHeight = contentHeight - 80;
+
+            console.log(contentHeight<defalutHeight);
 
         }else{
 
             maxHeight = defalutHeight - 80;
 
         }
+
+        console.log(defalutHeight,contentHeight,maxHeight,leftHeight);
 
 
       $('.frame_left_menu_container').css({

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import ManagerIndexActions from "../../actions/Manager/ManagerIndexActions";
 
-import CSActions from '../../actions/Manager/ClassSingleActions';
+import CRSActions from '../../actions/Manager/ClassRoomSingleActions';
 
 import AppAlertActions from '../../actions/AppAlertActions';
 
@@ -17,7 +17,7 @@ import {Loading} from "../../../../common";
 import SingleDoubleTable from "../../component/SingleDoubleTable";
 
 
-class ClassSingle extends Component{
+class ClassRoomSingle extends Component{
 
     constructor(props) {
 
@@ -25,7 +25,7 @@ class ClassSingle extends Component{
 
         const {dispatch} = props;
 
-        dispatch(ManagerIndexActions.ClassSingleInit());
+        dispatch(ManagerIndexActions.ClassRoomSingleInit());
 
     }
 
@@ -34,39 +34,39 @@ class ClassSingle extends Component{
 
         const {dispatch} = this.props;
 
-        dispatch({type:CSActions.MANAGER_CLASS_SINGLE_WEEK_CHANGE,data:e.value});
+        dispatch({type:CRSActions.MANAGER_CLASS_ROOM_SINGLE_WEEK_CHANGE,data:e.value});
 
-        dispatch({type:CSActions.MANAGER_CLASS_SINGLE_SCHEDULE_LOADING_SHOW});
+        dispatch({type:CRSActions.MANAGER_CLASS_ROOM_SINGLE_SCHEDULE_LOADING_SHOW});
 
-       dispatch(CSActions.WeekUpdate());
+       dispatch(CRSActions.WeekUpdate());
 
     }
 
     //选择下一周次
     weekNextEvent(){
 
-        const {dispatch,Manager,ClassSingle} = this.props;
+        const {dispatch,Manager,ClassRoomSingle} = this.props;
 
-        const {WeekNO} = ClassSingle;
+        const {WeekNO} = ClassRoomSingle;
 
-        dispatch({type:CSActions.MANAGER_CLASS_SINGLE_WEEK_CHANGE,data:(WeekNO+1)});
+        dispatch({type:CRSActions.MANAGER_CLASS_ROOM_SINGLE_WEEK_CHANGE,data:(WeekNO+1)});
 
-        dispatch({type:CSActions.MANAGER_CLASS_SINGLE_SCHEDULE_LOADING_SHOW});
+        dispatch({type:CRSActions.MANAGER_CLASS_ROOM_SINGLE_SCHEDULE_LOADING_SHOW});
 
-        dispatch(CSActions.WeekUpdate());
+        dispatch(CRSActions.WeekUpdate());
 
     }
 
     //选择上一周次
     weekPrevEvent(){
 
-        const {dispatch,Manager,ClassSingle} = this.props;
+        const {dispatch,Manager,ClassRoomSingle} = this.props;
 
-        const {WeekNO} = ClassSingle;
+        const {WeekNO} = ClassRoomSingle;
 
-        dispatch({type:CSActions.MANAGER_CLASS_SINGLE_WEEK_CHANGE,data:(WeekNO-1)});
+        dispatch({type:CRSActions.MANAGER_CLASS_ROOM_SINGLE_WEEK_CHANGE,data:(WeekNO-1)});
 
-        dispatch(CSActions.WeekUpdate());
+        dispatch(CRSActions.WeekUpdate());
 
     }
     //左侧菜单选取某一个班级
@@ -74,9 +74,9 @@ class ClassSingle extends Component{
 
         const {dispatch} = this.props;
 
-        dispatch({type:CSActions.MANAGER_CLASS_SINGLE_SCHEDULE_LOADING_SHOW});
+        dispatch({type:CRSActions.MANAGER_CLASS_ROOM_SINGLE_SCHEDULE_LOADING_SHOW});
 
-        dispatch(CSActions.ClassSingleScheduleUpdate(pickInfo));
+        dispatch(CRSActions.ClassRoomSingleScheduleUpdate(pickInfo));
 
     }
 
@@ -92,7 +92,7 @@ class ClassSingle extends Component{
 
         }else{
 
-            dispatch(CSActions.ClassSearch(e.value));
+            dispatch(CRSActions.ClassSearch(e.value));
 
         }
 
@@ -103,14 +103,14 @@ class ClassSingle extends Component{
 
         const {dispatch} = this.props;
 
-        dispatch({type:CSActions.MANAGER_CLASS_SINGLE_SEARCH_RESULT_HIDE});
+        dispatch({type:CRSActions.MANAGER_CLASS_ROOM_SINGLE_SEARCH_RESULT_HIDE});
 
     }
 
 
     render() {
 
-        const { PeriodWeekTerm ,ClassSingle,Manager} = this.props;
+        const { PeriodWeekTerm ,ClassRoomSingle,Manager} = this.props;
 
         const {SubjectCourseGradeClassRoom} = Manager;
 
@@ -123,28 +123,28 @@ class ClassSingle extends Component{
 
                 <LeftMenu
                     title="班级列表"
-                    type="class"
-                    pickList={ClassSingle.ClassList}
+                    type="classroom"
+                    pickList={ClassRoomSingle.ClassRoomList}
                     pickClick={this.menuPickClick.bind(this)}
                     searchClick={this.searchClick.bind(this)}
                     cancelSearch={this.cancelSearch.bind(this)}
-                    searchShow={ClassSingle.SearchWrapperShow}
-                    searchResult={ClassSingle.SearchResult}
-                    leftMenuSearchLoading={ClassSingle.SearchLoadingShow}>
+                    searchShow={ClassRoomSingle.SearchWrapperShow}
+                    searchResult={ClassRoomSingle.SearchResult}
+                    leftMenuSearchLoading={ClassRoomSingle.SearchLoadingShow}>
 
                 </LeftMenu>
 
                 {
 
-                    ClassSingle.PickClass===''?
+                    ClassRoomSingle.PickClassRoom===''?
 
                         '':
 
                         <div className="pick-teacher-wrapper">
 
-                            <span className="teacher-name">{ClassSingle.PickClass}</span>
+                            <span className="teacher-name">{ClassRoomSingle.PickClassRoom}</span>
 
-                            <span className="course-count"> (本周共<span className="count">{ClassSingle.ScheduleCount}</span>节课)</span>
+                            <span className="course-count"> (本周共<span className="count">{ClassRoomSingle.ScheduleCount}</span>节课)</span>
 
                         </div>
 
@@ -152,11 +152,11 @@ class ClassSingle extends Component{
 
                 <TermPick
 
-                    ItemWeek={ClassSingle.WeekList}
+                    ItemWeek={ClassRoomSingle.WeekList}
 
                     ItemTermName={PeriodWeekTerm.ItemTerm?PeriodWeekTerm.ItemTerm.TermName:''}
 
-                    NowWeekNo={ClassSingle.WeekNO}
+                    NowWeekNo={ClassRoomSingle.WeekNO}
 
                     weekPickEvent = {this.weekPickEvent.bind(this)}
 
@@ -166,7 +166,7 @@ class ClassSingle extends Component{
 
                 </TermPick>
 
-                <Loading tip="请稍后..." spinning={ClassSingle.ScheduleLoadingShow}>
+                <Loading tip="请稍后..." spinning={ClassRoomSingle.ScheduleLoadingShow}>
 
                     <SingleDoubleTable
                         topHeight = {64}
@@ -177,8 +177,8 @@ class ClassSingle extends Component{
                         ItemClassHourCount={SubjectCourseGradeClassRoom.ItemClassHourCount}
                         ItemClassHour={SubjectCourseGradeClassRoom.ItemClassHour}
                         ItemWeek = {PeriodWeekTerm.ItemWeek}
-                        NowWeekNo={ClassSingle.WeekNO}
-                        schedule={ClassSingle.Schedule}
+                        NowWeekNo={ClassRoomSingle.WeekNO}
+                        schedule={ClassRoomSingle.Schedule}
                         NowDate={PeriodWeekTerm.NowDate}>
 
                     </SingleDoubleTable>
@@ -197,14 +197,14 @@ const  mapStateToProps = (state) => {
 
     let { LoginUser,Manager,PeriodWeekTerm } = state;
 
-    let { ClassSingle } = Manager;
+    let { ClassRoomSingle } = Manager;
 
     return {
 
-        PeriodWeekTerm,ClassSingle,Manager
+        PeriodWeekTerm,ClassRoomSingle,Manager
 
     }
 
 };
 
-export default connect(mapStateToProps)(ClassSingle);
+export default connect(mapStateToProps)(ClassRoomSingle);

@@ -13,21 +13,22 @@ class DoubleSingleTable extends Component{
 
         $('#tb').find('div.ant-table-body').scroll(() => {
 
-            let scrollTop = $('#tb').find('div.ant-table-body').scrollTop();
+                let scrollTop = $('#tb').find('div.ant-table-body').scrollTop();
 
-            let wrapperHeight = $('#tb .ant-table-scroll>.ant-table-body .ant-table-tbody').height();
+                let wrapperHeight = $('#tb .ant-table-scroll>.ant-table-body .ant-table-tbody').height();
 
-            let scrollHeight = $('#tb .ant-table-scroll>.ant-table-body').height();
+                let scrollHeight = $('#tb .ant-table-scroll>.ant-table-body').height();
 
-            if ((wrapperHeight - scrollTop + 8)<= scrollHeight){
+                if ((wrapperHeight - scrollTop + 8)<= scrollHeight){
 
-                scrollToBottom();
+                    scrollToBottom();
 
-            }
+                }
 
-        });
+            });
 
     }
+
 
     render() {
 

@@ -214,6 +214,9 @@ class Subject extends Component{
                         rowTowHeight={64}
                         commonRowHeight={90}
                         schedule={SubjectTeacherSchedule.schedule}
+                        scheduleCount={SubjectTeacherSchedule.TeacherCount}
+                        schedulePageIndex={SubjectTeacherSchedule.pageIndex}
+                        schedulePageSize={10}
                         onClickRow={(record) => this.clickRow.bind(this,record)}
                         scrollToBottom={this.scrollToBottom.bind(this)}>
 

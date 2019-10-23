@@ -16,7 +16,6 @@ import $ from "jquery";
 import DoubleSingleTable from "../../component/DoubleSingleTable";
 
 
-
 class ClassTotal extends Component{
 
     constructor(props){
@@ -99,9 +98,15 @@ class ClassTotal extends Component{
 
     scrollToBottom(e){
 
-        const {dispatch} = this.props;
+        const {dispatch,ClassTotal} = this.props;
 
-        dispatch(CTActions.ClassTotalPageUpdate({nextPage:true}));
+        const { ClassCount,PageIndex } = ClassTotal;
+
+        if (PageIndex < Math.ceil(ClassCount/10)){
+
+            dispatch(CTActions.ClassTotalPageUpdate({nextPage:true}));
+
+        }
 
     }
 
@@ -190,6 +195,8 @@ class ClassTotal extends Component{
                 >
 
                 </DoubleSingleTable>
+
+
 
                 </Loading>
 

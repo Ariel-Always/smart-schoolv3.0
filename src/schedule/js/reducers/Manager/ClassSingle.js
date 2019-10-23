@@ -1,6 +1,6 @@
 import CSActions from '../../actions/Manager/ClassSingleActions';
 
-const SubjectTeacherTeacherSchedule = (state={
+const ClassSingle = (state={
 
     Schedule:[],
 
@@ -24,7 +24,13 @@ const SubjectTeacherTeacherSchedule = (state={
 
     SearchResult:[],
 
-    SearchLoadingShow:false
+    SearchLoadingShow:false,
+
+    OptionalClassShow:false,
+
+    OptionalClassLoading:true,
+
+    OptionalClassData:[]
 
 },actions) => {
 
@@ -56,7 +62,13 @@ const SubjectTeacherTeacherSchedule = (state={
 
                 SearchLoadingShow:false,
 
-                ClassList:[]
+                ClassList:[],
+
+                OptionalClassShow:false,
+
+                OptionalClassLoading:true,
+
+                OptionalClassData:[]
 
             };
 
@@ -118,4 +130,4 @@ const SubjectTeacherTeacherSchedule = (state={
 
 };
 
-export default SubjectTeacherTeacherSchedule
+export default ClassSingle

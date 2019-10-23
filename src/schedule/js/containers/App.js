@@ -146,11 +146,37 @@ class App extends Component{
 
         }
 
+
         if (hash.includes('#/manager/subject-teacher/teacher')){
 
             dispatch(TeacherIndexActions.STTPageInit());
 
         }
+
+        if (hash.includes('#/manager/class/total')){
+
+            dispatch(ManagerIndexActions.ClassTotalInit());
+
+        }
+
+        if (hash.includes('#/manager/class/single')){
+
+            dispatch(ManagerIndexActions.ClassSingleInit());
+
+        }
+
+        if (hash.includes('#/manager/room/total')){
+
+            dispatch(ManagerIndexActions.ClassRoomTotalInit());
+
+        }
+
+        if (hash.includes('#/manager/room/single')){
+
+            dispatch(ManagerIndexActions.ClassRoomSingleInit());
+
+        }
+
 
     }
     //将隐藏的adjustWrapper弹出或隐藏

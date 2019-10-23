@@ -1,5 +1,8 @@
 import ApiActions from "../ApiActions";
 
+const MANAGER_CLASS_TOTAL_INIT = 'MANAGER_CLASS_TOTAL_INIT';
+
+
 const  MANAGER_CLASS_TOTAL_GRADE_UPDATE = 'MANAGER_CLASS_TOTAL_GRADE_UPDATE';
 
 
@@ -7,6 +10,8 @@ const MANAGER_CLASS_TOTAL_WEEK_CHANGE = 'MANAGER_CLASS_TOTAL_WEEK_CHANGE';
 
 
 const MANAGER_CLASS_TOTAL_SCHEDULE_UPDATE = 'MANAGER_CLASS_TOTAL_SCHEDULE_UPDATE';
+
+const MANAGER_CLASS_TOTAL_CLASS_COUNT = 'MANAGER_CLASS_TOTAL_CLASS_COUNT';
 
 const MANAGER_CLASS_TOTAL_WEEK_LIST_UPDATE = 'MANAGER_CLASS_TOTAL_WEEK_LIST_UPDATE';
 
@@ -122,9 +127,11 @@ const ClassTotalPageUpdate = (opt) =>{
 
                 }else{
 
-                    dispatch({type:MANAGER_CLASS_TOTAL_SCHEDULE_UPDATE,data:Schedule});
+                    dispatch({type:MANAGER_CLASS_TOTAL_SCHEDULE_UPDATE,data:NextSchedule});
 
                 }
+
+                dispatch({type:MANAGER_CLASS_TOTAL_CLASS_COUNT,data:data.ClassCount});
 
                 dispatch({type:MANAGER_CLASS_TOTAL_LOADING_HIDE});
 
@@ -138,6 +145,8 @@ const ClassTotalPageUpdate = (opt) =>{
 
 
 export default {
+
+    MANAGER_CLASS_TOTAL_INIT,
 
     MANAGER_CLASS_TOTAL_GRADE_UPDATE,
 
@@ -154,6 +163,8 @@ export default {
     MANAGER_CLASS_TOTAL_PAGE_ADD,
 
     MANAGER_CLASS_TOTAL_GRADE_SELECT_CHANGE,
+
+    MANAGER_CLASS_TOTAL_CLASS_COUNT,
 
     ClassTotalPageUpdate
 

@@ -30,8 +30,6 @@ class Import extends Component{
 
             $.get(`${CONFIG.AdmClassProxy}/UserMgr/ClassMgr/Import.aspx?Token=${token}&UserType=CourseTeacher`, (data, status) => {
 
-                console.log(status);
-
                 if (status==='success'){
 
                     $('#import-wrapper').append(data);
@@ -47,9 +45,6 @@ class Import extends Component{
                     dispatch(AppAlertActions.alertError({title:"请求超时！",ok:()=>{ return ()=> window.location.href='/html/admclass';}}))
 
                 }
-                
-                
-                
 
 
             });
@@ -59,7 +54,21 @@ class Import extends Component{
 
             $.get(`${CONFIG.AdmClassProxy}/UserMgr/ClassMgr/Import.aspx?Token=${token}&UserType=GangerMonitor`,(data)=>{
 
-                $('#import-wrapper').append(data);
+                if (status==='success'){
+
+                    $('#import-wrapper').append(data);
+
+                    dispatch({type:UpUIState.APP_LOADING_CLOSE});
+
+                }else if (status === 'error'||status==='notmodified'||status==='parsererror'){
+
+                    dispatch(AppAlertActions.alertError({title:"请求出错！",ok:()=>{ return ()=> window.location.href='/html/admclass';}}));
+
+                }else if (status === 'timeout'){
+
+                    dispatch(AppAlertActions.alertError({title:"请求超时！",ok:()=>{ return ()=> window.location.href='/html/admclass';}}))
+
+                }
 
             });
 

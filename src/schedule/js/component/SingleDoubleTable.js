@@ -15,7 +15,16 @@ class SingleDoubleTable extends Component{
 
     render() {
 
-        const { commonHeight,topHeight,ItemClassHourCount,ItemClassHour,ItemWeek,NowWeekNo,commonWidth,leftOneWidth,leftTwoWidth,schedule,NowDate } = this.props;
+        const {
+
+            commonHeight, topHeight, ItemClassHourCount, ItemClassHour,
+
+            ItemWeek,NowWeekNo,commonWidth,leftOneWidth,leftTwoWidth,
+
+            schedule,NowDate,OptionalClassShow
+
+        } = this.props;
+
         //根据课程
 
         let courseTotal = 0;
@@ -227,7 +236,7 @@ class SingleDoubleTable extends Component{
 
                                                     it.IsShift?
 
-                                                        <a className="shift-wrapper">走班课程</a>
+                                                        <a className="shift-wrapper" onClick={()=>OptionalClassShow({WeekDay:it.WeekDay,ClassHourNO:it.ClassHourNO})}>走班课程</a>
 
                                                         :
 

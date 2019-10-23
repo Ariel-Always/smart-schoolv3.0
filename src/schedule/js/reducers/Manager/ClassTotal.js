@@ -16,9 +16,27 @@ const ClassTotal = (state={
 
     PageIndex:1,
 
+    ClassCount:0
+
 },actions) => {
 
     switch (actions.type) {
+
+        case ClassTotalActions.MANAGER_CLASS_TOTAL_INIT:
+
+            return {
+
+                ...state,
+
+                GradeDropSelectd:{value:"none",title:"全部年级"},
+
+                PageIndex:1,
+
+                ClassCount:0,
+
+                Schedule:actions.data,
+
+            };
 
         case ClassTotalActions.MANAGER_CLASS_TOTAL_GRADE_SELECT_CHANGE:
 
@@ -34,7 +52,11 @@ const ClassTotal = (state={
 
         case ClassTotalActions.MANAGER_CLASS_TOTAL_SCHEDULE_UPDATE:
 
-        return { ...state,Schedule:actions.data };
+            return { ...state,Schedule:actions.data };
+
+        case ClassTotalActions.MANAGER_CLASS_TOTAL_CLASS_COUNT:
+
+            return { ...state,ClassCount:actions.data };
 
         case ClassTotalActions.MANAGER_CLASS_TOTAL_WEEK_LIST_UPDATE:
 
@@ -50,7 +72,7 @@ const ClassTotal = (state={
 
         case ClassTotalActions.MANAGER_CLASS_TOTAL_PAGE_ADD:
 
-            return { ...state,LoadingShow:true };
+            return { ...state,PageIndex:state.PageIndex+1 };
 
         default:
 

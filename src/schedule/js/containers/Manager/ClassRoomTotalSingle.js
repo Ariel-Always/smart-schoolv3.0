@@ -24,9 +24,9 @@ class ClassRoomTotalSingle extends Component{
 
         const TabLinkList = [
 
-            {link:"/manager/room/total",name:"班级总课表"},
+            {link:"/manager/room/total",name:"教室总课表"},
 
-            {link:"/manager/room/single",name:"班级课表"}
+            {link:"/manager/room/single",name:"教室课表"}
 
         ];
 

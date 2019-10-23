@@ -4,6 +4,8 @@ import ApiActions from '../ApiActions';
 
 const SUBJECT_TEACHER_SCHEDULE_INIT = 'SUBJECT_TEACHER_SCHEDULE_INIT';
 
+const SUBJECT_TEACHER_SCHEDULE_TEACHER_COUNT = 'SUBJECT_TEACHER_SCHEDULE_TEACHER_COUNT';
+
 const SUBJECT_TEACHER_SCHEDULE_UPDATE = 'SUBJECT_TEACHER_SCHEDULE_UPDATE';
 
 const STS_SUBJECT_CHANGE = 'STS_SUBJECT_CHANGE';
@@ -15,6 +17,7 @@ const STS_PAGE_ADD = 'STS_PAGE_ADD';
 const LOADING_SHOW = 'LOADING_SHOW';
 
 const LOADING_HIDE = 'LOADING_HIDE';
+
 
 //学科教师总表学科课表界面更新
 const STSPageUpdate = (opt) => {
@@ -121,6 +124,8 @@ const STSPageUpdate = (opt) => {
 
                 }
 
+                dispatch({type:SUBJECT_TEACHER_SCHEDULE_TEACHER_COUNT,data:data.TeacherCount});
+
                 dispatch({type:LOADING_HIDE});
 
             }
@@ -136,6 +141,8 @@ const STSPageUpdate = (opt) => {
 export default {
 
     SUBJECT_TEACHER_SCHEDULE_INIT,
+
+    SUBJECT_TEACHER_SCHEDULE_TEACHER_COUNT,
 
     STS_SUBJECT_CHANGE,
 

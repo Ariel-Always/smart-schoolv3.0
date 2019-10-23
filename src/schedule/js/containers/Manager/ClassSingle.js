@@ -16,6 +16,8 @@ import {Loading} from "../../../../common";
 
 import SingleDoubleTable from "../../component/SingleDoubleTable";
 
+import OptionalClassModal from "../../component/OptionalClassModal";
+
 
 class ClassSingle extends Component{
 
@@ -107,6 +109,16 @@ class ClassSingle extends Component{
 
     }
 
+    OptionalClassShow({ClassHourNO,WeekDay}){
+
+        const { dispatch,ClassSingle } = this.props;
+
+        let { PickClassID,WeekNO } = ClassSingle;
+
+        dispatch(CSActions.getDetaiModal)
+
+    }
+
 
     render() {
 
@@ -179,9 +191,19 @@ class ClassSingle extends Component{
                         ItemWeek = {PeriodWeekTerm.ItemWeek}
                         NowWeekNo={ClassSingle.WeekNO}
                         schedule={ClassSingle.Schedule}
-                        NowDate={PeriodWeekTerm.NowDate}>
+                        NowDate={PeriodWeekTerm.NowDate}
+                        OptionalClassShow={this.OptionalClassShow.bind(this)}>
 
                     </SingleDoubleTable>
+
+                    <OptionalClassModal
+                        Show={ClassSingle.OptionalClassShow}
+                        LoadingShow={ClassSingle.OptionalClassLoading}
+                        DataSource={ClassSingle.OptionalClassData}>
+
+
+
+                    </OptionalClassModal>
 
                 </Loading>
 

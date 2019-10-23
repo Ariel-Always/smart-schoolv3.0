@@ -44,9 +44,9 @@ const GetAllOptionByPeriodID = async ({SchoolID,PeriodID,UserID,UserType,dispatc
 
         2,
 
-        CONFIG.ScheduleProxy);
+        //CONFIG.ScheduleProxy);
 
-    //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+    'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
 
     if (res.StatusCode === 200){
 
@@ -95,8 +95,8 @@ const GetAllScheduleOfClassByGradeIDForPage = async ({SchoolID,PeriodID,GradeID=
 
         2,
 
-        CONFIG.ScheduleProxy);
-        //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+        //CONFIG.ScheduleProxy);
+        'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
 
     if (res.StatusCode === 200){
 
@@ -110,6 +110,33 @@ const GetAllScheduleOfClassByGradeIDForPage = async ({SchoolID,PeriodID,GradeID=
 
 
 };
+
+
+//分页获取教室总课表
+
+const GetAllScheduleOfClassRoomByClassRoomTypeForPage = async ({SchoolID,PeriodID,ClassRoomType='',WeekNO=0,PageIndex,PageSize,dispatch}) => {
+
+    let res = await Method.getGetData(`/Schedule/api/GetAllScheduleOfClassRoomByClassRoomTypeForPage?SchoolID=${SchoolID}&ClassRoomType=${ClassRoomType}&PeriodID=${PeriodID}&WeekNO=${WeekNO}&PageIndex=${PageIndex}&PageSize=${PageSize}`,
+
+        2,
+
+        //CONFIG.ScheduleProxy);
+    'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+
+    if (res.StatusCode === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
+
+
 
 
 //获取单个班级课表
@@ -120,8 +147,8 @@ const GetScheduleOfClassOne = async ({SchoolID,ClassID,WeekNO=0,dispatch}) => {
 
         2,
 
-        CONFIG.ScheduleProxy);
-        //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+        //CONFIG.ScheduleProxy);
+        'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
 
     if (res.StatusCode === 200){
 
@@ -136,6 +163,29 @@ const GetScheduleOfClassOne = async ({SchoolID,ClassID,WeekNO=0,dispatch}) => {
 
 };
 
+//获取单个班级课表
+
+const GetScheduleOfClassRoomOne = async ({SchoolID,ClassRoomID,WeekNO=0,dispatch}) => {
+
+    let res = await Method.getGetData(`/schedule/api/GetScheduleOfClassRoomOne?SchoolID=${SchoolID}&ClassRoomID=${ClassRoomID}&WeekNO=${WeekNO}`,
+
+        2,
+
+        //CONFIG.ScheduleProxy);
+    'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+
+    if (res.StatusCode === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
 
 
 
@@ -221,9 +271,9 @@ const GetClassByGradeIDAndKey = async ({SchoolID,PeriodID='',GradeID='',Key='',d
 
         2,
 
-        CONFIG.ScheduleProxy);
+        //CONFIG.ScheduleProxy);
 
-        //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+        'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
 
     if (res.StatusCode === 200){
 
@@ -247,7 +297,9 @@ const GetClassRoomByClassTypeAndKey = async ({SchoolID,PeriodID='',ClassRoomType
 
         2,
 
-        CONFIG.ScheduleProxy);
+        //CONFIG.ScheduleProxy);
+
+    'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
 
     if (res.StatusCode === 200){
 
@@ -679,6 +731,10 @@ export default {
 
     GetAllScheduleOfClassByGradeIDForPage,
 
-    GetScheduleOfClassOne
+    GetScheduleOfClassOne,
+
+    GetScheduleOfClassRoomOne,
+
+    GetAllScheduleOfClassRoomByClassRoomTypeForPage
 
 }
