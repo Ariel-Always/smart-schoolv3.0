@@ -10,6 +10,8 @@ const TipsVisible = (state = { UserIDTipsVisible: false, UserNameTipsVisible: fa
             return Object.assign({}, state, { UserIDTipsVisible: true });
         case UpUIState.USER_ID_TIPS_VISIBLE_CLOSE:
             return Object.assign({}, state, { UserIDTipsVisible: false });
+        case UpUIState.ALL_TIPS_VISIBLE_CLOSE:
+            return Object.assign({}, state, { UserIDTipsVisible: false, UserNameTipsVisible: false });
         default:
             return state;
     }

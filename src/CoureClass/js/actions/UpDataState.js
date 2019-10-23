@@ -210,7 +210,7 @@ const getSubjectTeacherMsg = (url) => {
                 console.log('错误码：' + json.StatusCode)
             } else if (json.StatusCode === 200) {
                 console.log(json.Data)
-                dispatch({ type: GET_SUBJECT_TEACHER_MSG, data: json.Data.data });
+                dispatch({ type: GET_SUBJECT_TEACHER_MSG, data: json.Data });
                 dispatch({ type: actions.UpUIState.TEACHER_LOADING_MODAL_COLSE });
             }
         });

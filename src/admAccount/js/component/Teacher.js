@@ -6,6 +6,7 @@ import { postData, getData } from "../../../common/js/fetch";
 import CONFIG from '../../../common/js/config';
 import { Link, } from 'react-router-dom';
 import '../../scss/Teacher.scss'
+import md5 from 'md5'
 import { Tooltip, Input } from 'antd'
 import TipsContact from './TipsContact'
 import history from '../containers/history'
@@ -166,7 +167,8 @@ class Teacher extends React.Component {
             SubjectSelect: { value: 0, title: '全部学科' },
             keyword: '',
             CancelBtnShow: 'n',
-            userMsg:props.DataState.LoginUser
+            searchValue:'',
+            userMsg: props.DataState.LoginUser
         }
     }
     componentWillMount() {
@@ -201,7 +203,7 @@ class Teacher extends React.Component {
             pagination: 1,
             CancelBtnShow: 'n'
         })
-        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&SubjectIDs=' + e.value));
+        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&SubjectIDs=' + e.value));
 
     }
 
@@ -223,7 +225,7 @@ class Teacher extends React.Component {
                 close: this.onAlertWarnClose.bind(this)
             }));
         } else {
-            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&keyword=' + e.value + '&SubjectIDs=' + this.state.SubjectSelect.value));
+            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&keyword=' + e.value + '&SubjectIDs=' + this.state.SubjectSelect.value));
 
         }
     }
@@ -232,6 +234,18 @@ class Teacher extends React.Component {
         this.setState({
             searchValue: e.target.value
         })
+    }
+    // 取消搜索
+    onCancelSearch = (e) => {
+        const { dispatch } = this.props
+
+        this.setState({
+            CancelBtnShow: 'n',
+            keyword: ''
+        })
+        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + '&SubjectIDs=' + this.state.SubjectSelect.value));
+
+
     }
     onSelectChange = (e) => {
         console.log(e)
@@ -357,7 +371,7 @@ class Teacher extends React.Component {
                 {
                     userID: DataState.SubjectTeacherPreview.newList[this.state.onClickKey].Others.UserID,
                     userType: 1,
-                    newPwd: this.state.defaultPwd
+                    newPwd: md5(this.state.defaultPwd)
                 },
                 2).then(res => {
                     if (res.StatusCode === '401') {
@@ -372,6 +386,8 @@ class Teacher extends React.Component {
                             ChangePwdMadalVisible: false,
                             defaultPwd: 888888
                         })
+                        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&keyword=' + this.state.keyword + '&SubjectIDs=' + this.state.SubjectSelect.value));
+
                     }
 
                 });
@@ -416,7 +432,7 @@ class Teacher extends React.Component {
             {
                 userID: userIDs.join(),
                 userType: 2,
-                newPwd: this.state.defaultPwd
+                newPwd: md5(this.state.defaultPwd)
             },
             2).then(res => {
                 if (res.StatusCode === '401') {
@@ -431,6 +447,8 @@ class Teacher extends React.Component {
                         checkedList: [],
                         checkAll: false
                     })
+                    dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&keyword=' + this.state.keyword + '&SubjectIDs=' + this.state.SubjectSelect.value));
+
                 }
 
             });
@@ -452,7 +470,7 @@ class Teacher extends React.Component {
         if (this.state.keyword !== '') {
             keyword = '&keyword=' + this.state.keyword
         }
-        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=' + (--value) + '&PageSize=10' + keyword + SubjectIDs));
+        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (--value) + '&PageSize=10' + keyword + SubjectIDs));
 
     }
     onUserNameClick = (UserID) => {
@@ -501,7 +519,7 @@ class Teacher extends React.Component {
         let keyword = ''
 
         if (this.state.SubjectSelect.value !== 0) {
-            SubjectSelect = '&SubjectIDs=' + this.state.secondSelect.value
+            SubjectSelect = '&SubjectIDs=' + this.state.SubjectSelect.value
         }
         if (this.state.keyword !== '') {
             keyword = '&keyword=' + this.state.keyword
@@ -509,7 +527,7 @@ class Teacher extends React.Component {
         console.log(sorter)
         if (sorter && (sorter.columnKey === 'UserName' || sorter.columnKey === 'ShortName')) {
             let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
-            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID='+this.state.userMsg.SchoolID+'&sortFiled=' + sorter.columnKey + 'PageSize=10&' + sortType + '&PageIndex=' + (this.state.pagination - 1)  + keyword + SubjectSelect));
+            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&sortFiled=' + sorter.columnKey + 'PageSize=10&' + sortType + '&PageIndex=' + (this.state.pagination - 1) + keyword + SubjectSelect));
 
         }
     }
@@ -562,6 +580,7 @@ class Teacher extends React.Component {
                                 onClickSearch={this.TeacherSearch}
                                 Value={this.state.searchValue}
                                 onChange={this.onChangeSearch.bind(this)}
+                                onCancelSearch={this.onCancelSearch}
                                 CancelBtnShow={this.state.CancelBtnShow}
                                 height={30}
                             ></Search>
@@ -573,13 +592,13 @@ class Teacher extends React.Component {
                                         className='table'
                                         columns={this.state.columns}
                                         pagination={false}
-                                        loading={this.state.loading}
+                                        loading={UIState.AppLoading.TableLoading}
                                         onChange={this.onTableChange.bind(this)}
                                         dataSource={DataState.SubjectTeacherPreview.newList} >
 
                                     </Table>
                                 </CheckBoxGroup>
-                                <CheckBox style={{display:DataState.SubjectTeacherPreview.Total===0?'none':'inline-block'}} className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
+                                <CheckBox style={{ display: DataState.SubjectTeacherPreview.Total === 0 ? 'none' : 'inline-block' }} className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
                                     全选
                                     <Button onClick={this.onChangePwdAllClick} className='changePwdAll' color='blue'>批量重置密码</Button>
                                 </CheckBox>

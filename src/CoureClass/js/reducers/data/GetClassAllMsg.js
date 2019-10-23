@@ -2,7 +2,7 @@ import UpDataState from '../../actions/UpDataState';
 import history from '../../containers/history'
 import { utimes } from 'fs';
 
-const GetClassAllMsg = (state = {}, actions) => {
+const GetClassAllMsg = (state = {allClass:{}}, actions) => {
     switch (actions.type) {
         case UpDataState.GET_CLASS_ALL_MSG:
             

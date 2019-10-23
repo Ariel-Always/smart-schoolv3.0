@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Frame, Menu, Loading, Alert } from "../../../common";
+import {  Menu, Loading, Alert } from "../../../common";
 import { connect } from 'react-redux';
 import Introduce from '../component/Introduce'
 import { TokenCheck_Connect, TokenCheck } from '../../../common/js/disconnect'
+import Frame from '../../../common/Frame';
 
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
 import history from './history'
@@ -131,11 +132,11 @@ class App extends Component {
     }
     // 请求每个组件主要渲染的数据
     requestData = (route) => {
-        const { dispatch,DataState } = this.props;
+        const { dispatch, DataState } = this.props;
         let pathArr = route.split('/');
         let handleRoute = pathArr[1];
-        console.log(DataState.LoginUser,JSON.parse(sessionStorage.getItem('UserInfo')))
-        let userMsg = DataState.LoginUser.SchoolID?DataState.LoginUser:JSON.parse(sessionStorage.getItem('UserInfo'))
+        console.log(DataState.LoginUser, JSON.parse(sessionStorage.getItem('UserInfo')))
+        let userMsg = DataState.LoginUser.SchoolID ? DataState.LoginUser : JSON.parse(sessionStorage.getItem('UserInfo'))
         if (route === '/') {
             //dispatch(actions.UpDataState.getAllUserPreview('/ArchivesAll'));
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
@@ -146,19 +147,19 @@ class App extends Component {
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
             if (!this.props.DataState.GradeClassMsg.returnData.grades)
                 dispatch(actions.UpDataState.getGradeClassMsg('/GetGradeClassTree'));
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + userMsg.SchoolID + '&PageIndex=0&PageSize=10'));
 
         } else if (handleRoute === 'Teacher') {
 
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
             if (!this.props.DataState.SubjectTeacherMsg.returnData)
                 dispatch(actions.UpDataState.getSubjectTeacherMsg('/GetSubject'));
-            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID='+userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
+            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + userMsg.SchoolID + '&PageIndex=0&PageSize=10'));
         } else if (handleRoute === 'Leader') {
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
         } else if (handleRoute === 'Admin') {
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-            dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
+            dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=' + userMsg.SchoolID + '&PageIndex=0&PageSize=10'));
 
         } else {
             history.push('/')
@@ -219,15 +220,20 @@ class App extends Component {
                         type="triangle" showBarner={false} showLeftMenu={true}>
                         {/* <div ref="frame-time-barner"><TimeBanner /></div> */}
                         <div ref="frame-left-menu"><Menu params={this.state.MenuParams}></Menu></div>
+
                         <div ref="frame-right-content">
-                            <Router >
-                                <Route path='/' history={history} exact component={Introduce}></Route>
-                                <Route path='/Student' history={history} component={Student}></Route>
-                                <Route path='/Teacher' exact history={history} component={Teacher}></Route>
-                                <Route path='/Leader' exact history={history} component={Leader}></Route>
-                                <Route path='/Admin' exact history={history} component={Admin}></Route>
-                            </Router>
+                            <Loading opacity={false} size="large" spinning={UIState.AppLoading.RightLoading}>
+
+                                <Router >
+                                    <Route path='/' history={history} exact component={Introduce}></Route>
+                                    <Route path='/Student' history={history} component={Student}></Route>
+                                    <Route path='/Teacher' exact history={history} component={Teacher}></Route>
+                                    <Route path='/Leader' exact history={history} component={Leader}></Route>
+                                    <Route path='/Admin' exact history={history} component={Admin}></Route>
+                                </Router>
+                            </Loading>
                         </div>
+
                     </Frame>
 
 

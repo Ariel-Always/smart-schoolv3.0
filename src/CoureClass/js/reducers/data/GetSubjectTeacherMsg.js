@@ -16,8 +16,8 @@ function handleData(data) {
     
     let newdata = data.map((child,index) => {
         return{
-            value:child.teacherID,
-            title:child.teacherName
+            value:child.TeacherID,
+            title:child.TeacherName
         }
     })
     return newdata;

@@ -17,7 +17,9 @@ class HandleCourseClass extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tableSource: []
+            tableSource: [],
+            UserMsg: props.DataState.LoginUser
+
         }
     }
 
@@ -69,8 +71,9 @@ class HandleCourseClass extends React.Component {
     //选择教师
     onTeacherSelectClick = () => {
         const { DataState, UIState, dispatch } = this.props;
+        let data = DataState.GetCourseClassDetailsHandleClassMsg;
         dispatch(actions.UpUIState.AddTeacherModalOpen())
-        dispatch(actions.UpDataState.getSubjectTeacherMsg('/AdmSubjectTeacher'))
+        dispatch(actions.UpDataState.getSubjectTeacherMsg('/GetTeacherInfoBySubjectAndKey?key=&schoolID=' + this.state.UserMsg.SchoolID + '&subjectID=' + data.SubjectID))
     }
     //选择教师模态框
     AddTeacherModalOk = () => {
@@ -129,7 +132,9 @@ class HandleCourseClass extends React.Component {
     //选择弹窗
     onSelectStudentAllClick = () => {
         const { DataState, UIState, dispatch } = this.props;
-        dispatch(actions.UpDataState.getGradeClassMsg('/CourseClass_GradeID'))
+        let data = DataState.GetCourseClassDetailsHandleClassMsg;
+        dispatch(actions.UpDataState.getGradeClassMsg('/GetStudentForAddOrEditCourseClassByInit?schoolID=' + this.state.UserMsg.SchoolID + '&gradeID=' + data.GradeID))
+        
         dispatch(actions.UpUIState.AddStudentModalOpen())
     }
     render() {
@@ -250,7 +255,7 @@ class HandleCourseClass extends React.Component {
                     onOk={this.AddTeacherModalOk}
                     onCancel={this.AddTeacherModalCancel}
                 >
-                    <SelectTeacher></SelectTeacher>
+                    <SelectTeacher subject={data ? data.SubjectID : ''}></SelectTeacher>
                 </Modal>
                 <Modal
                     ref='SelectStudentMadal'

@@ -28,8 +28,8 @@ class Dynamic extends React.Component {
             ],
             startTime: '',
             endTime: '',
-            startMomentTime: '',
-            endtMomentTime: '',
+            startMomentTime: null,
+            endMomentTime: null,
             endOpen: false,
             columns: [
                 {
@@ -72,16 +72,16 @@ class Dynamic extends React.Component {
                     render: OperateParams => {
                         return (
                             <p style={{ textAlign: 'left', marginBottom: 0, paddinLeft: 10 + 'px' }}>
-                                <span className='OperateParams'>{OperateParams.OperateParams.map((param,index) => {
-                                    if(index%2){
-                
+                                <span className='OperateParams'>{OperateParams.OperateParams.map((param, index) => {
+                                    if (index % 2) {
+
                                         return <span key={param} className='key-params'>{param}</span>
-                                        
-                                    }else{
+
+                                    } else {
                                         return param
                                     }
                                 })}</span>
-                                <span onClick={this.onOperateParamsClick.bind(this,OperateParams.CourseClassIDs)} style={{ display: OperateParams.Flag === 1 ? 'inline-block' : 'none' }} className='Flag'>查看详情</span>
+                                <span onClick={this.onOperateParamsClick.bind(this, OperateParams.CourseClassIDs)} style={{ display: OperateParams.Flag === 1 ? 'inline-block' : 'none' }} className='Flag'>查看详情</span>
                             </p>
                         )
                     }
@@ -131,7 +131,7 @@ class Dynamic extends React.Component {
             plainOptions: [],
             pagination: 1,
             dataSource: [],
-            UserMsg:props.DataState.LoginUser
+            UserMsg: props.DataState.LoginUser
         }
 
         const { dispatch, DataState, UIState } = this.props;
@@ -171,15 +171,29 @@ class Dynamic extends React.Component {
     }
     onHandleTypeChange = (value) => {
 
-
-        console.log(value.value)
+        this.setState({
+            handleTypeSelected:value
+        })
+        // console.log(value.value)
     }
     //查看详情
-    onOperateParamsClick = (IDs) =>  {
+    onOperateParamsClick = (IDs) => {
         const { dispatch, DataState } = this.props;
-        let url = '/CourseClass_ClassIDs?courseClassIDs='+IDs;
-        dispatch(actions.UpUIState.LogDetailsModalOpen())
-        dispatch(actions.UpDataState.getLogDetailsMsg(url))
+        let classIDs = IDs.split(',');
+        let url = '';
+        if (classIDs.length === 0) {
+            return
+        } else if (classIDs.length === 1) {
+            url = '/GetCourseClassDetail?courseClassID=' + IDs;
+
+            dispatch(actions.UpUIState.CourseClassDetailsModalOpen())
+            dispatch(actions.UpDataState.getCourseClassDetailsMsg(url))
+        } else {
+            url = '/GetCourseClassByIDs?courseClassIDs=' + IDs;
+            dispatch(actions.UpUIState.LogDetailsModalOpen())
+            dispatch(actions.UpDataState.getLogDetailsMsg(url))
+        }
+
 
 
     }
@@ -301,7 +315,7 @@ class Dynamic extends React.Component {
             for (let index = 0; index < pageSize; index++) {
                 plainOptions.push(index + defaultPageSize * (pagination - 1))
             }
-            console.log(plainOptions,pageSize,dataSource)
+            console.log(plainOptions, pageSize, dataSource)
             this.setState({
                 plainOptions: plainOptions
             })
@@ -318,7 +332,7 @@ class Dynamic extends React.Component {
     onSelectAllClick = (e) => {
         const { dispatch, DataState } = this.props;
 
-        let url = '/DeleteSubject';
+        let url = '/GourseClassLogReaded';
         let userMsg = DataState.LoginUser;
         let handleTypeSelected = this.state.handleTypeSelected;
 
@@ -326,10 +340,10 @@ class Dynamic extends React.Component {
         let len = checkedList.length;
         let LogID = '';
         let source = this.state.dataSource;
-        console.log(checkedList,source)
+        console.log(checkedList, source)
         checkedList.map((child, index) => {
             if (index !== len - 1)
-                LogID += source[child].LogID + '-';
+                LogID += source[child].LogID + ',';
             else
                 LogID += source[child].LogID
 
@@ -350,7 +364,7 @@ class Dynamic extends React.Component {
             userID: userMsg.UserID,
             userType: userMsg.UserType,
             logIDs: LogID
-        },2,'json').then(res => {
+        }, 2, 'json').then(res => {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
@@ -385,7 +399,7 @@ class Dynamic extends React.Component {
         let handleTypeSelected = this.state.handleTypeSelected;
         dispatch(actions.UpDataState.getCourseClassDynamicMsg('/GetGourseClassLogNew?userID=' + userMsg.UserID + '&userType=' + userMsg.UserType + '&schoolID=' + userMsg.SchoolID + '&startDate=' + this.state.startTime + '&endDate=' + this.state.endTime + '&operateType=' + handleTypeSelected.value))
         this.setState({
-            pagination:1
+            pagination: 1
         })
         dispatch(actions.UpUIState.hideErrorAlert())
     }
@@ -396,7 +410,7 @@ class Dynamic extends React.Component {
         this.setState({
             pagination: value,
             checkAll: false,
-            checkedList:[]
+            checkedList: []
         })
     }
     render() {
@@ -467,7 +481,7 @@ class Dynamic extends React.Component {
                                     columns={this.state.columns}
                                     dataSource={DataState.GetCourseClassDynamicMsg.tableSource ? DataState.GetCourseClassDynamicMsg.tableSource : []}
                                     bordered
-                                    pagination={{ pageSize: this.state.pageSize, showQuickJumper: { goButton: (<Button className='go-btn' color='blue' size='small'>GO</Button>) }, onChange: this.onPaginationChange }}
+                                    pagination={{ hideOnSinglepage:true,pageSize: this.state.pageSize, showQuickJumper: { goButton: (<Button className='go-btn' color='blue' size='small'>GO</Button>) }, onChange: this.onPaginationChange }}
                                 >
 
                                 </Table>
@@ -487,7 +501,7 @@ class Dynamic extends React.Component {
                     </Loading>
 
                 </div>
-                
+
             </div >
         )
     }

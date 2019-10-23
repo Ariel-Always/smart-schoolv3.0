@@ -2,13 +2,15 @@ import UpDataState from '../../actions/UpDataState';
 
 
 
-const LogPreview = (state = { unreadLogCount: 0, unreadLog: {
-    List:{},
-    Add:0,
-    Delete:0,
-    Edit:0,
-    Total:0
-} }, actions) => {
+const LogPreview = (state = {
+    unreadLogCount: 0, unreadLog: {
+        List: {},
+        Add: 0,
+        Delete: 0,
+        Edit: 0,
+        Total: 0
+    }
+}, actions) => {
     switch (actions.type) {
         case UpDataState.GET_UNREAD_LOG_COUNT_PREVIEW:
             return Object.assign({}, state, { unreadLogCount: actions.data })
@@ -19,7 +21,7 @@ const LogPreview = (state = { unreadLogCount: 0, unreadLog: {
             console.log(List, others)
             let list = handleData(List, actions.pageIndex, actions.pageSize);
             //console.log(actions.GradeID||{value:List.newList[0].child.GradeID,title:List.newList[0].child.GradeName})
-            return Object.assign({}, state, { unreadLog: { ...others, List:list } });
+            return Object.assign({}, state, { unreadLog: { ...others, List: list } });
         default:
             return state;
     }
@@ -30,10 +32,12 @@ function handleData(data, pageIndex, pageSize) {
     let pensonalList = [];
     let newList = data instanceof Array && data.map((child, index) => {
         let list = {}
-        list.UserName = { key: index, 
-            PhotoPath: child.PhotoPath||child.PhotoPath_Nocache, 
+        list.UserName = {
+            key: index,
+            PhotoPath: child.PhotoPath || child.PhotoPath_Nocache,
             UserName: child.UserName,
-            UserID:  child.UserID};
+            UserID: child.UserID
+        };
         list.Gender = child.Gender;
         list.UserType_Txt = child.UserType_Txt;
         list.UserType = child.UserType;

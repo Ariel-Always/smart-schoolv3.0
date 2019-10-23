@@ -28,8 +28,8 @@ class Record extends React.Component {
             ],
             startTime: '',
             endTime: '',
-            startMomentTime: '',
-            endtMomentTime: '',
+            startMomentTime: null,
+            endtMomentTime: null,
             endOpen: false,
             columns: [
                 {
@@ -167,16 +167,29 @@ class Record extends React.Component {
         })
     }
     onHandleTypeChange = (value) => {
-        console.log(value.value)
+        this.setState({
+            handleTypeSelected:value
+        })
     }
     //查看详情
     onOperateParamsClick = (IDs) =>  {
         const { dispatch, DataState } = this.props;
-        let url = '/GetCourseClassByIDs?courseClassIDs='+IDs;
-        dispatch(actions.UpUIState.LogDetailsModalOpen())
-        dispatch(actions.UpDataState.getLogDetailsMsg(url))
+        
 
+        let classIDs = IDs.split(',');
+        let url = '';
+        if (classIDs.length === 0) {
+            return
+        } else if (classIDs.length === 1) {
+            url = '/GetCourseClassDetail?courseClassID=' + IDs;
 
+            dispatch(actions.UpUIState.CourseClassDetailsModalOpen())
+            dispatch(actions.UpDataState.getCourseClassDetailsMsg(url))
+        } else {
+            url = '/GetCourseClassByIDs?courseClassIDs=' + IDs;
+            dispatch(actions.UpUIState.LogDetailsModalOpen())
+            dispatch(actions.UpDataState.getLogDetailsMsg(url))
+        }
     }
     //操作时间
     disabledStartDate = (current) => {
@@ -459,7 +472,7 @@ class Record extends React.Component {
                                     columns={this.state.columns}
                                     dataSource={DataState.GetCourseClassRecordMsg.tableSource ? DataState.GetCourseClassRecordMsg.tableSource : []}
                                     bordered
-                                    pagination={{ pageSize: this.state.pageSize, showQuickJumper: { goButton: (<Button className='go-btn' color='blue' size='small'>GO</Button>) }, onChange: this.onPaginationChange }}
+                                    pagination={{ pageSize: this.state.pageSize,hideOnSinglepage:true, showQuickJumper: { goButton: (<Button className='go-btn' color='blue' size='small'>GO</Button>) }, onChange: this.onPaginationChange }}
                                 >
 
                                 </Table>

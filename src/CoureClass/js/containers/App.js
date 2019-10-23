@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Frame, Menu, Loading, Alert, LeftMenu, Modal } from "../../../common";
+import {  Menu, Loading, Alert, LeftMenu, Modal } from "../../../common";
 import { connect } from 'react-redux';
 import TimeBanner from '../component/TimeBanner'
 import CONFIG from '../../../common/js/config';
@@ -7,6 +7,7 @@ import deepCompare from '../../../common/js/public';
 
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
 import history from './history'
+import Frame from '../../../common/Frame';
 
 import logo from '../../images/image-MyClass.png'
 import All from '../component/All'
@@ -123,7 +124,8 @@ class App extends Component {
 
         const { dispatch, DataState } = this.props;
         let UserMsg = DataState.LoginUser.SchoolID ? DataState.LoginUser : JSON.parse(sessionStorage.getItem('UserInfo'))
-
+        let SubjectID = DataState.GetCoureClassAllMsg.Subject;
+        let GradeID = DataState.GetCoureClassAllMsg.Grade;
 
         let pathArr = route.split('/');
         let handleRoute = pathArr[1];
@@ -170,7 +172,7 @@ class App extends Component {
         } else if (handleRoute === 'Search') {
             // if (!DataState.GetCoureClassAllMsg.MenuParams)
             //     return;
-            dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + UserMsg.SchoolID + '&key=&pageIndex=1&pageSize=10&subjectID=' + routeID + '&gradeID=' + classID));
+            dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + UserMsg.SchoolID + '&key='+routeID+'&pageIndex=1&pageSize=10&subjectID='+SubjectID+'&gradeID='+GradeID));
 
 
         } else if (handleRoute === 'Log') {
@@ -205,7 +207,7 @@ class App extends Component {
     }
 
     MenuClcik = (id, type, sub = null) => {
-        console.log(id, type)
+        // 0console.log(id, type)
         if (type === 'All') {
             history.push('/All')
         } else if (type === 'Subject') {
@@ -273,7 +275,7 @@ class App extends Component {
             gradeID: data.GradeID,
             subjectID: data.SubjectID,
             courseClassStus: courseClassStus
-        }).then(res => {
+        },2,'json').then(res => {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
@@ -406,7 +408,7 @@ class App extends Component {
             gradeID: data.selectData.Grade.value,
             subjectID: data.selectData.Subject.value,
             courseClassStus: courseClassStus
-        }).then(res => {
+        },2,'json').then(res => {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
@@ -476,7 +478,7 @@ class App extends Component {
                         </div>
 
                         <div ref="frame-right-content">
-                            <Loading tip="加载中..." size="large" spinning={UIState.AppLoading.rightLoading}>
+                            <Loading tip="加载中..." opacity={false} size="large" spinning={UIState.AppLoading.rightLoading}>
                                 <Router>
                                     <Route path='/All' exact component={All}></Route>
                                     <Route path='/Subject/:subjectID/all' component={Subject}></Route>

@@ -37,12 +37,12 @@ class AddCourseClass extends React.Component {
         let subjectID = pathArr[3];
         let classID = pathArr[4];
         //*************** */
-        if (handleRoute === 'Teacher'){
+        if (handleRoute === 'Teacher') {
             let UserMsg = DataState.LoginUser;
-            DataState.GetCourseClassDetailsHandleClassMsg.selectData.Teacher={value:UserMsg.UserID,title:UserMsg.UserName};
+            DataState.GetCourseClassDetailsHandleClassMsg.selectData.Teacher = { value: UserMsg.UserID, title: UserMsg.UserName };
             //dispatch(actions.UpDataState.setSubjectTeacherTransferMsg({value:UserMsg.UserID,title:UserMsg.UserName}))
         }
-        
+
     }
     componentWillReceiveProps(nextProps) {
         const { DataState, UIState } = nextProps;
@@ -75,8 +75,11 @@ class AddCourseClass extends React.Component {
     //选择教师
     onTeacherSelectClick = () => {
         const { DataState, UIState, dispatch } = this.props;
+        if (this.state.SubjectSelect.value === 0)
+            return
+        
         dispatch(actions.UpUIState.AddTeacherModalOpen())
-        dispatch(actions.UpDataState.getSubjectTeacherMsg('/GetTeacherInfoBySubjectAndKey?key=&schoolID='+this.state.UserMsg.SchoolID+'&subjectID='+this.state.SubjectSelect.value))
+        dispatch(actions.UpDataState.getSubjectTeacherMsg('/GetTeacherInfoBySubjectAndKey?key=&schoolID=' + this.state.UserMsg.SchoolID + '&subjectID=' + this.state.SubjectSelect.value))
     }
     //选择教师模态框
     AddTeacherModalOk = () => {
@@ -140,7 +143,8 @@ class AddCourseClass extends React.Component {
             return
         if (this.state.GradeSelect.value === 0)
             return
-        dispatch(actions.UpDataState.getGradeClassMsg('/GetStudentForAddOrEditCourseClassByInit?schoolID='+UserMsg.SchoolID+'&gradeID='+this.state.GradeSelect.value))
+        // console.log(';ll')
+        dispatch(actions.UpDataState.getGradeClassMsg('/GetStudentForAddOrEditCourseClassByInit?schoolID=' + UserMsg.SchoolID + '&gradeID=' + this.state.GradeSelect.value))
         dispatch(actions.UpUIState.AddStudentModalOpen())
     }
     //选择学科
@@ -329,7 +333,7 @@ class AddCourseClass extends React.Component {
                     onOk={this.AddTeacherModalOk}
                     onCancel={this.AddTeacherModalCancel}
                 >
-                    {UIState.AddTeacherModalShow.Show ? (<SelectTeacher></SelectTeacher>) : ''}
+                    {UIState.AddTeacherModalShow.Show ? (<SelectTeacher subject={this.state.SubjectSelect.value}></SelectTeacher>) : ''}
                 </Modal>
                 <Modal
                     ref='SelectStudentMadal'

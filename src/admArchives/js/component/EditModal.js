@@ -43,7 +43,7 @@ class EditModal extends React.Component {
             changeSubjectVisible: false,
             TitleIDTipsTitle: '请选择职称',
             TitleIDVisible: false,
-            PositionTipsTitle:'请选择行政职称'
+            PositionTipsTitle: '请选择行政职称'
 
         }
     }
@@ -219,12 +219,12 @@ class EditModal extends React.Component {
                 { value: 2, title: '副校长' },
                 { value: 3, title: '教务主任' },
             ];
-            let position = {value:0,title:'请选择行政职务'}
-            Select&&LeaderPosition.map((child,index) => {
-                if(child.title===Select.child.Position){
+            let position = { value: 0, title: '请选择行政职务' }
+            Select && LeaderPosition.map((child, index) => {
+                if (child.title === Select.child.Position) {
                     position = child;
                 }
-                console.log(child.title,position)
+                console.log(child.title, position)
 
             })
             if (UserKey !== 'add') {
@@ -237,7 +237,7 @@ class EditModal extends React.Component {
                     userID: Select.child.UserID,
                     userName: Select.child.UserName,
                     gender: Select.child.Gender,
-                    position:position,
+                    position: position,
                     // photoPath: Select.child.PhotoPath,
                     photoPath: Select.child.PhotoPath || Select.child.PhotoPath_Nocache,
                     IDCardNo: Select.child.IDCardNo,
@@ -251,7 +251,7 @@ class EditModal extends React.Component {
                     userID: '',
                     userName: '',
                     gender: '',
-                    position:'',
+                    position: '',
                     photoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
                     // photoPath: '',
                     IDCardNo: '',
@@ -273,7 +273,7 @@ class EditModal extends React.Component {
                         title: Select.child.Gender
                     },
                 LeaderPositionList: LeaderPosition,
-                PositionChange: this.state.UserKey === 'add' ? {value:0,title:'请选择行政职务'}: LeaderChangeMsg.position,
+                PositionChange: this.state.UserKey === 'add' ? { value: 0, title: '请选择行政职务' } : LeaderChangeMsg.position,
                 IDCardChange: this.state.UserKey === 'add' ? '' : Select.child.IDCardNo,
                 PhoneChange: this.state.UserKey === 'add' ? '' : Select.child.Telephone,
                 MailChange: this.state.UserKey === 'add' ? '' : Select.child.Email,
@@ -315,7 +315,38 @@ class EditModal extends React.Component {
         //用户ID（工号/学号）检测  
         //长度是1~30位，只能由字母与数字组成。
         console.log(e.target.value)
-        let Test = /^([a-zA-Z0-9]{1,24})$/.test(e.target.value)
+        // let Test = value === '' ||/^([a-zA-Z0-9]{1,24})$/.test(e.target.value)
+        // if (!Test) {
+        //     dispatch(actions.UpUIState.editModalTipsVisible({
+        //         UserIDTipsVisible: true
+        //     }))
+        // } else {
+        //     dispatch(actions.UpUIState.editModalTipsVisible({
+        //         UserIDTipsVisible: false
+        //     }))
+        //     if (this.state.type === 'teacher') {
+        //         //改变reduce教师中转数据
+        //         dispatch(actions.UpDataState.setTeacherMsg({ userID: e.target.value }))
+        //     } else if (this.state.type === 'student') {
+        //         //改变reduce学生中转数据
+        //         dispatch(actions.UpDataState.setStudentMsg({ userID: e.target.value }))
+        //     }else if (this.state.type === 'leader') {
+        //         //改变reduce领导中转数据
+        //         dispatch(actions.UpDataState.setLeaderMsg({ userID: e.target.value }))
+        //     }
+        // }
+    }
+
+    // idBlur 
+    onEditBlur = (e) => {
+        const { dispatch } = this.props
+        // this.setState({
+        //     UserIDChange: e.target.value
+        // })
+        //用户ID（工号/学号）检测  
+        //长度是1~30位，只能由字母与数字组成。
+        console.log(e.target.value)
+        let Test = e.target.value === '' || /^([a-zA-Z0-9]{1,24})$/.test(e.target.value)
         if (!Test) {
             dispatch(actions.UpUIState.editModalTipsVisible({
                 UserIDTipsVisible: true
@@ -330,15 +361,11 @@ class EditModal extends React.Component {
             } else if (this.state.type === 'student') {
                 //改变reduce学生中转数据
                 dispatch(actions.UpDataState.setStudentMsg({ userID: e.target.value }))
-            }else if (this.state.type === 'leader') {
+            } else if (this.state.type === 'leader') {
                 //改变reduce领导中转数据
                 dispatch(actions.UpDataState.setLeaderMsg({ userID: e.target.value }))
             }
-
-
         }
-
-
     }
     onEditNameChange = (e) => {
         const { dispatch } = this.props
@@ -365,7 +392,7 @@ class EditModal extends React.Component {
             } else if (this.state.type === 'student') {
                 //改变reduce学生中转数据
                 dispatch(actions.UpDataState.setStudentMsg({ userName: value }))
-            }else if (this.state.type === 'leader') {
+            } else if (this.state.type === 'leader') {
                 console.log('ddd')
                 //改变reduce领导中转数据
                 dispatch(actions.UpDataState.setLeaderMsg({ userName: value }))
@@ -388,7 +415,7 @@ class EditModal extends React.Component {
         } else if (this.state.type === 'student') {
             //改变reduce学生中转数据
             dispatch(actions.UpDataState.setStudentMsg({ gender: e.title }))
-        }else if (this.state.type === 'leader') {
+        } else if (this.state.type === 'leader') {
             //改变reduce领导中转数据
             dispatch(actions.UpDataState.setLeaderMsg({ gender: e.title }))
         }
@@ -459,11 +486,19 @@ class EditModal extends React.Component {
     onEditIDCardChange = (e) => {
         const { dispatch } = this.props
 
-        let value = e.target.value;
-        let Test = /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/.test(value)
+
         this.setState({
             IDCardChange: e.target.value
         })
+
+    }
+    // 身份证Blur
+    onEditIDCardBlur = (e) => {
+        const { dispatch } = this.props
+
+        let value = e.target.value;
+        let Test = value === '' || /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/.test(value)
+
         if (!Test) {
             dispatch(actions.UpUIState.editModalTipsVisible({
                 IDCardNoTipsVisible: true
@@ -478,7 +513,7 @@ class EditModal extends React.Component {
             } else if (this.state.type === 'student') {
                 //改变reduce学生中转数据
                 dispatch(actions.UpDataState.setStudentMsg({ IDCardNo: value }))
-            }else if (this.state.type === 'leader') {
+            } else if (this.state.type === 'leader') {
                 //改变reduce领导中转数据
                 dispatch(actions.UpDataState.setLeaderMsg({ IDCardNo: value }))
             }
@@ -487,12 +522,18 @@ class EditModal extends React.Component {
     }
     //电话号码
     onEditPhoneChange = (e) => {
-        const { dispatch } = this.props
-        let value = e.target.value;
-        let Test = /^[0-9]{11}$/.test(value)
+
         this.setState({
             PhoneChange: e.target.value
         })
+
+    }
+    //电话号码Blur
+    onEditPhoneBlur = (e) => {
+        const { dispatch } = this.props
+        let value = e.target.value;
+        let Test = value === '' || /^[0-9]{11}$/.test(value)
+
         if (!Test) {
             dispatch(actions.UpUIState.editModalTipsVisible({
                 TelephoneTipsVisible: true
@@ -507,7 +548,7 @@ class EditModal extends React.Component {
             } else if (this.state.type === 'student') {
                 //改变reduce学生中转数据
                 dispatch(actions.UpDataState.setStudentMsg({ telephone: value }))
-            }else if (this.state.type === 'leader') {
+            } else if (this.state.type === 'leader') {
                 //改变reduce领导中转数据
                 dispatch(actions.UpDataState.setLeaderMsg({ telephone: value }))
             }
@@ -515,6 +556,13 @@ class EditModal extends React.Component {
         }
     }
     onEditMailChange = (e) => {
+
+        this.setState({
+            MailChange: e.target.value
+        })
+
+    }
+    onEditMailBlur = (e) => {
         const { dispatch } = this.props
         let value = e.target.value;
         let Test = false
@@ -522,12 +570,10 @@ class EditModal extends React.Component {
             Test = false;
         }
         else {
-            Test = /^([a-zA-Z0-9]+[_|\-|\.]*)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\-|\.]*)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/gi.test(value);
+            Test = value === '' || /^([a-zA-Z0-9]+[_|\-|\.]*)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\-|\.]*)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/gi.test(value);
         }
 
-        this.setState({
-            MailChange: e.target.value
-        })
+
         if (!Test) {
             dispatch(actions.UpUIState.editModalTipsVisible({
                 EmailTipsVisible: true
@@ -542,7 +588,7 @@ class EditModal extends React.Component {
             } else if (this.state.type === 'student') {
                 //改变reduce学生中转数据
                 dispatch(actions.UpDataState.setStudentMsg({ email: value }))
-            }else if (this.state.type === 'leader') {
+            } else if (this.state.type === 'leader') {
                 //改变reduce领导中转数据
                 dispatch(actions.UpDataState.setLeaderMsg({ email: value }))
             }
@@ -550,12 +596,17 @@ class EditModal extends React.Component {
         }
     }
     onEditAddressChange = (e) => {
-        const { dispatch } = this.props
-        let value = e.target.value;
-        let Test = /^[A-Za-z0-9_()\u4e00-\u9fa5]{0,100}$/.test(value);
+
         this.setState({
             AddressChange: e.target.value
         })
+
+    }
+    onEditAddressBlur = (e) => {
+        const { dispatch } = this.props
+        let value = e.target.value;
+        let Test = value === '' || /^[A-Za-z0-9_()\u4e00-\u9fa5]{0,100}$/.test(value);
+
         if (!Test) {
             dispatch(actions.UpUIState.editModalTipsVisible({
                 HomeAdressTipsVisible: true
@@ -570,7 +621,7 @@ class EditModal extends React.Component {
             } else if (this.state.type === 'student') {
                 //改变reduce学生中转数据
                 dispatch(actions.UpDataState.setStudentMsg({ homeAddress: value }))
-            }else if (this.state.type === 'leader') {
+            } else if (this.state.type === 'leader') {
                 //改变reduce领导中转数据
                 dispatch(actions.UpDataState.setLeaderMsg({ homeAddress: value }))
             }
@@ -630,7 +681,8 @@ class EditModal extends React.Component {
                 <div className='Right'>
                     <div className="row clearfix" style={{ marginTop: this.state.type === 'student' || !this.state.type ? 18 + 'px' : 5 + 'px' }}>
                         <span className='culonm-1'>
-                            {this.state.type === 'student' ? '学号：' :  '工号：'}
+                            <span className='must-icon'>*</span>
+                            {this.state.type === 'student' ? '学号：' : '工号：'}
                         </span>
                         <div className='culonm-2'>
                             <span style={{ display: this.state.UserKey !== 'add' ? 'block' : 'none' }} className='UserID-text'>{this.state.UserIDChange}</span>
@@ -639,7 +691,8 @@ class EditModal extends React.Component {
                                     type='text'
                                     name='EditID'
                                     value={this.state.UserIDChange}
-                                    onChange={this.onEditIDChange} />
+                                    onChange={this.onEditIDChange}
+                                    onBlur={this.onEditBlur} />
                             </Tips>
                         </div>
                     </div>
@@ -800,6 +853,7 @@ class EditModal extends React.Component {
                                     maxLength={18}
                                     name='EditIDCard'
                                     onChange={this.onEditIDCardChange}
+                                    onBlur={this.onEditIDCardBlur}
                                 ></Input>
                             </Tips>
                         </div>
@@ -817,6 +871,7 @@ class EditModal extends React.Component {
                                     type='text'
                                     name='EditPhone'
                                     onChange={this.onEditPhoneChange}
+                                    onBlur={this.onEditPhoneBlur}
                                 ></Input>
                             </Tips>
                         </div>
@@ -833,6 +888,7 @@ class EditModal extends React.Component {
                                     name='EditMail'
                                     value={this.state.MailChange}
                                     onChange={this.onEditMailChange}
+                                    onBlur={this.onEditMailBlur}
                                 ></Input>
                             </Tips>
                         </div>
@@ -850,6 +906,7 @@ class EditModal extends React.Component {
                                     name='EditAddress'
                                     value={this.state.AddressChange}
                                     onChange={this.onEditAddressChange}
+                                    onBlur={this.onEditAddressBlur}
                                 ></Input.TextArea>
                             </Tips>
                         </div>

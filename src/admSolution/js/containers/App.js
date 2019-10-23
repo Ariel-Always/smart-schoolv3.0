@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Frame, Menu, Loading, Alert, Modal, Button } from "../../../common";
+import { Menu, Loading, Alert, Modal, Button } from "../../../common";
 import { connect } from 'react-redux';
+import Frame from '../../../common/Frame';
 
 import { Modal as AntdModal, Input } from 'antd'
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';

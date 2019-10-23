@@ -210,7 +210,7 @@ class Leader extends React.Component {
         })
         let UserIDListString = UserIDList.join()
 
-        postData(CONFIG.proxy + url, {
+        postData(CONFIG.UserInfoProxy + url, {
             userIDs: UserIDListString,
             schoolID: this.state.userMsg.SchoolID
         }, 2).then(res => {
@@ -294,7 +294,8 @@ class Leader extends React.Component {
 
         const { DataState, dispatch } = this.props
         const { initLeaderMsg, changeLeaderMsg } = DataState.SetLeaderMsg;
-        if (Public.deepCompare(changeLeaderMsg, initLeaderMsg)) {
+        // console.log(initLeaderMsg,changeLeaderMsg,Public.comparisonObject(changeLeaderMsg, initLeaderMsg))
+        if (Public.comparisonObject(changeLeaderMsg, initLeaderMsg)) {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-error',
                 title: "你没有修改数据哦",
@@ -323,6 +324,8 @@ class Leader extends React.Component {
                     dispatch(actions.UpUIState.HandleLeaderModalClose())
 
                     dispatch(actions.UpDataState.getSchoolLeaderPreview('/GetSchoolLeader?SchoolID='+this.state.userMsg.SchoolID));
+                    dispatch(actions.UpUIState.editAlltModalTipsVisible());
+
                     this.setState({
                         checkedList: [],
                         checkAll: false
@@ -336,6 +339,7 @@ class Leader extends React.Component {
     handleLeaderModalCancel = (e) => {
         const {dispatch,DataState,UIState} = this.props;
         // console.log(e)
+        dispatch(actions.UpUIState.editAlltModalTipsVisible());
         dispatch(actions.UpUIState.HandleLeaderModalClose())
 
     }
@@ -354,14 +358,15 @@ class Leader extends React.Component {
 
         const { DataState, dispatch ,UIState} = this.props
         const { initLeaderMsg, changeLeaderMsg } = DataState.SetLeaderMsg;
-        let visible = UIState.EditModalVisible;
+        let visible = UIState.EditModalTipsVisible;
         let haveMistake = false;
         for(let visi in visible){
             if(visible[visi]){
                 haveMistake = true;
             }
         }
-        if (Public.deepCompare(changeLeaderMsg, initLeaderMsg)) {
+        // console.log(visible,haveMistake)
+        if (Public.comparisonObject(changeLeaderMsg, initLeaderMsg)) {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-error',
                 title: "你没有填写资料哦",
@@ -371,8 +376,15 @@ class Leader extends React.Component {
             }));
             return;
         } else {
+            //用户ID必填
+            if (changeLeaderMsg.userID === '') {
+                dispatch(actions.UpUIState.editModalTipsVisible({
+                    UserIDTipsVisible: true
+                }))
+                haveMistake = true;
+            }
             //用户名必填
-            if (!changeLeaderMsg.userName) {
+            if (changeLeaderMsg.userName === '') {
                 dispatch(actions.UpUIState.editModalTipsVisible({
                     UserNameTipsVisible: true
                 }))
@@ -418,6 +430,8 @@ class Leader extends React.Component {
 
                    
                     dispatch(actions.UpDataState.getGradeLeaderPreview('/GetSchoolLeader?SchoolID='+this.state.userMsg.SchoolID));
+                    dispatch(actions.UpUIState.editAlltModalTipsVisible());
+
                     this.setState({
                         checkedList: [],
                         checkAll: false
@@ -431,6 +445,8 @@ class Leader extends React.Component {
     handleAddLeaderModalCancel = (e) => {
         const {dispatch} = this.props
         // console.log(e)
+        dispatch(actions.UpUIState.editAlltModalTipsVisible());
+
         dispatch(actions.UpUIState.AddLeaderModalClose())
 
     }
@@ -488,7 +504,7 @@ class Leader extends React.Component {
                     ref='handleLeaderMadal'
                     bodyStyle={{ padding: 0 }}
                     type='1'
-                    title='编辑学生'
+                    title='编辑领导'
                     visible={UIState.AppModal.handleLeaderModalVisible}
                     onOk={this.handleLeaderModalOk}
                     onCancel={this.handleLeaderModalCancel}
@@ -500,7 +516,7 @@ class Leader extends React.Component {
                     ref='handleLeaderMadal'
                     bodyStyle={{ padding: 0 }}
                     type='1'
-                    title={'添加学生'}
+                    title={'添加领导'}
                     visible={UIState.AppModal.addLeaderModalVisible}
                     onOk={this.handleAddLeaderModalOk}
                     onCancel={this.handleAddLeaderModalCancel}

@@ -27,7 +27,7 @@ function handleData(data) {
                 OperateContent += param
             }
         })
-        return {...Data,OperateParams:{OperateParams:params,Flag:Flag,CourseClassIDs:CourseClassIDs}}
+        return {...Data,OperateParams:{OperateParams:params,Flag:Flag,CourseClassIDs:CourseClassIDs},key:index}
     })
     return newData
 }

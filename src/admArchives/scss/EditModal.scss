@@ -28,14 +28,14 @@
     .row {
       position: relative;
       width: 100%;
-      margin: 3px 0;
+      margin: 0;
       //height: 40px;
       .culonm-1 {
         width: 18%;
         float: left;
         line-height: 40px;
         text-align: right;
-        font-size: 16px;
+        font-size: 14px;
         color: #333;
         .must-icon {
           color: red;
@@ -61,12 +61,19 @@
         }
         .input {
           width: 300px;
+          height: 28px;
+          line-height: 28px;
           top: 50%;
           transform: translateY(-50%);
+        }
+        .ant-input{
+            // height: 28px;
+            line-height: 28px;
         }
         .UserName-input {
           width: 300px;
           top: 50%;
+          height: 28px;
           transform: translateY(-50%);
         }
         .dropdown_container {
@@ -87,13 +94,14 @@
         }
         .checkedBoxGroupMap {
           max-width: 450px;
-          min-height: 40px;
+          min-height: 28px;
           min-width: 300px;
 
           .checkedBoxMap {
-            min-width: 90px;
-            height: 40px;
-            line-height: 40px;
+            width: 90px;
+            height: 28px;
+            line-height: 28px;
+            overflow: hidden;
           }
         }
       }
