@@ -27,9 +27,9 @@ class PowerContent extends React.Component {
         if (DataState.GetUserPowerMsg.Power) {
 
 
-            console.log(DataState.GetUserPowerMsg.Power.student[0].StatusCode)
+            // console.log(DataState.GetUserPowerMsg.Power.student[0].Status)
             this.setState({
-                radioValue: DataState.GetUserPowerMsg.Power.student[0].StatusCode
+                radioValue: DataState.GetUserPowerMsg.Power.student[0].Status
             })
 
         }
@@ -48,7 +48,7 @@ class PowerContent extends React.Component {
         postData(CONFIG.PowerProxy + url, {
             PowerID: id,
             SchoolID: this.state.userMsg.SchoolID,
-            StatusCode: value ? 1 : 0
+            Status: value ? 1 : 0
         }, 2).then((res) => {
             this.setState({
                 disabled: false
@@ -89,7 +89,7 @@ class PowerContent extends React.Component {
         postData(CONFIG.PowerProxy + url, {
             PowerID: id,
             SchoolID: UserMsg.SchoolID,
-            StatusCode: value
+            Status: value
         }, 2).then((res) => {
             this.setState({
                 disabled: false
@@ -123,7 +123,7 @@ class PowerContent extends React.Component {
         for (let key in power) {
             power[key] = power[key].map((child, index) => {
                 if (child.PowerID === id) {
-                    child.StatusCode = value
+                    child.Status = value
                 }
                 return child;
             })
@@ -155,18 +155,18 @@ class PowerContent extends React.Component {
                                     <div>
                                         <Radio
                                             value={Power.student[0].PowerID}
-                                            checked={Power.student[0].StatusCode !== 0 ? true : false}
+                                            checked={Power.student[0].Status !== 0 ? true : false}
                                             className='radio'
                                             onChange={this.onRadioChange.bind(this)}
                                         >{Power.student[0].PowerName}</Radio>
                                         <div className='radio-box-2'>
                                             <RadioGroup
                                                 name='radioGroup'
-                                                value={Power.student[0].StatusCode}
+                                                value={Power.student[0].Status}
                                                 onChange={this.onChangeRadio.bind(this)}
                                             >
                                                 <div className='radio-2'>
-                                                    <MyRadio type value={1} disabled={Power.student[0].StatusCode === 0 ? true : false}></MyRadio>
+                                                    <MyRadio type value={1} disabled={Power.student[0].Status === 0 ? true : false}></MyRadio>
                                                     <span className='radio-tips-1'>
                                                         先审后用模式
                                                 </span>
@@ -175,7 +175,7 @@ class PowerContent extends React.Component {
                                                 </span>
                                                 </div>
                                                 <div className='radio-2'>
-                                                    <MyRadio type value={2} disabled={Power.student[0].StatusCode === 0 ? true : false}></MyRadio>
+                                                    <MyRadio type value={2} disabled={Power.student[0].Status === 0 ? true : false}></MyRadio>
                                                     <span className='radio-tips-1'>
                                                         先审后用模式
                                                 </span>
@@ -198,19 +198,19 @@ class PowerContent extends React.Component {
                                 <div>
                                     <Radio
                                         value={Power.teacher[0].PowerID}
-                                        checked={Power.teacher[0].StatusCode !== 0 ? true : false}
+                                        checked={Power.teacher[0].Status !== 0 ? true : false}
                                         className='radio'
                                         onChange={this.onRadioChange.bind(this)}
                                     >{Power.teacher[0].PowerName}</Radio>
                                     <Radio
                                         value={Power.teacher[1].PowerID}
-                                        checked={Power.teacher[1].StatusCode !== 0 ? true : false}
+                                        checked={Power.teacher[1].Status !== 0 ? true : false}
                                         className='radio'
                                         onChange={this.onRadioChange.bind(this)}
                                     >{Power.teacher[1].PowerName}</Radio>
                                     <Radio
                                         value={Power.teacher[2].PowerID}
-                                        checked={Power.teacher[2].StatusCode !== 0 ? true : false}
+                                        checked={Power.teacher[2].Status !== 0 ? true : false}
                                         className='radio'
                                         onChange={this.onRadioChange.bind(this)}
                                     >{Power.teacher[2].PowerName}</Radio>
@@ -225,13 +225,13 @@ class PowerContent extends React.Component {
                                 <div>
                                     <Radio
                                         value={Power.ganger[0].PowerID}
-                                        checked={Power.ganger[0].StatusCode !== 0 ? true : false}
+                                        checked={Power.ganger[0].Status !== 0 ? true : false}
                                         className='radio'
                                         onChange={this.onRadioChange.bind(this)}
                                     >{Power.ganger[0].PowerName}</Radio>
                                     <Radio
                                         value={Power.ganger[1].PowerID}
-                                        checked={Power.ganger[1].StatusCode !== 0 ? true : false}
+                                        checked={Power.ganger[1].Status !== 0 ? true : false}
                                         className='radio'
                                         onChange={this.onRadioChange.bind(this)}
                                     >{Power.ganger[1].PowerName}</Radio>
@@ -246,25 +246,25 @@ class PowerContent extends React.Component {
                                 <div>
                                     <Radio
                                         value={Power.dean[0].PowerID}
-                                        checked={Power.dean[0].StatusCode !== 0 ? true : false}
+                                        checked={Power.dean[0].Status !== 0 ? true : false}
                                         className='radio'
                                         onChange={this.onRadioChange.bind(this)}
                                     >{Power.dean[0].PowerName}</Radio>
                                     <Radio
                                         value={Power.dean[1].PowerID}
-                                        checked={Power.dean[1].StatusCode !== 0 ? true : false}
+                                        checked={Power.dean[1].Status !== 0 ? true : false}
                                         className='radio'
                                         onChange={this.onRadioChange.bind(this)}
                                     >{Power.dean[1].PowerName}</Radio>
                                     <Radio
                                         value={Power.dean[2].PowerID}
-                                        checked={Power.dean[2].StatusCode !== 0 ? true : false}
+                                        checked={Power.dean[2].Status !== 0 ? true : false}
                                         className='radio'
                                         onChange={this.onRadioChange.bind(this)}
                                     >{Power.dean[2].PowerName}</Radio>
                                     <Radio
                                         value={Power.dean[3].PowerID}
-                                        checked={Power.dean[3].StatusCode !== 0 ? true : false}
+                                        checked={Power.dean[3].Status !== 0 ? true : false}
                                         className='radio'
                                         onChange={this.onRadioChange.bind(this)}
                                     >{Power.dean[3].PowerName}</Radio></div>

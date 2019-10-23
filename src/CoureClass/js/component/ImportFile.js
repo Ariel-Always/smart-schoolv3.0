@@ -24,7 +24,8 @@ class ImportFile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            select: 'file'
+            select: 'file',
+            userMsg:props.DataState.LoginUser
 
         }
         const { dispatch, DataState } = this.props;
@@ -54,7 +55,7 @@ class ImportFile extends React.Component {
         // })
         let route = history.location.pathname.split('/');
 
-        fetch(CONFIG.UserInfoProxy + '/Import.aspx?Token=0111&UserType=' + route[2], {
+        fetch(CONFIG.UserInfoProxy + '/UserMgr/TeachInfoMgr/Import.aspx?SchoolID='+this.state.userMsg.SchoolID+'&Type=courseclass&UserID='+this.state.userMsgUserID+'&UserName='+this.state.userMsg.UserName+'&Token='+ sessionStorage.getItem('token'), {
             method: 'get',//*post、get、put、delete，此项为请求方法相关的配置 
             mode: 'cors',//no-cors(跨域模式但服务器端不支持cors),*cors(跨域模式，需要服务器通过Access-control-Allow-Origin来
             //允许指定的源进行跨域),same-origin(同源)
@@ -85,10 +86,10 @@ class ImportFile extends React.Component {
 
         return (
             <React.Fragment>
-                <div className='Tab'>
+                {/* <div className='Tab'>
                     <span ref='file' onClick={this.onTabClick.bind(this, 'file')} className={`Tab-btn ${this.state.select === 'file' ? 'btn-select' : ''}`}>导入基本资料</span>
                     <span ref='picture' onClick={this.onTabClick.bind(this, 'picture')} className={`Tab-btn ${this.state.select === 'picture' ? 'btn-select' : ''}`}>导入照片</span>
-                </div>
+                </div> */}
                 <div id='content-box' className='content-box'>
 
                 </div>
