@@ -44,7 +44,9 @@ class AddTeacherModal extends Component{
 
             emptyShow,
 
-            searchClose
+            searchClose,
+
+            subjectDropDisabled
 
         } = this.props;
 
@@ -79,7 +81,11 @@ class AddTeacherModal extends Component{
 
                                 style={{zIndex:5}}
 
-                                onChange = {(e) => {teacherModalDropChange(e)}}>
+                                onChange = {(e) => {teacherModalDropChange(e)}}
+
+                                disabled={subjectDropDisabled}
+
+                            >
 
                             </DropDown>
 
@@ -126,7 +132,7 @@ class AddTeacherModal extends Component{
 
                                     <div className="empty-wrapper">
 
-                                        <Empty type="4"  title="没找到相对应的教师"></Empty>
+                                        <Empty type="4"  title="没有相对应的教师"></Empty>
 
                                     </div>
 

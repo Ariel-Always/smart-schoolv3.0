@@ -10,7 +10,11 @@ import SubjectTeacher from './SubjectTeacher';
 
 import ClassTotalSingle from './ClassTotalSingle';
 
+import ClassRoomTotalSingle from './ClassRoomTotalSingle';
+
 import AdjustByTeacherModal from "./AdjustByTeacherModal";
+
+
 
 
 
@@ -26,7 +30,7 @@ class Index extends Component{
 
             {link:"/manager/class",name:"班级课表",logo:"class"},
 
-            {link:"/manager/classroom",name:"教室课表",logo:"classroom"},
+            {link:"/manager/room",name:"教室课表",logo:"classroom"},
 
         ];
 
@@ -47,10 +51,13 @@ class Index extends Component{
 
                         <Redirect path="/manager/subject-teacher*" to={{pathname:"/manager/subject-teacher/subject"}}></Redirect>
 
-                        <Route path="/manager/class/*" component={ClassTotalSingle}></Route>
+                        <Route exact path="/manager/class/*" component={ClassTotalSingle}></Route>
 
                         <Redirect path="/manager/class*" to={{pathname:"/manager/class/total"}}></Redirect>
 
+                        <Route path="/manager/room/*" component={ClassRoomTotalSingle}></Route>
+
+                        <Redirect path="/manager/room*" to={{pathname:"/manager/room/total"}}></Redirect>
 
                     </Switch>
 

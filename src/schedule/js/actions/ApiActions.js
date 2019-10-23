@@ -310,7 +310,7 @@ const GetAllDateTimeInfo = async ({SchoolID,dispatch}) => {
 //根据上课日期获取周次、星期信息
 const GetWeekInfoByDate = async ({SchoolID,ClassDate,dispatch}) => {
 
-    let res = await Method.getGetData(`/Schedule/api/GetWeekInfoByDate?SchoolID=${SchoolID}&ClassDate=${ClassDate}`,
+    let res = await Method.getGetData(`/schedule/api/GetWeekInfoByDate?SchoolID=${SchoolID}&ClassDate=${ClassDate}`,
 
         2,
 

@@ -208,41 +208,47 @@ const replaceScheduleInit = () => {
 
         ApiActions.GetAllOptionForAddSchedule({SchoolID,dispatch}).then(data => {
 
-           let teacherList = data.ItemSubject.map(item => {
+            if (data){
 
-              let list =  data.ItemTeacher.map(i => {
+                let teacherList = data.ItemSubject.map(item => {
 
-                 if (i.SubjectID === item.SubjectID){
+                    let list =  data.ItemTeacher.map(i => {
 
-                        return{
+                        if (i.SubjectID === item.SubjectID){
 
-                            name:i.TeacherName,
+                            return{
 
-                            id:i.Teacher
+                                name:i.TeacherName,
+
+                                id:i.TeacherID
+
+                            }
+
+                        }else{
+
+                            return;
 
                         }
 
-                 }else{
+                    }).filter(itm => itm!==undefined);
 
-                     return;
+                    return {
 
-                 }
+                        id:item.SubjectID,
 
-              }).filter(itm => itm!==undefined);
+                        name:item.SubjectName,
 
-              return {
+                        list
 
-                  id:item.SubjectID,
+                    }
 
-                  name:item.SubjectName,
+                });
 
-                  list
+                dispatch({type:ADJUST_BY_TEACHER_TEACHER_LIST_UPDATE,data:teacherList});
 
-              }
 
-           });
+            }
 
-           dispatch({type:ADJUST_BY_TEACHER_TEACHER_LIST_UPDATE,data:teacherList});
 
             ApiActions.GetSubjectAndClassInfoByTeacherID({TeacherID:UserID,dispatch}).then(data=>{
 
@@ -369,7 +375,7 @@ const replaceTeacherClickSearch = (key) => {
 
                         return{
 
-                            id:item.Teacher,
+                            id:item.TeacherID,
 
                             name:item.TeacherName
 
@@ -1066,7 +1072,7 @@ const targetTeacherClickSearch = (key) => {
 
                         return{
 
-                            id:item.Teacher,
+                            id:item.TeacherID,
 
                             name:item.TeacherName
 
@@ -1425,8 +1431,7 @@ const changeTimeNewTimeChange = (date) => {
 
             let GetAllOptionForAddSchedule = ApiActions.GetAllOptionForAddSchedule({SchoolID,dispatch});
 
-            Promise.all([GetWeekInfoByDate,GetAllOptionForAddSchedule]).then(data => {
-
+            Promise.all([GetWeekInfoByDate,GetAllOptionForAddSchedule]).then(res => {
 
                 const json1 = res[0];
 

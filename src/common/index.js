@@ -24,6 +24,7 @@ import 'moment/locale/zh-cn';
 
 const $ = require('jquery');
 
+
 moment.locale('zh-cn');
 /*
  * 组件：按钮组
@@ -1584,11 +1585,7 @@ class Menu extends React.Component {
 
 class MenuLeft extends React.Component {
 
-    componentDidMount(){
 
-
-
-    }
 
     render() {
         //传递的参数的数据
@@ -1691,7 +1688,7 @@ class MenuLeftNoLink extends React.Component {
 
                 <div id="frame_left_menu_container" className="frame_left_menu_container">
 
-                    <Scrollbars autoHeight autoHide autoHeightMax={window.innerHeight-80} style={{ width: 240}}>
+                  {/*  <Scrollbars autoHeight autoHide autoHeightMax={window.innerHeight-80} style={{ width: 240}}>*/}
 
                     {
                         Menu && Menu.map((item, key) => {
@@ -1741,7 +1738,7 @@ class MenuLeftNoLink extends React.Component {
                         })
                     }
 
-                    </Scrollbars>
+                    {/*</Scrollbars>*/}
 
                 </div>
 
@@ -1770,6 +1767,9 @@ class Frame extends React.Component {
     }
 
 
+
+
+
     componentDidMount(){
 
        $(window).scroll(()=>{
@@ -1790,8 +1790,40 @@ class Frame extends React.Component {
 
     }
 
+    componentWillUpdate(){
+
+        let defalutHeight = window.innerHeight;
+
+        let contentHeight  = $('.frame-content-rightside').height();
+
+        let maxHeight = 0;
+
+        let leftHeight = $('.frame_left_menu_container').height();
+
+        if (contentHeight!==0||(contentHeight<defalutHeight)){
+
+            maxHeight = contentHeight - 80;
+
+        }else{
+
+            maxHeight = defalutHeight - 80;
+
+        }
+
+
+      $('.frame_left_menu_container').css({
+
+          'overflow-y':'scroll',
+
+          'max-height':maxHeight+'px'
+
+      });
+
+
+    }
+
     render() {
-        const { children, type, module, userInfo, msg, showLeftMenu, showBarner = true,onLogOut, ...reset } = this.props;
+        const { children, type, module, userInfo, msg, showLeftMenu, showBarner = true,onLogOut,contentShow=true, ...reset } = this.props;
 
         let bgAnimateDom = '';
         let beyondAnimateDom = '';
@@ -1917,9 +1949,22 @@ class Frame extends React.Component {
                     <div className={`frame-content-leftside ${showLeftMenu ? '' : 'frame-hide'} ${this.state.fixed?'fix':''}`}>
                         {leftMenu}
                     </div>
-                    <div className={`frame-content-rightside ${showLeftMenu ? '' : 'frame-fluid'}`}>
-                        {rightContent}
-                    </div>
+
+                    {
+
+                        contentShow?
+
+                            <div className={`frame-content-rightside ${showLeftMenu ? '' : 'frame-fluid'}`}>
+
+                                {rightContent}
+
+                            </div>
+
+                            :""
+
+                    }
+
+
                 </div>
                 <div className="frame-bottom">{CONFIG.footer}</div>
             </div>

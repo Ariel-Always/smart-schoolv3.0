@@ -765,6 +765,10 @@ const oldDateUpdate = (date) => {
 
                     dispatch({type:ADJUST_BY_TIME_OLD_WEEK_DATE_LOADING_HIDE});
 
+                }else{
+
+                    dispatch({type:ADJUST_BY_TIME_OLD_WEEK_DATE_LOADING_HIDE});
+
                 }
 
             })
@@ -851,6 +855,10 @@ const newDateUpdate = (date) => {
                     }
 
                     dispatch({type:ADJUST_BY_TIME_NEW_WEEK_DATE_UPDATE,data:{weekDay:weekDay,weekNo:WeekNO}});
+
+                    dispatch({type:ADJUST_BY_TIME_NEW_WEEK_DATE_LOADING_HIDE});
+
+                }else{
 
                     dispatch({type:ADJUST_BY_TIME_NEW_WEEK_DATE_LOADING_HIDE});
 

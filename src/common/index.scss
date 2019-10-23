@@ -391,10 +391,12 @@ textarea.ant-input {
 */
 .emptyBox {
 
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: flex-start;
-  align-items: center;
+  @include flex;
+
+  @include flex-direction(column);
+
+  @include align-items(center);
+
 
   .empty {
     position: relative;

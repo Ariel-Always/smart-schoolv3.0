@@ -302,39 +302,97 @@ const getAddTeacherData = (opts) =>{
 
         let TeacherID = '';
 
-        const { ClassID,type } = opts;
+        const { ClassID,type,originTeacherInfo } = opts;
+
+        const { SubjectID,SubjectName } = originTeacherInfo?originTeacherInfo:{};
 
         let { SchoolID } = getState().DataState.LoginUser;
 
-        if (type===1||type===3) {//如果类型是添加
+        switch (type) {
 
+            case 1:
 
-        }else{//如果类型是更新，需要获取到已选择的教师的ID
+                dispatch({type:UpUIState.ADD_TEACHER_SUBJECTS_SELECT_CHANGE,data:{value:"none",title:"请选择学科"}});
 
-            TeacherID = getState().UIState.AddTeacherModal.originTeacherInfo.id;
+                getSubjects({ClassID,dispatch}).then(data=>{
+
+                    if (data){
+
+                        dispatch({type:ADD_TEACHER_UPDATA_SUBJECTS,list:data});
+
+                    }
+
+                    dispatch({type:UpUIState.ADD_TEACHER_LOADING_HIDE});
+
+                });
+
+                break;
+
+            case 2:
+
+                dispatch({type:UpUIState.ADD_TEACHER_SUBJECTS_SELECT_CHANGE,data:{value:SubjectID,title:SubjectName}});
+
+                dispatch({type:UpUIState.ADD_TEACHER_SUBJECTS_SELECT_DISABLED});
+
+                TeacherID = getState().UIState.AddTeacherModal.originTeacherInfo.id;
+
+                getAllTeacher({SchoolID,UserID:TeacherID,PageSize:0,SubjectIDs:SubjectID}).then(data=>{
+
+                    if (data){
+
+                        dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:data});
+
+                    }
+
+                    dispatch({type:UpUIState.ADD_TEACHER_LOADING_HIDE});
+
+                });
+
+                break;
+
+            case 3:
+
+            case 4:
+
+                if (type===4){
+
+                    TeacherID = getState().UIState.AddTeacherModal.originTeacherInfo.id;
+
+                }
+
+                let getSubjectsPromise = getGangerSubjects({SchoolID,dispatch});
+
+                let getTeachersPromise = getAllTeacher({SchoolID,UserID:TeacherID,PageSize:0});
+
+                Promise.all([getSubjectsPromise,getTeachersPromise]).then(res=>{
+
+                    if (res[0]){
+
+                        let dropInfo = res[0][0];
+
+                        dispatch({type:ADD_TEACHER_UPDATA_SUBJECTS,list:res[0]});
+
+                        dispatch({type:UpUIState.ADD_TEACHER_SUBJECTS_SELECT_CHANGE,data:{value:dropInfo.SubjectID,title:dropInfo.SubjectName}});
+
+                    }
+
+                    if (res[1]){
+
+                        dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:res[1]});
+
+                    }
+
+                    dispatch({type:UpUIState.ADD_TEACHER_LOADING_HIDE});
+
+                });
+
+                break;
+
+            default:
+
+                return;
 
         }
-
-        //请求学科和教师
-
-        let getSubjectsPromise = getSubjects({ClassID,dispatch});
-
-        let getTeachersPromise = getAllTeacher({SchoolID,UserID:TeacherID,PageSize:0});
-
-
-        Promise.all([getSubjectsPromise,getTeachersPromise]).then(res=>{
-
-            if (res){
-
-                dispatch({type:ADD_TEACHER_UPDATA_SUBJECTS,list:res[0]});
-
-                dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:res[1]});
-
-            }
-
-            dispatch({type:UpUIState.ADD_TEACHER_LOADING_HIDE});
-
-        });
 
     }
 
@@ -402,27 +460,34 @@ const  teacherSearchBtnClick = () => {
 
       }
 
-      if(subjectsSelect.value==='all'){
+      if(subjectsSelect.value==='none'){
 
-        SubjectID = '';
+        dispatch(AppAlertActions.alertWarn({title:"请先选择学科！"}));
+
+        dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
 
       }else{
 
           SubjectID = subjectsSelect.value;
 
+          getAllTeacher({SchoolID,SubjectIDs:SubjectID,UserID,Keyword:inputContent,dispatch}).then(data=>{
+
+              if (data){
+
+                  dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:data});
+
+                  dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
+
+              }else{
+
+                  dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_SHOW});
+
+              }
+
+          });
+
       }
 
-      getAllTeacher({SchoolID,SubjectIDs:SubjectID,UserID,Keyword:inputContent,dispatch}).then(data=>{
-
-          if (data){
-
-              dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:data});
-
-              dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
-
-          }
-
-      });
 
 
   }
@@ -444,9 +509,11 @@ const teacherSearchClose = () => {
 
         let SubjectID = '';
 
-        if (subjectsSelect.value==='all'){
+        if (subjectsSelect.value==='none'){
 
-            SubjectID = '';
+            dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
+
+            return;
 
         }else{
 
@@ -466,9 +533,9 @@ const teacherSearchClose = () => {
 
                 dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:data});
 
-                dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
-
             }
+
+            dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
 
         });
 
@@ -530,8 +597,6 @@ const updateGenger = (classInfo) =>{
 
         });
 
-
-
     }
 
 };
@@ -587,16 +652,6 @@ const updateTeacher = (classInfo) => {
         }else{
 
             SubjectID = getState().UIState.AddTeacherModal.subjectsSelect.value;
-
-        }
-
-        if (SubjectID === 'all'){
-
-
-            dispatch(AppAlertActions.alertWarn({title:"请选择学科"}));
-
-
-            return;
 
         }
 
@@ -695,7 +750,7 @@ const UpdateClassName = ({GradeID,ClassID,ClassName}) => {
 
               dispatch({type:UpUIState.RESET_CLASS_NAME_HIDE});
 
-              dispatch(AppAlertActions.alertSuccess({title:"'修改成功！'"}));
+              dispatch(AppAlertActions.alertSuccess({title:"修改成功！"}));
 
               dispatch(getTheGradePreview(GradeID));
 
@@ -720,11 +775,11 @@ const SetMonitorAction = ({UserID='',ClassID}) =>{
 
                 if (UserID){
 
-                    dispatch(AppAlertActions.alertSuccess({title:"成功取消班长!"}));
+                    dispatch(AppAlertActions.alertSuccess({title:"成功设置班长!"}));
 
                 }else{
 
-                    dispatch(AppAlertActions.alertSuccess({title:"成功设置班长!"}));
+                    dispatch(AppAlertActions.alertSuccess({title:"成功取消班长!"}));
 
                 }
 
@@ -881,9 +936,26 @@ const getSubjects = async ({ClassID,dispatch}) => {
         dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
 
     }
-
-
 };
+
+
+//获取班主任的学科
+
+const getGangerSubjects = async ({SchoolID,dispatch}) => {
+
+    let res = await Method.getGetData(`/UserMgr/UserInfoMgr/GetSubject?SchoolID=${SchoolID}`,2,CONFIG.AdmClassProxy);
+
+    if (res.StatusCode === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+};
+
 
 
 //获取所有的任课教师
@@ -965,7 +1037,7 @@ const adjustClass =  async ({ClassID,UserIDs,dispatch}) => {
 
     if (res.StatusCode === 200){
 
-        return res.Msg;
+        return res.ErrorCode;
 
     }else{
 

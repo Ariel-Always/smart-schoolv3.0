@@ -84,12 +84,14 @@
       .dropdown_select_li{
         position: relative;
         height:24px;
-        text-indent:11px;
         font-size: 14px;
         list-style:none;
         cursor: pointer;
         line-height: 24px;
         text-align: left;
+
+        padding: 0 10px;
+
         @include textOverFlow;
         &:hover{
           background-color: $dropHoverBg;

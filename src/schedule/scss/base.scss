@@ -50,6 +50,8 @@ $image-url:'../images';
 
     background-color: #ffffff;
 
+    @include flex;
+
   }
 
 }

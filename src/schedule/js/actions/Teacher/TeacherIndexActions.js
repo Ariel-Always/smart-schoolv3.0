@@ -167,17 +167,57 @@ const STTPageInit = () => {
                 dispatch({type:STTActions.STT_NOW_WEEK_CHANGE,data:NowWeekNo});
                 //根据获取的学科信息和教师信息组织数据
 
-                let subjectList = res[0].ItemSubject;
+                if(res[0]){
 
-                let leftMenuData = [];
+                    let subjectList = res[0].ItemSubject;
 
-                if (subjectList.length > 1){
+                    let leftMenuData = [];
 
-                    leftMenuData = subjectList.map((item) => {
+                    if (res[1].length>0){
 
-                        let list = res[1].map((i) => {
+                        console.log(res[1]);
 
-                            if (i.SubjectID===item.SubjectID){
+                        if (subjectList.length > 1){
+
+                            leftMenuData = subjectList.map((item) => {
+
+                                let list = res[1].map((i) => {
+
+                                    if (i.SubjectID===item.SubjectID){
+
+                                        return {
+
+                                            id:i.Teacher,
+
+                                            name:i.TeacherName
+
+                                        }
+
+                                    }else{
+
+                                        return;
+
+                                    }
+
+                                }).filter((i) =>i!==undefined);
+
+                                return {
+
+                                    id:item.SubjectID,
+
+                                    name:item.SubjectName,
+
+                                    list
+
+                                }
+
+                            });
+
+                            dispatch({type:STTActions.STT_SCHEDULE_INIT,data:leftMenuData});
+
+                        }else{
+
+                            let list = res[1].map((i) => {
 
                                 return {
 
@@ -187,65 +227,37 @@ const STTPageInit = () => {
 
                                 }
 
-                            }else{
+                            });
+                            //查找subjectID和对应的Subjectname
+                            let subjectID = '';
 
-                                return;
+                            for (let i = 0; i <= res[1].length-1; i++){
+
+                                subjectID = res[1][i].SubjectID;
+
+                                break;
 
                             }
 
-                        }).filter((i) =>i!==undefined);
+                            let subjectName = subjectList.find((item) => {return item.SubjectID === subjectID }).SubjectName;
 
-                        return {
+                            dispatch({type:STTActions.SEARCH_TEACHER_RESULT_UPDATE,data:list});
 
-                            id:item.SubjectID,
+                            dispatch({type:STTActions.SEARCH_TEACHER_RESULT_SHOW});
 
-                            name:item.SubjectName,
-
-                            list
+                            dispatch({type:STTActions.SEARCH_TITLE_SHOW,data:`${subjectName}任课教师列表`});
 
                         }
-
-                    });
-
-                    dispatch({type:STTActions.STT_SCHEDULE_INIT,data:leftMenuData});
-
-                }else{
-
-                    let list = res[1].map((i) => {
-
-                        return {
-
-                            id:i.Teacher,
-
-                            name:i.TeacherName
-
-                        }
-
-                    });
-                    //查找subjectID和对应的Subjectname
-                    let subjectID = '';
-
-                    for (let i = 0; i <= res[1].length-1; i++){
-
-                        subjectID = res[1][i].SubjectID;
-
-                        break;
 
                     }
 
-                    let subjectName = subjectList.find((item) => {return item.SubjectID === subjectID }).SubjectName;
+                    dispatch({type:STTActions.SCHEDULE_LOADING_HIDE});
 
-                    dispatch({type:STTActions.SEARCH_TEACHER_RESULT_UPDATE,data:list});
-
-                    dispatch({type:STTActions.SEARCH_TEACHER_RESULT_SHOW});
-
-                    dispatch({type:STTActions.SEARCH_TITLE_SHOW,data:`${subjectName}任课教师列表`});
+                    dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
 
                 }
 
-                dispatch({type:STTActions.SCHEDULE_LOADING_HIDE});
 
-                dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
 
             });
 

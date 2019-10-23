@@ -13,12 +13,6 @@ import ClassSingle from './ClassSingle';
 
 class ClassTotalSingle extends Component{
 
-    constructor(props){
-
-        super(props);
-
-    }
-
 
     render(){
 
