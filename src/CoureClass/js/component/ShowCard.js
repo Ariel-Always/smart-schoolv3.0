@@ -28,7 +28,7 @@ class ShowCard extends React.Component {
 
                     <div className='box-main'>
                         <div className='main-content'>
-                            <p className='content-tips'>{this.props.type === 'subject' ? this.props.params.SubjectName + '教学班' : this.props.params.GradetName}</p>
+                            <p className='content-tips'>{this.props.type === 'subject' ? this.props.params.SubjectName + '教学班' : this.props.params.GradeName}</p>
                             <hr className='content-hr' />
                             <div className='content-details'>
                                 <div className='details-row clearfix'>

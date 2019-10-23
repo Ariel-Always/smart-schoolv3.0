@@ -308,7 +308,7 @@ class SelectStudent extends React.Component {
                                             onClick={this.onSelectAllClick.bind(this)}
                                             checked={this.state.checkAll}
                                         >全选</CheckBox>
-                                    </li>:<Empty type='4' noTitle style={{marginTop:50+'%',transform:translateY(-50+'%')}}></Empty>}
+                                    </li>:<Empty type='4' noTitle style={{marginTop:50+'%',transform:'translateY(-50%)'}}></Empty>}
                                     <Scrollbars
                                         style={{ width: 100 + '%', height: 387 + 'px' }}
                                     >

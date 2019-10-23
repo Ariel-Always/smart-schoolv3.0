@@ -15,7 +15,9 @@ class SelectTeacher extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            select: false
+            select: false,
+            UserMsg:props.DataState.LoginUser,
+            subject:props.subject
         }
     }
 
@@ -33,7 +35,7 @@ class SelectTeacher extends React.Component {
     onClickSearch = (value) => {
         const { DataState, UIState, dispatch } = this.props;
         console.log(value.value)
-        dispatch(actions.UpDataState.getSubjectTeacherMsg('/GetTeacherInfoBySubjectAndKey?key='+value.value))
+        dispatch(actions.UpDataState.getSubjectTeacherMsg('/GetTeacherInfoBySubjectAndKey?schoolID='+this.state.UserMsg.schoolID+'key='+value.value+'&subjectID='+this.state.subject))
 
     }
     //选择教师

@@ -252,6 +252,10 @@ class Student extends React.Component {
             }));
         } else {
             dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&keyword=' + e.value + '&gradeID=' + this.state.firstSelect.value + '&classID=' + this.state.secondSelect.value));
+            this.setState({
+                checkedList: [],
+                checkAll: false
+            })
         }
     }
 
@@ -475,7 +479,10 @@ class Student extends React.Component {
         if (this.state.keyword !== '') {
             keyword = '&keyword=' + this.state.keyword
         }
-
+        this.setState({
+            checkedList: [],
+            checkAll: false
+        })
         dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=' + (--value) + '&PageSize=10' + keyword + firstSelect + secondSelect));
 
     }

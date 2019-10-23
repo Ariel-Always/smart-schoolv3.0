@@ -273,7 +273,7 @@ class App extends Component {
             gradeID: data.GradeID,
             subjectID: data.SubjectID,
             courseClassStus: courseClassStus
-        }).then(res => {
+        },2,'json').then(res => {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
@@ -406,7 +406,7 @@ class App extends Component {
             gradeID: data.selectData.Grade.value,
             subjectID: data.selectData.Subject.value,
             courseClassStus: courseClassStus
-        }).then(res => {
+        },2,'json').then(res => {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {

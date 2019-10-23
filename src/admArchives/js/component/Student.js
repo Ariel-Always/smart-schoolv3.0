@@ -6,6 +6,7 @@ import { Link, } from 'react-router-dom';
 import '../../scss/Student.scss'
 import CONFIG from '../../../common/js/config';
 import { postData, getData } from "../../../common/js/fetch";
+import Public from '../../../common/js/public'
 
 import history from '../containers/history'
 import EditModal from './EditModal'
@@ -142,7 +143,7 @@ class Student extends React.Component {
                 ClassName: '一年1班',
                 Others: {}
             }],
-            pagination: { total: 50 },
+            pagination: 1,
             loading: false,
             selectedAll: false,
             checkedList: [],
@@ -159,7 +160,12 @@ class Student extends React.Component {
             addStudentModalVisible: false,
             firstSelect: { value: 0, title: '全部年级' },
             secondSelect: { value: 0, title: '全部班级' },
-            userMsg:props.DataState.LoginUser
+            userMsg:props.DataState.LoginUser,
+            keyword: '',
+            CancelBtnShow: 'n',
+            searchValue: '',
+            sortType: '',
+            sortFiled: ''
 
         }
     }
@@ -169,7 +175,7 @@ class Student extends React.Component {
         let initFirstSelect = { value: 0, title: '全部年级' };
         let Classes = [{ value: 0, title: '全部班级' }];
         let Select = nextProps.DataState.GradeStudentPreview;
-        console.log(Grades)
+        //  console.log(Grades)
         let GradeArr = [{ value: 0, title: '全部年级' }];
 
         for (let i = 0; i < len; i++) {
@@ -215,24 +221,26 @@ class Student extends React.Component {
         // this.setState({
         //     firstSelect:e
         // })
-        //console.log(this.refs.dropMenuSecond)
+        ////  console.log(this.refs.dropMenuSecond)
         if (e.value !== 0) {
 
             //Classes.push(this.props.DataState.GradeClassMsg.returnData.AllClasses[e.value]);
             //this.refs.dropMenuSecond.state.dropList = Classes;]
 
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&GradeID=' + e.value + '&PageIndex=0&PageSize=10', e));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&GradeID=' + e.value + '&PageIndex=0&PageSize=10'+this.state.sortFiled+this.state.sortType, e));
 
             this.setState({
                 checkedList: [],
-                checkAll: false
+                checkAll: false,
+                firstSelect:e
             })
         } else {
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10'+this.state.sortFiled+this.state.sortType));
 
             this.setState({
                 checkedList: [],
-                checkAll: false
+                checkAll: false,
+                firstSelect:e
             })
         }
 
@@ -240,21 +248,23 @@ class Student extends React.Component {
 
     StudentDropMenuSecond = (e) => {
         const { dispatch, DataState } = this.props;
-        console.log(e);
+        //  console.log(e);
         // this.setState({
         //     secondSelect:e
         // })
         if (e.value === 0) {
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&GradeID=' + e.value + '&PageIndex=0&PageSize=10', this.state.firstSelect));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&GradeID=' + this.state.firstSelect.value + '&PageIndex=0&PageSize=10'+this.state.sortFiled+this.state.sortType, this.state.firstSelect));
             this.setState({
                 checkedList: [],
-                checkAll: false
+                checkAll: false,
+                secondSelect:e
             })
         } else {
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&GradeID=' + this.state.firstSelect.value + '&ClassID=' + e.value + '&PageIndex=0&PageSize=10', this.state.firstSelect, e));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&GradeID=' + this.state.firstSelect.value + '&ClassID=' + e.value + '&PageIndex=0&PageSize=10'+this.state.sortFiled+this.state.sortType, this.state.firstSelect, e));
             this.setState({
                 checkedList: [],
-                checkAll: false
+                checkAll: false,
+                secondSelect:e
             })
 
         }
@@ -263,6 +273,11 @@ class Student extends React.Component {
 
     StudentSearch = (e) => {
         const { dispatch, DataState } = this.props;
+        // this.setState({
+        //     keyword: '&keyword='+e.value,
+        //     CancelBtnShow: 'y',
+        //     pagination: 1,
+        // })
         if (e.value === '') {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-error',
@@ -273,21 +288,24 @@ class Student extends React.Component {
             }));
             return;
         }
-        console.log(e)
-        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+(this.state.firstSelect.value!==0?'&gradeID='+this.state.firstSelect.value:'')+(this.state.secondSelect.value!==0?'&classID='+this.state.secondSelect.value:'')+'&keyword=' + e.value + '&PageIndex=0&PageSize=10',this.state.firstSelect,this.state.secondSelect));
+        // //  console.log(e)
+        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+(this.state.firstSelect.value!==0?'&gradeID='+this.state.firstSelect.value:'')+(this.state.secondSelect.value!==0?'&classID='+this.state.secondSelect.value:'')+'&keyword=' + e.value + '&PageIndex=0&PageSize=10'+this.state.sortFiled+this.state.sortType,this.state.firstSelect,this.state.secondSelect));
         this.setState({
             checkedList: [],
-            checkAll: false
+            checkAll: false,
+            keyword: '&keyword='+e.value,
+            CancelBtnShow: 'y',
+            pagination: 1,
         })
     }
 
     onSelectChange = (e) => {
-        console.log(e)
+        // //  console.log(e)
         //this.setState({ selectedRowKeys });
     }
 
     StudentEdit = (e, key) => {
-        console.log(e, key)
+        //  console.log(e, key)
         this.setState({
             studentModalVisible: true,
             userKey: e
@@ -295,7 +313,7 @@ class Student extends React.Component {
     }
 
     StudentChange = (e, key) => {
-        console.log(e, key)
+        //  console.log(e, key)
         this.setState({
             StudentChangeMadalVisible: true,
             StudentChangeKey: key
@@ -306,7 +324,7 @@ class Student extends React.Component {
 
     }
     OnCheckAllChange = (e) => {
-        console.log(e)
+        //  console.log(e)
         if (e.target.checked) {
             this.setState({
                 checkedList: this.props.DataState.GradeStudentPreview.keyList,
@@ -320,7 +338,7 @@ class Student extends React.Component {
         }
     }
     onCheckBoxGroupChange = (checkedList) => {
-        console.log(checkedList)
+        //  console.log(checkedList)
         this.setState({
             checkedList,
             checkAll: checkedList.length === this.props.DataState.GradeStudentPreview.keyList.length ? true : false
@@ -331,7 +349,7 @@ class Student extends React.Component {
 
         const { DataState, dispatch } = this.props
         const { initStudentMsg, changeStudentMsg } = DataState.SetStudentMsg;
-        if (this.deepCompare(changeStudentMsg, initStudentMsg)) {
+        if (Public.comparisonObject(changeStudentMsg, initStudentMsg)) {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-error',
                 title: "你没有修改数据哦",
@@ -356,11 +374,13 @@ class Student extends React.Component {
                         close: this.onAppAlertClose.bind(this)
                     }));
                 } else if (json.StatusCode === 200) {
-                    console.log(json.Data)
+                    //  console.log(json.Data)
                     this.setState({
                         studentModalVisible: false
                     })
-                    dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+(this.state.firstSelect.value!==0?'&gradeID='+this.state.firstSelect.value:'')+(this.state.secondSelect.value!==0?'&classID='+this.state.secondSelect.value:'')+'&PageIndex=0&PageSize=10',this.state.firstSelect,this.state.secondSelect));
+                    dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+(this.state.firstSelect.value!==0?'&gradeID='+this.state.firstSelect.value:'')+(this.state.secondSelect.value!==0?'&classID='+this.state.secondSelect.value:'')+'&PageIndex='+(this.state.pagination -1)+'&PageSize=10'+this.state.sortFiled+this.state.sortType,this.state.firstSelect,this.state.secondSelect));
+                    dispatch(actions.UpUIState.editAlltModalTipsVisible());
+                    
                     this.setState({
                         checkedList: [],
                         checkAll: false
@@ -372,19 +392,21 @@ class Student extends React.Component {
 
     }
     handleStudentModalCancel = (e) => {
-        console.log(e)
+        //  console.log(e)
+        const {dispatch} = this.props;
+        dispatch(actions.UpUIState.editAlltModalTipsVisible());
         this.setState({
             studentModalVisible: false
         })
     }
     StudentChangeMadalOk = (e) => {
-        console.log(e)
+        //  console.log(e)
         this.setState({
             StudentChangeMadalVisible: false
         })
     }
     StudentChangeMadalCancel = (e) => {
-        console.log(e)
+        //  console.log(e)
         this.setState({
             StudentChangeMadalVisible: false
         })
@@ -392,7 +414,7 @@ class Student extends React.Component {
 
     onDeleteAllClick = () => {
         const { dispatch } = this.props;
-        console.log(this.state.checkedList)
+        //  console.log(this.state.checkedList)
         if (this.state.checkedList.length === 0) {
 
             dispatch(actions.UpUIState.showErrorAlert({
@@ -443,14 +465,14 @@ class Student extends React.Component {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
-                console.log('错误码：400' + json)
+                //  console.log('错误码：400' + json)
             } else if (json.StatusCode === 200) {
                 this.setState({
                     checkedList:[],
                     checkAll:false
                 })
                 dispatch(actions.UpUIState.hideErrorAlert());
-                dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+(this.state.firstSelect.value!==0?'&gradeID='+this.state.firstSelect.value:'')+(this.state.secondSelect.value!==0?'&classID='+this.state.secondSelect.value:'')+'&PageIndex=0&PageSize=10',this.state.firstSelect,this.state.secondSelect));
+                dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+(this.state.firstSelect.value!==0?'&gradeID='+this.state.firstSelect.value:'')+(this.state.secondSelect.value!==0?'&classID='+this.state.secondSelect.value:'')+'&PageIndex='+(this.state.pagination-1)+'&PageSize=10'+this.state.sortFiled+this.state.sortType,this.state.firstSelect,this.state.secondSelect));
                 this.setState({
                     checkedList: [],
                     checkAll: false
@@ -474,15 +496,17 @@ class Student extends React.Component {
         dispatch(actions.UpUIState.hideErrorAlert());
     }
 
-
+// 分页
     onPagiNationChange = (e) => {
         const { dispatch, DataState } = this.props;
 
         
-        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+(this.state.firstSelect.value!==0?'&gradeID='+this.state.firstSelect.value:'')+(this.state.secondSelect.value!==0?'&classID='+this.state.secondSelect.value:'')+'&PageIndex='+(--e)+'&PageSize=10',this.state.firstSelect,this.state.secondSelect));
+        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+(this.state.firstSelect.value!==0?'&gradeID='+this.state.firstSelect.value:'')+(this.state.secondSelect.value!==0?'&classID='+this.state.secondSelect.value:'')+'&PageIndex='+(e-1)+'&PageSize=10'+ this.state.sortType  + this.state.sortFiled  + this.state.keyword,this.state.firstSelect,this.state.secondSelect));
         this.setState({
             checkedList: [],
-            checkAll: false
+            checkAll: false,
+            pagination: e
+
         })
     }
     onUserNameClick = (key) => {
@@ -505,14 +529,14 @@ class Student extends React.Component {
         })
     }
     onAddStudent = (e, ) => {
-        console.log(e)
+        //  console.log(e)
         this.setState({
             addStudentModalVisible: true,
             userKey: 'add'
         })
     }
     handleAddStudentModalOk = (e) => {
-        console.log(e)
+        //  console.log(e)
         let url = '/AddStudent';
 
         const { DataState, dispatch ,UIState} = this.props
@@ -524,7 +548,7 @@ class Student extends React.Component {
                 haveMistake = true;
             }
         }
-        if (this.deepCompare(changeStudentMsg, initStudentMsg)) {
+        if (Public.comparisonObject(changeStudentMsg, initStudentMsg)) {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-error',
                 title: "你没有填写资料哦",
@@ -534,8 +558,15 @@ class Student extends React.Component {
             }));
             return;
         } else {
+             //用户ID必填
+             if (changeStudentMsg.userID === '') {
+                dispatch(actions.UpUIState.editModalTipsVisible({
+                    UserIDTipsVisible: true
+                }))
+                haveMistake = true;
+            }
             //用户名必填
-            if (!changeStudentMsg.userName) {
+            if (changeStudentMsg.userName==='') {
                 dispatch(actions.UpUIState.editModalTipsVisible({
                     UserNameTipsVisible: true
                 }))
@@ -579,7 +610,7 @@ class Student extends React.Component {
                         close: this.onAppAlertClose.bind(this)
                     }));
                 } else if (json.StatusCode === 200) {
-                    console.log(json.Data)
+                    //  console.log(json.Data)
                     this.setState({
                         studentModalVisible: false
                     })
@@ -587,7 +618,9 @@ class Student extends React.Component {
                         addStudentModalVisible: false
                     })
                    
-                    dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+(this.state.firstSelect.value!==0?'&gradeID='+this.state.firstSelect.value:'')+(this.state.secondSelect.value!==0?'&classID='+this.state.secondSelect.value:'')+'&PageIndex='+(--e)+'&PageSize=10',this.state.firstSelect,this.state.secondSelect));
+                    dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+(this.state.firstSelect.value!==0?'&gradeID='+this.state.firstSelect.value:'')+(this.state.secondSelect.value!==0?'&classID='+this.state.secondSelect.value:'')+'&PageIndex='+(this.state.pagination-1)+'&PageSize=10'+this.state.sortFiled+this.state.sortType,this.state.firstSelect,this.state.secondSelect));
+                    dispatch(actions.UpUIState.editAlltModalTipsVisible());
+                    
                     this.setState({
                         checkedList: [],
                         checkAll: false
@@ -599,7 +632,9 @@ class Student extends React.Component {
         
     }
     handleAddStudentModalCancel = (e) => {
-        console.log(e)
+        //  console.log(e)
+        const {dispatch} = this.props;
+        dispatch(actions.UpUIState.editAlltModalTipsVisible());
         this.setState({
             addStudentModalVisible: false
         })
@@ -720,15 +755,43 @@ class Student extends React.Component {
     //监听table的change进行排序操作
     onTableChange = (page,filters,sorter) => {
         const {DataState,dispatch} = this.props; 
-        console.log(sorter)
+        // //  console.log(sorter)
         if(sorter&&(sorter.columnKey==='UserName'||sorter.columnKey==='UserID')){
             let sortType = sorter.order==="descend"?'SortType=DESC':sorter.order==="ascend"?'SortType=ASC':'';
             dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+(this.state.firstSelect.value!==0?'&gradeID='+this.state.firstSelect.value:'')+(this.state.secondSelect.value!==0?'&classID='+this.state.secondSelect.value:'')+'&sortFiled='+sorter.columnKey+'&PageIndex=0&PageSize=10&'+sortType,this.state.firstSelect,this.state.secondSelect));
             this.setState({
                 checkedList: [],
-                checkAll: false
+                checkAll: false,
+                sortType: '&'+sortType,
+                sortFiled: '&sortFiled=' + sorter.columnKey
+            })
+        }else if (sorter && !sorter.columnKey) {
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID +(this.state.firstSelect.value!==0?'&gradeID='+this.state.firstSelect.value:'') +(this.state.secondSelect.value!==0?'&classID='+this.state.secondSelect.value:'')+ '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10'  + this.state.keyword,this.state.firstSelect,this.state.secondSelect));
+            this.setState({
+                checkedList: [],
+                checkAll: false,
+                sortType: '',
+                sortFiled: ''
             })
         }
+    }
+    //搜索change
+    onChangeSearch = (e) => {
+        this.setState({
+            searchValue: e.target.value
+        })
+
+    }
+    // 取消搜索
+    onCancelSearch = (e) => {
+        const {dispatch} = this.props
+
+        this.setState({
+            CancelBtnShow:'n',
+            keyword:''
+        })
+        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID +(this.state.firstSelect.value!==0?'&gradeID='+this.state.firstSelect.value:'')+(this.state.secondSelect.value!==0?'&classID='+this.state.secondSelect.value:'') + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' +  this.state.sortType  + this.state.sortFiled, this.state.firstSelect,this.state.secondSelect));
+
     }
     render() {
         const { UIState, DataState } = this.props;
@@ -745,7 +808,7 @@ class Student extends React.Component {
         //     userMail: '1519406168@qq.com',
         //     userAddress: '蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团'
         // };
-        console.log(this.state.firstSelect)
+        // //  console.log(this.state.firstSelect)
         return (
             <div className='Student'>
                 <div className='Student-box'>
@@ -788,6 +851,10 @@ class Student extends React.Component {
                             <Search placeHolder='搜索'
                                 onClickSearch={this.StudentSearch.bind(this)}
                                 height={30}
+                                Value={this.state.searchValue}
+                                onCancelSearch = {this.onCancelSearch}
+                                onChange={this.onChangeSearch.bind(this)}
+                                CancelBtnShow={this.state.CancelBtnShow}
                             ></Search>
                         </div>
                         <div className='content-render'>
@@ -810,6 +877,8 @@ class Student extends React.Component {
                                 <div className='pagination-box'>
                                     <PagiNation
                                         showQuickJumper
+                                        current={this.state.pagination}
+                                        hideOnSinglepage={true}
                                         total={DataState.GradeStudentPreview.Total}
                                         onChange={this.onPagiNationChange}
                                     ></PagiNation>

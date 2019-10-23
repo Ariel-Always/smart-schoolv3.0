@@ -41,6 +41,8 @@ const GRADUATE_JOBTYPE_VISIBLE_CLOSE = 'GRADUATE_JOBTYPE_VISIBLE_CLOSE'
 // 用户详情弹窗
 const USER_INFO_MODAL_OPEN = 'USER_INFO_MODAL_OPEN'
 const USER_INFO_MODAL_CLOSE = 'USER_INFO_MODAL_CLOSE'
+//ALL
+const EDIT_ALL_MODAL_TIPS_VISIBLE = 'EDIT_ALL_MODAL_TIPS_VISIBLE'
 //操作 
 const showErrorAlert = (alertMsg) => {
     return { type: SHOW_ERROR_ALERT, msg: alertMsg };
@@ -81,6 +83,9 @@ const TableLoadingClose = () => {
 //EditModalTipsVisible
 const editModalTipsVisible = (data) => {
     return { type: EDIT_MODAL_TIPS_VISIBLE, data: data }
+}
+const editAlltModalTipsVisible = () => {
+    return { type: EDIT_ALL_MODAL_TIPS_VISIBLE }
 }
 
 // 添加/编辑领导
@@ -192,6 +197,8 @@ export default {
     USER_INFO_MODAL_OPEN,
     USER_INFO_MODAL_CLOSE,
     UserInfoModalOpen,
-    UserInfoModalClose
+    UserInfoModalClose,
 
+    editAlltModalTipsVisible,
+    EDIT_ALL_MODAL_TIPS_VISIBLE
 }

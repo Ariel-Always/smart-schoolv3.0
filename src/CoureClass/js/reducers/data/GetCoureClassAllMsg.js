@@ -74,7 +74,7 @@ function handleData(data, func) {
         AllActive = true;
         AllSelect = true;
     } 
-    const { Item, ...newData } = data;
+    const { ItemSubject, ...newData } = data;
     //处理为左侧菜单数组
     let children = [{
         key: 'all',
@@ -85,7 +85,7 @@ function handleData(data, func) {
         selected: AllSelect,
         onTitleClick: () => { func('all', 'All') }
     }];
-    let newItem = Item.map((child, index) => {
+    let newItem = ItemSubject.map((child, index) => {
         let ID = child.GradeIDs.split(',');
         let name = child.GradesNames.split(',');
         let Grades = {};

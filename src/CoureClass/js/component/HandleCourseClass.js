@@ -17,7 +17,9 @@ class HandleCourseClass extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tableSource: []
+            tableSource: [],
+            UserMsg: props.DataState.LoginUser
+
         }
     }
 
@@ -129,7 +131,9 @@ class HandleCourseClass extends React.Component {
     //选择弹窗
     onSelectStudentAllClick = () => {
         const { DataState, UIState, dispatch } = this.props;
-        dispatch(actions.UpDataState.getGradeClassMsg('/CourseClass_GradeID'))
+        let data = DataState.GetCourseClassDetailsHandleClassMsg;
+        dispatch(actions.UpDataState.getGradeClassMsg('/GetStudentForAddOrEditCourseClassByInit?schoolID=' + this.state.UserMsg.SchoolID + '&gradeID=' + data.SubjectID))
+        
         dispatch(actions.UpUIState.AddStudentModalOpen())
     }
     render() {
@@ -250,7 +254,7 @@ class HandleCourseClass extends React.Component {
                     onOk={this.AddTeacherModalOk}
                     onCancel={this.AddTeacherModalCancel}
                 >
-                    <SelectTeacher></SelectTeacher>
+                    <SelectTeacher subject={data ? data.SubjectID : ''}></SelectTeacher>
                 </Modal>
                 <Modal
                     ref='SelectStudentMadal'
