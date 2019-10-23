@@ -121,7 +121,7 @@ class Search extends React.Component {
         const { DataState, UIState } = this.props;
 
         let options = []
-        let tableSource = nextProps.DataState.GetClassAllMsg.allClass ? nextProps.DataState.GetClassAllMsg.allClass.TableData : [];
+        let tableSource = nextProps.DataState.GetClassAllMsg.allClass.TableData ? nextProps.DataState.GetClassAllMsg.allClass.TableData : [];
         options = tableSource.map((child, index) => {
             return index;
         })

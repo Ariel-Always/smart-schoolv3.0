@@ -14,7 +14,17 @@ const USER_NAME_TIPS_VISIBLE_OPEN = 'USER_NAME_TIPS_VISIBLE_OPEN';
 const USER_ID_TIPS_VISIBLE_CLOSE = 'USER_ID_TIPS_VISIBLE_CLOSE';
 const USER_ID_TIPS_VISIBLE_OPEN = 'USER_ID_TIPS_VISIBLE_OPEN';
 
+const ALL_TIPS_VISIBLE_CLOSE = 'ALL_TIPS_VISIBLE_CLOSE';
 
+//右侧内容区loading
+const RIGHT_LOADING_CLOSE = 'RIGHT_LOADING_CLOSE';
+const RIGHT_LOADING_OPEN = 'RIGHT_LOADING_OPEN';
+//Table
+const TABLE_LOADING_OPEN = 'TABLE_LOADING_OPEN';
+const TABLE_LOADING_CLOSE = 'TABLE_LOADING_CLOSE';
+// 弹窗loading
+const MODAL_LOADING_OPEN = 'MODAL_LOADING_OPEN'
+const MODAL_LOADING_CLOSE = 'MODAL_LOADING_CLOSE'
 //操作
 const showErrorAlert = (alertMsg)=> {
     return {type:SHOW_ERROR_ALERT,msg:alertMsg};
@@ -53,7 +63,30 @@ const UserIDTipsVisibleClose = (alertMsg)=> {
     return {type:USER_ID_TIPS_VISIBLE_CLOSE,msg:alertMsg};
 };
 
-
+const AllTipsVisibleClose = (alertMsg)=> {
+    return {type:ALL_TIPS_VISIBLE_CLOSE};
+};
+//右侧loading
+const RightLoadingOpen = () => {
+    return { type: RIGHT_LOADING_OPEN };
+}
+const RightLoadingClose = () => {
+    return { type: RIGHT_LOADING_CLOSE };
+}
+//Table
+const TableLoadingOpen = () => {
+    return { type: TABLE_LOADING_OPEN };
+}
+const TableLoadingClose = () => {
+    return { type: TABLE_LOADING_CLOSE };
+}
+// 弹窗Loading
+const ModalLoadingOpen = () => {
+    return { type: MODAL_LOADING_OPEN }
+}
+const ModalLoadingClose = () => {
+    return { type: MODAL_LOADING_CLOSE }
+}
 export default {
     APP_LOADING_CLOSE,
     APP_LOADING_OPEN,
@@ -77,5 +110,21 @@ export default {
     USER_ID_TIPS_VISIBLE_OPEN,
     USER_ID_TIPS_VISIBLE_CLOSE,
     UserIDTipsVisibleOpen,
-    UserIDTipsVisibleClose
+    UserIDTipsVisibleClose,
+    AllTipsVisibleClose,
+    ALL_TIPS_VISIBLE_CLOSE,
+
+
+    RIGHT_LOADING_OPEN,
+    RIGHT_LOADING_CLOSE,
+    TABLE_LOADING_CLOSE,
+    TABLE_LOADING_OPEN,
+    RightLoadingOpen,
+    RightLoadingClose,
+    TableLoadingOpen,
+    TableLoadingClose,
+    ModalLoadingOpen,
+    ModalLoadingClose,
+    MODAL_LOADING_OPEN,
+    MODAL_LOADING_CLOSE,
 }

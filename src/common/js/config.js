@@ -12,7 +12,7 @@ if (process.env.NODE_ENV === 'development'){
         SubjectProxy:'http://192.168.129.1:30103/Subject/api',
         CourseClassProxy:'http://192.168.129.1:30103/CourseClass/api',
         UserAccountProxy:'http://192.168.129.1:30103/UserMgr/UserAccount',
-        TeachingSolutionProxy:'http://192.168.2.114:8090/SubjectResMgr/TeachingSolutionMgr/Teacher',
+        TeachingSolutionProxy:'http://192.168.129.1:30103/SubjectResMgr/TeachingSolutionMgr/Teacher',
         AdmClassProxy:"http://192.168.129.1:30103",
         DeskTopProxy:"http://192.168.129.1:30103",
         ScheduleProxy:"http://192.168.129.1:30103",

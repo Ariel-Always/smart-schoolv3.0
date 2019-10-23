@@ -18,7 +18,8 @@ class PowerContent extends React.Component {
         super(props);
         this.state = {
             radioValue: 0,
-            disabled: false
+            disabled: false,
+            userMsg: props.DataState.LoginUser
         }
     }
     componentWillReceiveProps(nextProps) {
@@ -46,7 +47,7 @@ class PowerContent extends React.Component {
         })
         postData(CONFIG.PowerProxy + url, {
             PowerID: id,
-            SchoolID: 'school1',
+            SchoolID: this.state.userMsg.SchoolID,
             StatusCode: value ? 1 : 0
         }, 2).then((res) => {
             this.setState({

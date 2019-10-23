@@ -1577,7 +1577,7 @@ class Menu extends React.Component {
                 style={{ width: this.state.MenuBoxWidth, display: this.state.MenuBoxShow }}
             >
                 <div className={`MenuBox_top ${this.state.MenuBoxTopPic}`}></div>
-                <div id="frame_left_menu_container" className="frame_left_menu_container" style={{ height: this.state.height ? this.state.height : 600 + 'px' }}>{this.state.menuDom}</div>
+                <div id="frame_left_menu_container" className="frame_left_menu_container" >{this.state.menuDom}</div>
             </div>
         )
     }

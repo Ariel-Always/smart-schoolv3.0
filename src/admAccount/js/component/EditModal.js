@@ -330,6 +330,13 @@ class EditModal extends React.Component {
         this.setState({
             UserIDChange: e.target.value
         })
+       
+
+
+    }
+    onEditIDBlur = (e) => {
+        const { dispatch } = this.props
+        
         //用户ID（工号/学号）检测  
         //长度是1~30位，只能由字母与数字组成。
         let Test = /^([a-zA-Z0-9]{1,24})$/.test(e.target.value)
@@ -352,14 +359,21 @@ class EditModal extends React.Component {
     }
     onEditNameChange = (e) => {
         const { dispatch } = this.props
+       
+
+        this.setState({
+            defaultUserName: e.target.value
+        })
+
+        
+    }
+    onEditNameBlur = (e) => {
+        const { dispatch } = this.props
         //用户姓名检测
         //用户姓名由1-20位的汉字、字母、数字、下划线组成。
         let value = e.target.value;
         let Test = /^[a-zA-Z0-9_\u4e00-\u9fa5][a-zA-Z0-9_\u4e00-\u9fa5 ]{0,48}[a-zA-Z0-9_\u4e00-\u9fa5]$|^[a-zA-Z0-9_\u4e00-\u9fa5]{1,50}$/.test(value)
 
-        this.setState({
-            defaultUserName: e.target.value
-        })
 
         if (!Test) {
             dispatch(actions.UpUIState.UserNameTipsVisibleOpen())
@@ -373,7 +387,6 @@ class EditModal extends React.Component {
 
         }
     }
-
 
     // 新
     onCheckAllChange = (index, e) => {
@@ -465,7 +478,8 @@ class EditModal extends React.Component {
                                 type='text'
                                 name='EditID'
                                 value={this.state.UserIDChange}
-                                onChange={this.onEditIDChange} />
+                                onChange={this.onEditIDChange} 
+                                onBlur={this.onEditIDBlur} />
 
                         </div>
                     </div>
@@ -488,7 +502,8 @@ class EditModal extends React.Component {
                                 type='text'
                                 name='EditName'
                                 value={this.state.defaultUserName}
-                                onChange={this.onEditNameChange} />
+                                onChange={this.onEditNameChange}
+                                onBlur={this.onEditNameBlur} />
 
                         </div>
                     </div>

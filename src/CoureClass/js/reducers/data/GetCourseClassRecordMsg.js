@@ -5,17 +5,18 @@ import history from '../../containers/history'
 const GetCourseClassRecordMsg = (state = {}, actions) => {
     switch (actions.type) {
         case UpDataState.GET_COURSE_CLASS_RECORD_MSG:
-            
-            let data = handleData(actions.data,actions.subject,actions.Class)
-            return Object.assign({}, state, {tableSource:data} );
+            const {Item,...Total} = actions.data;
+            let data = handleData(Item,actions.subject,actions.Class)
+            return Object.assign({}, state, {tableSource:data,...Total} );
         default:
             return state;
     }
 };
 
-function handleData(data) {
-    console.log(data )
-    let newData = data instanceof Array &&data.map((child,index) => {
+function handleData(Item) {
+    // console.log(data )
+    
+    let newData = Item instanceof Array &&Item.map((child,index) => {
         let {Flag,OperateParams,CourseClassIDs,...Data} = child
         let params = OperateParams.split('-');
         let OperateContent = '';
@@ -28,7 +29,7 @@ function handleData(data) {
                 OperateContent += param
             }
         })
-        return {...Data,OperateParams:{OperateParams:params,Flag:Flag,CourseClassIDs:CourseClassIDs}}
+        return {...Data,OperateParams:{OperateParams:params,Flag:Flag,CourseClassIDs:CourseClassIDs},key:index}
     })
     return newData
 }

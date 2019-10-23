@@ -129,7 +129,7 @@ function calculateSign(param, securityKey, token, randomString) {//等级3时是
     //     param = JSON.stringify(param);
     // }
 
-    console.info(param);
+    // console.info(param);
 
     return md5(token + param + securityKey + randomString);//签名顺序：token + 参数 + 秘钥 + randomString
 }

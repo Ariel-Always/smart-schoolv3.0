@@ -6,6 +6,7 @@ import { Alert, DetailsModal, DropDown, PagiNation, Search, Table, Button, Check
 import { Link, } from 'react-router-dom';
 import '../../scss/Student.scss'
 import { postData, getData } from "../../../common/js/fetch";
+import md5 from 'md5'
 import { Tooltip, Input } from 'antd'
 import TipsContact from './TipsContact'
 import history from '../containers/history'
@@ -157,7 +158,7 @@ class Student extends React.Component {
                     PhotoPath_NOcache: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg'
                 }
             }],
-            userMsg:props.DataState.LoginUser
+            userMsg: props.DataState.LoginUser
 
         }
     }
@@ -201,7 +202,7 @@ class Student extends React.Component {
             this.setState({
                 secondDropList: Classes,
             })
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&gradeID=' + e.value));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&gradeID=' + e.value));
             this.setState({
                 DropMenuShow: true,
                 firstSelect: e,
@@ -210,7 +211,7 @@ class Student extends React.Component {
                 CancelBtnShow: 'n'
             })
         } else {
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10'));
             this.setState({
                 DropMenuShow: false,
                 secondSelect: { value: 0, title: '全部班级' },
@@ -231,17 +232,14 @@ class Student extends React.Component {
             CancelBtnShow: 'n'
         })
         if (e.value !== 0)
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&gradeID=' + this.state.firstSelect.value + '&classID=' + e.value));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&gradeID=' + this.state.firstSelect.value + '&classID=' + e.value));
         else
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&gradeID=' + this.state.firstSelect.value));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&gradeID=' + this.state.firstSelect.value));
     }
     //搜索
     StudentSearch = (e) => {
         const { dispatch } = this.props;
-        this.setState({
-            keyword: e.value,
-            CancelBtnShow: 'y'
-        })
+
         if (e.value === '') {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-warn',
@@ -251,10 +249,12 @@ class Student extends React.Component {
                 close: this.onAlertWarnClose.bind(this)
             }));
         } else {
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&keyword=' + e.value + '&gradeID=' + this.state.firstSelect.value + '&classID=' + this.state.secondSelect.value));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&keyword=' + e.value + '&gradeID=' + this.state.firstSelect.value + '&classID=' + this.state.secondSelect.value));
             this.setState({
                 checkedList: [],
-                checkAll: false
+                checkAll: false,
+                keyword: e.value,
+                CancelBtnShow: 'y'
             })
         }
     }
@@ -265,7 +265,18 @@ class Student extends React.Component {
             searchValue: e.target.value
         })
     }
+ // 取消搜索
+ onCancelSearch = (e) => {
+    const { dispatch } = this.props
 
+    this.setState({
+        CancelBtnShow: 'n',
+        keyword: ''
+    })
+    dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' +  (this.state.firstSelect.value ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value ? '&classID=' + this.state.secondSelect.value : '')));
+   
+
+}
     onSelectChange = (e) => {
 
         //this.setState({ selectedRowKeys });
@@ -359,7 +370,7 @@ class Student extends React.Component {
         const { dispatch, DataState } = this.props;
         let data = this.state.StudentAccountData;
         let pwd = 888888;
-        console.log(key)
+        // console.log(key)
         this.setState({
             ChangePwdMadalVisible: true,
             onClickKey: key
@@ -384,7 +395,7 @@ class Student extends React.Component {
                 {
                     userID: DataState.GradeStudentPreview.newList[this.state.onClickKey].Others.UserID,
                     userType: 2,
-                    newPwd: this.state.defaultPwd
+                    newPwd: pwd(this.state.defaultPwd)
                 },
                 2).then(res => {
                     if (res.StatusCode === '401') {
@@ -399,6 +410,8 @@ class Student extends React.Component {
                             ChangePwdMadalVisible: false,
                             defaultPwd: 888888
                         })
+                        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&keyword=' + this.state.keyword + (this.state.firstSelect.value ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value ? '&classID=' + this.state.secondSelect.value : '')));
+
                     }
 
                 });
@@ -441,7 +454,7 @@ class Student extends React.Component {
             {
                 userID: userIDs.join(),
                 userType: 2,
-                newPwd: this.state.defaultPwd
+                newPwd: md5(this.state.defaultPwd)
             },
             2).then(res => {
                 if (res.StatusCode === '401') {
@@ -456,6 +469,8 @@ class Student extends React.Component {
                         checkedList: [],
                         checkAll: false
                     })
+                    dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&keyword=' + this.state.keyword + (this.state.firstSelect.value ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value ? '&classID=' + this.state.secondSelect.value : '')));
+
                 }
 
             });
@@ -481,9 +496,12 @@ class Student extends React.Component {
         }
         this.setState({
             checkedList: [],
-            checkAll: false
+            checkAll: false,
+            firstSelectStr: firstSelect,
+            secondSelectStr: secondSelect,
+            keywordStr: keyword
         })
-        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=' + (--value) + '&PageSize=10' + keyword + firstSelect + secondSelect));
+        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (--value) + '&PageSize=10' + keyword + firstSelect + secondSelect));
 
     }
 
@@ -505,7 +523,7 @@ class Student extends React.Component {
         console.log(sorter)
         if (sorter && (sorter.columnKey === 'UserName' || sorter.columnKey === 'ShortName')) {
             let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID='+this.state.userMsg.SchoolID+'&sortFiled=' + sorter.columnKey + '&PageSize=10&' + sortType + '&PageIndex=' + (this.state.pagination - 1)  + keyword + firstSelect + secondSelect));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&sortFiled=' + sorter.columnKey + '&PageSize=10&' + sortType + '&PageIndex=' + (this.state.pagination - 1) + keyword + firstSelect + secondSelect));
         }
     }
     onUserNameClick = (UserID) => {
@@ -604,6 +622,7 @@ class Student extends React.Component {
                                 Value={this.state.searchValue}
                                 onChange={this.onChangeSearch.bind(this)}
                                 CancelBtnShow={this.state.CancelBtnShow}
+                                onCancelSearch={this.onCancelSearch}
                                 height={30}
                             ></Search>
                         </div>
@@ -614,13 +633,13 @@ class Student extends React.Component {
                                         className='table'
                                         columns={this.state.columns}
                                         pagination={false}
-                                        loading={this.state.loading}
+                                        loading={UIState.AppLoading.TableLoading}
                                         onChange={this.onTableChange.bind(this)}
                                         dataSource={DataState.GradeStudentPreview.newList} >
 
                                     </Table>
                                 </CheckBoxGroup>
-                                <CheckBox style={{display:DataState.GradeStudentPreview.Total===0?'none':'inline-block'}} className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
+                                <CheckBox style={{ display: DataState.GradeStudentPreview.Total === 0 ? 'none' : 'inline-block' }} className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
                                     全选
                                     <Button onClick={this.onChangePwdAllClick} className='changePwdAll' color='blue'>批量重置密码</Button>
                                 </CheckBox>

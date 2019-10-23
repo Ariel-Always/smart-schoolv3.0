@@ -1,4 +1,4 @@
-import {postData,getData} from "../../../common/js/fetch";
+import { postData, getData } from "../../../common/js/fetch";
 import UpUIState from './UpUIState';
 import CONFIG from '../../../common/js/config';
 import 'whatwg-fetch';
@@ -9,17 +9,17 @@ import 'whatwg-fetch';
 //获取登录用户信息
 const GET_LOGIN_USER_INFO = 'GET_LOGIN_USER_INFO';
 //获取所有年级总览信息
-const  GET_ALL_USER_PREVIEW = 'GET_ALL_USER_PREVIEW';
+const GET_ALL_USER_PREVIEW = 'GET_ALL_USER_PREVIEW';
 //获取学生档案信息
-const  GET_GRADE_STUDENT_PREVIEW = 'GET_GRADE_STUDENT_PREVIEW';
+const GET_GRADE_STUDENT_PREVIEW = 'GET_GRADE_STUDENT_PREVIEW';
 //获取教师档案信息
-const  GET_SUBJECT_TEACHER_PREVIEW = 'GET_SUBJECT_TEACHER_PREVIEW';
+const GET_SUBJECT_TEACHER_PREVIEW = 'GET_SUBJECT_TEACHER_PREVIEW';
 //获取管理员档案信息
-const  GET_ADMIN_PREVIEW = 'GET_ADMIN_PREVIEW';
+const GET_ADMIN_PREVIEW = 'GET_ADMIN_PREVIEW';
 //获取领导档案信息
-const  GET_SCHOOL_LEADER_PREVIEW = 'GET_SCHOOL_LEADER_PREVIEW';
+const GET_SCHOOL_LEADER_PREVIEW = 'GET_SCHOOL_LEADER_PREVIEW';
 //获取年级班级信息
-const  GET_GRADE_CLASS_MSG = 'GET_GRADE_CLASS_MSG';
+const GET_GRADE_CLASS_MSG = 'GET_GRADE_CLASS_MSG';
 //获取学科信息
 const GET_SUBJECT_TEACHER_MSG = 'GET_SUBJECT_TEACHER_MSG';
 //修改管理员信息
@@ -31,211 +31,230 @@ const GET_USER_MSG = 'GET_USER_MSG'
 
 //操作的执行
 //获取登录用户信息
-const  getLoginUser = (data) => {
-    return (dispatch)=>{
-        
-           dispatch({type:GET_LOGIN_USER_INFO,data:data});
-        
+const getLoginUser = (data) => {
+    return (dispatch) => {
+
+        dispatch({ type: GET_LOGIN_USER_INFO, data: data });
+
     }
 };
 //获取所有用户总览信息
-const getAllUserPreview = (url) =>{
-    return (dispatch)=>{
+const getAllUserPreview = (url) => {
+    return (dispatch) => {
         // console.log(CONFIG.proxy+url);
-        getData(CONFIG.UserAccountProxy+url,2).then(res=>{
-            if(res.status === '401'){
-                console.log('错误码：'+ res.status)
+        getData(CONFIG.UserAccountProxy + url, 2).then(res => {
+            if (res.status === '401') {
+                console.log('错误码：' + res.status)
             }
-            return res.json()}).then(json=>{
-            if(json.status === 400){
+            return res.json()
+        }).then(json => {
+            if (json.status === 400) {
                 console.log(json.status)
-            }else if(json.status === 200){
-                dispatch({type:GET_ALL_USER_PREVIEW,data:json.data});
+            } else if (json.status === 200) {
+                dispatch({ type: GET_ALL_USER_PREVIEW, data: json.data });
                 dispatch({ type: UpUIState.APP_LOADING_CLOSE });
             }
-           
+
         });
     }
 }
 
 //获取学生账号信息/改
-const getGradeStudentPreview = (url) =>{
+const getGradeStudentPreview = (url) => {
     let pageIndex = url.split('PageIndex');
     let pageSize = url.split('PageSize');
 
-    if(pageIndex[0]===url){
+    if (pageIndex[0] === url) {
         pageIndex = 0;
         pageSize = 10;
-    }else{
-        pageIndex= pageIndex[1].split('&')[0].split('=')[1]
-        pageSize= pageSize[1].split('&')[0].split('=')[1]
+    } else {
+        pageIndex = pageIndex[1].split('&')[0].split('=')[1]
+        pageSize = pageSize[1].split('&')[0].split('=')[1]
     }
-    return (dispatch)=>{
-        dispatch({ type: UpUIState.APP_LOADING_OPEN });
+    return (dispatch) => {
+        dispatch({ type: UpUIState.TABLE_LOADING_OPEN });
 
-        getData(CONFIG.UserAccountProxy+url,2).then(res=>{
-            if(res.StatusCode === '401'){
-                console.log('错误码：'+ res.StatusCode)
+        getData(CONFIG.UserAccountProxy + url, 2).then(res => {
+            if (res.StatusCode === '401') {
+                console.log('错误码：' + res.StatusCode)
             }
-            return res.json()}).then(json=>{
-            if(json.StatusCode === 400){
+            return res.json()
+        }).then(json => {
+            if (json.StatusCode === 400) {
                 console.log(json.StatusCode)
-            }else if(json.StatusCode === 200){
-                dispatch({type:GET_GRADE_STUDENT_PREVIEW,data:json.Data,pageIndex:pageIndex,pageSize:pageSize});
-                dispatch({ type: UpUIState.APP_LOADING_CLOSE });
+            } else if (json.StatusCode === 200) {
+                dispatch({ type: GET_GRADE_STUDENT_PREVIEW, data: json.Data, pageIndex: pageIndex, pageSize: pageSize });
+                dispatch({ type: UpUIState.TABLE_LOADING_CLOSE });
             }
-           
+
         });
     }
 }
 
 //获取教师档案信息
-const getSubjectTeacherPreview = (url) =>{
+const getSubjectTeacherPreview = (url) => {
     let pageIndex = url.split('PageIndex');
     let pageSize = url.split('PageSize');
 
-    if(pageIndex[0]===url){
+    if (pageIndex[0] === url) {
         pageIndex = 0;
         pageSize = 10;
-    }else{
-        pageIndex= pageIndex[1].split('&')[0].split('=')[1]
-        pageSize= pageSize[1].split('&')[0].split('=')[1]
+    } else {
+        pageIndex = pageIndex[1].split('&')[0].split('=')[1]
+        pageSize = pageSize[1].split('&')[0].split('=')[1]
     }
-    return (dispatch)=>{
-        dispatch({ type: UpUIState.APP_LOADING_OPEN });
-        getData(CONFIG.UserAccountProxy+url,2).then(res=>{
-            if(res.StatusCode === '401'){
-                console.log('错误码：'+ res.StatusCode)
+    return (dispatch) => {
+        dispatch({ type: UpUIState.TABLE_LOADING_OPEN });
+        getData(CONFIG.UserAccountProxy + url, 2).then(res => {
+            if (res.StatusCode === '401') {
+                console.log('错误码：' + res.StatusCode)
             }
-            return res.json()}).then(json=>{
-            if(json.StatusCode === 400){
+            return res.json()
+        }).then(json => {
+            if (json.StatusCode === 400) {
                 console.log(json.StatusCode)
-            }else if(json.StatusCode === 200){
-                dispatch({type:GET_SUBJECT_TEACHER_PREVIEW,data:json.Data,pageIndex:pageIndex,pageSize:pageSize});
-                dispatch({ type: UpUIState.APP_LOADING_CLOSE });
+            } else if (json.StatusCode === 200) {
+                dispatch({ type: GET_SUBJECT_TEACHER_PREVIEW, data: json.Data, pageIndex: pageIndex, pageSize: pageSize });
+                dispatch({ type: UpUIState.TABLE_LOADING_CLOSE });
             }
-           
+
         });
     }
 }
 //获取领导档案信息
-const getSchoolLeaderPreview = (url) =>{
+const getSchoolLeaderPreview = (url) => {
     let pageIndex = url.split('PageIndex');
     let pageSize = url.split('PageSize');
 
-    if(pageIndex[0]===url){
+    if (pageIndex[0] === url) {
         pageIndex = 0;
         pageSize = 10;
-    }else{
-        pageIndex= pageIndex[1].split('&')[0].split('=')[1]
-        pageSize= pageSize[1].split('&')[0].split('=')[1]
+    } else {
+        pageIndex = pageIndex[1].split('&')[0].split('=')[1]
+        pageSize = pageSize[1].split('&')[0].split('=')[1]
     }
-    return (dispatch)=>{
-        console.log(CONFIG.proxy+url);
-        getData(CONFIG.UserAccountProxy+url,2).then(res=>{
-            if(res.status === '401'){
-                console.log('错误码：'+ res.status)
+    return (dispatch) => {
+        dispatch({ type: UpUIState.TABLE_LOADING_OPEN });
+        getData(CONFIG.UserAccountProxy + url, 2).then(res => {
+            if (res.status === '401') {
+                console.log('错误码：' + res.status)
             }
-            return res.json()}).then(json=>{
-            if(json.status === 400){
-            }else if(json.status === 200){
-                dispatch({type:GET_SCHOOL_LEADER_PREVIEW,data:json.data});
-                dispatch({ type: UpUIState.APP_LOADING_CLOSE });
+            return res.json()
+        }).then(json => {
+            if (json.status === 400) {
+            } else if (json.status === 200) {
+                dispatch({ type: GET_SCHOOL_LEADER_PREVIEW, data: json.data });
+                dispatch({ type: UpUIState.TABLE_LOADING_CLOSE });
             }
-           
+
         });
     }
 }
 //获取管理员档案信息
-const getAdminPreview = (url) =>{
+const getAdminPreview = (url) => {
     let pageIndex = url.split('PageIndex');
     let pageSize = url.split('PageSize');
 
-    if(pageIndex[0]===url){
+    if (pageIndex[0] === url) {
         pageIndex = 0;
         pageSize = 10;
-    }else{
-        pageIndex= pageIndex[1].split('&')[0].split('=')[1]
-        pageSize= pageSize[1].split('&')[0].split('=')[1]
+    } else {
+        pageIndex = pageIndex[1].split('&')[0].split('=')[1]
+        pageSize = pageSize[1].split('&')[0].split('=')[1]
     }
-    return (dispatch)=>{
-        dispatch({ type: UpUIState.APP_LOADING_OPEN });
-        getData(CONFIG.UserAccountProxy+url,2).then(res=>{
-            if(res.StatusCode === '401'){
-                console.log('错误码：'+ res.StatusCode)
+    return (dispatch) => {
+        dispatch({ type: UpUIState.TABLE_LOADING_OPEN });
+        getData(CONFIG.UserAccountProxy + url, 2).then(res => {
+            if (res.StatusCode === '401') {
+                console.log('错误码：' + res.StatusCode)
             }
             console.log(res)
-            return res.json()}).then(json=>{
-            if(json.StatusCode === 400){
+            return res.json()
+        }).then(json => {
+            if (json.StatusCode === 400) {
                 console.log(json.StatusCode)
-            }else if(json.StatusCode === 200){
-                dispatch({type:GET_ADMIN_PREVIEW,data:json.Data,pageIndex:pageIndex,pageSize:pageSize});
-                dispatch({ type: UpUIState.APP_LOADING_CLOSE });
+            } else if (json.StatusCode === 200) {
+                dispatch({ type: GET_ADMIN_PREVIEW, data: json.Data, pageIndex: pageIndex, pageSize: pageSize });
+                dispatch({ type: UpUIState.TABLE_LOADING_CLOSE });
             }
-           
+
         });
     }
 }
 //获取管理员档案信息
-const setAdminPreview = (data) =>{
-    return (dispatch)=>{
-                dispatch({type:SET_ADMIN_PREVIEW,data:data});
+const setAdminPreview = (data) => {
+    return (dispatch) => {
+        dispatch({ type: SET_ADMIN_PREVIEW, data: data });
     }
 }
 //获取年级班级信息/改
-const getGradeClassMsg = (url) =>{
-    return (dispatch)=>{
-        getData(CONFIG.UserInfoProxy+url,2).then(res=>{
-            if(res.StatusCode === '401'){
-                console.log('错误：'+ res.Msg)
+const getGradeClassMsg = (url) => {
+    return (dispatch) => {
+        dispatch({ type: UpUIState.RIGHT_LOADING_OPEN });
+        getData(CONFIG.UserInfoProxy + url, 2).then(res => {
+            if (res.StatusCode === '401') {
+                console.log('错误：' + res.Msg)
             }
             console.log(res)
 
-            return res.json()}).then(json=>{
-            if(json.StatusCode === 400){
+            return res.json()
+        }).then(json => {
+            if (json.StatusCode === 400) {
                 console.log(json.StatusCode)
-            }else if(json.StatusCode === 200){
-                dispatch({type:GET_GRADE_CLASS_MSG,data:json.Data});
+            } else if (json.StatusCode === 200) {
+                dispatch({ type: GET_GRADE_CLASS_MSG, data: json.Data });
+                dispatch({ type: UpUIState.RIGHT_LOADING_CLOSE });
+
             }
-           
+
         });
     }
 }
 //获取学科信息/改
-const getSubjectTeacherMsg = (url) =>{
-    return (dispatch)=>{
-        getData(CONFIG.UserInfoProxy+url,2).then(res=>{
-            if(res.StatusCode === '401'){
-                console.log('错误码：'+ res.StatusCode)
+const getSubjectTeacherMsg = (url) => {
+    return (dispatch) => {
+        dispatch({ type: UpUIState.RIGHT_LOADING_OPEN });
+
+        getData(CONFIG.UserInfoProxy + url, 2).then(res => {
+            if (res.StatusCode === '401') {
+                console.log('错误码：' + res.StatusCode)
             }
-            return res.json()}).then(json=>{
-            if(json.StatusCode === 400){
+            return res.json()
+        }).then(json => {
+            if (json.StatusCode === 400) {
                 console.log(json.StatusCode)
-            }else if(json.StatusCode === 200){
-                dispatch({type:GET_SUBJECT_TEACHER_MSG,data:json.Data});
+            } else if (json.StatusCode === 200) {
+                dispatch({ type: GET_SUBJECT_TEACHER_MSG, data: json.Data });
+                dispatch({ type: UpUIState.RIGHT_LOADING_CLOSE });
+
             }
-           
+
         });
     }
 }
 //获取Input值
-const getChangeInputValue = (value) =>{
-    return {type:CHANGE_INPUT_VALUE,value:value};
+const getChangeInputValue = (value) => {
+    return { type: CHANGE_INPUT_VALUE, value: value };
 }
 //获取用户信息/改
-const getUserMsg = (url) =>{
-    return (dispatch)=>{
-        getData(CONFIG.UserInfoProxy+url,2).then(res=>{
-            if(res.StatusCode === '401'){
-                console.log('错误：'+ res.Msg)
+const getUserMsg = (url) => {
+    return (dispatch) => {
+        dispatch({ type: UpUIState.MODAL_LOADING_OPEN });
+
+        getData(CONFIG.UserInfoProxy + url, 2).then(res => {
+            if (res.StatusCode === '401') {
+                console.log('错误：' + res.Msg)
             }
-            return res.json()}).then(json=>{
-            if(json.StatusCode === 400){
+            return res.json()
+        }).then(json => {
+            if (json.StatusCode === 400) {
                 console.log(json.StatusCode)
-            }else if(json.StatusCode === 200){
-                dispatch({type:GET_USER_MSG,data:json.Data});
+            } else if (json.StatusCode === 200) {
+                dispatch({ type: GET_USER_MSG, data: json.Data });
+                dispatch({ type: UpUIState.MODAL_LOADING_CLOSE });
+                
             }
-           
+
         });
     }
 }

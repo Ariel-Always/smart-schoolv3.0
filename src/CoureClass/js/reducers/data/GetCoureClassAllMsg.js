@@ -1,15 +1,15 @@
 import UpDataState from '../../actions/UpDataState';
 import history from '../../containers/history'
 
-const GetCoureClassAllMsg = (state = {}, actions) => {
+const GetCoureClassAllMsg = (state = {Subject:'',Grade:''}, actions) => {
     switch (actions.type) {
         case UpDataState.GET_COURE_CLASS_ALL_MSG:
             let data = handleData(actions.data, actions.func)
             return Object.assign({}, state, { ...data });
         case UpDataState.SET_COURE_CLASS_ALL_MSG:
-            console.log(state)
+            // console.log(state)
             let setData = setNewData(state.MenuParams, actions.data, actions.subjectID)
-            return Object.assign({}, state, { MenuParams: setData });
+            return Object.assign({}, state, { MenuParams: setData,Grade:actions.subjectID?actions.data:'',Subject:actions.subjectID?actions.subjectID:actions.data==='all'?'': actions.data});
         default:
             return state;
     }
@@ -17,9 +17,9 @@ const GetCoureClassAllMsg = (state = {}, actions) => {
 function setNewData(MenuParams, key, subjectID) {
     const { MenuBox, children } = MenuParams;
     let params = [];
-    console.log(children, key, subjectID)
+    // console.log(children, key, subjectID)
     //去active和selected为false
-    params = children.map((child, index) => {
+    params = children instanceof Array && children.map((child, index) => {
         let myChild = [];
         const { children, ...Params } = child;
         if (Params.key === key) {
@@ -67,13 +67,20 @@ function handleData(data, func) {
     let classID = pathArr[4];
     let AllActive = false;
     let AllSelect = false;
+    let Subject = '';
+    let Grade = ''
     //学科ID：{name：学科名，年级ID：年级名}
     let Subjects = {};
 
     if (route === '/' || handleRoute === 'All') {
         AllActive = true;
         AllSelect = true;
+    }else if(handleRoute!=='Search'){
+        Subject = routeID;
     } 
+    if(classID){
+        Grade = classID
+    }
     const { ItemSubject, ...newData } = data;
     //处理为左侧菜单数组
     let children = [{
@@ -85,7 +92,7 @@ function handleData(data, func) {
         selected: AllSelect,
         onTitleClick: () => { func('all', 'All') }
     }];
-    let newItem = ItemSubject.map((child, index) => {
+    let newItem = ItemSubject instanceof Array && ItemSubject.map((child, index) => {
         let ID = child.GradeIDs.split(',');
         let name = child.GradesNames.split(',');
         let Grades = {};
@@ -139,6 +146,6 @@ function handleData(data, func) {
         initParams: ''
     };
 
-    return {Subjects:Subjects, newData: { ...newData, ItemSubject: newItem }, oldData: oldData, MenuParams: MenuParams };
+    return {Subjects:Subjects, newData: { ...newData, ItemSubject: newItem }, oldData: oldData, MenuParams: MenuParams ,Subject:Subject,Grade:Grade};
 }
 export default GetCoureClassAllMsg;

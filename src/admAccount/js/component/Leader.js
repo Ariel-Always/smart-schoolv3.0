@@ -623,7 +623,7 @@ class Leader extends React.Component {
                                         className='table'
                                         columns={this.state.columns}
                                         pagination={false}
-                                        loading={this.state.loading}
+                                        loading={UIState.AppLoading.TableLoading}                                        
                                         dataSource={this.state.LeaderAccountData} >
 
                                     </Table>

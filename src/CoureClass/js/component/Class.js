@@ -84,9 +84,10 @@ class Class extends React.Component {
                     }
                 }
             ],
+            pagination: 1,
             checkedList: [],
             checkAll: false,
-            UserMsg:props.DataState.LoginUser
+            UserMsg: props.DataState.LoginUser
         })
     }
 
@@ -95,8 +96,8 @@ class Class extends React.Component {
         const { DataState, UIState } = this.props;
 
         let options = []
-        let tableSource = nextProps.DataState.GetClassAllMsg.allClass ? nextProps.DataState.GetClassAllMsg.allClass.TableData : [];
-        options = tableSource.map((child, index) => {
+        let tableSource = nextProps.DataState.GetClassAllMsg.allClass.TableData ? nextProps.DataState.GetClassAllMsg.allClass.TableData : [];
+        options = tableSource instanceof Array && tableSource.map((child, index) => {
             return index;
         })
         this.setState({
@@ -114,16 +115,17 @@ class Class extends React.Component {
     }
     //列表班级点击事件
     onCourseClassClick = (classID) => {
-        console.log('ss' + classID)
+        // console.log('ss' + classID)
         const { dispatch, DataState, UIState } = this.props;
         dispatch(actions.UpUIState.CourseClassDetailsModalOpen())
-        dispatch(actions.UpDataState.getCourseClassDetailsMsg('/GetCourseClassDetail?courseClassID='+classID))
+        dispatch(actions.UpDataState.getCourseClassDetailsMsg('/GetCourseClassDetail?courseClassID=' + classID))
     }
     //列表操作编辑点击事件
     onHandleClassClick = (key) => {
         const { dispatch, DataState, UIState } = this.props;
         let ClassID = DataState.GetClassAllMsg.allClass.TableData[key].CourseClass.ClassID;
-        console.log(key)
+        // console.log(key)
+        
         dispatch(actions.UpUIState.ChangeCourseClassModalOpen())
         dispatch(actions.UpDataState.getCourseClassDetailsHandleClassMsg('/GetCourseClassDetail?courseClassID=' + ClassID))
 
@@ -158,8 +160,12 @@ class Class extends React.Component {
         let routeID = pathArr[2];
         let subjectID = pathArr[3];
         let classID = pathArr[4];
-        dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID='+this.state.UserMsg.schoolID+'&pageIndex=' + value + '&pageSize=10', routeID, classID));
-
+        dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.schoolID + '&pageIndex=' + value + '&pageSize=10', routeID, classID));
+        this.setState({
+            pagination: e,
+            checkedList: [],
+            checkAll: false
+        })
 
     }
     //列表多选
@@ -251,7 +257,7 @@ class Class extends React.Component {
         dispatch(actions.UpUIState.hideErrorAlert());
         postData(CONFIG.CourseClassProxy + url, {
             courseClassID: id
-        },2,'json').then(res => {
+        }, 2, 'json').then(res => {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
@@ -263,10 +269,10 @@ class Class extends React.Component {
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
                 this.setState({
-                    checkedList:[],
-                    checkAll:false
+                    checkedList: [],
+                    checkAll: false
                 })
-                dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID='+this.state.UserMsg.SchoolID+'&pageIndex=' + 1 + '&pageSize=10', routeID, classID));
+                dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=' + this.state.pagination + '&pageSize=10', routeID, classID));
             }
         })
     }
@@ -283,7 +289,7 @@ class Class extends React.Component {
         dispatch(actions.UpUIState.hideErrorAlert());
         postData(CONFIG.CourseClassProxy + url, {
             courseClassID: id
-        },2,'json').then(res => {
+        }, 2, 'json').then(res => {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
@@ -294,8 +300,8 @@ class Class extends React.Component {
                     title: "成功",
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
-                
-                dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID='+this.state.UserMsg.SchoolID+'&pageIndex=' + 1 + '&pageSize=10', routeID, classID));
+
+                dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=' + 1 + '&pageSize=10', routeID, classID));
 
             }
         })
@@ -308,7 +314,7 @@ class Class extends React.Component {
     }
     render() {
         const { DataState, UIState } = this.props;
-        let tips = DataState.GetClassAllMsg.allClass && DataState.GetCoureClassAllMsg.Subjects ? DataState.GetCoureClassAllMsg.Subjects[DataState.GetClassAllMsg.allClass.subject].subjectName + '教学班>' + DataState.GetCoureClassAllMsg.Subjects[DataState.GetClassAllMsg.allClass.subject][DataState.GetClassAllMsg.allClass.Class] : '';
+        let tips = DataState.GetClassAllMsg.allClass.subject && DataState.GetCoureClassAllMsg.Subjects && DataState.GetCoureClassAllMsg.Subjects[DataState.GetClassAllMsg.allClass.subject].subjectName? DataState.GetCoureClassAllMsg.Subjects[DataState.GetClassAllMsg.allClass.subject].subjectName + '教学班>' + DataState.GetCoureClassAllMsg.Subjects[DataState.GetClassAllMsg.allClass.subject][DataState.GetClassAllMsg.allClass.Class] : '';
         let Total = DataState.GetClassAllMsg.allClass ? DataState.GetClassAllMsg.allClass.CourseClassCount : 0
         return (
             <div className='Class'>
@@ -330,16 +336,17 @@ class Class extends React.Component {
                                 dataSource={DataState.GetClassAllMsg.allClass ? DataState.GetClassAllMsg.allClass.TableData : []}
                             ></Table>
                         </CheckBoxGroup>
-                    {Total?(<CheckBox className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
-                        全选
+                        {Total ? (<CheckBox className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
+                            全选
                                 <Button onClick={this.onDeleteAllClick} className='deleteAll' color='blue'>删除</Button>
-                    </CheckBox>):''}
+                        </CheckBox>) : ''}
 
                         <div className='pagination-box'>
                             <PagiNation
                                 showQuickJumper
-                                defaultCurrent={DataState.GetClassAllMsg.allClass ? DataState.GetClassAllMsg.allClass.PageIndex : 1}
-                                defaultPageSize={10}
+                                // defaultCurrent={DataState.GetClassAllMsg.allClass ? DataState.GetClassAllMsg.allClass.PageIndex : 1}
+                                // defaultPageSize={10}
+                                current={this.state.pagination}
                                 total={DataState.GetClassAllMsg.allClass ? DataState.GetClassAllMsg.allClass.CourseClassCount : 0}
                                 onChange={this.onPagiNationChange.bind(this)}
 

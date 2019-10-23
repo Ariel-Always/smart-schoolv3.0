@@ -71,8 +71,9 @@ class HandleCourseClass extends React.Component {
     //选择教师
     onTeacherSelectClick = () => {
         const { DataState, UIState, dispatch } = this.props;
+        let data = DataState.GetCourseClassDetailsHandleClassMsg;
         dispatch(actions.UpUIState.AddTeacherModalOpen())
-        dispatch(actions.UpDataState.getSubjectTeacherMsg('/AdmSubjectTeacher'))
+        dispatch(actions.UpDataState.getSubjectTeacherMsg('/GetTeacherInfoBySubjectAndKey?key=&schoolID=' + this.state.UserMsg.SchoolID + '&subjectID=' + data.SubjectID))
     }
     //选择教师模态框
     AddTeacherModalOk = () => {
@@ -132,7 +133,7 @@ class HandleCourseClass extends React.Component {
     onSelectStudentAllClick = () => {
         const { DataState, UIState, dispatch } = this.props;
         let data = DataState.GetCourseClassDetailsHandleClassMsg;
-        dispatch(actions.UpDataState.getGradeClassMsg('/GetStudentForAddOrEditCourseClassByInit?schoolID=' + this.state.UserMsg.SchoolID + '&gradeID=' + data.SubjectID))
+        dispatch(actions.UpDataState.getGradeClassMsg('/GetStudentForAddOrEditCourseClassByInit?schoolID=' + this.state.UserMsg.SchoolID + '&gradeID=' + data.GradeID))
         
         dispatch(actions.UpUIState.AddStudentModalOpen())
     }

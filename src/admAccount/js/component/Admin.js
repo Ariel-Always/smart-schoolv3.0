@@ -9,6 +9,7 @@ import CONFIG from '../../../common/js/config';
 import { Tooltip, Input, Modal as AntdModal } from 'antd'
 import TipsContact from './TipsContact'
 import TipsPower from './TipsPower'
+import md5 from 'md5'
 import history from '../containers/history'
 import EditModal from './EditModal'
 //import IconLocation from '../../images/icon-location.png'
@@ -180,10 +181,7 @@ class Admin extends React.Component {
     // 搜索
     AdminSearch = (e) => {
         const { dispatch } = this.props;
-        this.setState({
-            keyword: e.value,
-            CancelBtnShow: 'y'
-        })
+        
         if (e.value === '') {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-warn',
@@ -195,7 +193,12 @@ class Admin extends React.Component {
         } else {
 
             dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&keyword=' + e.value));
-
+            this.setState({
+                checkedList: [],
+                checkAll: false,
+                keyword: e.value,
+                CancelBtnShow: 'y'
+            })
         }
     }
     onChangeSearch = (e) => {
@@ -363,9 +366,9 @@ class Admin extends React.Component {
                         checkAll: false
                     })
                     if (this.state.searchValue !== '')
-                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&Keyword=' + this.state.searchValue));
+                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=' + (this.state.pagination - 1) +'&PageSize=10&Keyword=' + this.state.keyword));
                     else
-                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
+                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=' + (this.state.pagination - 1) +'&PageSize=10'));
                 }
 
             });
@@ -481,6 +484,7 @@ class Admin extends React.Component {
                         Pwd: '0'
                     }))
                     dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
+                    dispatch(actions.UpUIState.AllTipsVisibleClose())
                 }
 
             });
@@ -500,6 +504,7 @@ class Admin extends React.Component {
         this.setState({
             addAdminModalVisible: false
         })
+        dispatch(actions.UpUIState.AllTipsVisibleClose())
 
     }
     handleChangeAdminModalOk = (e) => {
@@ -549,7 +554,7 @@ class Admin extends React.Component {
                 UserName: DataState.AdminPreview.TrasferData.UserName,
                 ModuleIDs: DataState.AdminPreview.TrasferData.ModuleIDs,
                 PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
-                Pwd: DataState.AdminPreview.TrasferData.Pwd
+                Pwd: md5(DataState.AdminPreview.TrasferData.Pwd)
             },
             2).then(res => {
                 if (res.StatusCode === '401') {
@@ -572,6 +577,7 @@ class Admin extends React.Component {
                         Pwd: '0'
                     }))
                     dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
+                    dispatch(actions.UpUIState.AllTipsVisibleClose())
 
                 }
 
@@ -592,6 +598,7 @@ class Admin extends React.Component {
         this.setState({
             changeAdminModalVisible: false
         })
+        dispatch(actions.UpUIState.AllTipsVisibleClose())
 
     }
     //修改密码
@@ -614,7 +621,7 @@ class Admin extends React.Component {
             {
                 userID: DataState.AdminPreview.newList[this.state.onClickKey].UserName.UserID,
                 userType: 0,
-                newPwd: pwd
+                newPwd: md5(pwd)
             },
             2).then(res => {
                 if (res.StatusCode === '401') {
@@ -630,9 +637,9 @@ class Admin extends React.Component {
                         defaultPwd: 888888
                     })
                     if (this.state.searchValue !== '')
-                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&Keyword=' + this.state.searchValue));
+                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=' + (this.state.pagination - 1) +'&PageSize=10&Keyword=' + this.state.keyword));
                     else
-                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
+                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=' + (this.state.pagination - 1) +'&PageSize=10'));
 
                 }
 
@@ -674,6 +681,17 @@ class Admin extends React.Component {
 
         }
     }
+    // 取消搜索
+    onCancelSearch = (e) => {
+        const { dispatch } = this.props
+
+        this.setState({
+            CancelBtnShow: 'n',
+            keyword: ''
+        })
+        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=' + (this.state.pagination - 1) +'&PageSize=10'));
+        
+    }
     render() {
         const { UIState, DataState } = this.props;
         const data = {
@@ -709,6 +727,7 @@ class Admin extends React.Component {
                             <Search placeHolder='请输入关键字搜索...'
                                 onClickSearch={this.AdminSearch}
                                 height={30}
+                                onCancelSearch={this.onCancelSearch}
                                 Value={this.state.searchValue}
                                 onChange={this.onChangeSearch.bind(this)}
                                 CancelBtnShow={this.state.CancelBtnShow}
@@ -722,15 +741,15 @@ class Admin extends React.Component {
                                         onChange={this.onTableChange.bind(this)}
                                         columns={this.state.columns}
                                         pagination={false}
-                                        loading={this.state.loading}
+                                        loading={UIState.AppLoading.TableLoading}
                                         dataSource={DataState.AdminPreview.newList} >
 
                                     </Table>
                                 </CheckBoxGroup>
-                                <CheckBox className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
+                                {DataState.AdminPreview.Total?(<CheckBox className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
                                     全选
                                     <Button onClick={this.onDeleteAllClick} className='deleteAll' color='red'>删除</Button>
-                                </CheckBox>
+                                </CheckBox>):''}
                                 <div className='pagination-box'>
                                     <PagiNation
                                         showQuickJumper
@@ -809,10 +828,6 @@ class Admin extends React.Component {
                     data={DataState.GetUserMsg}
                     type='Admin'
                 >
-                    <div className='modal-top'>
-
-                    </div>
-                    <div className='modal-content'></div>
                 </DetailsModal>
                 {/* <AntdModal
                     ref='changePwdMadal'
