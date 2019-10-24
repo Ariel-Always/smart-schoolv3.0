@@ -243,7 +243,6 @@ const cancelSearch = () => {
             dispatch({type:SEARCH_LOADING_SHOW});
 
             //如果学科提示语存在,重新请求后台接口。
-            let getSTTMenuPromise = Method.getGetData(`/scheduleSubjectTeacherTeacher-teacher?SchoolID=${SchoolID}&PeriodID=${PeriodID}`);
 
             ApiActions.GetTeacherBySubjectIDAndKey({
 

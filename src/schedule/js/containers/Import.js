@@ -13,17 +13,19 @@ import AppLoadingActions from '../actions/AppLoadingActions';
 
 class Import extends Component{
 
-    constructor(props){
+    componentDidMount(){
 
-        super(props);
+        const { dispatch } = this.props;
 
-        const { dispatch,LoginUser } = props;
+        if (sessionStorage.getItem('UserInfo')){
 
-        const token = sessionStorage.getItem('token');
+            const token = sessionStorage.getItem('token');
 
-        const { SchoolID,UserID,UserName } = LoginUser;
+            let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
 
-        $.get(`${CONFIG.AdmClassProxy}/UserMgr/TeachInfoMgr/Import.aspx?SchoolID=${SchoolID}&Token=${token}&Type=scheduleMiddle?UserName=${UserName}&UserID=${UserID}`, (data, status) => {
+            let { SchoolID,UserName,UserID } = UserInfo;
+
+            $.get(`${CONFIG.AdmClassProxy}/UserMgr/TeachInfoMgr/Import.aspx?SchoolID=${SchoolID}&Token=${token}&Type=scheduleMiddle&UserName=${UserName}&UserID=${UserID}`, (data, status) => {
 
 
                 if (status==='success'){
@@ -43,6 +45,51 @@ class Import extends Component{
                 }
 
             });
+
+
+
+        }else{
+
+
+            let getUserInfo = setInterval(()=>{
+
+                if (sessionStorage.getItem('UserInfo')){
+
+                    const token = sessionStorage.getItem('token');
+
+                    let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
+
+                    let { SchoolID,UserName,UserID } = UserInfo;
+
+                    $.get(`${CONFIG.AdmClassProxy}/UserMgr/TeachInfoMgr/Import.aspx?SchoolID=${SchoolID}&Token=${token}&Type=scheduleMiddle&UserName=${UserName}&UserID=${UserID}`, (data, status) => {
+
+
+                        if (status==='success'){
+
+                            $('#import-wrapper').append(data);
+
+                            dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
+
+                        }else if (status === 'error'||status==='notmodified'||status==='parsererror'){
+
+                            dispatch(AppAlertActions.alertError({title:"请求出错！",ok:()=>{ return ()=> window.location.href='/html/admclass';}}));
+
+                        }else if (status === 'timeout'){
+
+                            dispatch(AppAlertActions.alertError({title:"请求超时！",ok:()=>{ return ()=> window.location.href='/html/admclass';}}))
+
+                        }
+
+                    });
+
+                    clearInterval(getUserInfo);
+
+                }
+
+            },20)
+
+        }
+
 
     }
 

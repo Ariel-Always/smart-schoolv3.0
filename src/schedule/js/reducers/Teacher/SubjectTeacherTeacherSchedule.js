@@ -36,6 +36,8 @@ const SubjectTeacherTeacherSchedule = (state={
 
             return {
 
+                ...state,
+
                 schedule:[],
 
                 ScheduleCount:0,

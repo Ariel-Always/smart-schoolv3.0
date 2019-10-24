@@ -18,13 +18,15 @@ const TPSUpdate = () => {
 
         dispatch({type:TP_SCHEDULE_LOADING_SHOW});
 
-        const { LoginUser,Teacher } = getState();
+        const { LoginUser,Teacher,PeriodWeekTerm } = getState();
 
         let {SchoolID,UserID,UserType} = LoginUser;
 
         let NowWeekNo = Teacher.PersonalSchedule.NowWeekNo;
 
-        ApiActions.GetScheduleByUserID({SchoolID,UserType,UserID,WeekNO:NowWeekNo,dispatch}).then(data=>{
+        let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;//所需的参数
+
+        ApiActions.GetScheduleByUserID({SchoolID,PeriodID,UserType,UserID,WeekNO:NowWeekNo,dispatch}).then(data=>{
 
             if (data){
 

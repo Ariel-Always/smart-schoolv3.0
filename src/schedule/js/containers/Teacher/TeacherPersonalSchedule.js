@@ -79,7 +79,7 @@ class TeacherPersonalSchedule extends Component{
 
     Import(){
 
-        window.location.href='/html/schedule/#/Import';
+        window.open('/html/schedule/#/Import');
 
     }
 

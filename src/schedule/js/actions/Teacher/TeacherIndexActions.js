@@ -13,6 +13,8 @@ import TPActions from "./TeacherPersonalActions";
 
 import ApiActions from '../ApiActions';
 
+import $ from 'jquery';
+
 
 //学科教师总表学科总课表界面初始化
 const STSPageInit = () => {
@@ -49,62 +51,76 @@ const STSPageInit = () => {
 
                     let NowWeekNo = PeriodWeekTerm.WeekNO;
 
-                    dispatch({type:SCGCRActions.SCGCR_INFO_INIT,data:res[0]});
-
                     dispatch({type:STSActions.STS_NOW_WEEK_CHANGE,data:NowWeekNo});
+
+
+                    if (res[0]){
+
+                        dispatch({type:SCGCRActions.SCGCR_INFO_INIT,data:res[0]});
+
+                    }
+
 
                     //组织课表的信息存放到redux中
                     const json = res[1];
 
-                    let SubjectTeacherSchedule =  json.ItemTeacher.map((item) => {
+                    let SubjectTeacherSchedule = [];
 
-                        let teacherObj = {
+                    if (json){
 
-                            id:item.TeacherID,
+                        SubjectTeacherSchedule =  json.ItemTeacher.map((item) => {
 
-                            name:item.TeacherName
+                            let teacherObj = {
 
-                        };
+                                id:item.TeacherID,
 
-                        let list = json.ItemSchedule.map((i) => {
+                                name:item.TeacherName
 
-                            if (i.TeacherID === item.TeacherID){
+                            };
 
-                                return {
+                            let list = json.ItemSchedule.map((i) => {
 
-                                    type:i.ScheduleType,
+                                if (i.TeacherID === item.TeacherID){
 
-                                    title:(i.ClassName!==''?i.ClassName:CourseClassName),
+                                    return {
 
-                                    titleID:(i.ClassName!==''?i.ClassID:CourseClassID),
+                                        type:i.ScheduleType,
 
-                                    secondTitle:i.SubjectName,
+                                        title:(i.ClassName!==''?i.ClassName:i.CourseClassName),
 
-                                    secondTitleID:i.SubjectID,
+                                        titleID:(i.ClassName!==''?i.ClassID:i.CourseClassID),
 
-                                    thirdTitle:i.ClassRoomName,
+                                        secondTitle:i.SubjectName,
 
-                                    thirdTitleID:i.ClassRoomID,
+                                        secondTitleID:i.SubjectID,
 
-                                    WeekDay:i.WeekDay,
+                                        thirdTitle:i.ClassRoomName,
 
-                                    ClassHourNO:i.ClassHourNO
+                                        thirdTitleID:i.ClassRoomID,
 
-                                };
+                                        WeekDay:i.WeekDay,
 
-                            }else {
+                                        ClassHourNO:i.ClassHourNO
 
-                                return ;
+                                    };
 
-                            }
+                                }else {
 
-                        }).filter(i => {return i!==undefined});
+                                    return ;
 
-                        teacherObj['list'] = list;
+                                }
 
-                        return teacherObj;
+                            }).filter(i => {return i!==undefined});
 
-                    });
+                            teacherObj['list'] = list;
+
+                            return teacherObj;
+
+                        });
+
+                        dispatch({type:STSActions.TEACHER_SUBJECT_TEACHER_SUBJECT_TEACHER_COUNT,data:json.TeacherCount});
+
+                    }
 
                     dispatch({type:STSActions.SUBJECT_TEACHER_SCHEDULE_INIT,data:SubjectTeacherSchedule});
 
@@ -139,6 +155,8 @@ const STTPageInit = () => {
 
         dispatch({type:STTActions.SCHEDULE_LOADING_SHOW});
 
+        $('.left-menu-wrapper').find('.search_cancel_input').hide();
+
         let {PeriodWeekTerm,LoginUser} = getState();
         //如果前面获取的周次、学段信息已获得
         if (PeriodWeekTerm&&PeriodWeekTerm.ItemPeriod&&LoginUser.SchoolID){
@@ -161,21 +179,18 @@ const STTPageInit = () => {
                 let NowWeekNo = PeriodWeekTerm.WeekNO;
 
                 //将课程、学期、等等放到redux中
-
-                dispatch({type:SCGCRActions.SCGCR_INFO_INIT,data:res[0]});
-
                 dispatch({type:STTActions.STT_NOW_WEEK_CHANGE,data:NowWeekNo});
                 //根据获取的学科信息和教师信息组织数据
 
                 if(res[0]){
+
+                    dispatch({type:SCGCRActions.SCGCR_INFO_INIT,data:res[0]});
 
                     let subjectList = res[0].ItemSubject;
 
                     let leftMenuData = [];
 
                     if (res[1].length>0){
-
-                        console.log(res[1]);
 
                         if (subjectList.length > 1){
 
@@ -187,7 +202,7 @@ const STTPageInit = () => {
 
                                         return {
 
-                                            id:i.Teacher,
+                                            id:i.TeacherID,
 
                                             name:i.TeacherName
 
@@ -221,13 +236,14 @@ const STTPageInit = () => {
 
                                 return {
 
-                                    id:i.Teacher,
+                                    id:i.TeacherID,
 
                                     name:i.TeacherName
 
                                 }
 
                             });
+
                             //查找subjectID和对应的Subjectname
                             let subjectID = '';
 
@@ -249,15 +265,17 @@ const STTPageInit = () => {
 
                         }
 
+                    }else{
+
+                        dispatch({type:STTActions.STT_SCHEDULE_INIT,data:[]});
+
                     }
-
-                    dispatch({type:STTActions.SCHEDULE_LOADING_HIDE});
-
-                    dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
 
                 }
 
+                dispatch({type:STTActions.SCHEDULE_LOADING_HIDE});
 
+                dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
 
             });
 
@@ -304,8 +322,6 @@ const TeacherPersonalInit = () => {
 
 
                 let NowWeekNo = PeriodWeekTerm.WeekNO;
-
-
 
                 //将课程、学期、等等放到redux中
 

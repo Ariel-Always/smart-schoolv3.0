@@ -154,8 +154,6 @@ const PageInit = () => {
 
                     'http://192.168.129.1:10103/PsnMgr/LgAssistant/assets/layui-v2.5.5/layui/css/layui.css',
 
-                    'http://192.168.129.1:10103/PsnMgr/LgAssistant/assets/layui-v2.5.5/layui/layui.js',
-
                     'http://192.168.129.1:10103/PsnMgr/LgAssistant/js/jquery-1.7.2.min.js'
 
                 ]).then(()=>{
@@ -163,6 +161,8 @@ const PageInit = () => {
                     dynamicFile([
 
                         'http://192.168.129.1:10103/PsnMgr/LgAssistant/assets/jquery.pagination.js',
+
+                        'http://192.168.129.1:10103/PsnMgr/LgAssistant/assets/layui-v2.5.5/layui/layui.js',
 
                         'http://192.168.129.1:10103/PsnMgr/LgAssistant/js/lancoo.cp.assistant.js'
 

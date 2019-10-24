@@ -350,9 +350,7 @@ const getAddTeacherData = (opts) =>{
 
                 break;
 
-            case 3:
-
-            case 4:
+            case 3: case 4:
 
                 if (type===4){
 
