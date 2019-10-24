@@ -265,6 +265,33 @@ const GetCourseClassInfo = async ({ClassID,WeekNO,WeekDayNO,ClassHourNO,dispatch
 };
 
 
+//获取全部课时和全部学段用于课表设置
+
+const GetAllPeriodAndClassHours = async ({SchoolID,dispatch}) => {
+
+    let res = await Method.getGetData(`/schedule/api/GetAllPeriodAndClassHours?SchoolID=${SchoolID}`,
+
+        2,
+
+        //CONFIG.ScheduleProxy);
+
+    'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+
+    if (res.StatusCode === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
+
+
+
 
 
 
@@ -765,6 +792,8 @@ export default {
 
     GetAllScheduleOfClassRoomByClassRoomTypeForPage,
 
-    GetCourseClassInfo
+    GetCourseClassInfo,
+
+    GetAllPeriodAndClassHours
 
 }

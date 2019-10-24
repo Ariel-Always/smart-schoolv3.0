@@ -1,0 +1,236 @@
+.schedule-setting-wrapper{
+
+  color: #333333;
+
+  .title-bar{
+
+    height: 36px;
+
+    margin-top: 22px;
+
+    padding: 0 32px 0 54px;
+
+    line-height: 36px;
+
+    background: url('#{$image-url}/title-icon.png') no-repeat 26px;
+
+    &-name{
+
+      font-size: 18px;
+
+      color: #333;
+
+      border-bottom: 1px dashed #ccc;
+
+    }
+
+  }
+
+
+  .setting-content-wrapper{
+
+    padding: 0 52px;
+
+  }
+
+  .setting-type-wrapper{
+
+    margin:20px 0;
+
+    @include flex;
+
+    line-height: 30px;
+
+  }
+
+  .setting-type-switch{
+
+    width: 156px;
+
+    height: 30px;
+
+    background-color: #e0e0e0;
+
+    border-radius: 15px;
+
+    margin-left: 16px;
+
+  }
+
+  .setting-type-tab{
+
+    width: 74px;
+
+    height: 24px;
+
+    color: #6c6969;
+
+    border-radius: 12px;
+
+    text-align: center;
+
+    line-height: 24px;
+
+    font-size: 12px;
+
+    cursor:pointer;
+
+    &.left{
+
+      float: left;
+
+      margin:3px 0 3px 3px;
+
+    }
+
+    &.right{
+
+      float: left;
+
+      margin:3px 3px 3px 0;
+
+    }
+
+    &.active{
+
+      background-color: #17b119;
+
+      color: #fefefe;
+
+    }
+
+  }
+
+  .class-hour-setting-wrapper{
+
+    border: solid 1px #dcdcdc;
+
+    margin-bottom: 18px;
+
+    .period-tab{
+
+      position: relative;
+
+      cursor: pointer;
+
+      background-color: #f5f5f5;
+
+      height: 36px;
+
+      &:hover{
+
+        background-color: #dce8f0;
+
+        &:after,
+        &:before{
+
+          border-color:#648aa4;
+
+        }
+
+      }
+
+      &:after,
+      &:before{
+
+        position: absolute;
+
+        content: '';
+
+        width: 10px;
+
+        height: 10px;
+
+        right:18px;
+
+        border-right: 1px solid #999999;
+
+        border-bottom: 1px solid #999999;
+
+        background-color: transparent;
+
+        @include transform(rotate(45deg));
+
+      }
+
+      &:before{
+
+        top: 6px;
+
+      }
+
+      &:after{
+
+        top: 12px;
+
+      }
+
+      &.up{
+
+        &:after,
+        &:before{
+
+          border-left: 1px solid #999999;
+
+          border-top: 1px solid #999999;
+
+          border-bottom: 0;
+
+          border-right:0 ;
+
+          background-color: transparent;
+
+          @include transform(rotate(45deg));
+
+        }
+
+        &:before{
+
+          top: 12px;
+
+        }
+
+        &:after{
+
+          top: 18px;
+
+        }
+
+      }
+
+    }
+
+    .adjust-class-hour{
+
+      float: right;
+
+      height: 100%;
+
+      line-height:36px;
+
+      text-decoration: underline;
+
+      margin-right:50px;
+
+    }
+
+    .setting-content{
+
+      display: none;
+
+      padding: 24px 36px 34px 36px;
+
+
+    }
+
+  }
+
+}
+
+.schedule-setting-type-tips{
+
+  margin-top: 8px;
+
+  color: #ff6600;
+
+}

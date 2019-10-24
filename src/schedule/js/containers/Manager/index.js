@@ -61,7 +61,6 @@ class Index extends Component{
 
                         <Redirect path="/manager/room*" to={{pathname:"/manager/room/total"}}></Redirect>
 
-                        <Route path="/manager/scheduleSetting*" component={ScheduleSetting}></Route>
 
                     </Switch>
 

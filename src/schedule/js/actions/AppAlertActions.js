@@ -83,6 +83,36 @@ const alertWarn = ({title,cancel,ok,close}) => {
 
 };
 
+const alertQuery = ({title,abstract,cancel,ok,close}) => {
+
+    return dispatch => {
+
+        dispatch({
+
+            type:APP_ALERT_SHOW,
+
+            data:{
+
+                type:"btn-query",
+
+                title:title,
+
+                abstract:abstract,
+
+                cancel:(cancel?cancel():closeAlert(dispatch)),
+
+                close:(close?close():closeAlert(dispatch)),
+
+                ok:(ok?ok():closeAlert(dispatch))
+
+            }
+
+        });
+
+    }
+
+};
+
 const alertTips = ({title,cancel,ok,close}) => {
 
     return dispatch => {
@@ -132,6 +162,8 @@ export default {
 
     alertWarn,
 
-    alertTips
+    alertTips,
+
+    alertQuery
 
 }

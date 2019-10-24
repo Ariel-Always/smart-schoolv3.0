@@ -98,7 +98,7 @@ class Import extends Component{
 
         const { LoginUser } = this.props;
 
-        return <div className="#import-wrapper">
+        return <div id="import-wrapper">
 
 
         </div>

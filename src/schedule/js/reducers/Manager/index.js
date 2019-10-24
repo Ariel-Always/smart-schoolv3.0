@@ -27,6 +27,8 @@ import ClassRoomTotal from './ClassRoomTotal';
 
 import ClassRoomSingle from './ClassRoomSingle';
 
+import ScheduleSetting from './ScheduleSetting';
+
 //管理员角色的reduce
 
 const Index = combineReducers({
@@ -55,7 +57,9 @@ const Index = combineReducers({
 
     ClassRoomTotal,
 
-    ClassRoomSingle
+    ClassRoomSingle,
+
+    ScheduleSetting
 
 });
 

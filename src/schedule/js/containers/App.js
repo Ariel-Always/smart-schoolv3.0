@@ -52,6 +52,7 @@ import $ from 'jquery';
 
 
 
+
 class App extends Component{
 
     constructor(props) {
@@ -275,6 +276,14 @@ class App extends Component{
 
     }
 
+    //跳转到课表设置
+
+    ScheduleSettingShow(){
+
+        window.open('/html/schedule#/manager/scheduleSetting');
+
+    }
+
 
     componentDidMount(){
 
@@ -359,6 +368,8 @@ class App extends Component{
                                         adjustBtnsToggle={this.adjustBtnsToggle.bind(this)}
 
                                         adjustBtns={AdjustBtns}
+
+                                        ScheduleSettingShow={this.ScheduleSettingShow.bind(this)}
 
                                         addScheduleModalShow={this.addScheduleModalShow.bind(this)}
 

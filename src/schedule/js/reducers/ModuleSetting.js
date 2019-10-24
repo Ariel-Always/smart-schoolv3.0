@@ -75,6 +75,16 @@ const ModuleSetting = (state={
 
             return {...state,timeBar:true};
 
+        case ModuleSettingActions.MODULE_SETTINGS_UPDATE:
+
+            return {
+
+                ...state,
+
+                ...actions.data
+
+            };
+
         default:
 
             return state;
