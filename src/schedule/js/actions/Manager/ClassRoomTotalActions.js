@@ -40,7 +40,7 @@ const ClassTotalPageUpdate = (opt) =>{
 
         let NextPageIndex = 1;
         //判断已选中的学科是否为全部学科
-        if (RoomTypeDropSelectd.value!==0){
+        if (RoomTypeDropSelectd.value!=='none'){
 
             RoomTypeID = RoomTypeDropSelectd.value;
 
@@ -54,7 +54,7 @@ const ClassTotalPageUpdate = (opt) =>{
 
         ApiActions.GetAllScheduleOfClassRoomByClassRoomTypeForPage({
 
-            PeriodID,SchoolID,WeekNO:WeekNO,PageIndex:NextPageIndex,PageSize:10,ClassRoomType:RoomTypeID
+            PeriodID,SchoolID,WeekNO:WeekNO,PageIndex:NextPageIndex,PageSize:10,ClassRoomType:RoomTypeID,dispatch
 
         }).then(data => {
 

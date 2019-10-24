@@ -94,7 +94,7 @@ const STTWeekUpdate = () => {
 
     return (dispatch,getState) => {
 
-        const { Manager,LoginUser } = getState();
+        const { Manager,LoginUser,PeriodWeekTerm } = getState();
 
         const { pickTeacher,pickTeacherID } = Manager.SubjectTeacherTeacherSchedule;
         //当没有选择教师的时候就不请求后台接口。

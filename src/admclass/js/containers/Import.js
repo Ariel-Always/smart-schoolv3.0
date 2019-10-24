@@ -52,7 +52,7 @@ class Import extends Component{
 
         }else if(HashParam.includes('Genger')){
 
-            $.get(`${CONFIG.AdmClassProxy}/UserMgr/ClassMgr/Import.aspx?Token=${token}&UserType=GangerMonitor`,(data)=>{
+            $.get(`${CONFIG.AdmClassProxy}/UserMgr/ClassMgr/Import.aspx?Token=${token}&UserType=GangerMonitor`,(data,status)=>{
 
                 if (status==='success'){
 
