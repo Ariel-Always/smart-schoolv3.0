@@ -111,61 +111,67 @@
 
       position: relative;
 
-      cursor: pointer;
-
       background-color: #f5f5f5;
 
       height: 36px;
 
-      &:hover{
+      &.down{
 
-        background-color: #dce8f0;
+        cursor: pointer;
 
         &:after,
         &:before{
 
-          border-color:#648aa4;
+          position: absolute;
+
+          content: '';
+
+          width: 10px;
+
+          height: 10px;
+
+          right:18px;
+
+          border-right: 1px solid #999999;
+
+          border-bottom: 1px solid #999999;
+
+          background-color: transparent;
+
+          @include transform(rotate(45deg));
+
+        }
+
+        &:before{
+
+          top: 6px;
+
+        }
+
+        &:after{
+
+          top: 12px;
+
+        }
+
+        &:hover{
+
+          background-color: #dce8f0;
+
+          &:after,
+          &:before{
+
+            border-color:#648aa4;
+
+          }
 
         }
 
       }
 
-      &:after,
-      &:before{
-
-        position: absolute;
-
-        content: '';
-
-        width: 10px;
-
-        height: 10px;
-
-        right:18px;
-
-        border-right: 1px solid #999999;
-
-        border-bottom: 1px solid #999999;
-
-        background-color: transparent;
-
-        @include transform(rotate(45deg));
-
-      }
-
-      &:before{
-
-        top: 6px;
-
-      }
-
-      &:after{
-
-        top: 12px;
-
-      }
-
       &.up{
+
+        cursor: pointer;
 
         &:after,
         &:before{
@@ -196,6 +202,19 @@
 
         }
 
+        &:hover{
+
+          background-color: #dce8f0;
+
+          &:after,
+          &:before{
+
+            border-color:#648aa4;
+
+          }
+
+        }
+
       }
 
     }
@@ -203,6 +222,8 @@
     .adjust-class-hour{
 
       float: right;
+
+      display: none;
 
       height: 100%;
 
@@ -220,6 +241,319 @@
 
       padding: 24px 36px 34px 36px;
 
+      &>div{
+
+        position: relative;
+
+        background-color: #f5f5f5;
+
+        padding: 76px 76px 0 48px;
+
+        border-radius: 3px;
+
+        &:after{
+
+          position: absolute;
+
+          width:176px;
+
+          height: 42px;
+
+          content:'';
+
+          top: 16px;
+
+          left: -10px;
+
+          background-position: center;
+
+          background-repeat: no-repeat;
+
+          @include background-size(cover);
+
+        }
+
+      }
+
+    }
+
+    .class-hour-item-wrapper{
+
+      float: left;
+
+      width: 160px;
+
+      height: 128px;
+
+      @include border-radius(2px);
+
+      padding:5px;
+
+      margin-bottom: 24px;
+
+      &.add{
+
+        cursor: pointer;
+
+        .class-hour-item{
+
+          position: relative;
+
+        }
+
+        .class-hour-item>div{
+
+          position: absolute;
+
+          border-radius:3px;
+
+        }
+
+        .col{
+
+          top: 27px;
+
+          left: 72px;
+
+          width: 6px;
+
+          height: 64px;
+
+        }
+
+        .row{
+
+          left: 43px;
+
+          top: 56px;
+
+          width: 64px;
+
+          height: 6px;
+
+        }
+
+      }
+
+      &:not(:nth-child(5n+1)){
+
+        margin-left: 24px;
+
+      }
+
+    }
+
+    .class-hour-item{
+
+      width:150px;
+
+      height:118px;
+
+      text-align: center;
+
+      button{
+
+        width: 16px;
+
+        height: 16px;
+
+        margin-top: 14px;
+
+        outline: none;
+
+        cursor: pointer;
+
+        border: 0;
+
+        background-repeat: no-repeat;
+
+        background-position: center;
+
+        @include background-size(cover);
+
+        background-color: transparent;
+
+        &.class-hour-edit{
+
+          background-image: url("#{$image-url}/class-hour-edit.png");
+
+          &:hover{
+
+            background-image: url("#{$image-url}/class-hour-edit-hover.png");
+
+          }
+
+        }
+
+        &.class-hour-del{
+
+          height: 20px;
+
+          margin-left: 12px;
+
+          background-image: url("#{$image-url}/class-hour-del.png");
+
+          &:hover{
+
+            background-image: url("#{$image-url}/class-hour-del-hover.png");
+
+          }
+
+        }
+
+      }
+
+    }
+
+    .class-hour-name{
+
+      font-size: 24px;
+
+      line-height: 1;
+
+      padding-top: 24px;
+
+    }
+
+    .class-hour-time{
+
+      font-size: 14px;
+
+      color: #999999;
+
+      line-height: 1;
+
+      margin-top: 8px;
+
+    }
+
+    .morning-wrapper{
+
+      margin-bottom: 28px;
+
+      .class-hour-item-wrapper{
+
+        background-color: #cfe6d0;
+
+        &.add{
+
+          .row,.col{
+
+            background-color:#8ee293;
+
+          }
+
+          &:hover{
+
+            background-color:#b1e6b4;
+
+            .row,.col{
+
+              background-color: #60ea69;
+
+            }
+
+          }
+
+        }
+
+      }
+
+      .class-hour-item{
+
+        background-color:#f5fff6;
+
+      }
+
+      &:after{
+
+        background-image: url("#{$image-url}/morning-tab.png");
+
+      }
+
+    }
+
+    .afternoon-wrapper{
+
+      .class-hour-item-wrapper{
+
+        background-color: #afd8ea;
+
+        &.add{
+
+          .row,.col{
+
+            background-color:#8bc3dc;
+
+          }
+
+          &:hover{
+
+            background-color:#8bd2f1;
+
+            .row,.col{
+
+              background-color: #71c7ed;
+
+            }
+
+          }
+
+        }
+
+      }
+
+      .class-hour-item{
+
+        background-color:#f5fcff;
+
+      }
+
+      &:after{
+
+        background-image: url("#{$image-url}/afternoon-tab.png");
+
+      }
+
+    }
+
+  }
+
+  .linkage-setting-wrapper{
+
+    margin: 26px 0 38px 0;
+
+    line-height:30px;
+
+    padding-left:52px;
+
+    .title{
+
+      color: #666666;
+
+      font-size: 16px;
+
+    }
+
+    .linkage-switch{
+
+      width: 94px;
+
+      height: 30px;
+
+      outline: none;
+
+      border: 0;
+
+      background-repeat: no-repeat;
+
+      background-position: center;
+
+      @include background-size(cover);
+
+      background-color: transparent;
+
+      background-image: url("#{$image-url}/linkage-switch-close.png");
 
     }
 

@@ -12,6 +12,8 @@ class AddClassModal extends Component{
             inputTips,inputTipsShow
         } =  this.props;
 
+        console.log(selectTipsShow);
+
         let gradeList = grade.map((item,key) => {
 
             return {value:item.GradeID,title:item.GradeName};

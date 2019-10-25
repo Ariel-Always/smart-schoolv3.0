@@ -126,7 +126,7 @@ class ScheduleSetting extends Component{
 
                         <PeriodClassHourSetting
 
-                            HasPeriod={false}
+                            IsUnify={true}
 
                             ClassHourList={SettingByUnify.ClassHourList}
 
@@ -146,7 +146,7 @@ class ScheduleSetting extends Component{
 
                             return <PeriodClassHourSetting key={key}
 
-                                                           HasPeriod={true}
+                                                           IsUnify={false}
 
                                                            PeriodID={item.PeriodID}
 
@@ -166,7 +166,23 @@ class ScheduleSetting extends Component{
 
             </div>
 
+            <div className="title-bar">
 
+                <div className="title-bar-name">物联网自动联动设置</div>
+
+            </div>
+
+            <div className="linkage-setting-wrapper">
+
+                <span className="title">当前状态:</span>
+
+                <button className="linkage-switch"></button>
+
+                <span className="title">自动提前开机时间:</span>
+
+
+
+            </div>
 
         </div>
 

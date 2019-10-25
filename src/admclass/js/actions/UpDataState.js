@@ -261,7 +261,7 @@ const changeStudentCheckList = (checkList) => {
 };
 
 //添加班级
-const addClass = ({GradeID,ClassName}) =>{
+const addClass = ({GradeID,ClassName,TheGradePreviewID}) =>{
 
     return (dispatch,getState) => {
 
@@ -281,7 +281,11 @@ const addClass = ({GradeID,ClassName}) =>{
 
                dispatch(getAllGradePreview());
 
-               dispatch(getTheGradePreview(GradeID));
+               if (TheGradePreviewID){
+
+                   dispatch(getTheGradePreview(TheGradePreviewID));
+
+               }
 
            }
 
@@ -358,31 +362,34 @@ const getAddTeacherData = (opts) =>{
 
                 }
 
-                let getSubjectsPromise = getGangerSubjects({SchoolID,dispatch});
+                let getSubjectsPromise = getGangerSubjects({SchoolID,dispatch}).then(data=>{
 
-                let getTeachersPromise = getAllTeacher({SchoolID,UserID:TeacherID,PageSize:0});
+                    if (data){
 
-                Promise.all([getSubjectsPromise,getTeachersPromise]).then(res=>{
+                        let dropInfo = data[0];
 
-                    if (res[0]){
-
-                        let dropInfo = res[0][0];
-
-                        dispatch({type:ADD_TEACHER_UPDATA_SUBJECTS,list:res[0]});
+                        dispatch({type:ADD_TEACHER_UPDATA_SUBJECTS,list:data});
 
                         dispatch({type:UpUIState.ADD_TEACHER_SUBJECTS_SELECT_CHANGE,data:{value:dropInfo.SubjectID,title:dropInfo.SubjectName}});
 
+                        getAllTeacher({SchoolID,UserID:TeacherID,SubjectIDs:dropInfo.SubjectID,PageSize:0}).then(data2=>{
+
+
+                            if (data2){
+
+                                dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:data2});
+
+                            }
+
+                            dispatch({type:UpUIState.ADD_TEACHER_LOADING_HIDE});
+
+
+                        })
+
                     }
-
-                    if (res[1]){
-
-                        dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:res[1]});
-
-                    }
-
-                    dispatch({type:UpUIState.ADD_TEACHER_LOADING_HIDE});
 
                 });
+
 
                 break;
 

@@ -16,8 +16,6 @@ import UpUIState from '../actions/UpUIState';
 
 import UpDataState from '../actions/UpDataState';
 
-import AppAlertActions from '../actions/AppAlertActions';
-
 import RouterSetActions from '../actions/RouterSetActions';
 
 import logo from '../../images/logo.png';
@@ -152,9 +150,13 @@ class App extends Component{
 
         const {dispatch,DataState} = this.props;
 
-        const {SchoolGradeClasses} = DataState;
+        const {SchoolGradeClasses,TheGradePreview} = DataState;
+
+        let TheGradePreviewID = TheGradePreview.GradeID?TheGradePreview.GradeID:'';
 
         const {AddClassModal} = this.props.UIState;
+
+
         //判断是否已经选择了年级
         if (AddClassModal.selectValue.value===0){
 
@@ -190,7 +192,7 @@ class App extends Component{
                        }else{
 
                            //向后台请求添加班级的接口
-                           dispatch(UpDataState.addClass({GradeID:AddClassModal.selectValue.value,ClassName:AddClassModal.inputValue}));
+                           dispatch(UpDataState.addClass({GradeID:AddClassModal.selectValue.value,ClassName:AddClassModal.inputValue,TheGradePreviewID}));
 
                        }
 

@@ -1,16 +1,33 @@
 import React,{Component} from 'react';
 
-import {Empty} from "../../../../common";
-
 import $ from 'jquery';
 
 class PeriodClassHourSetting extends Component{
 
     componentDidMount(){
 
+
+
         $('.period-tab').click((e)=>{
 
-            $(e.target).closest('.class-hour-setting-wrapper').children('.setting-content').slideToggle();
+            if($('.period-tab').hasClass('up')){
+
+                $('.period-tab').removeClass('up');
+
+                $('.adjust-class-hour').hide();
+
+                $(e.target).closest('.class-hour-setting-wrapper').children('.setting-content').slideToggle();
+
+            }else if ($('.period-tab').hasClass('down')) {
+
+                $('.period-tab').addClass('up');
+
+                $('.adjust-class-hour').show();
+
+                $(e.target).closest('.class-hour-setting-wrapper').children('.setting-content').slideToggle();
+
+            }
+
 
         })
 
@@ -20,7 +37,7 @@ class PeriodClassHourSetting extends Component{
 
         const {
 
-            HasPeriod,
+            IsUnify,
 
             PeriodID,
 
@@ -35,33 +52,119 @@ class PeriodClassHourSetting extends Component{
             <div className="class-hour-setting-wrapper">
 
 
-                <div className="period-tab">
+                <div className={`period-tab ${IsUnify?'':'down'}`}>
 
                     {
 
-                        HasPeriod?
+                        IsUnify?
 
-                            <div className="title">{PeriodName}</div>
+                            ''
 
-                            :''
+                            :<div className="title">{PeriodName}</div>
 
                     }
 
-                    <a className="adjust-class-hour">批量调整上课时间</a>
+                    <a className="adjust-class-hour" style={IsUnify?{display:"block"}:{}}>批量调整上课时间</a>
 
                 </div>
 
-                <div className="setting-content">
+                <div className="setting-content" style={IsUnify?{display:"block"}:{}}>
 
-                    {
+                    <div className="morning-wrapper">
 
-                        ClassHourList.length>0?
+                        <div className="morning-class-hour-wrapper clearfix">
 
-                            <div></div>
+                            {
 
-                            :<Empty type="3" title="还没有课时，请新先添加课时"></Empty>
+                                ClassHourList.map((item,key)=>{
 
-                    }
+                                    if(item.ClassHourType===1){
+
+                                        return <div className="class-hour-item-wrapper">
+
+                                            <div className="class-hour-item">
+
+                                                <div className="class-hour-name">第{item.ClassHourNO}节</div>
+
+                                                <div className="class-hour-time">{item.StartTime}-{item.EndTime}</div>
+
+                                                <button className="class-hour-edit"></button>
+
+                                                <button className="class-hour-del"></button>
+
+                                            </div>
+
+                                        </div>
+
+                                    }
+
+                                })
+
+                            }
+
+                            <div className="class-hour-item-wrapper add">
+
+                                <div className="class-hour-item">
+
+                                    <div className="row"></div>
+
+                                    <div className="col"></div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div className="afternoon-wrapper">
+
+                        <div className="afternoon-class-hour-wrapper clearfix">
+
+                            {
+
+                                ClassHourList.map((item,key)=>{
+
+                                    if(item.ClassHourType===2){
+
+                                        return <div className="class-hour-item-wrapper">
+
+                                            <div className="class-hour-item">
+
+                                                <div className="class-hour-name">第{item.ClassHourNO}节</div>
+
+                                                <div className="class-hour-time">{item.StartTime}-{item.EndTime}</div>
+
+                                                <button className="class-hour-edit"></button>
+
+                                                <button className="class-hour-del"></button>
+
+                                            </div>
+
+                                        </div>
+
+                                    }
+
+                                })
+
+                            }
+
+                            <div className="class-hour-item-wrapper add">
+
+                                <div className="class-hour-item">
+
+                                    <div className="row"></div>
+
+                                    <div className="col"></div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
 
                 </div>
 
