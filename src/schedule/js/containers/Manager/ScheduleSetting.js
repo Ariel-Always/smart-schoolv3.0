@@ -1,5 +1,7 @@
 import React,{Component} from 'react';
 
+import {Input} from "antd";
+
 import SSActions from '../../actions/Manager/ScheduleSettingActions';
 
 import AppAlertActions from '../../actions/AppAlertActions';
@@ -70,7 +72,7 @@ class ScheduleSetting extends Component{
 
     }
 
-
+    //切换调课方式
     SettingTypeSitch(opts){
 
         const { dispatch } = this.props;
@@ -78,6 +80,8 @@ class ScheduleSetting extends Component{
         dispatch(SSActions.SettingTypeSitch(opts));
 
     }
+
+
 
 
     render(){
@@ -92,7 +96,13 @@ class ScheduleSetting extends Component{
 
             SettingByPeriod,
 
-            SettingByUnify
+            SettingByUnify,
+
+            IsEnable,
+
+            Times,
+
+            LinkageEditStatus
 
         } = ScheduleSetting;
 
@@ -142,7 +152,7 @@ class ScheduleSetting extends Component{
 
                     SettingType===1?
 
-                        SettingByPeriod.map((item,key)=>{
+                        SettingByPeriod.PeriodSettingList.map((item,key)=>{
 
                             return <PeriodClassHourSetting key={key}
 
@@ -151,6 +161,9 @@ class ScheduleSetting extends Component{
                                                            PeriodID={item.PeriodID}
 
                                                            PeriodName={item.PeriodName}
+
+                                                           ClassHourList={item.List}
+
                             >
 
 
@@ -172,15 +185,52 @@ class ScheduleSetting extends Component{
 
             </div>
 
-            <div className="linkage-setting-wrapper">
+            <div className="linkage-setting-wrapper clearfix">
 
                 <span className="title">当前状态:</span>
 
-                <button className="linkage-switch"></button>
+                <button className={`linkage-switch ${IsEnable===1?'on':''}`}>{IsEnable===1?'已开启':'已关闭'}</button>
 
                 <span className="title">自动提前开机时间:</span>
 
+                {
 
+                        LinkageEditStatus?
+
+                            <Input />
+
+                            :
+
+                            <span className="min-text">{Times}</span>
+
+                }
+
+
+                <span className="title">分钟</span>
+
+                {
+
+                    IsEnable?
+
+                            LinkageEditStatus?
+
+                                <React.Fragment>
+
+                                    <button className="save">确定</button>
+
+
+                                    <button className="cancel">取消</button>
+
+
+                                </React.Fragment>
+
+                                :
+
+                                <button className="edit">编辑</button>
+
+                        :''
+
+                }
 
             </div>
 

@@ -10,6 +10,8 @@ const MANAGER_SCHEDULE_SETTING_INIT = 'MANAGER_SCHEDULE_SETTING_INIT';
 
 const MANAGER_SCHEDULE_SETTING_SETTING_TYPE_CHANGE = 'MANAGER_SCHEDULE_SETTING_SETTING_TYPE_CHANGE';
 
+const MANAGER_SCHEDULE_SETTING_SETTING_PERIOD_TAB_TOGGLE = 'MANAGER_SCHEDULE_SETTING_SETTING_PERIOD_TAB_TOGGLE';
+
 
 const PageInit = ({SchoolID}) => {
 
@@ -45,8 +47,6 @@ const PageInit = ({SchoolID}) => {
 
                         MultiplePeriod = false;
 
-
-
                 }
 
                 if (SettingType === 0){
@@ -71,7 +71,11 @@ const PageInit = ({SchoolID}) => {
 
                             SettingByUnify:{ClassHourList},
 
-                            SettingByPeriod:{PeriodSettingList}
+                            SettingByPeriod:{PeriodSettingList},
+
+                            Times:data.Times,
+
+                            IsEnable:data.IsEnable
 
                         }});
 
@@ -95,7 +99,9 @@ const PageInit = ({SchoolID}) => {
 
                             PeriodID:item.PeriodID,
 
-                            PeriodName:item.PeriodName
+                            PeriodName:item.PeriodName,
+
+                            List:list
 
                         }
 
@@ -105,9 +111,15 @@ const PageInit = ({SchoolID}) => {
 
                             MultiplePeriod, SettingType,
 
-                            SettingByPeriod:{PeriodSettingList}
+                            SettingByPeriod:{PeriodSettingList},
+
+                            Times:data.Times,
+
+                            IsEnable:data.IsEnable
 
                         }});
+
+                    console.log(PeriodSettingList);
 
                 }
 
@@ -145,6 +157,8 @@ export default {
     MANAGER_SCHEDULE_SETTING_INIT,
 
     MANAGER_SCHEDULE_SETTING_SETTING_TYPE_CHANGE,
+
+    MANAGER_SCHEDULE_SETTING_SETTING_PERIOD_TAB_TOGGLE,
 
     PageInit,
 

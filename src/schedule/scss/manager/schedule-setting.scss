@@ -115,6 +115,48 @@
 
       height: 36px;
 
+      .title{
+
+        position: relative;
+
+        float: left;
+
+        height:36px;
+
+        line-height: 36px;
+
+        padding-left: 42px;
+
+        font-size: 16px;
+
+        font-weight: bold;
+
+        background-image: linear-gradient(to bottom,rgba(0,206,255,0.89),rgba(0,88,250,0.89));
+
+        @include background-clip(text);
+
+        color: transparent;
+
+        &:after{
+
+          position: absolute;
+
+          content: '';
+
+          width:16px;
+
+          height: 16px;
+
+          left: 18px;
+
+          top: 10px;
+
+          background: url("#{$image-url}/period-icon.png") no-repeat center;
+
+        }
+
+      }
+
       &.down{
 
         cursor: pointer;
@@ -175,6 +217,16 @@
 
         &:after,
         &:before{
+
+          position: absolute;
+
+          content: '';
+
+          width: 10px;
+
+          height: 10px;
+
+          right:18px;
 
           border-left: 1px solid #999999;
 
@@ -241,6 +293,24 @@
 
       padding: 24px 36px 34px 36px;
 
+     /* overflow-y: hidden;
+
+      max-height:0;
+
+      padding: {
+
+        left: 36px;
+
+        right: 36px;
+
+        top:0;
+
+        bottom: 0;
+
+      };*/
+
+
+
       &>div{
 
         position: relative;
@@ -274,6 +344,53 @@
         }
 
       }
+
+      /*&.show{
+
+        display: block;
+
+        padding: 24px 36px 34px 36px;
+
+      }*/
+
+    /*  &.open{
+
+        display: block;
+
+        max-height: 1000px;
+
+        padding-top: 24px;
+
+        padding-bottom: 34px;
+
+        !* 最大高度 *!
+
+        @include transition-property(all);
+
+        @include transition-duration(0.5s);
+
+        @include transition-timing-function(cubic-bezier(1, 0, 1, 0.5));
+
+      }
+
+      &.close{
+
+        display: block;
+
+        max-height: 0;
+
+        padding-top: 0;
+
+        padding-bottom: 0;
+        !* 最大高度 *!
+
+        @include transition-property(all);
+
+        @include transition-duration(0.5s);
+
+        @include transition-timing-function(cubic-bezier(0, 1, 0.5, 1));
+
+      }*/
 
     }
 
@@ -523,37 +640,134 @@
 
     margin: 26px 0 38px 0;
 
-    line-height:30px;
+    line-height:32px;
 
     padding-left:52px;
 
     .title{
 
+      float: left;
+
+      height: 32px;
+
       color: #666666;
 
       font-size: 16px;
+
+      &:nth-child(3){
+
+        margin-left: 64px;
+
+      }
 
     }
 
     .linkage-switch{
 
-      width: 94px;
+      float: left;
 
-      height: 30px;
+      font-size: 14px;
+
+      width: 96px;
+
+      height: 32px;
 
       outline: none;
 
+      cursor: pointer;
+
       border: 0;
+
+      color: #999999;
+
+      text-align: left;
+
+      text-indent: 36px;
+
+      margin-left: 12px;
 
       background-repeat: no-repeat;
 
-      background-position: center;
+      background-position: center bottom;
 
       @include background-size(cover);
 
       background-color: transparent;
 
       background-image: url("#{$image-url}/linkage-switch-close.png");
+
+
+      &.on{
+
+        color: #333333;
+
+        text-indent:16px;
+        
+        background-image: url("#{$image-url}/likeage-switch-open.png");
+
+      }
+
+    }
+
+    .min-text{
+
+      float: left;
+
+      min-width:18px;
+
+      padding:0 4px;
+
+      height:24px;
+
+      line-height: 24px;
+
+      /*border: 1px solid #98ccd7;
+
+      @include border-radius(4px);*/
+
+      text-align: center;
+
+      font-size: 16px;
+
+      margin-top: 4px;
+
+    }
+
+    .edit,.save,.cancel{
+
+      width:60px;
+
+      height:24px;
+
+      line-height:24px;
+
+      outline: none;
+
+      border:0;
+
+      color: #ffffff;
+
+      margin-left: 12px;
+
+      cursor: pointer;
+
+      @include border-radius(12px);
+
+    }
+
+    .edit,.save{
+
+      background-image: linear-gradient(90deg,#00e566,#12d033 62%,#23ba00),linear-gradient(#fff,#fff);
+
+      @include box-shadow(0 2px 16px -6px #23ba00);
+
+    }
+
+    .cancel{
+
+      background-image: linear-gradient(90deg,#ff593e,#ff1b10),linear-gradient(#fff,#fff);
+
+      @include box-shadow(0 2px 16px -6px #ff8178);
 
     }
 

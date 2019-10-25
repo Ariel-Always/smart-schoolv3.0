@@ -4,32 +4,33 @@ import $ from 'jquery';
 
 class PeriodClassHourSetting extends Component{
 
-    componentDidMount(){
+    TabToggle(e){
 
+        let TabContainer = $(e.target).closest('.class-hour-setting-wrapper').children('.period-tab');
 
+        let AdjustBtn = $(e.target).closest('.class-hour-setting-wrapper').find('.adjust-class-hour');
 
-        $('.period-tab').click((e)=>{
+        let SettingContent = $(e.target).closest('.class-hour-setting-wrapper').children('.setting-content');
 
-            if($('.period-tab').hasClass('up')){
+        if (TabContainer.hasClass('up')){
 
-                $('.period-tab').removeClass('up');
+            TabContainer.removeClass('up');
 
-                $('.adjust-class-hour').hide();
+            TabContainer.addClass('down');
 
-                $(e.target).closest('.class-hour-setting-wrapper').children('.setting-content').slideToggle();
+            AdjustBtn.hide();
 
-            }else if ($('.period-tab').hasClass('down')) {
+        }else{
 
-                $('.period-tab').addClass('up');
+            TabContainer.removeClass('down');
 
-                $('.adjust-class-hour').show();
+            TabContainer.addClass('up');
 
-                $(e.target).closest('.class-hour-setting-wrapper').children('.setting-content').slideToggle();
+            AdjustBtn.show();
 
-            }
+        }
 
-
-        })
+        SettingContent.slideToggle();
 
     }
 
@@ -52,7 +53,7 @@ class PeriodClassHourSetting extends Component{
             <div className="class-hour-setting-wrapper">
 
 
-                <div className={`period-tab ${IsUnify?'':'down'}`}>
+                <div className={`period-tab ${IsUnify?'':'down'}`} onClick={IsUnify?()=>{}:this.TabToggle.bind(this)}>
 
                     {
 
@@ -60,7 +61,7 @@ class PeriodClassHourSetting extends Component{
 
                             ''
 
-                            :<div className="title">{PeriodName}</div>
+                            :<div className="title" text={PeriodName}>{PeriodName}</div>
 
                     }
 
@@ -68,7 +69,7 @@ class PeriodClassHourSetting extends Component{
 
                 </div>
 
-                <div className="setting-content" style={IsUnify?{display:"block"}:{}}>
+                <div className='setting-content' style={IsUnify?{display:'block'}:{}}>
 
                     <div className="morning-wrapper">
 

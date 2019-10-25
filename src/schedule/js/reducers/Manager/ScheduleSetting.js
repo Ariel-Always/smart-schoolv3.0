@@ -16,7 +16,13 @@ const ScheduleSetting = (state={
 
         ClassHourList:[]
 
-    }
+    },
+
+    IsEnable:0,
+
+    Times:0,
+
+    LinkageEditStatus:false
 
 },actions) => {
 
@@ -39,6 +45,22 @@ const ScheduleSetting = (state={
                 ...state,
 
                 SettingType:actions.data
+
+            };
+
+        case SSActions.MANAGER_SCHEDULE_SETTING_SETTING_PERIOD_TAB_TOGGLE:
+
+            return {
+
+                ...state,
+
+                SettingByPeriod:{
+
+                    ...state.SettingByPeriod,
+
+                    PeriodSettingList:actions.data
+
+                }
 
             };
 
