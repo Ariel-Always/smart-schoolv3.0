@@ -529,9 +529,9 @@ const InsertSchedule =  async ({ SchoolID,SubjectID,WeekNO,WeeDay,ClassHourNO,Te
 
     },2,CONFIG.ScheduleProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
-        return res;
+        return res.ErrorCode;
 
     }else{
 
@@ -552,9 +552,9 @@ const SetSubstituteTeacher =  async ({ ClassID,ClassName,UserID,UserType,SchoolI
 
     },2,CONFIG.ScheduleProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
-        return res;
+        return res.ErrorCode;
 
     }else{
 
@@ -576,9 +576,9 @@ const ExchangeTeacherSchedule =  async ({ ScheduleID1,ScheduleID2,dispatch}) => 
 
     },2,CONFIG.ScheduleProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
-        return res;
+        return res.ErrorCode;
 
     }else{
 
@@ -600,9 +600,9 @@ const BatchEditClassDate =  async ({ ClassDate1,ClassHours1,ClassDate2,ClassHour
 
     },2,CONFIG.ScheduleProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
-        return res;
+        return res.ErrorCode;
 
     }else{
 
@@ -624,9 +624,9 @@ const EditClassDateOne =  async ({ ScheduleID,ClassDate1,ClassHourNO1,ClassDate2
 
     },2,CONFIG.ScheduleProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
-        return res;
+        return res.ErrorCode;
 
     }else{
 
@@ -647,9 +647,9 @@ const AdjustClassRooomOfSchedule =  async ({ ScheduleID,Type,Item,ClassRoomID1,C
 
     },2,CONFIG.ScheduleProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
-        return res;
+        return res.ErrorCode;
 
     }else{
 
@@ -671,9 +671,9 @@ const CloseTeacherSchedule =  async ({ UserID,UserType,ScheduleIDs,dispatch}) =>
 
     },2,CONFIG.ScheduleProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
-        return res;
+        return res.ErrorCode;
 
     }else{
 
@@ -695,9 +695,9 @@ const BatchCloseSchedule =  async ({ UserID,UserType,ClassDate,ClassHours,Grades
 
     },2,CONFIG.ScheduleProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
-        return res;
+        return res.ErrorCode;
 
     }else{
 
@@ -719,9 +719,34 @@ const DeleteScheduleByGrades =  async ({ SchoolID,GradeIDs,dispatch}) => {
 
     },2,CONFIG.ScheduleProxy);
 
-    if (res.Status === 200){
+    if (res.StatusCode === 200){
 
-        return res;
+        return res.ErrorCode;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
+
+
+//批量调整课时
+const UpdateClassHourTimeInstall = async ({ SchoolID,PeriodID='',MorningTimes=0,AfternoonTimes=0,dispatch}) => {
+
+    let res = await Method.getPostData(`/Schedule/api/UpdateClassHourTimeInstall`,{
+
+        SchoolID,PeriodID,MorningTimes,AfternoonTimes
+
+    },2,
+        //CONFIG.ScheduleProxy);
+        'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+
+    if (res.StatusCode === 200){
+
+        return res.ErrorCode;
 
     }else{
 
@@ -794,6 +819,8 @@ export default {
 
     GetCourseClassInfo,
 
-    GetAllPeriodAndClassHours
+    GetAllPeriodAndClassHours,
+
+    UpdateClassHourTimeInstall
 
 }

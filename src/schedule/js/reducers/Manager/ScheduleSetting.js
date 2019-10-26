@@ -4,8 +4,6 @@ const ScheduleSetting = (state={
 
     SettingType:0,//默认为统一设置,
 
-    MultiplePeriod:false,//默认按照单学段设置
-
     SettingByPeriod:{
 
         PeriodSettingList:[]//学段信息
@@ -14,7 +12,13 @@ const ScheduleSetting = (state={
 
     SettingByUnify:{
 
-        ClassHourList:[]
+        ClassHourList:{
+
+            Morning:[],
+
+            Afternoon:[]
+
+        }    //课时信息
 
     },
 
@@ -22,7 +26,43 @@ const ScheduleSetting = (state={
 
     Times:0,
 
-    LinkageEditStatus:false
+    LinkageEditStatus:false,
+
+    AdjustClassHourModal:{
+
+        Show:false,
+
+        PeriodID:'',
+
+        MorningRadioChecked:'',
+
+        MorningInputDisabled:true,
+
+        MorningTime:0,
+
+        AfternoonRadioChecked:'',
+
+        AfternoonInputDisabled:true,
+
+        AfternoonTime:0
+
+    },
+
+    AddClassHourModal:{
+
+        Show:false,
+
+        PeriodID:'',
+
+        StartHour:'08',
+
+        StartMin:'00',
+
+        EndHour:'08',
+
+        EndMin:'45'
+
+    }
 
 },actions) => {
 
@@ -33,6 +73,8 @@ const ScheduleSetting = (state={
             return {
 
                 ...state,
+
+                LinkageEditStatus:false,
 
                 ...actions.data
 
@@ -48,6 +90,38 @@ const ScheduleSetting = (state={
 
             };
 
+        case SSActions.MANAGER_SCHEDULE_SETTING_SETTING_PERIOD_INIT:
+
+            return {
+
+                ...state,
+
+                SettingByPeriod:{
+
+                    ...state.SettingByPeriod,
+
+                    PeriodSettingList:actions.data
+
+                }
+
+            };
+
+        case SSActions.MANAGER_SCHEDULE_SETTING_SETTING_UNIFY_INIT:
+
+            return {
+
+                ...state,
+
+                SettingByUnify:{
+
+                    ...state.SettingByUnify,
+
+                    ClassHourList:actions.data
+
+                }
+
+            };
+
         case SSActions.MANAGER_SCHEDULE_SETTING_SETTING_PERIOD_TAB_TOGGLE:
 
             return {
@@ -59,6 +133,159 @@ const ScheduleSetting = (state={
                     ...state.SettingByPeriod,
 
                     PeriodSettingList:actions.data
+
+                }
+
+            };
+
+        case SSActions.MANAGER_SCHEDULE_SETTING_ADJUST_MODAL_SHOW:
+
+            return {
+
+                ...state,
+
+                AdjustClassHourModal:{
+
+                    Show:true,
+
+                    PeriodID:actions.data,
+
+                    MorningRadioChecked:'',
+
+                    MorningInputDisabled:true,
+
+                    MorningTime:0,
+
+                    AfternoonRadioChecked:'',
+
+                    AfternoonInputDisabled:true,
+
+                    AfternoonTime:0
+
+
+                }
+
+            };
+
+        case SSActions.MANAGER_SCHEDULE_SETTING_ADJUST_MODAL_HIDE:
+
+            return {
+
+                ...state,
+
+                AdjustClassHourModal:{
+
+                    Show:false
+
+                }
+
+            };
+
+        case SSActions.MANAGER_SCHEDULE_SETTING_MORNING_RADIO_CHANGE:
+
+            return {
+
+                ...state,
+
+                AdjustClassHourModal:{
+
+                    ...state.AdjustClassHourModal,
+
+                    MorningInputDisabled:false,
+
+                    MorningRadioChecked:actions.data
+
+                }
+
+            };
+
+        case SSActions.MANAGER_SCHEDULE_SETTING_AFTERNOON_RADIO_CHANGE:
+
+            return {
+
+                ...state,
+
+                AdjustClassHourModal:{
+
+                    ...state.AdjustClassHourModal,
+
+                    AfternoonInputDisabled:false,
+
+                    AfternoonRadioChecked:actions.data
+
+                }
+
+            };
+
+        case SSActions.MANAGER_SCHEDULE_SETTING_ADJUST_AFTERNOON_INPUT_CHANGE:
+
+            return {
+
+                ...state,
+
+                AdjustClassHourModal:{
+
+                    ...state.AdjustClassHourModal,
+
+                    AfternoonTime:actions.data
+
+                }
+
+            };
+
+        case SSActions.MANAGER_SCHEDULE_SETTING_ADJUST_MORNING_INPUT_CHANGE:
+
+            return {
+
+                ...state,
+
+                AdjustClassHourModal:{
+
+                    ...state.AdjustClassHourModal,
+
+                    MorningTime:actions.data
+
+                }
+
+            };
+
+        case SSActions.MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_SHOW:
+
+            return {
+
+                ...state,
+
+                AddClassHourModal:{
+
+                    ...state.AddClassHourModal,
+
+                    Show:true,
+
+                    PeriodID:actions.data.PeriodID?actions.data.PeriodID:state.AddClassHourModal.PeriodID,
+
+                    StartHour:actions.data.StartHour?actions.data.StartHour:state.AddClassHourModal.StartHour,
+
+                    StartMin:actions.data.StartMin?actions.data.StartMin:state.AddClassHourModal.StartMin,
+
+                    EndHour: actions.data.EndHour?actions.data.EndHour:state.AddClassHourModal.EndHour,
+
+                    EndMin: actions.data.EndMin?actions.data.EndMin:state.AddClassHourModal.EndMin
+
+                }
+
+            };
+
+        case SSActions.MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_HIDE:
+
+            return {
+
+                ...state,
+
+                AddClassHourModal:{
+
+                    ...state.AddClassHourModal,
+
+                    Show:false
 
                 }
 

@@ -27,7 +27,7 @@ const alertSuccess = ({title,hide}) => {
 
 };
 
-const alertError = ({title,cancel,close,ok}) => {
+const alertError = ({title,abstract,cancel,close,ok}) => {
 
     return dispatch => {
 
@@ -40,6 +40,8 @@ const alertError = ({title,cancel,close,ok}) => {
                 type:"btn-error",
 
                 title:title,
+
+                abstract:abstract?abstract:'',
 
                 cancel:(cancel?cancel():closeAlert(dispatch)),
 
@@ -55,7 +57,7 @@ const alertError = ({title,cancel,close,ok}) => {
 
 };
 
-const alertWarn = ({title,cancel,ok,close}) => {
+const alertWarn = ({title,abstract,cancel,ok,close}) => {
 
     return dispatch => {
 
@@ -68,6 +70,8 @@ const alertWarn = ({title,cancel,ok,close}) => {
                 type:"btn-warn",
 
                 title:title,
+
+                abstract:abstract?abstract:'',
 
                 cancel:(cancel?cancel():closeAlert(dispatch)),
 
@@ -97,7 +101,7 @@ const alertQuery = ({title,abstract,cancel,ok,close}) => {
 
                 title:title,
 
-                abstract:abstract,
+                abstract:abstract?abstract:'',
 
                 cancel:(cancel?cancel():closeAlert(dispatch)),
 
@@ -113,7 +117,7 @@ const alertQuery = ({title,abstract,cancel,ok,close}) => {
 
 };
 
-const alertTips = ({title,cancel,ok,close}) => {
+const alertTips = ({title,abstract,cancel,ok,close}) => {
 
     return dispatch => {
 
@@ -126,6 +130,8 @@ const alertTips = ({title,cancel,ok,close}) => {
                 type:"btn-tips",
 
                 title:title,
+
+                abstract:abstract?abstract:'',
 
                 cancel:(cancel?cancel():closeAlert(dispatch)),
 

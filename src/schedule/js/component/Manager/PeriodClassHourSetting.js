@@ -44,7 +44,11 @@ class PeriodClassHourSetting extends Component{
 
             PeriodName,
 
-            ClassHourList
+            ClassHourList,
+
+            AdjustClassHour,
+
+            AddClassHour
 
         } = this.props;
 
@@ -65,7 +69,7 @@ class PeriodClassHourSetting extends Component{
 
                     }
 
-                    <a className="adjust-class-hour" style={IsUnify?{display:"block"}:{}}>批量调整上课时间</a>
+                    <a className="adjust-class-hour" style={IsUnify?{display:"block"}:{}} onClick={(e)=>AdjustClassHour({IsUnify,PeriodID,ClassHourList,Event:e})}>批量调整上课时间</a>
 
                 </div>
 
@@ -77,11 +81,9 @@ class PeriodClassHourSetting extends Component{
 
                             {
 
-                                ClassHourList.map((item,key)=>{
+                                ClassHourList.Morning.map((item,key)=>{
 
-                                    if(item.ClassHourType===1){
-
-                                        return <div className="class-hour-item-wrapper">
+                                    return <div key={key} className="class-hour-item-wrapper">
 
                                             <div className="class-hour-item">
 
@@ -97,13 +99,11 @@ class PeriodClassHourSetting extends Component{
 
                                         </div>
 
-                                    }
-
                                 })
 
                             }
 
-                            <div className="class-hour-item-wrapper add">
+                            <div className="class-hour-item-wrapper add" onClick={()=>AddClassHour({IsUnify,PeriodID})}>
 
                                 <div className="class-hour-item">
 
@@ -125,11 +125,9 @@ class PeriodClassHourSetting extends Component{
 
                             {
 
-                                ClassHourList.map((item,key)=>{
+                                ClassHourList.Afternoon.map((item,key)=>{
 
-                                    if(item.ClassHourType===2){
-
-                                        return <div className="class-hour-item-wrapper">
+                                    return <div className="class-hour-item-wrapper">
 
                                             <div className="class-hour-item">
 
@@ -144,8 +142,6 @@ class PeriodClassHourSetting extends Component{
                                             </div>
 
                                         </div>
-
-                                    }
 
                                 })
 

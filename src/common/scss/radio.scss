@@ -1,50 +1,55 @@
 //灰色的radio组件
 $grayColor:#758992;
-.ant-radio-gray{
-  .ant-radio{
-    vertical-align: middle;
-    &:hover{
-      border-color: $grayColor;
-      .ant-radio-inner{
-         border-color:$grayColor;
+
+label{
+
+  &.ant-radio-wrapper.ant-radio-gray{
+    .ant-radio{
+      vertical-align: middle;
+      &:hover{
+        border-color: $grayColor;
+        .ant-radio-inner{
+          border-color:$grayColor;
+        }
       }
     }
-  }
-  .ant-radio-inner{
-    width: 12px;
-    height: 12px;
-    border-color: $grayColor;
-    &:after{
-      left:1px;
-      top:1px;
-      background-color:$grayColor;
-    }
-  }
-  span:not(.ant-radio){
-    display: inline-block;
-    vertical-align: middle;
-  }
-  .ant-radio-disabled{
     .ant-radio-inner{
-      border-color: $grayColor!important;
-      background-color:#cfcfcf;
+      width: 12px;
+      height: 12px;
+      border-color: $grayColor;
       &:after{
-        left: 2px;
-        top: 2px;
-        width: 6px;
-        height: 6px;
+        left:1px;
+        top:1px;
+        background-color:$grayColor;
       }
     }
-    &:after{
-      border:0;
+    span:not(.ant-radio){
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .ant-radio-disabled{
+      .ant-radio-inner{
+        border-color: $grayColor!important;
+        background-color:#cfcfcf;
+        &:after{
+          left: 2px;
+          top: 2px;
+          width: 6px;
+          height: 6px;
+        }
+      }
+      &:after{
+        border:0;
+      }
+    }
+    .ant-radio-checked{
+      &:after{
+        border-color:$grayColor;
+      }
+    }
+    .ant-radio-input:focus+.ant-radio-inner{
+      border-color: $grayColor;
     }
   }
-  .ant-radio-checked{
-    &:after{
-      border-color:$grayColor;
-    }
-  }
-  .ant-radio-input:focus+.ant-radio-inner{
-    border-color: $grayColor;
-  }
+
 }

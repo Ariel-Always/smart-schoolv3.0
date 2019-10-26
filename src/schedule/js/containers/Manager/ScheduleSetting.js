@@ -2,6 +2,8 @@ import React,{Component} from 'react';
 
 import {Input} from "antd";
 
+import {Modal,Radio,RadioGroup} from "../../../../common";
+
 import SSActions from '../../actions/Manager/ScheduleSettingActions';
 
 import AppAlertActions from '../../actions/AppAlertActions';
@@ -82,6 +84,91 @@ class ScheduleSetting extends Component{
     }
 
 
+    //批量调整课时
+
+    AdjustClassHour(opts){
+
+        const  { dispatch } = this.props;
+
+        const { Event } = opts;
+
+        //阻止事件冒泡
+        Event.stopPropagation();
+
+        dispatch(SSActions.AdjustClassHour(opts));
+
+    }
+
+    //批量调整课时关闭
+
+    AdjustClassHourHide(){
+
+        const  { dispatch } = this.props;
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_ADJUST_MODAL_HIDE});
+
+    }
+
+    //确定点击弹窗按钮
+
+    AdjustClassHourOk(){
+
+        const { dispatch } = this.props;
+
+        dispatch(SSActions.AdjustClassHourOk());
+
+    }
+
+    //调整课时上午单选变化
+    MorningRadioChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_MORNING_RADIO_CHANGE,data:e.target.value});
+
+    }
+    //调整课时下午单选变化
+    AfternoonRadioChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_AFTERNOON_RADIO_CHANGE,data:e.target.value});
+
+    }
+
+    //受控组件input变化
+
+    AdjustMorningInputChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_ADJUST_MORNING_INPUT_CHANGE,data:e.target.value});
+
+    }
+
+    //受控组件input变化
+
+    AdjustAfternoonInputChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_ADJUST_AFTERNOON_INPUT_CHANGE,data:e.target.value});
+
+    }
+
+
+
+    //添加课时弹窗
+
+    AddClassHour(opts){
+
+        const  { dispatch } = this.props;
+
+        dispatch(SSActions.AddClassHour(opts));
+
+    }
+
+
 
 
     render(){
@@ -90,23 +177,23 @@ class ScheduleSetting extends Component{
 
         const {
 
-            SettingType,
+            SettingType, MultiplePeriod, SettingByPeriod, SettingByUnify, IsEnable, Times,
 
-            MultiplePeriod,
-
-            SettingByPeriod,
-
-            SettingByUnify,
-
-            IsEnable,
-
-            Times,
-
-            LinkageEditStatus
+            LinkageEditStatus, AdjustClassHourModal,AddClassHourModal
 
         } = ScheduleSetting;
 
-        return <div className="schedule-setting-wrapper">
+        const {
+
+            MorningRadioChecked,MorningInputDisabled,MorningTime,
+
+            AfternoonRadioChecked,AfternoonInputDisabled,AfternoonTime
+
+        } = AdjustClassHourModal;
+
+        return <React.Fragment>
+
+            <div className="schedule-setting-wrapper">
 
             <div className="title-bar">
 
@@ -140,6 +227,10 @@ class ScheduleSetting extends Component{
 
                             ClassHourList={SettingByUnify.ClassHourList}
 
+                            AdjustClassHour={this.AdjustClassHour.bind(this)}
+
+                            AddClassHour={this.AddClassHour.bind(this)}
+
                         >
 
                     </PeriodClassHourSetting>
@@ -154,6 +245,8 @@ class ScheduleSetting extends Component{
 
                         SettingByPeriod.PeriodSettingList.map((item,key)=>{
 
+
+
                             return <PeriodClassHourSetting key={key}
 
                                                            IsUnify={false}
@@ -162,8 +255,11 @@ class ScheduleSetting extends Component{
 
                                                            PeriodName={item.PeriodName}
 
-                                                           ClassHourList={item.List}
+                                                           ClassHourList={item.ClassHourList}
 
+                                                           AdjustClassHour={this.AdjustClassHour.bind(this)}
+
+                                                           AddClassHour={this.AddClassHour.bind(this)}
                             >
 
 
@@ -234,7 +330,90 @@ class ScheduleSetting extends Component{
 
             </div>
 
+
+
         </div>
+
+            <Modal type={1} className="adjust-class-hour-modal"
+
+                   title="批量调整上课时间"
+
+                   visible={AdjustClassHourModal.Show}
+
+                   width={540}
+
+                   bodyStyle={{height:176}}
+
+                   mask={true}
+
+                   maskClosable={false}
+
+                   destroyOnClose={true}
+
+                   onOk={this.AdjustClassHourOk.bind(this)}
+
+                   onCancel={this.AdjustClassHourHide.bind(this)}>
+
+                    <div className="monring-setting setting-line clearfix">
+
+                        <span className="title">上午:</span>
+
+                        <RadioGroup value={MorningRadioChecked} onChange={this.MorningRadioChange.bind(this)}>
+
+                            <Radio type="gray" value="before">提前</Radio>
+
+                            <Radio type="gray" value="after">延后</Radio>
+
+                        </RadioGroup>
+
+                        <Input maxLength={2} disabled={MorningInputDisabled} value={MorningInputDisabled?'':MorningTime} onChange={this.AdjustMorningInputChange.bind(this)}/>
+
+                    </div>
+
+                    <div className="afternoon-setting setting-line clearfix">
+
+                        <span className="title">下午:</span>
+
+                        <RadioGroup value={AfternoonRadioChecked} onChange={this.AfternoonRadioChange.bind(this)} >
+
+                            <Radio type="gray" value="before">提前</Radio>
+
+                            <Radio type="gray" value="after">延后</Radio>
+
+                        </RadioGroup>
+
+                        <Input maxLength={2} disabled={AfternoonInputDisabled} value={AfternoonInputDisabled?'':AfternoonTime} onChange={this.AdjustAfternoonInputChange.bind(this)}/>
+
+                    </div>
+
+            </Modal>
+
+            <Modal type={1} className="add-class-hour-modal"
+
+                   title="新增上课节次"
+
+                   visible={AddClassHourModal.Show}
+
+                   width={540}
+
+                   bodyStyle={{height:176}}
+
+                   mask={true}
+
+                   maskClosable={false}
+
+                   destroyOnClose={true}
+
+                   //onOk={this.AdjustClassHourOk.bind(this)}
+
+                   //onCancel={this.AdjustClassHourHide.bind(this)}
+                >
+
+
+
+            </Modal>
+
+        </React.Fragment>
 
     }
 
