@@ -15,7 +15,7 @@ const getTeacherCourseClassMsg = (url) => {
         
         dispatch({ type: actions.UpUIState.RIGHT_LOADING_OPEN });
 
-        getData(CONFIG.CourseClassProxy + url).then(res => {
+        getData(CONFIG.CourseClassProxy + url,2).then(res => {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {

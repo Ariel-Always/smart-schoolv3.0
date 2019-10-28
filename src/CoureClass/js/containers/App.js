@@ -185,7 +185,7 @@ class App extends Component {
             })
 
         } else if (handleRoute === 'Teacher') {
-            dispatch(actions.UpDataState.getTeacherCourseClassMsg('/GetCourseClassByUserID?schoolID=' + UserMsg.SchoolID + '&userID=' + UserMsg.UserID));
+            dispatch(actions.UpDataState.getTeacherCourseClassMsg('/GetCourseClassByUserID?schoolID=' + UserMsg.SchoolID + '&teacherID=' + UserMsg.UserID));
 
             this.setState({
                 showBarner: true,

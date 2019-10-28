@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React, { Component } from 'react';
 
 import $ from 'jquery';
 
@@ -16,9 +16,13 @@ import Content from '../../components/Teacher/Content';
 
 import { connect } from 'react-redux';
 
-import {getQueryVariable, LogOut} from "../../../../common/js/disconnect";
+import { Modal, Loading } from '../../../../common'
 
-class Index extends Component{
+import { getQueryVariable, LogOut } from "../../../../common/js/disconnect";
+
+import TeacherCustomContent from '../../components/Teacher/TeacherCustomContent'
+
+class Index extends Component {
 
     constructor(props) {
 
@@ -32,32 +36,32 @@ class Index extends Component{
 
     //点击header的menu按钮
 
-    HeaderMenuToggle(e){
+    HeaderMenuToggle(e) {
 
         e.stopPropagation();
 
         const { dispatch } = this.props;
 
-        dispatch({type:HeaderActions.TEACHER_HEADER_MENU_TOGGLE});
+        dispatch({ type: HeaderActions.TEACHER_HEADER_MENU_TOGGLE });
 
-        $('.content-wrapper').css("zIndex","5");
+        $('.content-wrapper').css("zIndex", "5");
 
     }
 
-   //点击学科按钮
-    SubjectMenuToggle(e){
+    //点击学科按钮
+    SubjectMenuToggle(e) {
 
         e.stopPropagation();
 
         const { dispatch } = this.props;
 
-        dispatch({type:HeaderActions.TEACHER_SUBJECT_MENU_TOGGLE});
+        dispatch({ type: HeaderActions.TEACHER_SUBJECT_MENU_TOGGLE });
 
-        $('.content-wrapper').css("zIndex","5");
+        $('.content-wrapper').css("zIndex", "5");
 
     }
 
-    SubjectClick(info){
+    SubjectClick(info) {
 
         const { dispatch } = this.props;
 
@@ -67,26 +71,26 @@ class Index extends Component{
 
 
     //图片加载成功调用
-    ModuleImgLoad({GroupID,PNO,CNO}){
+    ModuleImgLoad({ GroupID, PNO, CNO }) {
 
         const { dispatch } = this.props;
 
-        dispatch(ModuleActions.ImgLoad({GroupID,PNO,CNO}));
+        dispatch(ModuleActions.ImgLoad({ GroupID, PNO, CNO }));
 
     }
 
 
     //图片加载失败调用
-    ModuleImgErrorLoad({GroupID,PNO,CNO}){
+    ModuleImgErrorLoad({ GroupID, PNO, CNO }) {
 
         const { dispatch } = this.props;
 
-        dispatch(ModuleActions.ImgErrorLoad({GroupID,PNO,CNO}));
+        dispatch(ModuleActions.ImgErrorLoad({ GroupID, PNO, CNO }));
 
     }
 
     //点击了组合
-    GroupToggle({GroupID,OrderNo,Event}){
+    GroupToggle({ GroupID, OrderNo, Event }) {
 
         const { dispatch } = this.props;
 
@@ -99,16 +103,16 @@ class Index extends Component{
         let detailWrapper = itemGroup.children('.module-detail-wrapper');
 
         //判断是否需要向下展开
-        if(itemGroup.offset().top+40-detailWrapper.height()<0){
+        if (itemGroup.offset().top + 40 - detailWrapper.height() < 0) {
 
-            detailWrapper.css({bottom:"auto",top:"40px"});
+            detailWrapper.css({ bottom: "auto", top: "40px" });
 
         }
 
         detailWrapper.slideToggle();
 
         //将下层的zindex覆盖住上层的zindex
-        $('.content-wrapper').css("zIndex","101");
+        $('.content-wrapper').css("zIndex", "101");
 
 
     }
@@ -116,7 +120,7 @@ class Index extends Component{
 
     //点击了模块
 
-    ClickModule({ModuleStatus,AccessType,AccessParam,SysID,Event}){
+    ClickModule({ ModuleStatus, AccessType, AccessParam, SysID, Event }) {
 
         const { dispatch } = this.props;
 
@@ -126,49 +130,49 @@ class Index extends Component{
 
             case 1:
 
-               if (AccessType === 'href'){
+                if (AccessType === 'href') {
 
-                   if (SysID!=='000'){
+                    if (SysID !== '000') {
 
-                       let lg_tk = getQueryVariable('lg_tk')||sessionStorage.getItem('token');
+                        let lg_tk = getQueryVariable('lg_tk') || sessionStorage.getItem('token');
 
-                       window.open(`${AccessParam}?lg_tk=${lg_tk}`);
+                        window.open(`${AccessParam}?lg_tk=${lg_tk}`);
 
-                   }else{
+                    } else {
 
-                       window.open(AccessParam);
+                        window.open(AccessParam);
 
-                   }
+                    }
 
-               }else{
+                } else {
 
 
 
-               }
+                }
 
-               break;
+                break;
 
             case 2:
 
-                dispatch(AppAlertActions.alertWarn({title:"该模块未购买，请先购买该模块"}));
+                dispatch(AppAlertActions.alertWarn({ title: "该模块未购买，请先购买该模块" }));
 
                 break;
 
             case 3:
 
-                dispatch(AppAlertActions.alertWarn({title:"该模块未安装，请安装该模块"}));
+                dispatch(AppAlertActions.alertWarn({ title: "该模块未安装，请安装该模块" }));
 
                 break;
 
             case 4:
 
-                dispatch(AppAlertActions.alertWarn({title:"该模块维护中"}));
+                dispatch(AppAlertActions.alertWarn({ title: "该模块维护中" }));
 
                 break;
 
             case 5:
 
-                dispatch(AppAlertActions.alertWarn({title:"该模块已过期"}))
+                dispatch(AppAlertActions.alertWarn({ title: "该模块已过期" }))
 
                 break;
 
@@ -186,31 +190,31 @@ class Index extends Component{
 
 
 
-    OutMenuEvent(e){
+    OutMenuEvent(e) {
 
         const { dispatch } = this.props;
 
-        let HDM =  document.getElementById('header-down-menu');
+        let HDM = document.getElementById('header-down-menu');
 
         let HSM = document.getElementById('subject-pick-btn');
 
-        if (!HDM.contains(e.target)){
+        if (!HDM.contains(e.target)) {
 
-            dispatch({type:HeaderActions.TEACHER_HEADER_MENU_HIDE});
+            dispatch({ type: HeaderActions.TEACHER_HEADER_MENU_HIDE });
 
         }
 
-        if (!HSM.contains(e.target)){
+        if (!HSM.contains(e.target)) {
 
-            dispatch({type:HeaderActions.TEACHER_SUBJECT_MENU_HIDE});
+            dispatch({ type: HeaderActions.TEACHER_SUBJECT_MENU_HIDE });
 
         }
 
         /*dispatch(ModuleActions.GroupDetailHide());*/
 
-        $('.module-item.group').each((i,that)=>{
+        $('.module-item.group').each((i, that) => {
 
-            if (!that.contains(e.target)){
+            if (!that.contains(e.target)) {
 
                 $(that).children('.module-detail-wrapper').hide();
 
@@ -221,11 +225,11 @@ class Index extends Component{
     }
 
     //点击menu之外
-    componentDidMount(){
+    componentDidMount() {
 
-        addEventListener('click',this.OutMenuEvent.bind(this));
+        addEventListener('click', this.OutMenuEvent.bind(this));
 
-        $(document).scroll((e)=>{
+        $(document).scroll((e) => {
 
             this.EmptyLoad();
 
@@ -234,49 +238,57 @@ class Index extends Component{
     }
 
     //退出登录
-    LogOut(){
+    LogOut() {
 
         const { dispatch } = this.props;
 
-        dispatch(AppAlertActions.alertError({title:"您确定要退出登录么?",ok:()=>{ return this.GoOut}}));
+        dispatch(AppAlertActions.alertError({ title: "您确定要退出登录么?", ok: () => { return this.GoOut } }));
 
     }
 
 
-    GoOut(){
+    GoOut() {
 
         LogOut();
 
     }
 
 
-    EmptyLoad(){
+    EmptyLoad() {
 
-       let WHeight  = $(window).height();
+        let WHeight = $(window).height();
 
-       let ScrollTop = $(window).scrollTop();
+        let ScrollTop = $(window).scrollTop();
 
-       $('.teacher-empty').each((index,that)=>{
+        $('.teacher-empty').each((index, that) => {
 
             let OffSetTop = $(that).offset().top;
 
             //console.log(ScrollTop);
 
-       });
+        });
 
     }
 
 
+    // 桌面定制
+    CustomClick = (key='tool') => {
+        const { dispatch, Teacher } = this.props
+        dispatch({ type: HeaderActions.TEACHER_CUSTOM_MODAL_OPEN,key:key })
+    }
 
-
-
+    // 桌面定制-关闭
+    TeacherCustomModalCancel = () => {
+        const { dispatch, Teacher } = this.props
+        dispatch({ type: HeaderActions.TEACHER_CUSTOM_MODAL_CLOSE })
+    }
     render() {
 
-        const { LoginUser,Teacher } = this.props;
+        const { LoginUser, Teacher, AppLoading } = this.props;
 
-        const { HeaderSetting,Modules } = Teacher;
+        const { HeaderSetting, Modules } = Teacher;
 
-        const { ModuleGroups,ModulesLoading } = Modules;
+        const { ModuleGroups, ModulesLoading } = Modules;
 
         return (
 
@@ -289,21 +301,35 @@ class Index extends Component{
                     SubjectMenuToggle={this.SubjectMenuToggle.bind(this)}
                     SubjectClick={this.SubjectClick.bind(this)}
                     LogOut={this.LogOut.bind(this)}
+                    CustomClick={this.CustomClick.bind(this,'Website')}
                 >
 
                 </Header>
 
                 <Content ModuleGroups={ModuleGroups}
-                          ImgLoad={this.ModuleImgLoad.bind(this)}
-                          ImgErrorLoad={this.ModuleImgErrorLoad.bind(this)}
-                         GroupToggle={this.GroupToggle.bind(this)}
-                         ClickModule={this.ClickModule.bind(this)}
-                         ModulesLoading={ModulesLoading}
-                         EmptyLoad={this.EmptyLoad.bind(this)}
+                    ImgLoad={this.ModuleImgLoad.bind(this)}
+                    ImgErrorLoad={this.ModuleImgErrorLoad.bind(this)}
+                    GroupToggle={this.GroupToggle.bind(this)}
+                    ClickModule={this.ClickModule.bind(this)}
+                    ModulesLoading={ModulesLoading}
+                    EmptyLoad={this.EmptyLoad.bind(this)}
                 >
 
                 </Content>
 
+                <Modal ref='TeacherCustomMadal'
+                    bodyStyle={{ padding: 0, height: 734 + 'px' }}
+                    type='1'
+                    title={'桌面定制'}
+                    width={1150}
+                    footer={null}
+                    destroyOnClose={true}
+                    visible={Teacher.TeacherCustomModalShow.Show}
+                    onCancel={this.TeacherCustomModalCancel}>
+                    <Loading opacity={false} spinning={AppLoading.modalLoading}>
+                        <TeacherCustomContent></TeacherCustomContent>
+                    </Loading>
+                </Modal>
             </div>
 
         );
@@ -314,13 +340,15 @@ class Index extends Component{
 
 const mapStateToProps = (state) => {
 
-    const { LoginUser,Teacher } = state;
+    const { LoginUser, Teacher, AppLoading } = state;
 
     return {
 
         LoginUser,
 
-        Teacher
+        Teacher,
+
+        AppLoading
 
     }
 
