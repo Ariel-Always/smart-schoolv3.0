@@ -757,8 +757,104 @@ const UpdateClassHourTimeInstall = async ({ SchoolID,PeriodID='',MorningTimes=0,
 
 };
 
+//添加课时
+const InsertClassHourInfo = async ({ SchoolID,OrderNO,EndTime,StartTime,PeriodID='',ClasssHourType,CreateType,dispatch}) => {
+
+    let res = await Method.getPostData(`/Schedule/api/InsertClassHourInfo`,{
+
+            SchoolID,OrderNO,EndTime,StartTime,PeriodID,ClasssHourType,CreateType
+
+        },2,
+        //CONFIG.ScheduleProxy);
+        'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+
+    if (res.StatusCode === 200){
+
+        return res.ErrorCode;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
 
 
+};
+
+//编辑课时
+
+const UpdateClassHourInfo = async ({ SchoolID,ClassHourNO,NewClassHourNO,EndTime,StartTime,PeriodID='',ClasssHourType,CreateType,dispatch}) => {
+
+    let res = await Method.getPostData(`/Schedule/api/UpdateClassHourInfo`,{
+
+            SchoolID,ClassHourNO,NewClassHourNO,EndTime,StartTime,PeriodID,ClasssHourType,CreateType
+
+        },2,
+        //CONFIG.ScheduleProxy);
+        'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+
+    if (res.StatusCode === 200){
+
+        return res.ErrorCode;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
+
+//删除课时
+
+const DeleteClassHourInfo = async ({ SchoolID,ClassHourNO,PeriodID='',dispatch}) => {
+
+    let res = await Method.getPostData(`/Schedule/api/DeleteClassHourInfo`,{
+
+            SchoolID,ClassHourNO,PeriodID
+
+        },2,
+        //CONFIG.ScheduleProxy);
+        'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+
+    if (res.StatusCode === 200){
+
+        return res.ErrorCode;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
+
+
+//设置课表联动
+const SetScheduleIsAutomatic = async ({ SchoolID,IsEnable,Times,dispatch}) => {
+
+    let res = await Method.getPostData(`/Schedule/api/SetScheduleIsAutomatic`,{
+
+            SchoolID,IsEnable,Times
+
+        },2,
+        //CONFIG.ScheduleProxy);
+        'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+
+    if (res.StatusCode === 200){
+
+        return res.ErrorCode;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
 
 
 export default {
@@ -821,6 +917,14 @@ export default {
 
     GetAllPeriodAndClassHours,
 
-    UpdateClassHourTimeInstall
+    UpdateClassHourTimeInstall,
+
+    InsertClassHourInfo,
+
+    UpdateClassHourInfo,
+
+    DeleteClassHourInfo,
+
+    SetScheduleIsAutomatic
 
 }

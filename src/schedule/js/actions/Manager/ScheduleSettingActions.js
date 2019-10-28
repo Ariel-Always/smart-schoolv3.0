@@ -32,8 +32,27 @@ const MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_SHOW = 'MANAGER_SCHEDULE_SETT
 
 const MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_HIDE = 'MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_HIDE';
 
+const MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_START_HOUR_CHANGE = 'MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_START_HOUR_CHANGE';
 
+const MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_START_MIN_CHANGE = 'MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_START_MIN_CHANGE';
 
+const MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_END_HOUR_CHANGE = 'MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_END_HOUR_CHANGE';
+
+const MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_END_MIN_CHANGE = 'MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_END_MIN_CHANGE';
+
+const MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_MODAL_SHOW = 'MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_MODAL_SHOW';
+
+const MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_MODAL_HIDE = 'MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_MODAL_HIDE';
+
+const MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_START_HOUR_CHANGE = 'MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_START_HOUR_CHANGE';
+
+const MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_START_MIN_CHANGE = 'MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_START_MIN_CHANGE';
+
+const MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_END_HOUR_CHANGE = 'MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_END_HOUR_CHANGE';
+
+const MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_END_MIN_CHANGE = 'MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_END_MIN_CHANGE';
+
+const MANAGER_SCHEDULE_SETTING_SET_SWITCH_CHANGE = 'MANAGER_SCHEDULE_SETTING_SET_SWITCH_CHANGE';
 
 
 
@@ -56,6 +75,8 @@ const PageInit = ({SchoolID}) => {
             if (data){
 
                 let SettingType = data.CreateType;
+
+                let AMLimit = data.AMLimit;
 
                 if (SettingType === 0){
 
@@ -103,7 +124,9 @@ const PageInit = ({SchoolID}) => {
 
                             Times:data.Times,
 
-                            IsEnable:data.IsEnable
+                            IsEnable:data.IsEnable,
+
+                            AMLimit
 
                         }});
 
@@ -155,7 +178,9 @@ const PageInit = ({SchoolID}) => {
 
                             Times:data.Times,
 
-                            IsEnable:data.IsEnable
+                            IsEnable:data.IsEnable,
+
+                            AMLimit
 
                         }});
 
@@ -190,6 +215,8 @@ const PageUpdate = () => {
             if (data){
 
                 let SettingType = data.CreateType;
+
+                let AMLimit = data.AMLimit;
 
                 if (SettingType === 0){
 
@@ -237,7 +264,9 @@ const PageUpdate = () => {
 
                             Times:data.Times,
 
-                            IsEnable:data.IsEnable
+                            IsEnable:data.IsEnable,
+
+                            AMLimit
 
                         }});
 
@@ -289,7 +318,9 @@ const PageUpdate = () => {
 
                             Times:data.Times,
 
-                            IsEnable:data.IsEnable
+                            IsEnable:data.IsEnable,
+
+                            AMLimit
 
                         }});
 
@@ -411,40 +442,48 @@ const AdjustClassHourOk = () =>{
 
           let MorningTimes,AfternoonTimes = 0;
 
-          if (MorningRadioChecked==='before'){
+          if (MorningTime<0||MorningTime<0){
 
-            MorningTimes = -MorningTime;
-
-
-          }else{
-
-              MorningTimes = MorningTime
-
-          }
-
-          if (AfternoonRadioChecked==='before'){
-
-              AfternoonTimes = -AfternoonTime
+              dispatch(AppAlertActions.alertWarn({title:"时间不能为负!"}));
 
           }else{
 
-              AfternoonTimes = AfternoonTime
+              if (MorningRadioChecked==='before'){
+
+                  MorningTimes = -MorningTime;
+
+
+              }else{
+
+                  MorningTimes = MorningTime
+
+              }
+
+              if (AfternoonRadioChecked==='before'){
+
+                  AfternoonTimes = -AfternoonTime
+
+              }else{
+
+                  AfternoonTimes = AfternoonTime
+
+              }
+
+              ApiActions.UpdateClassHourTimeInstall({SchoolID,PeriodID,MorningTimes,AfternoonTimes,dispatch}).then(data=>{
+
+                  if (data===0){
+
+                      dispatch({type:MANAGER_SCHEDULE_SETTING_ADJUST_MODAL_HIDE});
+
+                      dispatch(AppAlertActions.alertSuccess({title:"调整成功！"}));
+
+                      dispatch(PageUpdate());
+
+                  }
+
+              });
 
           }
-
-          ApiActions.UpdateClassHourTimeInstall({SchoolID,PeriodID,MorningTimes,AfternoonTimes,dispatch}).then(data=>{
-
-             if (data===0){
-
-                 dispatch({type:MANAGER_SCHEDULE_SETTING_ADJUST_MODAL_HIDE});
-
-                 dispatch(AppAlertActions.alertSuccess({title:"调整成功！"}));
-
-                 dispatch(PageUpdate());
-
-             }
-
-          });
 
       }
 
@@ -461,7 +500,7 @@ const AddClassHour = (opts) => {
 
         const { PeriodID,IsUnify,type } = opts;
 
-        const { SettingByPeriod,SettingByUnify } = getState().Manager.ScheduleSetting;
+        const { SettingByPeriod,SettingByUnify,AMLimit } = getState().Manager.ScheduleSetting;
 
         const { ClassHourList } = SettingByUnify;
 
@@ -473,27 +512,67 @@ const AddClassHour = (opts) => {
 
                 if (ClassHourList.Morning.length>0){
 
-                    let StartTimeList = ClassHourList.Morning[ClassHourList.Morning.length-1].StartTime.split(':');
-
-                    let StartHour = StartTimeList[0],StartMin = StartTimeList[1];
-
                     let EndTimeList = ClassHourList.Morning[ClassHourList.Morning.length-1].EndTime.split(':');
 
-                    let EndHour = EndTimeList[0],EndMin = EndTimeList[1];
+                    let PreEndHour = parseInt(EndTimeList[0]),PreEndMin = parseInt(EndTimeList[1]);
 
-                    console.log(StartHour,StartMin,EndHour,EndMin);
+                    let StartHour = PreEndHour + Math.floor((PreEndMin + 1)/60);
+
+                    let StartMin = (PreEndMin + 1)%60;
+
+                    let EndHour = StartHour + Math.floor((StartMin + 45)/60);
+
+                    let EndMin = (StartMin + 45)%60;
+
+                    dispatch({type:MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_SHOW,data:{StartHour,StartMin,EndHour,EndMin,IsUnify:true,Type:type}});
 
                 }else{
 
                     let StartHour = '08',StartMin = '00',EndHour = '08',EndMin = '45';
 
-                    dispatch({type:MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_SHOW,data:{StartHour,StartMin,EndHour,EndMin}});
+                    dispatch({type:MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_SHOW,data:{StartHour,StartMin,EndHour,EndMin,IsUnify:true,Type:type}});
 
                 }
 
-            }else {
+            }else if (type === 'afternoon') {
 
-                dispatch({type:MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_SHOW,data:{}});
+                if (ClassHourList.Afternoon.length>0){
+
+                    let EndTimeList = ClassHourList.Afternoon[ClassHourList.Afternoon.length-1].EndTime.split(':');
+
+                    let PreEndHour = parseInt(EndTimeList[0]),PreEndMin = parseInt(EndTimeList[1]);
+
+                    let StartHour = PreEndHour + Math.floor((PreEndMin + 1)/60);
+
+                    let StartMin = (PreEndMin + 1)%60;
+
+                    let EndHour = StartHour + Math.floor((StartMin + 45)/60);
+
+                    let EndMin = (StartMin + 45)%60;
+
+                    dispatch({type:MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_SHOW,data:{StartHour,StartMin,EndHour,EndMin,IsUnify:true,Type:type}});
+
+
+                }else {
+
+                    let StartTimeList = AMLimit.split(':');
+
+                    let PreStartHour = parseInt(StartTimeList[0]);
+
+                    let PreStartMin = parseInt(StartTimeList[1]);
+
+                    let StartHour = PreStartHour + Math.floor(PreStartHour/60);
+
+                    let StartMin = PreStartMin%60;
+
+                    let EndHour = StartHour + Math.floor((StartMin + 45)/60);
+
+                    let EndMin = (StartMin + 45)%60;
+
+                    dispatch({type:MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_SHOW,data:{StartHour,StartMin,EndHour,EndMin,IsUnify:true,Type:type}});
+
+
+                }
 
             }
 
@@ -503,14 +582,71 @@ const AddClassHour = (opts) => {
 
                if (item.PeriodID === PeriodID){
 
-                   if (item.List.length>0){
+                   if (type==='morning'){
 
-                      let LastEndTime = item.List[item.List.length-1].EndTime;
+                       if (item.ClassHourList.Morning.length>0){
+
+                           let EndTimeList = item.ClassHourList.Morning[item.ClassHourList.Morning.length-1].EndTime.split(':');
+
+                           let PreEndHour = parseInt(EndTimeList[0]),PreEndMin = parseInt(EndTimeList[1]);
+
+                           let StartHour = PreEndHour + Math.floor((PreEndMin + 1)/60);
+
+                           let StartMin = (PreEndMin + 1)%60;
+
+                           let EndHour = StartHour + Math.floor((StartMin + 45)/60);
+
+                           let EndMin = (StartMin + 45)%60;
+
+                           dispatch({type:MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_SHOW,data:{PeriodID,StartHour,StartMin,EndHour,EndMin,Type:type,IsUnify:false}});
+
+                       }else{
+
+                           let StartHour = '08',StartMin = '00',EndHour = '08',EndMin = '45';
+
+                           dispatch({type:MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_SHOW,data:{PeriodID,StartHour,StartMin,EndHour,EndMin,IsUnify:false,Type:type}});
+
+                       }
+
+                   }else if (type === 'afternoon') {
+
+                       if (item.ClassHourList.Afternoon.length>0){
+
+                           let EndTimeList = item.ClassHourList.Afternoon[item.ClassHourList.Afternoon.length-1].EndTime.split(':');
+
+                           let PreEndHour = parseInt(EndTimeList[0]),PreEndMin = parseInt(EndTimeList[1]);
+
+                           let StartHour = PreEndHour + Math.floor((PreEndMin + 1)/60);
+
+                           let StartMin = (PreEndMin + 1)%60;
+
+                           let EndHour = StartHour + Math.floor((StartMin + 45)/60);
+
+                           let EndMin = (StartMin + 45)%60;
+
+                           dispatch({type:MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_SHOW,data:{PeriodID,StartHour,StartMin,EndHour,EndMin,IsUnify:false,Type:type}});
 
 
-                   }else{
+                       }else {
 
-                       dispatch({type:MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_SHOW,data:{PeriodID}});
+                           let StartTimeList = AMLimit.split(':');
+
+                           let PreStartHour = parseInt(StartTimeList[0]);
+
+                           let PreStartMin = parseInt(StartTimeList[1]);
+
+                           let StartHour = PreStartHour + Math.floor(PreStartHour/60);
+
+                           let StartMin = PreStartMin%60;
+
+                           let EndHour = StartHour + Math.floor((StartMin + 45)/60);
+
+                           let EndMin = (StartMin + 45)%60;
+
+                           dispatch({type:MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_SHOW,data:{PeriodID,StartHour,StartMin,EndHour,EndMin,IsUnify:false,Type:type}});
+
+
+                       }
 
                    }
 
@@ -523,6 +659,894 @@ const AddClassHour = (opts) => {
 
 
     }
+
+};
+
+//点击弹窗的OK
+const AddClassHourOk = () => {
+
+    return (dispatch,getState) => {
+
+        let { SchoolID } = getState().LoginUser;
+
+        let { SettingByPeriod,SettingByUnify,AMLimit } = getState().Manager.ScheduleSetting;
+
+        let { PeriodSettingList } = SettingByPeriod;
+
+        let { ClassHourList } = SettingByUnify;
+
+        let { IsUnify,PeriodID,StartHour,StartMin,EndHour,EndMin } = getState().Manager.ScheduleSetting.AddClassHourModal;
+
+
+        let IsCorrect = IsHourMinCorrect({StartHour,StartMin,EndHour,EndMin});
+
+        
+        //如果时间的输入格式没问题
+        if (IsCorrect.ErrorCode===0){
+
+            //如果是统一设置
+            if (IsUnify){
+
+                let SortResult = SortClassHourList({StartHour,StartMin,EndHour,EndMin,ClassHourList,AMLimit})
+
+                if (SortResult.ErrorCode===0){
+
+                    let SwitchName = '';
+
+                    switch (SortResult.ClassHourNO) {
+
+                        case 1:
+
+                            SwitchName = '一';
+
+                            break;
+
+                        case 2:
+
+                            SwitchName = '二';
+
+                            break;
+
+                        case 3:
+
+                            SwitchName = '三';
+
+                            break;
+
+                        case 4:
+
+                            SwitchName = '四';
+
+                            break;
+
+                        case 5:
+
+                            SwitchName = '五';
+
+                            break;
+
+                        case 6:
+
+                            SwitchName = '六';
+
+                            break;
+
+                        case 7:
+
+                            SwitchName = '七';
+
+                            break;
+
+                        case 8:
+
+                            SwitchName = '八';
+
+                            break;
+
+                        case 9:
+
+                            SwitchName = '九';
+
+                            break;
+
+                        case 10:
+
+                            SwitchName = '十';
+
+                            break;
+
+                        case 11:
+
+                            SwitchName = '十一';
+
+                            break;
+
+                        case 12:
+
+                            SwitchName = '十二';
+
+                            break;
+
+                        case 13:
+
+                            SwitchName = '十三';
+
+                            break;
+
+                        case 14:
+
+                            SwitchName = '十四';
+
+                            break;
+
+                        case 15:
+
+                            SwitchName = '十五';
+
+                            break;
+
+                        case 16:
+
+                            SwitchName = '十六';
+
+                            break;
+
+                        default:
+
+                            return;
+
+                    }
+
+                    let ClassHourName = `第${SwitchName}节`;
+
+                   ApiActions.InsertClassHourInfo({
+
+                       SchoolID,OrderNO:SortResult.ClassHourNO,StartTime:`${StartHour}:${StartMin}`,
+
+                       EndTime:`${EndHour}:${EndMin}`,ClasssHourType:SortResult.NoonType,
+
+                       ClassHourName,CreateType:0,PeriodID:'',dispatch
+
+
+                   }).then(data=>{
+
+                        if (data===0){
+
+                            dispatch({type:MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_HIDE});
+
+                            dispatch(AppAlertActions.alertSuccess({title:"添加课时成功！"}));
+
+                            dispatch(PageUpdate());
+
+                        }
+
+                   });
+
+                }else {
+
+                    dispatch(AppAlertActions.alertWarn({title:SortResult.Msg}));
+
+                }
+
+            }else {
+
+               let ClassHourList =  PeriodSettingList.find(item=>item.PeriodID===PeriodID).ClassHourList;
+
+                let SortResult = SortClassHourList({StartHour,StartMin,EndHour,EndMin,ClassHourList,AMLimit});
+
+                if (SortResult.ErrorCode===0){
+
+                    let SwitchName = '';
+
+                    switch (SortResult.ClassHourNO) {
+
+                        case 1:
+
+                            SwitchName = '一';
+
+                            break;
+
+                        case 2:
+
+                            SwitchName = '二';
+
+                            break;
+
+                        case 3:
+
+                            SwitchName = '三';
+
+                            break;
+
+                        case 4:
+
+                            SwitchName = '四';
+
+                            break;
+
+                        case 5:
+
+                            SwitchName = '五';
+
+                            break;
+
+                        case 6:
+
+                            SwitchName = '六';
+
+                            break;
+
+                        case 7:
+
+                            SwitchName = '七';
+
+                            break;
+
+                        case 8:
+
+                            SwitchName = '八';
+
+                            break;
+
+                        case 9:
+
+                            SwitchName = '九';
+
+                            break;
+
+                        case 10:
+
+                            SwitchName = '十';
+
+                            break;
+
+                        case 11:
+
+                            SwitchName = '十一';
+
+                            break;
+
+                        case 12:
+
+                            SwitchName = '十二';
+
+                            break;
+
+                        case 13:
+
+                            SwitchName = '十三';
+
+                            break;
+
+                        case 14:
+
+                            SwitchName = '十四';
+
+                            break;
+
+                        case 15:
+
+                            SwitchName = '十五';
+
+                            break;
+
+                        case 16:
+
+                            SwitchName = '十六';
+
+                            break;
+
+                        default:
+
+                            return;
+
+                    }
+
+                    let ClassHourName = `第${SwitchName}节`;
+
+                    ApiActions.InsertClassHourInfo({
+
+                        SchoolID,OrderNO:SortResult.ClassHourNO,StartTime:`${StartHour}:${StartMin}`,
+
+                        EndTime:`${EndHour}:${EndMin}`,ClasssHourType:SortResult.NoonType,
+
+                        ClassHourName,CreateType:1,PeriodID:PeriodID,dispatch
+
+
+                    }).then(data=>{
+
+                        if (data===0){
+
+                            dispatch({type:MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_HIDE});
+
+                            dispatch(AppAlertActions.alertSuccess({title:"添加课时成功！"}));
+
+                            dispatch(PageUpdate());
+
+                        }
+
+                    });
+
+                }else {
+
+                    dispatch(AppAlertActions.alertWarn({title:SortResult.Msg}));
+
+                }
+
+            }
+
+
+        }else{
+
+            dispatch(AppAlertActions.alertWarn({title:IsCorrect.Msg}));
+
+        }
+
+
+    }
+
+};
+
+const EditClassHourOk = () => {
+
+  return (dispatch,getState) => {
+
+      let { SchoolID } = getState().LoginUser;
+
+      let { SettingByPeriod,SettingByUnify,AMLimit } = getState().Manager.ScheduleSetting;
+
+      let { PeriodSettingList } = SettingByPeriod;
+
+      let NewClassHourList = [];
+
+      let { ClassHourList } = SettingByUnify;
+
+      let { IsUnify,Type,PeriodID,ClassHourNO,StartHour,StartMin,EndHour,EndMin } = getState().Manager.ScheduleSetting.EditClassHourModal;
+
+
+      let IsCorrect = IsHourMinCorrect({StartHour,StartMin,EndHour,EndMin});
+
+      if (IsCorrect.ErrorCode===0){
+
+          if (IsUnify){
+
+              NewClassHourList = JSON.parse(JSON.stringify(ClassHourList));
+
+              if(Type===1){
+
+                  NewClassHourList.Morning.splice(NewClassHourList.Morning.findIndex(item=>item.ClassHourNO===ClassHourNO),1);
+
+              }
+
+              if (Type===2){
+
+                  NewClassHourList.Afternoon.splice(NewClassHourList.Afternoon.findIndex(item=>item.ClassHourNO===ClassHourNO),1);
+
+              }
+
+              let SortResult = SortClassHourList({StartHour,StartMin,EndHour,EndMin,ClassHourList:NewClassHourList,AMLimit});
+
+              if (SortResult.ErrorCode===0){
+
+                  console.log(SortResult.ClassHourNO);
+
+                  let SwitchName = '';
+
+                  switch (SortResult.ClassHourNO) {
+
+                      case 1:
+
+                          SwitchName = '一';
+
+                          break;
+
+                      case 2:
+
+                          SwitchName = '二';
+
+                          break;
+
+                      case 3:
+
+                          SwitchName = '三';
+
+                          break;
+
+                      case 4:
+
+                          SwitchName = '四';
+
+                          break;
+
+                      case 5:
+
+                          SwitchName = '五';
+
+                          break;
+
+                      case 6:
+
+                          SwitchName = '六';
+
+                          break;
+
+                      case 7:
+
+                          SwitchName = '七';
+
+                          break;
+
+                      case 8:
+
+                          SwitchName = '八';
+
+                          break;
+
+                      case 9:
+
+                          SwitchName = '九';
+
+                          break;
+
+                      case 10:
+
+                          SwitchName = '十';
+
+                          break;
+
+                      case 11:
+
+                          SwitchName = '十一';
+
+                          break;
+
+                      case 12:
+
+                          SwitchName = '十二';
+
+                          break;
+
+                      case 13:
+
+                          SwitchName = '十三';
+
+                          break;
+
+                      case 14:
+
+                          SwitchName = '十四';
+
+                          break;
+
+                      case 15:
+
+                          SwitchName = '十五';
+
+                          break;
+
+                      case 16:
+
+                          SwitchName = '十六';
+
+                          break;
+
+                      default:
+
+                          return;
+
+                  }
+
+                  let ClassHourName = `第${SwitchName}节`;
+
+                  ApiActions.UpdateClassHourInfo({
+
+                      SchoolID,ClassHourNO,NewClassHourNO:SortResult.ClassHourNO,StartTime:`${StartHour}:${StartMin}`,
+
+                      EndTime:`${EndHour}:${EndMin}`,ClasssHourType:SortResult.NoonType,
+
+                      ClassHourName,CreateType:1,PeriodID:PeriodID,dispatch
+
+
+                  }).then(data=>{
+
+                      if (data===0){
+
+                          dispatch({type:MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_MODAL_HIDE});
+
+                          dispatch(AppAlertActions.alertSuccess({title:"修改课时成功！"}));
+
+                          dispatch(PageUpdate());
+
+                      }
+
+                  });
+
+              }else {
+
+                  dispatch(AppAlertActions.alertWarn({title:SortResult.Msg}));
+
+              }
+          }else{
+
+              NewClassHourList =  JSON.parse(JSON.stringify(PeriodSettingList.find(item=>item.PeriodID===PeriodID).ClassHourList));
+
+              if(Type===1){
+
+                  NewClassHourList.Morning.splice(NewClassHourList.Morning.findIndex(item=>item.ClassHourNO===ClassHourNO),1);
+
+              }
+
+              if (Type===2){
+
+                  NewClassHourList.Afternoon.splice(NewClassHourList.Afternoon.findIndex(item=>item.ClassHourNO===ClassHourNO),1);
+
+              }
+
+              let SortResult = SortClassHourList({StartHour,StartMin,EndHour,EndMin,ClassHourList:NewClassHourList,AMLimit});
+
+              if (SortResult.ErrorCode===0){
+
+                  console.log(SortResult.ClassHourNO);
+
+                  let SwitchName = '';
+
+                  switch (SortResult.ClassHourNO) {
+
+                      case 1:
+
+                          SwitchName = '一';
+
+                          break;
+
+                      case 2:
+
+                          SwitchName = '二';
+
+                          break;
+
+                      case 3:
+
+                          SwitchName = '三';
+
+                          break;
+
+                      case 4:
+
+                          SwitchName = '四';
+
+                          break;
+
+                      case 5:
+
+                          SwitchName = '五';
+
+                          break;
+
+                      case 6:
+
+                          SwitchName = '六';
+
+                          break;
+
+                      case 7:
+
+                          SwitchName = '七';
+
+                          break;
+
+                      case 8:
+
+                          SwitchName = '八';
+
+                          break;
+
+                      case 9:
+
+                          SwitchName = '九';
+
+                          break;
+
+                      case 10:
+
+                          SwitchName = '十';
+
+                          break;
+
+                      case 11:
+
+                          SwitchName = '十一';
+
+                          break;
+
+                      case 12:
+
+                          SwitchName = '十二';
+
+                          break;
+
+                      case 13:
+
+                          SwitchName = '十三';
+
+                          break;
+
+                      case 14:
+
+                          SwitchName = '十四';
+
+                          break;
+
+                      case 15:
+
+                          SwitchName = '十五';
+
+                          break;
+
+                      case 16:
+
+                          SwitchName = '十六';
+
+                          break;
+
+                      default:
+
+                          return;
+
+                  }
+
+                  let ClassHourName = `第${SwitchName}节`;
+
+                  ApiActions.UpdateClassHourInfo({
+
+                      SchoolID,ClassHourNO,NewClassHourNO:SortResult.ClassHourNO,StartTime:`${StartHour}:${StartMin}`,
+
+                      EndTime:`${EndHour}:${EndMin}`,ClasssHourType:SortResult.NoonType,
+
+                      ClassHourName,CreateType:1,PeriodID:PeriodID,dispatch
+
+
+                  }).then(data=>{
+
+                      if (data===0){
+
+                          dispatch({type:MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_MODAL_HIDE});
+
+                          dispatch(AppAlertActions.alertSuccess({title:"修改课时成功！"}));
+
+                          dispatch(PageUpdate());
+
+                      }
+
+                  });
+
+              }else {
+
+                  dispatch(AppAlertActions.alertWarn({title:SortResult.Msg}));
+
+              }
+
+          }
+
+      }else{
+
+          dispatch(AppAlertActions.alertWarn({title:IsCorrect.Msg}));
+
+      }
+
+
+
+  }
+
+};
+
+//转换开关
+
+const LinkageChange = () => {
+
+    return (dispatch,getState) => {
+
+        const { IsEnable,Times } = getState().Manager.ScheduleSetting;
+
+        const { SchoolID } = getState().LoginUser;
+
+        let NewIsEnable = '';
+
+       if(IsEnable===1){
+
+           NewIsEnable = 0;
+
+       }else if(IsEnable===0){
+
+           NewIsEnable = 1;
+
+       }
+
+        ApiActions.SetScheduleIsAutomatic({IsEnable:NewIsEnable,Times,SchoolID,dispatch}).then(data=>{
+
+           if (data===0){
+
+               dispatch(AppAlertActions.alertSuccess({title:"设置成功！"}));
+
+               dispatch({type:MANAGER_SCHEDULE_SETTING_SET_SWITCH_CHANGE,data:{IsEnable:NewIsEnable,Times}});
+
+           }
+
+        });
+
+    }
+
+};
+
+
+
+
+
+/*辅助类函数*/
+
+//返回时间格式正确与否
+const IsHourMinCorrect = ({StartHour,StartMin,EndHour,EndMin}) => {
+
+    let StartTime = TransformTime(`${StartHour}:${StartMin}`);
+
+    let EndTime = TransformTime(`${EndHour}:${EndMin}`);
+
+    if (StartMin===''||StartHour===''||EndMin===''||EndHour===''){
+
+        return {
+
+            ErrorCode:-1,
+
+            Msg:"时间不能为空！"
+
+        }
+
+    }
+
+    if ((StartHour>23||StartHour<0)||(StartMin>59||StartMin<0)){
+
+        return {
+
+            ErrorCode:-1,
+
+            Msg:"起始时间格式不正确"
+
+        };
+
+    }
+
+    if ((EndHour>23||EndHour<0)||(EndMin>59||EndMin<0)){
+
+        return {
+
+            ErrorCode:-1,
+
+            Msg:"结束时间格式不正确"
+
+        };
+
+    }
+
+    if (StartTime>=EndTime){
+
+        return {
+
+            ErrorCode:-1,
+
+            Msg:"结束时间必须要大于起始时间"
+
+        };
+
+    }
+
+
+    return {
+
+        ErrorCode:0
+
+    };
+
+};
+
+
+//返回重新排序的数组
+const SortClassHourList = ({StartHour,StartMin,EndHour,EndMin,ClassHourList,AMLimit}) =>{
+
+
+    let List = [...ClassHourList.Morning,...ClassHourList.Afternoon];
+
+    let StartTime =  TransformTime(`${StartHour}:${StartMin}`);
+
+    let EndTime =  TransformTime(`${EndHour}:${EndMin}`);
+
+    let ErrorCode = '',ClassHourNO = '',NoonType = '',Msg = '';
+
+
+    //判断是上午还是下午
+    if (StartTime>=TransformTime(AMLimit)){
+
+        NoonType = 2;
+
+    }else {
+
+        NoonType = 1;
+
+    }
+
+    //判断应该有的节次
+    if (List.length===0){
+
+        ClassHourNO = 1;
+
+        ErrorCode = 0;
+
+    }else{
+
+        List.map((item,key)=>{
+
+            let _StartTime = TransformTime(item.StartTime);
+
+            let _EndTime = TransformTime(item.EndTime);
+
+            //如果开始时间小于该时间的情况下
+
+            if (StartTime<_StartTime){
+
+                if (EndTime>=_StartTime){
+
+                        ErrorCode = -1;
+
+                        Msg = "课时时间冲突！";
+
+                        return ;
+
+                }else{
+
+                    ClassHourNO = key+1;
+
+                    ErrorCode = 0;
+
+                }
+
+            }else if ((StartTime>=_StartTime)&&(StartTime<=_EndTime)){
+
+
+
+                    ErrorCode = -1;
+
+                    Msg = "课时时间冲突！";
+
+                    return ;
+
+
+            }else {
+
+                if (key === List.length-1){
+
+                    ClassHourNO = key+2;
+
+                    ErrorCode = 0;
+
+                }
+
+            }
+
+        });
+
+    }
+
+    return { ErrorCode:ErrorCode,ClassHourNO,NoonType,Msg };
+
+};
+
+
+//将时间转换为秒，可以做比较
+const TransformTime = (Time)=>{
+
+    let Hour = parseInt(Time.split(':')[0]);
+
+    let Min = parseInt(Time.split(':')[1]);
+
+    return Hour*3600+Min*60;
 
 };
 
@@ -558,6 +1582,28 @@ export default {
 
     MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_HIDE,
 
+    MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_START_HOUR_CHANGE,
+
+    MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_START_MIN_CHANGE,
+
+    MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_END_HOUR_CHANGE,
+
+    MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_END_MIN_CHANGE,
+
+    MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_MODAL_HIDE,
+
+    MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_MODAL_SHOW,
+
+    MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_START_HOUR_CHANGE,
+
+    MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_START_MIN_CHANGE,
+
+    MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_END_HOUR_CHANGE,
+
+    MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_END_MIN_CHANGE,
+
+    MANAGER_SCHEDULE_SETTING_SET_SWITCH_CHANGE,
+
     PageInit,
 
     SettingTypeSitch,
@@ -566,6 +1612,14 @@ export default {
 
     AdjustClassHourOk,
 
-    AddClassHour
+    AddClassHour,
+
+    AddClassHourOk,
+
+    EditClassHourOk,
+
+    PageUpdate,
+
+    LinkageChange
 
 };

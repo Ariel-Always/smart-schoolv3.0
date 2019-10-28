@@ -26,6 +26,10 @@ const ScheduleSetting = (state={
 
     Times:0,
 
+    EditTimes:0,
+
+    AMLimit:'12:00',
+
     LinkageEditStatus:false,
 
     AdjustClassHourModal:{
@@ -52,7 +56,15 @@ const ScheduleSetting = (state={
 
         Show:false,
 
+        IsUnify:true,
+
         PeriodID:'',
+
+        Type:"morning",
+
+        OldStartTime:'',
+
+        OldEndTime:'',
 
         StartHour:'08',
 
@@ -62,7 +74,33 @@ const ScheduleSetting = (state={
 
         EndMin:'45'
 
-    }
+    },
+
+    EditClassHourModal:{
+
+        Show:false,
+
+        IsUnify:true,
+
+        PeriodID:'',
+
+        Type:"",
+
+        ClassHourName:'',
+
+        StartHour:'',
+
+        StartMin:'',
+
+        EndHour:"",
+
+        EndMin:"",
+
+        ClassHourNO:''
+
+    },
+
+
 
 },actions) => {
 
@@ -261,6 +299,10 @@ const ScheduleSetting = (state={
 
                     Show:true,
 
+                    IsUnify:actions.data.IsUnify,
+
+                    Type:actions.data.Type,
+
                     PeriodID:actions.data.PeriodID?actions.data.PeriodID:state.AddClassHourModal.PeriodID,
 
                     StartHour:actions.data.StartHour?actions.data.StartHour:state.AddClassHourModal.StartHour,
@@ -290,6 +332,201 @@ const ScheduleSetting = (state={
                 }
 
             };
+
+        case SSActions.MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_START_HOUR_CHANGE:
+
+            return {
+
+                ...state,
+
+                AddClassHourModal:{
+
+                    ...state.AddClassHourModal,
+
+                    StartHour:actions.data
+
+                }
+
+            };
+
+        case SSActions.MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_START_MIN_CHANGE:
+
+            return {
+
+                ...state,
+
+                AddClassHourModal:{
+
+                    ...state.AddClassHourModal,
+
+                    StartMin:actions.data
+
+                }
+
+            };
+
+        case SSActions.MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_END_HOUR_CHANGE:
+
+            return {
+
+                ...state,
+
+                AddClassHourModal:{
+
+                    ...state.AddClassHourModal,
+
+                    EndHour:actions.data
+
+                }
+
+            };
+
+        case SSActions.MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_END_MIN_CHANGE:
+
+            return {
+
+                ...state,
+
+                AddClassHourModal:{
+
+                    ...state.AddClassHourModal,
+
+                    EndMin:actions.data
+
+                }
+
+            };
+
+        case  SSActions.MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_MODAL_SHOW:
+
+            return {
+
+                ...state,
+
+                EditClassHourModal:{
+
+                    ...state.EditClassHourModal,
+
+                    Show:true,
+
+                    IsUnify:actions.data.IsUnify,
+
+                    PeriodID:actions.data.PeriodID,
+
+                    Type:actions.data.Type,
+
+                    ClassHourName:actions.data.ClassHourName,
+
+                    StartHour:actions.data.StartHour,
+
+                    StartMin:actions.data.StartMin,
+
+                    EndHour:actions.data.EndHour,
+
+                    EndMin:actions.data.EndMin,
+
+                    OldStartTime:actions.data.OldStartTime,
+
+                    OldEndTime: actions.data.OldEndTime,
+
+                    ClassHourNO:actions.data.ClassHourNO
+
+                }
+
+            };
+
+        case  SSActions.MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_MODAL_HIDE:
+
+            return {
+
+                ...state,
+
+                EditClassHourModal:{
+
+                    ...state.EditClassHourModal,
+
+                    Show:false
+
+                }
+
+            };
+
+        case SSActions.MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_START_HOUR_CHANGE:
+
+            return {
+
+                ...state,
+
+                EditClassHourModal:{
+
+                    ...state.EditClassHourModal,
+
+                    StartHour:actions.data
+
+                }
+
+            };
+
+        case SSActions.MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_START_MIN_CHANGE:
+
+            return {
+
+                ...state,
+
+                EditClassHourModal:{
+
+                    ...state.EditClassHourModal,
+
+                    StartMin:actions.data
+
+                }
+
+            };
+
+        case SSActions.MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_END_HOUR_CHANGE:
+
+            return {
+
+                ...state,
+
+                EditClassHourModal:{
+
+                    ...state.EditClassHourModal,
+
+                    EndHour:actions.data
+
+                }
+
+            };
+
+        case SSActions.MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_END_MIN_CHANGE:
+
+            return {
+
+                ...state,
+
+                EditClassHourModal:{
+
+                    ...state.EditClassHourModal,
+
+                    EndMin:actions.data
+
+                }
+
+            };
+
+        case SSActions.MANAGER_SCHEDULE_SETTING_SET_SWITCH_CHANGE:
+
+            return {
+
+                ...state,
+
+                IsEnable:actions.data.IsEnable,
+
+                Times:actions.data.Times
+
+            };
+
 
         default:
 
