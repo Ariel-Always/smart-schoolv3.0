@@ -103,7 +103,7 @@ class PeriodClassHourSetting extends Component{
 
                             }
 
-                            <div className="class-hour-item-wrapper add" onClick={()=>AddClassHour({IsUnify,PeriodID})}>
+                            <div className="class-hour-item-wrapper add" onClick={()=>AddClassHour({IsUnify,PeriodID,type:'morning'})}>
 
                                 <div className="class-hour-item">
 
@@ -147,7 +147,7 @@ class PeriodClassHourSetting extends Component{
 
                             }
 
-                            <div className="class-hour-item-wrapper add">
+                            <div className="class-hour-item-wrapper add" onClick={()=>AddClassHour({IsUnify,PeriodID,type:'afternoon'})}>
 
                                 <div className="class-hour-item">
 

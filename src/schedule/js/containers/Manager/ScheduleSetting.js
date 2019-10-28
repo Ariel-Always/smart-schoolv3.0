@@ -169,6 +169,15 @@ class ScheduleSetting extends Component{
     }
 
 
+    //隐藏添加课时弹窗
+
+    AddClassHourHide(){
+
+        const  { dispatch } = this.props;
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_HIDE});
+
+    }
 
 
     render(){
@@ -330,8 +339,6 @@ class ScheduleSetting extends Component{
 
             </div>
 
-
-
         </div>
 
             <Modal type={1} className="adjust-class-hour-modal"
@@ -406,10 +413,38 @@ class ScheduleSetting extends Component{
 
                    //onOk={this.AdjustClassHourOk.bind(this)}
 
-                   //onCancel={this.AdjustClassHourHide.bind(this)}
+                   onCancel={this.AddClassHourHide.bind(this)}
                 >
 
+                <div className="start-time-wrapper">
 
+                    <span className="title">开始时间:</span>
+
+                    <Input className="start-hour" type="number" maxLength={2} min={0} max={23} value={AddClassHourModal.StartHour}/>
+
+                    <span className="unit">时</span>
+
+                    <Input className="start-min" type="number" maxLength={2} min={0} max={59} value={AddClassHourModal.StartMin}/>
+
+                    <span className="unit">分</span>
+
+                </div>
+
+                <div className="end-time-wrapper">
+
+                    <span className="title">结束时间:</span>
+
+                    <Input className="end-hour" type="number" maxLength={2} min={0} max={23} value={AddClassHourModal.EndHour}/>
+
+                    <span className="unit">时</span>
+
+                    <Input className="end-min" type="number" maxLength={2} min={0} max={59} value={AddClassHourModal.EndMin}/>
+
+                    <span className="unit">分</span>
+
+                </div>
+
+                <div className="tap">注:最小起始间隔1分钟</div>
 
             </Modal>
 

@@ -415,19 +415,20 @@ const AdjustClassHourOk = () =>{
 
             MorningTimes = -MorningTime;
 
+
           }else{
 
               MorningTimes = MorningTime
 
           }
 
-          if (AfternoonTime==='before'){
+          if (AfternoonRadioChecked==='before'){
 
-              MorningTimes = -MorningTime
+              AfternoonTimes = -AfternoonTime
 
           }else{
 
-              MorningTimes = MorningTime
+              AfternoonTimes = AfternoonTime
 
           }
 
@@ -458,7 +459,7 @@ const AddClassHour = (opts) => {
 
     return (dispatch,getState) => {
 
-        const { PeriodID,IsUnify } = opts;
+        const { PeriodID,IsUnify,type } = opts;
 
         const { SettingByPeriod,SettingByUnify } = getState().Manager.ScheduleSetting;
 
@@ -468,9 +469,27 @@ const AddClassHour = (opts) => {
 
         if (IsUnify){
 
-            if (ClassHourList.length>0){
+            if (type==='morning'){
 
-                let LastEndTime = ClassHourList[ClassHourList.length-1].EndTime;
+                if (ClassHourList.Morning.length>0){
+
+                    let StartTimeList = ClassHourList.Morning[ClassHourList.Morning.length-1].StartTime.split(':');
+
+                    let StartHour = StartTimeList[0],StartMin = StartTimeList[1];
+
+                    let EndTimeList = ClassHourList.Morning[ClassHourList.Morning.length-1].EndTime.split(':');
+
+                    let EndHour = EndTimeList[0],EndMin = EndTimeList[1];
+
+                    console.log(StartHour,StartMin,EndHour,EndMin);
+
+                }else{
+
+                    let StartHour = '08',StartMin = '00',EndHour = '08',EndMin = '45';
+
+                    dispatch({type:MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_SHOW,data:{StartHour,StartMin,EndHour,EndMin}});
+
+                }
 
             }else {
 
