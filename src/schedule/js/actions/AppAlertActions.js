@@ -27,7 +27,7 @@ const alertSuccess = ({title,hide}) => {
 
 };
 
-const alertError = ({title,cancel,close,ok}) => {
+const alertError = ({title,abstract,cancel,close,ok}) => {
 
     return dispatch => {
 
@@ -41,6 +41,8 @@ const alertError = ({title,cancel,close,ok}) => {
 
                 title:title,
 
+                abstract:abstract?abstract:'',
+
                 cancel:(cancel?cancel():closeAlert(dispatch)),
 
                 close:(close?close():closeAlert(dispatch)),
@@ -55,7 +57,7 @@ const alertError = ({title,cancel,close,ok}) => {
 
 };
 
-const alertWarn = ({title,cancel,ok,close}) => {
+const alertWarn = ({title,abstract,cancel,ok,close}) => {
 
     return dispatch => {
 
@@ -69,6 +71,8 @@ const alertWarn = ({title,cancel,ok,close}) => {
 
                 title:title,
 
+                abstract:abstract?abstract:'',
+
                 cancel:(cancel?cancel():closeAlert(dispatch)),
 
                 close:(close?close():closeAlert(dispatch)),
@@ -83,7 +87,37 @@ const alertWarn = ({title,cancel,ok,close}) => {
 
 };
 
-const alertTips = ({title,cancel,ok,close}) => {
+const alertQuery = ({title,abstract,cancel,ok,close}) => {
+
+    return dispatch => {
+
+        dispatch({
+
+            type:APP_ALERT_SHOW,
+
+            data:{
+
+                type:"btn-query",
+
+                title:title,
+
+                abstract:abstract?abstract:'',
+
+                cancel:(cancel?cancel():closeAlert(dispatch)),
+
+                close:(close?close():closeAlert(dispatch)),
+
+                ok:(ok?ok():closeAlert(dispatch))
+
+            }
+
+        });
+
+    }
+
+};
+
+const alertTips = ({title,abstract,cancel,ok,close}) => {
 
     return dispatch => {
 
@@ -96,6 +130,8 @@ const alertTips = ({title,cancel,ok,close}) => {
                 type:"btn-tips",
 
                 title:title,
+
+                abstract:abstract?abstract:'',
 
                 cancel:(cancel?cancel():closeAlert(dispatch)),
 
@@ -132,6 +168,8 @@ export default {
 
     alertWarn,
 
-    alertTips
+    alertTips,
+
+    alertQuery
 
 }

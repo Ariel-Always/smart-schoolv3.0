@@ -14,6 +14,8 @@ import ClassRoomTotalSingle from './ClassRoomTotalSingle';
 
 import AdjustByTeacherModal from "./AdjustByTeacherModal";
 
+import ScheduleSetting from './ScheduleSetting';
+
 
 
 
@@ -58,6 +60,7 @@ class Index extends Component{
                         <Route path="/manager/room/*" component={ClassRoomTotalSingle}></Route>
 
                         <Redirect path="/manager/room*" to={{pathname:"/manager/room/total"}}></Redirect>
+
 
                     </Switch>
 

@@ -6,6 +6,8 @@ const SUBJECT_TEACHER_SCHEDULE_INIT = 'SUBJECT_TEACHER_SCHEDULE_INIT';
 
 const SUBJECT_TEACHER_SCHEDULE_UPDATE = 'SUBJECT_TEACHER_SCHEDULE_UPDATE';
 
+const TEACHER_SUBJECT_TEACHER_SUBJECT_TEACHER_COUNT = 'TEACHER_SUBJECT_TEACHER_SUBJECT_TEACHER_COUNT';
+
 const STS_SUBJECT_CHANGE = 'STS_SUBJECT_CHANGE';
 
 const STS_NOW_WEEK_CHANGE = 'STS_NOW_WEEK_CHANGE';
@@ -53,69 +55,76 @@ const STSPageUpdate = (opt) => {
 
         }).then(data => {
 
-            let SubjectTeacherSchedule =  data.ItemTeacher.map((item) => {
+            if (data){
 
-                let teacherObj = {
+                let SubjectTeacherSchedule =  data.ItemTeacher.map((item) => {
 
-                    id:item.TeacherID,
+                    let teacherObj = {
 
-                    name:item.TeacherName
+                        id:item.TeacherID,
 
-                };
+                        name:item.TeacherName
 
-                let list = data.ItemSchedule.map((i) => {
+                    };
 
-                    if (i.TeacherID === item.TeacherID){
+                    let list = data.ItemSchedule.map((i) => {
 
-                        return {
+                        if (i.TeacherID === item.TeacherID){
 
-                            type:i.ScheduleType,
+                            return {
 
-                            title:(i.ClassName!==''?i.ClassName:CourseClassName),
+                                type:i.ScheduleType,
 
-                            titleID:(i.ClassName!==''?i.ClassID:CourseClassID),
+                                title:(i.ClassName!==''?i.ClassName:i.CourseClassName),
 
-                            secondTitle:i.SubjectName,
+                                titleID:(i.ClassName!==''?i.ClassID:i.CourseClassID),
 
-                            secondTitleID:i.SubjectID,
+                                secondTitle:i.SubjectName,
 
-                            thirdTitle:i.ClassRoomName,
+                                secondTitleID:i.SubjectID,
 
-                            thirdTitleID:i.ClassRoomID,
+                                thirdTitle:i.ClassRoomName,
 
-                            WeekDay:i.WeekDay,
+                                thirdTitleID:i.ClassRoomID,
 
-                            ClassHourNO:i.ClassHourNO
+                                WeekDay:i.WeekDay,
 
-                        };
+                                ClassHourNO:i.ClassHourNO
 
-                    }else {
+                            };
 
-                        return ;
+                        }else {
 
-                    }
+                            return ;
 
-                }).filter(i => {return i!==undefined});
+                        }
 
-                teacherObj['list'] = list;
+                    }).filter(i => {return i!==undefined});
 
-                return teacherObj;
+                    teacherObj['list'] = list;
 
-            });
-            //判断操作是否是下一页操作
-            if (opt&&opt.nextPage){
+                    return teacherObj;
 
-                schedule.push(...SubjectTeacherSchedule);
+                });
+                //判断操作是否是下一页操作
+                if (opt&&opt.nextPage){
 
-                dispatch({type:SUBJECT_TEACHER_SCHEDULE_UPDATE,data:schedule});
+                    schedule.push(...SubjectTeacherSchedule);
 
-                dispatch({type:STS_PAGE_ADD});
+                    dispatch({type:SUBJECT_TEACHER_SCHEDULE_UPDATE,data:schedule});
 
-            }else{
+                    dispatch({type:STS_PAGE_ADD});
 
-                dispatch({type:SUBJECT_TEACHER_SCHEDULE_UPDATE,data:SubjectTeacherSchedule});
+                }else{
+
+                    dispatch({type:SUBJECT_TEACHER_SCHEDULE_UPDATE,data:SubjectTeacherSchedule});
+
+                }
+
+                dispatch({type:TEACHER_SUBJECT_TEACHER_SUBJECT_TEACHER_COUNT,data:data.TeacherCount});
 
             }
+
 
             dispatch({type:LOADING_HIDE});
 
@@ -140,6 +149,8 @@ export default {
     LOADING_SHOW,
 
     LOADING_HIDE,
+
+    TEACHER_SUBJECT_TEACHER_SUBJECT_TEACHER_COUNT,
 
     STSPageUpdate
 

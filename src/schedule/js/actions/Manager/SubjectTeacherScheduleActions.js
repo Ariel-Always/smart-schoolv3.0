@@ -78,9 +78,9 @@ const STSPageUpdate = (opt) => {
 
                                 type:i.ScheduleType,
 
-                                title:(i.ClassName!==''?i.ClassName:CourseClassName),
+                                title:(i.ClassName!==''?i.ClassName:i.CourseClassName),
 
-                                titleID:(i.ClassName!==''?i.ClassID:CourseClassID),
+                                titleID:(i.ClassName!==''?i.ClassID:i.CourseClassID),
 
                                 secondTitle:i.SubjectName,
 

@@ -3,6 +3,17 @@
   .addclass-select-grade{
     margin-left:38px;
     margin-top:20px;
+    height:28px;
+    line-height: 28px;
+    .error-tips:nth-child(3){
+
+      float: right;
+
+      margin-right: 64px;
+
+      margin-top: 2px;
+
+    }
   }
   .props{
     color: #999999;

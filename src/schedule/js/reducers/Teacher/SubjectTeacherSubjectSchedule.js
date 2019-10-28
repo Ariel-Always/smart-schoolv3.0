@@ -1,4 +1,4 @@
-import STSActions from '../../actions/Manager/SubjectTeacherScheduleActions';
+import STSActions from '../../actions/Teacher/SubjectTeacherSubjectActions';
 
 const SubjectTeacherSubjectSchedule = (state={
 
@@ -10,7 +10,9 @@ const SubjectTeacherSubjectSchedule = (state={
 
     pageIndex:1,
 
-    loadingShow:true
+    loadingShow:true,
+
+    TeacherCount:0
 
 }, actions) => {
 
@@ -43,6 +45,10 @@ const SubjectTeacherSubjectSchedule = (state={
         case STSActions.SUBJECT_TEACHER_SCHEDULE_UPDATE:
 
             return {...state,schedule:actions.data};
+
+        case STSActions.TEACHER_SUBJECT_TEACHER_SUBJECT_TEACHER_COUNT:
+
+            return {...state,TeacherCount:actions.data};
 
         case STSActions.STS_PAGE_ADD:
 

@@ -142,7 +142,7 @@ class Subject extends Component{
 
         let dropList = [];
         //封装获取到的学科列表
-        if (SubjectCourseGradeClassRoom.ItemSubject){
+        if (SubjectCourseGradeClassRoom.ItemSubject&&SubjectCourseGradeClassRoom.ItemSubject.length>0){
 
             dropList = SubjectCourseGradeClassRoom.ItemSubject.map((item) => {
 
@@ -157,6 +157,7 @@ class Subject extends Component{
             });
 
         }
+
 
         let ItemWeek = [];
         //封装获取到的周次

@@ -13,12 +13,6 @@ import ClassRoomSingle from './ClassRoomSingle';
 
 class ClassRoomTotalSingle extends Component{
 
-    constructor(props){
-
-        super(props);
-
-    }
-
 
     render(){
 

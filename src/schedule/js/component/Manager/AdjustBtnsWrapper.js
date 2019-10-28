@@ -1,4 +1,5 @@
 import React,{Component} from 'react';
+import ScheduleSetting from "../../containers/Manager/ScheduleSetting";
 
 class AdjustBtnsWrapper extends Component{
 
@@ -10,7 +11,7 @@ class AdjustBtnsWrapper extends Component{
 
             adjustByTimeModalShow,stopScheduleShow,delScheduleShow,
 
-            adjustByTeacherShow,Import
+            adjustByTeacherShow,Import,ScheduleSettingShow
 
         } = this.props;
 
@@ -18,7 +19,7 @@ class AdjustBtnsWrapper extends Component{
 
             <div className="adjust-schedule-wrapper">
 
-                <span className="schedule-setting">课程表设置</span>
+                <span className="schedule-setting" onClick={()=>ScheduleSettingShow()}>课程表设置</span>
 
                 <span className="import-schedule" onClick={()=>Import()}>导入课程安排</span>
 
