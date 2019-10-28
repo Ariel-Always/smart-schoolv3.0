@@ -1,0 +1,108 @@
+#TeacherCustomContent {
+  .ant-tabs-bar {
+    margin: 12px 0 0;
+    border-bottom: 1px solid #3dc9ff;
+  }
+  .ant-tabs-tab {
+    border: 1px solid #fff;
+    border-bottom: 1px solid #3dc9ff;
+    margin: 0 4px;
+    // height: 42px;
+    padding: 0;
+    overflow: hidden;
+    line-height: 42px;
+    border-radius: 0;
+    background-image: linear-gradient(0deg, rgba(187, 246, 255, 0.89) 0%, rgba(126, 217, 255, 0.89) 100%),
+      linear-gradient(#bae6ff, #bae6ff);
+
+    .my-tab {
+      display: inline-block;
+      font-size: 16px;
+      line-height: 39px;
+      height: 39px;
+      width: 160px;
+      text-align: center;
+      color: #008fb3;
+      .vertical {
+        vertical-align: top;
+        margin-left: 5px;
+        font-size: 16px;
+        color: #008fb3;
+      }
+      .tool {
+        display: inline-block;
+        width: 18px;
+        height: 100%;
+        background: url(../images/icon-tools.png) no-repeat center;
+        background-size: contain;
+      }
+      .App {
+        display: inline-block;
+        width: 18px;
+        height: 100%;
+        background: url(../images/icon-App.png) no-repeat center;
+        background-size: contain;
+      }
+      .Website {
+        display: inline-block;
+        width: 18px;
+        height: 100%;
+        background: url(../images/icon-Website.png) no-repeat center;
+        background-size: contain;
+      }
+      .database {
+        display: inline-block;
+        width: 18px;
+        height: 100%;
+        background: url(../images/icon-database.png) no-repeat center;
+        background-size: contain;
+      }
+    }
+    &:nth-of-type(1) {
+      margin-left: 12px;
+    }
+  }
+  .ant-tabs-tab-active {
+    border: 1px solid #3dc9ff;
+    border-bottom: 1px solid #fff;
+    background-color: #ffffff;
+    line-height: 41px;
+    background-image: none;
+    .my-tab {
+      .vertical {
+        vertical-align: top;
+        margin-left: 5px;
+        font-size: 16px;
+        color: #00a2ff;
+      }
+      .tool {
+        display: inline-block;
+        width: 18px;
+        height: 100%;
+        background: url(../images/icon-tools-selected.png) no-repeat center;
+        background-size: contain;
+      }
+      .App {
+        display: inline-block;
+        width: 18px;
+        height: 100%;
+        background: url(../images/icon-App-selected.png) no-repeat center;
+        background-size: contain;
+      }
+      .Website {
+        display: inline-block;
+        width: 18px;
+        height: 100%;
+        background: url(../images/icon-Website-selected.png) no-repeat center;
+        background-size: contain;
+      }
+      .database {
+        display: inline-block;
+        width: 18px;
+        height: 100%;
+        background: url(../images/icon-database-selected.png) no-repeat center;
+        background-size: contain;
+      }
+    }
+  }
+}

@@ -395,7 +395,7 @@ class Student extends React.Component {
                 {
                     userID: DataState.GradeStudentPreview.newList[this.state.onClickKey].Others.UserID,
                     userType: 2,
-                    newPwd: pwd(this.state.defaultPwd)
+                    newPwd: md5(this.state.defaultPwd)
                 },
                 2).then(res => {
                     if (res.StatusCode === '401') {

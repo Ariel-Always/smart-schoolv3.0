@@ -1,10 +1,12 @@
 import AppLoadingActions from '../actions/AppLoadingActions';
 
-const AppLoading = (state={
+const AppLoading = (state = {
 
-    show:true
+    show: true,
+    modalLoading: false,
+    customLoading:false
 
-},actions) => {
+}, actions) => {
 
     switch (actions.type) {
 
@@ -14,7 +16,7 @@ const AppLoading = (state={
 
                 ...state,
 
-                show:true,
+                show: true,
 
             };
 
@@ -24,10 +26,39 @@ const AppLoading = (state={
 
                 ...state,
 
-                show:false,
+                show: false,
 
             };
+        case AppLoadingActions.MODAL_LOADING_OPEN:
 
+            return Object.assign({}, state, {
+
+                modalLoading: true
+
+            });
+
+        case AppLoadingActions.MODAL_LOADING_CLOSE:
+
+            return Object.assign({}, state, {
+
+                modalLoading: false
+
+            });
+        case AppLoadingActions.CUSTOM_LOADING_OPEN:
+
+            return Object.assign({}, state, {
+
+                customLoading: true
+
+            });
+
+        case AppLoadingActions.CUSTOM_LOADING_CLOSE:
+
+            return Object.assign({}, state, {
+
+                customLoading: false
+
+            });
         default:
 
             return state;

@@ -79,7 +79,7 @@ class CourseClassDetails extends React.Component {
     //点击头部任课教师
     onTeacherNameClick = (id) => {
         const { dispatch } = this.props;
-        dispatch(actions.UpDataState.getTeacherMsg('/GetUserDetail?userID='+this.state.UserMsg.UserID));
+        dispatch(actions.UpDataState.getTeacherMsg('/GetUserDetail?userID='+id));
 
     }
     //关闭教师详情弹窗

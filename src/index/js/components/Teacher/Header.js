@@ -2,9 +2,16 @@ import React,{Component} from 'react';
 
 class Header extends Component{
 
+
+    // 桌面定制
+    onAdoptClick = () => {
+
+    }
+
+
     render() {
 
-        const { HeaderSetting,LoginUser,HeaderMenuToggle,SubjectMenuToggle,SubjectClick,LogOut } = this.props;
+        const { HeaderSetting,LoginUser,HeaderMenuToggle,SubjectMenuToggle,SubjectClick,LogOut,CustomClick } = this.props;
 
         return (
 
@@ -73,7 +80,7 @@ class Header extends Component{
 
                 </div>
 
-                <button className="adopt">桌面定制</button>
+                <button className="adopt" onClick={() => CustomClick()}>桌面定制</button>
 
             </div>
 
