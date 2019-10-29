@@ -1042,7 +1042,7 @@ const adjustClass =  async ({ClassID,UserIDs,dispatch}) => {
 
     if (res.StatusCode === 200){
 
-        return res.ErrorCode;
+        return res.ErrCode;
 
     }else{
 

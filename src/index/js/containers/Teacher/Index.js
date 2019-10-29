@@ -132,7 +132,7 @@ class Index extends Component {
 
                 if (AccessType === 'href') {
 
-                    if (SysID !== '000') {
+                    if (SysID !== '') {
 
                         let lg_tk = getQueryVariable('lg_tk') || sessionStorage.getItem('token');
 

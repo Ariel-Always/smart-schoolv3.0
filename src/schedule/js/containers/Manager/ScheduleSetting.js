@@ -668,7 +668,7 @@ class ScheduleSetting extends Component{
 
                 </div>
 
-                <div className="tap">注:最小起始间隔1分钟</div>
+                <div className="tap">注:两节课之间的最小起始间隔为1分钟</div>
 
             </Modal>
 
@@ -699,7 +699,7 @@ class ScheduleSetting extends Component{
 
                     <span className="class-hour-no">
 
-                        <span className="time">{EditClassHourModal.Type==='morning'?'上午':'下午'}{EditClassHourModal.ClassHourName}</span>
+                        <span className="time">{EditClassHourModal.Type===1?'上午':'下午'}{EditClassHourModal.ClassHourName}</span>
 
                         <span className="time-area">({EditClassHourModal.OldStartTime}-{EditClassHourModal.OldEndTime})</span>
 
@@ -735,7 +735,7 @@ class ScheduleSetting extends Component{
 
                 </div>
 
-                <div className="tap">注:最小起始间隔1分钟</div>
+                <div className="tap">注:两节课之间的最小起始间隔为1分钟</div>
 
             </Modal>
 

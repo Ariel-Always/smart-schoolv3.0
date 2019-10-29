@@ -1110,11 +1110,11 @@ let EditSecQA =  async ({UserID,ID,Question,Answer,Pwd,dispatch}) => {
 
     } else {
 
-        if (res.ErrorCode === -2){
+        if (res.ErrCode === -2){
 
             dispatch({type:SAFE_SETTING_EDIT_QUESTIONS_TIPS_SHOW,data:{type:'pwd',tips:"密码不正确！"}});
 
-        }else if (res.ErrorCode === -3){
+        }else if (res.ErrCode === -3){
 
             dispatch(AppAlertActions.alertError({title:"已存在相同问题！"}));
 
@@ -1145,11 +1145,11 @@ let DeleteSecQA =  async ({UserID,ID,Pwd,dispatch}) => {
 
     } else {
 
-        if (res.ErrorCode === -2){
+        if (res.ErrCode === -2){
 
             dispatch({type:SAFE_SETTING_DEL_QUESTIONS_PWD_TIPS_SHOW,data:"密码不正确"});
 
-        }else if (res.ErrorCode === -3){
+        }else if (res.ErrCode === -3){
 
            dispatch(AppAlertActions.alertError({title:"原问题已不存在！"}));
 

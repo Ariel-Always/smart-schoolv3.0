@@ -303,6 +303,21 @@ class DoubleSingleTable extends Component{
 
         //类型为single-single,double-single,single-double三种
 
+        if (dataSource.length>=6){
+
+            $('#tb').find('.ant-table-body').css('overflow','scroll');
+
+            $('#tb').find('.ant-table-scroll>.ant-table-header').css('overflow','scroll');
+
+
+        }else {
+
+            $('#tb').find('.ant-table-body').css('overflow','auto');
+
+            $('#tb').find('.ant-table-scroll>.ant-table-header').css('overflow','auto');
+
+        }
+
         return (
 
             <Table id="tb" ref="table" columns={Columns} bordered dataSource={dataSource} pagination={false} scroll={{x:1120,y:580}} onRow={record=>{return { onClick:onClickRow(record) } }}>

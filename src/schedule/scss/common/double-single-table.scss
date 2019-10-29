@@ -155,11 +155,11 @@
 
  }
 
-  .ant-table-fixed-header .ant-table-scroll .ant-table-header{
+ /* .ant-table-fixed-header .ant-table-scroll .ant-table-header{
 
     padding-bottom:9px!important;
 
-  }
+  }*/
 
   table tbody.ant-table-tbody tr:nth-child(2n) td{
 
@@ -480,7 +480,7 @@
 }
 
 
-.ant-table-body::-webkit-scrollbar {
+/*.ant-table-body::-webkit-scrollbar {
   width:8px;
   height:8px;
 }
@@ -498,6 +498,6 @@
 
   height:8px;
 
-}
+}*/
 
 
