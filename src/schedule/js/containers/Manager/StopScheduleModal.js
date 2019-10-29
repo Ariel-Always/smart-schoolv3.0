@@ -89,6 +89,7 @@ class StopScheduleModal extends Component{
 
         } = StopScheduleModal;
 
+
         return (
 
             <Modal className="stop-schedule-modal"

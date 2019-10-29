@@ -229,15 +229,15 @@ const InfoInit = () => {
 
                 if (item.ClassHourType === 1){
 
-                    morning['list'].push({no:item.ClassHOurNO,name:item.ClassHourName});
+                    morning['list'].push({no:item.ClassHourNO,name:item.ClassHourName});
 
                 }else if (item.ClassHourType === 2){
 
-                    afternoon['list'].push({no:item.ClassHOurNO,name:item.ClassHourName});
+                    afternoon['list'].push({no:item.ClassHourNO,name:item.ClassHourName});
 
                 }else if (item.ClassHourType === 3){
 
-                    tonight['list'].push({no:item.ClassHOurNO,name:item.ClassHourName});
+                    tonight['list'].push({no:item.ClassHourNO,name:item.ClassHourName});
 
                 }
 
@@ -742,6 +742,8 @@ const commitInfo = () => {
                    dispatch(AppAlertActions.alertSuccess({title:"停课成功！"}));
 
                 }
+
+                dispatch({type:STOP_SCHEDULE_LOADING_HIDE});
 
             });
 

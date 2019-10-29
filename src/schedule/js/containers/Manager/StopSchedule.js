@@ -93,6 +93,8 @@ class StopSchedule extends Component{
 
         } = StopSchedule;
 
+
+
         return (
 
             <div className="stop-schedule-by-teacher-wrapper">

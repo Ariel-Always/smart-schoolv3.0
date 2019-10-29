@@ -699,7 +699,7 @@ class ScheduleSetting extends Component{
 
                     <span className="class-hour-no">
 
-                        <span className="time">{EditClassHourModal.Type==='morning'?'上午':'下午'}{EditClassHourModal.ClassHourName}</span>
+                        <span className="time">{EditClassHourModal.Type===1?'上午':'下午'}{EditClassHourModal.ClassHourName}</span>
 
                         <span className="time-area">({EditClassHourModal.OldStartTime}-{EditClassHourModal.OldEndTime})</span>
 

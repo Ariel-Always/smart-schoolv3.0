@@ -535,13 +535,13 @@ const AddClassHour = (opts) => {
 
                     let PreEndHour = parseInt(EndTimeList[0]),PreEndMin = parseInt(EndTimeList[1]);
 
-                    let StartHour = PreEndHour + Math.floor((PreEndMin + 1)/60);
+                    let StartHour = SupplyZero(PreEndHour + Math.floor((PreEndMin + 1)/60));
 
-                    let StartMin = (PreEndMin + 1)%60;
+                    let StartMin = SupplyZero((PreEndMin + 1)%60);
 
-                    let EndHour = StartHour + Math.floor((StartMin + 45)/60);
+                    let EndHour = SupplyZero(parseInt(StartHour) + Math.floor((parseInt(StartMin) + 45)/60));
 
-                    let EndMin = (StartMin + 45)%60;
+                    let EndMin = SupplyZero((parseInt(StartMin) + 45)%60);
 
                     dispatch({type:MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_SHOW,data:{StartHour,StartMin,EndHour,EndMin,IsUnify:true,Type:type}});
 
@@ -561,13 +561,13 @@ const AddClassHour = (opts) => {
 
                     let PreEndHour = parseInt(EndTimeList[0]),PreEndMin = parseInt(EndTimeList[1]);
 
-                    let StartHour = PreEndHour + Math.floor((PreEndMin + 1)/60);
+                    let StartHour = SupplyZero(PreEndHour + Math.floor((PreEndMin + 1)/60));
 
-                    let StartMin = (PreEndMin + 1)%60;
+                    let StartMin = SupplyZero((PreEndMin + 1)%60);
 
-                    let EndHour = StartHour + Math.floor((StartMin + 45)/60);
+                    let EndHour = SupplyZero(parseInt(StartHour) + Math.floor((parseInt(StartMin) + 45)/60));
 
-                    let EndMin = (StartMin + 45)%60;
+                    let EndMin = SupplyZero((parseInt(StartMin) + 45)%60);
 
                     dispatch({type:MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_SHOW,data:{StartHour,StartMin,EndHour,EndMin,IsUnify:true,Type:type}});
 
@@ -580,13 +580,13 @@ const AddClassHour = (opts) => {
 
                     let PreStartMin = parseInt(StartTimeList[1]);
 
-                    let StartHour = PreStartHour + Math.floor(PreStartHour/60);
+                    let StartHour = SupplyZero(PreStartHour + Math.floor(PreStartHour/60));
 
-                    let StartMin = PreStartMin%60;
+                    let StartMin = SupplyZero(PreStartMin%60);
 
-                    let EndHour = StartHour + Math.floor((StartMin + 45)/60);
+                    let EndHour = SupplyZero(parseInt(StartHour) + Math.floor((parseInt(StartMin) + 45)/60));
 
-                    let EndMin = (StartMin + 45)%60;
+                    let EndMin = SupplyZero((parseInt(StartMin) + 45)%60);
 
                     dispatch({type:MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_SHOW,data:{StartHour,StartMin,EndHour,EndMin,IsUnify:true,Type:type}});
 
@@ -609,13 +609,13 @@ const AddClassHour = (opts) => {
 
                            let PreEndHour = parseInt(EndTimeList[0]),PreEndMin = parseInt(EndTimeList[1]);
 
-                           let StartHour = PreEndHour + Math.floor((PreEndMin + 1)/60);
+                           let StartHour = SupplyZero(PreEndHour + Math.floor((PreEndMin + 1)/60));
 
-                           let StartMin = (PreEndMin + 1)%60;
+                           let StartMin = SupplyZero((PreEndMin + 1)%60);
 
-                           let EndHour = StartHour + Math.floor((StartMin + 45)/60);
+                           let EndHour = SupplyZero(parseInt(StartHour) + Math.floor((parseInt(StartMin) + 45)/60));
 
-                           let EndMin = (StartMin + 45)%60;
+                           let EndMin = SupplyZero((parseInt(StartMin) + 45)%60);
 
                            dispatch({type:MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_SHOW,data:{PeriodID,StartHour,StartMin,EndHour,EndMin,Type:type,IsUnify:false}});
 
@@ -635,13 +635,13 @@ const AddClassHour = (opts) => {
 
                            let PreEndHour = parseInt(EndTimeList[0]),PreEndMin = parseInt(EndTimeList[1]);
 
-                           let StartHour = PreEndHour + Math.floor((PreEndMin + 1)/60);
+                           let StartHour = SupplyZero(PreEndHour + Math.floor((PreEndMin + 1)/60));
 
-                           let StartMin = (PreEndMin + 1)%60;
+                           let StartMin = SupplyZero((PreEndMin + 1)%60);
 
-                           let EndHour = StartHour + Math.floor((StartMin + 45)/60);
+                           let EndHour = SupplyZero(parseInt(StartHour) + Math.floor((parseInt(StartMin) + 45)/60));
 
-                           let EndMin = (StartMin + 45)%60;
+                           let EndMin = SupplyZero((parseInt(StartMin) + 45)%60);
 
                            dispatch({type:MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_SHOW,data:{PeriodID,StartHour,StartMin,EndHour,EndMin,IsUnify:false,Type:type}});
 
@@ -654,13 +654,13 @@ const AddClassHour = (opts) => {
 
                            let PreStartMin = parseInt(StartTimeList[1]);
 
-                           let StartHour = PreStartHour + Math.floor(PreStartHour/60);
+                           let StartHour = SupplyZero(PreStartHour + Math.floor(PreStartHour/60));
 
-                           let StartMin = PreStartMin%60;
+                           let StartMin = SupplyZero(PreStartMin%60);
 
-                           let EndHour = StartHour + Math.floor((StartMin + 45)/60);
+                           let EndHour = SupplyZero(parseInt(StartHour) + Math.floor((parseInt(StartMin) + 45)/60));
 
-                           let EndMin = (StartMin + 45)%60;
+                           let EndMin = SupplyZero((parseInt(StartMin) + 45)%60);
 
                            dispatch({type:MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_SHOW,data:{PeriodID,StartHour,StartMin,EndHour,EndMin,IsUnify:false,Type:type}});
 
@@ -710,110 +710,6 @@ const AddClassHourOk = () => {
 
                 if (SortResult.ErrorCode===0){
 
-                    /*switch (SortResult.ClassHourNO) {
-
-                        case 1:
-
-                            SwitchName = '一';
-
-                            break;
-
-                        case 2:
-
-                            SwitchName = '二';
-
-                            break;
-
-                        case 3:
-
-                            SwitchName = '三';
-
-                            break;
-
-                        case 4:
-
-                            SwitchName = '四';
-
-                            break;
-
-                        case 5:
-
-                            SwitchName = '五';
-
-                            break;
-
-                        case 6:
-
-                            SwitchName = '六';
-
-                            break;
-
-                        case 7:
-
-                            SwitchName = '七';
-
-                            break;
-
-                        case 8:
-
-                            SwitchName = '八';
-
-                            break;
-
-                        case 9:
-
-                            SwitchName = '九';
-
-                            break;
-
-                        case 10:
-
-                            SwitchName = '十';
-
-                            break;
-
-                        case 11:
-
-                            SwitchName = '十一';
-
-                            break;
-
-                        case 12:
-
-                            SwitchName = '十二';
-
-                            break;
-
-                        case 13:
-
-                            SwitchName = '十三';
-
-                            break;
-
-                        case 14:
-
-                            SwitchName = '十四';
-
-                            break;
-
-                        case 15:
-
-                            SwitchName = '十五';
-
-                            break;
-
-                        case 16:
-
-                            SwitchName = '十六';
-
-                            break;
-
-                        default:
-
-                            return;
-
-                    }*/
-
                     let ClassHourName = `第${SortResult.ClassHourNO}节`;
 
                    ApiActions.InsertClassHourInfo({
@@ -852,110 +748,6 @@ const AddClassHourOk = () => {
                 let SortResult = SortClassHourList({StartHour,StartMin,EndHour,EndMin,ClassHourList,AMLimit});
 
                 if (SortResult.ErrorCode===0){
-
-                   /* switch (SortResult.ClassHourNO) {
-
-                        case 1:
-
-                            SwitchName = '一';
-
-                            break;
-
-                        case 2:
-
-                            SwitchName = '二';
-
-                            break;
-
-                        case 3:
-
-                            SwitchName = '三';
-
-                            break;
-
-                        case 4:
-
-                            SwitchName = '四';
-
-                            break;
-
-                        case 5:
-
-                            SwitchName = '五';
-
-                            break;
-
-                        case 6:
-
-                            SwitchName = '六';
-
-                            break;
-
-                        case 7:
-
-                            SwitchName = '七';
-
-                            break;
-
-                        case 8:
-
-                            SwitchName = '八';
-
-                            break;
-
-                        case 9:
-
-                            SwitchName = '九';
-
-                            break;
-
-                        case 10:
-
-                            SwitchName = '十';
-
-                            break;
-
-                        case 11:
-
-                            SwitchName = '十一';
-
-                            break;
-
-                        case 12:
-
-                            SwitchName = '十二';
-
-                            break;
-
-                        case 13:
-
-                            SwitchName = '十三';
-
-                            break;
-
-                        case 14:
-
-                            SwitchName = '十四';
-
-                            break;
-
-                        case 15:
-
-                            SwitchName = '十五';
-
-                            break;
-
-                        case 16:
-
-                            SwitchName = '十六';
-
-                            break;
-
-                        default:
-
-                            return;
-
-                    }*/
 
                     let ClassHourName = `第${SortResult.ClassHourNO}节`;
 
@@ -1507,7 +1299,7 @@ const IsHourMinCorrect = ({StartHour,StartMin,EndHour,EndMin}) => {
 };
 
 
-//返回重新排序的数组
+//返回新的课时的序号
 const SortClassHourList = ({StartHour,StartMin,EndHour,EndMin,ClassHourList,AMLimit}) =>{
 
 
@@ -1609,7 +1401,25 @@ const TransformTime = (Time)=>{
 
 };
 
+const SupplyZero = (number) => {
 
+  let NumberStr = number.toString();
+
+  let Number = number;
+
+  if (NumberStr.length < 2){
+
+      Number = `0${NumberStr}`;
+
+  }else{
+
+      Number = NumberStr
+
+  }
+
+  return Number;
+
+};
 
 
 
