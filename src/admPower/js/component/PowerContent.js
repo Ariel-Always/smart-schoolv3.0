@@ -171,7 +171,7 @@ class PowerContent extends React.Component {
                                                         先审后用模式
                                                 </span>
                                                     <span className='radio-tips-2'>
-                                                        需要经过学校管理员或班主任审核确认后，系统才会会学生创建用户账号
+                                                        需要经过学校管理员或班主任审核确认后，系统才会为学生创建用户账号
                                                 </span>
                                                 </div>
                                                 <div className='radio-2'>
@@ -180,7 +180,7 @@ class PowerContent extends React.Component {
                                                         先审后用模式
                                                 </span>
                                                     <span className='radio-tips-2'>
-                                                        需要经过学校管理员或班主任审核确认后，系统才会会学生创建用户账号
+                                                        在学生提交档案时系统便为其创建用户账号
                                                 </span>
                                                 </div>
                                             </RadioGroup>

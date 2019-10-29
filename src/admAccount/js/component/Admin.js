@@ -680,10 +680,13 @@ class Admin extends React.Component {
         if (this.state.keyword !== '') {
             keyword = '&keyword=' + this.state.keyword
         }
-        console.log(sorter)
+        // console.log(sorter)
         if (sorter && (sorter.columnKey === 'UserName' || sorter.columnKey === 'ShortName')) {
-            let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
+            let sortType = sorter.order === "descend" ? '&SortType=DESC' : sorter.order === "ascend" ? '&SortType=ASC' : '';
             dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageSize=10&sortFiled=' + sorter.columnKey + sortType + '&PageIndex=' + (this.state.pagination - 1) + keyword));
+
+        }else if(sorter){
+            dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=' + this.state.userMsg.SchoolID  + '&PageSize=10'  + '&PageIndex=' + (this.state.pagination - 1) + keyword));
 
         }
     }

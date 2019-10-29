@@ -44,7 +44,7 @@ class EditModal extends React.Component {
             dispatch(actions.UpDataState.setAdminPreview({
                 UserID: this.state.data.UserName.UserID,
                 UserName: this.state.data.UserName.Name,
-                PhotoPath:this.state.data.UserImg
+                PhotoPath: this.state.data.UserImg
             }))
             this.state.PowerList.map((power, index) => {
                 let checkAll = this.state.checkAll;
@@ -330,13 +330,13 @@ class EditModal extends React.Component {
         this.setState({
             UserIDChange: e.target.value
         })
-       
+
 
 
     }
     onEditIDBlur = (e) => {
         const { dispatch } = this.props
-        
+
         //用户ID（工号/学号）检测  
         //长度是1~30位，只能由字母与数字组成。
         let Test = /^([a-zA-Z0-9]{1,24})$/.test(e.target.value)
@@ -359,13 +359,13 @@ class EditModal extends React.Component {
     }
     onEditNameChange = (e) => {
         const { dispatch } = this.props
-       
+
 
         this.setState({
             defaultUserName: e.target.value
         })
 
-        
+
     }
     onEditNameBlur = (e) => {
         const { dispatch } = this.props
@@ -470,16 +470,18 @@ class EditModal extends React.Component {
                                     overlayClassName={'tips-edit tips-userName'}
                                     visible={UIState.TipsVisible.UserIDTipsVisible}
                                     title={'工号' + this.state.UserIDTipsTitle} >
-                                    >
+                                    
                                 </Tips>
                             </div>
+                            {this.state.UserKey === 'change' ? (<span className='UserID-text'>{this.state.UserIDChange}</span>) :
+                                (<Input maxLength={24} id="123" style={{ display: 'block' }} className='UserName-input'
+                                    type='text'
+                                    name='EditID'
+                                    value={this.state.UserIDChange}
+                                    onChange={this.onEditIDChange}
+                                    onBlur={this.onEditIDBlur} />)
+                            }
 
-                            <Input maxLength={24} id="123" style={{ display: 'block' }} className='UserName-input'
-                                type='text'
-                                name='EditID'
-                                value={this.state.UserIDChange}
-                                onChange={this.onEditIDChange} 
-                                onBlur={this.onEditIDBlur} />
 
                         </div>
                     </div>

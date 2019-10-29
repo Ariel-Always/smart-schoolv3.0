@@ -524,6 +524,9 @@ class Student extends React.Component {
         if (sorter && (sorter.columnKey === 'UserName' || sorter.columnKey === 'ShortName')) {
             let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
             dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&sortFiled=' + sorter.columnKey + '&PageSize=10&' + sortType + '&PageIndex=' + (this.state.pagination - 1) + keyword + firstSelect + secondSelect));
+        }else if(sorter){
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID  + '&PageSize=10'  + '&PageIndex=' + (this.state.pagination - 1) + keyword + firstSelect + secondSelect));
+
         }
     }
     onUserNameClick = (UserID) => {
@@ -602,7 +605,7 @@ class Student extends React.Component {
                                 ref='dropMenuFirst'
                                 onChange={this.StudentDropMenu}
                                 width={120}
-                                height={72}
+                                height={240}
 
                                 dropSelectd={this.state.firstSelect}
                                 dropList={DataState.GradeClassMsg.returnData ? DataState.GradeClassMsg.returnData.grades : [{ value: 0, title: '全部年级' }]}
@@ -610,7 +613,7 @@ class Student extends React.Component {
                             <DropDown
                                 ref='dropMenuSecond'
                                 width={120}
-                                height={72}
+                                height={240}
 
                                 style={{ display: this.state.DropMenuShow ? 'block' : 'none' }}
                                 dropSelectd={this.state.secondSelect}

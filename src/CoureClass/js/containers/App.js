@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {  Menu, Loading, Alert, LeftMenu, Modal } from "../../../common";
+import { Menu, Loading, Alert, LeftMenu, Modal } from "../../../common";
 import { connect } from 'react-redux';
 import TimeBanner from '../component/TimeBanner'
 import CONFIG from '../../../common/js/config';
@@ -172,7 +172,7 @@ class App extends Component {
         } else if (handleRoute === 'Search') {
             // if (!DataState.GetCoureClassAllMsg.MenuParams)
             //     return;
-            dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + UserMsg.SchoolID + '&key='+routeID+'&pageIndex=1&pageSize=10&subjectID='+SubjectID+'&gradeID='+GradeID));
+            dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + UserMsg.SchoolID + '&key=' + routeID + '&pageIndex=1&pageSize=10&subjectID=' + SubjectID + '&gradeID=' + GradeID));
 
 
         } else if (handleRoute === 'Log') {
@@ -248,7 +248,8 @@ class App extends Component {
         let routeID = pathArr[2];
         let subjectID = pathArr[3];
         let classID = pathArr[4];
-
+        let SubjectID = DataState.GetCoureClassAllMsg.Subject;
+        let GradeID = DataState.GetCoureClassAllMsg.Grade;
         if (data.selectData.Teacher.value === data.TeacherID && data.selectData.CourseClass.CourseClassName === data.CourseClassName && deepCompare.deepCompare(data.selectData.Student, data.TableSource)) {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-error',
@@ -274,8 +275,9 @@ class App extends Component {
             teacherID: data.selectData.Teacher.value,
             gradeID: data.GradeID,
             subjectID: data.SubjectID,
-            courseClassStus: courseClassStus
-        },2,'json').then(res => {
+            courseClassStus: courseClassStus,
+            courseClassID: data.selectData.CourseClass.CourseClassID
+        }, 2, 'json').then(res => {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
@@ -287,8 +289,13 @@ class App extends Component {
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
 
-                dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=1&pageSize=10', routeID, classID));
+                //dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=1&pageSize=10', routeID, classID));
+                if(handleRoute==='Search'){
+            dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&key=' + routeID + '&pageIndex=1&pageSize=10&subjectID=' + SubjectID + '&gradeID=' + GradeID));
 
+                }else{
+                    dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&key=&pageIndex=1&pageSize=10&subjectID='+routeID+'&gradeID='+classID, routeID, classID));
+                }
             }
         })
 
@@ -342,7 +349,7 @@ class App extends Component {
         //     }));
         //     return;
         // }
-        if(!data.selectData.CourseClass.CourseClassName){
+        if (!data.selectData.CourseClass.CourseClassName) {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-error',
                 title: "您还没填写教学班名称哦~",
@@ -352,7 +359,7 @@ class App extends Component {
             }));
             return;
         }
-        if(!data.selectData.Subject.value){
+        if (!data.selectData.Subject.value) {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-error',
                 title: "您还没选择学科哦~",
@@ -362,7 +369,7 @@ class App extends Component {
             }));
             return;
         }
-        if(!data.selectData.Grade.value){
+        if (!data.selectData.Grade.value) {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-error',
                 title: "您还没选择年级哦~",
@@ -407,8 +414,9 @@ class App extends Component {
             teacherID: data.selectData.Teacher.value,
             gradeID: data.selectData.Grade.value,
             subjectID: data.selectData.Subject.value,
-            courseClassStus: courseClassStus
-        },2,'json').then(res => {
+            courseClassStus: courseClassStus,
+            courseClassID: ''
+        }, 2, 'json').then(res => {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
@@ -419,8 +427,8 @@ class App extends Component {
                     title: "成功",
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
-
-                dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=1&pageSize=10', routeID, classID));
+                history.push('/All')
+                // dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=1&pageSize=10&subjectID='+routeID+'&gradeID='+classID, routeID, classID));
 
             }
         })

@@ -160,7 +160,7 @@ class Teacher extends React.Component {
             alertQueryTitle: '查询提示~',
             TeacherDetailsMsgModalVisible: false,
             addTeacherModalVisible: false,
-            defaultPwd: 888888,
+            defaultPwd: '888888',
             onClickKey: 0,
             userMsgKey: 0,
             keyList: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -173,7 +173,7 @@ class Teacher extends React.Component {
     }
     componentWillMount() {
         const { dispatch } = this.props;
-        let pwd = 888888;
+        let pwd = '888888';
 
         dispatch(actions.UpDataState.getChangeInputValue(pwd));
     }
@@ -225,7 +225,7 @@ class Teacher extends React.Component {
                 close: this.onAlertWarnClose.bind(this)
             }));
         } else {
-            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&keyword=' + e.value + '&SubjectIDs=' + this.state.SubjectSelect.value));
+            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&keyword=' + e.value + '&SubjectIDs=' + (this.state.SubjectSelect.value?this.state.SubjectSelect.value:'')));
 
         }
     }
@@ -243,7 +243,7 @@ class Teacher extends React.Component {
             CancelBtnShow: 'n',
             keyword: ''
         })
-        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + '&SubjectIDs=' + this.state.SubjectSelect.value));
+        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + '&SubjectIDs=' + (this.state.SubjectSelect.value?this.state.SubjectSelect.value:'')));
 
 
     }
@@ -335,7 +335,7 @@ class Teacher extends React.Component {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-query',
                 title: "确定批量重置密码？",
-                ok: this.onAlertQueryOk.bind(this, 888888),
+                ok: this.onAlertQueryOk.bind(this, '888888'),
                 cancel: this.onAlertQueryClose.bind(this),
                 close: this.onAlertQueryClose.bind(this)
             }));
@@ -344,7 +344,7 @@ class Teacher extends React.Component {
     onChangePwdClick = (key) => {
         const { dispatch, DataState } = this.props;
         let data = this.state.TeacherAccountData;
-        let pwd = 888888;
+        let pwd = '888888';
         this.setState({
             ChangePwdMadalVisible: true,
             onClickKey: key
@@ -357,6 +357,7 @@ class Teacher extends React.Component {
         const { dispatch, DataState } = this.props;
         let url = '/ResetPwd';
         let UserMsg = DataState.LoginUser;
+        console.log(this.state.defaultPwd,md5(this.state.defaultPwd))
         if (this.state.defaultPwd === '') {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-query',
@@ -384,9 +385,9 @@ class Teacher extends React.Component {
                     } else if (json.StatusCode === 200) {
                         this.setState({
                             ChangePwdMadalVisible: false,
-                            defaultPwd: 888888
+                            defaultPwd: '888888'
                         })
-                        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&keyword=' + this.state.keyword + '&SubjectIDs=' + this.state.SubjectSelect.value));
+                        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&keyword=' + this.state.keyword + '&SubjectIDs=' + (this.state.SubjectSelect.value?this.state.SubjectSelect.value:'')));
 
                     }
 
@@ -398,7 +399,7 @@ class Teacher extends React.Component {
     onPwdchangeClose = () => {
         this.setState({
             ChangePwdMadalVisible: false,
-            defaultPwd: 888888
+            defaultPwd: '888888'
         })
     }
     onPwdchange = (e) => {
@@ -447,7 +448,7 @@ class Teacher extends React.Component {
                         checkedList: [],
                         checkAll: false
                     })
-                    dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&keyword=' + this.state.keyword + '&SubjectIDs=' + this.state.SubjectSelect.value));
+                    dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&keyword=' + this.state.keyword + '&SubjectIDs=' + (this.state.SubjectSelect.value?this.state.SubjectSelect.value:'')));
 
                 }
 
@@ -524,10 +525,13 @@ class Teacher extends React.Component {
         if (this.state.keyword !== '') {
             keyword = '&keyword=' + this.state.keyword
         }
-        console.log(sorter)
+        //console.log(sorter)
         if (sorter && (sorter.columnKey === 'UserName' || sorter.columnKey === 'ShortName')) {
             let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
             dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&sortFiled=' + sorter.columnKey + 'PageSize=10&' + sortType + '&PageIndex=' + (this.state.pagination - 1) + keyword + SubjectSelect));
+
+        }else if(sorter){
+            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID  + '&PageSize=10'  + '&PageIndex=' + (this.state.pagination - 1) + keyword + SubjectSelect));
 
         }
     }
@@ -570,7 +574,7 @@ class Teacher extends React.Component {
                                 ref='dropMenuFirst'
                                 onChange={this.TeacherDropMenu}
                                 width={120}
-                                height={72}
+                                height={240}
 
                                 dropSelectd={this.state.SubjectSelect}
                                 dropList={DataState.SubjectTeacherMsg.returnData ? DataState.SubjectTeacherMsg.returnData.SubjectList : [{ value: 0, title: '全部年级' }]}

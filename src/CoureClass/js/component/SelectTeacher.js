@@ -17,7 +17,10 @@ class SelectTeacher extends React.Component {
         this.state = {
             select: false,
             UserMsg:props.DataState.LoginUser,
-            subject:props.subject
+            subject:props.subject,
+            CancelBtnShow: 'n',
+            keyword: '',
+            searchValue:''
         }
     }
 
@@ -34,8 +37,13 @@ class SelectTeacher extends React.Component {
     //搜索
     onClickSearch = (value) => {
         const { DataState, UIState, dispatch } = this.props;
-        console.log(value.value)
-        dispatch(actions.UpDataState.getSubjectTeacherMsg('/GetTeacherInfoBySubjectAndKey?schoolID='+this.state.UserMsg.schoolID+'key='+value.value+'&subjectID='+this.state.subject))
+        // console.log(value.value)
+        this.setState({
+            CancelBtnShow: 'y',
+            keyword: value.value,
+            
+        })
+        dispatch(actions.UpDataState.getSubjectTeacherMsg('/GetTeacherInfoBySubjectAndKey?schoolID='+this.state.UserMsg.SchoolID+'&key='+value.value+'&subjectID='+this.state.subject))
 
     }
     //选择教师
@@ -51,9 +59,30 @@ class SelectTeacher extends React.Component {
         }
         dispatch(actions.UpDataState.setSubjectTeacherTransferMsg(Teacher))
     }
+    //搜索change
+    onChangeSearch = (e) => {
+        this.setState({
+            searchValue: e.target.value
+        })
+    }
+    // 取消搜索
+    onCancelSearch = (e) => {
+        const { dispatch, DataState } = this.props
+        let Subject = DataState.GetCourseClassDetailsHandleClassMsg.selectData?DataState.GetCourseClassDetailsHandleClassMsg.selectData.Subject?DataState.GetCourseClassDetailsHandleClassMsg.selectData.Subject:{}:{}
+        this.setState({
+            CancelBtnShow: 'n',
+            keyword: '',
+            searchValue: '',
+            // selectClassTab: '',
+            // leftShow: true,
+        })
+        // console.log(Subject.value)
+        dispatch(actions.UpDataState.getSubjectTeacherMsg('/GetTeacherInfoBySubjectAndKey?key=&schoolID=' + this.state.UserMsg.SchoolID + '&subjectID=' + (Subject.value||DataState.GetCourseClassDetailsHandleClassMsg.SubjectID)))
+        
+    }
     render() {
         const { DataState, UIState } = this.props;
-        console.log(this.state.selectTeacherID)
+        // console.log(this.state.selectTeacherID)
         let teacherList = DataState.GetSubjectTeacherMsg.teacherList ? DataState.GetSubjectTeacherMsg.teacherList : [];
         return (
             <React.Fragment>
@@ -63,6 +92,10 @@ class SelectTeacher extends React.Component {
                             className='top-search'
                             placeholder='请输入教师名称或工号搜索'
                             width='280'
+                            Value={this.state.searchValue}
+                            onChange={this.onChangeSearch.bind(this)}
+                            onCancelSearch={this.onCancelSearch}
+                            CancelBtnShow={this.state.CancelBtnShow}
                             onClickSearch={this.onClickSearch.bind(this)}
                         ></Search>
                     </div>

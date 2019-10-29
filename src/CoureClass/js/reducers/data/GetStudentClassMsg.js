@@ -1,7 +1,7 @@
 import UpDataState from '../../actions/UpDataState';
 import history from '../../containers/history'
 
-const GetStudentClassMsg = (state = {}, actions) => {
+const GetStudentClassMsg = (state = {GradeClass:[],ClassStudent:[]}, actions) => {
     switch (actions.type) {
         case UpDataState.GET_GRADE_CLASS_MSG:
             return Object.assign({}, state, { GradeClass: actions.data });

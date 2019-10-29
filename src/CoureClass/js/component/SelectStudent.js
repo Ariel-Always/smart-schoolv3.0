@@ -20,7 +20,8 @@ class SelectStudent extends React.Component {
             checkAll: false,
             checkList: [],
             show: false,
-            UserMsg:props.DataState.LoginUser
+            UserMsg:props.DataState.LoginUser,
+            leftShow:true
 
         }
     }
@@ -46,7 +47,7 @@ class SelectStudent extends React.Component {
         let defaultCheckList = selectStudent.map((child, index) => {
             return child.StudentID;
         })
-        console.log(ClassStudent)
+        // console.log(ClassStudent)
         let plainOptions = ClassStudent.propStudent ? ClassStudent.propStudent.map((child, index) => {
             return child.StudentID
         }) : []
@@ -67,6 +68,12 @@ class SelectStudent extends React.Component {
             plainOptions: plainOptions,
             checkAll: len===0 ? true : false
         })
+        if(!this.state.selectClassTab&&DataState.GetStudentClassMsg.GradeClass.length){
+            this.setState({
+                selectClassTab:DataState.GetStudentClassMsg.GradeClass[0].ClassID
+            })
+            this.onClickTabClick(DataState.GetStudentClassMsg.GradeClass[0].ClassID)
+        }
 
     }
 
@@ -77,6 +84,10 @@ class SelectStudent extends React.Component {
         console.log(value.value);
         this.setState({
             show: true,
+            CancelBtnShow: 'y',
+            keyword: value.value,
+            selectClassTab:'',
+            leftShow:false
         })
         dispatch(actions.UpDataState.searchClassStudentMsg('/GetStudentForAddOrEditCourseClassByKey?schoolID='+this.state.UserMsg.SchoolID+'&gradeID='+gradeID+'&key='+value.value))
 
@@ -262,12 +273,38 @@ class SelectStudent extends React.Component {
         })
         dispatch(actions.UpDataState.setClassStudentTransferMsg(newTrans))
     }
+    //搜索change
+    onChangeSearch = (e) => {
+        this.setState({
+            searchValue: e.target.value
+        })
+    }
+    // 取消搜索
+    onCancelSearch = (e) => {
+        const { dispatch, DataState } = this.props
+        this.setState({
+            CancelBtnShow: 'n',
+            keyword: '',
+            searchValue:'',
+            selectClassTab:'',
+            leftShow:true,
+        })
+        if(DataState.GetStudentClassMsg.GradeClass.length){
+            this.setState({
+                selectClassTab:DataState.GetStudentClassMsg.GradeClass[0].ClassID
+            })
+            this.onClickTabClick(DataState.GetStudentClassMsg.GradeClass[0].ClassID)
+        }
+    }
     render() {
         const { DataState, UIState } = this.props;
         let ClassList = DataState.GetStudentClassMsg.GradeClass ? DataState.GetStudentClassMsg.GradeClass : [];
         let StudentList = DataState.GetStudentClassMsg.ClassStudent ? DataState.GetStudentClassMsg.ClassStudent : [];
         let propStudent = StudentList.propStudent ? StudentList.propStudent : []
-        console.log(this.state.checkList)
+        // if(ClassList[0].ClassID){
+        //     this.onClickTabClick(ClassList[0].ClassID)
+        // }
+        //console.log(this.state.checkList)
         return (
             <React.Fragment>
                 <div id='SelectStudent' className='selectStudent-box'>
@@ -276,13 +313,17 @@ class SelectStudent extends React.Component {
                             className='top-search'
                             placeholder='请输入关键字搜索'
                             width='280'
+                            Value={this.state.searchValue}
+                                    onChange={this.onChangeSearch.bind(this)}
+                                    onCancelSearch={this.onCancelSearch}
+                                    CancelBtnShow={this.state.CancelBtnShow}
                             onClickSearch={this.onClickSearch.bind(this)}
                         ></Search>
                     </div>
-                    <Loading spinning={UIState.AppLoading.studentLoading}>
-                        {!ClassList.length&&!propStudent.length?(<div className='box-content'>
+                    <Loading spinning={UIState.AppLoading.studentLoading} >
+                        {ClassList.length?(<div className='box-content' style={{height:'437px'}}>
                             <Scrollbars
-                                style={{ width: 177 + 'px', height: 437 + 'px', float: 'left',margin:0 }}
+                                style={{ width: 177 + 'px', height: 437 + 'px', float: 'left',margin:0 ,display:this.state.leftShow?'block':'none'}}
                             >
                                 <ul className='selectClassBox'
                                     style={{ width: 177 + 'px', height: 437 + 'px',margin:0 }}
@@ -300,15 +341,15 @@ class SelectStudent extends React.Component {
                                     }
                                 </ul>
                             </Scrollbars>
-                            <Loading spinning={UIState.AppLoading.classStudentLoading}>
-                                <ul className='selectStudent' style={{ width: 475 + 'px', height: 437 + 'px', display: this.state.show ? 'block' : 'none' }}>
+                            <Loading spinning={UIState.AppLoading.classStudentLoading} style={{height:'437px'}}>
+                                <ul className='selectStudent' style={{width:this.state.leftShow? 475 + 'px': 680 + 'px', height: 437 + 'px', display: this.state.show ? 'block' : 'none' }}>
                                 {propStudent.length?<li className='selectAllBox'>
                                         <CheckBox
                                             className='selectAll'
                                             onClick={this.onSelectAllClick.bind(this)}
                                             checked={this.state.checkAll}
                                         >全选</CheckBox>
-                                    </li>:<Empty type='4' noTitle style={{marginTop:50+'%',transform:'translateY(-50%)'}}></Empty>}
+                                    </li>:<Empty type='4' noTitle style={{marginTop:'238.5px',transform:'translateY(-50%)'}}></Empty>}
                                     <Scrollbars
                                         style={{ width: 100 + '%', height: 387 + 'px' }}
                                     >
@@ -331,7 +372,7 @@ class SelectStudent extends React.Component {
                                     </Scrollbars>
                                 </ul>
                             </Loading>
-                        </div>):<Empty type='4' noTitle style={{marginTop:50+'%',transform:'translateY(-50%)'}}></Empty>}
+                        </div>):<Empty type='4' noTitle style={{marginTop:'238.5px',transform:'translateY(-50%)'}}></Empty>}
                     </Loading>
 
                 </div>

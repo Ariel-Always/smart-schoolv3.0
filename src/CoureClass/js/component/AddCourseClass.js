@@ -55,9 +55,19 @@ class AddCourseClass extends React.Component {
     }
     //数据绑定
     onCourseClassNameChange = (e) => {
+        // const { DataState, UIState, dispatch } = this.props;
+        // let { CourseClassName, ...data } = DataState.GetCourseClassDetailsHandleClassMsg.selectData.CourseClass
+        // //console.log(this.state.courseClassName, e.target.value)
+        // dispatch(actions.UpDataState.setCourseClassName({ CourseClassName: e.target.value, ...data }))
+        this.setState({
+            courseClassName: e.target.value,
+        })
+    }
+    //数据绑定
+    onCourseClassNameBlur = (e) => {
         const { DataState, UIState, dispatch } = this.props;
         let { CourseClassName, ...data } = DataState.GetCourseClassDetailsHandleClassMsg.selectData.CourseClass
-        console.log(this.state.courseClassName, e.target.value)
+        //console.log(this.state.courseClassName, e.target.value)
         dispatch(actions.UpDataState.setCourseClassName({ CourseClassName: e.target.value, ...data }))
         // this.setState({
         //     courseClassName: e.target.value,
@@ -150,10 +160,11 @@ class AddCourseClass extends React.Component {
     //选择学科
     onSelectSubjectChange = (value) => {
         const { DataState, UIState, dispatch } = this.props;
-        console.log(value)
+        // console.log(value)
         this.setState({
             Subject: value,
-            SubjectSelect: value
+            SubjectSelect: value,
+            GradeSelect:{value: 0, title: '请选择年级'}
         })
         dispatch(actions.UpDataState.setCourseClassDataMsg({ Subject: value }))
 
@@ -227,7 +238,7 @@ class AddCourseClass extends React.Component {
             GradeDropList[index] = Grade;
 
         }
-        console.log(SubjectDropList)
+        // console.log(SubjectDropList)
         return (
             <React.Fragment>
                 <div id='HandleCourseClass' className='HandleCourseClass'>
@@ -235,7 +246,7 @@ class AddCourseClass extends React.Component {
                         <div className='row-column'>
                             <span className='left'>教学班名称：</span>
                             <span className='right '>
-                                <Input placeholder='请输入教学班名称...' style={{ width: 180 + 'px' }} type='text' onChange={this.onCourseClassNameChange.bind(this)} value={this.state.courseClassName} />
+                                <Input placeholder='请输入教学班名称...' style={{ width: 180 + 'px' }} type='text' onBlur={this.onCourseClassNameBlur.bind(this)} onChange={this.onCourseClassNameChange.bind(this)} value={this.state.courseClassName} />
 
                             </span>
                             {/* <span className='right text-style'>{data.CourseClassName}</span> */}
