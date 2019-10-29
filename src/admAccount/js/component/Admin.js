@@ -65,7 +65,7 @@ class Admin extends React.Component {
                     sorter: true,
                     render: ShortName => {
                         return (
-                            <span className='UserName'>{ShortName}</span>
+                            <span className='UserName'>{ShortName?ShortName:'--'}</span>
                         )
                     }
                 },
@@ -242,7 +242,7 @@ class Admin extends React.Component {
         console.log(checkedList)
         this.setState({
             checkedList,
-            checkAll: checkedList === this.state.keyList ? true : false
+            checkAll: checkedList.length === this.state.keyList.length ? true : false
         })
     }
     handleAdminModalOk = (e) => {

@@ -179,7 +179,7 @@ class App extends Component {
             }
         } else if (route.split('/')[1] === 'ImportFile') {
             //dispatch(actions.UpDataState.getAllUserPreview('/RegisterExamine'));
-            if (route.split('/')[2] !== 'Student' && route.split('/')[2] !== 'Teacher') {
+            if (route.split('/')[2] !== 'Student' && route.split('/')[2] !== 'Teacher'&& route.split('/')[2] !== 'Leader') {
                 history.push('/UserArchives/All')
             }
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });

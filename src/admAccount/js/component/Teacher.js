@@ -63,7 +63,7 @@ class Teacher extends React.Component {
                     sorter: true,
                     render: ShortName => {
                         return (
-                            <span className='UserName'>{ShortName}</span>
+                            <span className='UserName'>{ShortName?ShortName:'--'}</span>
                         )
                     }
                 },
@@ -75,7 +75,7 @@ class Teacher extends React.Component {
                     key: 'Sign',
                     render: Sign => {
                         return (
-                            <span className='Sign' title={Sign}>{Sign}</span>
+                            <span className='Sign' title={Sign}>{Sign?Sign:'--'}</span>
                         )
                     }
                 },
@@ -289,7 +289,7 @@ class Teacher extends React.Component {
         const { DataState, dispatch } = this.props
         this.setState({
             checkedList,
-            checkAll: checkedList === DataState.SubjectTeacherPreview.keyList ? true : false
+            checkAll: checkedList.length === DataState.SubjectTeacherPreview.keyList.length ? true : false
         })
     }
     handleTeacherModalOk = (e) => {

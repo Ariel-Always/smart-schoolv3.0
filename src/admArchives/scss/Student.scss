@@ -80,7 +80,9 @@ $image-url: "../images";
       .content-render {
         margin-top: 16px;
         position: relative;
-
+        .ant-table-thead>tr>th{
+          padding: 0;
+        }
         .table {
           .ant-table-thead {
             th:nth-child(1),
@@ -89,12 +91,17 @@ $image-url: "../images";
               padding: 0;
             }
             th {
-              padding: 0 16px;
+              padding: 0;
             }
+            
           }
+         
           .ant-table-row {
             td:nth-child(2),
             td:nth-child(3) {
+              padding: 16px 0;
+            }
+            td {
               padding: 16px 0;
             }
             td:nth-child(1) {
