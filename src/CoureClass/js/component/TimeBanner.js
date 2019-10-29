@@ -62,12 +62,13 @@ class TimeBanner extends React.Component {
         let GradeID = DataState.GetCoureClassAllMsg.Grade;
         this.setState({
             CancelBtnShow: 'n',
-            keyword: ''
+            keyword: '',
+            searchValue:''
         })
+        // history.push('/Search/' + value.value)
+        // dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.userMsg.SchoolID + '&key=&pageIndex=1&pageSize=10&subjectID=' + SubjectID + '&gradeID=' + GradeID));
 
-        dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.userMsg.SchoolID + '&key=&pageIndex=1&pageSize=10&subjectID=' + SubjectID + '&gradeID=' + GradeID));
-
-
+        history.push('/All' )
     }
     render() {
         const { UIState, DataState } = this.props;
