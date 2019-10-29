@@ -668,7 +668,7 @@ class ScheduleSetting extends Component{
 
                 </div>
 
-                <div className="tap">注:最小起始间隔1分钟</div>
+                <div className="tap">注:两节课之间的最小起始间隔为1分钟</div>
 
             </Modal>
 
@@ -735,7 +735,7 @@ class ScheduleSetting extends Component{
 
                 </div>
 
-                <div className="tap">注:最小起始间隔1分钟</div>
+                <div className="tap">注:两节课之间的最小起始间隔为1分钟</div>
 
             </Modal>
 

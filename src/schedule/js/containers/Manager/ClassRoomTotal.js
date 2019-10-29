@@ -33,6 +33,8 @@ class ClassRoomTotal extends Component{
 
     RoomTypeChange(e){
 
+
+
         const {dispatch} = this.props;
 
         let data = {};
@@ -141,6 +143,8 @@ class ClassRoomTotal extends Component{
     render(){
 
         const { PeriodWeekTerm,SubjectCourseGradeClassRoom,ClassRoomTotal } = this.props;
+
+
 
         return <div className="class-total-content">
 

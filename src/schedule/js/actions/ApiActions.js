@@ -531,7 +531,7 @@ const InsertSchedule =  async ({ SchoolID,SubjectID,WeekNO,WeeDay,ClassHourNO,Te
 
     if (res.StatusCode === 200){
 
-        return res.ErrorCode;
+        return res.ErrCode;
 
     }else{
 
@@ -554,7 +554,7 @@ const SetSubstituteTeacher =  async ({ ClassID,ClassName,UserID,UserType,SchoolI
 
     if (res.StatusCode === 200){
 
-        return res.ErrorCode;
+        return res.ErrCode;
 
     }else{
 
@@ -578,7 +578,7 @@ const ExchangeTeacherSchedule =  async ({ ScheduleID1,ScheduleID2,dispatch}) => 
 
     if (res.StatusCode === 200){
 
-        return res.ErrorCode;
+        return res.ErrCode;
 
     }else{
 
@@ -602,7 +602,7 @@ const BatchEditClassDate =  async ({ ClassDate1,ClassHours1,ClassDate2,ClassHour
 
     if (res.StatusCode === 200){
 
-        return res.ErrorCode;
+        return res.ErrCode;
 
     }else{
 
@@ -626,7 +626,7 @@ const EditClassDateOne =  async ({ ScheduleID,ClassDate1,ClassHourNO1,ClassDate2
 
     if (res.StatusCode === 200){
 
-        return res.ErrorCode;
+        return res.ErrCode;
 
     }else{
 

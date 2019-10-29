@@ -535,9 +535,9 @@ const AddClassHour = (opts) => {
 
                     let PreEndHour = parseInt(EndTimeList[0]),PreEndMin = parseInt(EndTimeList[1]);
 
-                    let StartHour = SupplyZero(PreEndHour + Math.floor((PreEndMin + 1)/60));
+                    let StartHour = SupplyZero(PreEndHour + Math.floor((PreEndMin + 10)/60));
 
-                    let StartMin = SupplyZero((PreEndMin + 1)%60);
+                    let StartMin = SupplyZero((PreEndMin + 10)%60);
 
                     let EndHour = SupplyZero(parseInt(StartHour) + Math.floor((parseInt(StartMin) + 45)/60));
 
@@ -561,9 +561,9 @@ const AddClassHour = (opts) => {
 
                     let PreEndHour = parseInt(EndTimeList[0]),PreEndMin = parseInt(EndTimeList[1]);
 
-                    let StartHour = SupplyZero(PreEndHour + Math.floor((PreEndMin + 1)/60));
+                    let StartHour = SupplyZero(PreEndHour + Math.floor((PreEndMin + 10)/60));
 
-                    let StartMin = SupplyZero((PreEndMin + 1)%60);
+                    let StartMin = SupplyZero((PreEndMin + 10)%60);
 
                     let EndHour = SupplyZero(parseInt(StartHour) + Math.floor((parseInt(StartMin) + 45)/60));
 
@@ -609,9 +609,9 @@ const AddClassHour = (opts) => {
 
                            let PreEndHour = parseInt(EndTimeList[0]),PreEndMin = parseInt(EndTimeList[1]);
 
-                           let StartHour = SupplyZero(PreEndHour + Math.floor((PreEndMin + 1)/60));
+                           let StartHour = SupplyZero(PreEndHour + Math.floor((PreEndMin + 10)/60));
 
-                           let StartMin = SupplyZero((PreEndMin + 1)%60);
+                           let StartMin = SupplyZero((PreEndMin + 10)%60);
 
                            let EndHour = SupplyZero(parseInt(StartHour) + Math.floor((parseInt(StartMin) + 45)/60));
 
@@ -635,9 +635,9 @@ const AddClassHour = (opts) => {
 
                            let PreEndHour = parseInt(EndTimeList[0]),PreEndMin = parseInt(EndTimeList[1]);
 
-                           let StartHour = SupplyZero(PreEndHour + Math.floor((PreEndMin + 1)/60));
+                           let StartHour = SupplyZero(PreEndHour + Math.floor((PreEndMin + 10)/60));
 
-                           let StartMin = SupplyZero((PreEndMin + 1)%60);
+                           let StartMin = SupplyZero((PreEndMin + 10)%60);
 
                            let EndHour = SupplyZero(parseInt(StartHour) + Math.floor((parseInt(StartMin) + 45)/60));
 

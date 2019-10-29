@@ -1103,7 +1103,7 @@ class DropDown extends React.Component {
 
                         </div>
 
-                        <Scrollbars autoHide autoHeight autoHeightMax={scrollWrapperHeight} style={{ width: scrollWrapperWidth }} >
+                        <Scrollbars  autoHeight autoHeightMax={scrollWrapperHeight} style={{ width: scrollWrapperWidth }} >
 
                             <Loading spinning={mutipleOptions && mutipleOptions.dropLoadingShow ? mutipleOptions.dropLoadingShow : false}>
 
@@ -1133,7 +1133,7 @@ class DropDown extends React.Component {
 
                     <Loading spinning={dropLoadingShow ? dropLoadingShow : false}>
 
-                        <Scrollbars autoHide style={{ width: width ? width : 120, height: ClientHeight}}>
+                        <Scrollbars  style={{ width: width ? width : 120, height: ClientHeight}}>
                             {//dropList是否存在？dropList:''
                                 dropList ?
                                     dropList.map((item, key) => {
@@ -2040,7 +2040,7 @@ class DetailsModal extends React.Component {
                             </span>
                             <span className='col-right'>{data.userClass ? data.userClass : <span className='content-null'>未填写</span>}</span>
                         </div>
-                        <div className='row' style={{ display: type !== 'leader'&&type !== 'graduate'&&type !== 'Admin' ? 'block' : 'none' }}>
+                        <div className='row' style={{ display: type !== 'leader'&&type !== 'graduate' ? 'block' : 'none' }}>
                             <span className='col-left'>
                                 {type === 'student'||type==='examine'? '班级' : '所教学科'}
                             </span>
