@@ -449,6 +449,7 @@ const getUnreadLogPreview = (url) => {
     let pageSize = Public.getUrlQueryVariable(url, 'PageSize');
     return (dispatch, getState) => {
         // console.log(getState())
+        dispatch(actions.UpUIState.TableLoadingOpen());
         //url += getState().DataState.LoginUser.UserID
         getData(CONFIG.UserInfoProxy + url, 2).then(res => {
             if (res.StatusCode === '401') {
@@ -460,6 +461,10 @@ const getUnreadLogPreview = (url) => {
                 console.log(json.StatusCode)
             } else if (json.StatusCode === 200) {
                 dispatch({ type: GET_UNREAD_LOG_PREVIEW, data: json.Data, pageIndex: pageIndex, pageSize: pageSize });
+                dispatch(actions.UpUIState.TableLoadingClose());
+                dispatch(actions.UpUIState.RightLoadingClose());
+
+
             }
 
         });
@@ -472,6 +477,8 @@ const getLogRecordPreview = (url) => {
     return (dispatch, getState) => {
         // console.log(getState())
         //url += getState().DataState.LoginUser.UserID
+        dispatch(actions.UpUIState.TableLoadingOpen());
+
         getData(CONFIG.UserInfoProxy + url, 2).then(res => {
             if (res.StatusCode === '401') {
                 console.log('错误码：' + res.StatusCode)
@@ -482,6 +489,8 @@ const getLogRecordPreview = (url) => {
                 console.log(json.StatusCode)
             } else if (json.StatusCode === 200) {
                 dispatch({ type: GET_LOG_RECORD_PREVIEW, data: json.Data, pageIndex: pageIndex, pageSize: pageSize });
+                dispatch(actions.UpUIState.TableLoadingClose());
+
             }
 
         });

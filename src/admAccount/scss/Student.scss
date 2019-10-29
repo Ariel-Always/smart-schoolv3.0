@@ -128,10 +128,24 @@ $image-url: "../images";
             color: #333;
             font-size: 14px;
             cursor: pointer;
+            display: inline-block;
+            width:90px;
+            overflow: hidden; //超出一行文字自动隐藏
+            text-overflow: ellipsis; //文字隐藏后添加省略号
+            white-space: nowrap; //强制不换行
           }
           .name-UserID {
             font-size: 14px;
             color: #999;
+            
+          }
+          .UserID-content{
+            vertical-align: text-top;
+            display: inline-block;
+            max-width:90px;
+            overflow: hidden; //超出一行文字自动隐藏
+            text-overflow: ellipsis; //文字隐藏后添加省略号
+            white-space: nowrap; //强制不换行
           }
           .UserID {
             font-size: 14px;
@@ -140,6 +154,11 @@ $image-url: "../images";
           .UserName {
             font-size: 14px;
             color: #999;
+            display: inline-block;
+            max-width:95px;
+            overflow: hidden; //超出一行文字自动隐藏
+            text-overflow: ellipsis; //文字隐藏后添加省略号
+            white-space: nowrap; //强制不换行
           }
           .Sign {
             display: inline-block;

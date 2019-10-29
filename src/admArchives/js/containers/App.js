@@ -149,6 +149,8 @@ class App extends Component {
                         dispatch(actions.UpDataState.getGraduateGradeClassMsg('/GetGradeClassOfGraduate?SchoolID=' + userMsg.SchoolID));
                     dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?PageIndex=0&PageSize=10&schoolID=' + userMsg.SchoolID))
                 } else if (handleRoute === 'LogDynamic') {
+                    dispatch(actions.UpUIState.RightLoadingOpen());
+
 
                     dispatch(actions.UpDataState.getUnreadLogPreview('/GetUnreadLogToPage?UserType=-1&OperationType=-1&PageIndex=0&PageSize=10&OnlineUserID=' + userMsg.UserID))
                 } else if (handleRoute === 'LogRecord') {
@@ -177,6 +179,9 @@ class App extends Component {
             }
         } else if (route.split('/')[1] === 'ImportFile') {
             //dispatch(actions.UpDataState.getAllUserPreview('/RegisterExamine'));
+            if (route.split('/')[2] !== 'Student' && route.split('/')[2] !== 'Teacher') {
+                history.push('/UserArchives/All')
+            }
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
 
         } else {

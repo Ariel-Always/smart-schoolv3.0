@@ -5,34 +5,42 @@ import UpDataState from '../../actions/UpDataState';
 const UserMsg = (state = {}, actions) => {
     switch (actions.type) {
         case UpDataState.GET_TEACHER_MSG:
-            
+
             let newData = handleData(actions.data)
-            
-            return Object.assign({},state,{ ...newData });
+
+            return Object.assign({}, state, { ...newData });
+        case UpDataState.GET_USER_MSG:
+
+            let Data = handleData(actions.data)
+
+            return Object.assign({}, state, { ...Data });
         default:
             return state;
     }
 };
-function handleData(data){
+function handleData(data) {
     // console.log(data)
+    if(!data&&!(data instanceof Array)){
+        return {}
+    }
     return {
-        userName:data.UserName,
-        userImg:data.PhotoPath,
-        Gende:data.Gender,
-        userText:data.Sign,
-        userID:data.UserID,
-        userGrade:data.GradeName,
-        userClass:data.ClassName,
-        userIDCard:data.IDCardNo,
-        userPhone:data.Telephone,
-        userMail:data.Email,
-        userAddress:data.HomeAddress,
-        titleName:data.TitleName,
-        subjectName:data.SubjectNames,
-        source:data.Source,
-        position:data.Position,
-        sign:data.Sign,
-        userType:data.UserType
+        userName: data.UserName,
+        userImg: data.PhotoPath,
+        Gende: data.Gender,
+        userText: data.Sign,
+        userID: data.UserID,
+        userGrade: data.GradeName,
+        userClass: data.ClassName,
+        userIDCard: data.IDCardNo,
+        userPhone: data.Telephone,
+        userMail: data.Email,
+        userAddress: data.HomeAddress,
+        titleName: data.TitleName,
+        subjectName: data.SubjectNames,
+        source: data.Source,
+        position: data.Position,
+        sign: data.Sign,
+        userType: data.UserType
     }
 }
 export default UserMsg;

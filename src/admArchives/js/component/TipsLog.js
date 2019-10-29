@@ -18,7 +18,7 @@ class TipsLog extends React.Component {
                             return (
                                 <div key={index} className='box-content'>
                                     <div className='content'>
-                                        <span className={`content-text `}>{(child.LogTime?(child.LogTime+' '):'' )+ child.Content}</span>
+                                        <span className={`content-text `}>{child.Content}</span>
                                     </div>
                                     <hr style={{ border: '1px #ccc dotted' }} />
                                 </div>

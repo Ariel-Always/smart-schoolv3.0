@@ -220,6 +220,19 @@ class Graduate extends React.Component {
             searchValue: e.target.value
         })
     }
+     // 取消搜索
+     onCancelSearch = (e) => {
+        const { dispatch } = this.props
+
+        this.setState({
+            CancelBtnShow: 'n',
+            keyword: '',
+            searchValue:''
+
+        })
+        dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex='+(this.state.pagination - 1)+'&PageSize=10'  + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + ''+(this.state.columnKey?'&sortFiled=' + this.state.columnKey:'') + (this.state.order?'&SortType=' + this.state.order:'')));
+
+    }
     //table 多选组
     OnCheckAllChange = (e) => {
         console.log(e)
@@ -285,7 +298,7 @@ class Graduate extends React.Component {
     }
     // 编辑毕业去向
     HandleJobType = (key) => {
-        console.log(key)
+        // console.log(key)
         const { dispatch, DataState } = this.props;
         let data = DataState.GetGraduatePreview.newList[key].handleMsg
         let GraduateMsg = {
@@ -298,7 +311,7 @@ class Graduate extends React.Component {
         dispatch(actions.UpUIState.HandleGraduateModalOpen())
     }
     HandleContact = (key) => {
-        console.log(key)
+        // console.log(key)
         const { dispatch, DataState } = this.props;
         let data = DataState.GetGraduatePreview.newList[key].handleMsg
         let GraduateMsg = {
@@ -342,7 +355,7 @@ class Graduate extends React.Component {
         let data = DataState.GetGraduateMsg.GraduateChangeMsg;
         let visible = UIState.EditModalTipsVisible.GraduateJobTypeVisible;
         let url = '/EditGraduateTrack';
-        if(Public.deepCompare(DataState.GetGraduateMsg.GraduateInitMsg,data)){
+        if(Public.comparisonObject(DataState.GetGraduateMsg.GraduateInitMsg,data)){
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-warn',
                 title: '你还没编辑哦~',
@@ -350,6 +363,7 @@ class Graduate extends React.Component {
                 cancel: this.onAppAlertCancel.bind(this),
                 close: this.onAppAlertClose.bind(this)
             }));
+            return;
         }
         if (visible) {
             return;
@@ -394,7 +408,7 @@ class Graduate extends React.Component {
         let data = DataState.GetGraduateMsg.GraduateContactChangeMsg;
         let visible = UIState.EditModalTipsVisible.EmailTipsVisible||UIState.EditModalTipsVisible.TelephoneTipsVisible||UIState.EditModalTipsVisible.HomeAdressTipsVisible;
         let url = '/EditGraduateContact';
-        if(Public.deepCompare(DataState.GetGraduateMsg.GraduateContactInitMsg,data)){
+        if(Public.comparisonObject(DataState.GetGraduateMsg.GraduateContactInitMsg,data)){
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-warn',
                 title: '你还没编辑哦~',
@@ -402,6 +416,7 @@ class Graduate extends React.Component {
                 cancel: this.onAppAlertCancel.bind(this),
                 close: this.onAppAlertClose.bind(this)
             }));
+            return
         }
         if (visible) {
             return;
@@ -482,14 +497,14 @@ class Graduate extends React.Component {
                                     ref='dropMenuFirst'
                                     onChange={this.StudentDropMenu}
                                     width={120}
-                                    height={72}
+                                    height={96}
                                     dropSelectd={this.state.firstSelect}
                                     dropList={DataState.GetGraduateGradeClassMsg.Grade}
                                 ></DropDown>
                                 <DropDown
                                     ref='dropMenuSecond'
                                     width={120}
-                                    height={72}
+                                    height={96}
                                     style={{ display: this.state.secondDropMenuShow ? 'block' : 'none' }}
                                     dropSelectd={this.state.secondSelect}
                                     dropList={DataState.GetGraduateGradeClassMsg.Class[this.state.firstSelect.value]}
@@ -497,9 +512,11 @@ class Graduate extends React.Component {
                                 ></DropDown>
                             </div>
                             <div className='search-box'>
-                                <Search placeHolder='搜索'
+                                <Search placeHolder='请输入学号或姓名进行搜索'
                                     onClickSearch={this.StudentSearch.bind(this)}
-                                    height={30}
+                                width={250}
+                                height={30}
+                                onCancelSearch={this.onCancelSearch}
                                     Value={this.state.searchValue}
                                     onChange={this.onChangeSearch.bind(this)}
                                     CancelBtnShow={this.state.CancelBtnShow}

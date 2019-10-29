@@ -17,7 +17,7 @@ $image-url: "../images";
     position: relative;
     text-align: left;
     margin: 0 auto;
-    width: 1134px;
+    width: 1114px;
     .Graduate-top {
       position: relative;
       margin: 0;
@@ -77,7 +77,7 @@ $image-url: "../images";
       margin: 6px auto 0;
       position: relative;
       padding-left: 6px;
-      width: 1134px;
+      width: 1114px;
 
       .content-top {
         position: relative;
@@ -230,8 +230,10 @@ $image-url: "../images";
             cursor: pointer;
             text-decoration: underline;
             font-size: 14px;
-            &:hover,
-            :active {
+            &:hover{
+              color: #ff6600;
+            }
+            &:active {
               color: #ff6600;
             }
           }

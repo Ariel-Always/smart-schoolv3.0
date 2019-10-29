@@ -49,7 +49,7 @@ class Student extends React.Component {
                         return (
                             <div className='name-content'>
                                 <span className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.UserID)}>{arr.Name}</span><br />
-                                <span className='name-UserID'>{'(' + arr.UserID + ')'}</span>
+                                <span className='name-UserID'>(<span className='UserID-content'>{arr.UserID }</span>)</span>
                             </div>
                         )
                     }

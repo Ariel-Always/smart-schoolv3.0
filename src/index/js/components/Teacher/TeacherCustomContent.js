@@ -19,19 +19,19 @@ class TeacherCustomContent extends React.Component {
             userMsg: props.LoginUser
         }
 
-        const { dispatch } = props;
-        dispatch(TeacherCustomActions.getCustomData(this.state.activeKey, this.state.userMsg.UserID))
+        const { dispatch,Teacher } = props;
+        dispatch(TeacherCustomActions.getCustomData(this.state.activeKey, this.state.userMsg.UserID,'','S2-English'||Teacher.HeaderSetting.SubjectSelect.id))
     }
 
     // Tab change
     onTabsChange = (key) => {
-        const { dispatch } = this.props;
+        const { dispatch,Teacher } = this.props;
 
         // console.log(key)
         this.setState({
             activeKey: key
         })
-        dispatch(TeacherCustomActions.getCustomData(key, this.state.userMsg.UserID))
+        dispatch(TeacherCustomActions.getCustomData(key,this.state.userMsg.UserID,'','S2-English'||Teacher.HeaderSetting.SubjectSelect.id))
 
     }
 

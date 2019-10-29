@@ -189,6 +189,7 @@ class Teacher extends React.Component {
         this.setState({
             selectSubject: e,
             searchValue: '',
+            keyword:'',
             pagination: 1,
             CancelBtnShow: 'n'
         })
@@ -339,7 +340,11 @@ class Teacher extends React.Component {
                         close: this.onAppAlertClose.bind(this)
                     }));
                 } else if (json.StatusCode === 200) {
-
+                    dispatch(actions.UpUIState.showErrorAlert({
+                        type: 'success',
+                        title: "操作成功",
+                        onHide: this.onAlertWarnHide.bind(this)
+                    }));
                     this.setState({
                         TeacherModalVisible: false
                     })
@@ -455,8 +460,12 @@ class Teacher extends React.Component {
                             close: this.onAppAlertClose.bind(this)
                         }));
                     } else if (json.StatusCode === 200) {
-
-                        console.log(json.Data)
+                        dispatch(actions.UpUIState.showErrorAlert({
+                            type: 'success',
+                            title: "操作成功",
+                            onHide: this.onAlertWarnHide.bind(this)
+                        }));
+                        // console.log(json.Data)
                         this.setState({
                             studentModalVisible: false
                         })
@@ -556,6 +565,11 @@ class Teacher extends React.Component {
             if (json.StatusCode === 400) {
                 console.log('错误码：400' + json)
             } else if (json.StatusCode === 200) {
+                dispatch(actions.UpUIState.showErrorAlert({
+                    type: 'success',
+                    title: "操作成功",
+                    onHide: this.onAlertWarnHide.bind(this)
+                }));
                 this.setState({
                     checkedList: [],
                     checkAll: false
@@ -607,6 +621,13 @@ class Teacher extends React.Component {
             addTeacherModalVisible: true,
             userKey: 'add'
         })
+    }
+    //关闭
+    onAlertWarnHide = () => {
+        const { dispatch } = this.props;
+        //console.log('ddd')
+        dispatch(actions.UpUIState.hideErrorAlert())
+
     }
     //对象深度对比
     deepCompare(x, y) {
@@ -798,13 +819,14 @@ class Teacher extends React.Component {
                                 ref='dropMenuFirst'
                                 onChange={this.TeacherDropMenu.bind(this)}
                                 width={120}
-                                height={72}
+                                height={96}
                                 dropSelectd={this.state.selectSubject}
                                 dropList={DataState.SubjectTeacherMsg.returnData ? DataState.SubjectTeacherMsg.returnData.SubjectList : [{ value: 'all', title: '全部教师' }]}
                             ></DropDown>
 
-                            <Search placeHolder='搜索'
+                            <Search placeHolder='请输入工号或姓名进行搜索'
                                 onClickSearch={this.TeacherSearch.bind(this)}
+                                width={250}
                                 height={30}
                                 Value={this.state.searchValue}
                                 onCancelSearch={this.onCancelSearch}
