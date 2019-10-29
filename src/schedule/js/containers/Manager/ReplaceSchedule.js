@@ -270,7 +270,7 @@ class ReplaceSchedule extends Component{
 
     ];
 
-
+    console.log(classList);
 
     return (
 

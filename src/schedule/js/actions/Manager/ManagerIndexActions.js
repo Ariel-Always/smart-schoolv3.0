@@ -192,7 +192,7 @@ const STTPageInit = () => {
 
                               return {
 
-                                  id:i.Teacher,
+                                  id:i.TeacherID,
 
                                   name:i.TeacherName
 

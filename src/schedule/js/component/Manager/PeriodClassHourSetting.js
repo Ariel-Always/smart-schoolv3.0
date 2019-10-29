@@ -38,17 +38,11 @@ class PeriodClassHourSetting extends Component{
 
         const {
 
-            IsUnify,
+            IsUnify, PeriodID, PeriodName, ClassHourList,
 
-            PeriodID,
+            AdjustClassHour, AddClassHour, EditClassHour,
 
-            PeriodName,
-
-            ClassHourList,
-
-            AdjustClassHour,
-
-            AddClassHour
+            DelClassHour
 
         } = this.props;
 
@@ -87,13 +81,13 @@ class PeriodClassHourSetting extends Component{
 
                                             <div className="class-hour-item">
 
-                                                <div className="class-hour-name">第{item.ClassHourNO}节</div>
+                                                <div className="class-hour-name">{item.ClassHourName}</div>
 
                                                 <div className="class-hour-time">{item.StartTime}-{item.EndTime}</div>
 
-                                                <button className="class-hour-edit"></button>
+                                                <button className="class-hour-edit" onClick={()=>EditClassHour({Type:item.ClassHourType,IsUnify,PeriodID,StartTime:item.StartTime,EndTime:item.EndTime,ClassHourNO:item.ClassHourNO,ClassHourName:item.ClassHourName})}></button>
 
-                                                <button className="class-hour-del"></button>
+                                                <button className="class-hour-del" onClick={()=>DelClassHour({PeriodID,ClassHourNO:item.ClassHourNO})}></button>
 
                                             </div>
 
@@ -103,7 +97,7 @@ class PeriodClassHourSetting extends Component{
 
                             }
 
-                            <div className="class-hour-item-wrapper add" onClick={()=>AddClassHour({IsUnify,PeriodID})}>
+                            <div className="class-hour-item-wrapper add" onClick={()=>AddClassHour({IsUnify,PeriodID,type:'morning'})}>
 
                                 <div className="class-hour-item">
 
@@ -131,13 +125,13 @@ class PeriodClassHourSetting extends Component{
 
                                             <div className="class-hour-item">
 
-                                                <div className="class-hour-name">第{item.ClassHourNO}节</div>
+                                                <div className="class-hour-name">{item.ClassHourName}</div>
 
                                                 <div className="class-hour-time">{item.StartTime}-{item.EndTime}</div>
 
-                                                <button className="class-hour-edit"></button>
+                                                <button className="class-hour-edit" onClick={()=>EditClassHour({Type:item.ClassHourType,IsUnify,PeriodID,StartTime:item.StartTime,EndTime:item.EndTime,ClassHourNO:item.ClassHourNO,ClassHourName:item.ClassHourName})}></button>
 
-                                                <button className="class-hour-del"></button>
+                                                <button className="class-hour-del" onClick={()=>DelClassHour({PeriodID,ClassHourNO:item.ClassHourNO})}></button>
 
                                             </div>
 
@@ -147,7 +141,7 @@ class PeriodClassHourSetting extends Component{
 
                             }
 
-                            <div className="class-hour-item-wrapper add">
+                            <div className="class-hour-item-wrapper add" onClick={()=>AddClassHour({IsUnify,PeriodID,type:'afternoon'})}>
 
                                 <div className="class-hour-item">
 

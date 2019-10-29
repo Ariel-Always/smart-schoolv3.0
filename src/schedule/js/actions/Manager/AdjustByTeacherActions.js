@@ -293,7 +293,7 @@ const teacherDropChange = (info) => {
 
                             id:item.ClassID,
 
-                            name:item.ClasstName
+                            name:item.ClassName
 
                         }
 
@@ -327,7 +327,7 @@ const teacherDropChange = (info) => {
 
                         id:item.ClassID,
 
-                        name:item.ClasstName
+                        name:item.ClassName
 
                     }
 
@@ -2013,9 +2013,9 @@ const changeTimeNewTimeChange = (date) => {
 
                     dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"classHourListChange",value:ClassHour}});
 
-                    dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"classHourAbled"}});
-
                 }
+
+                dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"classHourAbled"}});
 
             });
 
@@ -3426,6 +3426,8 @@ const ModalCommit = () => {
 
                  }
 
+                  dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
+
               });
 
           }
@@ -3542,6 +3544,8 @@ const ModalCommit = () => {
 
                  }
 
+                  dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
+
               });
 
 
@@ -3635,6 +3639,8 @@ const ModalCommit = () => {
 
                   }
 
+                  dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
+
               });
 
 
@@ -3715,6 +3721,8 @@ const ModalCommit = () => {
                       dispatch(AppAlertActions.alertSuccess({title:"停课成功！"}))
 
                   }
+
+                  dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
 
               })
 

@@ -107,6 +107,9 @@ class Teacher extends Component{
         const {SubjectTeacherTeacherSchedule,SubjectCourseGradeClassRoom} = Manager;
 
         let ItemWeek = [];
+
+        console.log(SubjectTeacherTeacherSchedule);
+
         //封装获取到的周次
         if (PeriodWeekTerm.ItemWeek) {
 

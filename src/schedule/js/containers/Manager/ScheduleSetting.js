@@ -15,6 +15,9 @@ import $ from 'jquery';
 import { connect } from 'react-redux';
 
 
+import ApiActions from "../../actions/ApiActions";
+
+
 class ScheduleSetting extends Component{
 
     constructor(props){
@@ -169,6 +172,226 @@ class ScheduleSetting extends Component{
     }
 
 
+    AddClassHourOk(){
+
+        const { dispatch } = this.props;
+
+        dispatch(SSActions.AddClassHourOk());
+
+    }
+
+
+    //隐藏添加课时弹窗
+
+    AddClassHourHide(){
+
+        const  { dispatch } = this.props;
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_MODAL_HIDE});
+
+    }
+
+
+    //开始-小时变化
+    AddStartHourChange(e) {
+
+        const { dispatch } = this.props;
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_START_HOUR_CHANGE,data:e.target.value});
+
+    }
+
+
+    //开始-分钟变化
+    AddStartMinChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_START_MIN_CHANGE,data:e.target.value});
+
+    }
+
+
+    //结束-小时变化
+    AddEndHourChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_END_HOUR_CHANGE,data:e.target.value});
+
+    }
+
+
+    //结束-分钟变化
+    AddEndMinChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_ADD_CLASSHOUR_END_MIN_CHANGE,data:e.target.value});
+
+    }
+
+
+    //编辑OK
+
+    EditClassHour(opts){
+
+        const { dispatch } = this.props;
+
+        const { Type,IsUnify,PeriodID,ClassHourName,StartTime,EndTime,ClassHourNO } = opts;
+
+        let StartHour = StartTime.split(':')[0];
+
+        let StartMin = StartTime.split(':')[1];
+
+        let EndHour = EndTime.split(':')[0];
+
+        let EndMin = EndTime.split(':')[1];
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_MODAL_SHOW,data:{ClassHourNO,Type,OldStartTime:StartTime,OldEndTime:EndTime,IsUnify,PeriodID,ClassHourName,StartHour,EndHour,StartMin,EndMin}})
+
+    }
+
+    EditClassHourOk(){
+
+        const { dispatch } = this.props;
+
+        dispatch(SSActions.EditClassHourOk());
+
+    }
+
+    EditClassHourHide(){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_MODAL_HIDE})
+
+    }
+
+
+    //开始-小时变化
+    EditStartHourChange(e) {
+
+        const { dispatch } = this.props;
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_START_HOUR_CHANGE,data:e.target.value});
+
+    }
+
+
+    //开始-分钟变化
+    EditStartMinChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_START_MIN_CHANGE,data:e.target.value});
+
+    }
+
+
+    //结束-小时变化
+    EditEndHourChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_END_HOUR_CHANGE,data:e.target.value});
+
+    }
+
+
+    //结束-分钟变化
+    EditEndMinChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_END_MIN_CHANGE,data:e.target.value});
+
+    }
+
+    //删除课时
+
+    DelClassHour(opts){
+
+        const { LoginUser,dispatch } = this.props;
+
+
+        const { SchoolID } = LoginUser;
+
+        const { PeriodID,ClassHourNO } = opts;
+
+        dispatch(AppAlertActions.alertQuery({title:"您确定要删除该课时么？",ok:()=>this.DelClassHourOk.bind(this,{ PeriodID,ClassHourNO,SchoolID,dispatch })}))
+
+    }
+
+    DelClassHourOk({ PeriodID,ClassHourNO,SchoolID,dispatch }){
+
+        ApiActions.DeleteClassHourInfo({SchoolID,ClassHourNO,PeriodID,dispatch}).then(data=>{
+
+            if (data===0){
+
+                dispatch({type:AppAlertActions.APP_ALERT_HIDE});
+
+                dispatch(AppAlertActions.alertSuccess({title:"删除成功！"}));
+
+                dispatch(SSActions.PageUpdate());
+
+            }
+
+        })
+
+    }
+
+    //点击关闭和开启
+    LinkageChange(){
+
+        const { dispatch } = this.props;
+
+        dispatch(SSActions.LinkageChange());
+    }
+
+    //点击切换状态
+
+    SwitchTimeEditShow(){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_OPEN});
+
+    }
+
+    SwitchTimeEditClose(){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_CANCEL});
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_CLOSE});
+
+
+    }
+
+
+    //课表联动输入变化
+
+    LinkageInputChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_LINKAGE_INPUT_CHANGE,data:e.target.value});
+
+
+    }
+
+    //课表联动输入确定
+
+    SwitchTimeEditOk(){
+
+        const { dispatch } = this.props;
+
+        dispatch(SSActions.SwitchTimeEditOk());
+
+    }
+
 
 
     render(){
@@ -179,7 +402,9 @@ class ScheduleSetting extends Component{
 
             SettingType, MultiplePeriod, SettingByPeriod, SettingByUnify, IsEnable, Times,
 
-            LinkageEditStatus, AdjustClassHourModal,AddClassHourModal
+            LinkageEditStatus, AdjustClassHourModal,AddClassHourModal,EditTimes,
+
+            EditClassHourModal
 
         } = ScheduleSetting;
 
@@ -231,6 +456,10 @@ class ScheduleSetting extends Component{
 
                             AddClassHour={this.AddClassHour.bind(this)}
 
+                            EditClassHour={this.EditClassHour.bind(this)}
+
+                            DelClassHour={this.DelClassHour.bind(this)}
+
                         >
 
                     </PeriodClassHourSetting>
@@ -260,7 +489,11 @@ class ScheduleSetting extends Component{
                                                            AdjustClassHour={this.AdjustClassHour.bind(this)}
 
                                                            AddClassHour={this.AddClassHour.bind(this)}
-                            >
+
+                                                           EditClassHour={this.EditClassHour.bind(this)}
+
+                                                           DelClassHour={this.DelClassHour.bind(this)}>
+
 
 
 
@@ -285,7 +518,7 @@ class ScheduleSetting extends Component{
 
                 <span className="title">当前状态:</span>
 
-                <button className={`linkage-switch ${IsEnable===1?'on':''}`}>{IsEnable===1?'已开启':'已关闭'}</button>
+                <button className={`linkage-switch ${IsEnable===1?'on':''}`} onClick={this.LinkageChange.bind(this)}>{IsEnable===1?'已开启':'已关闭'}</button>
 
                 <span className="title">自动提前开机时间:</span>
 
@@ -293,7 +526,7 @@ class ScheduleSetting extends Component{
 
                         LinkageEditStatus?
 
-                            <Input />
+                            <Input value={EditTimes} type="number" onChange={this.LinkageInputChange.bind(this)}/>
 
                             :
 
@@ -312,25 +545,23 @@ class ScheduleSetting extends Component{
 
                                 <React.Fragment>
 
-                                    <button className="save">确定</button>
+                                    <button className="save" onClick={this.SwitchTimeEditOk.bind(this)}>确定</button>
 
 
-                                    <button className="cancel">取消</button>
+                                    <button className="cancel" onClick={this.SwitchTimeEditClose.bind(this)}>取消</button>
 
 
                                 </React.Fragment>
 
                                 :
 
-                                <button className="edit">编辑</button>
+                                <button className="edit" onClick={this.SwitchTimeEditShow.bind(this)}>编辑</button>
 
                         :''
 
                 }
 
             </div>
-
-
 
         </div>
 
@@ -366,7 +597,7 @@ class ScheduleSetting extends Component{
 
                         </RadioGroup>
 
-                        <Input maxLength={2} disabled={MorningInputDisabled} value={MorningInputDisabled?'':MorningTime} onChange={this.AdjustMorningInputChange.bind(this)}/>
+                        <Input maxLength={2} min={0} disabled={MorningInputDisabled} value={MorningInputDisabled?'':MorningTime} onChange={this.AdjustMorningInputChange.bind(this)}/>
 
                     </div>
 
@@ -382,7 +613,7 @@ class ScheduleSetting extends Component{
 
                         </RadioGroup>
 
-                        <Input maxLength={2} disabled={AfternoonInputDisabled} value={AfternoonInputDisabled?'':AfternoonTime} onChange={this.AdjustAfternoonInputChange.bind(this)}/>
+                        <Input maxLength={2} min={0} disabled={AfternoonInputDisabled} value={AfternoonInputDisabled?'':AfternoonTime} onChange={this.AdjustAfternoonInputChange.bind(this)}/>
 
                     </div>
 
@@ -404,12 +635,107 @@ class ScheduleSetting extends Component{
 
                    destroyOnClose={true}
 
-                   //onOk={this.AdjustClassHourOk.bind(this)}
+                   onOk={this.AddClassHourOk.bind(this)}
 
-                   //onCancel={this.AdjustClassHourHide.bind(this)}
+                   onCancel={this.AddClassHourHide.bind(this)}
                 >
 
+                <div className="start-time-wrapper">
 
+                    <span className="title">开始时间:</span>
+
+                    <Input onChange={this.AddStartHourChange.bind(this)} className="start-hour" type="number" maxLength={2} min={0} max={23} value={AddClassHourModal.StartHour}/>
+
+                    <span className="unit">时</span>
+
+                    <Input onChange={this.AddStartMinChange.bind(this)} className="start-min" type="number" maxLength={2} min={0} max={59} value={AddClassHourModal.StartMin}/>
+
+                    <span className="unit">分</span>
+
+                </div>
+
+                <div className="end-time-wrapper">
+
+                    <span className="title">结束时间:</span>
+
+                    <Input onChange={this.AddEndHourChange.bind(this)} className="end-hour" type="number" maxLength={2} min={0} max={23} value={AddClassHourModal.EndHour}/>
+
+                    <span className="unit">时</span>
+
+                    <Input onChange={this.AddEndMinChange.bind(this)} className="end-min" type="number" maxLength={2} min={0} max={59} value={AddClassHourModal.EndMin}/>
+
+                    <span className="unit">分</span>
+
+                </div>
+
+                <div className="tap">注:最小起始间隔1分钟</div>
+
+            </Modal>
+
+            <Modal type={1} className="edit-class-hour-modal"
+
+                   title="修改上课时间"
+
+                   visible={EditClassHourModal.Show}
+
+                   width={540}
+
+                   bodyStyle={{height:216}}
+
+                   mask={true}
+
+                   maskClosable={false}
+
+                   destroyOnClose={true}
+
+                   onOk={this.EditClassHourOk.bind(this)}
+
+                   onCancel={this.EditClassHourHide.bind(this)}
+            >
+
+                <div className="class-time-wrapper">
+
+                    <span className="title">节次:</span>
+
+                    <span className="class-hour-no">
+
+                        <span className="time">{EditClassHourModal.Type==='morning'?'上午':'下午'}{EditClassHourModal.ClassHourName}</span>
+
+                        <span className="time-area">({EditClassHourModal.OldStartTime}-{EditClassHourModal.OldEndTime})</span>
+
+                    </span>
+
+                </div>
+
+                <div className="start-time-wrapper">
+
+                    <span className="title">开始时间:</span>
+
+                    <Input onChange={this.EditStartHourChange.bind(this)} className="start-hour" type="number" maxLength={2} min={0} max={23} value={EditClassHourModal.StartHour}/>
+
+                    <span className="unit">时</span>
+
+                    <Input onChange={this.EditStartMinChange.bind(this)} className="start-min" type="number" maxLength={2} min={0} max={59} value={EditClassHourModal.StartMin}/>
+
+                    <span className="unit">分</span>
+
+                </div>
+
+                <div className="end-time-wrapper">
+
+                    <span className="title">结束时间:</span>
+
+                    <Input onChange={this.EditEndHourChange.bind(this)} className="end-hour" type="number" maxLength={2} min={0} max={23} value={EditClassHourModal.EndHour}/>
+
+                    <span className="unit">时</span>
+
+                    <Input onChange={this.EditEndMinChange.bind(this)} className="end-min" type="number" maxLength={2} min={0} max={59} value={EditClassHourModal.EndMin}/>
+
+                    <span className="unit">分</span>
+
+                </div>
+
+                <div className="tap">注:最小起始间隔1分钟</div>
 
             </Modal>
 
@@ -421,13 +747,13 @@ class ScheduleSetting extends Component{
 
 const  mapStateToProps = (state) => {
 
-    let { Manager } = state;
+    let { Manager,LoginUser } = state;
 
     let { ScheduleSetting } = Manager;
 
     return {
 
-        ScheduleSetting
+        ScheduleSetting,LoginUser
 
     }
 
