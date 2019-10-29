@@ -273,9 +273,9 @@ const GetAllPeriodAndClassHours = async ({SchoolID,dispatch}) => {
 
         2,
 
-        //CONFIG.ScheduleProxy);
+        CONFIG.ScheduleProxy);
 
-    'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+    //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
 
     if (res.StatusCode === 200){
 
@@ -741,8 +741,8 @@ const UpdateClassHourTimeInstall = async ({ SchoolID,PeriodID='',MorningTimes=0,
         SchoolID,PeriodID,MorningTimes,AfternoonTimes
 
     },2,
-        //CONFIG.ScheduleProxy);
-        'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+        CONFIG.ScheduleProxy);
+        //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
 
     if (res.StatusCode === 200){
 
@@ -765,8 +765,8 @@ const InsertClassHourInfo = async ({ SchoolID,OrderNO,EndTime,StartTime,PeriodID
             SchoolID,OrderNO,EndTime,StartTime,PeriodID,ClasssHourType,CreateType
 
         },2,
-        //CONFIG.ScheduleProxy);
-        'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+        CONFIG.ScheduleProxy);
+        //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
 
     if (res.StatusCode === 200){
 
@@ -790,8 +790,8 @@ const UpdateClassHourInfo = async ({ SchoolID,ClassHourNO,NewClassHourNO,EndTime
             SchoolID,ClassHourNO,NewClassHourNO,EndTime,StartTime,PeriodID,ClasssHourType,CreateType
 
         },2,
-        //CONFIG.ScheduleProxy);
-        'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+        CONFIG.ScheduleProxy);
+        //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
 
     if (res.StatusCode === 200){
 
@@ -815,8 +815,8 @@ const DeleteClassHourInfo = async ({ SchoolID,ClassHourNO,PeriodID='',dispatch})
             SchoolID,ClassHourNO,PeriodID
 
         },2,
-        //CONFIG.ScheduleProxy);
-        'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+        CONFIG.ScheduleProxy);
+        //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
 
     if (res.StatusCode === 200){
 
@@ -840,8 +840,8 @@ const SetScheduleIsAutomatic = async ({ SchoolID,IsEnable,Times,dispatch}) => {
             SchoolID,IsEnable,Times
 
         },2,
-        //CONFIG.ScheduleProxy);
-        'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+        CONFIG.ScheduleProxy);
+        //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
 
     if (res.StatusCode === 200){
 

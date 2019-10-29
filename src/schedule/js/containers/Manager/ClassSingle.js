@@ -179,7 +179,7 @@ class ClassSingle extends Component{
 
                             <span className="teacher-name">{ClassSingle.PickClass}</span>
 
-                            <span className="course-count"> (本周共<span className="count">{ClassSingle.ScheduleCount}</span>节课)</span>
+                            {/*<span className="course-count"> (本周共<span className="count">{ClassSingle.ScheduleCount}</span>节课)</span>*/}
 
                         </div>
 

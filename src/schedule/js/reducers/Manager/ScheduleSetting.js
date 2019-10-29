@@ -527,6 +527,25 @@ const ScheduleSetting = (state={
 
             };
 
+        case SSActions.MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_OPEN:
+
+            return { ...state,LinkageEditStatus:true };
+
+        case SSActions.MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_CLOSE:
+
+            return { ...state,LinkageEditStatus:false };
+
+        case SSActions.MANAGER_SCHEDULE_SETTING_LINKAGE_INPUT_CHANGE:
+
+            return { ...state,EditTimes:actions.data };
+
+        case SSActions.MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_CANCEL:
+
+            return { ...state,EditTimes:state.Times };
+
+        case SSActions.MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_OK:
+
+            return {...state,Times:state.EditTimes};
 
         default:
 

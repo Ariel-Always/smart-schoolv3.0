@@ -355,7 +355,40 @@ class ScheduleSetting extends Component{
 
         const { dispatch } = this.props;
 
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_OPEN});
 
+    }
+
+    SwitchTimeEditClose(){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_CANCEL});
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_CLOSE});
+
+
+    }
+
+
+    //课表联动输入变化
+
+    LinkageInputChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_LINKAGE_INPUT_CHANGE,data:e.target.value});
+
+
+    }
+
+    //课表联动输入确定
+
+    SwitchTimeEditOk(){
+
+        const { dispatch } = this.props;
+
+        dispatch(SSActions.SwitchTimeEditOk());
 
     }
 
@@ -369,7 +402,7 @@ class ScheduleSetting extends Component{
 
             SettingType, MultiplePeriod, SettingByPeriod, SettingByUnify, IsEnable, Times,
 
-            LinkageEditStatus, AdjustClassHourModal,AddClassHourModal,
+            LinkageEditStatus, AdjustClassHourModal,AddClassHourModal,EditTimes,
 
             EditClassHourModal
 
@@ -493,7 +526,7 @@ class ScheduleSetting extends Component{
 
                         LinkageEditStatus?
 
-                            <Input />
+                            <Input value={EditTimes} type="number" onChange={this.LinkageInputChange.bind(this)}/>
 
                             :
 
@@ -512,10 +545,10 @@ class ScheduleSetting extends Component{
 
                                 <React.Fragment>
 
-                                    <button className="save">确定</button>
+                                    <button className="save" onClick={this.SwitchTimeEditOk.bind(this)}>确定</button>
 
 
-                                    <button className="cancel">取消</button>
+                                    <button className="cancel" onClick={this.SwitchTimeEditClose.bind(this)}>取消</button>
 
 
                                 </React.Fragment>

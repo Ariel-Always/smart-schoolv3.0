@@ -54,6 +54,17 @@ const MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_END_MIN_CHANGE = 'MANAGER_SCHEDULE
 
 const MANAGER_SCHEDULE_SETTING_SET_SWITCH_CHANGE = 'MANAGER_SCHEDULE_SETTING_SET_SWITCH_CHANGE';
 
+const MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_OPEN = 'MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_OPEN';
+
+const MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_CLOSE = 'MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_CLOSE';
+
+const MANAGER_SCHEDULE_SETTING_LINKAGE_INPUT_CHANGE = 'MANAGER_SCHEDULE_SETTING_LINKAGE_INPUT_CHANGE';
+
+const MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_CANCEL = 'MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_CANCEL';
+
+const MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_OK = 'MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_OK';
+
+
 
 
 const PageInit = ({SchoolID}) => {
@@ -122,9 +133,11 @@ const PageInit = ({SchoolID}) => {
 
                             SettingByPeriod:{PeriodSettingList},
 
-                            Times:data.Times,
+                            Times:data.PreStartMinute,
 
                             IsEnable:data.IsEnable,
+
+                            EditTimes:data.PreStartMinute,
 
                             AMLimit
 
@@ -176,9 +189,11 @@ const PageInit = ({SchoolID}) => {
 
                             SettingByUnify:{ClassHourList},
 
-                            Times:data.Times,
+                            Times:data.PreStartMinute,
 
                             IsEnable:data.IsEnable,
+
+                            EditTimes:data.PreStartMinute,
 
                             AMLimit
 
@@ -262,9 +277,11 @@ const PageUpdate = () => {
 
                             SettingByPeriod:{PeriodSettingList},
 
-                            Times:data.Times,
+                            Times:data.PreStartMinute,
 
                             IsEnable:data.IsEnable,
+
+                            EditTimes:data.PreStartMinute,
 
                             AMLimit
 
@@ -316,9 +333,11 @@ const PageUpdate = () => {
 
                             SettingByUnify:{ClassHourList},
 
-                            Times:data.Times,
+                            Times:data.PreStartMinute,
 
                             IsEnable:data.IsEnable,
+
+                            EditTimes:data.PreStartMinute,
 
                             AMLimit
 
@@ -691,9 +710,7 @@ const AddClassHourOk = () => {
 
                 if (SortResult.ErrorCode===0){
 
-                    let SwitchName = '';
-
-                    switch (SortResult.ClassHourNO) {
+                    /*switch (SortResult.ClassHourNO) {
 
                         case 1:
 
@@ -795,9 +812,9 @@ const AddClassHourOk = () => {
 
                             return;
 
-                    }
+                    }*/
 
-                    let ClassHourName = `第${SwitchName}节`;
+                    let ClassHourName = `第${SortResult.ClassHourNO}节`;
 
                    ApiActions.InsertClassHourInfo({
 
@@ -836,9 +853,7 @@ const AddClassHourOk = () => {
 
                 if (SortResult.ErrorCode===0){
 
-                    let SwitchName = '';
-
-                    switch (SortResult.ClassHourNO) {
+                   /* switch (SortResult.ClassHourNO) {
 
                         case 1:
 
@@ -940,9 +955,9 @@ const AddClassHourOk = () => {
 
                             return;
 
-                    }
+                    }*/
 
-                    let ClassHourName = `第${SwitchName}节`;
+                    let ClassHourName = `第${SortResult.ClassHourNO}节`;
 
                     ApiActions.InsertClassHourInfo({
 
@@ -1377,7 +1392,51 @@ const LinkageChange = () => {
 
 };
 
+//输入点击OK
 
+const SwitchTimeEditOk = () => {
+
+    return (dispatch,getState) => {
+
+        const { SchoolID } = getState().LoginUser;
+
+        const { EditTimes,Times,IsEnable } = getState().Manager.ScheduleSetting;
+
+        if (!(/(^[1-9]\d*$)/.test(EditTimes))){
+
+            dispatch(AppAlertActions.alertWarn({title:"输入格式不正确！"}));
+
+            dispatch({type:MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_CANCEL});
+
+        }else {
+
+            if (Times===EditTimes){
+
+                dispatch(AppAlertActions.alertWarn({title:"没有任何修改！"}));
+
+            }else{
+
+                ApiActions.SetScheduleIsAutomatic({SchoolID,IsEnable,Times:EditTimes,dispatch}).then(data=>{
+
+                    if (data===0){
+
+                        dispatch(AppAlertActions.alertSuccess({title:"设置成功！"}));
+
+                        dispatch({type:MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_OK});
+
+                        dispatch({type:MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_CLOSE});
+
+                    }
+
+                })
+
+            }
+
+        }
+
+    }
+
+};
 
 
 
@@ -1604,6 +1663,16 @@ export default {
 
     MANAGER_SCHEDULE_SETTING_SET_SWITCH_CHANGE,
 
+    MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_OPEN,
+
+    MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_CLOSE,
+
+    MANAGER_SCHEDULE_SETTING_LINKAGE_INPUT_CHANGE,
+
+    MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_CANCEL,
+
+    MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_OK,
+
     PageInit,
 
     SettingTypeSitch,
@@ -1620,6 +1689,8 @@ export default {
 
     PageUpdate,
 
-    LinkageChange
+    LinkageChange,
+
+    SwitchTimeEditOk
 
 };
