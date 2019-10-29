@@ -14,6 +14,8 @@ import DoubleSingleTable from "../../component/DoubleSingleTable";
 
 import $ from 'jquery';
 
+import ComPageInit from "../../actions/ComPageInit";
+
 class Subject extends Component{
 
     constructor(props) {
@@ -22,7 +24,7 @@ class Subject extends Component{
 
         const {PeriodWeekTerm,dispatch} = this.props;
 
-        dispatch(TeacherIndexActions.STSPageInit());
+        ComPageInit(dispatch,TeacherIndexActions.STSPageInit());
 
     }
 

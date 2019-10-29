@@ -15,6 +15,8 @@ import $ from "jquery";
 
 import DoubleSingleTable from "../../component/DoubleSingleTable";
 
+import ComPageInit from "../../actions/ComPageInit";
+
 
 class ClassRoomTotal extends Component{
 
@@ -24,7 +26,8 @@ class ClassRoomTotal extends Component{
 
         const {dispatch} = this.props;
 
-        dispatch(ManagerIndexActions.ClassRoomTotalInit());
+        ComPageInit(dispatch,ManagerIndexActions.ClassRoomTotalInit());
+
 
     }
 

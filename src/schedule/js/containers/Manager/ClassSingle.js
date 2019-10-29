@@ -18,6 +18,8 @@ import SingleDoubleTable from "../../component/SingleDoubleTable";
 
 import OptionalClassModal from "../../component/OptionalClassModal";
 
+import ComPageInit from "../../actions/ComPageInit";
+
 
 class ClassSingle extends Component{
 
@@ -27,7 +29,7 @@ class ClassSingle extends Component{
 
         const {dispatch} = props;
 
-        dispatch(ManagerIndexActions.ClassSingleInit());
+        ComPageInit(dispatch,ManagerIndexActions.ClassSingleInit());
 
     }
 

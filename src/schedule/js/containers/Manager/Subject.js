@@ -6,6 +6,8 @@ import STSAction from '../../actions/Manager/SubjectTeacherScheduleActions';
 
 import ManagerIndexActions from '../../actions/Manager/ManagerIndexActions';
 
+import ComPageInit from '../../actions/ComPageInit';
+
 import TermPick from '../../component/TermPick';
 
 import DoubleSingleTable from '../../component/DoubleSingleTable';
@@ -22,7 +24,7 @@ class Subject extends Component{
 
         const {PeriodWeekTerm,dispatch} = this.props;
 
-        dispatch(ManagerIndexActions.STSPageInit());
+        ComPageInit(dispatch,ManagerIndexActions.STSPageInit());
 
     }
     //选择不同的学科
