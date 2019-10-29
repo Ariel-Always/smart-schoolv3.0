@@ -331,7 +331,7 @@ class SelectStudent extends React.Component {
                                     </Scrollbars>
                                 </ul>
                             </Loading>
-                        </div>):<Empty type='4' noTitle style={{marginTop:50+'%',transform:translateY(-50+'%')}}></Empty>}
+                        </div>):<Empty type='4' noTitle style={{marginTop:50+'%',transform:'translateY(-50%)'}}></Empty>}
                     </Loading>
 
                 </div>
