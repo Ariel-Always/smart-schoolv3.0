@@ -14,6 +14,8 @@ import TeacherIndexActions from "../../actions/Teacher/TeacherIndexActions";
 
 import STTActions from '../../actions/Teacher/SubjectTeacherTeacherActions';
 
+import ComPageInit from "../../actions/ComPageInit";
+
 
 class Teacher extends Component{
 
@@ -23,7 +25,7 @@ class Teacher extends Component{
 
         const {dispatch} = props;
 
-        dispatch(TeacherIndexActions.STTPageInit());
+        ComPageInit(dispatch,TeacherIndexActions.STTPageInit());
 
     }
 

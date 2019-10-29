@@ -16,6 +16,8 @@ import {Loading} from "../../../../common";
 
 import SingleDoubleTable from "../../component/SingleDoubleTable";
 
+import ComPageInit from "../../actions/ComPageInit";
+
 
 class ClassRoomSingle extends Component{
 
@@ -25,7 +27,7 @@ class ClassRoomSingle extends Component{
 
         const {dispatch} = props;
 
-        dispatch(ManagerIndexActions.ClassRoomSingleInit());
+        ComPageInit(dispatch,ManagerIndexActions.ClassRoomSingleInit());
 
     }
 

@@ -8,6 +8,8 @@ import LeftMenu from '../../component/LeftMenu';
 
 import { Loading } from "../../../../common";
 
+import ComPageInit from '../../actions/ComPageInit';
+
 import SingleDoubleTable from '../../component/SingleDoubleTable';
 
 import ManagerIndexActions from "../../actions/Manager/ManagerIndexActions";
@@ -23,7 +25,7 @@ class Teacher extends Component{
 
         const {dispatch} = props;
 
-        dispatch(ManagerIndexActions.STTPageInit());
+        ComPageInit(dispatch,ManagerIndexActions.STTPageInit());
 
     }
 

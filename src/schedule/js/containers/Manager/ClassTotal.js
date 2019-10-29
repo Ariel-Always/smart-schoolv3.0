@@ -9,6 +9,8 @@ import ManagerIndexActions from "../../actions/Manager/ManagerIndexActions";
 
 import CTActions from '../../actions/Manager/ClassTotalActions';
 
+import ComPageInit from '../../actions/ComPageInit';
+
 import TermPick from "../../component/TermPick";
 
 import $ from "jquery";
@@ -24,7 +26,7 @@ class ClassTotal extends Component{
 
         const {dispatch} = this.props;
 
-        dispatch(ManagerIndexActions.ClassTotalInit());
+        ComPageInit(dispatch,ManagerIndexActions.ClassTotalInit());
 
     }
 
