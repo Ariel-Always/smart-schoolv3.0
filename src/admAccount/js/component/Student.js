@@ -49,7 +49,7 @@ class Student extends React.Component {
                         return (
                             <div className='name-content'>
                                 <span className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.UserID)}>{arr.Name}</span><br />
-                                <span className='name-UserID'>{'(' + arr.UserID + ')'}</span>
+                                <span className='name-UserID'>(<span className='UserID-content'>{arr.UserID }</span>)</span>
                             </div>
                         )
                     }
@@ -64,7 +64,7 @@ class Student extends React.Component {
                     sorter: true,
                     render: ShortName => {
                         return (
-                            <span className='UserName'>{ShortName}</span>
+                            <span className='UserName'>{ShortName?ShortName:'--'}</span>
                         )
                     }
                 },
@@ -76,7 +76,7 @@ class Student extends React.Component {
                     key: 'Sign',
                     render: Sign => {
                         return (
-                            <span className='Sign' title={Sign}>{Sign}</span>
+                            <span className='Sign' title={Sign}>{Sign?Sign:'--'}</span>
                         )
                     }
                 },
@@ -318,7 +318,7 @@ class Student extends React.Component {
         const { DataState, dispatch } = this.props;
         this.setState({
             checkedList,
-            checkAll: checkedList === DataState.GradeStudentPreview.keyList ? true : false
+            checkAll: checkedList.length === DataState.GradeStudentPreview.keyList.length ? true : false
         })
     }
     handleStudentModalOk = (e) => {

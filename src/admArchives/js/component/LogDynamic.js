@@ -114,7 +114,7 @@ class LogDynamic extends React.Component {
                         }
                         return (
                             <div className='Logs-box'>
-                                <span className='Logs-tips' title={Logs[0].LogTime + ' ' + Logs[0].Content}>{Logs[0].LogTime + ' ' + Logs[0].Content}</span>
+                                <span className='Logs-tips' title={ Logs[0].Content}>{ Logs[0].Content}</span>
                                 <Tooltip placement='top' trigger='click' arrowPointAtCenter={true} title={<TipsLog data={Logs}></TipsLog>}>
                                     <span className='Logs-more' style={{ display: Logs.length > 1 ? 'inline-block' : 'none' }}>查看更多</span>
                                 </Tooltip>
@@ -169,7 +169,8 @@ class LogDynamic extends React.Component {
         this.setState({
             checkedList: [],
             checkAll: false,
-            pagination: 1
+            pagination: 1,
+            FileTypeSelect: e
         })
     }
     HandleTypeDropMenu = (e) => {
@@ -179,18 +180,26 @@ class LogDynamic extends React.Component {
         this.setState({
             checkedList: [],
             checkAll: false,
-            pagination: 1
+            pagination: 1,
+            HandleTypeSelect: e
         })
     }
     // 档案动态全部标记已读
     LogSignAllReaded = () => {
         const { DataState, dispatch } = this.props;
-
+        let total= DataState.LogPreview.unreadLog.Total
         let url = '/LogSignAllReaded'
-
-        postData(CONFIG.proxy + url, {
-            UserID: this.state.userMsg.UserID
-        }, 2).then(res => {
+        if(!total){
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-warn',
+                title: "暂无档案变更",
+                ok: this.onAlertWarnOk.bind(this),
+                cancel: this.onAlertWarnClose.bind(this),
+                close: this.onAlertWarnClose.bind(this)
+            }));
+            return
+        }
+        postData(CONFIG.XTestProxy + url,{}, 2).then(res => {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
@@ -211,7 +220,9 @@ class LogDynamic extends React.Component {
                 this.setState({
                     checkedList: [],
                     checkAll: false,
-                    pagination: 1
+                    pagination: 1,
+                    FileTypeSelect: { value: -1, title: '全部' },
+                    HandleTypeSelect: { value: -1, title: '全部' },
 
                 })
             }
@@ -226,9 +237,10 @@ class LogDynamic extends React.Component {
         let LogIDs = userInfo.Logs instanceof Array && userInfo.Logs.map((child, index) => {
             return child.LogID
         }).join()
-        postData(CONFIG.proxy + url, {
+        
+        postData(CONFIG.XTestProxy + url, {
             LogIDs: LogIDs,
-            UserID: this.state.userMsg.UserID
+           
         }, 2).then(res => {
             return res.json()
         }).then(json => {
@@ -296,8 +308,8 @@ class LogDynamic extends React.Component {
             checkAll: checkedList.length === DataState.LogPreview.unreadLog.List.keyList.length ? true : false
         })
     }
-    // 点击删除全部
-    onDeleteAllClick = () => {
+    // 点击标记全部
+    onReadAllClick = () => {
         const { dispatch } = this.props;
         console.log(this.state.checkedList)
         if (this.state.checkedList.length === 0) {
@@ -368,15 +380,20 @@ class LogDynamic extends React.Component {
         })
         let LogIDListString = LogIDList.join()
 
-        postData(CONFIG.proxy + url, {
+        postData(CONFIG.XTestProxy + url, {
             LogIDs: LogIDListString,
-            UserID: this.state.userMsg.UserID
+            
         }, 2).then(res => {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
                 console.log('错误码：400' + json)
             } else if (json.StatusCode === 200) {
+                dispatch(actions.UpUIState.showErrorAlert({
+                    type: 'success',
+                    title: "成功",
+                    onHide: this.onAlertWarnHide.bind(this)
+                }));
                 this.setState({
                     checkedList: [],
                     checkAll: false
@@ -443,7 +460,7 @@ class LogDynamic extends React.Component {
                         <div className='content-top'>
                             <p className='top-tips'>
                                 最近有
-                            <span className='Total'>{data.Total}</span>
+                            <span className='Total'>{data.TotalUser}</span>
                                 份用户档案发生变更，其中录入
                             <span className='Add'>{data.Add}</span>
                                 份，更新
@@ -497,7 +514,7 @@ class LogDynamic extends React.Component {
                             </CheckBoxGroup>
                             {data.Total > 0 ? (<CheckBox className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
                                 全选
-                                    <Button onClick={this.onDeleteAllClick} className='deleteAll' color='blue'>删除</Button>
+                                    <Button onClick={this.onReadAllClick} className='deleteAll' color='blue'>全部标记已读</Button>
                             </CheckBox>) : ''}
                             <div className='pagination-box'>
                                 <PagiNation

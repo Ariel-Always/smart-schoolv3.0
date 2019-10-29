@@ -50,7 +50,7 @@ class Admin extends React.Component {
                         return (
                             <div className='name-content'>
                                 <span className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.UserID)}>{arr.Name}</span><br />
-                                <span className='name-UserID'>{'(' + arr.UserID + ')'}</span>
+                                <span className='name-UserID'>(<span className='UserID-content'>{ arr.UserID }</span>)</span>
                             </div>
                         )
                     }
@@ -65,7 +65,7 @@ class Admin extends React.Component {
                     sorter: true,
                     render: ShortName => {
                         return (
-                            <span className='UserName'>{ShortName}</span>
+                            <span className='UserName'>{ShortName?ShortName:'--'}</span>
                         )
                     }
                 },
@@ -117,7 +117,7 @@ class Admin extends React.Component {
             ],
             data: [{
                 key: 1,
-                UserName: { key: '01', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
+                UserName: { key: '01', PhotoPath: '', UserName: '祝泽森' },
                 UserID: 'S00001',
                 Grader: '男',
                 GradeName: '一年级',
@@ -242,7 +242,7 @@ class Admin extends React.Component {
         console.log(checkedList)
         this.setState({
             checkedList,
-            checkAll: checkedList === this.state.keyList ? true : false
+            checkAll: checkedList.length === this.state.keyList.length ? true : false
         })
     }
     handleAdminModalOk = (e) => {
@@ -460,7 +460,7 @@ class Admin extends React.Component {
                 userID: DataState.AdminPreview.TrasferData.UserID,
                 UserName: DataState.AdminPreview.TrasferData.UserName,
                 ModuleIDs: DataState.AdminPreview.TrasferData.ModuleIDs,
-                PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
+                PhotoPath: '',
                 Pwd: DataState.AdminPreview.TrasferData.Pwd
             },
             2).then(res => {
@@ -469,8 +469,14 @@ class Admin extends React.Component {
                 }
                 return res.json()
             }).then(json => {
-                if (json.StatusCode === 400) {
-                    console.log(json.StatusCode)
+                if (json.StatusCode !== 200) {
+                    dispatch(actions.UpUIState.showErrorAlert({
+                        type: 'btn-error',
+                        title: json.Msg,
+                        ok: this.onAlertWarnOk.bind(this),
+                        cancel: this.onAlertWarnClose.bind(this),
+                        close: this.onAlertWarnClose.bind(this)
+                    }));
                 } else if (json.StatusCode === 200) {
                     this.setState({
                         addAdminModalVisible: false
@@ -553,7 +559,7 @@ class Admin extends React.Component {
                 userID: DataState.AdminPreview.TrasferData.UserID,
                 UserName: DataState.AdminPreview.TrasferData.UserName,
                 ModuleIDs: DataState.AdminPreview.TrasferData.ModuleIDs,
-                PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
+                PhotoPath: '',
                 Pwd: md5(DataState.AdminPreview.TrasferData.Pwd)
             },
             2).then(res => {
@@ -696,7 +702,7 @@ class Admin extends React.Component {
         const { UIState, DataState } = this.props;
         const data = {
             userName: '康欣',
-            userImg: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
+            userImg: '',
             Gende: '男',
             userText: '学如逆水行舟，不进则退',
             userID: '20170025444',

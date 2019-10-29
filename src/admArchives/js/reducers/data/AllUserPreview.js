@@ -1,7 +1,7 @@
 import UpDataState from '../../actions/UpDataState';
 import { Children } from 'react';
 
-const AllUserPreview = (state={Student:'',Teacher:'',SchoolLeader:'',Total:''},actions)=>{
+const AllUserPreview = (state={Student:'',Teacher:'',SchoolLeader:'',Total:'',NewGrades:{},NewSubjects:{}},actions)=>{
     switch (actions.type) {
         case UpDataState.GET_ALL_USER_PREVIEW:
             let newData = handleData(actions.data)
@@ -12,8 +12,8 @@ const AllUserPreview = (state={Student:'',Teacher:'',SchoolLeader:'',Total:''},a
 } ;
 function handleData(data){
     const {Grades,Subjects,...oldData} = data;
-    let NewGrades = [];
-    let NewSubjects = [];
+    let NewGrades = {};
+    let NewSubjects = {};
     let GradeNames = [];
     let SubjectNames = []
     Grades.map((child,index) => {

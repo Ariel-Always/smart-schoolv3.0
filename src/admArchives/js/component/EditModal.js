@@ -92,7 +92,7 @@ class EditModal extends React.Component {
                     gender: '',
                     classID: '',
                     gradeID: '',
-                    photoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
+                    photoPath: '',
                     // photoPath: '',
                     IDCardNo: '',
                     email: '',
@@ -169,7 +169,7 @@ class EditModal extends React.Component {
                     gender: '',
                     titleID: '',
                     subjectIDs: '',
-                    photoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
+                    photoPath: '',
                     // photoPath: '',
                     IDCardNo: '',
                     email: '',
@@ -252,7 +252,7 @@ class EditModal extends React.Component {
                     userName: '',
                     gender: '',
                     position: '',
-                    photoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
+                    photoPath: '',
                     // photoPath: '',
                     IDCardNo: '',
                     email: '',
@@ -743,7 +743,7 @@ class EditModal extends React.Component {
                                         }
                                     ]}
                                     width={120}
-                                    height={72}
+                                    height={96}
                                     onChange={this.onEditGendeChange}
                                 >
 
@@ -762,7 +762,7 @@ class EditModal extends React.Component {
                                     dropSelectd={this.state.GradeChange}
                                     dropList={this.state.Grades}
                                     width={200}
-                                    height={72}
+                                    height={96}
                                     onChange={this.onEditGradeChange}
                                 >
 
@@ -783,7 +783,7 @@ class EditModal extends React.Component {
                                     dropSelectd={this.state.TitleChange}
                                     dropList={this.state.TeacherTitle}
                                     width={200}
-                                    height={72}
+                                    height={96}
                                     onChange={this.onEditTitleChange}
                                 >
 
@@ -803,7 +803,7 @@ class EditModal extends React.Component {
                                     dropSelectd={this.state.ClassChange}
                                     dropList={this.state.Classes}
                                     width={200}
-                                    height={72}
+                                    height={96}
                                     onChange={this.onEditClassChange}
                                 >
                                 </DropDown>
@@ -833,7 +833,7 @@ class EditModal extends React.Component {
                                     dropSelectd={this.state.PositionChange}
                                     dropList={this.state.LeaderPositionList}
                                     width={200}
-                                    height={72}
+                                    height={96}
                                     onChange={this.onEditPositionChange}
                                 >
                                 </DropDown>

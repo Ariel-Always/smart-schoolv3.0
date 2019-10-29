@@ -1,0 +1,22 @@
+.Card {
+  display: inline-block;
+  width: 126px;
+  height: 156px;
+  background-color: #fff;
+  padding: 12px 23px 0;
+
+  .card-img {
+    border-radius: 12px;
+  }
+  .card-name {
+    font-size: 14px;
+    color: #333333;
+    line-height: 28px;
+    text-align: center;
+  }
+  &:hover{
+    border: solid 1px #02e362;
+    cursor: pointer;
+  }
+  
+}

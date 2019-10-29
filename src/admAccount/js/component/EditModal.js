@@ -34,7 +34,7 @@ class EditModal extends React.Component {
     }
     componentWillMount() {
         const { DataState, dispatch } = this.props;
-        // console.log(this.state.data)
+        // //console.log(this.state.data)
 
         if (this.state.UserKey === 'change') {
             this.setState({
@@ -60,7 +60,7 @@ class EditModal extends React.Component {
                 })
 
                 plainOptionsArr[index] = plainOptions;
-                // console.log(plainOptionsArr, index)
+                // //console.log(plainOptionsArr, index)
                 let Powers = this.props.data.Power.Powers[index] ? this.props.data.Power.Powers[index].PowerChild : []
                 this.props.data.Power.Powers.map((child, powerIndex) => {
                     if (child.value === power.value) {
@@ -77,7 +77,7 @@ class EditModal extends React.Component {
                 PowerChildLen[index] = checkedList ? checkedList.length : 0;
 
                 indeterminate[index] = plainOptionsArr[index].length === checkedList.length || checkedList.length === 0 ? false : true;
-                console.log(plainOptionsArr, checkedList, indeterminate)
+                //console.log(plainOptionsArr, checkedList, indeterminate)
                 checkedListArr[index] = checkedList;
                 this.setState({
                     checkAll: checkAll,
@@ -115,7 +115,7 @@ class EditModal extends React.Component {
             })
             let ModulesID = []
             this.state.checkedListArr.map((child) => {
-                console.log(child.length)
+                //console.log(child.length)
                 if (child.length !== 0)
                     ModulesID.push(child.join())
             })
@@ -137,7 +137,7 @@ class EditModal extends React.Component {
                 })
 
                 plainOptionsArr[index] = plainOptions;
-                // console.log(plainOptionsArr, index)
+                // //console.log(plainOptionsArr, index)
 
                 checkAll[index] = false;
 
@@ -184,7 +184,7 @@ class EditModal extends React.Component {
     }
     // componentWillReceiveProps() {
     //     //const { DataState } = this.props;
-    //     // console.log(this.props.data)
+    //     // //console.log(this.props.data)
     //     let checkedListArr = [];
     //     let PowerChildLen = [];
     //     let indeterminate = [];
@@ -209,7 +209,7 @@ class EditModal extends React.Component {
     //             })
 
     //             plainOptionsArr[index] = plainOptions;
-    //             // console.log(plainOptionsArr, index)
+    //             // //console.log(plainOptionsArr, index)
     //             let Powers = this.props.data.Power.Powers[index]?this.props.data.Power.Powers[index].PowerChild:[]
     //             this.props.data.Power.Powers.map((child,powerIndex) => {
     //                 if(child.value===power.value){
@@ -227,7 +227,7 @@ class EditModal extends React.Component {
     //             PowerChildLen[index] = checkedList ? checkedList.length : 0;
     //             indeterminate[index] = this.state.plainOptionsArr[index].length === checkedList.length || checkedList === [] ? false : true;;
     //             checkedListArr[index] = checkedList;
-    //             //console.log(checkedListArr)
+    //             ////console.log(checkedListArr)
     //             this.setState({
     //                 checkAll: checkAll,
     //                 indeterminate: indeterminate,
@@ -280,7 +280,7 @@ class EditModal extends React.Component {
     //             })
 
     //             plainOptionsArr[index] = plainOptions;
-    //             // console.log(plainOptionsArr, index)
+    //             // //console.log(plainOptionsArr, index)
 
     //             checkAll[index] = false;
 
@@ -340,7 +340,7 @@ class EditModal extends React.Component {
         //用户ID（工号/学号）检测  
         //长度是1~30位，只能由字母与数字组成。
         let Test = /^([a-zA-Z0-9]{1,24})$/.test(e.target.value)
-        // console.log(Test,e.target.value)
+        // //console.log(Test,e.target.value)
         if (!Test) {
             dispatch(actions.UpUIState.UserIDTipsVisibleOpen())
 
@@ -402,7 +402,7 @@ class EditModal extends React.Component {
         PowerChildLen[index] = e.target.checked ? this.state.plainOptionsArr[index].length : 0;
         let ModulesID = []
         checkedListArr.map((child) => {
-            console.log(child.length)
+            //console.log(child.length)
             if (child.length !== 0)
                 ModulesID.push(child.join())
         })
@@ -410,7 +410,7 @@ class EditModal extends React.Component {
             isChange: true,
             ModuleIDs: ModulesID.join()
         }))
-        console.log(indeterminate, checkedListArr, checkAll);
+        //console.log(indeterminate, checkedListArr, checkAll);
         this.setState({
             checkedListArr: checkedListArr,
             indeterminate: indeterminate,
@@ -421,7 +421,7 @@ class EditModal extends React.Component {
     onCheckChange = (index, value, e) => {
         const { dispatch } = this.props
 
-        console.log(index, value, this.state.plainOptionsArr[index], this.state.checkedListArr, this.state.PowerChildLen)
+        //console.log(index, value, this.state.plainOptionsArr[index], this.state.checkedListArr, this.state.PowerChildLen)
         let checkedListArr = this.state.checkedListArr;
         let indeterminate = this.state.indeterminate;
         let checkAll = this.state.checkAll;
@@ -430,10 +430,10 @@ class EditModal extends React.Component {
         indeterminate[index] = (this.state.plainOptionsArr[index].length !== value.length && value.length !== 0) ? true : false;
         checkAll[index] = this.state.plainOptionsArr[index].length === value.length ? true : false;
         PowerChildLen[index] = value.length;
-        console.log(checkedListArr, indeterminate, checkAll)
+        //console.log(checkedListArr, indeterminate, checkAll)
         let ModulesID = []
         checkedListArr.map((child) => {
-            console.log(child.length)
+            //console.log(child.length)
             if (child.length !== 0)
                 ModulesID.push(child.join())
         })
@@ -519,14 +519,14 @@ class EditModal extends React.Component {
                                 // let plainOptionsArr = this.state.plainOptionsArr;
                                 // let checkedList = [];
                                 // let checkedListArr = this.state.checkedListArr;
-                                // console.log(power)
+                                // //console.log(power)
                                 // power.PowerChild.map((child, index) => {
                                 //     plainOptions[index] = child.value;
 
                                 // })
 
                                 // plainOptionsArr[index] = plainOptions;
-                                // console.log(plainOptionsArr,index)
+                                // //console.log(plainOptionsArr,index)
                                 // indeterminate[index] = true;
                                 // checkAll[index] = this.state.data.Power.Powers[index].PowerChild.length !== 0 ? true : false
 
@@ -540,7 +540,7 @@ class EditModal extends React.Component {
                                 //     checkedListArr: checkedListArr,
                                 //     plainOptionsArr:plainOptionsArr
                                 // })
-                                // console.log(this.state.checkedListArr[index],this.state.PowerList[index])
+                                // //console.log(this.state.checkedListArr[index],this.state.PowerList[index])
                                 return (
                                     <div key={this.state.PowerList[index].value}>
                                         <CheckBox
@@ -593,7 +593,7 @@ class MapPlainOptions extends React.Component {
                 <CheckBox className={'checkedBoxMap'} key={index} value={opt}>{opt}</CheckBox>
             )
         })
-        console.log(map)
+        //console.log(map)
         this.setState({
             map: map
         })

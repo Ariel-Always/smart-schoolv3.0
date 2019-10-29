@@ -405,7 +405,7 @@ class RegisterDidExamine extends React.Component {
 
                         onChange={this.StudentDropMenu}
                         width={120}
-                        height={72}
+                        height={96}
 
                         dropSelectd={this.state.firstSelect}
                         dropList={DataState.GradeClassMsg.returnData ? DataState.GradeClassMsg.returnData.grades : [{ value: 0, title: '全部年级' }]}
@@ -413,7 +413,7 @@ class RegisterDidExamine extends React.Component {
                     <DropDown
 
                         width={120}
-                        height={72}
+                        height={96}
 
                         style={{ display: this.state.DropMenuShow ? 'block' : 'none' }}
                         dropSelectd={this.state.secondSelect}

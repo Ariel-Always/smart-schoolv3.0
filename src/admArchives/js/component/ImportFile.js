@@ -31,7 +31,8 @@ class ImportFile extends React.Component {
         super(props);
         this.state = {
             select: 'file',
-            userMsg:props.DataState.LoginUser
+            userMsg: props.DataState.LoginUser,
+            show: true
 
         }
         const { dispatch, DataState } = this.props;
@@ -60,8 +61,15 @@ class ImportFile extends React.Component {
         //     $('#content-box').html(data)
         // })
         let route = history.location.pathname.split('/');
-        
-        fetch(CONFIG.UserInfoProxy + '/Import.aspx?Token='+this.state.userMsg.SchoolID+'&UserType='+route[2], {
+        this.ImportHtml('file',route)
+
+    }
+    ImportHtml = (type,route) => {
+        let url = '/Import.aspx'
+        if(type==='picture'){
+             url = '/ImportPhoto.aspx'
+        }
+        fetch(CONFIG.UserInfoProxy + url+'?Token=' + sessionStorage.getItem('token') + '&UserType=' + route[2], {
             method: 'get',//*post、get、put、delete，此项为请求方法相关的配置 
             mode: 'cors',//no-cors(跨域模式但服务器端不支持cors),*cors(跨域模式，需要服务器通过Access-control-Allow-Origin来
             //允许指定的源进行跨域),same-origin(同源)
@@ -76,16 +84,25 @@ class ImportFile extends React.Component {
             // referrer: 'no-referrer',//该首部字段会告知服务器请求的原始资源的URI
 
         }).then(data => {
-            console.log(data)
-            $('#content-box').html(data)
+            return data.text();
+
+        }).then(text => {
+            console.log(text)
+            $('#content-box').html(text)
+            this.setState({
+                show:false
+            })
         })
     }
-
     //点击tab
     onTabClick = (name) => {
         this.setState({
-            select:name
+            select: name,
+            show:true
         })
+        let route = history.location.pathname.split('/');
+
+        this.ImportHtml(name,route)
     }
     render() {
         const { UIState, DataState } = this.props;
@@ -120,15 +137,17 @@ class ImportFile extends React.Component {
                     showBarner={false}>
                     <div className='box' ref="frame-right-content" key={this.props.location.pathname}>
                         <div className='Tab'>
-                            <span ref='file'  onClick={this.onTabClick.bind(this,'file')} className={`Tab-btn ${this.state.select === 'file' ? 'btn-select' : ''}`}>导入基本资料</span>
-                            <span ref='picture'  onClick={this.onTabClick.bind(this,'picture')} className={`Tab-btn ${this.state.select === 'picture' ? 'btn-select' : ''}`}>导入照片</span>
+                            <span ref='file' onClick={this.onTabClick.bind(this, 'file')} className={`Tab-btn ${this.state.select === 'file' ? 'btn-select' : ''}`}>导入基本资料</span>
+                            <span ref='picture' onClick={this.onTabClick.bind(this, 'picture')} className={`Tab-btn ${this.state.select === 'picture' ? 'btn-select' : ''}`}>导入照片</span>
                         </div>
                         {/* <iframe id='content-box' src={CONFIG.UserInfoProxy+'/Import.aspx?Token=0111&UserType=Student'}>
                             
                         </iframe> */}
-                        <div id='content-box' className='content-box'>
+                        <Loading opacity={false} size='large' spinning={this.state.show}>
+                            <div id='content-box' className='content-box'>
 
-                        </div>
+                            </div>
+                        </Loading>
                     </div>
                 </Frame>
 

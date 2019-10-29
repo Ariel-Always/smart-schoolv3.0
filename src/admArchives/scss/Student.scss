@@ -80,7 +80,9 @@ $image-url: "../images";
       .content-render {
         margin-top: 16px;
         position: relative;
-
+        .ant-table-thead>tr>th{
+          padding: 0;
+        }
         .table {
           .ant-table-thead {
             th:nth-child(1),
@@ -89,12 +91,17 @@ $image-url: "../images";
               padding: 0;
             }
             th {
-              padding: 0 16px;
+              padding: 0;
             }
+            
           }
+         
           .ant-table-row {
             td:nth-child(2),
             td:nth-child(3) {
+              padding: 16px 0;
+            }
+            td {
               padding: 16px 0;
             }
             td:nth-child(1) {
@@ -125,10 +132,20 @@ $image-url: "../images";
             color: #333;
             font-size: 16px;
             cursor: pointer;
+            display: inline-block;
+            width:90px;
+            overflow: hidden; //超出一行文字自动隐藏
+            text-overflow: ellipsis; //文字隐藏后添加省略号
+            white-space: nowrap; //强制不换行
           }
           .UserID {
             font-size: 14px;
             color: #999;
+            display: inline-block;
+            width:95px;
+            overflow: hidden; //超出一行文字自动隐藏
+            text-overflow: ellipsis; //文字隐藏后添加省略号
+            white-space: nowrap; //强制不换行
           }
           .Grader {
             font-size: 14px;
@@ -159,7 +176,7 @@ $image-url: "../images";
             width: 56px;
             line-height: 24px;
             font-size: 14px;
-            padding: 0 14px;
+            padding: 0 ;
             margin-right: 2px;
           }
         }

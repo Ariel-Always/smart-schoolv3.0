@@ -3,18 +3,18 @@ import AppLoadingActions from '../AppLoadingActions'
 import { getData, PostData } from '../../../../common/js/fetch'
 const GET_CUSTOM_DATA = 'GET_CUSTOM_DATA'
 
-const getCustomData = (key, techerID,  keyword = '') => {
+const getCustomData = (key, techerID,  keyword = '',subjectID='',subTypeID='1',periodId='4') => {
     let url = '';//桌面数据
     let url2 = '';//备选
     if (key === 'tool') {
         url = '/SubjectResMgr/ToolMgr/Teacher/ListDeskTop?TeacherId=' + techerID;
-        url2 = '/SubjectResMgr/ToolMgr/Teacher/ListAvaliableTools?TeacherId=' + techerID+ '&keyword=' +keyword;
+        url2 = '/SubjectResMgr/ToolMgr/Teacher/ListAvaliableTools?TeacherId=' + techerID+ '&keyWord=' +keyword;
     } else if (key === 'App') {
         url = '/SubjectResMgr/AppMgr/Teacher/ListDeskTop?TeacherId=' + techerID;
-        url2 = '/SubjectResMgr/AppMgr/Teacher/ListAvaliableApp?TeacherId=' + techerID + '&keyword=' +keyword;
+        url2 = '/SubjectResMgr/AppMgr/Teacher/ListAvaliableApp?TeacherId=' + techerID + '&keyWord=' +keyword;
     } else if (key === 'Website') {
         url = '/SubjectResMgr/WebSiteMgr/Teacher/ListDeskTop?TeacherId=' + techerID;
-        url2 = '/SubjectResMgr/WebSiteMgr/Teacher/ListAvailableWebsites?TeacherId=' + techerID ;
+        url2 = '/SubjectResMgr/WebSiteMgr/Teacher/ListAvailableWebsites?TeacherId=' + techerID +'&keyWord=' +keyword +'&SubjectId='+subjectID+'&PeriodId='+periodId+'&SubTypeId='+subTypeID;
 
     } else if (key === 'database') {
         url = '/SubjectResMgr/ResLibMgr/Teacher/ListDeskTop?TeacherId=' + techerID;

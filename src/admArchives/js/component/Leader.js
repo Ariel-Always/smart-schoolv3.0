@@ -111,7 +111,7 @@ class Leader extends React.Component {
                         return (
                             <div className='handle-content'>
                                 <Button color='blue' type='default' onClick={this.LeaderEdit.bind(this, key)} className='handle-btn'>编辑</Button>
-                                <Button color='blue' type='default' onClick={this.LeaderChange.bind(this, key)} className='handle-btn check-btn'>查看变更记录</Button>
+                                {/* <Button color='blue' type='default' onClick={this.LeaderChange.bind(this, key)} className='handle-btn check-btn'>查看变更记录</Button> */}
                             </div>
                         )
                     }
@@ -219,6 +219,11 @@ class Leader extends React.Component {
             if (json.StatusCode === 400) {
                 console.log('错误码：400' + json)
             } else if (json.StatusCode === 200) {
+                dispatch(actions.UpUIState.showErrorAlert({
+                    type: 'success',
+                    title: "操作成功",
+                    onHide: this.onAlertWarnHide.bind(this)
+                }));
                 this.setState({
                     checkedList: [],
                     checkAll: false
@@ -321,6 +326,11 @@ class Leader extends React.Component {
                     }));
                 } else if (json.StatusCode === 200) {
                     // console.log(json.Data)
+                    dispatch(actions.UpUIState.showErrorAlert({
+                        type: 'success',
+                        title: "操作成功",
+                        onHide: this.onAlertWarnHide.bind(this)
+                    }));
                     dispatch(actions.UpUIState.HandleLeaderModalClose())
 
                     dispatch(actions.UpDataState.getSchoolLeaderPreview('/GetSchoolLeader?SchoolID='+this.state.userMsg.SchoolID));
@@ -422,14 +432,19 @@ class Leader extends React.Component {
                         close: this.onAppAlertClose.bind(this)
                     }));
                 } else if (json.StatusCode === 200) {
-                    console.log(json.Data)
+                    // console.log(json.Data)
+                    dispatch(actions.UpUIState.showErrorAlert({
+                        type: 'success',
+                        title: "操作成功",
+                        onHide: this.onAlertWarnHide.bind(this)
+                    }));
                     this.setState({
                         studentModalVisible: false
                     })
                     dispatch(actions.UpUIState.AddLeaderModalClose())
 
                    
-                    dispatch(actions.UpDataState.getGradeLeaderPreview('/GetSchoolLeader?SchoolID='+this.state.userMsg.SchoolID));
+                    dispatch(actions.UpDataState.getSchoolLeaderPreview('/GetSchoolLeader?SchoolID='+this.state.userMsg.SchoolID));
                     dispatch(actions.UpUIState.editAlltModalTipsVisible());
 
                     this.setState({
@@ -441,6 +456,13 @@ class Leader extends React.Component {
 
         }
         
+    }
+    //关闭
+    onAlertWarnHide = () => {
+        const { dispatch } = this.props;
+        //console.log('ddd')
+        dispatch(actions.UpUIState.hideErrorAlert())
+
     }
     handleAddLeaderModalCancel = (e) => {
         const {dispatch} = this.props

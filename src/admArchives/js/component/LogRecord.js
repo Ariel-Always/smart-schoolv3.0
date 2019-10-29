@@ -183,21 +183,24 @@ class LogRecord extends React.Component {
     FileTypeDropMenu = (e) => {
         const { DataState, dispatch } = this.props;
 
-        dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&UserType=-1&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + e.value + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + this.state.SortType + this.state.sortFiled))
+        dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + e.value + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + this.state.SortType + this.state.sortFiled))
         this.setState({
             checkedList: [],
             checkAll: false,
-            pagination: 1
+            pagination: 1,
+            FileTypeSelect: e,
+           
         })
     }
     HandleTypeDropMenu = (e) => {
         const { DataState, dispatch } = this.props;
 
-        dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&UserType=-1&OperationType=' + e.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + this.state.SortType + this.state.sortFiled))
+        dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&OperationType=' + e.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + this.state.SortType + this.state.sortFiled))
         this.setState({
             checkedList: [],
             checkAll: false,
-            pagination: 1
+            pagination: 1,
+            HandleTypeSelect: e,
         })
     }
     // 档案动态全部标记已读
@@ -225,7 +228,7 @@ class LogRecord extends React.Component {
                     title: "成功",
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
-                dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&UserType=-1&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=0&PageSize=10'))
+                dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=0&PageSize=10'))
                 this.setState({
                     checkedList: [],
                     checkAll: false,
@@ -263,7 +266,7 @@ class LogRecord extends React.Component {
                     title: "成功",
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
-                dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&UserType=-1&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=0&PageSize=10'))
+                dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=0&PageSize=10'))
                 this.setState({
                     checkedList: [],
                     checkAll: false,
@@ -278,6 +281,7 @@ class LogRecord extends React.Component {
     onUserNameClick = (key) => {
         const { DataState, dispatch } = this.props;
         let userInfo = DataState.LogRecordPreview.LogRecord.List.newList[key];
+        console.log(key,userInfo)
         this.setState({
             UserType: userInfo.UserType
         })
@@ -342,7 +346,7 @@ class LogRecord extends React.Component {
     //关闭
     onAlertWarnHide = () => {
         const { dispatch } = this.props;
-        console.log('ddd')
+        //console.log('ddd')
         dispatch(actions.UpUIState.hideErrorAlert())
 
     }
@@ -400,7 +404,7 @@ class LogRecord extends React.Component {
                     checkAll: false
                 })
                 dispatch(actions.UpUIState.hideErrorAlert());
-                dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&UserType=-1&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=0&PageSize=10'))
+                dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=0&PageSize=10'))
                 this.setState({
                     checkedList: [],
                     checkAll: false,
@@ -418,7 +422,7 @@ class LogRecord extends React.Component {
         if (sorter && (sorter.columnKey === 'UserName' || sorter.columnKey === 'LogID')) {
             let sortFiled = sorter.columnKey === 'UserName' ? '&sortFiled=UserID' : '&sortFiled=LogID'
             let sortType = sorter.order === "descend" ? '&SortType=DESC' : sorter.order === "ascend" ? '&SortType=ASC' : '';
-            dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&UserType=-1&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + sortType + sortFiled))
+            dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + sortType + sortFiled))
             this.setState({
                 checkedList: [],
                 checkAll: false,
@@ -426,7 +430,7 @@ class LogRecord extends React.Component {
                 sortFiled: sortFiled
             })
         } else if (sorter && !sorter.columnKey) {
-            dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&UserType=-1&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10'))
+            dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10'))
             this.setState({
                 checkedList: [],
                 checkAll: false,
@@ -439,7 +443,7 @@ class LogRecord extends React.Component {
     onPagiNationChange = (value) => {
         const { DataState, dispatch } = this.props;
 
-        dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&UserType=-1&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=' + (value - 1) + '&PageSize=10&' + this.state.SortType + this.state.sortFiled))
+        dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=' + (value - 1) + '&PageSize=10&' + this.state.SortType + this.state.sortFiled))
         this.setState({
             checkedList: [],
             checkAll: false,
@@ -467,8 +471,10 @@ class LogRecord extends React.Component {
         // console.log(time,Moment)
         const { DataState, dispatch } = this.props;
         //console.log(time.valueOf())
-        dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&UserType=-1&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=0&PageSize=10'))
-        
+        dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=0&PageSize=10'))
+        this.setState({
+            pagination: 1
+        })
     }
     onStartTimeSelectChange = (Moment, time) => {
         this.setState({
@@ -479,8 +485,10 @@ class LogRecord extends React.Component {
     onEndTimeSelectOk = (Moment, time) => {
         const { DataState, dispatch } = this.props;
         // console.log(time)
-        dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&UserType=-1&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=0&PageSize=10'))
-
+        dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=0&PageSize=10'))
+        this.setState({
+            pagination: 1
+        })
         
     }
     onEndTimeSelectChange = (Moment, time) => {

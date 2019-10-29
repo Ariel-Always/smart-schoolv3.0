@@ -52,7 +52,8 @@ if (process.env.NODE_ENV === 'production'){
         BasicProxy:'http://localhost:3000',
         LoginProxy:'',
         MockLoginProxy:'',
-        PersonalProxy:""
+        PersonalProxy:"",
+        XTestProxy:'/UserMgr/UserInfoMgr'
     }
 
 }

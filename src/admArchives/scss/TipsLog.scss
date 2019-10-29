@@ -1,5 +1,7 @@
 .tips-Box{
     padding: 10px 16px;
+    max-height: 400px;
+    overflow: auto;
 
     .box-top{
         position: relative;

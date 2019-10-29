@@ -34,7 +34,8 @@ function handleData(data,pageIndex=0,pageSize=0){
             userIDCard:child.IDCardNo,
             userPhone:child.Telephone,
             userMail:child.Email,
-            userAddress:child.HomeAddress
+            userAddress:child.HomeAddress,
+            Position:child.Position
         }
         pensonalList.push(person)
         newList.push({...list,child}) 
