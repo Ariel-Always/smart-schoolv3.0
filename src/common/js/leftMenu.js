@@ -290,6 +290,7 @@ $(document).on('click', '.frame_leftmenu_twograde_grounp .frame_left_menu_right_
 
 //active 状态切换，selected 状态切换
 $(document).on('click', '.frame_leftmenu_mainitem_name,.frame_leftmenu_onegrade_name,.frame_leftmenu_twograde_grounp .frame_leftmenu_twograde_text', function () {
+
     var $this = $(this);
 
     if ($(this).parent().hasClass('frame_leftmenu_twograde_grounp')) {
@@ -357,6 +358,9 @@ $(document).on('click', '.frame_leftmenu_mainitem_name', function () {
     var $this = $(this);
     $this.closest('.frame_leftpart_container,.frame_left_menu_container').find('.active').removeClass('active');
     $this.parent('.frame_leftmenu_mainitem').addClass('active');
+    $this.parent('.frame_leftmenu_mainitem').next('.frame_leftmenu_nextgrade_container').slideDown();
+    $this.next().addClass('spread');
+
 });
 
 // 鼠标经过主菜单颜色变化

@@ -7,6 +7,7 @@ import AppAlertActions from "../AppAlertActions";
 import AppLoadingActions from '../AppLoadingActions';
 
 import CONFIG from "../../../../common/js/config";
+
 import dynamicFile from "dynamic-file";
 
 
@@ -80,7 +81,9 @@ const getManagerDesk = async ({UserID,dispatch}) => {
 
     }else{
 
-        window.location.href='/error.aspx';
+        //window.location.href='/error.aspx';
+
+        alert(res.Msg);
 
     }
 
