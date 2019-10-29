@@ -119,7 +119,7 @@ class App extends Component {
                 dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
                 if (handleRoute === 'Student') {
 
-                    if (!DataState.GradeClassMsg.returnData)
+                    if (!Object.keys(DataState.GradeClassMsg.returnData).length)
                         dispatch(actions.UpDataState.getGradeClassMsg('/GetGradeClassTree?schoolID=' + userMsg.SchoolID));
 
                     if (ID === 'all') {
