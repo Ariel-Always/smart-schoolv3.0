@@ -63,12 +63,12 @@ const getListStyle = isDraggingOver => ({
     //overflow: 'hidden',
 });
 
-class Website extends React.Component {
+class DataBase extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            main: this.props.Teacher.TeacherCustomData.WebsiteData,
-            alter1: this.props.Teacher.TeacherCustomData.WebsiteAlterData,
+            main: this.props.Teacher.TeacherCustomData.DataBaseData,
+            alter1: this.props.Teacher.TeacherCustomData.DataBaseAlterData,
             userMsg: props.LoginUser,
             firstSelect: { value: 0, title: '全部学段' },
             keyword: '',
@@ -80,9 +80,9 @@ class Website extends React.Component {
     componentWillReceiveProps(nextProps) {
         const { Teacher } = nextProps
         this.setState({
-            main: Teacher.TeacherCustomData.WebsiteData,
-            //main: Teacher.TeacherCustomData.WebsiteAlterData,
-            alter1: Teacher.TeacherCustomData.WebsiteAlterData,
+            main: Teacher.TeacherCustomData.DataBaseData,
+            //main: Teacher.TeacherCustomData.DataBaseAlterData,
+            alter1: Teacher.TeacherCustomData.DataBaseAlterData,
         })
     }
     // 从id选择列表
@@ -94,8 +94,8 @@ class Website extends React.Component {
     onDragEnd = result => {
         const { source, destination } = result;
         const { Teacher, dispatch } = this.props
-        let MainData = Teacher.TeacherCustomData.WebsiteData;
-        let AlterData = Teacher.TeacherCustomData.WebsiteAlterData;
+        let MainData = Teacher.TeacherCustomData.DataBaseData;
+        let AlterData = Teacher.TeacherCustomData.DataBaseAlterData;
         let dataObj = {}
         console.log(result)
         //        result:{ combine: null
@@ -111,14 +111,14 @@ class Website extends React.Component {
         }
 
         if (source.droppableId === destination.droppableId && source.droppableId === 'main') {//同一个区域
-            dataObj['WebsiteData'] = MainData
+            dataObj['DataBaseData'] = MainData
             dispatch(TeacherCustomActions.setCustomData('main', dataObj, source, destination))
-            dispatch(TeacherCustomActions.fetchCustomData('/SubjectResMgr/WebSiteMgr/Teacher/EditDeskTop'))
+            dispatch(TeacherCustomActions.fetchCustomData('/SubjectResMgr/ResLibMgr/Teacher/EditDeskTopInfo','database'))
         } else if (source.droppableId !== destination.droppableId && (source.droppableId === 'main' || (source.droppableId !== 'main' && destination.droppableId === 'main'))) {
-            dataObj['WebsiteData'] = MainData;
-            dataObj['WebsiteAlterData'] = AlterData
+            dataObj['DataBaseData'] = MainData;
+            dataObj['DataBaseAlterData'] = AlterData
             dispatch(TeacherCustomActions.setCustomData('alter', dataObj, source, destination))
-            dispatch(TeacherCustomActions.fetchCustomData('/SubjectResMgr/WebSiteMgr/Teacher/EditDeskTop'))
+            dispatch(TeacherCustomActions.fetchCustomData('/SubjectResMgr/ResLibMgr/Teacher/EditDeskTopInfo','database'))
 
         }
         // if (source.droppableId === destination.droppableId) {//同一个区域
@@ -152,51 +152,51 @@ class Website extends React.Component {
     // main内card移除
     onEditClick = (source) => {
         const { Teacher, dispatch } = this.props
-        let MainData = Teacher.TeacherCustomData.WebsiteData;
-        let AlterData = Teacher.TeacherCustomData.WebsiteAlterData;
+        let MainData = Teacher.TeacherCustomData.DataBaseData;
+        let AlterData = Teacher.TeacherCustomData.DataBaseAlterData;
         let dataObj = {}
-        dataObj['WebsiteData'] = MainData;
-        dataObj['WebsiteAlterData'] = AlterData
+        dataObj['DataBaseData'] = MainData;
+        dataObj['DataBaseAlterData'] = AlterData
         let destination = { droppableId: 'alter', index: 0 }
         dispatch(TeacherCustomActions.setCustomData('alter', dataObj, source, destination))
-        dispatch(TeacherCustomActions.fetchCustomData('/SubjectResMgr/WebSiteMgr/Teacher/EditDeskTop'))
+        dispatch(TeacherCustomActions.fetchCustomData('/SubjectResMgr/ResLibMgr/Teacher/EditDeskTopInfo','database'))
     }
 
     // alter 内card增加
     onAddClick = (source) => {
         const { Teacher, dispatch } = this.props
-        let MainData = Teacher.TeacherCustomData.WebsiteData;
-        let AlterData = Teacher.TeacherCustomData.WebsiteAlterData;
+        let MainData = Teacher.TeacherCustomData.DataBaseData;
+        let AlterData = Teacher.TeacherCustomData.DataBaseAlterData;
         let dataObj = {}
-        dataObj['WebsiteData'] = MainData;
-        dataObj['WebsiteAlterData'] = AlterData
+        dataObj['DataBaseData'] = MainData;
+        dataObj['DataBaseAlterData'] = AlterData
         let destination = { droppableId: 'main', index: -1 }
         dispatch(TeacherCustomActions.setCustomData('alter', dataObj, source, destination))
-        dispatch(TeacherCustomActions.fetchCustomData('/SubjectResMgr/WebSiteMgr/Teacher/EditDeskTop'))
+        dispatch(TeacherCustomActions.fetchCustomData('/SubjectResMgr/ResLibMgr/Teacher/EditDeskTopInfo','database'))
     }
     // card删除
     onDeleteClick = (dataObj, source, ID) => {
         const { Teacher, dispatch } = this.props
-        let MainData = Teacher.TeacherCustomData.WebsiteData;
-        let AlterData = Teacher.TeacherCustomData.WebsiteAlterData;
+        let MainData = Teacher.TeacherCustomData.DataBaseData;
+        let AlterData = Teacher.TeacherCustomData.DataBaseAlterData;
         // let dataObj = {}
-        // dataObj['WebsiteData'] = MainData;
-        // dataObj['WebsiteAlterData'] = AlterData
+        // dataObj['DataBaseData'] = MainData;
+        // dataObj['DataBaseAlterData'] = AlterData
         let destination = { droppableId: 'delete', index: -1 }
         dispatch(TeacherCustomActions.setOneCustomData(dataObj, source))
-        dispatch(TeacherCustomActions.fetchDeleteCustomData('//SubjectResMgr/WebSiteMgr/Teacher/DeleteWebsite', ID))
+        dispatch(TeacherCustomActions.fetchDeleteCustomData('/SubjectResMgr/ResLibMgr/Teacher/EditDeskTopInfo', ID,'database'))
     }
     // card编辑
     onResetClick = (source) => {
         const { Teacher, dispatch } = this.props
-        let MainData = Teacher.TeacherCustomData.WebsiteData;
-        let AlterData = Teacher.TeacherCustomData.WebsiteAlterData;
+        let MainData = Teacher.TeacherCustomData.DataBaseData;
+        let AlterData = Teacher.TeacherCustomData.DataBaseAlterData;
         let dataObj = {}
-        dataObj['WebsiteData'] = MainData;
-        dataObj['WebsiteAlterData'] = AlterData
+        dataObj['DataBaseData'] = MainData;
+        dataObj['DataBaseAlterData'] = AlterData
         let destination = { droppableId: 'main', index: -1 }
         dispatch(TeacherCustomActions.setCustomData('alter', dataObj, source, destination))
-        dispatch(TeacherCustomActions.fetchCustomData('/SubjectResMgr/WebSiteMgr/Teacher/EditDeskTop'))
+        dispatch(TeacherCustomActions.fetchCustomData('/SubjectResMgr/ResLibMgr/Teacher/EditDeskTopInfo','tool'))
     }
     // 学段下拉
     onDropMenuChange = (value) => {
@@ -205,9 +205,9 @@ class Website extends React.Component {
             this.setState({
                 firstSelect: value
             })
-        dispatch(TeacherCustomActions.getCustomData('Website', this.state.userMsg.UserID, '', 'S2-Chinese' || Teacher.HeaderSetting.SubjectSelect.id, value.value))
+        dispatch(TeacherCustomActions.getCustomData('tool', this.state.userMsg.UserID, '', 'S2-Chinese' || Teacher.HeaderSetting.SubjectSelect.id, value.value))
 
-        //dispatch(TeacherCustomActions.getAlterData('/SubjectResMgr/WebSiteMgr/Teacher/ListAvailableWebsites?TeacherID=' + LoginUser.UserID + '&keyWord=' + keyword + '&SubjectId=' + subjectID + '&PeriodId=' + periodId;))
+        //dispatch(TeacherCustomActions.getAlterData('/SubjectResMgr/WebSiteMgr/Teacher/ListAvailableDataBases?TeacherID=' + LoginUser.UserID + '&keyWord=' + keyword + '&SubjectId=' + subjectID + '&PeriodId=' + periodId;))
 
     }
     StudentSearch = (e) => {
@@ -228,7 +228,7 @@ class Website extends React.Component {
         this.setState({
             CancelBtnShow: 'y',
         })
-        dispatch(TeacherCustomActions.getCustomData('Website', this.state.userMsg.UserID, e.value, 'S2-Chinese' || Teacher.HeaderSetting.SubjectSelect.id, this.state.firstSelect.value))
+        dispatch(TeacherCustomActions.getCustomData('tool', this.state.userMsg.UserID, e.value, 'S2-Chinese' || Teacher.HeaderSetting.SubjectSelect.id, this.state.firstSelect.value))
 
     }
     //搜索change
@@ -247,7 +247,7 @@ class Website extends React.Component {
             keyword: '',
             searchValue: ''
         })
-        dispatch(TeacherCustomActions.getCustomData('Website', this.state.userMsg.UserID, '', 'S2-Chinese' || Teacher.HeaderSetting.SubjectSelect.id, this.state.firstSelect.value))
+        dispatch(TeacherCustomActions.getCustomData('tool', this.state.userMsg.UserID, '', 'S2-Chinese' || Teacher.HeaderSetting.SubjectSelect.id, this.state.firstSelect.value))
 
         // dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + this.state.sortType + this.state.sortFiled, this.state.firstSelect, this.state.secondSelect));
 
@@ -268,35 +268,30 @@ class Website extends React.Component {
         dispatch(TeacherCustomActions.setAlterTips({
             TeacherId: LoginUser.UserID,
             SectionID: 2
-        }, 'Website'))
-    }
-    // 添加网站
-    onAddCustomClick = () =>{
-        const {dispatch} = this.props;
-        // dispatch()
+        }, 'database'))
     }
     render() {
         const { Teacher, AppLoading } = this.props;
-        let MainData = Teacher.TeacherCustomData.WebsiteData;
-        let AlterData = Teacher.TeacherCustomData.WebsiteAlterData;
+        let MainData = Teacher.TeacherCustomData.DataBaseData;
+        let AlterData = Teacher.TeacherCustomData.DataBaseAlterData;
         // console.log(this.state.main)
         return (
             <Loading opacity={false} spinning={AppLoading.customOpacityLoading}>
                 <Loading spinning={AppLoading.customLoading}>
-                    <div id='Website'>
-                        <div style={{ display: Teacher.TeacherCustomData.TipsShow.WebsiteTipsShow ? 'block' : 'none' }} className='my-Tips'>
+                    <div id='DataBase'>
+                        <div style={{ display: Teacher.TeacherCustomData.TipsShow.DataBaseTipsShow ? 'block' : 'none' }} className='my-Tips'>
                             <div className='tips-left'>
                                 <i className='tips-icon'></i>
-                                <span className='tips-text'>操作提示: 拖放图标可调整网站的摆放顺序或进行分组。</span>
+                                <span className='tips-text'>操作提示: 拖放图标可调整资源库的摆放顺序或进行分组。</span>
                             </div>
                             <div className='tips-handle'>
                                 <span className='handle-text'>不再提示</span>
                                 <span className='handle-cancel' onClick={this.onCancelTipsClick.bind(this)}></span>
                             </div>
                         </div>
-                        <div className='add-box'>
-                            <span className='btn-add'><i className='add-icon'></i><span onClick={this.onAddCustomClick.bind(this)} className='add-text'>添加</span> </span>
-                        </div>
+                        {/* <div className='add-box'>
+                            <span className='btn-add'><i className='add-icon'></i><span className='add-text'>添加</span> </span>
+                        </div> */}
                         <DragDropContext onDragEnd={this.onDragEnd}>
                             <Droppable droppableId="main" direction="horizontal">
                                 {(provided, snapshot) => {//provided生成的数据，snapshot监听拖拽时的数据变化，snapshot:{draggingFromThisWith: null,draggingOverWith: null,isDraggingOver: false},draggingFromThisWith为拖拽对象的id，draggingOverWith为拖拽对象在该区域的id，isDraggingOver为是否有拖拽事件
@@ -304,7 +299,7 @@ class Website extends React.Component {
                                     return (
                                         <div className='main-box'>
                                             <p className='main-header'>
-                                                已添加至桌面的网站:
+                                                已添加至桌面的资源库:
                                 </p>
                                             <div
                                                 ref={provided.innerRef}
@@ -318,12 +313,12 @@ class Website extends React.Component {
                                                             {(provided, snapshot) => (
                                                                 <Card
                                                                     type='main'
-                                                                    custom='Website'
+                                                                    custom='DataBase'
                                                                     data={item}
                                                                     ID={'main-' + item.ID}
                                                                     provided={provided}
                                                                     snapshot={snapshot}
-                                                                    onDeleteClick={this.onDeleteClick.bind(this, { WebsiteData: MainData }, { droppableId: 'main-' + item.ID, index: index }, item.ID)}
+                                                                    onDeleteClick={this.onDeleteClick.bind(this, { DataBaseData: MainData }, { droppableId: 'main-' + item.ID, index: index }, item.ID)}
                                                                     onResetClick={this.onResetClick.bind(this, { droppableId: 'main-' + item.ID, index: index })}
                                                                     onEditClick={this.onEditClick.bind(this, { droppableId: 'main-' + item.ID, index: index })}
                                                                     style={getItemStyle(
@@ -343,38 +338,41 @@ class Website extends React.Component {
                                     )
                                 }}
                             </Droppable>
+                            {/* <div className='changeBox'>
+                            <span className='box-tips'>备选网站<span className='tips-1'>（共<span className='tips-2'>{this.getNumber(AlterData)}</span>）</span></span>
+                            <DropDown
+                                ref='dropMenu'
+                                style={{ zIndex: 2 }}
+                                onChange={this.onDropMenuChange}
+                                width={110}
+                                height={240}
+                                dropSelectd={this.state.firstSelect}
+                                dropList={[{ value: 1, title: '小学' },
+                                { value: 2, title: '初中' },
+                                { value: 4, title: '高中' },
+                                ]}
+                            ></DropDown>
+                            <Search placeHolder='输入关键词搜索...'
+                                onClickSearch={this.StudentSearch.bind(this)}
+                                className='SearchAlter'
+                                height={30}
+                                width={200}
+                                Value={this.state.searchValue}
+                                onCancelSearch={this.onCancelSearch}
+                                onChange={this.onChangeSearch.bind(this)}
+                                CancelBtnShow={this.state.CancelBtnShow}
+                            ></Search>
+                        </div> */}
                             <div className='changeBox'>
-                                <span className='box-tips'>备选网站<span className='tips-1'>（共<span className='tips-2'>{this.getNumber(AlterData)}</span>个）</span></span>
-                                <DropDown
-                                    ref='dropMenu'
-                                    style={{ zIndex: 2 }}
-                                    onChange={this.onDropMenuChange}
-                                    width={110}
-                                    height={240}
-                                    dropSelectd={this.state.firstSelect}
-                                    dropList={[{ value: 1, title: '小学' },
-                                    { value: 2, title: '初中' },
-                                    { value: 4, title: '高中' },
-                                    ]}
-                                ></DropDown>
-                                <Search placeHolder='输入关键词搜索...'
-                                    onClickSearch={this.StudentSearch.bind(this)}
-                                    className='SearchAlter'
-                                    height={30}
-                                    width={200}
-                                    Value={this.state.searchValue}
-                                    onCancelSearch={this.onCancelSearch}
-                                    onChange={this.onChangeSearch.bind(this)}
-                                    CancelBtnShow={this.state.CancelBtnShow}
-                                ></Search>
+                                <span className='box-tips'>备选资源库<span className='tips-1'>（共<span className='tips-2'>{this.getNumber(AlterData)}</span>个）</span></span>
                             </div>
                             {AlterData instanceof Array && AlterData.map((child, index) => {
                                 // console.log(child)
                                 return (child.List.length > 0 && <Droppable key={"alter" + index} droppableId={"alter" + index} direction="horizontal">
                                     {(provided, snapshot) => {
                                         return (
-                                            <div className='alter-box'>
-                                                <p className='alter-header'><i className='header-icon-1'></i><span className='header-text'>{child.SubTypeName}</span><i className='header-icon-2'></i></p>
+                                            <div className='alter-box alter-box-2'>
+                                                {/* <p className='alter-header'><i className='header-icon-1'></i><span className='header-text'>{child.SubTypeName}</span><i className='header-icon-2'></i></p> */}
                                                 <div
                                                     className='alter-drop'
                                                     ref={provided.innerRef}
@@ -386,10 +384,10 @@ class Website extends React.Component {
                                                             {(provided, snapshot) => (
                                                                 <Card
                                                                     type='alter'
-                                                                    custom='Website'
+                                                                    custom='DataBase'
                                                                     data={item}
                                                                     onAddClick={this.onAddClick.bind(this, { droppableId: "alter" + index, index: index1 })}
-                                                                    onDeleteClick={this.onDeleteClick.bind(this, { WebsiteAlterData: AlterData }, { droppableId: "alter" + index, index: index1 }, item.ID)}
+                                                                    onDeleteClick={this.onDeleteClick.bind(this, { DataBaseAlterData: AlterData }, { droppableId: "alter" + index, index: index1 }, item.ID)}
                                                                     onResetClick={this.onResetClick.bind(this, { droppableId: "alter" + index, index: index1 })}
                                                                     provided={provided}
                                                                     snapshot={snapshot}
@@ -434,4 +432,4 @@ const mapStateToProps = (state) => {
 
     }
 };
-export default connect(mapStateToProps)(Website);
+export default connect(mapStateToProps)(DataBase);

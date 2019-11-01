@@ -16,6 +16,7 @@ if (process.env.NODE_ENV === 'development'){
         AdmClassProxy:"http://192.168.129.1:30103",
         DeskTopProxy:"http://192.168.129.1:30103",
         CustomProxy:"http://192.168.2.114:8090",
+        // CustomProxy:"http://192.168.129.1:30103",
         ScheduleProxy:"http://192.168.129.1:30103",
         Xproxy:'http://192.168.129.1:30103/UserMgr/UserInfoMgr',
         PowerProxy:'http://192.168.129.1:30103/UserMgr/PowerMgr',

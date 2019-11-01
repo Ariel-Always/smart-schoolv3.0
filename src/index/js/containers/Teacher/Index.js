@@ -326,8 +326,20 @@ class Index extends Component {
                     destroyOnClose={true}
                     visible={Teacher.TeacherCustomModalShow.Show}
                     onCancel={this.TeacherCustomModalCancel}>
-                    <Loading opacity={false} spinning={AppLoading.modalLoading}>
                         {Teacher.TeacherCustomModalShow.Show?(<TeacherCustomContent></TeacherCustomContent>):''}
+                </Modal>
+                <Modal ref='CustomWebsiteMadal'
+                    bodyStyle={{ padding: 0, height: 734 + 'px' }}
+                    type='1'
+                    title={'添加桌面'}
+                    width={850}
+                    destroyOnClose={true}
+                    visible={Teacher.TeacherCustomModalShow.Show}
+                    onCancel={this.CustomWebsiteMadalCancel}
+                    onOk={this.CustomWebsiteMadalOk}
+                    >
+                    <Loading opacity={false} spinning={AppLoading.modalLoading}>
+                        
                     </Loading>
                 </Modal>
             </div>

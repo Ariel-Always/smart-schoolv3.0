@@ -108,9 +108,12 @@
 }
 
 // Website
-#Website {
-  padding: 0 30px;
-
+#Website,#Tool,#DataBase,#app {
+  // padding: 0 30px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
   .Card-protect {
     display: inline-block;
     // padding: 0 12px 12px;
@@ -127,6 +130,7 @@
     border-width: 1px;
     border-image-source: linear-gradient(90deg, #8bb915 0%, #a2d923 100%);
     border-image-slice: 1;
+    box-shadow: 7px 7px 5px -5px #a2d923;
 
     .main-header {
       width: 1088px;
@@ -159,10 +163,32 @@
     background-color: #f2f2f2;
     .alter-header {
       height: 36px;
+
       padding: 0 12px;
-      text-align: left;
-      font-size: 14px;
-      color: #333333;
+
+      .header-icon-2 {
+        display: inline-block;
+        width: 41px;
+        height: 36px;
+        background: url(../images/icon-diamonds.png) no-repeat center;
+        background-size: contain;
+      }
+      .header-icon-1 {
+        display: inline-block;
+        width: 8px;
+        height: 36px;
+        background: url(../images/icon-diamond.png) no-repeat center;
+        background-size: contain;
+      }
+      .header-text {
+        line-height: 36px;
+        text-align: left;
+        font-size: 14px;
+        color: #333333;
+        display: inline-block;
+        vertical-align: top;
+        margin: 0 5px;
+      }
     }
     .alter-drop {
       display: flex;
@@ -170,13 +196,20 @@
       justify-content: flex-start;
       align-items: center;
       width: 1090px;
-      min-height: 212px;
+      // min-height: 212px;
       padding: 4px 20px;
     }
+   
+  }
+  .alter-box-2{
+    min-height: 176px;
+    background-color: #fff;
+
   }
 
   .changeBox {
     position: relative;
+    width: 1090px;
     height: 28px;
     margin: 15px 0;
 
@@ -194,9 +227,101 @@
         color: #ff0000;
       }
     }
-    .SearchAlter{
+    .SearchAlter {
       float: right;
-      
+    }
+  }
+
+  .my-Tips {
+    position: relative;
+    padding: 0 8px;
+    width: 100%;
+    height: 30px;
+    background-color: #fff4e4;
+
+    .tips-left {
+      float: left;
+      height: 30px;
+
+      .tips-icon {
+        display: inline-block;
+        width: 14px;
+        height: 30px;
+        background: url(../images/icon-warn.png) no-repeat center;
+        background-size: 14px 14px;
+      }
+
+      .tips-text {
+        display: inline-block;
+        margin-left: 5px;
+        vertical-align: top;
+        font-size: 14px;
+        line-height: 30px;
+        color: #7182a8;
+      }
+    }
+
+    .tips-handle {
+      float: right;
+      height: 30px;
+
+      .handle-text {
+        display: inline-block;
+        vertical-align: top;
+        font-size: 14px;
+        line-height: 30px;
+        color: #0099ff;
+        margin-right: 5px;
+      }
+
+      .handle-cancel {
+        display: inline-block;
+        width: 14px;
+        // right: 8px;
+        height: 30px;
+        background: url(../images/icon-close.png) no-repeat center;
+        background-size: 14px 14px;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .add-box {
+    height: 54px;
+    width: 1090px;
+    // margin-top: 30px;
+
+    .btn-add {
+      // display: inline-block;
+      float: right;
+      width: 72px;
+      height: 30px;
+      margin-top: 12px;
+      background-image: linear-gradient(-90deg, #23a1fa 0%, #14b6f7 51%, #04caf4 100%),
+        linear-gradient(#199aff, #199aff);
+      border-radius: 3px;
+      line-height: 30px;
+      font-size: 14px;
+      color: #ffffff;
+      text-align: center;
+
+      .add-icon {
+        display: inline-block;
+        width: 13px;
+        // right: 8px;
+        height: 30px;
+        background: url(../images/icon-add.png) no-repeat center;
+        background-size: 14px 14px;
+        margin-right: 5px;
+      }
+      .add-text {
+        display: inline-block;
+        font-size: 14px;
+        vertical-align: top;
+        line-height: 30px;
+        color: #ffffff;
+      }
     }
   }
 }

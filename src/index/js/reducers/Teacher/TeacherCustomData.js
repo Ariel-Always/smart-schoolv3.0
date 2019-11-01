@@ -9,8 +9,15 @@ const TeacherCustomData = (
         AppAlterData: [],
         DataBaseData: [],
         DataBaseAlterData: [],
-        AlterPeriod: []
+        AlterPeriod: [],
+        TipsShow: {
+            WebsiteTipsShow: false,
+            ToolTipsShow: false,
+            AppTipsShow: false,
+            DataBaseTipsShow: false
+        }
     }, actions) => {
+    let TipsShow = '';
     switch (actions.type) {
         case TeacherCustomActions.GET_CUSTOM_DATA:
             let data = handleData(actions.data, actions.data2, actions.key)
@@ -25,19 +32,31 @@ const TeacherCustomData = (
             return Object.assign({}, state, { AlterPeriod: actions.data });
         case TeacherCustomActions.GET_ALTER_DATA:
             return Object.assign({}, state, { WebsiteAlterData: handleWebsiteAlter(actions.data) });
+        case TeacherCustomActions.GET_WEBSITE_ALTER_TIPS:
+            TipsShow = Object.assign({}, state.TipsShow, { WebsiteTipsShow: actions.data });
+            return Object.assign({}, state, { TipsShow });
+        case TeacherCustomActions.GET_TOOL_ALTER_TIPS:
+            TipsShow = Object.assign({}, state.TipsShow, { ToolTipsShow: actions.data });
+            return Object.assign({}, state, { TipsShow });
+        case TeacherCustomActions.GET_APP_ALTER_TIPS:
+            TipsShow = Object.assign({}, state.TipsShow, { AppTipsShow: actions.data });
+            return Object.assign({}, state, { TipsShow });
+        case TeacherCustomActions.GET_DATABASE_ALTER_TIPS:
+            TipsShow = Object.assign({}, state.TipsShow, { DataBaseTipsShow: actions.data });
+            return Object.assign({}, state, { TipsShow });
         default:
             return state;
     }
 };
 function handleData(data, data2, key) {
     if (key === 'tool') {
-        return { ToolData: data, ToolAlterData: data2 }
+        return { ToolData: handleWebsiteMain(data), ToolAlterData: handleAlter(data2) }
     } else if (key === 'App') {
-        return { AppData: data, AppAlterData: data2 }
+        return { AppData: handleWebsiteMain(data), AppAlterData: handleAlter(data2) }
     } else if (key === 'Website') {
         return { WebsiteData: handleWebsiteMain(data), WebsiteAlterData: handleWebsiteAlter(data2) }
     } else if (key === 'database') {
-        return { DataBaseData: data, DataBaseAlterData: data2 }
+        return { DataBaseData: handleWebsiteMain(data), DataBaseAlterData:  handleAlter(data2) }
     }
 
 }
@@ -72,7 +91,7 @@ function handleWebsiteAlter(data) {
             let number = Math.random() * 3
             let myColor = number > 2 ? 'blue' : number > 1 ? 'orange' : 'green';
             child1.myColor = myColor//设计颜色
-            child1.Img = child1.ImgUrl || (UrlGetIcon(child1.Url) + '/favicon.ico')// data数据处理:img
+            child1.Img = child1.ModuleLogoPath||child1.ImgUrl || (UrlGetIcon(child1.Url) + '/favicon.ico')// data数据处理:img
             return child1
         })
 
@@ -80,6 +99,18 @@ function handleWebsiteAlter(data) {
         return child;
     })
     return newData;
+}
+function handleAlter(data) {
+    let newData = data.map((child, index) => {
+            let number = Math.random() * 3
+            let myColor = number > 2 ? 'blue' : number > 1 ? 'orange' : 'green';
+            child.myColor = myColor//设计颜色
+            child.key = child.OrderNo
+            child.Img = child.ModuleLogoPath||child.ImgUrl || (UrlGetIcon(child.Url) + '/favicon.ico')// data数据处理:img
+            return child
+    })
+    return [{List:newData}];
+    
 }
 // 排序
 function Sort(dataArr, data) {

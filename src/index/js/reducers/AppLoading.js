@@ -4,7 +4,8 @@ const AppLoading = (state = {
 
     show: true,
     modalLoading: false,
-    customLoading:false
+    customLoading: false,
+    customOpacityLoading:false
 
 }, actions) => {
 
@@ -57,6 +58,21 @@ const AppLoading = (state = {
             return Object.assign({}, state, {
 
                 customLoading: false
+
+            });
+        case AppLoadingActions.CUSTOM_OPACITY_LOADING_OPEN:
+
+            return Object.assign({}, state, {
+
+                customOpacityLoading: true
+
+            });
+
+        case AppLoadingActions.CUSTOM_OPACITY_LOADING_CLOSE:
+
+            return Object.assign({}, state, {
+
+                customOpacityLoading: false
 
             });
         default:

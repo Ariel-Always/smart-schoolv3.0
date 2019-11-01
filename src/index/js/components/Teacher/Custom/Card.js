@@ -61,7 +61,7 @@ class Card extends React.Component {
                     <span onClick={() => {this.props.onAddClick()}} className='alter-btn' >添加至桌面</span>
 
                 }
-                {this.props.custom === 'Website'&&this.props.data.IsCreatedByMe?
+                {this.props.data.IsCreatedByMe?
                 <div  className='handle-box'>
                     <span onClick={() => {this.props.onDeleteClick()}} className='delete'></span>
                     <span onClick={() => {this.props.onResetClick()}} className='reset'></span>

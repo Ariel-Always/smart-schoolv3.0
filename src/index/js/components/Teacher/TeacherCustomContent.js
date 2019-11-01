@@ -9,6 +9,9 @@ import CONFIG from '../../../../common/js/config';
 import '../../../scss/TeacherCustomContent.scss'
 import { Tabs } from 'antd'
 import Website from './Custom/Website'
+import Tool from './Custom/Tool'
+import DataBase from './Custom/DataBase'
+import App from './Custom/App'
 const { TabPane } = Tabs;
 
 class TeacherCustomContent extends React.Component {
@@ -48,16 +51,16 @@ class TeacherCustomContent extends React.Component {
                         onChange={this.onTabsChange.bind(this)}
                         activeKey={this.state.activeKey}>
                         <TabPane tab={<span className='my-tab'><i className='tool'></i><span className='vertical'>常用工具定制</span></span>} key='tool'>
-                            tool
+                            <Tool></Tool>
                        </TabPane>
                         <TabPane tab={<span className='my-tab'><i className='App'></i><span className='vertical'>应用定制</span></span>} key='App'>
-                            App
+                            <App></App>
                        </TabPane>
                         <TabPane tab={<span className='my-tab'><i className='Website'></i><span className='vertical'>网站定制</span></span>} key='Website'>
                             <Website></Website>
                         </TabPane>
                         <TabPane tab={<span className='my-tab'><i className='database'></i><span className='vertical'>资源库定制</span></span>} key='database'>
-                            database
+                            <DataBase></DataBase>
                        </TabPane>
                     </Tabs>
                 </div>
