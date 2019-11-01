@@ -53,6 +53,7 @@ if (process.env.NODE_ENV === 'production'){
         LoginProxy:'',
         MockLoginProxy:'',
         PersonalProxy:"",
+        CustomProxy:'',
         XTestProxy:'/UserMgr/UserInfoMgr'
     }
 

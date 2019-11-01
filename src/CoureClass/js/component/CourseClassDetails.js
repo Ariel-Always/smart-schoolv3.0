@@ -55,7 +55,7 @@ class CourseClassDetails extends React.Component {
                     key: 'Gender',
                     render: Gender => {
                         return (
-                            <span className='Gender'>{Gender}</span>
+                            <span className='Gender'>{Gender?Gender:'--'}</span>
                         )
                     }
                 },
@@ -98,7 +98,7 @@ class CourseClassDetails extends React.Component {
                 <div className='CourseClassDetails'>
                     <div className='details-tips'>
                         <span className='tips-content className'>{GetCourseClassDetailsMsg ? GetCourseClassDetailsMsg.CourseClassName : ''}</span>
-                        <span className='tips-content classTeacher'><span className='tips'>任课教师：</span><span onClick={this.onTeacherNameClick.bind(this,GetCourseClassDetailsMsg.TeacherID)}>{GetCourseClassDetailsMsg ? GetCourseClassDetailsMsg.TeacherName + '[' + GetCourseClassDetailsMsg.TeacherID + ']' : ''}</span></span>
+        <span className='tips-content classTeacher'><span className='tips'>任课教师：</span>{GetCourseClassDetailsMsg ?GetCourseClassDetailsMsg.TeacherID? <span onClick={this.onTeacherNameClick.bind(this,GetCourseClassDetailsMsg.TeacherID)}>{GetCourseClassDetailsMsg.TeacherName + '[' + GetCourseClassDetailsMsg.TeacherID + ']' }</span>: '--':'--'}</span>
                         <span className='tips-content subject'><span className='tips'>学科：</span>{GetCourseClassDetailsMsg ? GetCourseClassDetailsMsg.SubjectName : ''}</span>
                         <span className='tips-content grade'><span className='tips'>年级：</span>{GetCourseClassDetailsMsg ? GetCourseClassDetailsMsg.GradeName : ''}</span>
                         <span className='tips-content studentCount'><span className='tips'>学生人数：</span>{GetCourseClassDetailsMsg ? GetCourseClassDetailsMsg.StudentCount : ''}</span>

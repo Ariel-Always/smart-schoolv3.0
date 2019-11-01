@@ -177,7 +177,7 @@ class PowerContent extends React.Component {
                                                 <div className='radio-2'>
                                                     <MyRadio type value={2} disabled={Power.student[0].Status === 0 ? true : false}></MyRadio>
                                                     <span className='radio-tips-1'>
-                                                        先审后用模式
+                                                        先用后审
                                                 </span>
                                                     <span className='radio-tips-2'>
                                                         在学生提交档案时系统便为其创建用户账号

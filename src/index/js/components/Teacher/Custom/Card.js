@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { Button } from 'antd'
 import '../../../../scss/Card.scss'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
@@ -8,32 +8,36 @@ class Card extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            isTrue: true
         }
 
     }
-//图片加载成功调用
-ModuleImgLoad({ GroupID, PNO, CNO }) {
+    //图片加载成功调用
+    ImgLoad(e, imgData) {
 
-    const { dispatch } = this.props;
+        const { dispatch } = this.props;
 
-    dispatch(ModuleActions.ImgLoad({ GroupID, PNO, CNO }));
+        // console.log(e,imgData,'true')
+    }
 
-}
+
+    //图片加载失败调用
+    ImgErrorLoad(e, imgData) {
+
+        const { dispatch } = this.props;
+        this.setState({
+            isTrue: false
+        })
+        // console.log(e,imgData,'false',this.state.isTrue)
 
 
-//图片加载失败调用
-ModuleImgErrorLoad({ GroupID, PNO, CNO }) {
-
-    const { dispatch } = this.props;
-
-    dispatch(ModuleActions.ImgErrorLoad({ GroupID, PNO, CNO }));
-
-}
+    }
 
     render() {
         //console.log(this.props.data)
-        let data= this.props.data;
+        let data = this.props.data;
+        let number = Math.random() * 3
+        let myColor = number > 2 ? 'blue' : number > 1 ? 'orange' : 'green';
         return (
             <div
                 ref={this.props.provided.innerRef}
@@ -42,14 +46,26 @@ ModuleImgErrorLoad({ GroupID, PNO, CNO }) {
                 className='Card'
                 style={this.props.style}
             >
-                <img
-                    className='card-img'
-                    width={80} alt={''}
-                    src={data.ModuleLogoPath||`${data.Url}/favicon.ico`}
-                    onLoad={() => this.ModuleImgLoad({ GroupID: item.GroupID, PNO: i.OrderNo, CNO: it.OrderNo })}
-                    onError={() => this.ModuleImgErrorLoad({ GroupID: item.GroupID, PNO: i.OrderNo, CNO: it.OrderNo })}
-                    height={80}></img>
-                <p className='card-name'>{this.props.data.Name}</p>
+                <div className={`img-box ${data.myColor}`}>
+                    {this.state.isTrue ? (<img
+                        className='card-img'
+                        alt={''}
+                        src={data.Img}
+                        onLoad={this.ImgLoad.bind(this, data)}
+                        onError={this.ImgErrorLoad.bind(this, data)}
+                    ></img>) : <span className='inErrorText'>{data.Name ? data.Name.split('')[0] : ''}</span>}
+                </div>
+                <p className='card-name' title={this.props.data.Name}><i style={{display:this.props.data.IsCreatedByMe?'inline-block':'none'}} className='isSelf'></i><span style={{paddingLeft:this.props.data.IsCreatedByMe?'12px':'0'}}>{this.props.data.Name}</span></p>
+                {this.props.type === 'main' ?
+                    <span onClick={() => {this.props.onEditClick()}} className='main-btn' >移除</span> :
+                    <span onClick={() => {this.props.onAddClick()}} className='alter-btn' >添加至桌面</span>
+
+                }
+                {this.props.custom === 'Website'&&this.props.data.IsCreatedByMe?
+                <div  className='handle-box'>
+                    <span onClick={() => {this.props.onDeleteClick()}} className='delete'></span>
+                    <span onClick={() => {this.props.onResetClick()}} className='reset'></span>
+                </div>:''}
             </div>
         )
     }

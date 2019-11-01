@@ -327,7 +327,7 @@ class Index extends Component {
                     visible={Teacher.TeacherCustomModalShow.Show}
                     onCancel={this.TeacherCustomModalCancel}>
                     <Loading opacity={false} spinning={AppLoading.modalLoading}>
-                        <TeacherCustomContent></TeacherCustomContent>
+                        {Teacher.TeacherCustomModalShow.Show?(<TeacherCustomContent></TeacherCustomContent>):''}
                     </Loading>
                 </Modal>
             </div>

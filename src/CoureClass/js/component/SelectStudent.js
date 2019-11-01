@@ -8,7 +8,7 @@ import { Scrollbars } from 'react-custom-scrollbars'
 import history from '../containers/history'
 import { Input, } from 'antd'
 import CONFIG from '../../../common/js/config';
-import { Search, Loading, CheckBox, CheckBoxGroup,Empty } from "../../../common";
+import { Search, Loading, CheckBox, CheckBoxGroup, Empty } from "../../../common";
 
 
 class SelectStudent extends React.Component {
@@ -20,9 +20,11 @@ class SelectStudent extends React.Component {
             checkAll: false,
             checkList: [],
             show: false,
-            UserMsg:props.DataState.LoginUser,
-            leftShow:true
-
+            UserMsg: props.DataState.LoginUser,
+            leftShow: true,
+            CancelBtnShow: 'n',
+            keyword: '',
+            searchValue:''
         }
     }
     componentWillMount() {
@@ -54,23 +56,23 @@ class SelectStudent extends React.Component {
 
         let selectList = [];
         let len = plainOptions.length;
-        checkList.map((child,index) => {
-            
+        checkList.map((child, index) => {
+
             plainOptions.map(key => {
-                if(key===child){
+                if (key === child) {
                     len--;
                 }
             })
-            
+
         })
         this.setState({
             checkList: checkList,
             plainOptions: plainOptions,
-            checkAll: len===0 ? true : false
+            checkAll: len === 0 ? true : false
         })
-        if(!this.state.selectClassTab&&DataState.GetStudentClassMsg.GradeClass.length){
+        if (!this.state.selectClassTab && DataState.GetStudentClassMsg.GradeClass.length) {
             this.setState({
-                selectClassTab:DataState.GetStudentClassMsg.GradeClass[0].ClassID
+                selectClassTab: DataState.GetStudentClassMsg.GradeClass[0].ClassID
             })
             this.onClickTabClick(DataState.GetStudentClassMsg.GradeClass[0].ClassID)
         }
@@ -86,10 +88,10 @@ class SelectStudent extends React.Component {
             show: true,
             CancelBtnShow: 'y',
             keyword: value.value,
-            selectClassTab:'',
-            leftShow:false
+            selectClassTab: '',
+            leftShow: false
         })
-        dispatch(actions.UpDataState.searchClassStudentMsg('/GetStudentForAddOrEditCourseClassByKey?schoolID='+this.state.UserMsg.SchoolID+'&gradeID='+gradeID+'&key='+value.value))
+        dispatch(actions.UpDataState.searchClassStudentMsg('/GetStudentForAddOrEditCourseClassByKey?schoolID=' + this.state.UserMsg.SchoolID + '&gradeID=' + gradeID + '&key=' + value.value))
 
     }
     //点击左侧
@@ -98,11 +100,11 @@ class SelectStudent extends React.Component {
         this.setState({
             selectClassTab: id,
             show: true,
-            checkAll:false
+            checkAll: false
         })
         let oldStudent = DataState.GetCourseClassDetailsHandleClassMsg.selectData.Student;
         dispatch(actions.UpDataState.setClassStudentTransferMsg(oldStudent))
-        dispatch(actions.UpDataState.getClassStudentMsg('/GetStudentForAddOrEditCourseClassByGroupID?schoolID='+this.state.UserMsg.SchoolID+'&classID=' + id))
+        dispatch(actions.UpDataState.getClassStudentMsg('/GetStudentForAddOrEditCourseClassByGroupID?schoolID=' + this.state.UserMsg.SchoolID + '&classID=' + id))
 
     }
     //全选
@@ -186,7 +188,7 @@ class SelectStudent extends React.Component {
         let oldStudent = DataState.GetCourseClassDetailsHandleClassMsg.selectData.Student;//上次改变生成的数据
         let transfer = DataState.GetCourseClassDetailsHandleClassMsg.transfer.Student;
         //获得列表没选的
-        let newCheckList = [] ;
+        let newCheckList = [];
         plainOptions.map((child, index) => {
             let unSelect = true;
             value.map((valueChild) => {
@@ -195,13 +197,13 @@ class SelectStudent extends React.Component {
                 }
             })
             if (unSelect) {
-                newCheckList.push(child) ;
+                newCheckList.push(child);
             }
         })
         //checklist去掉未选的
         let newTransfer = transfer;
         let newTrans = [];
-        console.log(newTransfer,oldCheckList,newCheckList)
+        console.log(newTransfer, oldCheckList, newCheckList)
         let isSelectList = [];
         oldCheckList.map((child, index) => {
             let isSelect = true;
@@ -210,63 +212,63 @@ class SelectStudent extends React.Component {
                 if (list === child) {//进来就是没选择的
                     isSelect = false;
                     newTransfer.map((trans, key) => {
-                
+
                         if (trans.StudentID === child) {
                             isTranSelect = false
                             newTrans.push(key)
                         }
-                        
-                        
+
+
                     })
-                    
+
                 }
             })
-            
-             
+
+
             if (isSelect) {
                 isSelectList.push(child)
             }
         })
         console.log(newTrans)
         let transtrans = [];
-        newTransfer.map((child,index) => {
+        newTransfer.map((child, index) => {
             let a = true;
             newTrans.map(key => {
-                if(key===index){
+                if (key === index) {
                     a = false
                 }
             })
-            if(a){
+            if (a) {
                 transtrans.push(child);
             }
         })
-        
+
 
         //旧选中加新选
         let transerNewData = []
         let newList = [];
-        value.map((child,index) => {
+        value.map((child, index) => {
             let isNew = true;
             isSelectList.map((valueChild) => {
-                if(valueChild===child){
+                if (valueChild === child) {
                     isNew = false
                 }
             })
-            
-            if(isNew){
-                popStudent.map((pop,index) => {
-                    if(pop.StudentID === child){
+
+            if (isNew) {
+                popStudent.map((pop, index) => {
+                    if (pop.StudentID === child) {
                         transerNewData.push(pop)
                     }
                 })
-                newList.push(child) ;
+                newList.push(child);
             }
         })
-        console.log(transtrans,transerNewData)
+        console.log(transtrans, transerNewData)
         newTrans = transtrans.concat(transerNewData);
         let endCheckList = isSelectList.concat(newList);
 
-        console.log(value,endCheckList)
+        console.log(value, endCheckList)
         this.setState({
             checkList: endCheckList,
             checkAll: value.length === this.state.plainOptions.length ? true : false
@@ -285,13 +287,13 @@ class SelectStudent extends React.Component {
         this.setState({
             CancelBtnShow: 'n',
             keyword: '',
-            searchValue:'',
-            selectClassTab:'',
-            leftShow:true,
+            searchValue: '',
+            selectClassTab: '',
+            leftShow: true,
         })
-        if(DataState.GetStudentClassMsg.GradeClass.length){
+        if (DataState.GetStudentClassMsg.GradeClass.length) {
             this.setState({
-                selectClassTab:DataState.GetStudentClassMsg.GradeClass[0].ClassID
+                selectClassTab: DataState.GetStudentClassMsg.GradeClass[0].ClassID
             })
             this.onClickTabClick(DataState.GetStudentClassMsg.GradeClass[0].ClassID)
         }
@@ -314,19 +316,19 @@ class SelectStudent extends React.Component {
                             placeholder='请输入关键字搜索'
                             width='280'
                             Value={this.state.searchValue}
-                                    onChange={this.onChangeSearch.bind(this)}
-                                    onCancelSearch={this.onCancelSearch}
-                                    CancelBtnShow={this.state.CancelBtnShow}
+                            onChange={this.onChangeSearch.bind(this)}
+                            onCancelSearch={this.onCancelSearch}
+                            CancelBtnShow={this.state.CancelBtnShow}
                             onClickSearch={this.onClickSearch.bind(this)}
                         ></Search>
                     </div>
                     <Loading spinning={UIState.AppLoading.studentLoading} >
-                        {ClassList.length?(<div className='box-content' style={{height:'437px'}}>
+                        {ClassList.length ? (<div className='box-content' style={{ height: '437px' }}>
                             <Scrollbars
-                                style={{ width: 177 + 'px', height: 437 + 'px', float: 'left',margin:0 ,display:this.state.leftShow?'block':'none'}}
+                                style={{ width: 177 + 'px', height: 437 + 'px', float: 'left', margin: 0, display: this.state.leftShow ? 'block' : 'none' }}
                             >
                                 <ul className='selectClassBox'
-                                    style={{ width: 177 + 'px', height: 437 + 'px',margin:0 }}
+                                    style={{ width: 177 + 'px', height: 437 + 'px', margin: 0 }}
                                 >
                                     {
                                         ClassList.map((child, index) => {
@@ -341,15 +343,15 @@ class SelectStudent extends React.Component {
                                     }
                                 </ul>
                             </Scrollbars>
-                            <Loading spinning={UIState.AppLoading.classStudentLoading} style={{height:'437px'}}>
-                                <ul className='selectStudent' style={{width:this.state.leftShow? 475 + 'px': 680 + 'px', height: 437 + 'px', display: this.state.show ? 'block' : 'none' }}>
-                                {propStudent.length?<li className='selectAllBox'>
+                            <Loading spinning={UIState.AppLoading.classStudentLoading} style={{ height: '437px' }}>
+                                <ul className='selectStudent' style={{ width: this.state.leftShow ? 475 + 'px' : 680 + 'px', height: 437 + 'px', display: this.state.show ? 'block' : 'none' }}>
+                                    {propStudent.length ? <li className='selectAllBox'>
                                         <CheckBox
                                             className='selectAll'
                                             onClick={this.onSelectAllClick.bind(this)}
                                             checked={this.state.checkAll}
                                         >全选</CheckBox>
-                                    </li>:<Empty type='4' noTitle style={{marginTop:'238.5px',transform:'translateY(-50%)'}}></Empty>}
+                                    </li> : <Empty type='4' noTitle style={{ marginTop: '238.5px', transform: 'translateY(-50%)' }}></Empty>}
                                     <Scrollbars
                                         style={{ width: 100 + '%', height: 387 + 'px' }}
                                     >
@@ -372,7 +374,7 @@ class SelectStudent extends React.Component {
                                     </Scrollbars>
                                 </ul>
                             </Loading>
-                        </div>):<Empty type='4' noTitle style={{marginTop:'238.5px',transform:'translateY(-50%)'}}></Empty>}
+                        </div>) : <Empty type='4' noTitle style={{ marginTop: '238.5px', transform: 'translateY(-50%)' }}></Empty>}
                     </Loading>
 
                 </div>

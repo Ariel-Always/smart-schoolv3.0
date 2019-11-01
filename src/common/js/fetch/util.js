@@ -19,7 +19,7 @@ function AESEncryptionBody(paramsObj, CRYPTOJSKEY = COMMONKEY, SecurityLevel, co
         if (SecurityLevel === 3 || SecurityLevel === 4) {
             plain =JSON.stringify({ p: encrypt(plain, CRYPTOJSKEY) });
         }
-        console.log(plain)
+        //console.log(plain)
         return plain;
     } else {
         //let body = JSON.stringify(paramsObj);

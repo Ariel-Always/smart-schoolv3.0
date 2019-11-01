@@ -110,6 +110,12 @@
 // Website
 #Website {
   padding: 0 30px;
+
+  .Card-protect {
+    display: inline-block;
+    // padding: 0 12px 12px;
+    width: auto;
+  }
   .main-box {
     position: relative;
     // left: 50%;
@@ -135,10 +141,11 @@
     .main-drop {
       width: 1090px;
       min-height: 212px;
-      display: flex;
-      flex-flow: row wrap;
-      justify-content: flex-start;
-      align-items: center;
+      padding: 12px 20px;
+      // display: flex;
+      // flex-flow: row wrap;
+      // justify-content: flex-start;
+      // align-items: center;
     }
   }
 
@@ -148,6 +155,7 @@
     // margin-left: -545px;
     width: 1090px;
     min-height: 212px;
+    margin-bottom: 20px;
     background-color: #f2f2f2;
     .alter-header {
       height: 36px;
@@ -164,6 +172,31 @@
       width: 1090px;
       min-height: 212px;
       padding: 4px 20px;
+    }
+  }
+
+  .changeBox {
+    position: relative;
+    height: 28px;
+    margin: 15px 0;
+
+    .box-tips {
+      position: relative;
+      font-size: 14px;
+      line-height: 28px;
+      letter-spacing: 0px;
+      color: #666666;
+
+      .tips-1 {
+        color: #999999;
+      }
+      .tips-2 {
+        color: #ff0000;
+      }
+    }
+    .SearchAlter{
+      float: right;
+      
     }
   }
 }

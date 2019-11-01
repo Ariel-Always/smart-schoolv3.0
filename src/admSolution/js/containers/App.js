@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Menu, Loading, Alert, Modal, Button } from "../../../common";
+import { Menu, Loading, Alert, Modal, Button, Empty } from "../../../common";
 import { connect } from 'react-redux';
 import Frame from '../../../common/Frame';
 
@@ -26,7 +26,7 @@ class App extends Component {
         const { dispatch } = props;
         this.state = {
             UserMsg: props.DataState.LoginUser,
-            resetName:''
+            resetName: ''
         }
     }
 
@@ -37,12 +37,13 @@ class App extends Component {
         TokenCheck_Connect()
         //sessionStorage.setItem('token','')
 
-        dispatch(actions.UpDataState.getTeachingSolutionMsg('/ListTeachingSolutions?pageSize=9&currentPage=1'))
 
         let token = sessionStorage.getItem('token')
         // sessionStorage.setItem('UserInfo', '')
         if (sessionStorage.getItem('UserInfo')) {
             dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
+            dispatch(actions.UpDataState.getTeachingSolutionMsg('/ListTeachingSolutions?beginTime=&endTime=&pageSize=9&currentPage=1&userId=' + JSON.parse(sessionStorage.getItem('UserInfo')).UserID))
+
         }
         else {
             getUserInfo(token, '000');
@@ -50,10 +51,13 @@ class App extends Component {
                 if (sessionStorage.getItem('UserInfo')) {
                     dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
                     clearInterval(timeRun)
+                    dispatch(actions.UpDataState.getTeachingSolutionMsg('/ListTeachingSolutions?beginTime=&endTime=&pageSize=9&currentPage=1&userId=' + JSON.parse(sessionStorage.getItem('UserInfo')).UserID))
+
                 }
             }, 1000)
             //dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
         }
+
 
 
     }
@@ -81,7 +85,7 @@ class App extends Component {
         let url = '/EditTeachingSolution';
         let UserMsg = DataState.LoginUser;
         console.log(this.state.resetName)
-        if (this.state.resetName === DataState.GetSolutionID.Solution.SolutionName||this.state.resetName==='') {
+        if (this.state.resetName === DataState.GetSolutionID.Solution.SolutionName || this.state.resetName === '') {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-error',
                 title: "你输入的方案名有误~",
@@ -95,7 +99,7 @@ class App extends Component {
             SolutionID: DataState.GetSolutionID.Solution.SolutionID,
             UserID: UserMsg.UserID,
             SolutionName: this.state.resetName
-        },2).then(res => {
+        }, 2).then(res => {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
@@ -107,9 +111,10 @@ class App extends Component {
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
                 this.setState({
-                    resetName:''
+                    resetName: ''
                 })
-                dispatch(actions.UpDataState.getTeachingSolutionMsg('/ListTeachingSolutions?pageSize=9&currentPage=1'))
+                dispatch(actions.UpDataState.getTeachingSolutionMsg('/ListTeachingSolutions?beginTime=&endTime=&pageSize=9&currentPage=1&userId=' + JSON.parse(sessionStorage.getItem('UserInfo')).UserID))
+                
 
             }
         })
@@ -164,8 +169,8 @@ class App extends Component {
                         type="triangle" showBarner={false} showLeftMenu={false}>
                         {/* <div ref="frame-time-barner"><TimeBanner /></div> */}
 
-                        <div ref="frame-right-content">
-                            <TeachingAbsolution></TeachingAbsolution>
+                        <div className='box' style={{ background: DataState.GetTeachingSolutionDetailsMsg.solutionDetailsData.length ? 'transparent' : '#fff' }} ref="frame-right-content">
+                            {DataState.GetTeachingSolutionDetailsMsg.solutionDetailsData.length ? <TeachingAbsolution></TeachingAbsolution> : <Empty type='4' className='Empty' title='您还没有添加教学方案哦~'></Empty>}
                         </div>
                     </Frame>
 
@@ -183,7 +188,7 @@ class App extends Component {
                 ></Alert>
                 {/* 模态框 */}
                 <Modal ref='CourseClassDetailsMadal'
-                    bodyStyle={{height:522+'px', padding: 0 }}
+                    bodyStyle={{ height: 522 + 'px', padding: 0 }}
                     type='1'
                     width={936}
                     footer={null}

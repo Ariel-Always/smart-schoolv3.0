@@ -62,7 +62,8 @@ class ShowCard extends React.Component {
                     title: "成功",
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
-                dispatch(actions.UpDataState.getTeachingSolutionMsg('/ListTeachingSolutions?pageSize=9&currentPage=1'))
+                dispatch(actions.UpDataState.getTeachingSolutionMsg('/ListTeachingSolutions?beginTime=&endTime=&pageSize=9&currentPage=1&userId=' + JSON.parse(sessionStorage.getItem('UserInfo')).UserID))
+                
 
             }
         })

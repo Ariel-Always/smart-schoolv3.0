@@ -2,7 +2,7 @@ import config from '../config'
 
 import $ from 'jquery'
 
-export function TokenCheck(IsDesk,SysID = '000') {
+export function TokenCheck(IsDesk=false,SysID = '000') {
 
     let session_token = sessionStorage.getItem('token');
 

@@ -1,11 +1,14 @@
 import React from 'react'
 import { connect } from 'react-redux';
 import TeacherCustomActions from '../../../actions/Teacher/TeacherCustomActions';
+import AppAlertActions from '../../../actions/AppAlertActions';
+
 import { postData, getData } from '../../../../../common/js/fetch'
 import CONFIG from '../../../../../common/js/config';
 import '../../../../scss/TeacherCustomContent.scss'
 import Card from './Card'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { Loading, DropDown, Search } from '../../../../../common';
 const getItems = (count, offset = 0) =>
     Array.from({ length: count }, (v, k) => k).map(k => ({
         id: `item-${k + offset}`,
@@ -44,7 +47,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
     width: '126px',
     height: '156px',
     // padding: grid * 2,
-    margin: `0 24px 12px 0`,
+    margin: `0 12px 12px 12px`,
     border: isDragging ? `solid 1px #02e362` : 'none',
     // change background colour if dragging
     //background: isDragging ? 'lightgreen' : 'grey',
@@ -55,9 +58,9 @@ const getItemStyle = (isDragging, draggableStyle) => ({
 
 const getListStyle = isDraggingOver => ({
     //background: isDraggingOver ? 'lightblue' : 'lightgrey',
-    display: 'flex',
-    padding: grid,
-    overflow: 'auto',
+    //display: 'flex',
+    //padding: grid,
+    //overflow: 'hidden',
 });
 
 class Website extends React.Component {
@@ -66,7 +69,11 @@ class Website extends React.Component {
         this.state = {
             main: this.props.Teacher.TeacherCustomData.WebsiteData,
             alter1: this.props.Teacher.TeacherCustomData.WebsiteAlterData,
-            userMsg: props.LoginUser
+            userMsg: props.LoginUser,
+            firstSelect: { value: 0, title: '全部学段' },
+            keyword: '',
+            CancelBtnShow: 'n',
+            searchValue: '',
         }
         this.onDragEnd = this.onDragEnd.bind(this);
     }
@@ -86,6 +93,10 @@ class Website extends React.Component {
     getList = id => this.state[this.id2List[id]];
     onDragEnd = result => {
         const { source, destination } = result;
+        const { Teacher, dispatch } = this.props
+        let MainData = Teacher.TeacherCustomData.WebsiteData;
+        let AlterData = Teacher.TeacherCustomData.WebsiteAlterData;
+        let dataObj = {}
         console.log(result)
         //        result:{ combine: null
         // destination: {droppableId: "droppable2", index: 4}
@@ -99,128 +110,288 @@ class Website extends React.Component {
             return;
         }
 
-        if (source.droppableId === destination.droppableId) {//同一个区域
-            const main = reorder(
-                this.getList(source.droppableId),
-                source.index,
-                destination.index
-            );
+        if (source.droppableId === destination.droppableId && source.droppableId === 'main') {//同一个区域
+            dataObj['WebsiteData'] = MainData
+            dispatch(TeacherCustomActions.setCustomData('main', dataObj, source, destination))
+            dispatch(TeacherCustomActions.fetchCustomData('/SubjectResMgr/WebSiteMgr/Teacher/EditDeskTop'))
+        } else if (source.droppableId !== destination.droppableId && (source.droppableId === 'main' || (source.droppableId !== 'main' && destination.droppableId === 'main'))) {
+            dataObj['WebsiteData'] = MainData;
+            dataObj['WebsiteAlterData'] = AlterData
+            dispatch(TeacherCustomActions.setCustomData('alter', dataObj, source, destination))
+            dispatch(TeacherCustomActions.fetchCustomData('/SubjectResMgr/WebSiteMgr/Teacher/EditDeskTop'))
 
-            let state = { main };
-
-            if (source.droppableId === 'alter1') {
-                state = { alter1: main };
-            }
-
-            this.setState(state);
-        } else {//非同一个区域
-            const result = move(
-                this.getList(source.droppableId),
-                this.getList(destination.droppableId),
-                source,
-                destination
-            );
-
-            this.setState({
-                main: result.main,
-                alter1: result.alter1
-            });
         }
-    };
+        // if (source.droppableId === destination.droppableId) {//同一个区域
+        //     const main = reorder(
+        //         this.getList(source.droppableId),
+        //         source.index,
+        //         destination.index
+        //     );
 
-    render() {
-        const { Teacher } = this.props;
+        //     let state = { main };
+
+        //     if (source.droppableId === 'alter1') {
+        //         state = { alter1: main };
+        //     }
+
+        //     this.setState(state);
+        // } else {//非同一个区域
+        //     const result = move(
+        //         this.getList(source.droppableId),
+        //         this.getList(destination.droppableId),
+        //         source,
+        //         destination
+        //     );
+
+        //     this.setState({
+        //         main: result.main,
+        //         alter1: result.alter1
+        //     });
+        // }
+    };
+    // main内card移除
+    onEditClick = (source) => {
+        const { Teacher, dispatch } = this.props
         let MainData = Teacher.TeacherCustomData.WebsiteData;
         let AlterData = Teacher.TeacherCustomData.WebsiteAlterData;
-        console.log(this.state.main)
+        let dataObj = {}
+        dataObj['WebsiteData'] = MainData;
+        dataObj['WebsiteAlterData'] = AlterData
+        let destination = { droppableId: 'alter', index: 0 }
+        dispatch(TeacherCustomActions.setCustomData('alter', dataObj, source, destination))
+        dispatch(TeacherCustomActions.fetchCustomData('/SubjectResMgr/WebSiteMgr/Teacher/EditDeskTop'))
+    }
+
+    // alter 内card增加
+    onAddClick = (source) => {
+        const { Teacher, dispatch } = this.props
+        let MainData = Teacher.TeacherCustomData.WebsiteData;
+        let AlterData = Teacher.TeacherCustomData.WebsiteAlterData;
+        let dataObj = {}
+        dataObj['WebsiteData'] = MainData;
+        dataObj['WebsiteAlterData'] = AlterData
+        let destination = { droppableId: 'main', index: -1 }
+        dispatch(TeacherCustomActions.setCustomData('alter', dataObj, source, destination))
+        dispatch(TeacherCustomActions.fetchCustomData('/SubjectResMgr/WebSiteMgr/Teacher/EditDeskTop'))
+    }
+    // card删除
+    onDeleteClick = (dataObj, source, ID) => {
+        const { Teacher, dispatch } = this.props
+        let MainData = Teacher.TeacherCustomData.WebsiteData;
+        let AlterData = Teacher.TeacherCustomData.WebsiteAlterData;
+        // let dataObj = {}
+        // dataObj['WebsiteData'] = MainData;
+        // dataObj['WebsiteAlterData'] = AlterData
+        let destination = { droppableId: 'delete', index: -1 }
+        dispatch(TeacherCustomActions.setOneCustomData(dataObj, source))
+        dispatch(TeacherCustomActions.fetchDeleteCustomData('//SubjectResMgr/WebSiteMgr/Teacher/DeleteWebsite', ID))
+    }
+    // card编辑
+    onResetClick = (source) => {
+        const { Teacher, dispatch } = this.props
+        let MainData = Teacher.TeacherCustomData.WebsiteData;
+        let AlterData = Teacher.TeacherCustomData.WebsiteAlterData;
+        let dataObj = {}
+        dataObj['WebsiteData'] = MainData;
+        dataObj['WebsiteAlterData'] = AlterData
+        let destination = { droppableId: 'main', index: -1 }
+        dispatch(TeacherCustomActions.setCustomData('alter', dataObj, source, destination))
+        dispatch(TeacherCustomActions.fetchCustomData('/SubjectResMgr/WebSiteMgr/Teacher/EditDeskTop'))
+    }
+    // 学段下拉
+    onDropMenuChange = (value) => {
+        const {dispatch,LoginUser} = this.props
+        let url = 
+        this.setState({
+            firstSelect: value
+        })
+        dispatch(TeacherCustomActions.getCustomData('Website',this.state.userMsg.UserID,'','S2-Chinese'||Teacher.HeaderSetting.SubjectSelect.id,value.value))
+
+        //dispatch(TeacherCustomActions.getAlterData('/SubjectResMgr/WebSiteMgr/Teacher/ListAvailableWebsites?TeacherID=' + LoginUser.UserID + '&keyWord=' + keyword + '&SubjectId=' + subjectID + '&PeriodId=' + periodId;))
+
+    }
+    StudentSearch = (e) => {
+        const { dispatch, Teacher } = this.props;
+        // this.setState({
+        //     keyword: '&keyword='+e.value,
+        //     CancelBtnShow: 'y',
+        //     pagination: 1,
+        // })
+        if (e.value === '') {
+
+            dispatch(AppAlertActions.alertSuccess({ title: "搜索数据为能为空" }));
+
+            return;
+        }
+        // //  console.log(e)
+        // dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + '&keyword=' + e.value + '&PageIndex=0&PageSize=10' + this.state.sortFiled + this.state.sortType, this.state.firstSelect, this.state.secondSelect));
+        this.setState({
+            CancelBtnShow: 'y',
+        })
+        dispatch(TeacherCustomActions.getCustomData('Website',this.state.userMsg.UserID,e.value,'S2-Chinese'||Teacher.HeaderSetting.SubjectSelect.id,this.state.firstSelect.value))
+
+    }
+    //搜索change
+    onChangeSearch = (e) => {
+        this.setState({
+            searchValue: e.target.value
+        })
+
+    }
+    // 取消搜索
+    onCancelSearch = (e) => {
+        const { dispatch } = this.props
+
+        this.setState({
+            CancelBtnShow: 'n',
+            keyword: '',
+            searchValue: ''
+        })
+        dispatch(TeacherCustomActions.getCustomData('Website',this.state.userMsg.UserID,'','S2-Chinese'||Teacher.HeaderSetting.SubjectSelect.id,this.state.firstSelect.value))
+
+        // dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + this.state.sortType + this.state.sortFiled, this.state.firstSelect, this.state.secondSelect));
+
+    }
+
+    // 获取备选网站总数
+    getNumber = (data) => {
+        let num = 0;
+        data instanceof Array && data.map((child, index) => {
+            num += child.List.length
+        })
+        return num
+    }
+    render() {
+        const { Teacher, AppLoading } = this.props;
+        let MainData = Teacher.TeacherCustomData.WebsiteData;
+        let AlterData = Teacher.TeacherCustomData.WebsiteAlterData;
+        // console.log(this.state.main)
         return (
-            <div id='Website'>
-                <DragDropContext onDragEnd={this.onDragEnd}>
-                    <Droppable droppableId="main" direction="horizontal">
-                        {(provided, snapshot) => {//provided生成的数据，snapshot监听拖拽时的数据变化，snapshot:{draggingFromThisWith: null,draggingOverWith: null,isDraggingOver: false},draggingFromThisWith为拖拽对象的id，draggingOverWith为拖拽对象在该区域的id，isDraggingOver为是否有拖拽事件
-                            console.log(provided, snapshot)
-                            return (
-                                <div className='main-box'>
-                                    <p className='main-header'>
-                                        已添加至桌面的网站:
+            <Loading spinning={AppLoading.customLoading}>
+                <div id='Website'>
+                    <DragDropContext onDragEnd={this.onDragEnd}>
+                        <Droppable droppableId="main" direction="horizontal">
+                            {(provided, snapshot) => {//provided生成的数据，snapshot监听拖拽时的数据变化，snapshot:{draggingFromThisWith: null,draggingOverWith: null,isDraggingOver: false},draggingFromThisWith为拖拽对象的id，draggingOverWith为拖拽对象在该区域的id，isDraggingOver为是否有拖拽事件
+                                // console.log(provided, snapshot)
+                                return (
+                                    <div className='main-box'>
+                                        <p className='main-header'>
+                                            已添加至桌面的网站:
                                 </p>
-                                    <div
-                                        ref={provided.innerRef}
-                                        className='main-drop'
-                                        style={getListStyle(snapshot.isDraggingOver)}
-                                        {...provided.droppableProps}
-                                    >
-                                        {this.state.main.map((item, index) => (
-                                            <Draggable key={'main-'+item.ID} draggableId={'main-'+item.ID} index={index}>
-                                                {(provided, snapshot) => (
-                                                    <Card
-                                                        type='main'
-                                                        custom='Website'
-                                                        data={item}
-                                                        ID={'main-'+item.ID}
-                                                        provided={provided}
-                                                        snapshot={snapshot}
-                                                        style={getItemStyle(
-                                                            snapshot.isDragging,
-                                                            provided.draggableProps.style
+                                        <div
+                                            ref={provided.innerRef}
+                                            className='main-drop'
+                                            style={getListStyle(snapshot.isDraggingOver)}
+                                            {...provided.droppableProps}
+                                        >
+                                            {MainData instanceof Array && MainData.length !== 0 && MainData.map((item, index) => (
+                                                <div className='Card-protect' key={'main-' + item.ID}>
+                                                    <Draggable draggableId={'main-' + item.ID} index={index}>
+                                                        {(provided, snapshot) => (
+                                                            <Card
+                                                                type='main'
+                                                                custom='Website'
+                                                                data={item}
+                                                                ID={'main-' + item.ID}
+                                                                provided={provided}
+                                                                snapshot={snapshot}
+                                                                onDeleteClick={this.onDeleteClick.bind(this, { WebsiteData: MainData }, { droppableId: 'main-' + item.ID, index: index }, item.ID)}
+                                                                onResetClick={this.onResetClick.bind(this, { droppableId: 'main-' + item.ID, index: index })}
+                                                                onEditClick={this.onEditClick.bind(this, { droppableId: 'main-' + item.ID, index: index })}
+                                                                style={getItemStyle(
+                                                                    snapshot.isDragging,
+                                                                    provided.draggableProps.style
+                                                                )}
+
+                                                            ></Card>
                                                         )}
-
-                                                    ></Card>
-                                                )}
-                                            </Draggable>
-                                        ))}
-                                        {provided.placeholder}
-                                    </div>
-                                </div>
-
-                            )
-                        }}
-                    </Droppable>
-                    <Droppable droppableId="alter1" direction="horizontal">
-                        {(provided, snapshot) => {
-                            return (
-                                <div className='alter-box'>
-                                    <p className='alter-header'>综合类</p>
-                                    <div
-                                        className='alter-drop'
-                                        ref={provided.innerRef}
-                                        style={getListStyle(snapshot.isDraggingOver)}
-                                        {...provided.droppableProps}
-                                    >
-                                        {this.state.alter1.map((item, index) => (
-                                            <Draggable key={'alter1-'+item.ID} draggableId={'alter1-'+item.ID} index={index}>
-                                                {(provided, snapshot) => (
-                                                    <Card
-                                                    type='alter'
-                                                    custom='Website'
-                                                    data={item}
-
-                                                    provided={provided}
-                                                    snapshot={snapshot}
-                                                    style={getItemStyle(
-                                                        snapshot.isDragging,
-                                                        provided.draggableProps.style
-                                                    )}
-
-                                                ></Card>
-                                                )}
-                                            </Draggable>
-                                        ))}
-                                        {provided.placeholder}
+                                                    </Draggable>
+                                                </div>
+                                            ))}
+                                            {provided.placeholder}
+                                        </div>
                                     </div>
 
-                                </div>
-                            )
-                        }}
-                    </Droppable>
-                </DragDropContext>
-            </div>
+                                )
+                            }}
+                        </Droppable>
+                        <div className='changeBox'>
+                            <span className='box-tips'>备选网站<span className='tips-1'>（共<span className='tips-2'>{this.getNumber(AlterData)}</span>）</span></span>
+                            <DropDown
+                                ref='dropMenu'
+                                style={{ zIndex: 2 }}
+                                onChange={this.onDropMenuChange}
+                                width={110}
+                                height={240}
+                                dropSelectd={this.state.firstSelect}
+                                dropList={[{ value: 1, title: '小学' },
+                                { value: 2, title: '初中' },
+                                { value: 4, title: '高中' },
+                                ]}
+                            ></DropDown>
+                            <Search placeHolder='输入关键词搜索...'
+                                onClickSearch={this.StudentSearch.bind(this)}
+                                className='SearchAlter'
+                                height={30}
+                                width={200}
+                                Value={this.state.searchValue}
+                                onCancelSearch={this.onCancelSearch}
+                                onChange={this.onChangeSearch.bind(this)}
+                                CancelBtnShow={this.state.CancelBtnShow}
+                            ></Search>
+                        </div>
+                        {AlterData instanceof Array && AlterData.map((child, index) => {
+                            // console.log(child)
+                            return (child.List.length > 0 && <Droppable key={"alter" + index} droppableId={"alter" + index} direction="horizontal">
+                                {(provided, snapshot) => {
+                                    return (
+                                        <div className='alter-box'>
+                                            <p className='alter-header'>{child.SubTypeName}</p>
+                                            <div
+                                                className='alter-drop'
+                                                ref={provided.innerRef}
+                                                style={getListStyle(snapshot.isDraggingOver)}
+                                                {...provided.droppableProps}
+                                            >
+                                                {child.List.map((item, index1) => (
+                                                    <Draggable key={'alter' + index + '-' + item.ID} draggableId={'alter' + index + '-' + item.ID} index={index1}>
+                                                        {(provided, snapshot) => (
+                                                            <Card
+                                                                type='alter'
+                                                                custom='Website'
+                                                                data={item}
+                                                                onAddClick={this.onAddClick.bind(this, { droppableId: "alter" + index, index: index1 })}
+                                                                onDeleteClick={this.onDeleteClick.bind(this, { WebsiteAlterData: AlterData }, { droppableId: "alter" + index, index: index1 }, item.ID)}
+                                                                onResetClick={this.onResetClick.bind(this, { droppableId: "alter" + index, index: index1 })}
+                                                                provided={provided}
+                                                                snapshot={snapshot}
+                                                                style={getItemStyle(
+                                                                    snapshot.isDragging,
+                                                                    provided.draggableProps.style
+                                                                )}
+
+                                                            ></Card>
+                                                        )}
+                                                    </Draggable>
+                                                ))}
+                                                {provided.placeholder}
+                                            </div>
+
+                                        </div>
+                                    )
+                                }}
+                            </Droppable>)
+                        })}
+
+                    </DragDropContext>
+                </div>
+            </Loading>
         )
     }
 }
 
 const mapStateToProps = (state) => {
-    const { LoginUser, Teacher, AppLoading } = state;
+    const { LoginUser, Teacher, AppLoading, AppAltert } = state;
 
     return {
 
@@ -228,7 +399,9 @@ const mapStateToProps = (state) => {
 
         Teacher,
 
-        AppLoading
+        AppLoading,
+
+        AppAltert
 
     }
 };

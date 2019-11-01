@@ -48,11 +48,11 @@ class Class extends React.Component {
                     key: 'ClassMsg',
                     render: Class => {
                         return (
-                            <React.Fragment>
+                            Class.TeacherID===0||Class.TeacherID?(<React.Fragment>
                                 <img className='Class-img' alt={Class.TeacherName} src={Class.TeacherImg} />
                                 <span className='Class-name'>{Class.TeacherName}</span>
                                 <span className='Class-id'>{'(' + Class.TeacherID + ')'}</span>
-                            </React.Fragment>
+                            </React.Fragment>):<span>--</span>
                         )
                     }
                 },
@@ -137,12 +137,12 @@ class Class extends React.Component {
         let checkedList = this.state.checkedList
         let len = checkedList.length;
         let source = DataState.GetClassAllMsg.allClass.TableData;
-        console.log(key)
+        //console.log(key)
         let courseClassID = source[key].CourseClass.ClassID;
         dispatch(actions.UpUIState.showErrorAlert({
             type: 'btn-warn',
             title: "您确定删除？",
-            ok: this.onAppAlertDeleteOK.bind(this, key),
+            ok: this.onAppAlertDeleteOK.bind(this, courseClassID),
             cancel: this.onAppAlertCancel.bind(this),
             close: this.onAppAlertClose.bind(this)
         }));
@@ -160,7 +160,7 @@ class Class extends React.Component {
         let routeID = pathArr[2];
         let subjectID = pathArr[3];
         let classID = pathArr[4];
-        dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.schoolID + '&pageIndex=' + value + '&pageSize=10', routeID, classID));
+        dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.schoolID + '&pageIndex=' + value + '&key=&pageSize=10&subjectID=' + routeID + '&gradeID=' + classID, routeID, classID));
         this.setState({
             pagination: e,
             checkedList: [],
@@ -200,15 +200,21 @@ class Class extends React.Component {
         const { dispatch, DataState } = this.props;
         let checkedList = this.state.checkedList
         let len = checkedList.length;
-        let courseClassID = '';
+        let courseClassID = [];
         let source = DataState.GetClassAllMsg.allClass.TableData;
-        checkedList.map((child, index) => {
-            // if (index !== len - 1)
-            courseClassID = source[child].CourseClass.ClassID + '-';
-            // else
-            //     courseClassID = source[child].CourseClass.ClassID;
+        // checkedList.map((child, index) => {
+        //     // if (index !== len - 1)
+        //     courseClassID = source[child].CourseClass.ClassID + ',';
+        //     // else
+        //     //     courseClassID = source[child].CourseClass.ClassID;
 
-        })
+        // })
+        checkedList.map((child, index) => {
+           
+            courseClassID.push(source[child].CourseClass.ClassID)
+
+    })
+    courseClassID = courseClassID.join()
 
         console.log(this.state.checkedList)
         if (len === 0) {
@@ -253,10 +259,13 @@ class Class extends React.Component {
         let routeID = pathArr[2];
         let subjectID = pathArr[3];
         let classID = pathArr[4];
-        let url = '/DeleteSubject';
+        let url = '/DeleteCourseClass';
         dispatch(actions.UpUIState.hideErrorAlert());
         postData(CONFIG.CourseClassProxy + url, {
-            courseClassID: id
+            courseClassIDs: id,
+            schoolID:this.state.UserMsg.SchoolID,
+            userID:this.state.UserMsg.UserID,
+            userType:this.state.UserMsg.UserType
         }, 2, 'json').then(res => {
             return res.json()
         }).then(json => {
@@ -272,7 +281,7 @@ class Class extends React.Component {
                     checkedList: [],
                     checkAll: false
                 })
-                dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=' + this.state.pagination + '&pageSize=10', routeID, classID));
+                dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=' + this.state.pagination + '&key=&pageSize=10&subjectID=' + routeID + '&gradeID=' + classID, routeID, classID));
             }
         })
     }
@@ -285,10 +294,13 @@ class Class extends React.Component {
         let routeID = pathArr[2];
         let subjectID = pathArr[3];
         let classID = pathArr[4];
-        let url = '/DeleteSubject';
+        let url = '/DeleteCourseClass';
         dispatch(actions.UpUIState.hideErrorAlert());
         postData(CONFIG.CourseClassProxy + url, {
-            courseClassID: id
+            courseClassIDs: id,
+            schoolID:this.state.UserMsg.SchoolID,
+            userID:this.state.UserMsg.UserID,
+            userType:this.state.UserMsg.UserType
         }, 2, 'json').then(res => {
             return res.json()
         }).then(json => {
@@ -301,7 +313,7 @@ class Class extends React.Component {
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
 
-                dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=' + 1 + '&pageSize=10', routeID, classID));
+                dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=' + 1 + '&key=&pageSize=10&subjectID=' + routeID + '&gradeID=' + classID, routeID, classID));
 
             }
         })

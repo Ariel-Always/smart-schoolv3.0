@@ -147,10 +147,10 @@ const getSubjectTeacherMsg = (url, grades, allGrades = []) => {
                 console.log(json.Data)
                 if (grades === 'All') {
 
-                    dispatch({ type: SET_SUBJECT_TEACHER_MSG_All, data: { Teacher: json.Data, allGrades: allGrades } });
+                    dispatch({ type: SET_SUBJECT_TEACHER_MSG_All, data: { Teacher: json.Data.TeacherInfoItem, allGrades: allGrades } });
 
                 } else
-                    dispatch({ type: SET_SUBJECT_TEACHER_MSG, data: { Teacher: json.Data, grades: grades } });
+                    dispatch({ type: SET_SUBJECT_TEACHER_MSG, data: { Teacher: json.Data.TeacherInfoItem, grades: grades } });
 
             }
         });

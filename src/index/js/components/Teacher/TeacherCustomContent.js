@@ -20,7 +20,7 @@ class TeacherCustomContent extends React.Component {
         }
 
         const { dispatch,Teacher } = props;
-        dispatch(TeacherCustomActions.getCustomData(this.state.activeKey, this.state.userMsg.UserID,'','S2-English'||Teacher.HeaderSetting.SubjectSelect.id))
+        dispatch(TeacherCustomActions.getCustomData(this.state.activeKey, this.state.userMsg.UserID,'','S2-Chinese'||Teacher.HeaderSetting.SubjectSelect.id))
     }
 
     // Tab change
@@ -31,7 +31,7 @@ class TeacherCustomContent extends React.Component {
         this.setState({
             activeKey: key
         })
-        dispatch(TeacherCustomActions.getCustomData(key,this.state.userMsg.UserID,'','S2-English'||Teacher.HeaderSetting.SubjectSelect.id))
+        dispatch(TeacherCustomActions.getCustomData(key,this.state.userMsg.UserID,'','S2-Chinese'||Teacher.HeaderSetting.SubjectSelect.id))
 
     }
 

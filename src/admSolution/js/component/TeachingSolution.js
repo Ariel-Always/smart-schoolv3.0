@@ -20,7 +20,7 @@ class TeachingSolution extends Component {
     onPaginationChange = (page) => {
         const { dispatch } = this.props;
         console.log(page)
-        dispatch(actions.UpDataState.getTeachingSolutionMsg('/ListTeachingSolutions?pageSize=9&currentPage=' + page))
+        dispatch(actions.UpDataState.getTeachingSolutionMsg('/ListTeachingSolutions?beginTime=&endTime=&pageSize=9&currentPage='+page+'&userId=' + JSON.parse(sessionStorage.getItem('UserInfo')).UserID))
 
     }
     render() {

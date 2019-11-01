@@ -144,12 +144,16 @@ class App extends Component {
             if (!DataState.GetCoureClassAllMsg.MenuParams)
                 return;
             dispatch(actions.UpDataState.setCoureClassAllMsg('all'));
+            dispatch(actions.UpDataState.getCoureClassAllMsg('/GetCouseclassSumarry?schoolID=' + UserMsg.SchoolID, this.MenuClcik));
+
         } else if (handleRoute === 'All') {
 
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
             if (!DataState.GetCoureClassAllMsg.MenuParams)
                 return;
             dispatch(actions.UpDataState.setCoureClassAllMsg('all'));
+            dispatch(actions.UpDataState.getCoureClassAllMsg('/GetCouseclassSumarry?schoolID=' + UserMsg.SchoolID, this.MenuClcik));
+
 
         } else if (handleRoute === 'Subject' && subjectID === 'all') {
 
@@ -223,10 +227,14 @@ class App extends Component {
     CourseClassDetailsModalOk = () => {
         const { dispatch, DataState } = this.props;
         dispatch(actions.UpUIState.CourseClassDetailsModalClose())
+        dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
+
     }
     CourseClassDetailsModalCancel = () => {
         const { dispatch, DataState } = this.props;
         dispatch(actions.UpUIState.CourseClassDetailsModalClose())
+        dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
+
     }
     //日志模态框关闭
     LogDetailsModalOk = () => {
@@ -290,15 +298,15 @@ class App extends Component {
                 }));
 
                 //dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=1&pageSize=10', routeID, classID));
-                if(handleRoute==='Search'){
-            dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&key=' + routeID + '&pageIndex=1&pageSize=10&subjectID=' + SubjectID + '&gradeID=' + GradeID));
+                if (handleRoute === 'Search') {
+                    dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&key=' + routeID + '&pageIndex=1&pageSize=10&subjectID=' + SubjectID + '&gradeID=' + GradeID));
 
-                }else{
-                    dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&key=&pageIndex=1&pageSize=10&subjectID='+routeID+'&gradeID='+classID, routeID, classID));
+                } else {
+                    dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&key=&pageIndex=1&pageSize=10&subjectID=' + routeID + '&gradeID=' + classID, routeID, classID));
                 }
             }
         })
-
+        dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
         dispatch(actions.UpUIState.ChangeCourseClassModalClose())
         dispatch(actions.UpDataState.setCourseClassName([]))
         dispatch(actions.UpDataState.setCourseClassStudentMsg([]))
@@ -322,6 +330,7 @@ class App extends Component {
         dispatch(actions.UpDataState.setClassStudentTransferMsg([]))
         dispatch(actions.UpDataState.setSubjectTeacherTransferMsg([]))
         dispatch(actions.UpUIState.ChangeCourseClassModalClose())
+        dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
 
     }
     //添加教学班模态框
@@ -433,6 +442,7 @@ class App extends Component {
             }
         })
         dispatch(actions.UpUIState.AddCourseClassModalClose())
+        dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
 
         // dispatch(actions.UpUIState.ChangeCourseClassModalClose())
         dispatch(actions.UpDataState.setCourseClassName([]))
@@ -447,6 +457,8 @@ class App extends Component {
         let Student = DataState.GetCourseClassDetailsHandleClassMsg.TableSource;
         let Teacher = { value: DataState.GetCourseClassDetailsHandleClassMsg.TeacherID, title: DataState.GetCourseClassDetailsHandleClassMsg.TeacherName }
         dispatch(actions.UpUIState.AddCourseClassModalClose())
+        dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
+
     }
     render() {
         const { UIState, DataState } = this.props;
@@ -528,7 +540,7 @@ class App extends Component {
                     visible={UIState.SetCourseClassDetailsModalShow.setCourseClassDetailsMadalShow}
                     onOk={this.CourseClassDetailsModalOk}
                     onCancel={this.CourseClassDetailsModalCancel}>
-                    <Loading spinning={UIState.AppLoading.modalLoading}>
+                    <Loading wrapperClassName='Detail-laoding' opacity={false} spinning={UIState.AppLoading.modalLoading}>
                         <CourseClassDetails></CourseClassDetails>
                     </Loading>
                 </Modal>
@@ -540,7 +552,7 @@ class App extends Component {
                     visible={UIState.ChangeCourseClassModalShow.Show}
                     onOk={this.ChangeCourseClassModalOk}
                     onCancel={this.ChangeCourseClassModalCancel}>
-                    <Loading spinning={UIState.AppLoading.modalLoading}>
+                    <Loading wrapperClassName='handle-laoding' opacity={false} spinning={UIState.AppLoading.modalLoading}>
                         {UIState.ChangeCourseClassModalShow.Show ? (<HandleCourseClass></HandleCourseClass>) : ''}
                     </Loading>
                 </Modal>
@@ -552,7 +564,7 @@ class App extends Component {
                     visible={UIState.AddCourseClassModalShow.Show}
                     onOk={this.AddCourseClassModalOk}
                     onCancel={this.AddCourseClassModalCancel}>
-                    <Loading spinning={UIState.AppLoading.modalLoading}>
+                    <Loading wrapperClassName='handle-laoding' opacity={false} spinning={UIState.AppLoading.modalLoading}>
                         {UIState.AddCourseClassModalShow.Show ? (<AddCourseClass></AddCourseClass>) : ''}
                     </Loading>
                 </Modal>

@@ -14,7 +14,10 @@ const TeacherMsg = (state = '', actions) => {
     }
 };
 function handleData(data){
-    console.log(data)
+    // console.log(data)
+    if(!data){
+        return {}
+    }
     return {
         userName:data.UserName,
         userImg:data.PhotoPath,

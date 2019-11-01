@@ -29,7 +29,7 @@ class App extends Component {
         window.location.href = url
     }
     onLoginClick = () => {
-
+        sessionStorage.clear();
         window.location.href = this.state.toLogin
     }
     render() {

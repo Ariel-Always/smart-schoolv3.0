@@ -161,12 +161,12 @@ class Search extends React.Component {
         let checkedList = this.state.checkedList
         let len = checkedList.length;
         let source = DataState.GetClassAllMsg.allClass.TableData;
-        console.log(key)
+        // console.log(key)
         let courseClassID = source[key].CourseClass.ClassID;
         dispatch(actions.UpUIState.showErrorAlert({
             type: 'btn-warn',
             title: "您确定删除？",
-            ok: this.onAppAlertDeleteOK.bind(this, key),
+            ok: this.onAppAlertDeleteOK.bind(this, courseClassID),
             cancel: this.onAppAlertCancel.bind(this),
             close: this.onAppAlertClose.bind(this)
         }));
@@ -184,7 +184,9 @@ class Search extends React.Component {
         let routeID = pathArr[2];
         let subjectID = pathArr[3];
         let classID = pathArr[4];
-        dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=' + value + '&pageSize=10', routeID, classID));
+        let SubjectID = DataState.GetCoureClassAllMsg.Subject;
+        let GradeID = DataState.GetCoureClassAllMsg.Grade;
+        dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=' + value + '&key=&pageSize=10&subjectID=' + SubjectID + '&gradeID=' + GradeID));
 
 
     }
@@ -220,15 +222,14 @@ class Search extends React.Component {
         const { dispatch, DataState } = this.props;
         let checkedList = this.state.checkedList
         let len = checkedList.length;
-        let courseClassID = '';
+        let courseClassID = [];
         let source = DataState.GetClassAllMsg.allClass.TableData;
         checkedList.map((child, index) => {
-            if (index !== len - 1)
-                courseClassID += source[child].CourseClass.ClassID + '-';
-            else
-                courseClassID += source[child].CourseClass.ClassID;
+           
+                courseClassID.push(source[child].CourseClass.ClassID)
 
         })
+        courseClassID = courseClassID.join()
 
         console.log(this.state.checkedList)
         if (len === 0) {
@@ -266,18 +267,23 @@ class Search extends React.Component {
 
     //删除提示框
     onAppAlertDeleteAllOK = (id) => {
-        const { dispatch } = this.props;
+        const { dispatch ,DataState} = this.props;
         let route = history.location.pathname;
         let pathArr = route.split('/');
         let handleRoute = pathArr[1];
         let routeID = pathArr[2];
         let subjectID = pathArr[3];
         let classID = pathArr[4];
-        let url = '/DeleteSubject';
+        let url = '/DeleteCourseClass';
+        let SubjectID = DataState.GetCoureClassAllMsg.Subject;
+        let GradeID = DataState.GetCoureClassAllMsg.Grade;
         dispatch(actions.UpUIState.hideErrorAlert());
         postData(CONFIG.CourseClassProxy + url, {
-            courseClassID: id
-        }, 2, 'json').then(res => {
+            courseClassIDs: id,
+            schoolID:this.state.UserMsg.SchoolID,
+            userID:this.state.UserMsg.UserID,
+            userType:this.state.UserMsg.UserType
+        },2, 'json').then(res => {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
@@ -292,7 +298,7 @@ class Search extends React.Component {
                     checkedList: [],
                     checkAll: false
                 })
-                dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=' + 1 + '&pageSize=10', routeID, classID));
+                dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=' + 1 + '&key=&pageSize=10&subjectID=' + SubjectID + '&gradeID=' + GradeID));
             }
         })
     }
@@ -304,13 +310,18 @@ class Search extends React.Component {
         let routeID = pathArr[2];
         let subjectID = pathArr[3];
         let classID = pathArr[4];
-        let url = '/DeleteSubject';
+        let url = '/DeleteCourseClass';
+        let SubjectID = DataState.GetCoureClassAllMsg.Subject;
+        let GradeID = DataState.GetCoureClassAllMsg.Grade;
         dispatch(actions.UpUIState.hideErrorAlert());
         postData(CONFIG.CourseClassProxy + url, {
-            courseClassID: id
-        }).then(res => {
+            courseClassIDs: id,
+            schoolID:this.state.UserMsg.SchoolID,
+            userID:this.state.UserMsg.UserID,
+            userType:this.state.UserMsg.UserType
+        },2, 'json').then(res => {
             return res.json()
-        }, 2, 'json').then(json => {
+        }).then(json => {
             if (json.StatusCode === 400) {
                 console.log('错误码：' + json.StatusCode)
             } else if (json.StatusCode === 200) {
@@ -320,7 +331,7 @@ class Search extends React.Component {
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
 
-                dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=' + 1 + '&pageSize=10', routeID, classID));
+                dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=' + 1 + '&key=&pageSize=10&subjectID=' + SubjectID + '&gradeID=' + GradeID));
 
             }
         })

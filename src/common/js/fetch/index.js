@@ -12,7 +12,7 @@ import { stringify } from 'querystring';
 // content_type：请求的实体的数据的媒体类型，默认urlencoded格式，支持json
 
 
-function postData(url, paramsObj = {}, SecurityLevel = 1, content_type = 'urlencoded') {
+function postData(url, paramsObj = {}, SecurityLevel = 1, content_type = 'urlencoded', IsDesk = false) {
 
     let token = sessionStorage.getItem('token') || getQueryVariable('lg_tk');
 
@@ -52,6 +52,11 @@ function postData(url, paramsObj = {}, SecurityLevel = 1, content_type = 'urlenc
         // 注意post时候参数的形式 
         body: AESEncryptionBody(paramsObj, TESTKEY, SecurityLevel, content_type)//此处需要和headers里的"Content-Type"相对应
     })
+    // .then(data => data.json()).then(json => {
+    //     if (json.StatusCode === '401') {
+    //         TokenCheck(IsDesk);
+    //     }
+    // })
 
     // result.then(res => {//做提前处理
     //     console.log(res)
@@ -63,7 +68,7 @@ function postData(url, paramsObj = {}, SecurityLevel = 1, content_type = 'urlenc
     return result;
 }
 
-function getData(url, SecurityLevel = 1, mode = 'cors') {
+function getData(url, SecurityLevel = 1, mode = 'cors', IsDesk = false) {
 
     let token = sessionStorage.getItem('token') || getQueryVariable('lg_tk');
 
@@ -80,7 +85,7 @@ function getData(url, SecurityLevel = 1, mode = 'cors') {
     // }
 
 
-    let result = fetch(AESEncryptionUrl(url, TESTKEY, SecurityLevel), {
+    let result = fetch(AESEncryptionUrl(url, TESTKEY, SecurityLevel, IsDesk), {
         method: 'get',//*post、get、put、delete，此项为请求方法相关的配置 
         mode: mode,//no-cors(跨域模式但服务器端不支持cors),*cors(跨域模式，需要服务器通过Access-control-Allow-Origin来
         //允许指定的源进行跨域),same-origin(同源)
@@ -97,6 +102,15 @@ function getData(url, SecurityLevel = 1, mode = 'cors') {
 
     })
 
+    // result.then(data => {
+    //     let json = data;
+    //     console.log(json)
+    //     if (json.StatusCode === '401') {
+    //         TokenCheck(IsDesk);
+    //     }
+    //     return data
+    // })
+
     // result.then(res => {//做提前处理
 
     //     console.log(res)
@@ -110,8 +124,8 @@ function getData(url, SecurityLevel = 1, mode = 'cors') {
 
 //获取url参数
 function getQueryVariable(variable) {
-    var query = window.location.search.substring(1) || window.location.href.split('?')[1]||window.location.href;
-    
+    var query = window.location.search.substring(1) || window.location.href.split('?')[1] || window.location.href;
+
     console.log(query)
     var vars = query.split("&");
     for (var i = 0; i < vars.length; i++) {
