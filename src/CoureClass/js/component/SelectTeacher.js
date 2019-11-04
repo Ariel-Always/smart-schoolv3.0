@@ -8,7 +8,7 @@ import { Scrollbars } from 'react-custom-scrollbars'
 import history from '../containers/history'
 import { Input, } from 'antd'
 import CONFIG from '../../../common/js/config';
-import { Search, Loading } from "../../../common";
+import { Search, Loading,Empty } from "../../../common";
 
 
 class SelectTeacher extends React.Component {
@@ -105,7 +105,7 @@ class SelectTeacher extends React.Component {
                         <Loading spinning={UIState.AppLoading.teacherLoading}>
                             <div className='box-content'>
                                 {
-                                    teacherList.map((child, index) => {
+                                    (teacherList instanceof Array && teacherList.length>0)?teacherList.map((child, index) => {
                                         return (
                                             <span
                                                 onClick={this.onSelectTeacherClick.bind(this, child.value, child.title)}
@@ -115,7 +115,7 @@ class SelectTeacher extends React.Component {
                                                 {child.title}
                                             </span>
                                         )
-                                    })
+                                    }):<Empty type='4' title='该学科暂无教师' style={{ marginTop: '218.5px', transform: 'translateY(-50%)' }}></Empty>
                                 }
                             </div>
                         </Loading>

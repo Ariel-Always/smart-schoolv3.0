@@ -28,7 +28,10 @@ const SET_ADMIN_PREVIEW = 'SET_ADMIN_PREVIEW';
 const CHANGE_INPUT_VALUE = 'CHANGE_INPUT_VALUE';
 // 获取用户信息
 const GET_USER_MSG = 'GET_USER_MSG'
-
+// 获取图片上传链接
+const GET_PIC_URL = 'GET_PIC_URL'
+// 获取图片对象
+const GET_PIC_OBJECT = 'GET_PIC_OBJECT'
 //操作的执行
 //获取登录用户信息
 const getLoginUser = (data) => {
@@ -259,6 +262,14 @@ const getUserMsg = (url) => {
     }
 }
 
+// 获取照片上传链接
+const getPicObject = (data) => {
+    return (dispatch) => {
+        dispatch({ type: GET_PIC_OBJECT, data: data });
+
+    }
+}
+
 export default {
     getLoginUser,
     getChangeInputValue,
@@ -285,4 +296,7 @@ export default {
 
     SET_ADMIN_PREVIEW,
     setAdminPreview,
+    GET_PIC_URL,
+    getPicObject,
+    GET_PIC_OBJECT
 }

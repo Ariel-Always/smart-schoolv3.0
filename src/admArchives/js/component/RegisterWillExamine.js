@@ -54,7 +54,7 @@ class RegisterWillExamine extends React.Component {
                         return (
                             <div className='registerTime-content'>
 
-                                <span className='registerTime'>{time}</span>
+                                <span title={time} className='registerTime'>{time?time:'--'}</span>
                             </div>
                         )
                     }
@@ -86,7 +86,7 @@ class RegisterWillExamine extends React.Component {
                         return (
                             <div className='name-content'>
 
-                                <span className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.key)}>{arr.UserName}</span>
+                                <span title={arr.UserName} className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.key)}>{arr.UserName}</span>
                             </div>
                         )
                     }
@@ -101,7 +101,7 @@ class RegisterWillExamine extends React.Component {
                     sorter: true,
                     render: UserID => {
                         return (
-                            <span className='UserID'>{UserID}</span>
+                            <span title={UserID} className='UserID'>{UserID?UserID:'--'}</span>
                         )
                     }
                 },
@@ -113,7 +113,7 @@ class RegisterWillExamine extends React.Component {
                     key: 'Gender',
                     render: Gender => {
                         return (
-                            <span className='Gender'>{Gender}</span>
+                            <span title={Gender} className='Gender'>{Gender?Gender:'--'}</span>
                         )
                     }
                 },
@@ -125,7 +125,7 @@ class RegisterWillExamine extends React.Component {
                     key: 'Grade',
                     render: Grade => {
                         return (
-                            <span className='GradeName'>{Grade.GradeName}</span>
+                            <span title={Grade.GradeName} className='GradeName'>{Grade.GradeName?Grade.GradeName:'--'}</span>
                         )
                     }
                 },
@@ -137,7 +137,7 @@ class RegisterWillExamine extends React.Component {
                     key: 'Class',
                     render: Class => {
                         return (
-                            <span className='ClassName'>{Class.ClassName}</span>
+                            <span title={Class.ClassName} className='ClassName'>{Class.ClassName?Class.ClassName:'--'}</span>
                         )
                     }
                 },
@@ -183,12 +183,12 @@ class RegisterWillExamine extends React.Component {
 
     StudentDropMenu = (e) => {
         const { dispatch } = this.props;
-        console.log(e);
+        //console.log(e);
         let Classes = [{ value: 0, title: '全部班级' }];
         this.setState({
             firstSelect: e
         })
-        //console.log(this.refs.dropMenuSecond)
+        ////console.log(this.refs.dropMenuSecond)
         if (e.value !== 0) {
             let ClassArr = this.props.DataState.GradeClassMsg.returnData.AllClasses[e.value];
             ClassArr.map((Class) => {
@@ -231,7 +231,7 @@ class RegisterWillExamine extends React.Component {
     }
 
     OnCheckAllChange = (e) => {
-        console.log(e.target.checked, this.state.keyList)
+        //console.log(e.target.checked, this.state.keyList)
         if (e.target.checked) {
             this.setState({
                 checkedList: this.state.keyList,
@@ -245,7 +245,7 @@ class RegisterWillExamine extends React.Component {
         }
     }
     onCheckBoxGroupChange = (checkedList) => {
-        console.log(checkedList)
+        //console.log(checkedList)
         this.setState({
             checkedList,
             checkAll: checkedList === this.state.keyList ? true : false
@@ -284,7 +284,7 @@ class RegisterWillExamine extends React.Component {
     }
     onAgreeAll = (e) => {
         const { dispatch } = this.props;
-        console.log(this.state.checkedList)
+        //console.log(this.state.checkedList)
         let checkedList = this.state.checkedList;
         if (checkedList.length) {
             dispatch(actions.UpUIState.showErrorAlert({
@@ -308,7 +308,7 @@ class RegisterWillExamine extends React.Component {
     }
     RefuseAll = (e) => {
         const { dispatch } = this.props;
-        console.log(this.state.checkedList)
+        //console.log(this.state.checkedList)
         let checkedList = this.state.checkedList;
         if (checkedList.length) {
             dispatch(actions.UpUIState.showErrorAlert({
@@ -340,7 +340,7 @@ class RegisterWillExamine extends React.Component {
         })
         let url = '/SignUpLogAudit'
         dispatch(actions.UpDataState.setSignUpLogCountMsg(StatusCodeCount + logID.length));
-        console.log(StatusCodeCount)
+        //console.log(StatusCodeCount)
         postData(CONFIG.UserInfoProxy + url, {
             LogID: logID.join(),
             StatusCode: 1
@@ -348,7 +348,7 @@ class RegisterWillExamine extends React.Component {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
-                console.log('错误码：400' + json);
+                //console.log('错误码：400' + json);
                 dispatch(actions.UpUIState.hideErrorAlert());
             } else if (json.StatusCode === 200) {
                 dispatch(actions.UpUIState.hideErrorAlert());
@@ -388,7 +388,7 @@ class RegisterWillExamine extends React.Component {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
-                console.log('错误码：400' + json)
+                //console.log('错误码：400' + json)
             } else if (json.StatusCode === 200) {
                 dispatch(actions.UpUIState.hideErrorAlert());
 
@@ -445,7 +445,7 @@ class RegisterWillExamine extends React.Component {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
-                console.log('错误码：400' + json)
+                //console.log('错误码：400' + json)
             } else if (json.StatusCode === 200) {
                 this.setState({
                     UserExamineModalVisible: false,
@@ -473,7 +473,7 @@ class RegisterWillExamine extends React.Component {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
-                console.log('错误码：400' + json)
+                //console.log('错误码：400' + json)
             } else if (json.StatusCode === 200) {
                 this.setState({
                     UserExamineModalVisible: false,
@@ -509,7 +509,7 @@ class RegisterWillExamine extends React.Component {
     //监听table的change进行排序操作
     onTableChange = (page, filters, sorter) => {
         const { DataState, dispatch } = this.props;
-        console.log(sorter)
+        //console.log(sorter)
         if (sorter && (sorter.columnKey === 'SignUpTime' || sorter.columnKey === 'UserName' || sorter.columnKey === 'UserID')) {
             let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
             dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=0&sortFiled=' + sorter.columnKey + '&PageSize=10&' + sortType))

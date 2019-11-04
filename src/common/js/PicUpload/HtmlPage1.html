@@ -15,10 +15,6 @@
     <script>
         $(function () {
 
-            $.get("./UserMgr/UserInfoMgr/Import.aspx?Token=xxxx&UserType=Student", function (data) {
-                $("body").html(data);
-            });
-
 
 
 
@@ -36,12 +32,12 @@
             $("#picUpload").picUploader(option);//初始化
 
 
-            option.curImgPath = "http://localhost:3542/UserInfo/Photo/Student/cb20c839b6003af3ab1741913f2ac65c1238b682.jpg";
+            //option.curImgPath = "http://localhost:3542/UserInfo/Photo/Student/cb20c839b6003af3ab1741913f2ac65c1238b682.jpg";
 
             $("#picUpload").picUploader.reset(option);  //重置头像上传插件（需要初始化传递参数）
             $("#picUpload").picUploader.getCurImgPath();//获取当前头像url
             $("#picUpload").picUploader.isChanged();    //用户判断当前是否修改过头像
-            //$("#picUpload").picUploader.uploadSubmit(); //在确定新增、编辑用户时，调用该事件完成头像编辑操作
+            $("#picUpload").picUploader.uploadSubmit(); //在确定新增、编辑用户时，调用该事件完成头像编辑操作
             $("#picUpload").picUploader.setGender("男");//切换用户性别时，调用该函数，可选值:男、女、保密
 
         });

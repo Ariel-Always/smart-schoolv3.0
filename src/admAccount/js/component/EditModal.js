@@ -5,8 +5,17 @@ import '../../scss/EditModal.scss'
 import { Input } from 'antd'
 import { Radio, RadioGroup, DropDown, CheckBox, CheckBoxGroup, Tips } from '../../../common/index'
 import actions from '../actions';
+import '../../../common/js/PicUpload/Cropper/cropper.css';
 
+import '../../../common/js/PicUpload/photoUpload.scss';
 
+import '../../../common/js/PicUpload/Cropper/cropper';
+
+import $ from 'jquery';
+window.$ = $;
+
+window.jQuery = $;
+require('../../../common/js/PicUpload/juqery.cp.picUploader');
 class EditModal extends React.Component {
     constructor(props) {
         super(props);
@@ -35,7 +44,10 @@ class EditModal extends React.Component {
     componentWillMount() {
         const { DataState, dispatch } = this.props;
         // //console.log(this.state.data)
-
+        let token = sessionStorage.getItem('token');
+        let userType = 'Admin'
+        let userID = DataState.LoginUser.UserID;
+        let curImgPath = ''
         if (this.state.UserKey === 'change') {
             this.setState({
                 UserIDChange: this.state.data.UserName.UserID,
@@ -122,8 +134,10 @@ class EditModal extends React.Component {
             dispatch(actions.UpDataState.setAdminPreview({
                 ModuleIDs: ModulesID.join()
             }))
-        } else if (this.state.UserKey === 'add') {
+            curImgPath = this.state.data.UserImg
 
+        } else if (this.state.UserKey === 'add') {
+            curImgPath = ''
             this.state.PowerList.map((power, index) => {
                 let checkAll = this.state.checkAll;
                 let indeterminate = this.state.indeterminate;
@@ -179,6 +193,38 @@ class EditModal extends React.Component {
                 // )
             })
 
+
+        }
+        // 图片上传
+        let option = {
+            token: token,
+            resWebUrl: DataState.GetPicUrl.picUrl, //资源站点地址
+            userType: userType,   //用户类型，可选值Admin、Student、Teacher、SchoolLeader
+            userID: userID, //新增时传空字符串、编辑时传相应UserID
+            curImgPath: curImgPath //用户当前头像，新增时可不传
+
+        };
+        this.setState({
+            option: option
+        })
+    }
+    componentDidMount() {
+        const { dispatch } = this.props
+        // console.log(this.state.option, $("#picUpload"))
+        $("#picUpload").picUploader(this.state.option);//初始化
+        dispatch(actions.UpDataState.getPicObject($("#picUpload")))
+
+    }
+    componentWillReceiveProps(nextProps) {
+        const { DataState } = nextProps
+        if (DataState.GetPicUrl.picUrl && DataState.GetPicUrl.picUrl !== this.state.option.resWebUrl) {
+            let option = this.state.option;
+            option.resWebUrl = DataState.GetPicUrl.picUrl;
+            this.setState({
+                option: option
+            })
+            $("#picUpload").picUploader(option);//初始化
+            dispatch(actions.UpDataState.getPicObject($("#picUpload")))
 
         }
     }
@@ -456,7 +502,7 @@ class EditModal extends React.Component {
 
         return (
             <div className='EditModal_Admin'>
-                <div className='Left'></div>
+                <div className='Left' id='picUpload'></div>
                 <div className='Right'>
                     <div className="row clearfix" style={{ marginTop: 18 + 'px' }}>
                         <span className='culonm-1'>

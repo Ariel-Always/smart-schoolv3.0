@@ -4,8 +4,21 @@ import { connect } from 'react-redux';
 import '../../scss/EditModal.scss'
 import { Input } from 'antd'
 import actions from '../actions';
+import '../../../common/js/PicUpload/Cropper/cropper.css';
+
+import '../../../common/js/PicUpload/photoUpload.scss';
+
+import '../../../common/js/PicUpload/Cropper/cropper';
+
+import $ from 'jquery';
+
+
 
 import { Radio, RadioGroup, DropDown, CheckBox, CheckBoxGroup, Tips } from '../../../common/index'
+window.$ = $;
+
+window.jQuery = $;
+require('../../../common/js/PicUpload/juqery.cp.picUploader');
 
 
 class EditModal extends React.Component {
@@ -50,7 +63,12 @@ class EditModal extends React.Component {
     componentWillMount() {
         const { DataState, dispatch } = this.props;
         let UserKey = this.state.UserKey;
-        console.log(this.state.UserKey)
+        // //console.log(this.state.UserKey)
+        let token = sessionStorage.getItem('token');
+        let userType = 'Student'
+        let userID = DataState.LoginUser.UserID;
+        let curImgPath = ''
+
         if (this.state.type === 'student') {
             let Grades = DataState.GradeClassMsg.returnData.NewGrade ? DataState.GradeClassMsg.returnData.NewGrade : [];
             let len = Grades.lenght;
@@ -62,7 +80,7 @@ class EditModal extends React.Component {
             //     let Grade = { value: Grades[i].GradeID, title: Grades[i].GradeName }
             //     GradeArr.push(Grade)
             // }
-
+            userType = 'Student'
             let ClassArr = [];
             let StudentChangeMsg = {}
             if (UserKey !== 'add') {
@@ -84,6 +102,7 @@ class EditModal extends React.Component {
                     telephone: Select.child.Telephone,
                     homeAddress: Select.child.HomeAddress
                 }
+                curImgPath = Select.child.PhotoPath || Select.child.PhotoPath_Nocache
             } else {
 
                 StudentChangeMsg = {
@@ -99,6 +118,8 @@ class EditModal extends React.Component {
                     telephone: '',
                     homeAddress: ''
                 }
+
+                curImgPath = ''
             }
             //改变reduce学生中转数据
             dispatch(actions.UpDataState.setInitStudentMsg(StudentChangeMsg))
@@ -140,7 +161,7 @@ class EditModal extends React.Component {
             let plainOptions = SubjectListChange.map((child, index) => {
                 return child.SubjectID;
             })
-
+            userType = 'Teacher'
             let TeacherTitle = DataState.TeacherTitleMsg.returnData;
             if (UserKey !== 'add') {
                 //ClassArr = DataState.GradeClassMsg.returnData.AllClasses[Select.child.GradeID];
@@ -161,6 +182,8 @@ class EditModal extends React.Component {
                     telephone: Select.child.Telephone,
                     homeAddress: Select.child.HomeAddress
                 }
+                curImgPath = Select.child.PhotoPath || Select.child.PhotoPath_Nocache
+
             } else {
 
                 TeacherChangeMsg = {
@@ -176,6 +199,8 @@ class EditModal extends React.Component {
                     telephone: '',
                     homeAddress: ''
                 }
+                curImgPath = ''
+
             }
             //改变reduce教师中转数据
             dispatch(actions.UpDataState.setInitTeacherMsg(TeacherChangeMsg))
@@ -213,6 +238,7 @@ class EditModal extends React.Component {
             // let plainOptions = SubjectListChange.map((child, index) => {
             //     return child.SubjectID;
             // })
+            userType = 'SchoolLeader'
 
             let LeaderPosition = [
                 { value: 1, title: '校长' },
@@ -224,7 +250,7 @@ class EditModal extends React.Component {
                 if (child.title === Select.child.Position) {
                     position = child;
                 }
-                console.log(child.title, position)
+                //console.log(child.title, position)
 
             })
             if (UserKey !== 'add') {
@@ -245,6 +271,8 @@ class EditModal extends React.Component {
                     telephone: Select.child.Telephone,
                     homeAddress: Select.child.HomeAddress
                 }
+                curImgPath = Select.child.PhotoPath || Select.child.PhotoPath_Nocache
+
             } else {
 
                 LeaderChangeMsg = {
@@ -259,8 +287,10 @@ class EditModal extends React.Component {
                     telephone: '',
                     homeAddress: ''
                 }
+                curImgPath = ''
+
             }
-            // console.log(position,Select.child.Position)
+            // //console.log(position,Select.child.Position)
             //改变reduce教师中转数据
             dispatch(actions.UpDataState.setInitLeaderMsg(LeaderChangeMsg))
             this.setState({
@@ -304,8 +334,41 @@ class EditModal extends React.Component {
             })
         }
 
-    }
 
+        // 图片上传
+        let option = {
+            token: token,
+            resWebUrl: DataState.GetPicUrl.picUrl, //资源站点地址
+            userType: userType,   //用户类型，可选值Admin、Student、Teacher、SchoolLeader
+            userID: userID, //新增时传空字符串、编辑时传相应UserID
+            curImgPath: curImgPath //用户当前头像，新增时可不传
+
+        };
+        this.setState({
+            option: option
+        })
+
+    }
+    componentDidMount() {
+        const { dispatch } = this.props
+        // //console.log(this.state.option, $("#picUpload"))
+        $("#picUpload").picUploader(this.state.option);//初始化
+        dispatch(actions.UpDataState.getPicObject($("#picUpload")))
+
+    }
+    componentWillReceiveProps(nextProps) {
+        const { DataState } = nextProps
+        if (DataState.GetPicUrl.picUrl && DataState.GetPicUrl.picUrl !== this.state.option.resWebUrl) {
+            let option = this.state.option;
+            option.resWebUrl = DataState.GetPicUrl.picUrl;
+            this.setState({
+                option: option
+            })
+            $("#picUpload").picUploader(option);//初始化
+            dispatch(actions.UpDataState.getPicObject($("#picUpload")))
+
+        }
+    }
     //id修改
     onEditIDChange = (e) => {
         const { dispatch } = this.props
@@ -314,7 +377,7 @@ class EditModal extends React.Component {
         })
         //用户ID（工号/学号）检测  
         //长度是1~30位，只能由字母与数字组成。
-        console.log(e.target.value)
+        //console.log(e.target.value)
         // let Test = value === '' ||/^([a-zA-Z0-9]{1,24})$/.test(e.target.value)
         // if (!Test) {
         //     dispatch(actions.UpUIState.editModalTipsVisible({
@@ -345,7 +408,7 @@ class EditModal extends React.Component {
         // })
         //用户ID（工号/学号）检测  
         //长度是1~30位，只能由字母与数字组成。
-        console.log(e.target.value)
+        //console.log(e.target.value)
         let Test = e.target.value === '' || /^([a-zA-Z0-9]{1,24})$/.test(e.target.value)
         if (!Test) {
             dispatch(actions.UpUIState.editModalTipsVisible({
@@ -393,7 +456,7 @@ class EditModal extends React.Component {
                 //改变reduce学生中转数据
                 dispatch(actions.UpDataState.setStudentMsg({ userName: value }))
             } else if (this.state.type === 'leader') {
-                console.log('ddd')
+                // //console.log('ddd')
                 //改变reduce领导中转数据
                 dispatch(actions.UpDataState.setLeaderMsg({ userName: value }))
             }
@@ -406,6 +469,7 @@ class EditModal extends React.Component {
         this.setState({
             GendeChange: e
         })
+        $("#picUpload").picUploader.setGender(e.title)
         dispatch(actions.UpUIState.editModalTipsVisible({
             GenderTipsVisible: false
         }))
@@ -433,7 +497,7 @@ class EditModal extends React.Component {
         // for (let child in ClassArr) {
         //     Classes.push(ClassArr[child]);
         // }
-        console.log(ClassArr)
+        //console.log(ClassArr)
         this.setState({
             Classes: ClassArr
         })
@@ -480,7 +544,7 @@ class EditModal extends React.Component {
             PositionTipsVisible: false
         }))
         //改变reduce领导中转数据
-        dispatch(actions.UpDataState.setLeaderMsg({ position: e.title }))
+        dispatch(actions.UpDataState.setLeaderMsg({ position: e }))
     }
     //身份证
     onEditIDCardChange = (e) => {
@@ -674,10 +738,10 @@ class EditModal extends React.Component {
     render() {
         const { UIState, DataState } = this.props;
         let EditModalTipsVisible = UIState.EditModalTipsVisible;
-        // console.log(EditModalTipsVisible)
+        // //console.log(EditModalTipsVisible)
         return (
             <div className='EditModal'>
-                <div className='Left'></div>
+                <div className='Left' id='picUpload'></div>
                 <div className='Right'>
                     <div className="row clearfix" style={{ marginTop: this.state.type === 'student' || !this.state.type ? 18 + 'px' : 5 + 'px' }}>
                         <span className='culonm-1'>
@@ -936,7 +1000,7 @@ class MapPlainOptions extends React.Component {
                 <CheckBox className={'checkedBoxMap'} key={index} value={opt}>{plainOptions[opt]}</CheckBox>
             )
         })
-        console.log(map)
+        //console.log(map)
         this.setState({
             map: map
         })

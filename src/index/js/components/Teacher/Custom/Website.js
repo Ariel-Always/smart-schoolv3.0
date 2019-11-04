@@ -70,7 +70,7 @@ class Website extends React.Component {
             main: this.props.Teacher.TeacherCustomData.WebsiteData,
             alter1: this.props.Teacher.TeacherCustomData.WebsiteAlterData,
             userMsg: props.LoginUser,
-            firstSelect: { value: 0, title: '全部学段' },
+            firstSelect: { value: 'A,B,C', title: '全部学段' },
             keyword: '',
             CancelBtnShow: 'n',
             searchValue: '',
@@ -352,9 +352,9 @@ class Website extends React.Component {
                                     width={110}
                                     height={240}
                                     dropSelectd={this.state.firstSelect}
-                                    dropList={[{ value: 1, title: '小学' },
-                                    { value: 2, title: '初中' },
-                                    { value: 4, title: '高中' },
+                                    dropList={[{ value: 'A', title: '小学' },
+                                    { value: 'B', title: '初中' },
+                                    { value: 'C', title: '高中' },
                                     ]}
                                 ></DropDown>
                                 <Search placeHolder='输入关键词搜索...'

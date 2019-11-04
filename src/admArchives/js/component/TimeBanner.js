@@ -15,7 +15,8 @@ class TimeBanner extends React.Component {
         const {DataState,UIState} = this.props
         return (<Router>
 
-            {this.props.route ? (<Link to='/ImportFile/Graduate' target='_blank'><Button className='btn-toGraduate' color='blue' shape='round'>导入毕业去向</Button></Link>)
+            {this.props.route ? 
+            (<Link to='/ImportFile/Graduate' target='_blank'><Button className='btn-toGraduate' color='blue' shape='round'>导入毕业去向</Button></Link>)
                 : (<span className='timeBanner_tips'>
                     最近有
                 <span className='tips_num'>

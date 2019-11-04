@@ -38,7 +38,7 @@ class RegisterDidExamine extends React.Component {
                         return (
                             <div className='registerTime-content'>
 
-                                <span className='registerTime'>{time}</span>
+                                <span title={time} className='registerTime'>{time?time:'--'}</span>
                             </div>
                         )
                     }
@@ -69,7 +69,7 @@ class RegisterDidExamine extends React.Component {
                         return (
                             <div className='name-content'>
 
-                                <span className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.key)}>{arr.UserName}</span>
+                                <span title={arr.UserName} className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.key)}>{arr.UserName?arr.UserName:'--'}</span>
                             </div>
                         )
                     }
@@ -83,7 +83,7 @@ class RegisterDidExamine extends React.Component {
                     sorter: true,
                     render: UserID => {
                         return (
-                            <span className='UserID'>{UserID}</span>
+                            <span title={UserID} className='UserID'>{UserID?UserID:'--'}</span>
                         )
                     }
                 },
@@ -94,7 +94,7 @@ class RegisterDidExamine extends React.Component {
                     key: 'Gender',
                     render: Gender => {
                         return (
-                            <span className='Gender'>{Gender}</span>
+                            <span title={Gender} className='Gender'>{Gender?Gender:'--'}</span>
                         )
                     }
                 },
@@ -105,7 +105,7 @@ class RegisterDidExamine extends React.Component {
                     key: 'Grade',
                     render: Grade => {
                         return (
-                            <span className='GradeName'>{Grade.GradeName}</span>
+                            <span title={Grade.GradeName} className='GradeName'>{Grade.GradeName?Grade.GradeName:'--'}</span>
                         )
                     }
                 },
@@ -116,7 +116,7 @@ class RegisterDidExamine extends React.Component {
                     key: 'Class',
                     render: Class => {
                         return (
-                            <span className='ClassName'>{Class.ClassName}</span>
+                            <span title={Class.ClassName} className='ClassName'>{Class.ClassName?Class.ClassName:'--'}</span>
                         )
                     }
                 },
@@ -129,7 +129,7 @@ class RegisterDidExamine extends React.Component {
 
                         return (
                             <div className='handle-content'>
-                                <span className={`handle-tips `}>{StatusCode.StatusCode === 1 ? '审核通过' : StatusCode.StatusCode === 2 ? '审核未通过' : '未审核'}</span>
+                                <span title={StatusCode.StatusCode === 1 ? '审核通过' : StatusCode.StatusCode === 2 ? '审核未通过' : '未审核'} className={`handle-tips `}>{StatusCode.StatusCode === 1 ? '审核通过' : StatusCode.StatusCode === 2 ? '审核未通过' : '未审核'}</span>
                             </div>
                         )
                     }
@@ -165,12 +165,12 @@ class RegisterDidExamine extends React.Component {
     StudentDropMenu = (e) => {
         const { dispatch } = this.props;
 
-        console.log(e);
+        //console.log(e);
         let Classes = [{ value: 0, title: '全部班级' }];
         this.setState({
             firstSelect: e
         })
-        //console.log(this.refs.dropMenuSecond)
+        ////console.log(this.refs.dropMenuSecond)
         if (e.value !== 0) {
             let ClassArr = this.props.DataState.GradeClassMsg.returnData.AllClasses[e.value];
             ClassArr.map((Class) => {
@@ -211,7 +211,7 @@ class RegisterDidExamine extends React.Component {
     }
 
     OnCheckAllChange = (e) => {
-        console.log(e.target.checked, this.state.keyList)
+        //console.log(e.target.checked, this.state.keyList)
         if (e.target.checked) {
             this.setState({
                 checkedList: this.state.keyList,
@@ -225,14 +225,14 @@ class RegisterDidExamine extends React.Component {
         }
     }
     onCheckBoxGroupChange = (checkedList) => {
-        console.log(checkedList)
+        //console.log(checkedList)
         this.setState({
             checkedList,
             checkAll: checkedList === this.state.keyList ? true : false
         })
     }
     onExamineClick = (Others) => {
-        console.log(Others);
+        //console.log(Others);
         let arr = this.state.data;
         //arr[Others.key-1].Others[isAgree] = !arr[Others.key-1].Others[isAgree];
         this.setState({
@@ -254,7 +254,7 @@ class RegisterDidExamine extends React.Component {
         }
     }
     UserExamineMadalOk = (e) => {
-        console.log(e)
+        //console.log(e)
         this.setState({
             UserExamineModalVisible: false,
             loading: true
@@ -266,7 +266,7 @@ class RegisterDidExamine extends React.Component {
         }, 3000)
     }
     UserExamineMadalCancel = (e) => {
-        console.log(e)
+        //console.log(e)
         this.setState({
             UserExamineModalVisible: false
         })
@@ -280,7 +280,7 @@ class RegisterDidExamine extends React.Component {
     }
     onAgreeAll = (e) => {
         const { dispatch } = this.props;
-        console.log(this.state.checkedList)
+        //console.log(this.state.checkedList)
         let checkedList = this.state.checkedList;
         if (checkedList.length) {
             dispatch(actions.UpUIState.showErrorAlert({
@@ -304,7 +304,7 @@ class RegisterDidExamine extends React.Component {
     }
     RefuseAll = (e) => {
         const { dispatch } = this.props;
-        console.log(this.state.checkedList)
+        //console.log(this.state.checkedList)
         let checkedList = this.state.checkedList;
         if (checkedList.length) {
             dispatch(actions.UpUIState.showErrorAlert({
@@ -344,7 +344,7 @@ class RegisterDidExamine extends React.Component {
     }
     onTableChange = (page, filter, sorter, extra) => {
         const { DataState, dispatch } = this.props;
-        console.log(sorter)
+        //console.log(sorter)
         if (sorter && (sorter.columnKey === 'SignUpTime' || sorter.columnKey === 'UserName' || sorter.columnKey === 'UserID')) {
             let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
             dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=1&sortFiled=' + sorter.columnKey + '&PageSize=10&' + sortType))

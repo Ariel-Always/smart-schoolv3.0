@@ -32,7 +32,16 @@ class TimeBanner extends React.Component {
     //搜索
     onClickSearch = (value) => {
         const { DataState, UIState, dispatch } = this.props;
-
+        if(value.value===''){
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-warn',
+                title: "搜索关键字不能为空",
+                ok: this.onAppAlertOK.bind(this),
+                cancel: this.onAppAlertCancel.bind(this),
+                close: this.onAppAlertClose.bind(this)
+            }));
+            return
+        }
         history.push('/Search/' + value.value)
         let SubjectID = DataState.GetCoureClassAllMsg.Subject;
         let GradeID = DataState.GetCoureClassAllMsg.Grade;
@@ -42,6 +51,20 @@ class TimeBanner extends React.Component {
             keyword: value.value
         })
         // dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.userMsg.SchoolID + '&key=' + value.value + '&pageIndex=1&pageSize=10&subjectID=' + SubjectID + '&gradeID=' + GradeID));
+    }
+      //通用提示弹窗
+      onAppAlertOK() {
+        const { dispatch } = this.props;
+        dispatch(actions.UpUIState.hideErrorAlert());
+
+    }
+    onAppAlertCancel() {
+        const { dispatch } = this.props;
+        dispatch(actions.UpUIState.hideErrorAlert());
+    }
+    onAppAlertClose() {
+        const { dispatch } = this.props;
+        dispatch(actions.UpUIState.hideErrorAlert());
     }
     //查看记录
     onCheckLogClick = () => {

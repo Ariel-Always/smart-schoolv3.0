@@ -85,9 +85,17 @@ class AddCourseClass extends React.Component {
     //选择教师
     onTeacherSelectClick = () => {
         const { DataState, UIState, dispatch } = this.props;
-        if (this.state.SubjectSelect.value === 0)
+        if (this.state.SubjectSelect.value === 0) {
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-warn',
+                title: "您还没有选择学科哦~",
+                ok: this.onAppAlertOK.bind(this),
+                cancel: this.onAppAlertCancel.bind(this),
+                close: this.onAppAlertClose.bind(this)
+            }));
             return
-        
+        }
+
         dispatch(actions.UpUIState.AddTeacherModalOpen())
         dispatch(actions.UpDataState.getSubjectTeacherMsg('/GetTeacherInfoBySubjectAndKey?key=&schoolID=' + this.state.UserMsg.SchoolID + '&subjectID=' + this.state.SubjectSelect.value))
     }
@@ -149,10 +157,26 @@ class AddCourseClass extends React.Component {
     onSelectStudentAllClick = () => {
         const { DataState, UIState, dispatch } = this.props;
         let UserMsg = DataState.LoginUser
-        if (this.state.SubjectSelect.value === 0)
+        if (this.state.SubjectSelect.value === 0) {
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-warn',
+                title: "您还没有选择学科哦~",
+                ok: this.onAppAlertOK.bind(this),
+                cancel: this.onAppAlertCancel.bind(this),
+                close: this.onAppAlertClose.bind(this)
+            }));
             return
-        if (this.state.GradeSelect.value === 0)
+        }
+        if (this.state.GradeSelect.value === 0) {
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-warn',
+                title: "您还没有选择年级哦~",
+                ok: this.onAppAlertOK.bind(this),
+                cancel: this.onAppAlertCancel.bind(this),
+                close: this.onAppAlertClose.bind(this)
+            }));
             return
+        }
         // console.log(';ll')
         dispatch(actions.UpDataState.getGradeClassMsg('/GetStudentForAddOrEditCourseClassByInit?schoolID=' + UserMsg.SchoolID + '&gradeID=' + this.state.GradeSelect.value))
         dispatch(actions.UpUIState.AddStudentModalOpen())
@@ -164,7 +188,7 @@ class AddCourseClass extends React.Component {
         this.setState({
             Subject: value,
             SubjectSelect: value,
-            GradeSelect:{value: 0, title: '请选择年级'}
+            GradeSelect: { value: 0, title: '请选择年级' }
         })
         dispatch(actions.UpDataState.setCourseClassDataMsg({ Subject: value }))
 
@@ -199,6 +223,10 @@ class AddCourseClass extends React.Component {
 
     }
     onAppAlertCancel() {
+        const { dispatch } = this.props;
+        dispatch(actions.UpUIState.hideErrorAlert());
+    }
+    onAppAlertClose() {
         const { dispatch } = this.props;
         dispatch(actions.UpUIState.hideErrorAlert());
     }

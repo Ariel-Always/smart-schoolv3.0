@@ -107,7 +107,7 @@ class UserArchives extends React.Component {
             if (handleRoute === 'Graduate') {
                 this.setState({
                     showLeftMenu: false,
-                    showBarner: true,
+                    showBarner: false,
                     route:true
                 })
             }else if (handleRoute === 'LogDynamic'||handleRoute === 'LogRecord') {

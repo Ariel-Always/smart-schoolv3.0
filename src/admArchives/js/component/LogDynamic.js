@@ -59,8 +59,8 @@ class LogDynamic extends React.Component {
                     render: arr => {
                         return (
                             <div className='name-content'>
-                                <span className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.key)}>{arr.UserName ? arr.UserName : '--'}</span>
-                                <span className='UserID'>{arr.UserID ? arr.UserID : '--'}</span>
+                                <span title={arr.UserName} className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.key)}>{arr.UserName ? arr.UserName : '--'}</span>
+                                <span title={arr.UserID} className='UserID'>{arr.UserID ? arr.UserID : '--'}</span>
                             </div>
                         )
                     }
@@ -74,7 +74,7 @@ class LogDynamic extends React.Component {
                     width: 130,
                     render: UserType_Txt => {
                         return (
-                            <span className='UserType_Txt'>{UserType_Txt ? UserType_Txt : '--'}</span>
+                            <span title={UserType_Txt} className='UserType_Txt'>{UserType_Txt ? UserType_Txt : '--'}</span>
                         )
                     }
                 },
@@ -86,7 +86,7 @@ class LogDynamic extends React.Component {
                     key: 'OperationType_Txt',
                     render: OperationType_Txt => {
                         return (
-                            <span className='OperationType_Txt'>{OperationType_Txt ? OperationType_Txt : '--'}</span>
+                            <span title={OperationType_Txt} className='OperationType_Txt'>{OperationType_Txt ? OperationType_Txt : '--'}</span>
                         )
                     }
                 },
@@ -98,7 +98,7 @@ class LogDynamic extends React.Component {
                     dataIndex: 'OperationCount',
                     render: OperationCount => {
                         return (
-                            <span className='OperationCount'>{OperationCount ? OperationCount : '--'}</span>
+                            <span title={OperationCount} className='OperationCount'>{OperationCount ? OperationCount : '--'}</span>
                         )
                     }
                 },
@@ -114,7 +114,7 @@ class LogDynamic extends React.Component {
                         }
                         return (
                             <div className='Logs-box'>
-                                <span className='Logs-tips' title={ Logs[0].Content}>{ Logs[0].Content}</span>
+                                <span className='Logs-tips' title={ Logs[0].Content}>{ Logs[0].Content?Logs[0].Content:'--'}</span>
                                 <Tooltip placement='top' trigger='click' arrowPointAtCenter={true} title={<TipsLog data={Logs}></TipsLog>}>
                                     <span className='Logs-more' style={{ display: Logs.length > 1 ? 'inline-block' : 'none' }}>查看更多</span>
                                 </Tooltip>
@@ -130,7 +130,7 @@ class LogDynamic extends React.Component {
                     key: 'handle',
                     dataIndex: 'key',
                     render: (key) => {
-                        // console.log(key)
+                        // //console.log(key)
                         return (
                             <div className='handle-content'>
                                 <Button color='blue' onClick={this.LogSignReaded.bind(this, key)} className='handle-btn'>标记已读</Button>
@@ -203,7 +203,7 @@ class LogDynamic extends React.Component {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
-                console.log('错误码：400' + json)
+                //console.log('错误码：400' + json)
             } else if (json.StatusCode === 200) {
                 this.setState({
                     checkedList: [],
@@ -230,7 +230,7 @@ class LogDynamic extends React.Component {
     }
     // 档案动态标记已读
     LogSignReaded = (key) => {
-        // console.log(key)
+        // //console.log(key)
         const { DataState, dispatch } = this.props;
         let userInfo = DataState.LogPreview.unreadLog.List.newList[key];
         let url = '/LogSignReaded'
@@ -245,7 +245,7 @@ class LogDynamic extends React.Component {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
-                console.log('错误码：400' + json)
+                //console.log('错误码：400' + json)
             } else if (json.StatusCode === 200) {
                 this.setState({
                     checkedList: [],
@@ -286,7 +286,7 @@ class LogDynamic extends React.Component {
     }
     // 点击全选
     OnCheckAllChange = (e) => {
-        console.log(e)
+        //console.log(e)
         if (e.target.checked) {
             this.setState({
                 checkedList: this.props.DataState.LogPreview.unreadLog.List.keyList,
@@ -302,7 +302,7 @@ class LogDynamic extends React.Component {
     // 点击多选组
     onCheckBoxGroupChange = (checkedList) => {
         const { DataState } = this.props
-        console.log(checkedList)
+        //console.log(checkedList)
         this.setState({
             checkedList,
             checkAll: checkedList.length === DataState.LogPreview.unreadLog.List.keyList.length ? true : false
@@ -311,7 +311,7 @@ class LogDynamic extends React.Component {
     // 点击标记全部
     onReadAllClick = () => {
         const { dispatch } = this.props;
-        console.log(this.state.checkedList)
+        //console.log(this.state.checkedList)
         if (this.state.checkedList.length === 0) {
 
             dispatch(actions.UpUIState.showErrorAlert({
@@ -336,7 +336,7 @@ class LogDynamic extends React.Component {
     //关闭
     onAlertWarnHide = () => {
         const { dispatch } = this.props;
-        console.log('ddd')
+        //console.log('ddd')
         dispatch(actions.UpUIState.hideErrorAlert())
 
     }
@@ -387,7 +387,7 @@ class LogDynamic extends React.Component {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
-                console.log('错误码：400' + json)
+                //console.log('错误码：400' + json)
             } else if (json.StatusCode === 200) {
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
@@ -413,7 +413,7 @@ class LogDynamic extends React.Component {
     //监听table的change进行排序操作
     onTableChange = (page, filters, sorter) => {
         const { DataState, dispatch } = this.props;
-        // console.log(sorter)
+        // //console.log(sorter)
         if (sorter && (sorter.columnKey === 'UserName')) {
             let sortType = sorter.order === "descend" ? '&SortType=DESC' : sorter.order === "ascend" ? '&SortType=ASC' : '';
             dispatch(actions.UpDataState.getUnreadLogPreview('/GetUnreadLogToPage?OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&OnlineUserID=' + this.state.userMsg.UserID + sortType))

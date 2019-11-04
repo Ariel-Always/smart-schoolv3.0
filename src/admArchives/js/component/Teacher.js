@@ -62,7 +62,7 @@ class Teacher extends React.Component {
                     render: arr => {
                         return (
                             <div className='name-content'>
-                                <span className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.key)}>{arr.UserName}</span>
+                                <span title={arr.UserName} className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.key)}>{arr.UserName?arr.UserName:'--'}</span>
                             </div>
                         )
                     }
@@ -77,7 +77,7 @@ class Teacher extends React.Component {
                     sorter: true,
                     render: UserID => {
                         return (
-                            <span className='UserID'>{UserID}</span>
+                            <span title={UserID} className='UserID'>{UserID?UserID:'--'}</span>
                         )
                     }
                 },
@@ -89,7 +89,7 @@ class Teacher extends React.Component {
                     key: 'Gender',
                     render: Gender => {
                         return (
-                            <span className='Gender'>{Gender}</span>
+                            <span title={Gender} className='Gender'>{Gender?Gender:'--'}</span>
                         )
                     }
                 },
@@ -101,7 +101,7 @@ class Teacher extends React.Component {
                     dataIndex: 'SubjectNames',
                     render: arr => {
                         return (
-                            <span className='SubjectName'>{arr.showTwo}</span>
+                            <span title={arr.showTwo} className='SubjectName'>{arr.showTwo?arr.showTwo:'--'}</span>
                         )
                     }
                 },
@@ -113,7 +113,7 @@ class Teacher extends React.Component {
                     dataIndex: 'Titles',
                     render: Titles => {
                         return (
-                            <span className='Title'>{Titles.TitleName}</span>
+                            <span title={Titles.TitleName} className='Title'>{Titles.TitleName?Titles.TitleName:'--'}</span>
                         )
                     }
                 },
@@ -189,7 +189,7 @@ class Teacher extends React.Component {
         this.setState({
             selectSubject: e,
             searchValue: '',
-            keyword:'',
+            keyword: '',
             pagination: 1,
             CancelBtnShow: 'n'
         })
@@ -300,19 +300,22 @@ class Teacher extends React.Component {
         })
     }
     handleTeacherModalOk = (e) => {
-        console.log(e)
+        // console.log(e)
         let url = '/EditTeacher'
         const { DataState, dispatch, UIState } = this.props
         const { initTeacherMsg, changeTeacherMsg } = DataState.SetTeacherMsg;
-        let visible = UIState.EditModalVisible;
+        let picObj = DataState.GetPicUrl.picObj
+        let visible = UIState.EditModalTipsVisible;
         let haveMistake = false;
         for (let visi in visible) {
             if (visible[visi]) {
-                haveMistake = true;
+
+                return;
             }
         }
-        console.log(visible)
-        if (Public.comparisonObject(initTeacherMsg, changeTeacherMsg)) {
+
+        // console.log(visible)
+        if (Public.comparisonObject(initTeacherMsg, changeTeacherMsg) && !picObj.picUploader.isChanged()) {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-error',
                 title: "你没有修改数据哦",
@@ -322,43 +325,44 @@ class Teacher extends React.Component {
             }));
             return;
         } else {
+            if (picObj.picUploader.uploadSubmit()) {
 
-            if (haveMistake) {
-                return;
+
+                postData(CONFIG.UserInfoProxy + url, {
+                    ...changeTeacherMsg,
+                    photoPath: picObj.picUploader.getCurImgPath()
+
+                }, 2).then(res => {
+                    return res.json()
+                }).then(json => {
+                    if (json.StatusCode !== 200) {
+                        dispatch(actions.UpUIState.showErrorAlert({
+                            type: 'btn-error',
+                            title: json.Message,
+                            ok: this.onAppAlertOK.bind(this),
+                            cancel: this.onAppAlertCancel.bind(this),
+                            close: this.onAppAlertClose.bind(this)
+                        }));
+                    } else if (json.StatusCode === 200) {
+                        dispatch(actions.UpUIState.showErrorAlert({
+                            type: 'success',
+                            title: "操作成功",
+                            onHide: this.onAlertWarnHide.bind(this)
+                        }));
+                        this.setState({
+                            TeacherModalVisible: false
+                        })
+                        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&SubjectIDs=' + this.state.selectSubject.value + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + this.state.keyword + this.state.sortType + this.state.sortFiled, this.state.selectSubject));
+                        dispatch(actions.UpUIState.editAlltModalTipsVisible());
+
+                        this.setState({
+                            checkedList: [],
+                            checkAll: false
+                        })
+
+                    }
+                });
             }
-            postData(CONFIG.UserInfoProxy + url, {
-                ...changeTeacherMsg
-            }, 2).then(res => {
-                return res.json()
-            }).then(json => {
-                if (json.StatusCode !== 200) {
-                    dispatch(actions.UpUIState.showErrorAlert({
-                        type: 'btn-error',
-                        title: json.Message,
-                        ok: this.onAppAlertOK.bind(this),
-                        cancel: this.onAppAlertCancel.bind(this),
-                        close: this.onAppAlertClose.bind(this)
-                    }));
-                } else if (json.StatusCode === 200) {
-                    dispatch(actions.UpUIState.showErrorAlert({
-                        type: 'success',
-                        title: "操作成功",
-                        onHide: this.onAlertWarnHide.bind(this)
-                    }));
-                    this.setState({
-                        TeacherModalVisible: false
-                    })
-                    dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&SubjectIDs=' + this.state.selectSubject.value + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + this.state.keyword + this.state.sortType + this.state.sortFiled, this.state.selectSubject));
-                    dispatch(actions.UpUIState.editAlltModalTipsVisible());
-
-                    this.setState({
-                        checkedList: [],
-                        checkAll: false
-                    })
-
-                }
-            });
-
         }
 
     }
@@ -392,6 +396,7 @@ class Teacher extends React.Component {
         console.log(e)
         let url = '/AddTeacher';
         const { DataState, dispatch, UIState } = this.props
+        let picObj = DataState.GetPicUrl.picObj;
         const { initTeacherMsg, changeTeacherMsg } = DataState.SetTeacherMsg;
         let visible = UIState.EditModalVisible;
         let haveMistake = false;
@@ -400,7 +405,45 @@ class Teacher extends React.Component {
                 haveMistake = true;
             }
         }
-        if (Public.comparisonObject(initTeacherMsg, changeTeacherMsg)) {
+        //用户ID必填
+        if (changeTeacherMsg.userID === '') {
+            dispatch(actions.UpUIState.editModalTipsVisible({
+                UserIDTipsVisible: true
+            }))
+            haveMistake = true;
+        }
+        //用户名必填
+        if (changeTeacherMsg.userName === '') {
+            dispatch(actions.UpUIState.editModalTipsVisible({
+                UserNameTipsVisible: true
+            }))
+            haveMistake = true;
+        }
+        //性别必选
+        if (!changeTeacherMsg.gender) {
+            dispatch(actions.UpUIState.editModalTipsVisible({
+                GenderTipsVisible: true
+            }))
+            haveMistake = true;
+        }
+        //职称必选
+        if (changeTeacherMsg.titleID === '') {
+            dispatch(actions.UpUIState.editModalTipsVisible({
+                TitleIDVisible: true
+            }))
+            haveMistake = true;
+        }
+        //学科必选
+        if (changeTeacherMsg.subjectIDs === '') {
+            dispatch(actions.UpUIState.editModalTipsVisible({
+                changeSubjectTipsVisible: true
+            }))
+            haveMistake = true;
+        }
+        if (haveMistake) {
+            return
+        }
+        if (Public.comparisonObject(initTeacherMsg, changeTeacherMsg) && !picObj.picUploader.isChanged()) {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-error',
                 title: "你没有填写资料哦",
@@ -410,44 +453,11 @@ class Teacher extends React.Component {
             }));
             return;
         } else {
-            //用户ID必填
-            if (changeTeacherMsg.userID === '') {
-                dispatch(actions.UpUIState.editModalTipsVisible({
-                    UserIDTipsVisible: true
-                }))
-                haveMistake = true;
-            }
-            //用户名必填
-            if (changeTeacherMsg.userName === '') {
-                dispatch(actions.UpUIState.editModalTipsVisible({
-                    UserNameTipsVisible: true
-                }))
-                haveMistake = true;
-            }
-            //性别必选
-            if (!changeTeacherMsg.gender) {
-                dispatch(actions.UpUIState.editModalTipsVisible({
-                    GenderTipsVisible: true
-                }))
-                haveMistake = true;
-            }
-            //职称必选
-            if (changeTeacherMsg.titleID === '') {
-                dispatch(actions.UpUIState.editModalTipsVisible({
-                    TitleIDVisible: true
-                }))
-                haveMistake = true;
-            }
-            //学科必选
-            if (changeTeacherMsg.subjectIDs === '') {
-                dispatch(actions.UpUIState.editModalTipsVisible({
-                    changeSubjectTipsVisible: true
-                }))
-                haveMistake = true;
-            }
-            if (!haveMistake) {
+            if (picObj.picUploader.uploadSubmit()) {
                 postData(CONFIG.UserInfoProxy + url, {
-                    ...changeTeacherMsg
+                    ...changeTeacherMsg,
+                    photoPath: picObj.picUploader.getCurImgPath()
+
                 }, 2).then(res => {
                     return res.json()
                 }).then(json => {
@@ -565,16 +575,17 @@ class Teacher extends React.Component {
             if (json.StatusCode === 400) {
                 console.log('错误码：400' + json)
             } else if (json.StatusCode === 200) {
-                dispatch(actions.UpUIState.showErrorAlert({
-                    type: 'success',
-                    title: "操作成功",
-                    onHide: this.onAlertWarnHide.bind(this)
-                }));
+               
                 this.setState({
                     checkedList: [],
                     checkAll: false
                 })
                 dispatch(actions.UpUIState.hideErrorAlert());
+                dispatch(actions.UpUIState.showErrorAlert({
+                    type: 'success',
+                    title: "操作成功",
+                    onHide: this.onAlertWarnHide.bind(this)
+                }));
                 dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&SubjectIDs=' + this.state.selectSubject.value + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + this.state.keyword + this.state.sortType + this.state.sortFiled, this.state.selectSubject));
                 this.setState({
                     checkedList: [],
@@ -589,7 +600,7 @@ class Teacher extends React.Component {
     onPagiNationChange = (e) => {
         const { dispatch, DataState } = this.props;
         // console.log(this.state.selectSubject)
-        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&SubjectIDs=' + this.state.selectSubject.value + '&PageIndex=' + (e-1) + '&PageSize=10' + this.state.sortType + this.state.sortFiled + this.state.keyword, this.state.selectSubject));
+        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&SubjectIDs=' + this.state.selectSubject.value + '&PageIndex=' + (e - 1) + '&PageSize=10' + this.state.sortType + this.state.sortFiled + this.state.keyword, this.state.selectSubject));
         this.setState({
             checkedList: [],
             checkAll: false,
@@ -841,7 +852,7 @@ class Teacher extends React.Component {
                                         className='table'
                                         columns={this.state.columns}
                                         pagination={false}
-                                        loading={{ delay: 500, spinning: DataState.SubjectTeacherPreview ? DataState.SubjectTeacherPreview.loading : true }}
+                                        loading={UIState.AppLoading.TableLoading}
                                         dataSource={DataState.SubjectTeacherPreview.newList}
                                         onChange={this.onTableChange.bind(this)}
                                     >

@@ -18,13 +18,17 @@ class GraduateContact extends React.Component {
             IDCardNoTipsTitle: '身份证格式错误',
             HomeAdressTipsVisible: false,
             HomeAdressTipsTitle: '家庭住址格式错误',
+            HomeAddress:this.props.DataState.GetGraduateMsg.GraduateContactInitMsg.HomeAddress,
+            Email:this.props.DataState.GetGraduateMsg.GraduateContactInitMsg.Email,
+            Telephone:this.props.DataState.GetGraduateMsg.GraduateContactInitMsg.Telephone,
         }
     }
 
     onTelephoneChange = (e) => {
         const { dispatch } = this.props;
-
-        dispatch(actions.UpDataState.setGraduateContactMsg({ Telephone: e.target.value }))
+        this.setState({
+            Telephone: e.target.value
+        })
     }
     onTelephoneBlur = (e) => {
         const { dispatch } = this.props;
@@ -32,6 +36,8 @@ class GraduateContact extends React.Component {
         let Test = /^[0-9]{11}$/.test(value)
         if (Test || !e.target.value) {
             dispatch(actions.UpUIState.editModalTipsVisible({ TelephoneTipsVisible: false }))
+            dispatch(actions.UpDataState.setGraduateContactMsg({ Telephone: e.target.value }))
+
         } else {
             dispatch(actions.UpUIState.editModalTipsVisible({ TelephoneTipsVisible: true }))
 
@@ -40,8 +46,9 @@ class GraduateContact extends React.Component {
     }
     onEmailChange = (e) => {
         const { dispatch } = this.props;
-
-        dispatch(actions.UpDataState.setGraduateContactMsg({ Email: e.target.value }))
+        this.setState({
+            Email: e.target.value
+        })
     }
     onEmailBlur = (e) => {
         const { dispatch } = this.props;
@@ -55,6 +62,8 @@ class GraduateContact extends React.Component {
         }
         if (Test || !e.target.value) {
             dispatch(actions.UpUIState.editModalTipsVisible({ EmailTipsVisible: false }))
+            dispatch(actions.UpDataState.setGraduateContactMsg({ Email: e.target.value }))
+
         } else {
             dispatch(actions.UpUIState.editModalTipsVisible({ EmailTipsVisible: true }))
 
@@ -62,15 +71,19 @@ class GraduateContact extends React.Component {
     }
     onHomeAddressChange = (e) => {
         const { dispatch } = this.props;
-
-        dispatch(actions.UpDataState.setGraduateContactMsg({ HomeAddress: e.target.value }))
+        this.setState({
+            HomeAddress: e.target.value
+        })
     }
     onHomeAddressBlur = (e) => {
         const { dispatch } = this.props;
         let value = e.target.value;
         let Test = /^[A-Za-z0-9_()\u4e00-\u9fa5]{0,100}$/.test(value);
         if (Test || !e.target.value) {
+
             dispatch(actions.UpUIState.editModalTipsVisible({ HomeAdressTipsVisible: false }))
+            dispatch(actions.UpDataState.setGraduateContactMsg({ HomeAddress: e.target.value }))
+
         } else {
             dispatch(actions.UpUIState.editModalTipsVisible({ HomeAdressTipsVisible: true }))
 
@@ -93,7 +106,7 @@ class GraduateContact extends React.Component {
                                 maxLength={11}
                                 type='text'
                                 className='Telephone'
-                                value={GraduateContactChangeMsg.Telephone}
+                                value={this.state.Telephone}
                                 onChange={this.onTelephoneChange.bind(this)}
                                 onBlur={this.onTelephoneBlur.bind(this)}
                                 style={{ display: 'inline-block' }}
@@ -111,7 +124,7 @@ class GraduateContact extends React.Component {
                                 placeholder='请输入电子邮箱'
                                 type='text'
                                 className='Email'
-                                value={GraduateContactChangeMsg.Email}
+                                value={this.state.Email}
                                 onChange={this.onEmailChange.bind(this)}
                                 onBlur={this.onEmailBlur.bind(this)}
                                 style={{ display: 'inline-block' }}
@@ -128,7 +141,7 @@ class GraduateContact extends React.Component {
                             <Input.TextArea
                                 placeholder='请输入家庭住址'
                                 className='HomeAddress'
-                                value={GraduateContactChangeMsg.HomeAddress}
+                                value={this.state.HomeAddress}
                                 onChange={this.onHomeAddressChange.bind(this)}
                                 onBlur={this.onHomeAddressBlur.bind(this)}
                                 height={56}

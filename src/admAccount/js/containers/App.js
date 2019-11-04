@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Introduce from '../component/Introduce'
 import { TokenCheck_Connect, TokenCheck } from '../../../common/js/disconnect'
 import Frame from '../../../common/Frame';
+import config from '../../../common/js/config'
 
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
 import history from './history'
@@ -86,10 +87,22 @@ class App extends Component {
 
     componentWillMount() {
         //this.handleMenu()
+        const {dispatch} = this.props
+
         let route = history.location.pathname;
         // 获取接口数据
         //this.requestData(route)
+        getData(config.PicProxy+'/Global/GetResHttpServerAddr').then(res => {
+            return res.json()
+        }).then(json => {
+            if (json.StatusCode === 400) {
+                //console.log(json.StatusCode)
+            } else if (json.StatusCode === 200) {
+                // console.log(json)
+                dispatch({type:actions.UpDataState.GET_PIC_URL,data:json.Data})
+            }
 
+        })
         this.handleMenu()
         history.listen(() => {//路由监听
             let route = history.location.pathname;
@@ -243,6 +256,7 @@ class App extends Component {
                     type={UIState.AppAlert.type}
                     abstract={UIState.AppAlert.littleTitle}
                     title={UIState.AppAlert.title}
+                    onHide={UIState.AppAlert.onHide}
                     onOk={UIState.AppAlert.onOk}
                     onCancel={UIState.AppAlert.onCancel}
                     onClose={UIState.AppAlert.onClose}

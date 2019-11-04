@@ -62,8 +62,8 @@ class LogRecord extends React.Component {
                     render: arr => {
                         return (
                             <div className='name-content'>
-                                <span className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.key)}>{arr.UserName ? arr.UserName : '--'}</span>
-                                <span className='UserID'>{arr.UserID ? arr.UserID : '--'}</span>
+                                <span title={arr.UserName} className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.key)}>{arr.UserName ? arr.UserName : '--'}</span>
+                                <span title={arr.UserID} className='UserID'>{arr.UserID ? arr.UserID : '--'}</span>
                             </div>
                         )
                     }
@@ -77,7 +77,7 @@ class LogRecord extends React.Component {
                     width: 130,
                     render: UserType_Txt => {
                         return (
-                            <span className='UserType_Txt'>{UserType_Txt ? UserType_Txt : '--'}</span>
+                            <span title={UserType_Txt} className='UserType_Txt'>{UserType_Txt ? UserType_Txt : '--'}</span>
                         )
                     }
                 },
@@ -89,7 +89,7 @@ class LogRecord extends React.Component {
                     key: 'OperationType_Txt',
                     render: OperationType_Txt => {
                         return (
-                            <span className='OperationType_Txt'>{OperationType_Txt ? OperationType_Txt : '--'}</span>
+                            <span title={OperationType_Txt} className='OperationType_Txt'>{OperationType_Txt ? OperationType_Txt : '--'}</span>
                         )
                     }
                 },
@@ -118,8 +118,8 @@ class LogRecord extends React.Component {
                     render: Operator => {
                         return (
                             <span className='Operator'>
-                                <span className='OperatorName'>{Operator.OperatorName}</span><br></br>
-                                <span className='OperatorID'>{Operator.OperatorID}</span>
+                                <span title={Operator.OperatorName} className='OperatorName'>{Operator.OperatorName?Operator.OperatorName:'--'}</span><br></br>
+                                <span title={Operator.OperatorID} className='OperatorID'>{Operator.OperatorID?Operator.OperatorID:'--'}</span>
                             </span>
                         )
                     }
@@ -131,9 +131,9 @@ class LogRecord extends React.Component {
                     key: 'LogTime',
                     dataIndex: 'LogTime',
                     render: (LogTime) => {
-                        // console.log(key)
+                        // //console.log(key)
                         return (
-                            <span className='LogTime'>{LogTime}</span>
+                            <span title={LogTime} className='LogTime'>{LogTime?LogTime:'--'}</span>
                         )
                     }
                 },
@@ -144,9 +144,9 @@ class LogRecord extends React.Component {
                     key: 'OperatorIP',
                     dataIndex: 'OperatorIP',
                     render: (OperatorIP) => {
-                        // console.log(key)
+                        // //console.log(key)
                         return (
-                            <span className='OperatorIP'>{OperatorIP}</span>
+                            <span title={OperatorIP} className='OperatorIP'>{OperatorIP?OperatorIP:'--'}</span>
                         )
                     }
                 }
@@ -215,7 +215,7 @@ class LogRecord extends React.Component {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
-                console.log('错误码：400' + json)
+                //console.log('错误码：400' + json)
             } else if (json.StatusCode === 200) {
                 this.setState({
                     checkedList: [],
@@ -240,7 +240,7 @@ class LogRecord extends React.Component {
     }
     // 档案动态标记已读
     LogSignReaded = (key) => {
-        // console.log(key)
+        // //console.log(key)
         const { DataState, dispatch } = this.props;
         let userInfo = DataState.LogRecordPreview.LogRecord.List.newList[key];
         let url = '/LogSignReaded'
@@ -254,7 +254,7 @@ class LogRecord extends React.Component {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
-                console.log('错误码：400' + json)
+                //console.log('错误码：400' + json)
             } else if (json.StatusCode === 200) {
                 this.setState({
                     checkedList: [],
@@ -281,7 +281,7 @@ class LogRecord extends React.Component {
     onUserNameClick = (key) => {
         const { DataState, dispatch } = this.props;
         let userInfo = DataState.LogRecordPreview.LogRecord.List.newList[key];
-        console.log(key,userInfo)
+        //console.log(key,userInfo)
         this.setState({
             UserType: userInfo.UserType
         })
@@ -296,7 +296,7 @@ class LogRecord extends React.Component {
     }
     // 点击全选
     OnCheckAllChange = (e) => {
-        console.log(e)
+        //console.log(e)
         if (e.target.checked) {
             this.setState({
                 checkedList: this.props.DataState.LogRecordPreview.LogRecord.List.keyList,
@@ -312,7 +312,7 @@ class LogRecord extends React.Component {
     // 点击多选组
     onCheckBoxGroupChange = (checkedList) => {
         const { DataState } = this.props
-        console.log(checkedList)
+        //console.log(checkedList)
         this.setState({
             checkedList,
             checkAll: checkedList.length === DataState.LogRecordPreview.LogRecord.List.keyList.length ? true : false
@@ -321,7 +321,7 @@ class LogRecord extends React.Component {
     // 点击删除全部
     onDeleteAllClick = () => {
         const { dispatch } = this.props;
-        console.log(this.state.checkedList)
+        //console.log(this.state.checkedList)
         if (this.state.checkedList.length === 0) {
 
             dispatch(actions.UpUIState.showErrorAlert({
@@ -346,7 +346,7 @@ class LogRecord extends React.Component {
     //关闭
     onAlertWarnHide = () => {
         const { dispatch } = this.props;
-        //console.log('ddd')
+        ////console.log('ddd')
         dispatch(actions.UpUIState.hideErrorAlert())
 
     }
@@ -397,7 +397,7 @@ class LogRecord extends React.Component {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
-                console.log('错误码：400' + json)
+                //console.log('错误码：400' + json)
             } else if (json.StatusCode === 200) {
                 this.setState({
                     checkedList: [],
@@ -418,7 +418,7 @@ class LogRecord extends React.Component {
     //监听table的change进行排序操作
     onTableChange = (page, filters, sorter) => {
         const { DataState, dispatch } = this.props;
-        // console.log(sorter)
+        // //console.log(sorter)
         if (sorter && (sorter.columnKey === 'UserName' || sorter.columnKey === 'LogID')) {
             let sortFiled = sorter.columnKey === 'UserName' ? '&sortFiled=UserID' : '&sortFiled=LogID'
             let sortType = sorter.order === "descend" ? '&SortType=DESC' : sorter.order === "ascend" ? '&SortType=ASC' : '';
@@ -468,9 +468,9 @@ class LogRecord extends React.Component {
     }
     //操作时间事件
     onStartTimeSelectOk = (Moment, time) => {
-        // console.log(time,Moment)
+        // //console.log(time,Moment)
         const { DataState, dispatch } = this.props;
-        //console.log(time.valueOf())
+        ////console.log(time.valueOf())
         dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=0&PageSize=10'))
         this.setState({
             pagination: 1
@@ -484,7 +484,7 @@ class LogRecord extends React.Component {
     }
     onEndTimeSelectOk = (Moment, time) => {
         const { DataState, dispatch } = this.props;
-        // console.log(time)
+        // //console.log(time)
         dispatch(actions.UpDataState.getLogRecordPreview('/GetAllLogToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.startTime ? '&beginTime=' + this.state.startTime : '') + (this.state.endTime ? '&endTime=' + this.state.endTime : '') + '&OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=0&PageSize=10'))
         this.setState({
             pagination: 1

@@ -67,6 +67,11 @@ const GET_UNREAD_LOG_PREVIEW = 'GET_UNREAD_LOG_PREVIEW'
 const GET_LOG_RECORD_PREVIEW = 'GET_LOG_RECORD_PREVIEW'
 // 获取用户信息
 const GET_USER_MSG = 'GET_USER_MSG'
+// 获取图片上传链接
+const GET_PIC_URL = 'GET_PIC_URL'
+// 获取图片对象
+const GET_PIC_OBJECT = 'GET_PIC_OBJECT'
+
 //操作的执行
 //获取登录用户信息
 const getLoginUser = (data) => {
@@ -513,6 +518,13 @@ const getUserMsg = (url) => {
         });
     }
 }
+// 获取照片上传链接
+const getPicObject = (data) => {
+    return (dispatch) => {
+        dispatch({ type: GET_PIC_OBJECT, data: data });
+
+    }
+}
 export default {
     getLoginUser,
     getAllUserPreview,
@@ -578,5 +590,8 @@ export default {
     getUserMsg,
     GET_USER_MSG,
     GET_LOG_RECORD_PREVIEW,
-    getLogRecordPreview
+    getLogRecordPreview,
+    GET_PIC_URL,
+    getPicObject,
+    GET_PIC_OBJECT
 }

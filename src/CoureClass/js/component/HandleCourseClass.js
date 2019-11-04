@@ -53,7 +53,7 @@ class HandleCourseClass extends React.Component {
     onCourseClassNameChange = (e) => {
         const { DataState, UIState, dispatch } = this.props;
         let { CourseClassName, ...data } = DataState.GetCourseClassDetailsHandleClassMsg.selectData.CourseClass
-        console.log(this.state.courseClassName, e.target.value)
+        //console.log(this.state.courseClassName, e.target.value)
         dispatch(actions.UpDataState.setCourseClassName({ CourseClassName: e.target.value, ...data }))
         // this.setState({
         //     courseClassName: e.target.value,
@@ -62,11 +62,11 @@ class HandleCourseClass extends React.Component {
 
     //学科选择
     onSelectSubjectChange = (value) => {
-        console.log(value)
+        //console.log(value)
     }
     //年级选择
     onSelectGradeChange = (value) => {
-        console.log(value)
+        //console.log(value)
     }
     //选择教师
     onTeacherSelectClick = () => {
@@ -117,7 +117,7 @@ class HandleCourseClass extends React.Component {
         this.setState({
             tableSource: data
         })
-        console.log(id, newData);
+        //console.log(id, newData);
         dispatch(actions.UpDataState.setCourseClassStudentMsg(data))
 
     }

@@ -58,7 +58,7 @@ class Graduate extends React.Component {
                     render: arr => {
                         return (
                             <div className='name-content'>
-                                <span className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.key)}>{arr.UserName ? arr.UserName : '--'}</span>
+                                <span title={arr.UserName } className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.key)}>{arr.UserName ? arr.UserName : '--'}</span>
                             </div>
                         )
                     }
@@ -73,7 +73,7 @@ class Graduate extends React.Component {
                     sorter: true,
                     render: UserID => {
                         return (
-                            <span className='UserID'>{UserID ? UserID : '--'}</span>
+                            <span title={UserID} className='UserID'>{UserID ? UserID : '--'}</span>
                         )
                     }
                 },
@@ -85,7 +85,7 @@ class Graduate extends React.Component {
                     key: 'Grade',
                     render: Grade => {
                         return (
-                            <span className='GradeName'>{Grade.Year ? Grade.Year : '--'}</span>
+                            <span title={Grade.Year} className='GradeName'>{Grade.Year ? Grade.Year : '--'}</span>
                         )
                     }
                 },
@@ -97,7 +97,7 @@ class Graduate extends React.Component {
                     dataIndex: 'Class',
                     render: arr => {
                         return (
-                            <span className='ClassName'>{arr.ClassName ? arr.ClassName : '--'}</span>
+                            <span title={arr.ClassName} className='ClassName'>{arr.ClassName ? arr.ClassName : '--'}</span>
                         )
                     }
                 },
@@ -110,9 +110,9 @@ class Graduate extends React.Component {
                     render: JobType => {
                         return (
                             JobType.HasTrack ? (<div className='JobType-box'>
-                                <span className='JobType' style={{ color: JobType.JobType === '升学' ? '#002871' : '#187100' }}>{JobType.JobType}</span>
-                                <span className='Discription'>{JobType.Discription}</span>
-                            </div>) : (<span className='HasTrack'>不详</span>)
+                                <span title={JobType.JobType} className='JobType' style={{ color: JobType.JobType === '升学' ? '#002871' : '#187100' }}>{JobType.JobType}</span>
+                                <span title={JobType.Discription} className='Discription'>{JobType.Discription}</span>
+                            </div>) : (<span title={'不详'} className='HasTrack'>不详</span>)
                         )
                     }
                 }, {
@@ -123,7 +123,7 @@ class Graduate extends React.Component {
                     dataIndex: 'Telephone',
                     render: Telephone => {
                         return (
-                            <span className='Telephone'>{Telephone ? Telephone : '--'}</span>
+                            <span title={Telephone} className='Telephone'>{Telephone ? Telephone : '--'}</span>
 
                         )
                     }
@@ -134,8 +134,8 @@ class Graduate extends React.Component {
                     width: 200,
                     key: 'handleMsg',
                     dataIndex: 'handleMsg',
-                    render: (handleMsg,i) => {
-                        console.log(handleMsg,i)
+                    render: (handleMsg, i) => {
+                        //console.log(handleMsg,i)
                         return (
                             <div className='handle-content'>
                                 <Button color='blue' type='default' onClick={this.HandleJobType.bind(this, handleMsg.key)} className='handle-btn'>编辑毕业去向</Button>
@@ -178,7 +178,7 @@ class Graduate extends React.Component {
         } else {
             this.setState({ secondDropMenuShow: false })
         }
-        dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?SchoolID=' + this.state.userMsg.SchoolID + (e.value !== 0 ? '&gradeID=' + e.value : '') + '&PageIndex=0&PageSize=10'+(this.state.columnKey?'&sortFiled=' + this.state.columnKey:'') + (this.state.order?'&SortType=' + this.state.order:'')));
+        dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?SchoolID=' + this.state.userMsg.SchoolID + (e.value !== 0 ? '&gradeID=' + e.value : '') + '&PageIndex=0&PageSize=10' + (this.state.columnKey ? '&sortFiled=' + this.state.columnKey : '') + (this.state.order ? '&SortType=' + this.state.order : '')));
 
     }
     StudentDropMenuSecond = (e) => {
@@ -189,7 +189,7 @@ class Graduate extends React.Component {
             pagination: 1,
             CancelBtnShow: 'n'
         })
-        dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?SchoolID=' + this.state.userMsg.SchoolID + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (e.value !== 0 ? '&classID=' + e.value : '') + '&PageIndex=0&PageSize=10'+(this.state.columnKey?'&sortFiled=' + this.state.columnKey:'') + (this.state.order?'&SortType=' + this.state.order:'')));
+        dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?SchoolID=' + this.state.userMsg.SchoolID + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (e.value !== 0 ? '&classID=' + e.value : '') + '&PageIndex=0&PageSize=10' + (this.state.columnKey ? '&sortFiled=' + this.state.columnKey : '') + (this.state.order ? '&SortType=' + this.state.order : '')));
 
     }
     // 搜索 click
@@ -210,7 +210,7 @@ class Graduate extends React.Component {
                 close: this.onAlertWarnClose.bind(this)
             }));
         } else {
-            dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&keyword=' + e.value + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + ''+(this.state.columnKey?'&sortFiled=' + this.state.columnKey:'') + (this.state.order?'&SortType=' + this.state.order:'')));
+            dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&keyword=' + e.value + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + '' + (this.state.columnKey ? '&sortFiled=' + this.state.columnKey : '') + (this.state.order ? '&SortType=' + this.state.order : '')));
 
         }
     }
@@ -220,22 +220,22 @@ class Graduate extends React.Component {
             searchValue: e.target.value
         })
     }
-     // 取消搜索
-     onCancelSearch = (e) => {
+    // 取消搜索
+    onCancelSearch = (e) => {
         const { dispatch } = this.props
 
         this.setState({
             CancelBtnShow: 'n',
             keyword: '',
-            searchValue:''
+            searchValue: ''
 
         })
-        dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex='+(this.state.pagination - 1)+'&PageSize=10'  + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + ''+(this.state.columnKey?'&sortFiled=' + this.state.columnKey:'') + (this.state.order?'&SortType=' + this.state.order:'')));
+        dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + '' + (this.state.columnKey ? '&sortFiled=' + this.state.columnKey : '') + (this.state.order ? '&SortType=' + this.state.order : '')));
 
     }
     //table 多选组
     OnCheckAllChange = (e) => {
-        console.log(e)
+        //console.log(e)
         if (e.target.checked) {
             this.setState({
                 checkedList: this.props.DataState.GradeStudentPreview.keyList,
@@ -249,7 +249,7 @@ class Graduate extends React.Component {
         }
     }
     onCheckBoxGroupChange = (checkedList) => {
-        console.log(checkedList)
+        //console.log(checkedList)
         this.setState({
             checkedList,
             checkAll: checkedList.length === this.props.DataState.GetGraduatePreview.keyList.length ? true : false
@@ -258,7 +258,7 @@ class Graduate extends React.Component {
     //监听table的change进行排序操作
     onTableChange = (page, filters, sorter) => {
         const { DataState, dispatch } = this.props;
-        console.log(sorter)
+        //console.log(sorter)
         if (sorter && (sorter.columnKey === 'UserName' || sorter.columnKey === 'UserID')) {
             let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
             dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?SchoolID=' + this.state.userMsg.SchoolID + (this.state.keyword ? '&keyword=' + this.state.keyword : '') + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + '&sortFiled=' + sorter.columnKey + '&PageIndex=0&PageSize=10&' + sortType));
@@ -269,7 +269,7 @@ class Graduate extends React.Component {
                 order: sorter.order === "descend" ? 'DESC' : sorter.order === "ascend" ? 'ASC' : ''
             })
         } else {
-            dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?PageIndex=0&PageSize=10&schoolID='+this.state.userMsg.SchoolID))
+            dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?PageIndex=0&PageSize=10&schoolID=' + this.state.userMsg.SchoolID))
             this.setState({
                 columnKey: '',
                 order: ''
@@ -280,8 +280,8 @@ class Graduate extends React.Component {
     onPagiNationChange = (e) => {
         const { dispatch, DataState } = this.props;
 
-        console.log(e)
-        dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?SchoolID=' + this.state.userMsg.SchoolID + (this.state.keyword ? '&keyword=' + this.state.keyword : '') + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + '&PageIndex=' + (--e) + '&PageSize=10'+(this.state.columnKey?'&sortFiled=' + this.state.columnKey:'') + (this.state.order?'&SortType=' + this.state.order:'')));
+        //console.log(e)
+        dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?SchoolID=' + this.state.userMsg.SchoolID + (this.state.keyword ? '&keyword=' + this.state.keyword : '') + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + '&PageIndex=' + (--e) + '&PageSize=10' + (this.state.columnKey ? '&sortFiled=' + this.state.columnKey : '') + (this.state.order ? '&SortType=' + this.state.order : '')));
         this.setState({
             checkedList: [],
             checkAll: false,
@@ -298,7 +298,7 @@ class Graduate extends React.Component {
     }
     // 编辑毕业去向
     HandleJobType = (key) => {
-        // console.log(key)
+        // //console.log(key)
         const { dispatch, DataState } = this.props;
         let data = DataState.GetGraduatePreview.newList[key].handleMsg
         let GraduateMsg = {
@@ -311,7 +311,7 @@ class Graduate extends React.Component {
         dispatch(actions.UpUIState.HandleGraduateModalOpen())
     }
     HandleContact = (key) => {
-        // console.log(key)
+        // //console.log(key)
         const { dispatch, DataState } = this.props;
         let data = DataState.GetGraduatePreview.newList[key].handleMsg
         let GraduateMsg = {
@@ -355,7 +355,11 @@ class Graduate extends React.Component {
         let data = DataState.GetGraduateMsg.GraduateChangeMsg;
         let visible = UIState.EditModalTipsVisible.GraduateJobTypeVisible;
         let url = '/EditGraduateTrack';
-        if(Public.comparisonObject(DataState.GetGraduateMsg.GraduateInitMsg,data)){
+        
+        if (visible) {
+            return;
+        }
+        if (Public.comparisonObject(DataState.GetGraduateMsg.GraduateInitMsg, data)) {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-warn',
                 title: '你还没编辑哦~',
@@ -364,10 +368,7 @@ class Graduate extends React.Component {
                 close: this.onAppAlertClose.bind(this)
             }));
             return;
-        }
-        if (visible) {
-            return;
-        }
+        } 
         postData(CONFIG.XTestProxy + url,
             {
                 userID: data.UserID,
@@ -391,7 +392,7 @@ class Graduate extends React.Component {
                         title: "成功",
                         onHide: this.onAlertWarnHide.bind(this)
                     }));
-                    dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?SchoolID=' + this.state.userMsg.SchoolID + (this.state.keyword ? '&keyword=' + this.state.keyword : '') + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10'+(this.state.columnKey?'&sortFiled=' + this.state.columnKey:'') + (this.state.order?'&SortType=' + this.state.order:'')));
+                    dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?SchoolID=' + this.state.userMsg.SchoolID + (this.state.keyword ? '&keyword=' + this.state.keyword : '') + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + (this.state.columnKey ? '&sortFiled=' + this.state.columnKey : '') + (this.state.order ? '&SortType=' + this.state.order : '')));
                 }
                 dispatch(actions.UpDataState.getGraduateContactMsg())
                 dispatch(actions.UpUIState.HandleGraduateModalClose())
@@ -406,9 +407,13 @@ class Graduate extends React.Component {
     handleGraduateContactModalOk = () => {
         const { dispatch, DataState, UIState } = this.props;
         let data = DataState.GetGraduateMsg.GraduateContactChangeMsg;
-        let visible = UIState.EditModalTipsVisible.EmailTipsVisible||UIState.EditModalTipsVisible.TelephoneTipsVisible||UIState.EditModalTipsVisible.HomeAdressTipsVisible;
+        let visible = UIState.EditModalTipsVisible.EmailTipsVisible || UIState.EditModalTipsVisible.TelephoneTipsVisible || UIState.EditModalTipsVisible.HomeAdressTipsVisible;
         let url = '/EditGraduateContact';
-        if(Public.comparisonObject(DataState.GetGraduateMsg.GraduateContactInitMsg,data)){
+        
+        if (visible) {
+            return;
+        }
+        if (Public.comparisonObject(DataState.GetGraduateMsg.GraduateContactInitMsg, data)) {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-warn',
                 title: '你还没编辑哦~',
@@ -418,15 +423,12 @@ class Graduate extends React.Component {
             }));
             return
         }
-        if (visible) {
-            return;
-        }
         postData(CONFIG.XTestProxy + url,
             {
                 userID: data.UserID,
-                Email: data.Email ,
+                Email: data.Email,
                 Telephone: data.Telephone,
-                HomeAddress:data.HomeAddress
+                HomeAddress: data.HomeAddress
             },
             2).then(res => {
                 return res.json()
@@ -445,7 +447,7 @@ class Graduate extends React.Component {
                         title: "成功",
                         onHide: this.onAlertWarnHide.bind(this)
                     }));
-                    dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?SchoolID=' + this.state.userMsg.SchoolID + (this.state.keyword ? '&keyword=' + this.state.keyword : '') + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10'+(this.state.columnKey?'&sortFiled=' + this.state.columnKey:'') + (this.state.order?'&SortType=' + this.state.order:'')));
+                    dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?SchoolID=' + this.state.userMsg.SchoolID + (this.state.keyword ? '&keyword=' + this.state.keyword : '') + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + (this.state.columnKey ? '&sortFiled=' + this.state.columnKey : '') + (this.state.order ? '&SortType=' + this.state.order : '')));
                 }
                 dispatch(actions.UpDataState.getGraduateMsg())
                 dispatch(actions.UpUIState.HandleGraduateContactModalClose())
@@ -460,7 +462,7 @@ class Graduate extends React.Component {
     //关闭
     onAlertWarnHide = () => {
         const { dispatch } = this.props;
-        console.log('ddd')
+        //console.log('ddd')
         dispatch(actions.UpUIState.hideErrorAlert())
 
     }
@@ -480,7 +482,7 @@ class Graduate extends React.Component {
     }
     render() {
         const { DataState, UIState } = this.props
-        console.log(DataState.GetGraduateGradeClassMsg, DataState.GetGraduateGradeClassMsg.Class[this.state.firstSelect.value])
+        //console.log(DataState.GetGraduateGradeClassMsg, DataState.GetGraduateGradeClassMsg.Class[this.state.firstSelect.value])
         return (
             <div id='Graduate' className='Graduate'>
                 <div className='Graduate-box'>
@@ -514,9 +516,9 @@ class Graduate extends React.Component {
                             <div className='search-box'>
                                 <Search placeHolder='请输入学号或姓名进行搜索'
                                     onClickSearch={this.StudentSearch.bind(this)}
-                                width={250}
-                                height={30}
-                                onCancelSearch={this.onCancelSearch}
+                                    width={250}
+                                    height={30}
+                                    onCancelSearch={this.onCancelSearch}
                                     Value={this.state.searchValue}
                                     onChange={this.onChangeSearch.bind(this)}
                                     CancelBtnShow={this.state.CancelBtnShow}
@@ -569,9 +571,9 @@ class Graduate extends React.Component {
                     onOk={this.handleGraduateModalOk}
                     onCancel={this.handleGraduateModalCancel}
                 >
-                    <Loading tip="加载中..." opacity={false} size="large" spinning={UIState.AppLoading.modalLoading}>
+                    {UIState.AppModal.handleGraduateModalVisible?(<Loading tip="加载中..." opacity={false} size="large" spinning={UIState.AppLoading.modalLoading}>
                         <GraduateJobType></GraduateJobType>
-                    </Loading>
+                    </Loading>):''}
                 </Modal>
                 {/* 编辑联系方式*/}
                 <Modal
@@ -584,9 +586,9 @@ class Graduate extends React.Component {
                     onOk={this.handleGraduateContactModalOk}
                     onCancel={this.handleGraduateContactModalCancel}
                 >
-                    <Loading tip="加载中..." opacity={false} size="large" spinning={UIState.AppLoading.modalLoading}>
+                    {UIState.AppModal.handleGraduateContactModalVisible?(<Loading tip="加载中..." opacity={false} size="large" spinning={UIState.AppLoading.modalLoading}>
                         <GraduateContact></GraduateContact>
-                    </Loading>
+                    </Loading>):''}
                 </Modal>
             </div>
         )

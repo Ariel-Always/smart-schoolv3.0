@@ -10,6 +10,7 @@ import SubjectTeacherMsg from './data/SubjectTeacherMsg';
 import SubjectTeacherPreview from './data/SubjectTeacherPreview';
 import GetUserMsg from './data/GetUserMsg';
 import AdminPreview from './data/AdminPreview';
+import GetPicUrl from './data/GetPicUrl';
 const DataState=combineReducers(
     {
         LoginUser,
@@ -22,6 +23,7 @@ const DataState=combineReducers(
         SubjectTeacherMsg,
         SubjectTeacherPreview,
         GetUserMsg,
-        AdminPreview
+        AdminPreview,
+        GetPicUrl
     });
 export default DataState;

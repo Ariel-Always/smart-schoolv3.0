@@ -158,7 +158,9 @@ class Student extends React.Component {
                     PhotoPath_NOcache: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg'
                 }
             }],
-            userMsg: props.DataState.LoginUser
+            userMsg: props.DataState.LoginUser,
+            sortType: '',
+            sortFiled: ''
 
         }
     }
@@ -202,7 +204,7 @@ class Student extends React.Component {
             this.setState({
                 secondDropList: Classes,
             })
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&gradeID=' + e.value));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&gradeID=' + e.value+this.state.sortFiled+this.state.sortType));
             this.setState({
                 DropMenuShow: true,
                 firstSelect: e,
@@ -211,7 +213,7 @@ class Student extends React.Component {
                 CancelBtnShow: 'n'
             })
         } else {
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10'));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10'+this.state.sortFiled+this.state.sortType));
             this.setState({
                 DropMenuShow: false,
                 secondSelect: { value: 0, title: '全部班级' },
@@ -232,9 +234,9 @@ class Student extends React.Component {
             CancelBtnShow: 'n'
         })
         if (e.value !== 0)
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&gradeID=' + this.state.firstSelect.value + '&classID=' + e.value));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&gradeID=' + this.state.firstSelect.value + '&classID=' + e.value+this.state.sortFiled+this.state.sortType));
         else
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&gradeID=' + this.state.firstSelect.value));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&gradeID=' + this.state.firstSelect.value+this.state.sortFiled+this.state.sortType));
     }
     //搜索
     StudentSearch = (e) => {
@@ -249,7 +251,7 @@ class Student extends React.Component {
                 close: this.onAlertWarnClose.bind(this)
             }));
         } else {
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&keyword=' + e.value + '&gradeID=' + this.state.firstSelect.value + '&classID=' + this.state.secondSelect.value));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&keyword=' + e.value + '&gradeID=' + this.state.firstSelect.value + '&classID=' + this.state.secondSelect.value+this.state.sortFiled+this.state.sortType));
             this.setState({
                 checkedList: [],
                 checkAll: false,
@@ -271,9 +273,10 @@ class Student extends React.Component {
 
     this.setState({
         CancelBtnShow: 'n',
-        keyword: ''
+        keyword: '',
+        searchValue: e.value
     })
-    dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' +  (this.state.firstSelect.value ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value ? '&classID=' + this.state.secondSelect.value : '')));
+    dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' +  (this.state.firstSelect.value ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value ? '&classID=' + this.state.secondSelect.value : ''+this.state.sortFiled+this.state.sortType)));
    
 
 }
@@ -406,16 +409,28 @@ class Student extends React.Component {
                     if (json.StatusCode === 400) {
                         console.log(json.StatusCode)
                     } else if (json.StatusCode === 200) {
+                        dispatch(actions.UpUIState.showErrorAlert({
+                            type: 'success',
+                            title: "操作成功",
+                            onHide: this.onAlertWarnHide.bind(this)
+                        }));
                         this.setState({
                             ChangePwdMadalVisible: false,
                             defaultPwd: 888888
                         })
-                        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&keyword=' + this.state.keyword + (this.state.firstSelect.value ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value ? '&classID=' + this.state.secondSelect.value : '')));
+                        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&keyword=' + this.state.keyword + (this.state.firstSelect.value ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value ? '&classID=' + this.state.secondSelect.value : ''+this.state.sortFiled+this.state.sortType)));
 
                     }
 
                 });
         }
+
+    }
+     //关闭
+     onAlertWarnHide = () => {
+        const { dispatch } = this.props;
+        //console.log('ddd')
+        dispatch(actions.UpUIState.hideErrorAlert())
 
     }
     // 重置密码close
@@ -465,11 +480,16 @@ class Student extends React.Component {
                 if (json.StatusCode === 400) {
                     console.log(json.StatusCode)
                 } else if (json.StatusCode === 200) {
+                    dispatch(actions.UpUIState.showErrorAlert({
+                        type: 'success',
+                        title: "操作成功",
+                        onHide: this.onAlertWarnHide.bind(this)
+                    }));
                     this.setState({
                         checkedList: [],
                         checkAll: false
                     })
-                    dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&keyword=' + this.state.keyword + (this.state.firstSelect.value ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value ? '&classID=' + this.state.secondSelect.value : '')));
+                    dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&keyword=' + this.state.keyword + (this.state.firstSelect.value ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value ? '&classID=' + this.state.secondSelect.value : ''+this.state.sortFiled+this.state.sortType)));
 
                 }
 
@@ -501,7 +521,7 @@ class Student extends React.Component {
             secondSelectStr: secondSelect,
             keywordStr: keyword
         })
-        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (--value) + '&PageSize=10' + keyword + firstSelect + secondSelect));
+        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (--value) + '&PageSize=10' + keyword + firstSelect + secondSelect+this.state.sortFiled+this.state.sortType));
 
     }
 
@@ -523,10 +543,17 @@ class Student extends React.Component {
         console.log(sorter)
         if (sorter && (sorter.columnKey === 'UserName' || sorter.columnKey === 'ShortName')) {
             let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&sortFiled=' + sorter.columnKey + '&PageSize=10&' + sortType + '&PageIndex=' + (this.state.pagination - 1) + keyword + firstSelect + secondSelect));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&sortFiled=' + sorter.columnKey + '&PageSize=10&' + sortType + '&PageIndex=' + (this.state.pagination - 1) + keyword + firstSelect + secondSelect+this.state.sortFiled+this.state.sortType));
+            this.setState({
+                sortType: '&' + sortType,
+                sortFiled: '&sortFiled=' + sorter.columnKey
+            })
         }else if(sorter){
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID  + '&PageSize=10'  + '&PageIndex=' + (this.state.pagination - 1) + keyword + firstSelect + secondSelect));
-
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID  + '&PageSize=10'  + '&PageIndex=' + (this.state.pagination - 1) + keyword + firstSelect + secondSelect+this.state.sortFiled+this.state.sortType));
+            this.setState({
+                sortType: '',
+                sortFiled: ''
+            })
         }
     }
     onUserNameClick = (UserID) => {

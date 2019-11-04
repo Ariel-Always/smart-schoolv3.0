@@ -62,7 +62,7 @@ class Student extends React.Component {
                     render: arr => {
                         return (
                             <div className='name-content'>
-                                <span className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.key)}>{arr.UserName}</span>
+                                <span title={arr.UserName} className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.key)}>{arr.UserName?arr.UserName:'--'}</span>
                             </div>
                         )
                     }
@@ -77,7 +77,7 @@ class Student extends React.Component {
                     sorter: true,
                     render: UserID => {
                         return (
-                            <span className='UserID'>{UserID}</span>
+                            <span title={UserID} className='UserID'>{UserID?UserID:'--'}</span>
                         )
                     }
                 },
@@ -89,7 +89,7 @@ class Student extends React.Component {
                     key: 'Gender',
                     render: Gender => {
                         return (
-                            <span className='Gender'>{Gender}</span>
+                            <span title={Gender} className='Gender'>{Gender?Gender:'--'}</span>
                         )
                     }
                 },
@@ -101,7 +101,7 @@ class Student extends React.Component {
                     dataIndex: 'GradeName',
                     render: GradeName => {
                         return (
-                            <span className='GradeName'>{GradeName}</span>
+                            <span title={GradeName} className='GradeName'>{GradeName?GradeName:'--'}</span>
                         )
                     }
                 },
@@ -113,7 +113,7 @@ class Student extends React.Component {
                     dataIndex: 'ClassName',
                     render: ClassName => {
                         return (
-                            <span className='ClassName'>{ClassName}</span>
+                            <span title={ClassName} className='ClassName'>{ClassName?ClassName:'--'}</span>
                         )
                     }
                 },
@@ -183,7 +183,7 @@ class Student extends React.Component {
             GradeArr.push(Grade)
         }
 
-        if (nextProps.DataState.GradeClassMsg.returnData.AllClasses&&Select.GradeID && Select.GradeID.value !== 0) {
+        if (nextProps.DataState.GradeClassMsg.returnData.AllClasses && Select.GradeID && Select.GradeID.value !== 0) {
             let ClassArr = nextProps.DataState.GradeClassMsg.returnData.AllClasses[Select.GradeID.value];
             ClassArr.map((Class) => {
                 Classes.push(Class);
@@ -294,7 +294,7 @@ class Student extends React.Component {
         if (e.value === '') {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-error',
-                title: "搜索数据为能为空",
+                title: "你还没有输入关键字哦~",
                 ok: this.onAppAlertOK.bind(this),
                 cancel: this.onAppAlertCancel.bind(this),
                 close: this.onAppAlertClose.bind(this)
@@ -360,9 +360,21 @@ class Student extends React.Component {
     handleStudentModalOk = (e) => {
         let url = '/EditStudent';
 
-        const { DataState, dispatch } = this.props
+        const { DataState, dispatch, UIState } = this.props
         const { initStudentMsg, changeStudentMsg } = DataState.SetStudentMsg;
-        if (Public.comparisonObject(changeStudentMsg, initStudentMsg)) {
+        let picObj = DataState.GetPicUrl.picObj
+        // console.log(picObj.picUploader.isChanged());
+        let EditModalTipsVisible = UIState.EditModalTipsVisible;
+        for (let key in EditModalTipsVisible) {
+            if (EditModalTipsVisible[key]) {
+
+                return;
+            }
+        }
+        //    if(EditModalTipsVisible.UserIDTipsVisible||EditModalTipsVisible.UserNameTipsVisible||EditModalTipsVisible.GenderTipsVisible||EditModalTipsVisible.GradeTipsVisible||EditModalTipsVisible.ClassTipsVisible){
+        //        return;
+        //    }
+        if (Public.comparisonObject(changeStudentMsg, initStudentMsg) && !picObj.picUploader.isChanged()) {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-error',
                 title: "你没有修改数据哦",
@@ -372,39 +384,44 @@ class Student extends React.Component {
             }));
             return;
         } else {
+            if (picObj.picUploader.uploadSubmit()) {
 
-            postData(CONFIG.UserInfoProxy + url, {
-                ...changeStudentMsg
-            }, 2).then(res => {
-                return res.json()
-            }).then(json => {
-                if (json.StatusCode !== 200) {
-                    dispatch(actions.UpUIState.showErrorAlert({
-                        type: 'btn-error',
-                        title: json.Msg,
-                        ok: this.onAppAlertOK.bind(this),
-                        cancel: this.onAppAlertCancel.bind(this),
-                        close: this.onAppAlertClose.bind(this)
-                    }));
-                } else if (json.StatusCode === 200) {
-                    //  console.log(json.Data)
-                    dispatch(actions.UpUIState.showErrorAlert({
-                        type: 'success',
-                        title: "操作成功",
-                        onHide: this.onAlertWarnHide.bind(this)
-                    }));
-                    this.setState({
-                        studentModalVisible: false
-                    })
-                    dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + this.state.sortFiled + this.state.sortType, this.state.firstSelect, this.state.secondSelect));
-                    dispatch(actions.UpUIState.editAlltModalTipsVisible());
+                // console.log(picObj.picUploader.getCurImgPath())
+                postData(CONFIG.UserInfoProxy + url, {
+                    ...changeStudentMsg,
+                    photoPath: picObj.picUploader.getCurImgPath()
+                }, 2).then(res => {
+                    return res.json()
+                }).then(json => {
+                    if (json.StatusCode !== 200) {
+                        dispatch(actions.UpUIState.showErrorAlert({
+                            type: 'btn-error',
+                            title: json.Msg,
+                            ok: this.onAppAlertOK.bind(this),
+                            cancel: this.onAppAlertCancel.bind(this),
+                            close: this.onAppAlertClose.bind(this)
+                        }));
+                    } else if (json.StatusCode === 200) {
+                        //  console.log(json.Data)
+                        dispatch(actions.UpUIState.showErrorAlert({
+                            type: 'success',
+                            title: "操作成功",
+                            onHide: this.onAlertWarnHide.bind(this)
+                        }));
+                        this.setState({
+                            studentModalVisible: false
+                        })
+                        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + this.state.sortFiled + this.state.sortType, this.state.firstSelect, this.state.secondSelect));
+                        dispatch(actions.UpUIState.editAlltModalTipsVisible());
 
-                    this.setState({
-                        checkedList: [],
-                        checkAll: false
-                    })
-                }
-            });
+                        this.setState({
+                            checkedList: [],
+                            checkAll: false
+                        })
+                    }
+                });
+            }
+
 
         }
 
@@ -489,12 +506,13 @@ class Student extends React.Component {
                     checkedList: [],
                     checkAll: false
                 })
+               
+                dispatch(actions.UpUIState.hideErrorAlert());
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
                     title: "操作成功",
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
-                dispatch(actions.UpUIState.hideErrorAlert());
                 dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + this.state.sortFiled + this.state.sortType, this.state.firstSelect, this.state.secondSelect));
                 this.setState({
                     checkedList: [],
@@ -563,6 +581,7 @@ class Student extends React.Component {
         let url = '/AddStudent';
 
         const { DataState, dispatch, UIState } = this.props
+        let picObj = DataState.GetPicUrl.picObj;
         const { initStudentMsg, changeStudentMsg } = DataState.SetStudentMsg;
         let visible = UIState.EditModalVisible;
         let haveMistake = false;
@@ -571,7 +590,47 @@ class Student extends React.Component {
                 haveMistake = true;
             }
         }
-        if (Public.comparisonObject(changeStudentMsg, initStudentMsg)) {
+
+        // 错误
+        //用户ID必填
+        if (changeStudentMsg.userID === '') {
+            dispatch(actions.UpUIState.editModalTipsVisible({
+                UserIDTipsVisible: true
+            }))
+            haveMistake = true;
+        }
+        //用户名必填
+        if (changeStudentMsg.userName === '') {
+            dispatch(actions.UpUIState.editModalTipsVisible({
+                UserNameTipsVisible: true
+            }))
+            haveMistake = true;
+        }
+        //性别必选
+        if (!changeStudentMsg.gender) {
+            dispatch(actions.UpUIState.editModalTipsVisible({
+                GenderTipsVisible: true
+            }))
+            haveMistake = true;
+        }
+        //年级必选
+        if (!changeStudentMsg.gradeID) {
+            dispatch(actions.UpUIState.editModalTipsVisible({
+                GradeTipsVisible: true
+            }))
+            haveMistake = true;
+        }
+        //班级必选
+        if (!changeStudentMsg.classID) {
+            dispatch(actions.UpUIState.editModalTipsVisible({
+                ClassTipsVisible: true
+            }))
+            haveMistake = true;
+        }
+        if (haveMistake) {
+            return;
+        }
+        if (Public.comparisonObject(changeStudentMsg, initStudentMsg && !picObj.picUploader.isChanged())) {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-error',
                 title: "你没有填写资料哦",
@@ -581,80 +640,46 @@ class Student extends React.Component {
             }));
             return;
         } else {
-            //用户ID必填
-            if (changeStudentMsg.userID === '') {
-                dispatch(actions.UpUIState.editModalTipsVisible({
-                    UserIDTipsVisible: true
-                }))
-                haveMistake = true;
-            }
-            //用户名必填
-            if (changeStudentMsg.userName === '') {
-                dispatch(actions.UpUIState.editModalTipsVisible({
-                    UserNameTipsVisible: true
-                }))
-                haveMistake = true;
-            }
-            //性别必选
-            if (!changeStudentMsg.gender) {
-                dispatch(actions.UpUIState.editModalTipsVisible({
-                    GenderTipsVisible: true
-                }))
-                haveMistake = true;
-            }
-            //年级必选
-            if (!changeStudentMsg.gradeID) {
-                dispatch(actions.UpUIState.editModalTipsVisible({
-                    GradeTipsVisible: true
-                }))
-                haveMistake = true;
-            }
-            //班级必选
-            if (!changeStudentMsg.classID) {
-                dispatch(actions.UpUIState.editModalTipsVisible({
-                    ClassTipsVisible: true
-                }))
-                haveMistake = true;
-            }
-            if (haveMistake) {
-                return;
-            }
-            postData(CONFIG.UserInfoProxy + url, {
-                ...changeStudentMsg
-            }, 2).then(res => {
-                return res.json()
-            }).then(json => {
-                if (json.StatusCode !== 200) {
-                    dispatch(actions.UpUIState.showErrorAlert({
-                        type: 'btn-error',
-                        title: json.Msg,
-                        ok: this.onAppAlertOK.bind(this),
-                        cancel: this.onAppAlertCancel.bind(this),
-                        close: this.onAppAlertClose.bind(this)
-                    }));
-                } else if (json.StatusCode === 200) {
-                    //  console.log(json.Data)
-                    dispatch(actions.UpUIState.showErrorAlert({
-                        type: 'success',
-                        title: "操作成功",
-                        onHide: this.onAlertWarnHide.bind(this)
-                    }));
-                    this.setState({
-                        studentModalVisible: false
-                    })
-                    this.setState({
-                        addStudentModalVisible: false
-                    })
+            if (picObj.picUploader.uploadSubmit()) {
 
-                    dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + this.state.sortFiled + this.state.sortType, this.state.firstSelect, this.state.secondSelect));
-                    dispatch(actions.UpUIState.editAlltModalTipsVisible());
+                postData(CONFIG.UserInfoProxy + url, {
+                    ...changeStudentMsg,
+                    photoPath: picObj.picUploader.getCurImgPath()
+                }, 2).then(res => {
+                    return res.json()
+                }).then(json => {
+                    if (json.StatusCode !== 200) {
+                        dispatch(actions.UpUIState.showErrorAlert({
+                            type: 'btn-error',
+                            title: json.Msg,
+                            ok: this.onAppAlertOK.bind(this),
+                            cancel: this.onAppAlertCancel.bind(this),
+                            close: this.onAppAlertClose.bind(this)
+                        }));
+                    } else if (json.StatusCode === 200) {
+                        //  console.log(json.Data)
+                        dispatch(actions.UpUIState.showErrorAlert({
+                            type: 'success',
+                            title: "操作成功",
+                            onHide: this.onAlertWarnHide.bind(this)
+                        }));
+                        this.setState({
+                            studentModalVisible: false
+                        })
+                        this.setState({
+                            addStudentModalVisible: false
+                        })
 
-                    this.setState({
-                        checkedList: [],
-                        checkAll: false
-                    })
-                }
-            });
+                        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + this.state.sortFiled + this.state.sortType, this.state.firstSelect, this.state.secondSelect));
+                        dispatch(actions.UpUIState.editAlltModalTipsVisible());
+
+                        this.setState({
+                            checkedList: [],
+                            checkAll: false
+                        })
+                    }
+                });
+            }
 
         }
 

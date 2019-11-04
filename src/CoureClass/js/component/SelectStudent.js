@@ -24,7 +24,7 @@ class SelectStudent extends React.Component {
             leftShow: true,
             CancelBtnShow: 'n',
             keyword: '',
-            searchValue:''
+            searchValue: ''
         }
     }
     componentWillMount() {
@@ -83,7 +83,17 @@ class SelectStudent extends React.Component {
     onClickSearch = (value) => {
         const { DataState, UIState, dispatch } = this.props;
         let gradeID = DataState.GetCourseClassDetailsHandleClassMsg.GradeID;
-        console.log(value.value);
+        // console.log(value.value);
+        if (value.value === '') {
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-warn',
+                title: "搜索关键字不能为空",
+                ok: this.onAppAlertOK.bind(this),
+                cancel: this.onAppAlertCancel.bind(this),
+                close: this.onAppAlertClose.bind(this)
+            }));
+            return;
+        }
         this.setState({
             show: true,
             CancelBtnShow: 'y',
@@ -93,6 +103,20 @@ class SelectStudent extends React.Component {
         })
         dispatch(actions.UpDataState.searchClassStudentMsg('/GetStudentForAddOrEditCourseClassByKey?schoolID=' + this.state.UserMsg.SchoolID + '&gradeID=' + gradeID + '&key=' + value.value))
 
+    }
+    //通用提示弹窗
+    onAppAlertOK() {
+        const { dispatch } = this.props;
+        dispatch(actions.UpUIState.hideErrorAlert());
+
+    }
+    onAppAlertCancel() {
+        const { dispatch } = this.props;
+        dispatch(actions.UpUIState.hideErrorAlert());
+    }
+    onAppAlertClose() {
+        const { dispatch } = this.props;
+        dispatch(actions.UpUIState.hideErrorAlert());
     }
     //点击左侧
     onClickTabClick = (id) => {

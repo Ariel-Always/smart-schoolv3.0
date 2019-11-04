@@ -1,5 +1,6 @@
 import UpUIState from '../../actions/UpUIState';
 const EditModalTipsVisible = (state = {
+    UserIDTipsVisible:false,
     UserNameTipsVisible: false,
     GradeTipsVisible: false,
     TitleTipsVisible: false,
@@ -19,6 +20,7 @@ const EditModalTipsVisible = (state = {
             return Object.assign({}, state, { ...actions.data });
         case UpUIState.EDIT_ALL_MODAL_TIPS_VISIBLE:
             return Object.assign({}, state, {
+                UserIDTipsVisible:false,
                 UserNameTipsVisible: false,
                 GradeTipsVisible: false,
                 TitleTipsVisible: false,

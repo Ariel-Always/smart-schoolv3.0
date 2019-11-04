@@ -3,7 +3,7 @@ import { Frame, Menu, Loading, Alert } from "../../../common";
 import { connect } from 'react-redux';
 import UserArchives from "../component/UserArchives";
 import { TokenCheck_Connect, TokenCheck, getUserInfo } from '../../../common/js/disconnect'
-
+import config from '../../../common/js/config'
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
 import history from './history'
 import RegisterExamine from "../component/RegisterExamine";
@@ -53,9 +53,21 @@ class App extends Component {
 
 
     componentWillMount() {
+        const {dispatch} = this.props
         this.handleMenu()
         let route = history.location.pathname;
         // 获取接口数据
+        getData(config.PicProxy+'/Global/GetResHttpServerAddr').then(res => {
+            return res.json()
+        }).then(json => {
+            if (json.StatusCode === 400) {
+                //console.log(json.StatusCode)
+            } else if (json.StatusCode === 200) {
+                // console.log(json)
+                dispatch({type:actions.UpDataState.GET_PIC_URL,data:json.Data})
+            }
+
+        })
         this.requestData(route)
         if (history.location.pathname === '/' || history.location.pathname === '/UserArchives') {
             history.push('/UserArchives/All')

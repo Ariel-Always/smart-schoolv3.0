@@ -48,7 +48,7 @@ class Teacher extends React.Component {
                         return (
                             <div className='name-content'>
                                 <span className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.UserID)}>{arr.Name}</span><br />
-                                <span className='name-UserID'>(<span className='UserID-content'>{ arr.UserID }</span>)</span>
+                                <span className='name-UserID'>(<span className='UserID-content'>{arr.UserID}</span>)</span>
                             </div>
                         )
                     }
@@ -63,7 +63,7 @@ class Teacher extends React.Component {
                     sorter: true,
                     render: ShortName => {
                         return (
-                            <span className='UserName'>{ShortName?ShortName:'--'}</span>
+                            <span className='UserName'>{ShortName ? ShortName : '--'}</span>
                         )
                     }
                 },
@@ -75,7 +75,7 @@ class Teacher extends React.Component {
                     key: 'Sign',
                     render: Sign => {
                         return (
-                            <span className='Sign' title={Sign}>{Sign?Sign:'--'}</span>
+                            <span className='Sign' title={Sign}>{Sign ? Sign : '--'}</span>
                         )
                     }
                 },
@@ -142,7 +142,7 @@ class Teacher extends React.Component {
                 },
                 handle: {
                     key: 0
-                }
+                },
 
             }],
             pagination: 1,
@@ -167,8 +167,10 @@ class Teacher extends React.Component {
             SubjectSelect: { value: 0, title: '全部学科' },
             keyword: '',
             CancelBtnShow: 'n',
-            searchValue:'',
-            userMsg: props.DataState.LoginUser
+            searchValue: '',
+            userMsg: props.DataState.LoginUser,
+            sortType: '',
+            sortFiled: ''
         }
     }
     componentWillMount() {
@@ -203,7 +205,7 @@ class Teacher extends React.Component {
             pagination: 1,
             CancelBtnShow: 'n'
         })
-        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&SubjectIDs=' + e.value));
+        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&SubjectIDs=' + e.value+this.state.sortFiled+this.state.sortType));
 
     }
 
@@ -211,11 +213,7 @@ class Teacher extends React.Component {
 
     TeacherSearch = (e) => {
         const { dispatch } = this.props;
-        this.setState({
-            keyword: e.value,
-            CancelBtnShow: 'y',
-            pagination: 1
-        })
+
         if (e.value === '') {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-warn',
@@ -225,7 +223,12 @@ class Teacher extends React.Component {
                 close: this.onAlertWarnClose.bind(this)
             }));
         } else {
-            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&keyword=' + e.value + '&SubjectIDs=' + (this.state.SubjectSelect.value?this.state.SubjectSelect.value:'')));
+            this.setState({
+                keyword: e.value,
+                CancelBtnShow: 'y',
+                pagination: 1
+            })
+            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&keyword=' + e.value + '&SubjectIDs=' + (this.state.SubjectSelect.value ? this.state.SubjectSelect.value : '')+this.state.sortFiled+this.state.sortType));
 
         }
     }
@@ -241,9 +244,11 @@ class Teacher extends React.Component {
 
         this.setState({
             CancelBtnShow: 'n',
-            keyword: ''
+            keyword: '',
+            searchValue: e.value
+
         })
-        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + '&SubjectIDs=' + (this.state.SubjectSelect.value?this.state.SubjectSelect.value:'')));
+        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + '&SubjectIDs=' + (this.state.SubjectSelect.value ? this.state.SubjectSelect.value : '')+this.state.sortFiled+this.state.sortType));
 
 
     }
@@ -357,7 +362,7 @@ class Teacher extends React.Component {
         const { dispatch, DataState } = this.props;
         let url = '/ResetPwd';
         let UserMsg = DataState.LoginUser;
-        console.log(this.state.defaultPwd,md5(this.state.defaultPwd))
+        console.log(this.state.defaultPwd, md5(this.state.defaultPwd))
         if (this.state.defaultPwd === '') {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-query',
@@ -383,16 +388,28 @@ class Teacher extends React.Component {
                     if (json.StatusCode === 400) {
                         console.log(json.StatusCode)
                     } else if (json.StatusCode === 200) {
+                        dispatch(actions.UpUIState.showErrorAlert({
+                            type: 'success',
+                            title: "操作成功",
+                            onHide: this.onAlertWarnHide.bind(this)
+                        }));
                         this.setState({
                             ChangePwdMadalVisible: false,
                             defaultPwd: '888888'
                         })
-                        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&keyword=' + this.state.keyword + '&SubjectIDs=' + (this.state.SubjectSelect.value?this.state.SubjectSelect.value:'')));
+                        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&keyword=' + this.state.keyword + '&SubjectIDs=' + (this.state.SubjectSelect.value ? this.state.SubjectSelect.value : '')+this.state.sortFiled+this.state.sortType));
 
                     }
 
                 });
         }
+    }
+     //关闭
+     onAlertWarnHide = () => {
+        const { dispatch } = this.props;
+        //console.log('ddd')
+        dispatch(actions.UpUIState.hideErrorAlert())
+
     }
     // 重置密码close
 
@@ -444,11 +461,16 @@ class Teacher extends React.Component {
                 if (json.StatusCode === 400) {
                     console.log(json.StatusCode)
                 } else if (json.StatusCode === 200) {
+                    dispatch(actions.UpUIState.showErrorAlert({
+                        type: 'success',
+                        title: "操作成功",
+                        onHide: this.onAlertWarnHide.bind(this)
+                    }));
                     this.setState({
                         checkedList: [],
                         checkAll: false
                     })
-                    dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&keyword=' + this.state.keyword + '&SubjectIDs=' + (this.state.SubjectSelect.value?this.state.SubjectSelect.value:'')));
+                    dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&keyword=' + this.state.keyword + '&SubjectIDs=' + (this.state.SubjectSelect.value ? this.state.SubjectSelect.value : '')+this.state.sortFiled+this.state.sortType));
 
                 }
 
@@ -471,7 +493,7 @@ class Teacher extends React.Component {
         if (this.state.keyword !== '') {
             keyword = '&keyword=' + this.state.keyword
         }
-        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (--value) + '&PageSize=10' + keyword + SubjectIDs));
+        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (--value) + '&PageSize=10' + keyword + SubjectIDs+this.state.sortFiled+this.state.sortType));
 
     }
     onUserNameClick = (UserID) => {
@@ -529,10 +551,16 @@ class Teacher extends React.Component {
         if (sorter && (sorter.columnKey === 'UserName' || sorter.columnKey === 'ShortName')) {
             let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
             dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&sortFiled=' + sorter.columnKey + 'PageSize=10&' + sortType + '&PageIndex=' + (this.state.pagination - 1) + keyword + SubjectSelect));
-
-        }else if(sorter){
-            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID  + '&PageSize=10'  + '&PageIndex=' + (this.state.pagination - 1) + keyword + SubjectSelect));
-
+            this.setState({
+                sortType: '&' + sortType,
+                sortFiled: '&sortFiled=' + sorter.columnKey
+            })
+        } else if (sorter) {
+            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageSize=10' + '&PageIndex=' + (this.state.pagination - 1) + keyword + SubjectSelect));
+            this.setState({
+                sortType: '',
+                sortFiled: ''
+            })
         }
     }
     render() {

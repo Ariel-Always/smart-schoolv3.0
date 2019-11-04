@@ -56,7 +56,7 @@ class Leader extends React.Component {
                     render: arr => {
                         return (
                             <div className='name-content'>
-                                <span className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.key)}>{arr.UserName}</span>
+                                <span title={arr.UserName} className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.key)}>{arr.UserName?arr.UserName:'--'}</span>
                             </div>
                         )
                     }
@@ -71,7 +71,7 @@ class Leader extends React.Component {
                     sorter: true,
                     render: UserID => {
                         return (
-                            <span className='UserID'>{UserID}</span>
+                            <span title={UserID} className='UserID'>{UserID?UserID:'--'}</span>
                         )
                     }
                 },
@@ -83,7 +83,7 @@ class Leader extends React.Component {
                     key: 'Gender',
                     render: Gender => {
                         return (
-                            <span className='Gender'>{Gender}</span>
+                            <span title={Gender} className='Gender'>{Gender?Gender:'--'}</span>
                         )
                     }
                 },
@@ -96,7 +96,7 @@ class Leader extends React.Component {
                     dataIndex: 'Position',
                     render: Position => {
                         return (
-                            <span className='Position'>{Position}</span>
+                            <span title={Position} className='Position'>{Position?Position:'--'}</span>
                         )
                     }
                 },
@@ -120,7 +120,7 @@ class Leader extends React.Component {
             checkedList: [],
             checkAll: false,
             userMsg: props.DataState.LoginUser,
-            LeaderDetailsMsgModalVisible:false
+            LeaderDetailsMsgModalVisible: false
         }
     }
     // 点击全选
@@ -219,16 +219,17 @@ class Leader extends React.Component {
             if (json.StatusCode === 400) {
                 console.log('错误码：400' + json)
             } else if (json.StatusCode === 200) {
-                dispatch(actions.UpUIState.showErrorAlert({
-                    type: 'success',
-                    title: "操作成功",
-                    onHide: this.onAlertWarnHide.bind(this)
-                }));
+                
                 this.setState({
                     checkedList: [],
                     checkAll: false
                 })
                 dispatch(actions.UpUIState.hideErrorAlert());
+                dispatch(actions.UpUIState.showErrorAlert({
+                    type: 'success',
+                    title: "操作成功",
+                    onHide: this.onAlertWarnHide.bind(this)
+                }));
                 dispatch(actions.UpDataState.getSchoolLeaderPreview('/GetSchoolLeader?SchoolID=' + this.state.userMsg.SchoolID + '&SortFiled=UserID&SortType=ASC'));
                 this.setState({
                     checkedList: [],
@@ -254,9 +255,9 @@ class Leader extends React.Component {
     // 编辑领导
     LeaderEdit = (key) => {
         // console.log(key)
-        const {dispatch} = this.props
+        const { dispatch } = this.props
         this.setState({
-            userKey:key
+            userKey: key
         })
         dispatch(actions.UpUIState.HandleLeaderModalOpen())
     }
@@ -271,8 +272,8 @@ class Leader extends React.Component {
                 checkedList: [],
                 checkAll: false
             })
-        }else if(sorter&&!sorter.columnKey){
-            dispatch(actions.UpDataState.getSchoolLeaderPreview('/GetSchoolLeader?SchoolID=' + this.state.userMsg.SchoolID ));
+        } else if (sorter && !sorter.columnKey) {
+            dispatch(actions.UpDataState.getSchoolLeaderPreview('/GetSchoolLeader?SchoolID=' + this.state.userMsg.SchoolID));
             this.setState({
                 checkedList: [],
                 checkAll: false
@@ -297,10 +298,19 @@ class Leader extends React.Component {
     handleLeaderModalOk = (e) => {
         let url = '/EditSchoolLeader';
 
-        const { DataState, dispatch } = this.props
+        const { DataState, dispatch, UIState } = this.props
         const { initLeaderMsg, changeLeaderMsg } = DataState.SetLeaderMsg;
+        let EditModalTipsVisible = UIState.EditModalTipsVisible;
+        let picObj = DataState.GetPicUrl.picObj
+
+        for (let key in EditModalTipsVisible) {
+            if (EditModalTipsVisible[key]) {
+
+                return;
+            }
+        }
         // console.log(initLeaderMsg,changeLeaderMsg,Public.comparisonObject(changeLeaderMsg, initLeaderMsg))
-        if (Public.comparisonObject(changeLeaderMsg, initLeaderMsg)) {
+        if (Public.comparisonObject(changeLeaderMsg, initLeaderMsg) && !picObj.picUploader.isChanged()) {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-error',
                 title: "你没有修改数据哦",
@@ -310,44 +320,48 @@ class Leader extends React.Component {
             }));
             return;
         } else {
-            let {position,...data} = changeLeaderMsg
-            postData(CONFIG.UserInfoProxy + url, {
-                ...data,position:position.title
-            }, 2).then(res => {
-                return res.json()
-            }).then(json => {
-                if (json.StatusCode !== 200) {
-                    dispatch(actions.UpUIState.showErrorAlert({
-                        type: 'btn-error',
-                        title: json.Msg,
-                        ok: this.onAppAlertOK.bind(this),
-                        cancel: this.onAppAlertCancel.bind(this),
-                        close: this.onAppAlertClose.bind(this)
-                    }));
-                } else if (json.StatusCode === 200) {
-                    // console.log(json.Data)
-                    dispatch(actions.UpUIState.showErrorAlert({
-                        type: 'success',
-                        title: "操作成功",
-                        onHide: this.onAlertWarnHide.bind(this)
-                    }));
-                    dispatch(actions.UpUIState.HandleLeaderModalClose())
+            if (picObj.picUploader.uploadSubmit()) {
+                let { position, ...data } = changeLeaderMsg
+                postData(CONFIG.UserInfoProxy + url, {
+                    ...data,
+                    position: position.title,
+                    photoPath: picObj.picUploader.getCurImgPath()
 
-                    dispatch(actions.UpDataState.getSchoolLeaderPreview('/GetSchoolLeader?SchoolID='+this.state.userMsg.SchoolID));
-                    dispatch(actions.UpUIState.editAlltModalTipsVisible());
+                }, 2).then(res => {
+                    return res.json()
+                }).then(json => {
+                    if (json.StatusCode !== 200) {
+                        dispatch(actions.UpUIState.showErrorAlert({
+                            type: 'btn-error',
+                            title: json.Msg,
+                            ok: this.onAppAlertOK.bind(this),
+                            cancel: this.onAppAlertCancel.bind(this),
+                            close: this.onAppAlertClose.bind(this)
+                        }));
+                    } else if (json.StatusCode === 200) {
+                        // console.log(json.Data)
+                        dispatch(actions.UpUIState.showErrorAlert({
+                            type: 'success',
+                            title: "操作成功",
+                            onHide: this.onAlertWarnHide.bind(this)
+                        }));
+                        dispatch(actions.UpUIState.HandleLeaderModalClose())
 
-                    this.setState({
-                        checkedList: [],
-                        checkAll: false
-                    })
-                }
-            });
+                        dispatch(actions.UpDataState.getSchoolLeaderPreview('/GetSchoolLeader?SchoolID=' + this.state.userMsg.SchoolID));
+                        dispatch(actions.UpUIState.editAlltModalTipsVisible());
 
+                        this.setState({
+                            checkedList: [],
+                            checkAll: false
+                        })
+                    }
+                });
+            }
         }
 
     }
     handleLeaderModalCancel = (e) => {
-        const {dispatch,DataState,UIState} = this.props;
+        const { dispatch, DataState, UIState } = this.props;
         // console.log(e)
         dispatch(actions.UpUIState.editAlltModalTipsVisible());
         dispatch(actions.UpUIState.HandleLeaderModalClose())
@@ -356,9 +370,9 @@ class Leader extends React.Component {
 
     // 添加事件
     onAddLeader = (e) => {
-        const {dispatch,DataState,UIState} = this.props;
+        const { dispatch, DataState, UIState } = this.props;
         this.setState({
-            userKey:'add'
+            userKey: 'add'
         })
         dispatch(actions.UpUIState.AddLeaderModalOpen())
     }
@@ -366,17 +380,50 @@ class Leader extends React.Component {
         // console.log(e)
         let url = '/AddSchoolLeader';
 
-        const { DataState, dispatch ,UIState} = this.props
+        const { DataState, dispatch, UIState } = this.props
+        let picObj = DataState.GetPicUrl.picObj;
         const { initLeaderMsg, changeLeaderMsg } = DataState.SetLeaderMsg;
         let visible = UIState.EditModalTipsVisible;
         let haveMistake = false;
-        for(let visi in visible){
-            if(visible[visi]){
-                haveMistake = true;
+        for (let visi in visible) {
+            if (visible[visi]) {
+                return;
             }
         }
+        //用户ID必填
+        if (changeLeaderMsg.userID === '') {
+            dispatch(actions.UpUIState.editModalTipsVisible({
+                UserIDTipsVisible: true
+            }))
+            haveMistake = true;
+        }
+        //用户名必填
+        if (changeLeaderMsg.userName === '') {
+            dispatch(actions.UpUIState.editModalTipsVisible({
+                UserNameTipsVisible: true
+            }))
+            haveMistake = true;
+        }
+        //性别必选
+        if (!changeLeaderMsg.gender) {
+            dispatch(actions.UpUIState.editModalTipsVisible({
+                GenderTipsVisible: true
+            }))
+            haveMistake = true;
+        }
+        //职务必选
+        if (!changeLeaderMsg.position) {
+            dispatch(actions.UpUIState.editModalTipsVisible({
+                PositionTipsVisible: true
+            }))
+            haveMistake = true;
+        }
+        // console.log(haveMistake)
+        if (haveMistake) {
+            return;
+        }
         // console.log(visible,haveMistake)
-        if (Public.comparisonObject(changeLeaderMsg, initLeaderMsg)) {
+        if (Public.comparisonObject(changeLeaderMsg, initLeaderMsg) && !picObj.picUploader.isChanged()) {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-error',
                 title: "你没有填写资料哦",
@@ -386,76 +433,51 @@ class Leader extends React.Component {
             }));
             return;
         } else {
-            //用户ID必填
-            if (changeLeaderMsg.userID === '') {
-                dispatch(actions.UpUIState.editModalTipsVisible({
-                    UserIDTipsVisible: true
-                }))
-                haveMistake = true;
-            }
-            //用户名必填
-            if (changeLeaderMsg.userName === '') {
-                dispatch(actions.UpUIState.editModalTipsVisible({
-                    UserNameTipsVisible: true
-                }))
-                haveMistake = true;
-            }
-            //性别必选
-            if (!changeLeaderMsg.gender) {
-                dispatch(actions.UpUIState.editModalTipsVisible({
-                    GenderTipsVisible: true
-                }))
-                haveMistake = true;
-            }
-            //职务必选
-            if (!changeLeaderMsg.position) {
-                dispatch(actions.UpUIState.editModalTipsVisible({
-                    PositionTipsVisible: true
-                }))
-                haveMistake = true;
-            }
-            // console.log(haveMistake)
-            if(haveMistake){
-                return ;
-            }
-            postData(CONFIG.UserInfoProxy + url, {
-                ...changeLeaderMsg
-            }, 2).then(res => {
-                return res.json()
-            }).then(json => {
-                if (json.StatusCode !== 200) {
-                    dispatch(actions.UpUIState.showErrorAlert({
-                        type: 'btn-error',
-                        title: json.Msg,
-                        ok: this.onAppAlertOK.bind(this),
-                        cancel: this.onAppAlertCancel.bind(this),
-                        close: this.onAppAlertClose.bind(this)
-                    }));
-                } else if (json.StatusCode === 200) {
-                    // console.log(json.Data)
-                    dispatch(actions.UpUIState.showErrorAlert({
-                        type: 'success',
-                        title: "操作成功",
-                        onHide: this.onAlertWarnHide.bind(this)
-                    }));
-                    this.setState({
-                        studentModalVisible: false
-                    })
-                    dispatch(actions.UpUIState.AddLeaderModalClose())
+            if (picObj.picUploader.uploadSubmit()) {
+                let { position, ...data } = changeLeaderMsg
 
-                   
-                    dispatch(actions.UpDataState.getSchoolLeaderPreview('/GetSchoolLeader?SchoolID='+this.state.userMsg.SchoolID));
-                    dispatch(actions.UpUIState.editAlltModalTipsVisible());
+                postData(CONFIG.UserInfoProxy + url, {
+                    ...changeLeaderMsg,
+                    photoPath: picObj.picUploader.getCurImgPath(),
+                    position: position.title,
 
-                    this.setState({
-                        checkedList: [],
-                        checkAll: false
-                    })
-                }
-            });
 
+                }, 2).then(res => {
+                    return res.json()
+                }).then(json => {
+                    if (json.StatusCode !== 200) {
+                        dispatch(actions.UpUIState.showErrorAlert({
+                            type: 'btn-error',
+                            title: json.Msg,
+                            ok: this.onAppAlertOK.bind(this),
+                            cancel: this.onAppAlertCancel.bind(this),
+                            close: this.onAppAlertClose.bind(this)
+                        }));
+                    } else if (json.StatusCode === 200) {
+                        // console.log(json.Data)
+                        dispatch(actions.UpUIState.showErrorAlert({
+                            type: 'success',
+                            title: "操作成功",
+                            onHide: this.onAlertWarnHide.bind(this)
+                        }));
+                        this.setState({
+                            studentModalVisible: false
+                        })
+                        dispatch(actions.UpUIState.AddLeaderModalClose())
+
+
+                        dispatch(actions.UpDataState.getSchoolLeaderPreview('/GetSchoolLeader?SchoolID=' + this.state.userMsg.SchoolID));
+                        dispatch(actions.UpUIState.editAlltModalTipsVisible());
+
+                        this.setState({
+                            checkedList: [],
+                            checkAll: false
+                        })
+                    }
+                });
+            }
         }
-        
+
     }
     //关闭
     onAlertWarnHide = () => {
@@ -465,7 +487,7 @@ class Leader extends React.Component {
 
     }
     handleAddLeaderModalCancel = (e) => {
-        const {dispatch} = this.props
+        const { dispatch } = this.props
         // console.log(e)
         dispatch(actions.UpUIState.editAlltModalTipsVisible());
 
@@ -521,8 +543,8 @@ class Leader extends React.Component {
                     type='leader'
                 >
                 </DetailsModal>
-                 {/* 模态框 */}
-                 <Modal
+                {/* 模态框 */}
+                <Modal
                     ref='handleLeaderMadal'
                     bodyStyle={{ padding: 0 }}
                     type='1'
@@ -532,7 +554,7 @@ class Leader extends React.Component {
                     onCancel={this.handleLeaderModalCancel}
 
                 >
-                    {UIState.AppModal.handleLeaderModalVisible?(<EditModal type='leader' userKey={this.state.userKey}></EditModal>):''}
+                    {UIState.AppModal.handleLeaderModalVisible ? (<EditModal type='leader' userKey={this.state.userKey}></EditModal>) : ''}
                 </Modal>
                 <Modal
                     ref='handleLeaderMadal'
@@ -543,7 +565,7 @@ class Leader extends React.Component {
                     onOk={this.handleAddLeaderModalOk}
                     onCancel={this.handleAddLeaderModalCancel}
                 >
-                    {UIState.AppModal.addLeaderModalVisible?(<EditModal type='leader' userKey={this.state.userKey}></EditModal>):''}
+                    {UIState.AppModal.addLeaderModalVisible ? (<EditModal type='leader' userKey={this.state.userKey}></EditModal>) : ''}
                 </Modal>
                 <Modal
                     ref='LeaderChangeMadal'
@@ -564,7 +586,7 @@ class Leader extends React.Component {
                         </div>
                     </div>
                 </Modal>
-                
+
             </div>
         )
     }

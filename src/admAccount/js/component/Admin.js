@@ -50,7 +50,7 @@ class Admin extends React.Component {
                         return (
                             <div className='name-content'>
                                 <span className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.UserID)}>{arr.Name}</span><br />
-                                <span className='name-UserID'>(<span className='UserID-content'>{ arr.UserID }</span>)</span>
+                                <span className='name-UserID'>(<span className='UserID-content'>{arr.UserID}</span>)</span>
                             </div>
                         )
                     }
@@ -65,7 +65,7 @@ class Admin extends React.Component {
                     sorter: true,
                     render: ShortName => {
                         return (
-                            <span className='UserName'>{ShortName?ShortName:'--'}</span>
+                            <span className='UserName'>{ShortName ? ShortName : '--'}</span>
                         )
                     }
                 },
@@ -149,7 +149,9 @@ class Admin extends React.Component {
             keyword: '',
             CancelBtnShow: 'n',
             searchValue: '',
-            userMsg:props.DataState.LoginUser
+            userMsg: props.DataState.LoginUser,
+            sortType: '',
+            sortFiled: ''
 
 
         }
@@ -181,7 +183,7 @@ class Admin extends React.Component {
     // 搜索
     AdminSearch = (e) => {
         const { dispatch } = this.props;
-        
+
         if (e.value === '') {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-warn',
@@ -192,7 +194,7 @@ class Admin extends React.Component {
             }));
         } else {
 
-            dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&keyword=' + e.value));
+            dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&keyword=' + e.value+this.state.sortFiled+this.state.sortType));
             this.setState({
                 checkedList: [],
                 checkAll: false,
@@ -301,6 +303,13 @@ class Admin extends React.Component {
 
 
     }
+     //关闭
+     onAlertWarnHide = () => {
+        const { dispatch } = this.props;
+        //console.log('ddd')
+        dispatch(actions.UpUIState.hideErrorAlert())
+
+    }
     onHandleClick = (key) => {
         //console.log(this.state.AdminAccountData[key])
         this.setState({
@@ -360,15 +369,21 @@ class Admin extends React.Component {
                 if (json.StatusCode === 400) {
                     console.log(json.StatusCode)
                 } else if (json.StatusCode === 200) {
+                    
                     dispatch(actions.UpUIState.hideErrorAlert());
+                    dispatch(actions.UpUIState.showErrorAlert({
+                        type: 'success',
+                        title: "操作成功",
+                        onHide: this.onAlertWarnHide.bind(this)
+                    }));
                     this.setState({
                         checkedList: [],
                         checkAll: false
                     })
                     if (this.state.searchValue !== '')
-                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=' + (this.state.pagination - 1) +'&PageSize=10&Keyword=' + this.state.keyword));
+                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&Keyword=' + this.state.keyword+this.state.sortFiled+this.state.sortType));
                     else
-                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=' + (this.state.pagination - 1) +'&PageSize=10'));
+                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10'+this.state.sortFiled+this.state.sortType));
                 }
 
             });
@@ -388,7 +403,7 @@ class Admin extends React.Component {
         if (this.state.keyword !== '') {
             keyword = '&keyword=' + this.state.keyword
         }
-        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=' + (--value) + '&PageSize=10' + keyword));
+        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (--value) + '&PageSize=10' + keyword));
     }
 
 
@@ -417,17 +432,9 @@ class Admin extends React.Component {
     handleAddAdminModalOk = (e) => {
         const { dispatch, UIState, DataState } = this.props;
 
+        let picObj = DataState.GetPicUrl.picObj
 
-        if (!DataState.AdminPreview.TrasferData.isChange) {
-            dispatch(actions.UpUIState.showErrorAlert({
-                type: 'btn-warn',
-                title: "你没有修改",
-                ok: this.onAlertWarnOk.bind(this),
-                cancel: this.onAlertWarnClose.bind(this),
-                close: this.onAlertWarnClose.bind(this)
-            }));
-            return;
-        }
+
         if (UIState.TipsVisible.UserIDTipsVisible || !DataState.AdminPreview.TrasferData.UserID) {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-warn',
@@ -448,6 +455,16 @@ class Admin extends React.Component {
             }));
             return;
         }
+        if (!DataState.AdminPreview.TrasferData.isChange && !picObj.picUploader.isChanged()) {
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-warn',
+                title: "你没有修改",
+                ok: this.onAlertWarnOk.bind(this),
+                cancel: this.onAlertWarnClose.bind(this),
+                close: this.onAlertWarnClose.bind(this)
+            }));
+            return;
+        }
         let url = '/AddAdmin';
         // let ModulesID = []
         // DataState.AdminPreview.TrasferData.ModuleIDs.map((child) => {
@@ -460,7 +477,7 @@ class Admin extends React.Component {
                 userID: DataState.AdminPreview.TrasferData.UserID,
                 UserName: DataState.AdminPreview.TrasferData.UserName,
                 ModuleIDs: DataState.AdminPreview.TrasferData.ModuleIDs,
-                PhotoPath: '',
+                PhotoPath: picObj.picUploader.getCurImgPath(),
                 Pwd: DataState.AdminPreview.TrasferData.Pwd
             },
             2).then(res => {
@@ -478,6 +495,11 @@ class Admin extends React.Component {
                         close: this.onAlertWarnClose.bind(this)
                     }));
                 } else if (json.StatusCode === 200) {
+                    dispatch(actions.UpUIState.showErrorAlert({
+                        type: 'success',
+                        title: "操作成功",
+                        onHide: this.onAlertWarnHide.bind(this)
+                    }));
                     this.setState({
                         addAdminModalVisible: false
                     })
@@ -489,7 +511,7 @@ class Admin extends React.Component {
                         PhotoPath: '',
                         Pwd: '0'
                     }))
-                    dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
+                    dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10'));
                     dispatch(actions.UpUIState.AllTipsVisibleClose())
                 }
 
@@ -516,17 +538,9 @@ class Admin extends React.Component {
     handleChangeAdminModalOk = (e) => {
         const { dispatch, UIState, DataState } = this.props;
 
+        let picObj = DataState.GetPicUrl.picObj
 
-        if (!DataState.AdminPreview.TrasferData.isChange) {
-            dispatch(actions.UpUIState.showErrorAlert({
-                type: 'btn-warn',
-                title: "你没有修改",
-                ok: this.onAlertWarnOk.bind(this),
-                cancel: this.onAlertWarnClose.bind(this),
-                close: this.onAlertWarnClose.bind(this)
-            }));
-            return;
-        }
+
         if (UIState.TipsVisible.UserIDTipsVisible) {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-warn',
@@ -547,6 +561,16 @@ class Admin extends React.Component {
             }));
             return;
         }
+        if (!DataState.AdminPreview.TrasferData.isChange && !picObj.picUploader.isChanged()) {
+            dispatch(actions.UpUIState.showErrorAlert({
+                type: 'btn-warn',
+                title: "你没有修改",
+                ok: this.onAlertWarnOk.bind(this),
+                cancel: this.onAlertWarnClose.bind(this),
+                close: this.onAlertWarnClose.bind(this)
+            }));
+            return;
+        }
         let url = '/EditAdmin';
         // let ModulesID = []
         // DataState.AdminPreview.TrasferData.ModuleIDs.map((child) => {
@@ -554,41 +578,47 @@ class Admin extends React.Component {
         //     if (child.length !== 0)
         //         ModulesID.push(child.join())
         // })
-        postData(CONFIG.UserAccountProxy + url,
-            {
-                userID: DataState.AdminPreview.TrasferData.UserID,
-                UserName: DataState.AdminPreview.TrasferData.UserName,
-                ModuleIDs: DataState.AdminPreview.TrasferData.ModuleIDs,
-                PhotoPath: '',
-                Pwd: md5(DataState.AdminPreview.TrasferData.Pwd)
-            },
-            2).then(res => {
-                if (res.StatusCode === '401') {
-                    console.log('错误码：' + res.StatusCode)
-                }
-                return res.json()
-            }).then(json => {
-                if (json.StatusCode === 400) {
-                    console.log(json.StatusCode)
-                } else if (json.StatusCode === 200) {
-                    this.setState({
-                        changeAdminModalVisible: false
-                    })
-                    dispatch(actions.UpDataState.setAdminPreview({
-                        isChange: false,
-                        UserID: '',
-                        UserName: '',
-                        ModuleIDs: '',
-                        PhotoPath: '',
-                        Pwd: '0'
-                    }))
-                    dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10'));
-                    dispatch(actions.UpUIState.AllTipsVisibleClose())
+        if (picObj.picUploader.uploadSubmit()) {
+            postData(CONFIG.UserAccountProxy + url,
+                {
+                    userID: DataState.AdminPreview.TrasferData.UserID,
+                    UserName: DataState.AdminPreview.TrasferData.UserName,
+                    ModuleIDs: DataState.AdminPreview.TrasferData.ModuleIDs,
+                    PhotoPath: picObj.picUploader.getCurImgPath(),
+                    Pwd: md5(DataState.AdminPreview.TrasferData.Pwd)
+                },
+                2).then(res => {
+                    if (res.StatusCode === '401') {
+                        console.log('错误码：' + res.StatusCode)
+                    }
+                    return res.json()
+                }).then(json => {
+                    if (json.StatusCode === 400) {
+                        console.log(json.StatusCode)
+                    } else if (json.StatusCode === 200) {
+                        dispatch(actions.UpUIState.showErrorAlert({
+                            type: 'success',
+                            title: "操作成功",
+                            onHide: this.onAlertWarnHide.bind(this)
+                        }));
+                        this.setState({
+                            changeAdminModalVisible: false
+                        })
+                        dispatch(actions.UpDataState.setAdminPreview({
+                            isChange: false,
+                            UserID: '',
+                            UserName: '',
+                            ModuleIDs: '',
+                            PhotoPath: '',
+                            Pwd: '0'
+                        }))
+                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10'+this.state.sortFiled+this.state.sortType));
+                        dispatch(actions.UpUIState.AllTipsVisibleClose())
 
-                }
+                    }
 
-            });
-
+                });
+        }
 
     }
     handleChangeAdminModalCancel = (e) => {
@@ -638,14 +668,19 @@ class Admin extends React.Component {
                 if (json.StatusCode === 400) {
                     console.log(json.StatusCode)
                 } else if (json.StatusCode === 200) {
+                    dispatch(actions.UpUIState.showErrorAlert({
+                        type: 'success',
+                        title: "操作成功",
+                        onHide: this.onAlertWarnHide.bind(this)
+                    }));
                     this.setState({
                         ChangePwdMadalVisible: false,
                         defaultPwd: 888888
                     })
                     if (this.state.searchValue !== '')
-                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=' + (this.state.pagination - 1) +'&PageSize=10&Keyword=' + this.state.keyword));
+                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&Keyword=' + this.state.keyword+this.state.sortFiled+this.state.sortType));
                     else
-                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=' + (this.state.pagination - 1) +'&PageSize=10'));
+                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10'+this.state.sortFiled+this.state.sortType));
 
                 }
 
@@ -683,11 +718,17 @@ class Admin extends React.Component {
         // console.log(sorter)
         if (sorter && (sorter.columnKey === 'UserName' || sorter.columnKey === 'ShortName')) {
             let sortType = sorter.order === "descend" ? '&SortType=DESC' : sorter.order === "ascend" ? '&SortType=ASC' : '';
-            dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageSize=10&sortFiled=' + sorter.columnKey + sortType + '&PageIndex=' + (this.state.pagination - 1) + keyword));
-
-        }else if(sorter){
-            dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=' + this.state.userMsg.SchoolID  + '&PageSize=10'  + '&PageIndex=' + (this.state.pagination - 1) + keyword));
-
+            dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageSize=10&sortFiled=' + sorter.columnKey + sortType + '&PageIndex=' + (this.state.pagination - 1) + keyword));
+            this.setState({
+                sortType: '&' + sortType,
+                sortFiled: '&sortFiled=' + sorter.columnKey
+            })
+        } else if (sorter) {
+            dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageSize=10' + '&PageIndex=' + (this.state.pagination - 1) + keyword));
+            this.setState({
+                sortType: '',
+                sortFiled: ''
+            })
         }
     }
     // 取消搜索
@@ -698,8 +739,8 @@ class Admin extends React.Component {
             CancelBtnShow: 'n',
             keyword: ''
         })
-        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=' + (this.state.pagination - 1) +'&PageSize=10'));
-        
+        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10'+this.state.sortFiled+this.state.sortType));
+
     }
     render() {
         const { UIState, DataState } = this.props;
@@ -755,10 +796,10 @@ class Admin extends React.Component {
 
                                     </Table>
                                 </CheckBoxGroup>
-                                {DataState.AdminPreview.Total?(<CheckBox className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
+                                {DataState.AdminPreview.Total ? (<CheckBox className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
                                     全选
                                     <Button onClick={this.onDeleteAllClick} className='deleteAll' color='red'>删除</Button>
-                                </CheckBox>):''}
+                                </CheckBox>) : ''}
                                 <div className='pagination-box'>
                                     <PagiNation
                                         showQuickJumper

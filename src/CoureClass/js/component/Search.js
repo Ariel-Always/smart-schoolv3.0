@@ -131,7 +131,7 @@ class Search extends React.Component {
     }
     //列表复选框改变事件
     onTableCheckBoxChange = (e) => {
-        //console.log(e.target.value)
+        ////console.log(e.target.value)
         const { DataState, UIState } = this.props;
         let checkedList = this.state.checkedList;
 
@@ -139,7 +139,7 @@ class Search extends React.Component {
     }
     //列表班级点击事件
     onCourseClassClick = (classID) => {
-        console.log('ss' + classID)
+        //console.log('ss' + classID)
         const { dispatch, DataState, UIState } = this.props;
         dispatch(actions.UpUIState.CourseClassDetailsModalOpen())
         dispatch(actions.UpDataState.getCourseClassDetailsMsg('/GetCourseClassDetail?courseClassID=' + classID))
@@ -147,7 +147,7 @@ class Search extends React.Component {
     //列表操作编辑点击事件
     onHandleClassClick = (key) => {
         const { dispatch, DataState, UIState } = this.props;
-        console.log(key)
+        //console.log(key)
         let ClassID = DataState.GetClassAllMsg.allClass.TableData[key].CourseClass.ClassID;
 
         dispatch(actions.UpUIState.ChangeCourseClassModalOpen())
@@ -161,7 +161,7 @@ class Search extends React.Component {
         let checkedList = this.state.checkedList
         let len = checkedList.length;
         let source = DataState.GetClassAllMsg.allClass.TableData;
-        // console.log(key)
+        // //console.log(key)
         let courseClassID = source[key].CourseClass.ClassID;
         dispatch(actions.UpUIState.showErrorAlert({
             type: 'btn-warn',
@@ -175,7 +175,7 @@ class Search extends React.Component {
     }
     //列表分页改变事件
     onPagiNationChange = (value) => {
-        console.log(value)
+        //console.log(value)
         const { dispatch, DataState } = this.props;
 
         let route = history.location.pathname;
@@ -203,7 +203,7 @@ class Search extends React.Component {
     }
     //列表全选
     OnCheckAllChange = (e) => {
-        //console.log(e.target,this.state.options)
+        ////console.log(e.target,this.state.options)
         const { DataState, UIState } = this.props;
 
         let checkList = [];
@@ -231,7 +231,7 @@ class Search extends React.Component {
         })
         courseClassID = courseClassID.join()
 
-        console.log(this.state.checkedList)
+        //console.log(this.state.checkedList)
         if (len === 0) {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-error',
@@ -287,7 +287,7 @@ class Search extends React.Component {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
-                console.log('错误码：' + json.StatusCode)
+                //console.log('错误码：' + json.StatusCode)
             } else if (json.StatusCode === 200) {
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
@@ -323,7 +323,7 @@ class Search extends React.Component {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
-                console.log('错误码：' + json.StatusCode)
+                //console.log('错误码：' + json.StatusCode)
             } else if (json.StatusCode === 200) {
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',

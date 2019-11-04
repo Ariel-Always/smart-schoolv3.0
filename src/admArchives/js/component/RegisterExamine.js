@@ -29,13 +29,13 @@ class RegisterExamine extends React.Component {
         this.state = {
             handleClick: true,
             UserExamineModalVisible: false,
-            userMsg:props.DataState.LoginUser
+            userMsg: props.DataState.LoginUser
 
         }
         const { dispatch, DataState } = this.props;
 
-        if (!DataState.GradeClassMsg.returnData)
-            dispatch(actions.UpDataState.getGradeClassMsg('/GetGradeClassTree?schoolID='+this.state.userMsg.SchoolID));
+        // if (!DataState.GradeClassMsg.returnData)
+        dispatch(actions.UpDataState.getGradeClassMsg('/GetGradeClassTree?schoolID=' + this.state.userMsg.SchoolID));
     }
 
     componentWillMount() {
@@ -46,13 +46,13 @@ class RegisterExamine extends React.Component {
             this.setState({
                 handleClick: false
             })
-            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=1'))
+            dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&status=1'))
 
         } else if (pathname.split('/')[2] === 'RegisterWillExamine') {
             this.setState({
                 handleClick: true
             })
-            dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=0'))
+            dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&status=0'))
 
         }
         history.listen(() => {//路由监听
@@ -64,13 +64,13 @@ class RegisterExamine extends React.Component {
                 })
                 dispatch(actions.UpDataState.setSignUpLogCountMsg(0));
 
-                dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=1'))
+                dispatch(actions.UpDataState.getDidSignUpLog('/GetSignUpLogToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&status=1'))
 
             } else if (pathname.split('/')[2] === 'RegisterWillExamine') {
                 this.setState({
                     handleClick: true
                 })
-                dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID='+this.state.userMsg.SchoolID+'&PageIndex=0&PageSize=10&status=0'))
+                dispatch(actions.UpDataState.getWillSignUpLog('/GetSignUpLogToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&status=0'))
 
             }
         })
