@@ -9,13 +9,15 @@ import ManagerIndexActions from "../../actions/Manager/ManagerIndexActions";
 
 import CTActions from '../../actions/Manager/ClassTotalActions';
 
-import ComPageInit from '../../actions/ComPageInit';
+import ComPageRefresh from '../../actions/ComPageRefresh';
 
 import TermPick from "../../component/TermPick";
 
 import $ from "jquery";
 
 import DoubleSingleTable from "../../component/DoubleSingleTable";
+
+import {message} from "antd";
 
 
 class ClassTotal extends Component{
@@ -26,7 +28,7 @@ class ClassTotal extends Component{
 
         const {dispatch} = this.props;
 
-        ComPageInit(dispatch,ManagerIndexActions.ClassTotalInit());
+        ComPageRefresh.ComPageInit(dispatch,ManagerIndexActions.ClassTotalInit());
 
     }
 
@@ -108,6 +110,12 @@ class ClassTotal extends Component{
 
             dispatch(CTActions.ClassTotalPageUpdate({nextPage:true}));
 
+        }else if (Math.ceil(ClassCount/10)>0){
+
+            message.info('已经是最后一页了！',0.2);
+
+            message.config({maxCount:1,top:200});
+
         }
 
     }
@@ -146,63 +154,61 @@ class ClassTotal extends Component{
 
         return <div className="class-total-content">
 
-            <DropDown
+            <Loading spinning={ClassTotal.LoadingShow} tip="正在为您查找，请稍后...">
 
-                dropSelectd={ClassTotal.GradeDropSelectd}
+                <DropDown
 
-                dropList={ClassTotal.GradeDropList}
+                    dropSelectd={ClassTotal.GradeDropSelectd}
 
-                style={{zIndex:5}}
+                    dropList={ClassTotal.GradeDropList}
 
-                height={108}
+                    style={{zIndex:5}}
 
-                onChange={this.GradeChange.bind(this)}>
+                    height={108}
 
-            </DropDown>
+                    onChange={this.GradeChange.bind(this)}>
 
-            <TermPick
+                </DropDown>
 
-                ItemTermName={PeriodWeekTerm.ItemTerm?PeriodWeekTerm.ItemTerm.TermName:''}
+                <TermPick
 
-                NowWeekNo={ClassTotal.WeekNO}
+                    ItemTermName={PeriodWeekTerm.ItemTerm?PeriodWeekTerm.ItemTerm.TermName:''}
 
-                ItemWeek ={ClassTotal.WeekList}
+                    NowWeekNo={ClassTotal.WeekNO}
 
-                weekPickEvent = {this.weekPickEvent.bind(this)}
+                    ItemWeek ={ClassTotal.WeekList}
 
-                weekNextEvent = {this.weekNextEvent.bind(this)}
+                    weekPickEvent = {this.weekPickEvent.bind(this)}
 
-                weekPrevEvent = {this.weekPrevEvent.bind(this)}
-            >
+                    weekNextEvent = {this.weekNextEvent.bind(this)}
 
-            </TermPick>
-
-            <div className="double-single-table-wrapper">
-
-                <Loading spinning={ClassTotal.LoadingShow} tip="正在为您查找，请稍后...">
-
-                    <DoubleSingleTable
-                    ItemClassHourCount={SubjectCourseGradeClassRoom.ItemClassHourCount}
-                    ItemClassHour={SubjectCourseGradeClassRoom.ItemClassHour}
-                    ItemWeek = {PeriodWeekTerm.ItemWeek}
-                    NowWeekNo={PeriodWeekTerm.NowWeekNo}
-                    leftColWidth={136}
-                    commonColWidth={128}
-                    rowOneHeight={46}
-                    rowTowHeight={64}
-                    commonRowHeight={90}
-                    schedule={ClassTotal.Schedule}
-                    onClickRow={(record) => this.clickRow.bind(this,record)}
-                    scrollToBottom={this.scrollToBottom.bind(this)}
+                    weekPrevEvent = {this.weekPrevEvent.bind(this)}
                 >
 
-                </DoubleSingleTable>
+                </TermPick>
 
+                <div className="double-single-table-wrapper">
 
+                        <DoubleSingleTable
+                        ItemClassHourCount={SubjectCourseGradeClassRoom.ItemClassHourCount}
+                        ItemClassHour={SubjectCourseGradeClassRoom.ItemClassHour}
+                        ItemWeek = {PeriodWeekTerm.ItemWeek}
+                        NowWeekNo={PeriodWeekTerm.NowWeekNo}
+                        leftColWidth={136}
+                        commonColWidth={128}
+                        rowOneHeight={46}
+                        rowTowHeight={64}
+                        commonRowHeight={90}
+                        schedule={ClassTotal.Schedule}
+                        onClickRow={(record) => this.clickRow.bind(this,record)}
+                        scrollToBottom={this.scrollToBottom.bind(this)}
+                    >
 
-                </Loading>
+                    </DoubleSingleTable>
 
-            </div>
+                </div>
+
+            </Loading>
 
         </div>
 

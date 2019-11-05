@@ -41,6 +41,8 @@
 
     background-color: #ffffff;
 
+    @include flex;
+
   }
 
 }

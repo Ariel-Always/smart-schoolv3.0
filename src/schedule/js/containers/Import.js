@@ -90,6 +90,15 @@ class Import extends Component{
 
         }
 
+        $('.frame-content-rightside').css({
+
+            'margin-top':'0px',
+
+            "border-radius":"12px",
+
+            "border-top":"0px"
+
+        });
 
     }
 

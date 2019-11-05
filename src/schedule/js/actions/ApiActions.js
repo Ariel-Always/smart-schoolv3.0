@@ -165,9 +165,9 @@ const GetScheduleOfClassOne = async ({SchoolID,ClassID,WeekNO=0,dispatch}) => {
 
 //获取单个班级课表
 
-const GetScheduleOfClassRoomOne = async ({SchoolID,ClassRoomID,WeekNO=0,dispatch}) => {
+const GetScheduleOfClassRoomOne = async ({PeriodID,ClassRoomID,WeekNO=0,dispatch}) => {
 
-    let res = await Method.getGetData(`/schedule/api/GetScheduleOfClassRoomOne?SchoolID=${SchoolID}&ClassRoomID=${ClassRoomID}&WeekNO=${WeekNO}`,
+    let res = await Method.getGetData(`/schedule/api/GetScheduleOfClassRoomOne?PeriodID=${PeriodID}&ClassRoomID=${ClassRoomID}&WeekNO=${WeekNO}`,
 
         2,
 
@@ -503,6 +503,61 @@ const ClassRoomIsUseded = async ({ClassRoomID,ClassDate,ClassHourNO,dispatch}) =
 
 };
 
+//判断教室是否被占用
+
+const GetScheduleLogForPage = async ({SchoolID,OperateType=0,StartDate='',EndDate='',PageIndex=1,PageSize=10,ScheduleID='',dispatch}) => {
+
+    let Url = '/Schedule/api/GetScheduleLogForPage?SchoolID='+SchoolID+'&OperateType='+OperateType+'&StartDate='+StartDate+'&EndDate='+EndDate+'&PageIndex='+PageIndex+'&PageSize='+PageSize+'&ScheduleID='+ScheduleID;
+
+    let res = await Method.getGetData(Url,
+
+        2,
+
+        CONFIG.ScheduleProxy);
+
+    //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+
+
+    if (res.StatusCode === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+};
+
+//课时设置切换处理程序并获取切换后的课时信息
+
+const ShiftClassHourModel = async ({SchoolID,CreateType=0,dispatch}) => {
+
+    let res = await Method.getGetData(`/Schedule/api/ShiftClassHourModel?SchoolID=${SchoolID}&CreateType=${CreateType}`,
+
+        2,
+
+        CONFIG.ScheduleProxy);
+
+    //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+
+
+    if (res.StatusCode === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+};
+
+
+
+
 
 
 
@@ -521,11 +576,11 @@ const ClassRoomIsUseded = async ({ClassRoomID,ClassDate,ClassHourNO,dispatch}) =
 
 //添加临时课程。写入课程数据接口
 
-const InsertSchedule =  async ({ SchoolID,SubjectID,WeekNO,WeeDay,ClassHourNO,TeacherID,ClassID,ClassRoomID,UserType,UserID,dispatch}) => {
+const InsertSchedule =  async ({ SchoolID,SubjectID,WeekNO,WeekDay,ClassHourNO,TeacherID,ClassID,ClassRoomID,UserType,UserID,dispatch}) => {
 
     let res = await Method.getPostData(`/Schedule/api/InsertSchedule`,{
 
-        SchoolID,SubjectID,WeekNO,WeeDay,ClassHourNO,TeacherID,ClassID,ClassRoomID,UserType,UserID
+        SchoolID,SubjectID,WeekNO,WeekDay,ClassHourNO,TeacherID,ClassID,ClassRoomID,UserType,UserID
 
     },2,CONFIG.ScheduleProxy);
 
@@ -568,11 +623,11 @@ const SetSubstituteTeacher =  async ({ ClassID,ClassName,UserID,UserType,SchoolI
 
 //教师课程互换
 
-const ExchangeTeacherSchedule =  async ({ ScheduleID1,ScheduleID2,dispatch}) => {
+const ExchangeTeacherSchedule =  async ({UserID,UserType,ScheduleID1,ScheduleID2,dispatch}) => {
 
     let res = await Method.getPostData(`/Schedule/api/ExchangeTeacherSchedule`,{
 
-        ScheduleID1,ScheduleID2
+        ScheduleID1,ScheduleID2,UserID,UserType
 
     },2,CONFIG.ScheduleProxy);
 
@@ -592,11 +647,11 @@ const ExchangeTeacherSchedule =  async ({ ScheduleID1,ScheduleID2,dispatch}) => 
 
 
 //批量调整上课时间
-const BatchEditClassDate =  async ({ ClassDate1,ClassHours1,ClassDate2,ClassHours2,Grades,dispatch}) => {
+const BatchEditClassDate =  async ({ UserID,ClassDate1,ClassHours1,ClassDate2,ClassHours2,Grades,dispatch}) => {
 
     let res = await Method.getPostData(`/Schedule/api/BatchEditClassDate`,{
 
-        ClassDate1,ClassHours1,ClassDate2,ClassHours2,Grades
+        UserID,ClassDate1,ClassHours1,ClassDate2,ClassHours2,Grades
 
     },2,CONFIG.ScheduleProxy);
 
@@ -639,17 +694,17 @@ const EditClassDateOne =  async ({ ScheduleID,ClassDate1,ClassHourNO1,ClassDate2
 
 //调整上课教室
 
-const AdjustClassRooomOfSchedule =  async ({ ScheduleID,Type,Item,ClassRoomID1,ClassRoomID2,dispatch}) => {
+const AdjustClassRooomOfSchedule =  async ({ UserID,UserType,SchoolID,Type,Item,ClassRoomID1,ClassRoomID2,dispatch}) => {
 
     let res = await Method.getPostData(`/Schedule/api/AdjustClassRooomOfSchedule`,{
 
-        ScheduleID,Type,Item,ClassRoomID1,ClassRoomID2
+        UserID,UserType:parseInt(UserType),SchoolID,Type,Item,ClassRoomID1,ClassRoomID2
 
     },2,CONFIG.ScheduleProxy);
 
     if (res.StatusCode === 200){
 
-        return res.ErrorCode;
+        return res.ErrCode;
 
     }else{
 
@@ -673,7 +728,7 @@ const CloseTeacherSchedule =  async ({ UserID,UserType,ScheduleIDs,dispatch}) =>
 
     if (res.StatusCode === 200){
 
-        return res.ErrorCode;
+        return res.ErrCode;
 
     }else{
 
@@ -687,17 +742,17 @@ const CloseTeacherSchedule =  async ({ UserID,UserType,ScheduleIDs,dispatch}) =>
 
 //批量停课
 
-const BatchCloseSchedule =  async ({ UserID,UserType,ClassDate,ClassHours,Grades,dispatch}) => {
+const BatchCloseSchedule =  async ({ SchoolID,UserID,UserType,ClassDate,ClassHours,Grades,dispatch}) => {
 
     let res = await Method.getPostData(`/Schedule/api/BatchCloseSchedule`,{
 
-        UserID,UserType,ClassDate,ClassHours,Grades
+        SchoolID,UserID,UserType,ClassDate,ClassHours,Grades
 
     },2,CONFIG.ScheduleProxy);
 
     if (res.StatusCode === 200){
 
-        return res.ErrorCode;
+        return res.ErrCode;
 
     }else{
 
@@ -711,17 +766,17 @@ const BatchCloseSchedule =  async ({ UserID,UserType,ClassDate,ClassHours,Grades
 
 //清除课表
 
-const DeleteScheduleByGrades =  async ({ SchoolID,GradeIDs,dispatch}) => {
+const DeleteScheduleByGrades =  async ({ UserID,UserType,SchoolID,GradeIDs,dispatch}) => {
 
     let res = await Method.getPostData(`/Schedule/api/DeleteScheduleByGrades`,{
 
-        SchoolID,GradeIDs
+        UserID,UserType,SchoolID,GradeIDs
 
     },2,CONFIG.ScheduleProxy);
 
     if (res.StatusCode === 200){
 
-        return res.ErrorCode;
+        return res.ErrCode;
 
     }else{
 
@@ -746,7 +801,7 @@ const UpdateClassHourTimeInstall = async ({ SchoolID,PeriodID='',MorningTimes=0,
 
     if (res.StatusCode === 200){
 
-        return res.ErrorCode;
+        return res.ErrCode;
 
     }else{
 
@@ -758,11 +813,11 @@ const UpdateClassHourTimeInstall = async ({ SchoolID,PeriodID='',MorningTimes=0,
 };
 
 //添加课时
-const InsertClassHourInfo = async ({ SchoolID,OrderNO,EndTime,StartTime,PeriodID='',ClasssHourType,CreateType,dispatch}) => {
+const InsertClassHourInfo = async ({ SchoolID,ClassHourName,OrderNO,EndTime,StartTime,PeriodID='',ClasssHourType,CreateType,dispatch}) => {
 
     let res = await Method.getPostData(`/Schedule/api/InsertClassHourInfo`,{
 
-            SchoolID,OrderNO,EndTime,StartTime,PeriodID,ClasssHourType,CreateType
+            SchoolID,OrderNO,ClassHourName,EndTime,StartTime,PeriodID,ClasssHourType,CreateType
 
         },2,
         CONFIG.ScheduleProxy);
@@ -770,7 +825,7 @@ const InsertClassHourInfo = async ({ SchoolID,OrderNO,EndTime,StartTime,PeriodID
 
     if (res.StatusCode === 200){
 
-        return res.ErrorCode;
+        return res.ErrCode;
 
     }else{
 
@@ -783,11 +838,11 @@ const InsertClassHourInfo = async ({ SchoolID,OrderNO,EndTime,StartTime,PeriodID
 
 //编辑课时
 
-const UpdateClassHourInfo = async ({ SchoolID,ClassHourNO,NewClassHourNO,EndTime,StartTime,PeriodID='',ClasssHourType,CreateType,dispatch}) => {
+const UpdateClassHourInfo = async ({ SchoolID,ClassHourName,ClassHourNO,NewClassHourNO,EndTime,StartTime,PeriodID='',ClasssHourType,CreateType,dispatch}) => {
 
     let res = await Method.getPostData(`/Schedule/api/UpdateClassHourInfo`,{
 
-            SchoolID,ClassHourNO,NewClassHourNO,EndTime,StartTime,PeriodID,ClasssHourType,CreateType
+            SchoolID,ClassHourNO,ClassHourName,NewClassHourNO,EndTime,StartTime,PeriodID,ClasssHourType,CreateType
 
         },2,
         CONFIG.ScheduleProxy);
@@ -795,7 +850,7 @@ const UpdateClassHourInfo = async ({ SchoolID,ClassHourNO,NewClassHourNO,EndTime
 
     if (res.StatusCode === 200){
 
-        return res.ErrorCode;
+        return res.ErrCode;
 
     }else{
 
@@ -820,7 +875,7 @@ const DeleteClassHourInfo = async ({ SchoolID,ClassHourNO,PeriodID='',dispatch})
 
     if (res.StatusCode === 200){
 
-        return res.ErrorCode;
+        return res.ErrCode;
 
     }else{
 
@@ -845,7 +900,7 @@ const SetScheduleIsAutomatic = async ({ SchoolID,IsEnable,Times,dispatch}) => {
 
     if (res.StatusCode === 200){
 
-        return res.ErrorCode;
+        return res.ErrCode;
 
     }else{
 
@@ -855,6 +910,33 @@ const SetScheduleIsAutomatic = async ({ SchoolID,IsEnable,Times,dispatch}) => {
 
 
 };
+
+//撤销课程安排调整
+const RevolveScheduleLog = async ({ SchoolID,LogID,UserID,UserName,dispatch}) => {
+
+    let res = await Method.getPostData(`/Schedule/api/RevolveScheduleLog`,{
+
+            SchoolID,LogID,UserID,UserName
+
+        },2,
+
+        CONFIG.ScheduleProxy);
+    //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+
+    if (res.StatusCode === 200){
+
+        return res.ErrCode;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
+
+
 
 
 export default {
@@ -925,6 +1007,12 @@ export default {
 
     DeleteClassHourInfo,
 
-    SetScheduleIsAutomatic
+    SetScheduleIsAutomatic,
+
+    GetScheduleLogForPage,
+
+    RevolveScheduleLog,
+
+    ShiftClassHourModel
 
 }

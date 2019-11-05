@@ -121,7 +121,7 @@ class PeriodClassHourSetting extends Component{
 
                                 ClassHourList.Afternoon.map((item,key)=>{
 
-                                    return <div className="class-hour-item-wrapper">
+                                    return <div key={key} className="class-hour-item-wrapper">
 
                                             <div className="class-hour-item">
 

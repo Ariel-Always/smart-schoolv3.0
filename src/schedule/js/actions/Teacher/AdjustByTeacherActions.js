@@ -300,7 +300,7 @@ const replaceScheduleInit = () => {
 
                    }else{
 
-                       let  subject =  data.ItemSubject[0]?data.ItemSubject[0]:{SubjectID:"none",SubjectName:"未设置"};
+                       let  subject =  data.ItemSubject[0]?data.ItemSubject[0]:{SubjectID:"none",SubjectName:""};
 
                        let subjectObj = { id:subject.SubjectID,name:subject.SubjectName };
 
@@ -2193,6 +2193,8 @@ const ModalCommit = () => {
 
       if (activeKey==='1'){
 
+
+
         let {
 
             activeRadio,
@@ -2211,11 +2213,13 @@ const ModalCommit = () => {
 
             classHourCheckedList,
 
-            classHourDate
+            classHourDate,
+
+            teacherSubject
 
         } = replaceSchedule;
 
-        let replaceTeacherOk,classOk,dayLineOk = false;
+        let replaceTeacherOk,classOk,dayLineOk,subjectOk = false;
 
 
         //判断替代的教师是否已被选择
@@ -2230,6 +2234,53 @@ const ModalCommit = () => {
               dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:"replaceTeacher"}});
 
           }
+
+
+          //判断班级
+          if (classCheckedList.length>0){
+
+              classOk = true;
+
+              dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:"class"}});
+
+          }else{
+
+              dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_SHOW,data:{type:"class",title:"请选择班级"}});
+
+          }
+
+
+          //判断学科
+          if (teacherSubject.dropShow){
+
+            if (teacherSubject.select.dropSelectd===''){
+
+                dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_SHOW,data:{type:"originTeacher",title:"请选择学科"}});
+
+            }else{
+
+                subjectOk = true;
+
+                dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:"originTeacher"}});
+
+            }
+
+          }else{
+
+              if (teacherSubject.name===''){
+
+                  dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_SHOW,data:{type:"originTeacher",title:"请选择学科"}});
+
+              }else{
+
+                  subjectOk = true;
+
+                  dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:"originTeacher"}});
+
+              }
+
+          }
+
 
           //判断班级是否选择
 
@@ -2355,7 +2406,7 @@ const ModalCommit = () => {
 
 
           //所有的都已经OK了可以向后台发送请求了
-          if (replaceTeacherOk&classOk&dayLineOk){
+          if (replaceTeacherOk&&classOk&&subjectOk&&dayLineOk){
 
               let Type,Item = '';
 

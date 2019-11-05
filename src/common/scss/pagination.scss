@@ -1,7 +1,7 @@
 /*组件：分页 start*/
 .ant-pagination{
   &>li{
-    min-width:40px;
+    min-width:32px;
     height:28px;
     line-height:26px;
     border-color: $pagiThemeColor;
@@ -52,7 +52,7 @@
       font-size: 12px;
       input{
         width: 28px;
-        padding:0px;
+        padding:0;
         height: 28px;
         line-height: 28px;
         vertical-align: top;

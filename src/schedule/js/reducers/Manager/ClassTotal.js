@@ -34,7 +34,7 @@ const ClassTotal = (state={
 
                 ClassCount:0,
 
-                Schedule:actions.data,
+                Schedule:actions.data
 
             };
 

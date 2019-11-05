@@ -8,7 +8,24 @@ class SingleDoubleTable extends Component{
         d = new Date(d);
         //return d;
         //格式化
-        return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+        return d.getFullYear()+"-"+(this.SupplyZero(d.getMonth()+1))+"-"+this.SupplyZero(d.getDate());
+
+    }
+
+
+    SupplyZero(number){
+
+        let NumberStr = number.toString();
+
+        let Number = NumberStr;
+
+        if (NumberStr.length<2){
+
+            Number = `0${NumberStr}`;
+
+        }
+
+        return Number;
 
     }
 

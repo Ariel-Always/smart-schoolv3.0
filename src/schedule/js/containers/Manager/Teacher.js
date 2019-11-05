@@ -8,13 +8,16 @@ import LeftMenu from '../../component/LeftMenu';
 
 import { Loading } from "../../../../common";
 
-import ComPageInit from '../../actions/ComPageInit';
+import ComPageRefresh from '../../actions/ComPageRefresh';
 
 import SingleDoubleTable from '../../component/SingleDoubleTable';
 
 import ManagerIndexActions from "../../actions/Manager/ManagerIndexActions";
 
 import STTActions from '../../actions/Manager/SubjectTeacherTeacherActions';
+
+import AppAlertActions from '../../actions/AppAlertActions';
+
 
 
 class Teacher extends Component{
@@ -25,7 +28,7 @@ class Teacher extends Component{
 
         const {dispatch} = props;
 
-        ComPageInit(dispatch,ManagerIndexActions.STTPageInit());
+        ComPageRefresh.ComPageInit(dispatch,ManagerIndexActions.STTPageInit());
 
     }
 
@@ -88,9 +91,19 @@ class Teacher extends Component{
 
         const {dispatch} = this.props;
 
-        dispatch(STTActions.STTTeacherSearch(e.value));
+        if (e.value===''){
+
+            dispatch(AppAlertActions.alertWarn({title:"搜索不能为空！"}));
+
+        }else{
+
+            dispatch(STTActions.STTTeacherSearch(e.value));
+
+        }
 
     }
+
+
 
     //取消搜索事件
     cancelSearch(e){
@@ -98,6 +111,20 @@ class Teacher extends Component{
         const {dispatch} = this.props;
 
         dispatch({type:STTActions.SEARCH_TEACHER_RESULT_HIDE});
+
+        dispatch({type:STTActions.MANAGER_STT_LEFT_MENU_SEARCH_INPUT_CHANGE,data:''});
+
+        dispatch({type:STTActions.MANAGER_STT_LEFT_MENU_CANCEL_BTN_HIDE});
+
+    }
+
+    //左侧菜单输入框改变
+
+    SearchValueChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:STTActions.MANAGER_STT_LEFT_MENU_SEARCH_INPUT_CHANGE,data:e.target.value});
 
     }
 
@@ -109,8 +136,6 @@ class Teacher extends Component{
         const {SubjectTeacherTeacherSchedule,SubjectCourseGradeClassRoom} = Manager;
 
         let ItemWeek = [];
-
-        console.log(SubjectTeacherTeacherSchedule);
 
         //封装获取到的周次
         if (PeriodWeekTerm.ItemWeek) {
@@ -127,67 +152,75 @@ class Teacher extends Component{
 
             <div className="subject-teacher-teacher-content clearfix">
 
-                <LeftMenu
-                    title="教师列表"
-                    type="person"
-                    pickList={SubjectTeacherTeacherSchedule.teacherList}
-                    pickClick={this.menuPickClick.bind(this)}
-                    searchClick={this.searchClick.bind(this)}
-                    cancelSearch={this.cancelSearch.bind(this)}
-                    searchShow={SubjectTeacherTeacherSchedule.searchWrapperShow}
-                    searchResult={SubjectTeacherTeacherSchedule.searchResult}
-                    leftMenuSearchLoading={SubjectTeacherTeacherSchedule.searchLoadingShow}>
+                <Loading tip="请稍后..." spinning={SubjectTeacherTeacherSchedule.ScheduleLoadingShow}>
 
-                </LeftMenu>
+                    <LeftMenu
+                        title="教师列表"
+                        type="person"
+                        pickList={SubjectTeacherTeacherSchedule.teacherList}
+                        pickClick={this.menuPickClick.bind(this)}
+                        searchClick={this.searchClick.bind(this)}
+                        cancelSearch={this.cancelSearch.bind(this)}
+                        searchShow={SubjectTeacherTeacherSchedule.searchWrapperShow}
+                        searchResult={SubjectTeacherTeacherSchedule.searchResult}
+                        leftMenuSearchLoading={SubjectTeacherTeacherSchedule.searchLoadingShow}
+                        PickID={SubjectTeacherTeacherSchedule.pickTeacherID}
+                        CancelBtnShow={SubjectTeacherTeacherSchedule.CancelBtnShow}
+                        SearchValue={SubjectTeacherTeacherSchedule.SearchValue}
+                        SearchValueChange={this.SearchValueChange.bind(this)}>
 
-                {
+                    </LeftMenu>
 
-                    SubjectTeacherTeacherSchedule.pickTeacher===''?
+                    <div className="pick-teacher-wrapper">
 
-                    '':
+                    {
 
-                        <div className="pick-teacher-wrapper">
+                        SubjectTeacherTeacherSchedule.pickTeacher!==''?
 
-                                <span className="teacher-name">{SubjectTeacherTeacherSchedule.pickTeacher}</span>
+                            <React.Fragment>
+
+                            <span className="teacher-name">{SubjectTeacherTeacherSchedule.pickTeacher}</span>
 
                             <span className="course-count"> (本周共<span className="count">{SubjectTeacherTeacherSchedule.ScheduleCount}</span>节课)</span>
 
-                        </div>
+                            </React.Fragment>
 
-                }
+                            :<div className="please-select-teacher">请选择教师</div>
 
-                <TermPick
+                    }
 
-                    ItemWeek={ItemWeek}
+                    </div>
 
-                    ItemTermName={PeriodWeekTerm.ItemTerm?PeriodWeekTerm.ItemTerm.TermName:''}
+                    <TermPick
 
-                    NowWeekNo={SubjectTeacherTeacherSchedule.NowWeekNo}
+                        ItemWeek={ItemWeek}
 
-                    weekPickEvent = {this.weekPickEvent.bind(this)}
+                        ItemTermName={PeriodWeekTerm.ItemTerm?PeriodWeekTerm.ItemTerm.TermName:''}
 
-                    weekNextEvent = {this.weekNextEvent.bind(this)}
+                        NowWeekNo={SubjectTeacherTeacherSchedule.NowWeekNo}
 
-                    weekPrevEvent = {this.weekPrevEvent.bind(this)}>
+                        weekPickEvent = {this.weekPickEvent.bind(this)}
 
-                </TermPick>
+                        weekNextEvent = {this.weekNextEvent.bind(this)}
 
-                <Loading tip="请稍后..." spinning={SubjectTeacherTeacherSchedule.ScheduleLoadingShow}>
+                        weekPrevEvent = {this.weekPrevEvent.bind(this)}>
+
+                    </TermPick>
 
                     <SingleDoubleTable
-                    topHeight = {64}
-                    commonHeight = {90}
-                    commonWidth={106}
-                    leftOneWidth ={32}
-                    leftTwoWidth = {110}
-                    ItemClassHourCount={SubjectCourseGradeClassRoom.ItemClassHourCount}
-                    ItemClassHour={SubjectCourseGradeClassRoom.ItemClassHour}
-                    ItemWeek = {PeriodWeekTerm.ItemWeek}
-                    NowWeekNo={SubjectTeacherTeacherSchedule.NowWeekNo}
-                    schedule={SubjectTeacherTeacherSchedule.schedule}
-                    NowDate={PeriodWeekTerm.NowDate}>
+                        topHeight = {64}
+                        commonHeight = {90}
+                        commonWidth={106}
+                        leftOneWidth ={32}
+                        leftTwoWidth = {110}
+                        ItemClassHourCount={SubjectCourseGradeClassRoom.ItemClassHourCount}
+                        ItemClassHour={SubjectCourseGradeClassRoom.ItemClassHour}
+                        ItemWeek = {PeriodWeekTerm.ItemWeek}
+                        NowWeekNo={SubjectTeacherTeacherSchedule.NowWeekNo}
+                        schedule={SubjectTeacherTeacherSchedule.schedule}
+                        NowDate={PeriodWeekTerm.NowDate}>
 
-                </SingleDoubleTable>
+                    </SingleDoubleTable>
 
                 </Loading>
 

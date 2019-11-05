@@ -34,6 +34,8 @@ const STSPageUpdate = (opt) => {
 
         let {NowWeekNo,ItemSubjectSelect,schedule,pageIndex} = Manager.SubjectTeacherSchedule;
 
+        console.log(NowWeekNo);
+
         let SubjectID = '';
 
         let PageIndex = 1;
@@ -52,7 +54,7 @@ const STSPageUpdate = (opt) => {
 
         ApiActions.GetAllScheduleOfTeachersBySubjectIDForPage({
 
-            PeriodID,SchoolID,SubjectID,NowWeekNo,PageIndex,PageSize:10,dispatch
+            PeriodID,SchoolID,SubjectID,WeekNO:NowWeekNo,PageIndex,PageSize:10,dispatch
 
         }).then(data => {
 

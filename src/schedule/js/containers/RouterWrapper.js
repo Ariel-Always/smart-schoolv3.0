@@ -11,6 +11,9 @@ import StudentComponent from "./Student";
 import Import from './Import';
 
 import { connect } from 'react-redux';
+
+import AdjustLog from './Manager/AdjustLog';
+
 import ScheduleSetting from "./Manager/ScheduleSetting";
 
 
@@ -29,6 +32,8 @@ class RouterWrapper extends Component{
                 <Switch>
 
                     <Route exact path="/manager/scheduleSetting*" component={ScheduleSetting}></Route>
+
+                    <Route exact path="/manager/adjustlog*" component={AdjustLog}></Route>
 
                     <Route path="/manager/*"  component={ManagerComponent}></Route>
 

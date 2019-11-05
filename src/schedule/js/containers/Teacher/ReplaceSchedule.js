@@ -260,9 +260,11 @@ class ReplaceSchedule extends Component{
 
                                 :
 
-                                <span className={`subject-name ${teacherSubject.name?'':'unset'}`}>{teacherSubject.name?teacherSubject.name:"请选择老师"}</span>
+                                <span className={`subject-name ${teacherSubject.name?'':'unset'}`}>{teacherSubject.name?teacherSubject.name:"暂无课程安排"}</span>
 
                         }
+
+                        <span className="error-tips" style={{display:`${originTeacherTips?'inline-block':'none'}`,marginLeft:10}}>{originTeacherTipsTitle}</span>
 
                     </div>
 
@@ -288,21 +290,13 @@ class ReplaceSchedule extends Component{
 
                                 })
 
-                                    :'请选择老师'
+                                    :'暂无课程安排'
 
                             }
 
                         </div>
 
-                        {
-
-                            classList.length>0?
-
-                                <span className="error-tips" style={{display:`${classTips?'inline-block':'none'}`}}>{classTipsTitle}</span>
-
-                                :''
-
-                        }
+                        <span className="error-tips" style={{display:`${classTips?'inline-block':'none'}`}}>{classTipsTitle}</span>
 
                     </div>
 

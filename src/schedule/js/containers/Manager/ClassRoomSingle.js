@@ -16,7 +16,7 @@ import {Loading} from "../../../../common";
 
 import SingleDoubleTable from "../../component/SingleDoubleTable";
 
-import ComPageInit from "../../actions/ComPageInit";
+import ComPageRefresh from "../../actions/ComPageRefresh";
 
 
 class ClassRoomSingle extends Component{
@@ -27,7 +27,7 @@ class ClassRoomSingle extends Component{
 
         const {dispatch} = props;
 
-        ComPageInit(dispatch,ManagerIndexActions.ClassRoomSingleInit());
+        ComPageRefresh.ComPageInit(dispatch,ManagerIndexActions.ClassRoomSingleInit());
 
     }
 
@@ -107,9 +107,23 @@ class ClassRoomSingle extends Component{
 
         dispatch({type:CRSActions.MANAGER_CLASS_ROOM_SINGLE_SEARCH_RESULT_HIDE});
 
+        dispatch({type:CRSActions.MANAGER_CRS_LEFT_MENU_SEARCH_INPUT_CHANGE,data:''});
+
+        dispatch({type:CRSActions.MANAGER_CRS_LEFT_MENU_CANCEL_BTN_HIDE});
+
+
     }
 
 
+
+    //左侧菜单输入框改变
+    SearchValueChange(e) {
+
+        const {dispatch} = this.props;
+
+        dispatch({type:CRSActions.MANAGER_CRS_LEFT_MENU_SEARCH_INPUT_CHANGE,data:e.target.value});
+
+    }
     render() {
 
         const { PeriodWeekTerm ,ClassRoomSingle,Manager} = this.props;
@@ -123,67 +137,72 @@ class ClassRoomSingle extends Component{
 
             <div className="subject-teacher-teacher-content clearfix">
 
-                <LeftMenu
-                    title="班级列表"
-                    type="classroom"
-                    pickList={ClassRoomSingle.ClassRoomList}
-                    pickClick={this.menuPickClick.bind(this)}
-                    searchClick={this.searchClick.bind(this)}
-                    cancelSearch={this.cancelSearch.bind(this)}
-                    searchShow={ClassRoomSingle.SearchWrapperShow}
-                    searchResult={ClassRoomSingle.SearchResult}
-                    leftMenuSearchLoading={ClassRoomSingle.SearchLoadingShow}>
-
-                </LeftMenu>
-
-                {
-
-                    ClassRoomSingle.PickClassRoom===''?
-
-                        '':
-
-                        <div className="pick-teacher-wrapper">
-
-                            <span className="teacher-name">{ClassRoomSingle.PickClassRoom}</span>
-
-                            <span className="course-count"> (本周共<span className="count">{ClassRoomSingle.ScheduleCount}</span>节课)</span>
-
-                        </div>
-
-                }
-
-                <TermPick
-
-                    ItemWeek={ClassRoomSingle.WeekList}
-
-                    ItemTermName={PeriodWeekTerm.ItemTerm?PeriodWeekTerm.ItemTerm.TermName:''}
-
-                    NowWeekNo={ClassRoomSingle.WeekNO}
-
-                    weekPickEvent = {this.weekPickEvent.bind(this)}
-
-                    weekNextEvent = {this.weekNextEvent.bind(this)}
-
-                    weekPrevEvent = {this.weekPrevEvent.bind(this)}>
-
-                </TermPick>
-
                 <Loading tip="请稍后..." spinning={ClassRoomSingle.ScheduleLoadingShow}>
 
-                    <SingleDoubleTable
-                        topHeight = {64}
-                        commonHeight = {90}
-                        commonWidth={106}
-                        leftOneWidth ={32}
-                        leftTwoWidth = {110}
-                        ItemClassHourCount={SubjectCourseGradeClassRoom.ItemClassHourCount}
-                        ItemClassHour={SubjectCourseGradeClassRoom.ItemClassHour}
-                        ItemWeek = {PeriodWeekTerm.ItemWeek}
-                        NowWeekNo={ClassRoomSingle.WeekNO}
-                        schedule={ClassRoomSingle.Schedule}
-                        NowDate={PeriodWeekTerm.NowDate}>
+                    <LeftMenu
+                        title="教室课表"
+                        type="classroom"
+                        pickList={ClassRoomSingle.ClassRoomList}
+                        pickClick={this.menuPickClick.bind(this)}
+                        searchClick={this.searchClick.bind(this)}
+                        cancelSearch={this.cancelSearch.bind(this)}
+                        searchShow={ClassRoomSingle.SearchWrapperShow}
+                        searchResult={ClassRoomSingle.SearchResult}
+                        leftMenuSearchLoading={ClassRoomSingle.SearchLoadingShow}
+                        PickID={ClassRoomSingle.PickClassRoomID}
+                        CancelBtnShow={ClassRoomSingle.CancelBtnShow}
+                        SearchValue={ClassRoomSingle.SearchValue}
+                        SearchValueChange={this.SearchValueChange.bind(this)}>
 
-                    </SingleDoubleTable>
+                    </LeftMenu>
+
+                    {
+
+                        ClassRoomSingle.PickClassRoom===''?
+
+                            '':
+
+                            <div className="pick-teacher-wrapper">
+
+                                <span className="teacher-name">{ClassRoomSingle.PickClassRoom}</span>
+
+                                <span className="course-count"> (本周共<span className="count">{ClassRoomSingle.ScheduleCount}</span>节课)</span>
+
+                            </div>
+
+                    }
+
+                    <TermPick
+
+                        ItemWeek={ClassRoomSingle.WeekList}
+
+                        ItemTermName={PeriodWeekTerm.ItemTerm?PeriodWeekTerm.ItemTerm.TermName:''}
+
+                        NowWeekNo={ClassRoomSingle.WeekNO}
+
+                        weekPickEvent = {this.weekPickEvent.bind(this)}
+
+                        weekNextEvent = {this.weekNextEvent.bind(this)}
+
+                        weekPrevEvent = {this.weekPrevEvent.bind(this)}>
+
+                    </TermPick>
+
+
+                    <SingleDoubleTable
+                            topHeight = {64}
+                            commonHeight = {90}
+                            commonWidth={106}
+                            leftOneWidth ={32}
+                            leftTwoWidth = {110}
+                            ItemClassHourCount={SubjectCourseGradeClassRoom.ItemClassHourCount}
+                            ItemClassHour={SubjectCourseGradeClassRoom.ItemClassHour}
+                            ItemWeek = {PeriodWeekTerm.ItemWeek}
+                            NowWeekNo={ClassRoomSingle.WeekNO}
+                            schedule={ClassRoomSingle.Schedule}
+                            NowDate={PeriodWeekTerm.NowDate}>
+
+                        </SingleDoubleTable>
 
                 </Loading>
 

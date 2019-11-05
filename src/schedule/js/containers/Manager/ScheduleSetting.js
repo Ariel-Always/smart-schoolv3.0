@@ -73,7 +73,7 @@ class ScheduleSetting extends Component{
 
         const { dispatch } = this.props;
 
-        dispatch(AppAlertActions.alertQuery({title:"您确定要切换设置方式吗？",abstract:<div className="schedule-setting-type-tips">切换设置方式将会把您之前所设置的课时所删除！</div>,ok:()=>this.SettingTypeSitch.bind(this,opts)}));
+        dispatch(AppAlertActions.alertQuery({title:"您确定要切换设置方式吗？",ok:()=>this.SettingTypeSitch.bind(this,opts)}));
 
     }
 

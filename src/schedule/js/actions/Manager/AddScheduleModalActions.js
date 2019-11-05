@@ -1,11 +1,10 @@
-import Method from  '../Method';
-
 import React from 'react';
 
 import AppAlertActions from '../../actions/AppAlertActions'
 
 import ApiActions from '../../actions/ApiActions';
 
+import ComPageRefresh from '../ComPageRefresh';
 
 
 const ADD_SCHEDULE_MODAL_SHOW = 'ADJUST_SCHEDULE_MODAL_SHOW';
@@ -334,7 +333,7 @@ const InfoInit = () => {
 
                       type:item.ClassHourType,
 
-                       value:item.ClassHOurNO,
+                       value:item.ClassHourNO,
 
                        title:<span>{item.ClassHourName} <span className="classHourType">({classHourType})</span></span>
 
@@ -480,7 +479,7 @@ const teacherSearch = (key) => {
 
                         return{
 
-                            id:item.Teacher,
+                            id:item.TeacherID,
 
                             name:item.TeacherName
 
@@ -618,18 +617,22 @@ const commitInfo = () => {
 
             SubjectID, WeekNO, WeekDay, ClassHourNO, TeacherID, ClassID,ClassRoomID,
 
-            SchoolID,UserID,UserType
+            SchoolID,UserID,UserType,dispatch
 
 
         }).then((data) => {
 
-            if (data){
+            if (data===0){
 
                 dispatch({type:ADD_SCHEDULE_MODAL_HIDE});
 
                 dispatch(AppAlertActions.alertSuccess({title:"添加临时课程成功!"}));
 
+                ComPageRefresh.ComPageUpdate(dispatch);
+
             }
+
+            dispatch({type:ADD_SHEDULE_MODAL_LOADING_HIDE});
 
         });
 

@@ -214,8 +214,6 @@ const replaceScheduleInit = () => {
 
                 let teacherList = data.ItemSubject.map(item => {
 
-                    console.log(data.ItemTeacher);
-
                     let list =  data.ItemTeacher.map(i => {
 
                         if (i.SubjectID === item.SubjectID){
@@ -317,7 +315,7 @@ const teacherDropChange = (info) => {
 
             }else{
 
-                let  subject =  data.ItemSubject[0]?data.ItemSubject[0]:{SubjectID:"none",SubjectName:"未设置"};
+                let  subject =  data.ItemSubject[0]?data.ItemSubject[0]:{SubjectID:"none",SubjectName:""};
 
                 let subjectObj = { id:subject.SubjectID,name:subject.SubjectName };
 
@@ -441,8 +439,6 @@ const replaceTeacherClickSearch = (key) => {
             ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,Key:key,dispatch}).then(data=>{
 
                 if (data){
-
-                    console.log(data);
 
                     let teacherSearchList = data.map(item => {
 
@@ -1893,6 +1889,8 @@ const changeTimeNewTimeChange = (date) => {
             Promise.all([GetWeekInfoByDate,GetScheduleByTeacherIDAndDate]).then(res => {
 
 
+                console.log(res);
+
                 const json1 = res[0];
 
                 const json2 = res[1];
@@ -1962,15 +1960,15 @@ const changeTimeNewTimeChange = (date) => {
 
                 if (json2.length>0){
 
-                    console.log(json2);
-
                     let { newWeek } = getState().Manager.AdjustByTeacherModal.changeTime;
 
                     let data = json2;
 
-                    let ClassHour = data.ItemClassHour.map(item => {
+                    let ClassHour = json2.map(item => {
 
                         let title = '';
+
+                        console.log(item);
 
                         switch (item.ClassHourType) {
 
@@ -3296,6 +3294,12 @@ const ModalCommit = () => {
 
               let ClassID = classCheckedList.join(',');
 
+              let ClassNameList = classCheckedList.map(item=>{
+
+                  return classList.find(i=>i.id===item).name
+
+              }).join(',');
+
 
 
               dispatch({type:ADJUST_BY_TEACHER_LOADING_SHOW});
@@ -3304,7 +3308,7 @@ const ModalCommit = () => {
 
                   Type,Item,TeacherID1,TeacherID2,dispatch,
 
-                  SchoolID,UserID,UserType,SubjectID,ClassID
+                  SchoolID,UserID,UserType:parseInt(UserType),SubjectID,ClassID,ClassName:ClassNameList
 
               }).then((data) => {
 
@@ -3315,6 +3319,8 @@ const ModalCommit = () => {
                       dispatch(AppAlertActions.alertSuccess({title:"找人代课成功！"}));
 
                   }
+
+                  dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
 
               })
 
@@ -3410,13 +3416,16 @@ const ModalCommit = () => {
 
           if (originDateOk&&originTeacherOk&&originScheduleOk&&targetTeacherOk&&targetDateOk&&targetScheduleOk){
 
+
+              const { UserID,UserType } = getState().LoginUser;
+
               let ScheduleID1 = originScheduleDropSelectd.value;
 
               let ScheduleID2 = targetScheduleDropSelectd.value;
 
               dispatch({type:ADJUST_BY_TEACHER_LOADING_SHOW});
 
-              ApiActions.ExchangeTeacherSchedule({ScheduleID1,ScheduleID2,dispatch}).then(data=>{
+              ApiActions.ExchangeTeacherSchedule({UserID,UserType:parseInt(UserType),ScheduleID1,ScheduleID2,dispatch}).then(data=>{
 
                  if (data){
 
@@ -3612,7 +3621,7 @@ const ModalCommit = () => {
 
               dispatch({type:ADJUST_BY_TEACHER_LOADING_SHOW});
 
-              let { SchoolID } = getState().LoginUser;
+              let { SchoolID,UserType,UserID } = getState().LoginUser;
 
               let ClassHourNo = classHourList.find(item=>item.value === classHourDrop.value).NO;
 
@@ -3626,7 +3635,7 @@ const ModalCommit = () => {
 
               ApiActions.AdjustClassRooomOfSchedule({
 
-                  SchoolID,Type,Item,ClassRoomID1,ClassRoomID2,dispatch
+                  UserID,UserType,SchoolID,Type,Item,ClassRoomID1,ClassRoomID2,dispatch
 
               }).then(data=>{
 

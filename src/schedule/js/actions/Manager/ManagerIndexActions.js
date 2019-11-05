@@ -210,11 +210,11 @@ const STTPageInit = () => {
 
               dispatch({type:STTActions.STT_SCHEDULE_INIT,data:leftMenuData});
 
-              dispatch({type:STTActions.SCHEDULE_LOADING_HIDE});
-
-              dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
-
           }
+
+          dispatch({type:STTActions.SCHEDULE_LOADING_HIDE});
+
+          dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
 
       });
 
@@ -282,6 +282,8 @@ const ClassTotalInit = () => {
                         }
 
                     });
+
+                    ClassDropList.unshift({value:"",title:"全部年级"});
 
                     dispatch({type:SCGCRActions.SCGCR_INFO_INIT,data:res[0]});
 
@@ -402,8 +404,6 @@ const ClassSingleInit = () => {
 
             let NowWeekNo = PeriodWeekTerm.WeekNO;
 
-            console.log(res[0]);
-
             //将课程、学期、等等放到redux中
 
             if (res[0]){
@@ -473,11 +473,12 @@ const ClassSingleInit = () => {
 
                 dispatch({type:CSActions.MANAGER_CLASS_SINGLE_WEEK_CHANGE,data:NowWeekNo});
 
-                dispatch({type:CSActions.MANAGER_CLASS_SINGLE_SCHEDULE_LOADING_HIDE});
-
-                dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
 
             }
+
+            dispatch({type:CSActions.MANAGER_CLASS_SINGLE_SCHEDULE_LOADING_HIDE});
+
+            dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
 
         });
 
@@ -544,6 +545,8 @@ const ClassRoomTotalInit = () => {
                         }
 
                     });
+
+                    ClassRoomDropList.unshift({value:"",title:"全部教室"});
 
                     dispatch({type:SCGCRActions.SCGCR_INFO_INIT,data:res[0]});
 
@@ -618,11 +621,11 @@ const ClassRoomTotalInit = () => {
 
                     dispatch({type:CRTActions.MANAGER_CLASS_ROOM_TOTAL_CLASS_COUNT,data:json.ClassRoomCount});
 
-                    dispatch({type:CRTActions.MANAGER_CLASS_ROOM_TOTAL_LOADING_HIDE});
-
-                    dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
-
                 }
+
+                dispatch({type:CRTActions.MANAGER_CLASS_ROOM_TOTAL_LOADING_HIDE});
+
+                dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
 
             });
 
@@ -661,9 +664,6 @@ const ClassRoomSingleInit = () => {
         Promise.all([GetAllOptionByPeriodID,GetClassRoomByClassTypeAndKey]).then(res => {
 
             let NowWeekNo = PeriodWeekTerm.WeekNO;
-
-            console.log(res[0]);
-
             //将课程、学期、等等放到redux中
 
             if (res[0]){

@@ -287,6 +287,8 @@ const commitInfo = () => {
 
         dispatch({type:DEL_SCHEDULE_LOADING_SHOW});
 
+        const { UserType,UserID } = getState().LoginUser;
+
         const { periodGradesCheckedList } = getState().Manager.DelScheduleModal;
 
         //判断是否全部都已经选择完毕
@@ -339,19 +341,18 @@ const commitInfo = () => {
 
 
 
-            ApiActions.DeleteScheduleByGrades({SchoolID,GradeIDs,dispatch}).then(data => {
+            ApiActions.DeleteScheduleByGrades({UserID,UserType:parseInt(UserType),SchoolID,GradeIDs,dispatch}).then(data => {
 
-                if (data) {
+                if (data === 0) {
 
                     dispatch({type:DEL_SCHEDULE_HIDE});
 
                     dispatch(AppAlertActions.alertSuccess({title:"删除课程成功！"}))
 
-                }else{
-
-                    dispatch({type:DEL_SCHEDULE_LOADING_HIDE});
-
                 }
+
+                dispatch({type:DEL_SCHEDULE_LOADING_HIDE});
+
 
         });
 

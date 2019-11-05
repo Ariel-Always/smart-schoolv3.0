@@ -270,7 +270,18 @@ class ReplaceSchedule extends Component{
 
     ];
 
-    console.log(classList);
+    let TeacherSubjectTip = '';
+
+
+    if (teacherOptions.dropSelectd.value==='none'){
+
+        TeacherSubjectTip = '请选择教师';
+
+    }else {
+
+        TeacherSubjectTip = '该教师暂无课程安排';
+
+    }
 
     return (
 
@@ -315,7 +326,7 @@ class ReplaceSchedule extends Component{
 
                                 :
 
-                                <span className={`subject-name ${teacherSubject.name?'':'unset'}`}>{teacherSubject.name?teacherSubject.name:"请选择老师"}</span>
+                                <span className={`subject-name ${teacherSubject.name===''?'unset':''}`}>{teacherSubject.name!==''?teacherSubject.name:TeacherSubjectTip}</span>
 
                         }
 
@@ -343,7 +354,7 @@ class ReplaceSchedule extends Component{
 
                                 })
 
-                                    :'请选择老师'
+                                    :TeacherSubjectTip
 
                             }
 

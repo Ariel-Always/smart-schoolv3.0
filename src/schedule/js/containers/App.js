@@ -38,10 +38,6 @@ import DelScheduleModal from './Manager/DelScheduleModal';
 
 import ABTActions from '../actions/Manager/AdjustByTeacherActions';
 
-import TeacherIndexActions from '../actions/Teacher/TeacherIndexActions';
-
-import ManagerIndexActions from '../actions/Manager/ManagerIndexActions';
-
 import RouterWrapper from './RouterWrapper';
 
 import '../../scss/index.scss';
@@ -50,7 +46,7 @@ import RouterSetActions from "../actions/RouterSetActions";
 
 import $ from 'jquery';
 
-
+import ComPageRefresh from '../actions/ComPageRefresh';
 
 
 class App extends Component{
@@ -121,63 +117,7 @@ class App extends Component{
 
         dispatch({type:PeriodWeekTermActions.PERIOD_VALUE_CHANGE,key:key});
 
-        let hash = window.location.hash.split('?')[0];
-
-        if (hash.includes('#/teacher/subject-teacher/subject')){
-
-            dispatch(TeacherIndexActions.STSPageInit());
-
-        }
-
-        if (hash.includes('#/teacher/subject-teacher/teacher')){
-
-            dispatch(TeacherIndexActions.STTPageInit());
-
-        }
-
-        if (hash.includes('#/teacher/mine')){
-
-            dispatch(TeacherIndexActions.TeacherPersonalInit());
-
-        }
-
-        if (hash.includes('#/manager/subject-teacher/subject')){
-
-            dispatch(ManagerIndexActions.STSPageInit());
-
-        }
-
-
-        if (hash.includes('#/manager/subject-teacher/teacher')){
-
-            dispatch(TeacherIndexActions.STTPageInit());
-
-        }
-
-        if (hash.includes('#/manager/class/total')){
-
-            dispatch(ManagerIndexActions.ClassTotalInit());
-
-        }
-
-        if (hash.includes('#/manager/class/single')){
-
-            dispatch(ManagerIndexActions.ClassSingleInit());
-
-        }
-
-        if (hash.includes('#/manager/room/total')){
-
-            dispatch(ManagerIndexActions.ClassRoomTotalInit());
-
-        }
-
-        if (hash.includes('#/manager/room/single')){
-
-            dispatch(ManagerIndexActions.ClassRoomSingleInit());
-
-        }
-
+        ComPageRefresh.ComPageUpdate(dispatch);
 
     }
     //将隐藏的adjustWrapper弹出或隐藏

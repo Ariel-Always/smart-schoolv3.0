@@ -2,10 +2,6 @@ import Method from "./Method";
 
 import AppAlertActions from "./AppAlertActions";
 
-import {getData} from "../../../common/js/fetch";
-
-import LoginUserActions from "./LoginUserActions";
-
 import AppLoadingActions from './AppLoadingActions';
 
 import CONFIG from "../../../common/js/config";

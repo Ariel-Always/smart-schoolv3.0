@@ -1,5 +1,3 @@
-import Method from '../Method';
-
 import AppAlertActions from '../AppAlertActions'
 
 import ApiActions from '../ApiActions';
@@ -727,15 +725,15 @@ const commitInfo = () => {
 
             }).filter(i => i!==undefined).join(',');
 
-            let { UserID,UserType } = getState().LoginUser;
+            let { UserID,UserType,SchoolID } = getState().LoginUser;
 
             ApiActions.BatchCloseSchedule({
 
-                UserID,UserType,ClassHours,ClassDate,Grades,dispatch
+                SchoolID,UserID,UserType,ClassHours,ClassDate,Grades,dispatch
 
             }).then(data => {
 
-                if (data){
+                if (data===0){
 
                     dispatch({type:STOP_SCHEDULE_HIDE});
 

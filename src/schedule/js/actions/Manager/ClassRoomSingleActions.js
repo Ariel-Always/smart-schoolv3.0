@@ -24,6 +24,13 @@ const MANAGER_CLASS_ROOM_SINGLE_SEARCH_LOADING_HIDE = 'MANAGER_CLASS_ROOM_SINGLE
 
 const MANAGER_CLASS_ROOM_SINGLE_SEARCHLIST_UPDATE = 'MANAGER_CLASS_ROOM_SINGLE_SEARCHLIST_UPDATE';
 
+const MANAGER_CRS_LEFT_MENU_SEARCH_INPUT_CHANGE = 'MANAGER_CRS_LEFT_MENU_SEARCH_INPUT_CHANGE';
+
+const MANAGER_CRS_LEFT_MENU_CANCEL_BTN_SHOW = 'MANAGER_CRS_LEFT_MENU_CANCEL_BTN_SHOW';
+
+const MANAGER_CRS_LEFT_MENU_CANCEL_BTN_HIDE = 'MANAGER_CRS_LEFT_MENU_CANCEL_BTN_HIDE';
+
+
 
 const ClassRoomSingleScheduleUpdate = (pickInfo) =>{
 
@@ -31,7 +38,7 @@ const ClassRoomSingleScheduleUpdate = (pickInfo) =>{
 
         const { LoginUser,Manager,PeriodWeekTerm } = getState();
 
-        let { SchoolID } = LoginUser;
+        let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;//所需的参数
 
         let ClassRoomID = pickInfo.catChildrenId;
 
@@ -39,7 +46,7 @@ const ClassRoomSingleScheduleUpdate = (pickInfo) =>{
 
         ApiActions.GetScheduleOfClassRoomOne({
 
-            SchoolID,WeekNO,ClassRoomID,dispatch
+            PeriodID,WeekNO,ClassRoomID,dispatch
 
         }).then(data => {
 
@@ -92,7 +99,7 @@ const WeekUpdate = () => {
 
     return (dispatch,getState) => {
 
-        const { Manager,LoginUser } = getState();
+        const { Manager,LoginUser,PeriodWeekTerm } = getState();
 
         const { PickClass,PickClassRoomID,WeekNO } = Manager.ClassRoomSingle;
         //当没有选择教师的时候就不请求后台接口。
@@ -104,11 +111,12 @@ const WeekUpdate = () => {
 
         }else{
 
-            let SchoolID = LoginUser.SchoolID;
+            let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;//所需的参数
+
 
             ApiActions.GetScheduleOfClassRoomOne({
 
-                SchoolID,WeekNO,ClassRoomID:PickClassRoomID,dispatch
+                PeriodID,WeekNO,ClassRoomID:PickClassRoomID,dispatch
 
             }).then(data => {
 
@@ -169,6 +177,8 @@ const ClassSearch = (val) => {
         dispatch({type:MANAGER_CLASS_ROOM_SINGLE_SEARCHLIST_UPDATE,data:[]});
 
         dispatch({type:MANAGER_CLASS_ROOM_SINGLE_SEARCH_LOADING_SHOW});
+
+        dispatch({type:MANAGER_CRS_LEFT_MENU_CANCEL_BTN_SHOW});
 
         let { LoginUser,Manager,PeriodWeekTerm } = getState();
 
@@ -239,6 +249,12 @@ export default {
     MANAGER_CLASS_ROOM_SINGLE_SEARCH_RESULT_SHOW,
 
     MANAGER_CLASS_ROOM_SINGLE_SEARCH_RESULT_HIDE,
+
+    MANAGER_CRS_LEFT_MENU_SEARCH_INPUT_CHANGE,
+
+    MANAGER_CRS_LEFT_MENU_CANCEL_BTN_SHOW,
+
+    MANAGER_CRS_LEFT_MENU_CANCEL_BTN_HIDE,
 
     ClassRoomSingleScheduleUpdate,
 
