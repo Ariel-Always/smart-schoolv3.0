@@ -99,7 +99,7 @@ $image-url: "../images";
               padding: 10px;
             }
             td {
-              padding: 10px;
+              padding: 10px 0;
               white-space: nowrap;
             }
           }
@@ -137,6 +137,14 @@ $image-url: "../images";
           .name-UserID {
             font-size: 14px;
             color: #999;
+          }
+          .overflow-text {
+            display: inline-block;
+            vertical-align: text-top;
+            max-width: 90px;
+            overflow: hidden; //超出一行文字自动隐藏
+            text-overflow: ellipsis; //文字隐藏后添加省略号
+            white-space: nowrap; //强制不换行
           }
           .UserID {
             font-size: 14px;
@@ -205,6 +213,7 @@ $image-url: "../images";
         }
         .checkAll-box {
           margin-top: 10px;
+          margin-left:10px;
           .deleteAll {
             color: #fff;
             width: 56px;
@@ -212,8 +221,9 @@ $image-url: "../images";
             height: 28px;
             padding: 0;
             text-align: center;
+            border: none;
             margin-left: 8px;
-            box-sizing: content-box;
+            // box-sizing: content-box;
           }
           .changePwdAll {
             color: #fff;
@@ -222,8 +232,9 @@ $image-url: "../images";
             height: 28px;
             padding: 0;
             text-align: center;
+            border: none;
             margin-left: 8px;
-            box-sizing: content-box;
+            // box-sizing: content-box;
           }
         }
         .pagination-box {

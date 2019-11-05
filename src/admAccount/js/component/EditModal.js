@@ -516,7 +516,7 @@ class EditModal extends React.Component {
                                     overlayClassName={'tips-edit tips-userName'}
                                     visible={UIState.TipsVisible.UserIDTipsVisible}
                                     title={'工号' + this.state.UserIDTipsTitle} >
-                                    
+
                                 </Tips>
                             </div>
                             {this.state.UserKey === 'change' ? (<span className='UserID-text'>{this.state.UserIDChange}</span>) :
@@ -601,7 +601,7 @@ class EditModal extends React.Component {
                                             <span className='checkTips'>[已选择<span style={{ color: 'red' }}>{this.state.PowerChildLen[index] ? this.state.PowerChildLen[index] : 0}</span>项]</span>
                                         </CheckBox>
                                         <CheckBoxGroup
-
+                                            className='CheckBoxGroup'
                                             value={this.state.checkedListArr[index]}
                                             onChange={this.onCheckChange.bind(this, index)}
                                         >

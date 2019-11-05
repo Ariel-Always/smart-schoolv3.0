@@ -4,6 +4,8 @@ import CryptoJS from 'crypto-js';
 import { COMMONKEY } from './SecretKey'
 import md5 from 'md5'
 import $ from 'jquery'
+import { Alert } from '../../index'
+import React from 'react'
 //import { type } from 'os';
 
 //AES加密传输参数：post
@@ -17,7 +19,7 @@ function AESEncryptionBody(paramsObj, CRYPTOJSKEY = COMMONKEY, SecurityLevel, co
 
         // console.log(decrypt(encrypt(plain,CRYPTOJSKEY)))
         if (SecurityLevel === 3 || SecurityLevel === 4) {
-            plain =JSON.stringify({ p: encrypt(plain, CRYPTOJSKEY) });
+            plain = JSON.stringify({ p: encrypt(plain, CRYPTOJSKEY) });
         }
         //console.log(plain)
         return plain;
@@ -52,7 +54,7 @@ function AESEncryptionUrl(url, CRYPTOJSKEY = COMMONKEY, SecurityLevel) {//加密
 
 //请求安全，根据安全级别SecurityLevel返回token+签名
 function requestSecure(params, securityKey, SecurityLevel = 1) {
-    let token = sessionStorage.getItem('token')||getQueryVariable('lg_tk');
+    let token = sessionStorage.getItem('token') || getQueryVariable('lg_tk');
     let Autorization = null;
 
     if (!token && SecurityLevel !== 1) {
@@ -220,7 +222,7 @@ function handleParam(params) {
 
 //获取url参数
 function getQueryVariable(variable) {
-    var query = window.location.search.substring(1) || window.location.href.split('?')[1]||window.location.href;
+    var query = window.location.search.substring(1) || window.location.href.split('?')[1] || window.location.href;
 
     console.log(query)
     var vars = query.split("&");
@@ -230,9 +232,50 @@ function getQueryVariable(variable) {
     }
     return (false);
 }
+// 根据statuscode进行不同alter操作
+class ErrorAlert extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            show: props.show
+        }
+    }
 
+    onOk = () => {
+        this.setState({
+            show: false
+        })
+    }
+
+    onCancel = () => {
+        this.setState({
+            show: false
+        })
+    }
+    onClose = () => {
+        this.setState({
+            show: false
+        })
+    }
+    
+    render() {
+        // console.log(this.props.title)
+        return <Alert
+            show={this.state.show}
+            type='btn-error'
+            title={'提示信息'}
+            onOk={this.onOk}
+            abstract={this.props.title}
+            onCancel={this.onCancel}
+            onClose={this.onClose}
+        ></Alert>
+    }
+
+
+}
 export {
     requestSecure,
     AESEncryptionBody,
-    AESEncryptionUrl
+    AESEncryptionUrl,
+    ErrorAlert
 }

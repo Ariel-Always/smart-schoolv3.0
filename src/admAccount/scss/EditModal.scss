@@ -124,6 +124,10 @@
             color: #666666;
           }
         }
+        .CheckBoxGroup{
+          width: 100%;
+          margin-bottom: 10px;
+        }
         .checkChild {
           color: #666;
           font-size: 14px;
@@ -134,7 +138,7 @@
           position: relative;
           border: 0.5px dashed #ccc;
           width: 100%;
-          margin: 10px auto;
+          margin: 0 auto 10px;
         }
       }
     }

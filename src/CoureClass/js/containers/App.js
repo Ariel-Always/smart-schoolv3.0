@@ -581,6 +581,7 @@ class App extends Component {
                     {UIState.LogDetailsModalShow.Show ? (<LogDetails></LogDetails>) : ''}
 
                 </Modal>
+                
             </React.Fragment >
 
         );

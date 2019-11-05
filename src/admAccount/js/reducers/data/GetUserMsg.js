@@ -30,7 +30,8 @@ function handleData(data) {
         userIDCard: data.IDCardNo,
         userPhone: data.Telephone,
         userMail: data.Email,
-        userAddress: data.HomeAddress
+        userAddress: data.HomeAddress,
+        Position:data.Position
     }
 }
 const GetUserMsg = (state = {
@@ -45,7 +46,8 @@ const GetUserMsg = (state = {
     userIDCard: '',
     userPhone: '',
     userMail: '',
-    userAddress: ''
+    userAddress: '',
+    Position:''
 }, actions) => {
     let returnData = { grades: null };
     switch (actions.type) {

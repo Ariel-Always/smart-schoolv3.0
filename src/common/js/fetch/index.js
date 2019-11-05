@@ -1,9 +1,12 @@
 import 'whatwg-fetch';
 import 'es6-promise';
 import { TESTKEY } from './SecretKey'
-import { AESEncryptionBody, AESEncryptionUrl, requestSecure } from './util'
+import { AESEncryptionBody, AESEncryptionUrl, requestSecure, ErrorAlert } from './util'
 import { stringify } from 'querystring';
-
+import ReactDOM from 'react-dom'
+import React from 'react'
+import {TokenCheck} from '../disconnect'
+import config from '../config'
 
 // 参数
 // url:请求服务对象
@@ -68,7 +71,7 @@ function postData(url, paramsObj = {}, SecurityLevel = 1, content_type = 'urlenc
     return result;
 }
 
-function getData(url, SecurityLevel = 1, mode = 'cors', IsDesk = false) {
+function getData(url, SecurityLevel = 1, mode = 'cors', IsDesk = false, element = null) {
 
     let token = sessionStorage.getItem('token') || getQueryVariable('lg_tk');
 
@@ -111,13 +114,37 @@ function getData(url, SecurityLevel = 1, mode = 'cors', IsDesk = false) {
     //     return data
     // })
 
-    // result.then(res => {//做提前处理
+    result.then(res => {//做提前处理
+        let clone = res.clone()
+        // console.log(clone.json())
+        return clone.json()
+    }, err => {
 
-    //     console.log(res)
-    //     return res;
-    // }, err => {
+    }).then(json => {
+        // console.log(json, json.StatusCode === 200)
+        let title = ''
+        if (json.StatusCode === 400 || json.StatusCode === 500) {
+            if (json.StatusCode === 400) {
+                title = '操作出现未知异常，请重试或联系管理员'
+            } else {
+                title = '服务器出现未知异常，请重试或联系管理员'
+            }
 
-    // })
+
+            ReactDOM.render(
+                // eslint-disable-next-line react/react-in-jsx-scope
+                <ErrorAlert
+                    show={true} title={title} />,
+                document.getElementById('alert')
+            )
+
+
+        }else if(json.StatusCode === 401){
+            TokenCheck()
+        }else if(json.StatusCode === 403){
+            window.location.href = config.ErrorProxy+'/Error.aspx?errcode=E011'
+        }
+    })
 
     return result;
 }

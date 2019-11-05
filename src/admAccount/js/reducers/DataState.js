@@ -11,6 +11,7 @@ import SubjectTeacherPreview from './data/SubjectTeacherPreview';
 import GetUserMsg from './data/GetUserMsg';
 import AdminPreview from './data/AdminPreview';
 import GetPicUrl from './data/GetPicUrl';
+import SchoolLeaderPreview from './data/SchoolLeaderPreview';
 const DataState=combineReducers(
     {
         LoginUser,
@@ -24,6 +25,7 @@ const DataState=combineReducers(
         SubjectTeacherPreview,
         GetUserMsg,
         AdminPreview,
-        GetPicUrl
+        GetPicUrl,
+        SchoolLeaderPreview
     });
 export default DataState;
