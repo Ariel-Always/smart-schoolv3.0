@@ -14,7 +14,6 @@ import ClassRoomTotalSingle from './ClassRoomTotalSingle';
 
 import AdjustByTeacherModal from "./AdjustByTeacherModal";
 
-import ScheduleSetting from './ScheduleSetting';
 
 
 

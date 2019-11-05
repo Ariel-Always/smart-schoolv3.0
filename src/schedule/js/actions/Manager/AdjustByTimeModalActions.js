@@ -1,4 +1,4 @@
-import Method from '../Method';
+import ComPageRefresh from '../ComPageRefresh';
 
 import AppAlertActions from '../../actions/AppAlertActions';
 
@@ -1072,11 +1072,13 @@ const commitInfo = () => {
 
             ).then(data => {
 
-               if (data){
+               if (data===0){
 
                    dispatch({type:ADJUST_BY_TIME_HIDE});
 
                    dispatch(AppAlertActions.alertSuccess({title:"调整成功！"}));
+
+                   ComPageRefresh.ComPageUpdate(dispatch);
 
                }
 

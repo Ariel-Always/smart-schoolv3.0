@@ -170,6 +170,16 @@ class ReplaceSchedule extends Component{
 
     }
 
+    //教师学科切换
+
+    TeacherSubjectChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch(ABTActions.TSChange(e));
+
+    }
+
 
 
 
@@ -322,7 +332,7 @@ class ReplaceSchedule extends Component{
 
                             teacherSubject.dropShow?
 
-                                <DropDown width={90} dropSelectd={teacherSubject.select.dropSelectd} style={{zIndex:7}} dropList={teacherSubject.select.dropList}></DropDown>
+                                <DropDown width={90} height={200} style={{zIndex:20}} dropSelectd={teacherSubject.select.dropSelectd}  dropList={teacherSubject.select.dropList} onChange={this.TeacherSubjectChange.bind(this)}></DropDown>
 
                                 :
 
@@ -380,7 +390,7 @@ class ReplaceSchedule extends Component{
                             width={160}
                             dropSelectd={replaceTeacherOptions.dropSelectd?replaceTeacherOptions.dropSelectd:{value:"none",title:"请选择任课教师"}}
                             type="multiple"
-                            style={{zIndex:1078}}
+                            style={{zIndex:9}}
                             mutipleOptions={{
                                 range:2,
                                 dropMultipleList:teacherList,

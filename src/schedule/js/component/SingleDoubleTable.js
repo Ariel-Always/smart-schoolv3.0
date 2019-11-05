@@ -246,7 +246,7 @@ class SingleDoubleTable extends Component{
 
                                         tds.push(<td key={`${i}${ky}`} className={`shedule${i} `} style={{height:commonHeight,width:commonWidth}}>
 
-                                            <div className={`scheduleDiv ${i === weekDay?'active':''}  ${it.IsShift?'isShift':''}`} style={{width:'100%'}}>
+                                            <div className={`scheduleDiv ${i === weekDay?'active':''}  ${it.IsShift?'isShift':''}`} style={{width:commonWidth}}>
 
 
                                                 {

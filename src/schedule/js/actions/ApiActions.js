@@ -671,11 +671,11 @@ const BatchEditClassDate =  async ({ UserID,ClassDate1,ClassHours1,ClassDate2,Cl
 
 //单个调整上课时间
 
-const EditClassDateOne =  async ({ ScheduleID,ClassDate1,ClassHourNO1,ClassDate2,ClassHourNO2,ClassRoomID,dispatch}) => {
+const EditClassDateOne =  async ({ UserID,UserType,ScheduleID,ClassDate1,ClassHourNO1,ClassDate2,ClassHourNO2,ClassRoomID,dispatch}) => {
 
     let res = await Method.getPostData(`/Schedule/api/EditClassDateOne`,{
 
-        ScheduleID,ClassDate1,ClassHourNO1,ClassDate2,ClassHourNO2,ClassRoomID
+        UserID,UserType,ScheduleID,ClassDate1,ClassHourNO1,ClassDate2,ClassHourNO2,ClassRoomID
 
     },2,CONFIG.ScheduleProxy);
 
