@@ -23,6 +23,11 @@ const SEARCH_LOADING_SHOW = 'SEARCH_LOADING_SHOW';
 
 const SEARCH_LOADING_HIDE = 'SEARCH_LOADING_HIDE';
 
+const MANAGER_STT_LEFT_MENU_SEARCH_INPUT_CHANGE = 'MANAGER_STT_LEFT_MENU_SEARCH_INPUT_CHANGE';
+
+const MANAGER_STT_LEFT_MENU_CANCEL_BTN_SHOW = 'MANAGER_STT_LEFT_MENU_CANCEL_BTN_SHOW';
+
+const MANAGER_STT_LEFT_MENU_CANCEL_BTN_HIDE = 'MANAGER_STT_LEFT_MENU_CANCEL_BTN_HIDE';
 
 //学科教师总表教师课表，教师更改
 const STTTeacherUpdate = (pickInfo) => {
@@ -174,6 +179,8 @@ const STTTeacherSearch = (val) => {
 
         dispatch({type:SEARCH_LOADING_SHOW});
 
+        dispatch({type:MANAGER_STT_LEFT_MENU_CANCEL_BTN_SHOW});
+
         dispatch({type:SEARCH_TEACHER_RESULT_SHOW});
 
         let { LoginUser,Manager,PeriodWeekTerm } = getState();
@@ -241,6 +248,12 @@ export default {
     SEARCH_LOADING_SHOW,
 
     STT_SCHEDULE_INIT,
+
+    MANAGER_STT_LEFT_MENU_SEARCH_INPUT_CHANGE,
+
+    MANAGER_STT_LEFT_MENU_CANCEL_BTN_SHOW,
+
+    MANAGER_STT_LEFT_MENU_CANCEL_BTN_HIDE,
 
     STTTeacherUpdate,
 

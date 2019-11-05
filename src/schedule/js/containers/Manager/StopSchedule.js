@@ -133,7 +133,6 @@ class StopSchedule extends Component{
 
                         <DatePicker value={date?moment(date,'YYYY-MM-DD'):null} onChange={this.datePick.bind(this)}></DatePicker>
 
-
                     </ConfigProvider>
 
                     <span className="error-tips" style={{display:`${dateTips?'block':'none'}`}}>请选择日期</span>
@@ -142,93 +141,89 @@ class StopSchedule extends Component{
 
                 <Loading type="loading" spinning={classHourLoading}>
 
-                    <div className="class-hour-pick-wrapper">
+                    {
+                        classHours.length>0?
 
-                        {
+                            <div className="class-hour-pick-wrapper">
 
-                            classHours.map((item,key) => {
+                                {
+
+                                    classHours.map((item,key) => {
 
 
-                                let noonChecked = false;
+                                        let noonChecked = false;
 
 
-                                classHoursCheckedList.map(itm => {
+                                        classHoursCheckedList.map(itm => {
 
-                                    if (itm.type === item.type){
+                                            if (itm.type === item.type){
 
-                                        if (itm.checked){
+                                                if (itm.checked){
 
-                                            noonChecked = true;
-
-                                        }
-
-                                    }
-
-                                });
-
-                                return  <div key={key} className="class-hour-item clearfix">
-
-                                    <div className="noon">
-
-                                        <div className={`check-item ${noonChecked?'active':''}`} onClick={this.classHoursChecked.bind(this,{type:'noon',id:item.type})}>
-
-                                            {item.name}
-
-                                        </div>
-
-                                    </div>
-
-                                    {
-
-                                        item.list.map((i,k) => {
-
-                                            let itemChecked = false;
-
-                                            classHoursCheckedList.map(it => {
-
-                                                if (it.type === item.type){
-
-                                                    if (it.list.includes(i.id)){
-
-                                                        itemChecked = true;
-
-                                                    }
+                                                    noonChecked = true;
 
                                                 }
 
-                                            });
+                                            }
 
-                                            return <div key={k} className={`check-item ${itemChecked?'active':''}`} onClick={this.classHoursChecked.bind(this,{type:'item',pid:item.type,id:i.id})}>
+                                        });
 
-                                                第{i.name}节
+                                        return  <div key={key} className="class-hour-item clearfix">
+
+                                            <div className="noon">
+
+                                                <div className={`check-item ${noonChecked?'active':''}`} onClick={this.classHoursChecked.bind(this,{type:'noon',id:item.type})}>
+
+                                                    {item.name}
+
+                                                </div>
 
                                             </div>
 
-                                        })
+                                            {
 
-                                    }
+                                                item.list.map((i,k) => {
 
-                                </div>
+                                                    let itemChecked = false;
 
-                            })
+                                                    classHoursCheckedList.map(it => {
 
-                        }
+                                                        if (it.type === item.type){
 
-                        {
+                                                            if (it.list.includes(i.id)){
 
-                            classHours.length>0?
+                                                                itemChecked = true;
 
-                                <span className="error-tips" style={{display:`${scheduleTips?'block':'none'}`}}>请选择节次</span>
+                                                            }
 
-                                :''
+                                                        }
 
-                        }
+                                                    });
 
-                    </div>
+                                                    return <div key={k} className={`check-item ${itemChecked?'active':''}`} onClick={this.classHoursChecked.bind(this,{type:'item',pid:item.type,id:i.id})}>
 
+                                                        第{i.name}节
+
+                                                    </div>
+
+                                                })
+
+                                            }
+
+                                        </div>
+
+                                    })
+
+                                }
+
+                            </div>
+
+                            :''
+                    }
 
                 </Loading>
 
+                <span className="error-tips" style={{display:`${scheduleTips?'block':'none'}`}}>请选择节次</span>
 
             </div>
 

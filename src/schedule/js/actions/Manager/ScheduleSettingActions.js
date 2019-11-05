@@ -367,51 +367,114 @@ const PageUpdate = () => {
 //切换调整模式
 const SettingTypeSitch = ({type}) => {
 
-    return ( dispatch,getState ) => {
+    return (dispatch, getState) => {
 
-        const { SettingByUnify,SettingByPeriod } = getState().Manager.ScheduleSetting;
+        const {SchoolID} = getState().LoginUser;
 
-        let { ClassHourList } = SettingByUnify;
+        const {SettingByUnify, SettingByPeriod} = getState().Manager.ScheduleSetting;
+
+        let {ClassHourList} = SettingByUnify;
 
         let {PeriodSettingList} = SettingByPeriod;
 
-        dispatch({type:MANAGER_SCHEDULE_SETTING_SETTING_TYPE_CHANGE,data:type});
+        ApiActions.ShiftClassHourModel({SchoolID, CreateType: type, dispatch}).then(data => {
 
-        if (type===1){
+            if (data) {
 
-            ClassHourList = { Morning:[],Afternoon:[] };
+                //由统一切换到按学段
+                if (type === 1) {
 
-            dispatch({type:MANAGER_SCHEDULE_SETTING_SETTING_UNIFY_INIT,data:ClassHourList});
+                    //先清空之前存留的课时,只保留学段
+                    PeriodSettingList = PeriodSettingList.map(item => {
 
-        }else if (type===0){
+                        return {
 
-            PeriodSettingList = PeriodSettingList.map(item=>{
+                            ...item,
 
-               return {
+                            ClassHourList: {}
 
-                   ...item,
+                        }
 
-                   ClassHourList:{
+                    });
 
-                       Morning:[],
+                    //将最新获取的课时填入学段课时
+                    PeriodSettingList = PeriodSettingList.map(item => {
 
-                       Afternoon:[]
+                        let Morning = [], Afternoon = [];
 
-                   }
+                        data.map(i => {
 
-               }
+                            if (i.PeriodID === item.PeriodID) {
 
-            });
+                                if (i.ClassHourType === 1) {
 
-            dispatch({type:MANAGER_SCHEDULE_SETTING_SETTING_PERIOD_INIT,data:PeriodSettingList});
+                                    Morning.push(i);
 
-        }
+                                } else if (i.ClassHourType === 2) {
 
-        dispatch({type:AppAlertActions.APP_ALERT_HIDE});
+                                    Afternoon.push(i);
 
-        dispatch(AppAlertActions.alertSuccess({title:"切换成功，请添加课时"}));
+                                }
 
-    }
+                            }
+
+                        });
+
+                        return {
+
+                            ...item,
+
+                            ClassHourList: {Morning, Afternoon}
+
+                        }
+
+                    });
+
+                    dispatch({type: MANAGER_SCHEDULE_SETTING_SETTING_PERIOD_INIT, data: PeriodSettingList});
+
+                } else {//由按学段切换到统一
+
+                    //先清空之前存留的课时
+                    ClassHourList = {};
+
+                    let Morning = [], Afternoon = [];
+
+                    //将最新获取的课时填入学段课时
+
+                    data.map(item => {
+
+                        if (item.ClasssHourType === 1) {
+
+                            Morning.push(item);
+
+                        } else if (item.ClasssHourType === 2) {
+
+                            Afternoon.push(item);
+
+                        }
+
+                    });
+
+                    ClassHourList['Morning'] = Morning;
+
+                    ClassHourList['Afternoon'] = Afternoon;
+
+                    dispatch({type: MANAGER_SCHEDULE_SETTING_SETTING_UNIFY_INIT, data: ClassHourList});
+
+                }
+                //最后做界面的切换
+
+                dispatch({type: AppAlertActions.APP_ALERT_HIDE});
+
+                dispatch(AppAlertActions.alertSuccess({title: "切换成功，请添加课时"}));
+
+                dispatch({type: MANAGER_SCHEDULE_SETTING_SETTING_TYPE_CHANGE, data: type});
+
+            }
+
+        });
+
+    };
 
 };
 
@@ -794,6 +857,7 @@ const AddClassHourOk = () => {
 
 };
 
+
 const EditClassHourOk = () => {
 
   return (dispatch,getState) => {
@@ -832,6 +896,7 @@ const EditClassHourOk = () => {
               }
 
               let SortResult = SortClassHourList({StartHour,StartMin,EndHour,EndMin,ClassHourList:NewClassHourList,AMLimit});
+
 
               if (SortResult.ErrorCode===0){
 
@@ -952,7 +1017,7 @@ const LinkageChange = () => {
 
        }
 
-        ApiActions.SetScheduleIsAutomatic({IsEnable:NewIsEnable,Times,SchoolID,dispatch}).then(data=>{
+        ApiActions.SetScheduleIsAutomatic({IsEnable:NewIsEnable,Times:parseInt(Times),SchoolID,dispatch}).then(data=>{
 
            if (data===0){
 
@@ -1001,6 +1066,8 @@ const SwitchTimeEditOk = () => {
                         dispatch({type:MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_OK});
 
                         dispatch({type:MANAGER_SCHEDULE_SETTING_LINKAGE_TIME_EDIT_CLOSE});
+
+                        PageUpdate();
 
                     }
 
@@ -1116,11 +1183,11 @@ const SortClassHourList = ({StartHour,StartMin,EndHour,EndMin,ClassHourList,AMLi
 
     }else{
 
-        List.map((item,key)=>{
+        for(let i = 0;i<=List.length-1;i++){
 
-            let _StartTime = TransformTime(item.StartTime);
+            let _StartTime = TransformTime(List[i].StartTime);
 
-            let _EndTime = TransformTime(item.EndTime);
+            let _EndTime = TransformTime(List[i].EndTime);
 
             //如果开始时间小于该时间的情况下
 
@@ -1128,17 +1195,19 @@ const SortClassHourList = ({StartHour,StartMin,EndHour,EndMin,ClassHourList,AMLi
 
                 if (EndTime>=_StartTime){
 
-                        ErrorCode = -1;
+                    ErrorCode = -1;
 
-                        Msg = "课时时间冲突！";
+                    Msg = "课时时间冲突！";
 
-                        return ;
+                    break ;
 
                 }else{
 
-                    ClassHourNO = key+1;
+                    ClassHourNO = i+1;
 
                     ErrorCode = 0;
+
+                    break ;
 
                 }
 
@@ -1146,26 +1215,29 @@ const SortClassHourList = ({StartHour,StartMin,EndHour,EndMin,ClassHourList,AMLi
 
 
 
-                    ErrorCode = -1;
+                ErrorCode = -1;
 
-                    Msg = "课时时间冲突！";
+                Msg = "课时时间冲突！";
 
-                    return ;
+                break ;
 
 
             }else {
 
-                if (key === List.length-1){
+                if (i === List.length-1){
 
-                    ClassHourNO = key+2;
+                    ClassHourNO = i+2;
 
                     ErrorCode = 0;
+
+                    break ;
 
                 }
 
             }
 
-        });
+
+        }
 
     }
 

@@ -32,7 +32,11 @@ const ClassSingle = (state={
 
     OptionalClassData:[],
 
-    OptionalClassCurrentPage:1
+    OptionalClassCurrentPage:1,
+
+    CancelBtnShow:'n',
+
+    SearchValue:''
 
 },actions) => {
 
@@ -66,7 +70,11 @@ const ClassSingle = (state={
 
                 ClassList:[],
 
-                OptionalClassShow:false
+                OptionalClassShow:false,
+
+                CancelBtnShow:'n',
+
+                SearchValue:''
 
             };
 
@@ -155,6 +163,18 @@ const ClassSingle = (state={
         case CSActions.MANAGER_CLASS_SINGLE_OPTIONAL_CLASS_PAGE_CHANGE:
 
             return {...state,OptionalClassCurrentPage:actions.data};
+
+        case CSActions.MANAGER_CSA_LEFT_MENU_SEARCH_INPUT_CHANGE:
+
+            return { ...state,SearchValue:actions.data };
+
+        case  CSActions.MANAGER_CSA_LEFT_MENU_CANCEL_BTN_SHOW:
+
+            return {...state,CancelBtnShow:'y'};
+
+        case  CSActions.MANAGER_CSA_LEFT_MENU_CANCEL_BTN_HIDE:
+
+            return { ...state,CancelBtnShow:'n' };
 
         default:
 

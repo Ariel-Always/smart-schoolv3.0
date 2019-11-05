@@ -18,7 +18,7 @@ import SingleDoubleTable from "../../component/SingleDoubleTable";
 
 import OptionalClassModal from "../../component/OptionalClassModal";
 
-import ComPageInit from "../../actions/ComPageInit";
+import ComPageRefresh from "../../actions/ComPageRefresh";
 
 
 class ClassSingle extends Component{
@@ -29,7 +29,7 @@ class ClassSingle extends Component{
 
         const {dispatch} = props;
 
-        ComPageInit(dispatch,ManagerIndexActions.ClassSingleInit());
+        ComPageRefresh.ComPageInit(dispatch,ManagerIndexActions.ClassSingleInit());
 
     }
 
@@ -109,6 +109,11 @@ class ClassSingle extends Component{
 
         dispatch({type:CSActions.MANAGER_CLASS_SINGLE_SEARCH_RESULT_HIDE});
 
+        dispatch({type:CSActions.MANAGER_CSA_LEFT_MENU_CANCEL_BTN_HIDE});
+
+        dispatch({type:CSActions.MANAGER_CSA_LEFT_MENU_SEARCH_INPUT_CHANGE,data:''});
+
+
     }
 
     //走班详情弹窗打开
@@ -144,6 +149,16 @@ class ClassSingle extends Component{
 
     }
 
+    //左侧菜单输入框改变
+
+    SearchValueChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:CSActions.MANAGER_CSA_LEFT_MENU_SEARCH_INPUT_CHANGE,data:e.target.value});
+
+    }
+
 
     render() {
 
@@ -158,52 +173,58 @@ class ClassSingle extends Component{
 
             <div className="subject-teacher-teacher-content clearfix">
 
-                <LeftMenu
-                    title="班级列表"
-                    type="class"
-                    pickList={ClassSingle.ClassList}
-                    pickClick={this.menuPickClick.bind(this)}
-                    searchClick={this.searchClick.bind(this)}
-                    cancelSearch={this.cancelSearch.bind(this)}
-                    searchShow={ClassSingle.SearchWrapperShow}
-                    searchResult={ClassSingle.SearchResult}
-                    leftMenuSearchLoading={ClassSingle.SearchLoadingShow}>
-
-                </LeftMenu>
-
-                {
-
-                    ClassSingle.PickClass===''?
-
-                        '':
-
-                        <div className="pick-teacher-wrapper">
-
-                            <span className="teacher-name">{ClassSingle.PickClass}</span>
-
-                            {/*<span className="course-count"> (本周共<span className="count">{ClassSingle.ScheduleCount}</span>节课)</span>*/}
-
-                        </div>
-
-                }
-
-                <TermPick
-
-                    ItemWeek={ClassSingle.WeekList}
-
-                    ItemTermName={PeriodWeekTerm.ItemTerm?PeriodWeekTerm.ItemTerm.TermName:''}
-
-                    NowWeekNo={ClassSingle.WeekNO}
-
-                    weekPickEvent = {this.weekPickEvent.bind(this)}
-
-                    weekNextEvent = {this.weekNextEvent.bind(this)}
-
-                    weekPrevEvent = {this.weekPrevEvent.bind(this)}>
-
-                </TermPick>
-
                 <Loading tip="请稍后..." spinning={ClassSingle.ScheduleLoadingShow}>
+
+                    <LeftMenu
+                        title="班级列表"
+                        type="class"
+                        pickList={ClassSingle.ClassList}
+                        pickClick={this.menuPickClick.bind(this)}
+                        searchClick={this.searchClick.bind(this)}
+                        cancelSearch={this.cancelSearch.bind(this)}
+                        searchShow={ClassSingle.SearchWrapperShow}
+                        searchResult={ClassSingle.SearchResult}
+                        leftMenuSearchLoading={ClassSingle.SearchLoadingShow}
+                        PickID={ClassSingle.PickClassID}
+                        CancelBtnShow={ClassSingle.CancelBtnShow}
+                        SearchValue={ClassSingle.SearchValue}
+                        SearchValueChange={this.SearchValueChange.bind(this)}>
+                        >
+
+                    </LeftMenu>
+
+                    {
+
+                        ClassSingle.PickClass===''?
+
+                            '':
+
+                            <div className="pick-teacher-wrapper">
+
+                                <span className="teacher-name">{ClassSingle.PickClass}</span>
+
+                                {/*<span className="course-count"> (本周共<span className="count">{ClassSingle.ScheduleCount}</span>节课)</span>*/}
+
+                            </div>
+
+                    }
+
+                    <TermPick
+
+                        ItemWeek={ClassSingle.WeekList}
+
+                        ItemTermName={PeriodWeekTerm.ItemTerm?PeriodWeekTerm.ItemTerm.TermName:''}
+
+                        NowWeekNo={ClassSingle.WeekNO}
+
+                        weekPickEvent = {this.weekPickEvent.bind(this)}
+
+                        weekNextEvent = {this.weekNextEvent.bind(this)}
+
+                        weekPrevEvent = {this.weekPrevEvent.bind(this)}>
+
+                    </TermPick>
+
 
                     <SingleDoubleTable
                         topHeight = {64}

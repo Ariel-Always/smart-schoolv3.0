@@ -1,10 +1,10 @@
 import React from 'react';
 
-import Method from '../Method';
-
 import AppAlertActions from '../AppAlertActions';
 
 import ApiActions from '../ApiActions';
+
+import ComPageRefresh from '../ComPageRefresh'
 
 //关于弹窗公共部分
 const ADJUST_BY_TEACHER_SHOW = 'ADJUST_BY_TEACHER_SHOW';
@@ -214,8 +214,6 @@ const replaceScheduleInit = () => {
 
                 let teacherList = data.ItemSubject.map(item => {
 
-                    console.log(data.ItemTeacher);
-
                     let list =  data.ItemTeacher.map(i => {
 
                         if (i.SubjectID === item.SubjectID){
@@ -305,7 +303,8 @@ const teacherDropChange = (info) => {
 
                 }).filter(i => i!==undefined);
 
-                dispatch({type:REPLACE_SHCEDULE_CLASS_LIST_UPDATE,data:classList});
+
+                dispatch({type:REPLACE_SHCEDULE_CLASS_LIST_UPDATE,data:{classList,ClassTotalList:data.ItemClass}});
 
                 dispatch({type:REPLACE_SHCEDULE_TEACHER_SSUBJECT_DROP_SHOW,data:{
 
@@ -317,7 +316,7 @@ const teacherDropChange = (info) => {
 
             }else{
 
-                let  subject =  data.ItemSubject[0]?data.ItemSubject[0]:{SubjectID:"none",SubjectName:"未设置"};
+                let  subject =  data.ItemSubject[0]?data.ItemSubject[0]:{SubjectID:"none",SubjectName:""};
 
                 let subjectObj = { id:subject.SubjectID,name:subject.SubjectName };
 
@@ -333,7 +332,7 @@ const teacherDropChange = (info) => {
 
                 }):[];
 
-                dispatch({type:REPLACE_SHCEDULE_CLASS_LIST_UPDATE,data:classList});
+                dispatch({type:REPLACE_SHCEDULE_CLASS_LIST_UPDATE,data:{classList,ClassTotalList:classList}});
 
                 dispatch({type:REPLACE_SHCEDULE_TEACHER_SSUBJECT_DROP_HIDE,data:{
 
@@ -442,8 +441,6 @@ const replaceTeacherClickSearch = (key) => {
 
                 if (data){
 
-                    console.log(data);
-
                     let teacherSearchList = data.map(item => {
 
                         return{
@@ -484,6 +481,39 @@ const replaceTeacherSearchClose = (key) => {
     }
 
 };
+
+
+//教师学科变化
+const TSChange = (e) => {
+
+    return (dispatch,getState)=>{
+
+        const SubjectID = e.value;
+
+        const { ClassTotalList } = getState().Manager.AdjustByTeacherModal.replaceSchedule;
+
+        let ClassList = ClassTotalList.filter(item=>item.SubjectID===SubjectID);
+
+        let classList = ClassList.map(item=>{
+
+            return {
+
+                id:item.ClassID,
+
+                name:item.ClassName
+
+            }
+
+        });
+
+        dispatch({type:REPLACE_SHCEDULE_CLASS_LIST_UPDATE,data:{classList}});
+
+        dispatch({type:REPLACE_SHCEDULE_CLASS_CHECKED,data:[]});
+
+    }
+
+};
+
 
 //点击班级
 const classChecked = (id) => {
@@ -536,9 +566,11 @@ const radioChange = (id) => {
 
                 if (id === 'month') {
 
-                    const {ItemMoth} = data;
+                    const {ItemMonth} = data;
 
-                    let list = ItemMoth.map(item => {
+
+
+                    let list = ItemMonth.map(item => {
 
                         return {
 
@@ -551,6 +583,9 @@ const radioChange = (id) => {
                     });
 
                     dispatch({type: REPLACE_SHCEDULE_MONTHS_LIST_UPDATE, data: list});
+
+
+
                 }
 
                 if (id === 'week') {
@@ -1893,6 +1928,8 @@ const changeTimeNewTimeChange = (date) => {
             Promise.all([GetWeekInfoByDate,GetScheduleByTeacherIDAndDate]).then(res => {
 
 
+                console.log(res);
+
                 const json1 = res[0];
 
                 const json2 = res[1];
@@ -1962,15 +1999,15 @@ const changeTimeNewTimeChange = (date) => {
 
                 if (json2.length>0){
 
-                    console.log(json2);
-
                     let { newWeek } = getState().Manager.AdjustByTeacherModal.changeTime;
 
                     let data = json2;
 
-                    let ClassHour = data.ItemClassHour.map(item => {
+                    let ClassHour = json2.map(item => {
 
                         let title = '';
+
+                        console.log(item);
 
                         switch (item.ClassHourType) {
 
@@ -2050,8 +2087,6 @@ const changeTimeNewClassHourPick = (info) => {
 
       dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"weekChange",value:{...newWeek,ClassHour:info.title}}});
 
-      let getClassRoom = Method.getGetData('/scheduleEmptyClassRoom');
-
       let ClassHourNO = info.value;
 
       let ClassDate = getState().Manager.AdjustByTeacherModal.changeTime.newDate;
@@ -2094,7 +2129,7 @@ const changeTimeNewClassHourPick = (info) => {
 
                         //是否被占用的接口
 
-                      if (data){
+                      if (data===1){
 
                           if (data.Useded === 1){
 
@@ -3296,6 +3331,12 @@ const ModalCommit = () => {
 
               let ClassID = classCheckedList.join(',');
 
+              let ClassNameList = classCheckedList.map(item=>{
+
+                  return classList.find(i=>i.id===item).name
+
+              }).join(',');
+
 
 
               dispatch({type:ADJUST_BY_TEACHER_LOADING_SHOW});
@@ -3304,17 +3345,21 @@ const ModalCommit = () => {
 
                   Type,Item,TeacherID1,TeacherID2,dispatch,
 
-                  SchoolID,UserID,UserType,SubjectID,ClassID
+                  SchoolID,UserID,UserType:parseInt(UserType),SubjectID,ClassID,ClassName:ClassNameList
 
               }).then((data) => {
 
-                  if (data){
+                  if (data===0){
 
                       dispatch({type:ADJUST_BY_TEACHER_HIDE});
 
                       dispatch(AppAlertActions.alertSuccess({title:"找人代课成功！"}));
 
+                      ComPageRefresh.ComPageUpdate(dispatch);
+
                   }
+
+                  dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
 
               })
 
@@ -3410,19 +3455,24 @@ const ModalCommit = () => {
 
           if (originDateOk&&originTeacherOk&&originScheduleOk&&targetTeacherOk&&targetDateOk&&targetScheduleOk){
 
+
+              const { UserID,UserType } = getState().LoginUser;
+
               let ScheduleID1 = originScheduleDropSelectd.value;
 
               let ScheduleID2 = targetScheduleDropSelectd.value;
 
               dispatch({type:ADJUST_BY_TEACHER_LOADING_SHOW});
 
-              ApiActions.ExchangeTeacherSchedule({ScheduleID1,ScheduleID2,dispatch}).then(data=>{
+              ApiActions.ExchangeTeacherSchedule({UserID,UserType:parseInt(UserType),ScheduleID1,ScheduleID2,dispatch}).then(data=>{
 
-                 if (data){
+                 if (data===0){
 
                      dispatch({type:ADJUST_BY_TEACHER_HIDE});
 
                      dispatch(AppAlertActions.alertSuccess({title:"与人换课成功！"}));
+
+                     ComPageRefresh.ComPageUpdate(dispatch);
 
                  }
 
@@ -3515,6 +3565,7 @@ const ModalCommit = () => {
 
           if (teacherOk&&originDateOk&&originSchedukeOk&&targetDateOk&&targetScheduleOk&&targetClassRoomOk&&(!errorTips)){
 
+              let { UserID,UserType } = getState().LoginUser;
 
               let ScheduleID = oldClassHourDrop.value;
 
@@ -3532,15 +3583,17 @@ const ModalCommit = () => {
 
               ApiActions.EditClassDateOne({
 
-                  ScheduleID,ClassDate1,ClassHourNO1,ClassDate2,ClassHourNO2,ClassRoomID,dispatch
+                  UserID,UserType,ScheduleID,ClassDate1,ClassHourNO1,ClassDate2,ClassHourNO2,ClassRoomID,dispatch
 
               }).then(data=>{
 
-                 if (data){
+                 if (data===0){
 
                      dispatch({type:ADJUST_BY_TEACHER_HIDE});
 
                      dispatch(AppAlertActions.alertSuccess({title:"调整时间成功！"}));
+
+                     ComPageRefresh.ComPageUpdate(dispatch);
 
                  }
 
@@ -3612,7 +3665,7 @@ const ModalCommit = () => {
 
               dispatch({type:ADJUST_BY_TEACHER_LOADING_SHOW});
 
-              let { SchoolID } = getState().LoginUser;
+              let { SchoolID,UserType,UserID } = getState().LoginUser;
 
               let ClassHourNo = classHourList.find(item=>item.value === classHourDrop.value).NO;
 
@@ -3626,16 +3679,18 @@ const ModalCommit = () => {
 
               ApiActions.AdjustClassRooomOfSchedule({
 
-                  SchoolID,Type,Item,ClassRoomID1,ClassRoomID2,dispatch
+                  UserID,UserType,SchoolID,Type,Item,ClassRoomID1,ClassRoomID2,dispatch
 
               }).then(data=>{
 
 
-                  if (data){
+                  if (data===0){
 
                       dispatch({type:ADJUST_BY_TEACHER_HIDE});
 
                       dispatch(AppAlertActions.alertSuccess({title:"调整教室成功！"}));
+
+                      ComPageRefresh.ComPageUpdate(dispatch);
 
                   }
 
@@ -3714,11 +3769,13 @@ const ModalCommit = () => {
 
               }).then(data=>{
 
-                  if (data){
+                  if (data===0){
 
                       dispatch({type:ADJUST_BY_TEACHER_HIDE});
 
                       dispatch(AppAlertActions.alertSuccess({title:"停课成功！"}))
+
+                      ComPageRefresh.ComPageUpdate(dispatch);
 
                   }
 
@@ -3971,6 +4028,8 @@ export default {
     classHourDateChecked,
 
     classHourChecked,
+
+    TSChange,
 
     //与人换课
 

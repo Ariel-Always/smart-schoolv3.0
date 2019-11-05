@@ -25,7 +25,7 @@ class AdjustBtnsWrapper extends Component{
 
                 <span className="adjust-schedule" id="adjust-schedule" onClick={() => adjustBtnsToggle()}>调整课程安排</span>
 
-                <span className="see-adjust-log">查看调课日志</span>
+                <span className="see-adjust-log" onClick={()=>{ window.open('/html/schedule#/manager/adjustlog'); }}>查看调课日志</span>
 
                 <div className="adjust-list-wrapper" id="adjust-list-wrapper" style={{display:`${adjustBtns.adjustBtnsShow?'block':'none'}`}}>
 

@@ -12,7 +12,17 @@ const SubjectTeacherSubjectSchedule = (state={
 
     loadingShow:true,
 
-    TeacherCount:0
+    TeacherCount:0,
+
+    SubjectSelectd:"",
+
+    SubjectDropList:[],
+
+    SubjectDropShow:false,
+
+    SubjectTitleName:"",
+
+    SubjectTitleID:''
 
 }, actions) => {
 
@@ -61,6 +71,26 @@ const SubjectTeacherSubjectSchedule = (state={
         case STSActions.LOADING_SHOW:
 
             return {...state,loadingShow:true};
+
+        case STSActions.TEACHER_STS_SUBJECT_DROP_SHOW:
+
+            return { ...state,SubjectDropShow:true };
+
+        case STSActions.TEACHER_STS_SUBJECT_DROP_HIDE:
+
+            return { ...state,SubjectDropShow:false };
+
+        case STSActions.TEACHER_STS_SUBJECT_DROP_CHANGE:
+
+            return { ...state,SubjectSelectd:actions.data };
+
+        case STSActions.TEACHER_STS_SUBJECT_DROP_LIST_CHANGE:
+
+            return { ...state,SubjectDropList:actions.data };
+
+        case STSActions.TEACHER_STS_SUBJECT_TITLE_CHANGE:
+
+            return { ...state,SubjectTitleName:actions.data.title,SubjectTitleID:actions.data.id };
 
         default:
 

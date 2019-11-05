@@ -2,6 +2,8 @@ import React,{Component} from 'react';
 
 import { Table } from "../../../common";
 
+import { message } from 'antd';
+
 import $ from 'jquery';
 
 class DoubleSingleTable extends Component{
@@ -11,17 +13,25 @@ class DoubleSingleTable extends Component{
 
         const  { scrollToBottom } = this.props;
 
+        let ScrollTop = 0;
+
         $('#tb').find('div.ant-table-body').scroll(() => {
 
                 let scrollTop = $('#tb').find('div.ant-table-body').scrollTop();
 
-                let wrapperHeight = $('#tb .ant-table-scroll>.ant-table-body .ant-table-tbody').height();
+                if(scrollTop!==ScrollTop){
 
-                let scrollHeight = $('#tb .ant-table-scroll>.ant-table-body').height();
+                    ScrollTop = scrollTop;
 
-                if ((wrapperHeight - scrollTop + 8)<= scrollHeight){
+                    let wrapperHeight = $('#tb .ant-table-scroll>.ant-table-body .ant-table-tbody').height();
 
-                    scrollToBottom();
+                    let scrollHeight = $('#tb .ant-table-scroll>.ant-table-body').height();
+
+                    if ((wrapperHeight - scrollTop + 21)<= scrollHeight){
+
+                        scrollToBottom();
+
+                    }
 
                 }
 
@@ -71,37 +81,37 @@ class DoubleSingleTable extends Component{
         });
 
 
-        for (let i = 1; i <= 7; i++){
+        for (let i = 0; i <= 6; i++){
 
             let weekTitle = '星期一';
 
             switch (i) {
 
-                case 1:
+                case 0:
                     weekTitle = '星期一';
                     break;
 
-                case 2:
+                case 1:
                     weekTitle = '星期二';
                     break;
 
-                case 3:
+                case 2:
                     weekTitle = '星期三';
                     break;
 
-                case 4:
+                case 3:
                     weekTitle = '星期四';
                     break;
 
-                case 5:
+                case 4:
                     weekTitle = '星期五';
                     break;
 
-                case 6:
+                case 5:
                     weekTitle = '星期六';
                     break;
 
-                case 7:
+                case 6:
                     weekTitle = '星期日';
                     break;
 

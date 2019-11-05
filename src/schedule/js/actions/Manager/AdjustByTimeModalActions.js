@@ -1,4 +1,4 @@
-import Method from '../Method';
+import ComPageRefresh from '../ComPageRefresh';
 
 import AppAlertActions from '../../actions/AppAlertActions';
 
@@ -144,15 +144,15 @@ const InfoInit = () => {
 
                 if (item.ClassHourType === 1){
 
-                    morning['list'].push({no:item.ClassHOurNO,name:item.ClassHourName});
+                    morning['list'].push({no:item.ClassHourNO,name:item.ClassHourName});
 
                 }else if (item.ClassHourType === 2){
 
-                    afternoon['list'].push({no:item.ClassHOurNO,name:item.ClassHourName});
+                    afternoon['list'].push({no:item.ClassHourNO,name:item.ClassHourName});
 
                 }else if (item.ClassHourType === 3){
 
-                    tonight['list'].push({no:item.ClassHOurNO,name:item.ClassHourName});
+                    tonight['list'].push({no:item.ClassHourNO,name:item.ClassHourName});
 
                 }
 
@@ -782,7 +782,7 @@ const oldDateUpdate = (date) => {
 //新的日期变更
 const newDateUpdate = (date) => {
 
-    return dispatch => {
+    return (dispatch,getState) => {
 
         dispatch({type:ADJUST_BY_TIME_NEW_DATE_UPDATE,data:date});
 
@@ -800,7 +800,7 @@ const newDateUpdate = (date) => {
 
                 if (data){
 
-                    const { WeekNO,WeekDay } = json.Data;
+                    const { WeekNO,WeekDay } = data;
 
                     let weekDay = '';
 
@@ -1064,19 +1064,25 @@ const commitInfo = () => {
 
             }).filter(i => i!==undefined).join(',');
 
+            let { UserID } = getState().LoginUser;
+
             ApiActions.BatchEditClassDate(
 
-                {ClassDate1,ClassDate2,ClassHours1,ClassHours2,Grades}
+                {UserID,ClassDate1,ClassDate2,ClassHours1,ClassHours2,Grades,dispatch}
 
             ).then(data => {
 
-               if (data){
+               if (data===0){
 
                    dispatch({type:ADJUST_BY_TIME_HIDE});
 
                    dispatch(AppAlertActions.alertSuccess({title:"调整成功！"}));
 
+                   ComPageRefresh.ComPageUpdate(dispatch);
+
                }
+
+                dispatch({type:ADJUST_BY_TIME_LOADING_HIDE});
 
             });
 

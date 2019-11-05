@@ -13,7 +13,7 @@
 
   }
 
-  &>.dropdown_container{
+  &>.ant-spin-nested-loading>.ant-spin-container>.dropdown_container{
 
     vertical-align:top;
 
@@ -107,6 +107,12 @@
 
     float: right;
 
+  }
+  
+  .please-select-teacher{
+
+    color: #999999;
+    
   }
 
 }

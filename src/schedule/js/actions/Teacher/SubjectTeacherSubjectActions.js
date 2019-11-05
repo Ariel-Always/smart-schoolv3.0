@@ -18,6 +18,17 @@ const LOADING_SHOW = 'LOADING_SHOW';
 
 const LOADING_HIDE = 'LOADING_HIDE';
 
+const TEACHER_STS_SUBJECT_DROP_SHOW = 'TEACHER_STS_SUBJECT_DROP_SHOW';
+
+const TEACHER_STS_SUBJECT_DROP_HIDE = 'TEACHER_STS_SUBJECT_DROP_HIDE';
+
+const TEACHER_STS_SUBJECT_DROP_CHANGE = 'TEACHER_STS_SUBJECT_DROP_CHANGE';
+
+const TEACHER_STS_SUBJECT_DROP_LIST_CHANGE = 'TEACHER_STS_SUBJECT_DROP_LIST_CHANGE';
+
+const TEACHER_STS_SUBJECT_TITLE_CHANGE = 'TEACHER_STS_SUBJECT_TITLE_CHANGE';
+
+
 //学科教师总表学科课表界面更新
 const STSPageUpdate = (opt) => {
 
@@ -31,15 +42,19 @@ const STSPageUpdate = (opt) => {
 
         let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;
 
-        let {NowWeekNo,ItemSubjectSelect,schedule,pageIndex} = Teacher.SubjectTeacherSubjectSchedule;
+        let {NowWeekNo,SubjectSelectd,SubjectTitleID,schedule,pageIndex,SubjectDropShow} = Teacher.SubjectTeacherSubjectSchedule;
 
         let SubjectID = '';
 
         let PageIndex = 1;
         //判断已选中的学科是否为全部学科
-        if (ItemSubjectSelect.value!==0){
+        if (SubjectDropShow){
 
-            SubjectID = ItemSubjectSelect.value;
+            SubjectID = SubjectSelectd.value;
+
+        }else{
+
+            SubjectID = SubjectTitleID;
 
         }
         //如果是下一页的话
@@ -51,7 +66,7 @@ const STSPageUpdate = (opt) => {
 
         ApiActions.GetAllScheduleOfTeachersBySubjectIDForPage({
 
-            PeriodID,SchoolID,WeekNO:NowWeekNo,PageIndex,PageSize:10,SubjectID
+            SubjectID,PeriodID,SchoolID,WeekNO:NowWeekNo,PageIndex,PageSize:10,dispatch
 
         }).then(data => {
 
@@ -152,6 +167,16 @@ export default {
 
     TEACHER_SUBJECT_TEACHER_SUBJECT_TEACHER_COUNT,
 
-    STSPageUpdate
+    TEACHER_STS_SUBJECT_DROP_SHOW,
+
+    TEACHER_STS_SUBJECT_DROP_HIDE,
+
+    TEACHER_STS_SUBJECT_DROP_CHANGE,
+
+    TEACHER_STS_SUBJECT_DROP_LIST_CHANGE,
+
+    TEACHER_STS_SUBJECT_TITLE_CHANGE,
+
+STSPageUpdate
 
 }

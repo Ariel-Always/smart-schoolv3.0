@@ -535,7 +535,7 @@
 
       margin-bottom:10px;
 
-      &:nth-child(8n+1){
+      &:nth-child(7n+1){
 
         margin-left: 0;
 
@@ -551,7 +551,7 @@
 
       margin-bottom:10px;
 
-      &:nth-child(8n+1){
+      &:nth-child(7n+1){
 
         margin-left: 0;
 
@@ -1348,6 +1348,12 @@
     .error-tips{
 
       position: absolute;
+
+    }
+
+    &>.error-tips{
+
+      left:138px;
 
     }
 

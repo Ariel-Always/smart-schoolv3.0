@@ -8,7 +8,24 @@ class SingleDoubleTable extends Component{
         d = new Date(d);
         //return d;
         //格式化
-        return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+        return d.getFullYear()+"-"+(this.SupplyZero(d.getMonth()+1))+"-"+this.SupplyZero(d.getDate());
+
+    }
+
+
+    SupplyZero(number){
+
+        let NumberStr = number.toString();
+
+        let Number = NumberStr;
+
+        if (NumberStr.length<2){
+
+            Number = `0${NumberStr}`;
+
+        }
+
+        return Number;
 
     }
 
@@ -229,7 +246,7 @@ class SingleDoubleTable extends Component{
 
                                         tds.push(<td key={`${i}${ky}`} className={`shedule${i} `} style={{height:commonHeight,width:commonWidth}}>
 
-                                            <div className={`scheduleDiv ${i === weekDay?'active':''}  ${it.IsShift?'isShift':''}`} style={{width:'100%'}}>
+                                            <div className={`scheduleDiv ${i === weekDay?'active':''}  ${it.IsShift?'isShift':''}`} style={{width:commonWidth}}>
 
 
                                                 {

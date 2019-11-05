@@ -24,7 +24,11 @@ const ClassRoomSingle = (state={
 
     SearchResult:[],
 
-    SearchLoadingShow:false
+    SearchLoadingShow:false,
+
+    CancelBtnShow:'n',
+
+    SearchValue:''
 
 },actions) => {
 
@@ -47,6 +51,10 @@ const ClassRoomSingle = (state={
                 PickClassRoom:'',
 
                 PickClassRoomID:'',
+
+                CancelBtnShow:'n',
+
+                SearchValue:'',
 
                 ScheduleLoadingShow:true,
 
@@ -109,6 +117,21 @@ const ClassRoomSingle = (state={
         case CRSActions.MANAGER_CLASS_ROOM_SINGLE_SEARCH_RESULT_HIDE:
 
             return {...state,SearchWrapperShow:false};
+
+
+        case CRSActions.MANAGER_CRS_LEFT_MENU_SEARCH_INPUT_CHANGE:
+
+            return {...state,SearchValue:actions.data};
+
+        case CRSActions.MANAGER_CRS_LEFT_MENU_CANCEL_BTN_SHOW:
+
+            return {...state,CancelBtnShow:'y'};
+
+        case CRSActions.MANAGER_CRS_LEFT_MENU_CANCEL_BTN_HIDE:
+
+            return {...state,CancelBtnShow:'n'};
+
+
 
         default:
 

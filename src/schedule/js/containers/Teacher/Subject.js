@@ -14,7 +14,9 @@ import DoubleSingleTable from "../../component/DoubleSingleTable";
 
 import $ from 'jquery';
 
-import ComPageInit from "../../actions/ComPageInit";
+import ComPageRefresh from "../../actions/ComPageRefresh";
+
+import {message} from "antd";
 
 class Subject extends Component{
 
@@ -24,7 +26,7 @@ class Subject extends Component{
 
         const {PeriodWeekTerm,dispatch} = this.props;
 
-        ComPageInit(dispatch,TeacherIndexActions.STSPageInit());
+        ComPageRefresh.ComPageInit(dispatch,TeacherIndexActions.STSPageInit());
 
     }
 
@@ -83,6 +85,12 @@ class Subject extends Component{
 
             dispatch(STSAction.STSPageUpdate({nextPage:true}));
 
+        }else if (Math.ceil(TeacherCount/10)>0){
+
+            message.info('已经是最后一页了！',0.2);
+
+            message.config({maxCount:1,top:200});
+
         }
 
     }
@@ -114,12 +122,27 @@ class Subject extends Component{
 
     }
 
+    //切换不同的学科
+
+    subjectChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:STSAction.TEACHER_STS_SUBJECT_DROP_CHANGE,data:e});
+
+        dispatch(STSAction.STSPageUpdate())
+
+    }
+
 
     render() {
 
         const { PeriodWeekTerm,Teacher } = this.props;
 
         const { SubjectTeacherSubjectSchedule,SubjectCourseGradeClassRoom  } = Teacher;
+
+        const {SubjectSelectd,SubjectDropList,SubjectDropShow,SubjectTitleName} = SubjectTeacherSubjectSchedule;
+
 
         let ItemWeek = [];
         //封装获取到的周次
@@ -137,46 +160,71 @@ class Subject extends Component{
 
             <div className="subject-teacher-subject-content">
 
+                <Loading spinning={SubjectTeacherSubjectSchedule.loadingShow} tip="正在为您查找，请稍后...">
 
-                <TermPick
+                    {
 
-                    ItemTermName={PeriodWeekTerm.ItemTerm?PeriodWeekTerm.ItemTerm.TermName:''}
+                        SubjectDropShow?
 
-                    NowWeekNo={SubjectTeacherSubjectSchedule.NowWeekNo}
+                            <DropDown
 
-                    ItemWeek ={ItemWeek}
+                                dropSelectd={SubjectSelectd}
 
-                    weekPickEvent = {this.weekPickEvent.bind(this)}
+                                dropList={SubjectDropList}
 
-                    weekNextEvent = {this.weekNextEvent.bind(this)}
+                                style={{zIndex:5}}
 
-                    weekPrevEvent = {this.weekPrevEvent.bind(this)}>
+                                height={108}
 
-                </TermPick>
+                                onChange={this.subjectChange.bind(this)}>
 
-                <div className="double-single-table-wrapper">
+                            </DropDown>
 
-                    <Loading spinning={SubjectTeacherSubjectSchedule.loadingShow} tip="正在为您查找，请稍后...">
+                            :
 
-                            <DoubleSingleTable
-                                ItemClassHourCount={SubjectCourseGradeClassRoom.ItemClassHourCount}
-                                ItemClassHour={SubjectCourseGradeClassRoom.ItemClassHour}
-                                ItemWeek = {PeriodWeekTerm.ItemWeek}
-                                NowWeekNo={PeriodWeekTerm.NowWeekNo}
-                                leftColWidth={136}
-                                commonColWidth={128}
-                                rowOneHeight={46}
-                                rowTowHeight={64}
-                                commonRowHeight={90}
-                                schedule={SubjectTeacherSubjectSchedule.schedule}
-                                onClickRow={(record) => this.clickRow.bind(this,record)}
-                                scrollToBottom={this.scrollToBottom.bind(this)}>
+                            <div className="subject-title-name">{SubjectTitleName}学科</div>
 
-                            </DoubleSingleTable>
+                    }
 
-                    </Loading>
 
-                </div>
+
+                    <TermPick
+
+                        ItemTermName={PeriodWeekTerm.ItemTerm?PeriodWeekTerm.ItemTerm.TermName:''}
+
+                        NowWeekNo={SubjectTeacherSubjectSchedule.NowWeekNo}
+
+                        ItemWeek ={ItemWeek}
+
+                        weekPickEvent = {this.weekPickEvent.bind(this)}
+
+                        weekNextEvent = {this.weekNextEvent.bind(this)}
+
+                        weekPrevEvent = {this.weekPrevEvent.bind(this)}>
+
+                    </TermPick>
+
+                    <div className="double-single-table-wrapper">
+
+                        <DoubleSingleTable
+                                    ItemClassHourCount={SubjectCourseGradeClassRoom.ItemClassHourCount}
+                                    ItemClassHour={SubjectCourseGradeClassRoom.ItemClassHour}
+                                    ItemWeek = {PeriodWeekTerm.ItemWeek}
+                                    NowWeekNo={PeriodWeekTerm.NowWeekNo}
+                                    leftColWidth={136}
+                                    commonColWidth={128}
+                                    rowOneHeight={46}
+                                    rowTowHeight={64}
+                                    commonRowHeight={90}
+                                    schedule={SubjectTeacherSubjectSchedule.schedule}
+                                    onClickRow={(record) => this.clickRow.bind(this,record)}
+                                    scrollToBottom={this.scrollToBottom.bind(this)}>
+
+                                </DoubleSingleTable>
+
+                    </div>
+
+                </Loading>
 
             </div>
 

@@ -18,7 +18,7 @@ import AdjustByTeacherActions from '../../actions/Teacher/AdjustByTeacherActions
 
 import AdjustByTeacherModal from './AdjustByTeacherModal';
 
-import ComPageInit from "../../actions/ComPageInit";
+import ComPageRefresh from "../../actions/ComPageRefresh";
 
 class TeacherPersonalSchedule extends Component{
 
@@ -28,7 +28,7 @@ class TeacherPersonalSchedule extends Component{
 
         const {dispatch} = props;
 
-        ComPageInit(dispatch,TeacherIndexActions.TeacherPersonalInit());
+        ComPageRefresh.ComPageInit(dispatch,TeacherIndexActions.TeacherPersonalInit());
 
     }
 

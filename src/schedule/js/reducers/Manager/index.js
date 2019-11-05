@@ -29,6 +29,8 @@ import ClassRoomSingle from './ClassRoomSingle';
 
 import ScheduleSetting from './ScheduleSetting';
 
+import AdjustLog from './AdjustLog';
+
 //管理员角色的reduce
 
 const Index = combineReducers({
@@ -59,7 +61,9 @@ const Index = combineReducers({
 
     ClassRoomSingle,
 
-    ScheduleSetting
+    ScheduleSetting,
+
+    AdjustLog
 
 });
 

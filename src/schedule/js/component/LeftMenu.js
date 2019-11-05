@@ -4,13 +4,15 @@ import $ from 'jquery';
 
 import {Search,Loading,Empty} from "../../../common";
 
+import ScrollBars from 'react-custom-scrollbars';
+
 class LeftMenu extends Component{
 
     constructor(props) {
 
         super(props);
 
-        this.state={
+       /* this.state={
 
             catActive:'',
 
@@ -18,7 +20,7 @@ class LeftMenu extends Component{
 
             searchActive:''
 
-        };
+        };*/
 
     }
 
@@ -45,7 +47,7 @@ class LeftMenu extends Component{
 
         const {pickClick} = this.props;
 
-        this.setState({catChildrenActive:pickInfo.catChildrenId,catActive:pickInfo.catId});
+        //this.setState({catChildrenActive:pickInfo.catChildrenId,catActive:pickInfo.catId});
 
         pickClick(pickInfo);
 
@@ -56,7 +58,7 @@ class LeftMenu extends Component{
 
         const {pickClick} = this.props;
 
-        this.setState({searchActive:pickInfo.catChildrenId});
+        //this.setState({searchActive:pickInfo.catChildrenId});
 
         pickClick(pickInfo);
 
@@ -65,7 +67,17 @@ class LeftMenu extends Component{
 
     render() {
 
-        const { title,type,pickList,pickClick,searchClick,cancelSearch,searchShow,searchResult,leftMenuSearchLoading,searchTitleShow,searchTitle } = this.props;
+        const {
+
+            title,type,pickList,pickClick,searchClick,
+
+            cancelSearch,searchShow,searchResult,leftMenuSearchLoading,
+
+            searchTitleShow,searchTitle,PickID,CancelBtnShow,SearchValue,
+
+            SearchValueChange
+
+        } = this.props;
 
         return (
 
@@ -73,7 +85,7 @@ class LeftMenu extends Component{
 
                 <div className="left-menu-title">{title}</div>
 
-                <Search width={204} onClickSearch={searchClick} onCancelSearch={cancelSearch}></Search>
+                <Search width={204} CancelBtnShow={CancelBtnShow} Value={SearchValue} onChange={(e)=>SearchValueChange(e)} onClickSearch={searchClick} onCancelSearch={cancelSearch}></Search>
 
                 {
 
@@ -91,38 +103,44 @@ class LeftMenu extends Component{
 
                             }
 
-                            <div className={`left-menu-search-wrapper ${type}`}>
+                            <ScrollBars autoHide autoHeight autoHeightMax={760}>
 
-                            {
+                                <div className={`left-menu-search-wrapper ${type}`}>
 
-                                searchResult&&searchResult.length>0?
+                                {
 
-                                    searchResult.map((item,key) => {
+                                    searchResult&&searchResult.length>0?
 
-                                    return <div key={key} className={`cat-item ${item.id===this.state.searchActive?'active':''}`} data-id={item.id}>
+                                        searchResult.map((item,key) => {
 
-                                                <span className="cat-children-name" title={item.name} onClick={this.onPickSearch.bind(this,{catChildrenId:item.id,catChildrenName:item.name})}>
+                                        return <div key={key} className={`cat-item ${item.id===PickID?'active':''}`} data-id={item.id}>
 
-                                                    {item.name}
+                                                    <span className="cat-children-name" title={item.name} onClick={this.onPickSearch.bind(this,{catChildrenId:item.id,catChildrenName:item.name})}>
 
-                                                </span>
+                                                        {item.name}
 
-                                            </div>
+                                                    </span>
 
-                                })
+                                                </div>
 
-                                    :
+                                    })
 
-                                    <Empty type="5"></Empty>
+                                        :
 
-                            }
+                                        <Empty type="5"></Empty>
+
+                                }
 
                         </div>
+
+                            </ScrollBars>
 
                         </Loading>
                     :
 
                         <div className={`pick-wrapper ${type}`}>
+
+                            <ScrollBars autoHide autoHeight autoHeightMax={760}>
 
                             {
 
@@ -145,7 +163,7 @@ class LeftMenu extends Component{
 
                                                     item.list.map((i,k) => {
 
-                                                        return  <div key={k} className={`cat-item ${((item.id===this.state.catActive)&&(this.state.catChildrenActive===i.id))?'active':''}`} data-id={i.id}>
+                                                        return  <div key={k} className={`cat-item ${i.id===PickID?'active':''}`} data-id={i.id}>
 
                                                                     <span className="cat-children-name" title={i.name} onClick={this.onPick.bind(this,{catId:item.id,catChildrenId:i.id,catChildrenName:i.name,catName:item.name})}>
 
@@ -169,6 +187,8 @@ class LeftMenu extends Component{
                                     <Empty type="3" title="没有数据"></Empty>
 
                             }
+
+                            </ScrollBars>
 
                         </div>
 

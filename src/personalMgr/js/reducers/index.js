@@ -12,6 +12,8 @@ import BaseSetting from './BaseSetting';
 
 import SafeSetting from './SafeSetting';
 
+import AuthorSetting from './AuthorSetting';
+
 
 
 
@@ -31,7 +33,9 @@ let rootReducers = combineReducers({
 
     BaseSetting,
 
-    SafeSetting
+    SafeSetting,
+
+    AuthorSetting
 
 });
 

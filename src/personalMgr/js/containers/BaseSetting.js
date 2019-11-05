@@ -51,25 +51,42 @@ class BaseSetting extends Component{
 
         dispatch({type:BaseActions.BASE_SETTING_SHORT_NAME_CHANGE,data:e.target.value});
 
-        let result = this.UserComm_CheckShortName(e.target.value);
+    }
 
-        if (result!==0){
 
-            dispatch({type:BaseActions.BASE_SETTING_SHORT_NAME_TIPS_SHOW});
+    //用户名验证
+    CheckShortName(){
+
+        const { dispatch,BaseSetting } = this.props;
+
+        const { ShortNameValue } = BaseSetting;
+
+        let CheckShortName = ShortNameValue.trim();
+
+        if(CheckShortName === ''){
+
+            dispatch({type:BaseActions.BASE_SETTING_SHORT_NAME_TIPS_HIDE});
 
         }else{
 
-            dispatch({type:BaseActions.BASE_SETTING_SHORT_NAME_TIPS_HIDE});
+            let result = this.UserComm_CheckShortName(CheckShortName);
 
-        }
+            if (result!==0){
 
-        if(e.target.value === ''){
+                dispatch({type:BaseActions.BASE_SETTING_SHORT_NAME_TIPS_SHOW});
 
-            dispatch({type:BaseActions.BASE_SETTING_SHORT_NAME_TIPS_HIDE});
+            }else{
+
+                dispatch({type:BaseActions.BASE_SETTING_SHORT_NAME_TIPS_HIDE});
+
+            }
 
         }
 
     }
+
+
+
     //QQ输入改变
     QQChange(e){
 
@@ -77,21 +94,35 @@ class BaseSetting extends Component{
 
         dispatch({type:BaseActions.BASE_SETTING_QQ_CHANGE,data:e.target.value});
 
-        let result = this.UserComm_CheckQQ(e.target.value);
+    }
 
-        if (result){
+
+    //验证QQ
+    CheckQQ(){
+
+        const { dispatch,BaseSetting } = this.props;
+
+        const { QQValue } = BaseSetting;
+
+        let CheckQQValue = QQValue.trim();
+
+        if(CheckQQValue === ''){
 
             dispatch({type:BaseActions.BASE_SETTING_QQ_TIPS_HIDE});
 
         }else{
 
-            dispatch({type:BaseActions.BASE_SETTING_QQ_TIPS_SHOW});
+            let result = this.UserComm_CheckQQ(CheckQQValue);
 
-        }
+            if (result){
 
-        if(e.target.value === ''){
+                dispatch({type:BaseActions.BASE_SETTING_QQ_TIPS_HIDE});
 
-            dispatch({type:BaseActions.BASE_SETTING_SHORT_NAME_TIPS_HIDE});
+            }else{
+
+                dispatch({type:BaseActions.BASE_SETTING_QQ_TIPS_SHOW});
+
+            }
 
         }
 
@@ -104,25 +135,40 @@ class BaseSetting extends Component{
 
         dispatch({type:BaseActions.BASE_SETTING_WEIXIN_CHANGE,data:e.target.value});
 
-        let result = this.UserComm_CheckWeixin(e.target.value);
+    }
 
-        if (result){
+
+    //微信验证
+    CheckWeiChat(){
+
+        const { dispatch,BaseSetting } = this.props;
+
+        const { WeixinValue } = BaseSetting;
+
+        let CheckWeixinValue = WeixinValue.trim();
+
+        if(CheckWeixinValue === ''){
 
             dispatch({type:BaseActions.BASE_SETTING_WEIXIN_TIPS_HIDE});
 
         }else{
 
-            dispatch({type:BaseActions.BASE_SETTING_WEIXIN_TIPS_SHOW});
+            let result = this.UserComm_CheckWeixin(CheckWeixinValue);
 
-        }
+            if (result){
 
-        if(e.target.value === ''){
+                dispatch({type:BaseActions.BASE_SETTING_WEIXIN_TIPS_HIDE});
 
-            dispatch({type:BaseActions.BASE_SETTING_SHORT_NAME_TIPS_HIDE});
+            }else{
+
+                dispatch({type:BaseActions.BASE_SETTING_WEIXIN_TIPS_SHOW});
+
+            }
 
         }
 
     }
+
 
     //微博输入改变
     WeiBoChange(e){
@@ -131,25 +177,39 @@ class BaseSetting extends Component{
 
         dispatch({type:BaseActions.BASE_SETTING_WEIBO_CHANGE,data:e.target.value});
 
-        let result = this.UserComm_CheckSinaWeibo(e.target.value);
 
-        if (result){
+    }
+
+    //微博验证
+    CheckWeiBo(){
+
+        const { dispatch,BaseSetting } = this.props;
+
+        const { WeiboValue } = BaseSetting;
+
+        let CheckWeiboValue = WeiboValue.trim();
+
+        if(CheckWeiboValue === ''){
 
             dispatch({type:BaseActions.BASE_SETTING_WEIBO_TIPS_HIDE});
 
         }else{
 
-            dispatch({type:BaseActions.BASE_SETTING_WEIBO_TIPS_SHOW});
+            let result = this.UserComm_CheckSinaWeibo(CheckWeiboValue);
 
-        }
+            if (result){
 
-        if(e.target.value === ''){
+                dispatch({type:BaseActions.BASE_SETTING_WEIBO_TIPS_HIDE});
 
-            dispatch({type:BaseActions.BASE_SETTING_SHORT_NAME_TIPS_HIDE});
+            }else{
 
+                dispatch({type:BaseActions.BASE_SETTING_WEIBO_TIPS_SHOW});
+
+            }
         }
 
     }
+
 
     //电话号码输入改变
     TelChange(e){
@@ -158,25 +218,39 @@ class BaseSetting extends Component{
 
         dispatch({type:BaseActions.BASE_SETTING_TEL_CHANGE,data:e.target.value});
 
-        let result = this.UserComm_CheckTelephone(e.target.value);
+    }
 
-        if (result){
+    //电话号码验证
+    CheckTel(){
+
+        const { dispatch,BaseSetting } = this.props;
+
+        const { TelephoneValue } = BaseSetting;
+
+        let CheckTelephoneValue = TelephoneValue.trim();
+
+        if(CheckTelephoneValue === ''){
 
             dispatch({type:BaseActions.BASE_SETTING_TEL_TIPS_HIDE});
 
         }else{
 
-            dispatch({type:BaseActions.BASE_SETTING_TEL_TIPS_SHOW});
+            let result = this.UserComm_CheckTelephone(CheckTelephoneValue);
 
-        }
+            if (result){
 
-        if(e.target.value === ''){
+                dispatch({type:BaseActions.BASE_SETTING_TEL_TIPS_HIDE});
 
-            dispatch({type:BaseActions.BASE_SETTING_SHORT_NAME_TIPS_HIDE});
+            }else{
 
+                dispatch({type:BaseActions.BASE_SETTING_TEL_TIPS_SHOW});
+
+            }
         }
 
     }
+
+
     //sign个性签名变化
     SignChange(e){
 
@@ -541,7 +615,7 @@ class BaseSetting extends Component{
 
                                         <Tooltip visible={ShortNameTipsShow} placement="right" title="用户名由3-20位的字母、数字组成（且不能为admin）">
 
-                                            <Input value={ShortNameValue}   maxLength={15} onChange={this.ShortNameChange.bind(this)}/>
+                                            <Input value={ShortNameValue}   maxLength={15} onChange={this.ShortNameChange.bind(this)} onBlur={this.CheckShortName.bind(this)}/>
 
                                         </Tooltip>
 
@@ -782,7 +856,7 @@ class BaseSetting extends Component{
 
                                     <Tooltip visible={QQTipsShow} placement="right" title="QQ由5-18位纯数字组成">
 
-                                        <Input value={QQValue} onChange={this.QQChange.bind(this)} />
+                                        <Input value={QQValue} onChange={this.QQChange.bind(this)} onBlur={this.CheckQQ.bind(this)}/>
 
                                     </Tooltip>
 
@@ -805,7 +879,7 @@ class BaseSetting extends Component{
 
                                     <Tooltip visible={WeixinTipsShow} placement="right" title="微信为手机号、QQ、邮箱或微信ID">
 
-                                        <Input value={WeixinValue} onChange={this.WeiChatChange.bind(this)}/>
+                                        <Input value={WeixinValue} onChange={this.WeiChatChange.bind(this)} onBlur={this.CheckWeiChat.bind(this)}/>
 
                                     </Tooltip>
 
@@ -828,7 +902,7 @@ class BaseSetting extends Component{
 
                                     <Tooltip visible={WeiboTipsShow} placement="right" title="微博为手机号码、邮箱地址">
 
-                                    <Input value={WeiboValue} onChange={this.WeiBoChange.bind(this)}/>
+                                    <Input value={WeiboValue} onChange={this.WeiBoChange.bind(this)} onBlur={this.CheckWeiBo.bind(this)}/>
 
                                     </Tooltip>
 
@@ -851,7 +925,7 @@ class BaseSetting extends Component{
 
                                     <Tooltip visible={TelephoneTipsShow} placement="right" title="电话由数字及-/组成">
 
-                                        <Input value={TelephoneValue} onChange={this.TelChange.bind(this)}/>
+                                        <Input value={TelephoneValue} onChange={this.TelChange.bind(this)} onBlur={this.CheckTel.bind(this)}/>
 
                                     </Tooltip>
 

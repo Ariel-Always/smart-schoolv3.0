@@ -26,7 +26,11 @@ const SubjectTeacherTeacherSchedule = (state={
 
     searchTitle:'',
 
-    searchTitleShow:false
+    searchTitleShow:false,
+
+    CancelBtnShow:'n',
+
+    SearchValue:''
 
 },actions) => {
 
@@ -111,6 +115,19 @@ const SubjectTeacherTeacherSchedule = (state={
         case STTActions.SEARCH_TITLE_HIDE:
 
             return {...state,searchTitleShow:false};
+
+        case STTActions.TEACHER_STT_LEFT_MENU_SEARCH_INPUT_CHANGE:
+
+            return { ...state,SearchValue:actions.data };
+
+        case  STTActions.TEACHER_STT_LEFT_MENU_CANCEL_BTN_SHOW:
+
+            return {...state,CancelBtnShow:'y'};
+
+        case  STTActions.TEACHER_STT_LEFT_MENU_CANCEL_BTN_HIDE:
+
+            return { ...state,CancelBtnShow:'n' };
+
 
         default:
 

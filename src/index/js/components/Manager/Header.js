@@ -126,7 +126,7 @@ class Header extends Component{
 
                         <div className="num">
 
-                            <span className="num-detail">{TopVisit?TopVisit.split('/')[0]:0}</span>
+                            <span className="num-detail">{OnlineUsers?OnlineUsers.split('/')[0]:0}</span>
 
                             <span className="unit">人</span>
 
@@ -134,13 +134,14 @@ class Header extends Component{
 
                         <div className="title">当前在线</div>
 
+
                     </div>
 
                     <div className="circle top-visit">
 
                         <div className="num">
 
-                            <span className="num-detail">{OnlineUsers?OnlineUsers.split('/')[0]:0}</span>
+                            <span className="num-detail">{TopVisit?TopVisit.split('/')[0]:0}</span>
 
                             <span className="unit">人</span>
 

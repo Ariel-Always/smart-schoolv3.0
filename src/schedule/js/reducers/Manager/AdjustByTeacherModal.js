@@ -59,6 +59,8 @@ const AdjustByTeacherModal = (state={
 
         },
 
+        ClassTotalList:[],
+
         classList:[],
 
         classCheckedList:[],
@@ -691,7 +693,9 @@ const AdjustByTeacherModal = (state={
 
                     ...state.replaceSchedule,
 
-                    classList:actions.data
+                    classList:actions.data.classList,
+
+                    ClassTotalList:actions.data.ClassTotalList?actions.data.ClassTotalList:state.replaceSchedule.ClassTotalList
 
                 }
 

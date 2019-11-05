@@ -22,7 +22,12 @@ const SubjectTeacherTeacherSchedule = (state={
 
     searchResult:[],
 
-    searchLoadingShow:false
+    searchLoadingShow:false,
+
+    CancelBtnShow:'n',
+
+    SearchValue:''
+
 
 },actions) => {
 
@@ -43,6 +48,10 @@ const SubjectTeacherTeacherSchedule = (state={
                 pickTeacher:'',
 
                 pickTeacherID:'',
+
+                CancelBtnShow:'n',
+
+                SearchValue:'',
 
                 ScheduleLoadingShow:true,
 
@@ -102,6 +111,18 @@ const SubjectTeacherTeacherSchedule = (state={
         case STTActions.SCHEDULE_LOADING_SHOW:
 
             return {...state,ScheduleLoadingShow:true};
+
+        case STTActions.MANAGER_STT_LEFT_MENU_SEARCH_INPUT_CHANGE:
+
+            return { ...state,SearchValue:actions.data };
+
+        case  STTActions.MANAGER_STT_LEFT_MENU_CANCEL_BTN_SHOW:
+
+            return {...state,CancelBtnShow:'y'};
+
+        case  STTActions.MANAGER_STT_LEFT_MENU_CANCEL_BTN_HIDE:
+
+            return { ...state,CancelBtnShow:'n' };
 
         default:
 
