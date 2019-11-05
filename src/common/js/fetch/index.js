@@ -15,7 +15,7 @@ import config from '../config'
 // content_type：请求的实体的数据的媒体类型，默认urlencoded格式，支持json
 
 
-function postData(url, paramsObj = {}, SecurityLevel = 1, content_type = 'urlencoded', IsDesk = false) {
+function postData(url, paramsObj = {}, SecurityLevel = 1, content_type = 'urlencoded', IsDesk = false, element = null) {
 
     let token = sessionStorage.getItem('token') || getQueryVariable('lg_tk');
 
@@ -67,7 +67,39 @@ function postData(url, paramsObj = {}, SecurityLevel = 1, content_type = 'urlenc
     // }, err => {
 
     // })
+    result.then(res => {//做提前处理
+        let clone = res.clone()
+        // console.log(clone.json())
+        return clone.json()
+    }, err => {
 
+    }).then(json => {
+        // console.log(json, json.StatusCode === 200)
+        if(!element)
+        return;
+        let title = ''
+        if (json.StatusCode === 400 || json.StatusCode === 500) {
+            if (json.StatusCode === 400) {
+                title = '操作出现未知异常，请重试或联系管理员'
+            } else {
+                title = '服务器出现未知异常，请重试或联系管理员'
+            }
+
+
+            ReactDOM.render(
+                // eslint-disable-next-line react/react-in-jsx-scope
+                <ErrorAlert
+                    show={true} title={title} />,
+                document.getElementById('alert')
+            )
+
+
+        }else if(json.StatusCode === 401){
+            TokenCheck()
+        }else if(json.StatusCode === 403){
+            window.location.href = config.ErrorProxy+'/Error.aspx?errcode=E011'
+        }
+    })
     return result;
 }
 
@@ -122,6 +154,8 @@ function getData(url, SecurityLevel = 1, mode = 'cors', IsDesk = false, element 
 
     }).then(json => {
         // console.log(json, json.StatusCode === 200)
+        if(!element)
+        return;
         let title = ''
         if (json.StatusCode === 400 || json.StatusCode === 500) {
             if (json.StatusCode === 400) {
