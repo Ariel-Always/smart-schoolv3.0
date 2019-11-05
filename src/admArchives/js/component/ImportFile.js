@@ -57,7 +57,7 @@ class ImportFile extends React.Component {
         //     }
         // })
         // getData(CONFIG.UserInfoProxy+'/Import.aspx?Token=0111&UserType=Student',1,'no-cors').then(data => {
-        //     console.log(data)
+        //     //console.log(data)
         //     $('#content-box').html(data)
         // })
         let route = history.location.pathname.split('/');
@@ -87,7 +87,7 @@ class ImportFile extends React.Component {
             return data.text();
 
         }).then(text => {
-            console.log(text)
+            //console.log(text)
             $('#content-box').html(text)
             this.setState({
                 show:false

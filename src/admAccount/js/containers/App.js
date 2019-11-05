@@ -47,12 +47,12 @@ class App extends Component {
                         icon: 'menu33',
                         onTitleClick: this.handleClick,
                     },
-                    // {
-                    //     key: 'Leader',
-                    //     title: '领导账号管理',
-                    //     icon: 'menu35',
-                    //     onTitleClick: this.handleClick,
-                    // },
+                    {
+                        key: 'Leader',
+                        title: '领导账号管理',
+                        icon: 'menu35',
+                        onTitleClick: this.handleClick,
+                    },
                     {
                         key: 'Admin',
                         title: '管理员账号管理',
@@ -170,6 +170,8 @@ class App extends Component {
             dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + userMsg.SchoolID + '&PageIndex=0&PageSize=10'));
         } else if (handleRoute === 'Leader') {
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+            dispatch(actions.UpDataState.getSchoolLeaderPreview('/GetSchoolLeader?SchoolID=' + userMsg.SchoolID ));
+
         } else if (handleRoute === 'Admin') {
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
             dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=' + userMsg.SchoolID + '&PageIndex=0&PageSize=10'));

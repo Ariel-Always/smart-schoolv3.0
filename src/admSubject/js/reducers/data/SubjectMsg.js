@@ -9,6 +9,10 @@ import Politics from '../../../images/Politics.png';
 import Maths from '../../../images/Math.png';
 import Chinese from '../../../images/Chinese.png';
 import Others from '../../../images/Others.png';
+import Science from '../../../images/Others.png';
+import IT from '../../../images/Others.png';
+import PE from '../../../images/Others.png';
+import Art from '../../../images/Others.png';
 
 
 const SubjectMsg = (state = {}, actions) => {
@@ -20,24 +24,24 @@ const SubjectMsg = (state = {}, actions) => {
 
             return Object.assign({}, state, { ...data, SubjectItem: newData, oldData: oldData });
         case UpDataState.GET_SUBJECT_MODAL_MSG:
-           let addSubjectMsg = handleAddSubjectMsg(actions.data.ItemSubject)
+            let addSubjectMsg = handleAddSubjectMsg(actions.data.ItemSubject)
 
-            return Object.assign({}, state, { addSubjectMsg:addSubjectMsg});
+            return Object.assign({}, state, { addSubjectMsg: addSubjectMsg });
         default:
             return state;
     }
 };
-function handleAddSubjectMsg(data=[]){
-    let initData = [{ value: 0, title: '自定义',GlabalGrades:'' }]
-    let endData = data instanceof Array &&data.map((child,index) => {
+function handleAddSubjectMsg(data = []) {
+    let initData = [{ value: 0, title: '自定义', GlabalGrades: '' }]
+    let endData = data instanceof Array && data.map((child, index) => {
         let value = child.SubjectID;
         let title = child.SubjectName;
 
         //let GlabalGrades = handleAllGrades(child.GlabalGrades);
         return {
-            value:value ,
-            title:title ,
-            GlabalGrades:child.GlabalGrades ,
+            value: value,
+            title: title,
+            GlabalGrades: child.GlabalGrades,
         }
     })
     let newData = initData.concat(endData)
@@ -54,8 +58,8 @@ function handleAllGrades(grade) {
     return gradeArr2
 }
 function handleData(data) {
-    data = data||[]
-    let newData = data instanceof Array &&data.map((child, index) => {
+    data = data || []
+    let newData = data instanceof Array && data.map((child, index) => {
         let SubjectName = handleSubjectName(child)
         // {
         //     SubjectID:child.SubjectID,
@@ -82,24 +86,32 @@ function handleData(data) {
 function handleSubjectName(Subject) {
     let SubjectLogo = Others;
     if (Subject.IsDefault) {
-        if (Subject.SubjectID === 'ENGLISH')
+        if (Subject.SubjectID === 'S2-English' || Subject.SubjectID === 'S3-English' || Subject.SubjectID === 'S4-English')
             SubjectLogo = English;
-        else if (Subject.SubjectID === 'MATHS')
+        else if (Subject.SubjectID === 'S2-Maths')
             SubjectLogo = Maths;
-        else if (Subject.SubjectID === 'CHINESE')
+        else if (Subject.SubjectID === 'S2-Chinese')
             SubjectLogo = Chinese;
-        else if (Subject.SubjectID === 'GEOGRAPHY')
+        else if (Subject.SubjectID === 'S2-Geography')
             SubjectLogo = Geography;
-        else if (Subject.SubjectID === 'HISTORY')
+        else if (Subject.SubjectID === 'S2-History')
             SubjectLogo = History;
-        else if (Subject.SubjectID === 'POLITICS')
+        else if (Subject.SubjectID === 'S2-Politics')
             SubjectLogo = Politics;
-        else if (Subject.SubjectID === 'PHYSICS')
+        else if (Subject.SubjectID === 'S2-Physics')
             SubjectLogo = Physics;
-        else if (Subject.SubjectID === 'CHEMISTRY')
+        else if (Subject.SubjectID === 'S2-Chemistry')
             SubjectLogo = Chemistry;
-        else if (Subject.SubjectID === 'BIOLOGY')
+        else if (Subject.SubjectID === 'S2-Biology')
             SubjectLogo = Biology;
+        else if (Subject.SubjectID === 'Science')
+            SubjectLogo = Science;
+        else if (Subject.SubjectID === 'IT')
+            SubjectLogo = IT;
+        else if (Subject.SubjectID === 'PE')
+            SubjectLogo = PE;
+        else if (Subject.SubjectID === 'Art')
+            SubjectLogo = Art;
     }
     return {
         SubjectImg: SubjectLogo,
@@ -109,7 +121,7 @@ function handleSubjectName(Subject) {
 }
 function handleTeacher(teacher) {
     let teacherArr = teacher.split(',');
-    let allTeacherArr = teacherArr instanceof Array &&teacherArr.map((child, index) => {
+    let allTeacherArr = teacherArr instanceof Array && teacherArr.map((child, index) => {
         let childArr = child.split('/');
         let Grade = '';
         let TeacherID = '';
@@ -128,16 +140,16 @@ function handleTeacher(teacher) {
     return allTeacherArr;
 }
 function handleGrade(grade) {
-    
+
     if (grade === '')
         return '';
     let GradeArr = grade.split(',');
-    console.log(grade,GradeArr)
+    console.log(grade, GradeArr)
     let sort = [];
     let Grades = [];
     let returnGrade = '';
     let isSeries = true;
-    GradeArr instanceof Array &&GradeArr.map((child, index) => {
+    GradeArr instanceof Array && GradeArr.map((child, index) => {
         let childArr = child.split('-');
         sort.push(childArr[0].slice(1));
         Grades.push(childArr[1])
@@ -151,7 +163,7 @@ function handleGrade(grade) {
     if (isSeries && Grades.length !== 0) {
         returnGrade = Grades[0] + '~' + Grades[Grades.length - 1];
     } else if (!isSeries && Grades.length !== 0) {
-        Grades instanceof Array &&Grades.map((child, index) => {
+        Grades instanceof Array && Grades.map((child, index) => {
             if (index !== Grades.length - 1)
                 returnGrade += child + ',';
             else

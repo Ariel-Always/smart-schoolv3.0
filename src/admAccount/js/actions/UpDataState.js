@@ -126,16 +126,16 @@ const getSubjectTeacherPreview = (url) => {
 }
 //获取领导档案信息
 const getSchoolLeaderPreview = (url) => {
-    let pageIndex = url.split('PageIndex');
-    let pageSize = url.split('PageSize');
+    // let pageIndex = url.split('PageIndex');
+    // let pageSize = url.split('PageSize');
 
-    if (pageIndex[0] === url) {
-        pageIndex = 0;
-        pageSize = 10;
-    } else {
-        pageIndex = pageIndex[1].split('&')[0].split('=')[1]
-        pageSize = pageSize[1].split('&')[0].split('=')[1]
-    }
+    // if (pageIndex[0] === url) {
+    //     pageIndex = 0;
+    //     pageSize = 10;
+    // } else {
+    //     pageIndex = pageIndex[1].split('&')[0].split('=')[1]
+    //     pageSize = pageSize[1].split('&')[0].split('=')[1]
+    // }
     return (dispatch) => {
         dispatch({ type: UpUIState.TABLE_LOADING_OPEN });
         getData(CONFIG.UserAccountProxy + url, 2).then(res => {

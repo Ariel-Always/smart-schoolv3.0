@@ -31,7 +31,7 @@ function handleData(data){
         userMail:data.Email,
         userAddress:data.HomeAddress,
         titleName:data.TitleName,
-        subjectNames:data.SubjectNames,
+        subjectName:data.SubjectNames,
         source:data.Source,
         position:data.Position
         
