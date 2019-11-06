@@ -139,14 +139,14 @@ const getSchoolLeaderPreview = (url) => {
     return (dispatch) => {
         dispatch({ type: UpUIState.TABLE_LOADING_OPEN });
         getData(CONFIG.UserAccountProxy + url, 2).then(res => {
-            if (res.status === '401') {
-                console.log('错误码：' + res.status)
+            if (res.StatusCode === '401') {
+                console.log('错误码：' + res.StatusCode)
             }
             return res.json()
         }).then(json => {
-            if (json.status === 400) {
-            } else if (json.status === 200) {
-                dispatch({ type: GET_SCHOOL_LEADER_PREVIEW, data: json.data });
+            if (json.StatusCode === 400) {
+            } else if (json.StatusCode === 200) {
+                dispatch({ type: GET_SCHOOL_LEADER_PREVIEW, data: json.Data });
                 dispatch({ type: UpUIState.TABLE_LOADING_CLOSE });
             }
 

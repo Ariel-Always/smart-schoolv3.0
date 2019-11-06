@@ -140,7 +140,7 @@ class Admin extends React.Component {
             alertQueryTitle: '查询提示~',
             AdminDetailsMsgModalVisible: false,
             addAdminModalVisible: false,
-            defaultPwd: 888888,
+            defaultPwd: '888888',
             onClickKey: 0,
             userMsgKey: 0,
             keyList: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
@@ -158,7 +158,7 @@ class Admin extends React.Component {
     }
     componentWillMount() {
         const { dispatch } = this.props;
-        let pwd = 888888;
+        let pwd = '0';
 
         dispatch(actions.UpDataState.getChangeInputValue(pwd));
     }
@@ -199,7 +199,8 @@ class Admin extends React.Component {
                 checkedList: [],
                 checkAll: false,
                 keyword: e.value,
-                CancelBtnShow: 'y'
+                CancelBtnShow: 'y',
+                pagination:1
             })
         }
     }
@@ -294,7 +295,7 @@ class Admin extends React.Component {
     onChangePwdClick = (key) => {
         const { dispatch, DataState } = this.props;
         let data = this.state.AdminAccountData;
-        let pwd = 888888;
+        let pwd = '888888';
         this.setState({
             ChangePwdMadalVisible: true,
             onClickKey: key
@@ -478,7 +479,7 @@ class Admin extends React.Component {
                 UserName: DataState.AdminPreview.TrasferData.UserName,
                 ModuleIDs: DataState.AdminPreview.TrasferData.ModuleIDs,
                 PhotoPath: picObj.picUploader.getCurImgPath(),
-                Pwd: DataState.AdminPreview.TrasferData.Pwd
+                Pwd:'0'
             },
             2).then(res => {
                 if (res.StatusCode === '401') {
@@ -511,7 +512,7 @@ class Admin extends React.Component {
                         PhotoPath: '',
                         Pwd: '0'
                     }))
-                    dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10'));
+                    dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex='+(this.state.pagination-1)+'&PageSize=10'));
                     dispatch(actions.UpUIState.AllTipsVisibleClose())
                 }
 
@@ -585,7 +586,7 @@ class Admin extends React.Component {
                     UserName: DataState.AdminPreview.TrasferData.UserName,
                     ModuleIDs: DataState.AdminPreview.TrasferData.ModuleIDs,
                     PhotoPath: picObj.picUploader.getCurImgPath(),
-                    Pwd: md5(DataState.AdminPreview.TrasferData.Pwd)
+                    Pwd:'0'
                 },
                 2).then(res => {
                     if (res.StatusCode === '401') {
@@ -612,7 +613,7 @@ class Admin extends React.Component {
                             PhotoPath: '',
                             Pwd: '0'
                         }))
-                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10'+this.state.sortFiled+this.state.sortType));
+                        dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex='+(this.state.pagination-1)+'&PageSize=10'+this.state.sortFiled+this.state.sortType));
                         dispatch(actions.UpUIState.AllTipsVisibleClose())
 
                     }
@@ -675,7 +676,7 @@ class Admin extends React.Component {
                     }));
                     this.setState({
                         ChangePwdMadalVisible: false,
-                        defaultPwd: 888888
+                        defaultPwd: '888888'
                     })
                     if (this.state.searchValue !== '')
                         dispatch(actions.UpDataState.getAdminPreview('/GetAdminToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&Keyword=' + this.state.keyword+this.state.sortFiled+this.state.sortType));
@@ -690,7 +691,7 @@ class Admin extends React.Component {
     onPwdchangeClose = () => {
         this.setState({
             ChangePwdMadalVisible: false,
-            defaultPwd: 888888
+            defaultPwd: '888888'
         })
     }
     onPwdchange = (e) => {
@@ -876,7 +877,7 @@ class Admin extends React.Component {
                     onOk={this.AdminDetailsMsgModalOk}
                     onCancel={this.AdminDetailsMsgModalCancel}
                     data={DataState.GetUserMsg}
-                    type='Admin'
+                    type='admin'
                 >
                 </DetailsModal>
                 {/* <AntdModal

@@ -126,7 +126,7 @@ class Student extends React.Component {
             alertQueryTitle: '查询提示~',
             StudentDetailsMsgModalVisible: false,
             addStudentModalVisible: false,
-            defaultPwd: 888888,
+            defaultPwd: '888888',
             onClickKey: 0,
             userMsgKey: 0,
             keyword: '',
@@ -166,7 +166,7 @@ class Student extends React.Component {
     }
     componentWillMount() {
         const { dispatch } = this.props;
-        let pwd = 888888;
+        let pwd = '888888';
 
         dispatch(actions.UpDataState.getChangeInputValue(pwd));
     }
@@ -276,7 +276,7 @@ class Student extends React.Component {
         keyword: '',
         searchValue: e.value
     })
-    dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' +  (this.state.firstSelect.value ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value ? '&classID=' + this.state.secondSelect.value : ''+this.state.sortFiled+this.state.sortType)));
+    dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' +  (this.state.firstSelect.value ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value ? '&classID=' + this.state.secondSelect.value : '')+this.state.sortFiled+this.state.sortType));
    
 
 }
@@ -362,7 +362,7 @@ class Student extends React.Component {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-query',
                 title: "确定批量重置密码？",
-                ok: this.onAlertQueryOk.bind(this, 888888),
+                ok: this.onAlertQueryOk.bind(this, '888888'),
                 cancel: this.onAlertQueryClose.bind(this),
                 close: this.onAlertQueryClose.bind(this)
             }));
@@ -372,7 +372,7 @@ class Student extends React.Component {
     onChangePwdClick = (key) => {
         const { dispatch, DataState } = this.props;
         let data = this.state.StudentAccountData;
-        let pwd = 888888;
+        let pwd = '888888';
         // console.log(key)
         this.setState({
             ChangePwdMadalVisible: true,
@@ -416,9 +416,9 @@ class Student extends React.Component {
                         }));
                         this.setState({
                             ChangePwdMadalVisible: false,
-                            defaultPwd: 888888
+                            defaultPwd: '888888'
                         })
-                        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&keyword=' + this.state.keyword + (this.state.firstSelect.value ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value ? '&classID=' + this.state.secondSelect.value : ''+this.state.sortFiled+this.state.sortType)));
+                        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&keyword=' + this.state.keyword + (this.state.firstSelect.value ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value ? '&classID=' + this.state.secondSelect.value : '')+this.state.sortFiled+this.state.sortType));
 
                     }
 
@@ -437,7 +437,7 @@ class Student extends React.Component {
     onPwdchangeClose = () => {
         this.setState({
             ChangePwdMadalVisible: false,
-            defaultPwd: 888888
+            defaultPwd: '888888'
         })
     }
     onPwdchange = (e) => {
@@ -489,7 +489,7 @@ class Student extends React.Component {
                         checkedList: [],
                         checkAll: false
                     })
-                    dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&keyword=' + this.state.keyword + (this.state.firstSelect.value ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value ? '&classID=' + this.state.secondSelect.value : ''+this.state.sortFiled+this.state.sortType)));
+                    dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&keyword=' + this.state.keyword + (this.state.firstSelect.value ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value ? '&classID=' + this.state.secondSelect.value : '')+this.state.sortFiled+this.state.sortType));
 
                 }
 
@@ -543,13 +543,13 @@ class Student extends React.Component {
         console.log(sorter)
         if (sorter && (sorter.columnKey === 'UserName' || sorter.columnKey === 'ShortName')) {
             let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&sortFiled=' + sorter.columnKey + '&PageSize=10&' + sortType + '&PageIndex=' + (this.state.pagination - 1) + keyword + firstSelect + secondSelect+this.state.sortFiled+this.state.sortType));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&sortFiled=' + sorter.columnKey + '&PageSize=10&' + sortType + '&PageIndex=' + (this.state.pagination - 1) + keyword + firstSelect +'&sortFiled=' + sorter.columnKey +'&'+sortType));
             this.setState({
                 sortType: '&' + sortType,
                 sortFiled: '&sortFiled=' + sorter.columnKey
             })
         }else if(sorter){
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID  + '&PageSize=10'  + '&PageIndex=' + (this.state.pagination - 1) + keyword + firstSelect + secondSelect+this.state.sortFiled+this.state.sortType));
+            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID  + '&PageSize=10'  + '&PageIndex=' + (this.state.pagination - 1) + keyword + firstSelect + secondSelect));
             this.setState({
                 sortType: '',
                 sortFiled: ''

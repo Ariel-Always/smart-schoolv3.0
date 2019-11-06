@@ -214,8 +214,9 @@ $image-url: "../images";
             height: 28px;
             padding: 0;
             text-align: center;
+            border: none;
             margin-left: 8px;
-            box-sizing: content-box;
+            // box-sizing: content-box;
           }
           .changePwdAll {
             color: #fff;
@@ -224,8 +225,9 @@ $image-url: "../images";
             height: 28px;
             padding: 0;
             text-align: center;
+            border: none;
             margin-left: 8px;
-            box-sizing: content-box;
+            // box-sizing: content-box;
           }
         }
         .pagination-box {

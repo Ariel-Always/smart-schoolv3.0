@@ -2040,7 +2040,7 @@ class DetailsModal extends React.Component {
                             </span>
                             <span className='col-right'>{data.userClass ? data.userClass : <span className='content-null'>未填写</span>}</span>
                         </div>
-                        <div className='row' style={{ display: type !== 'leader'&&type !== 'graduate' ? 'block' : 'none' }}>
+                        <div className='row' style={{ display: type !== 'leader'&&type !== 'graduate'&&type !== 'admin' ? 'block' : 'none' }}>
                             <span className='col-left'>
                                 {type === 'student'||type==='examine'? '班级' : '所教学科'}
                             </span>
