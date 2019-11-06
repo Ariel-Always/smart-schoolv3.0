@@ -5,10 +5,11 @@ const $ = require('jquery');
  * 左侧菜单栏交互
  * 最后修改日期：2016-07-12
  */
-;(function () {
-    
+;
+(function() {
 
-    var LeftMenu = function (element, options) {
+
+    var LeftMenu = function(element, options) {
 
         this.options = options;
         this.$element = $(element);
@@ -19,12 +20,12 @@ const $ = require('jquery');
 
     LeftMenu.DEFAULTS = {};
 
-    LeftMenu.prototype.clearActive = function ($menu) {
+    LeftMenu.prototype.clearActive = function($menu) {
 
         $menu.find('.frame_lm_item,.frame_lm_sitem,.frame_lm_titem').removeClass('active');
     };
 
-    LeftMenu.prototype.activeSelf = function ($ele, slide) {
+    LeftMenu.prototype.activeSelf = function($ele, slide) {
 
 
         if (slide) {
@@ -39,7 +40,7 @@ const $ = require('jquery');
         } else {
             $ele.addClass('active');
 
-            var e = $.Event('selected.menu', {relatedTarget: this.$element});
+            var e = $.Event('selected.menu', { relatedTarget: this.$element });
 
             this.$element.trigger(e);
 
@@ -47,21 +48,21 @@ const $ = require('jquery');
 
     };
 
-    LeftMenu.prototype.toggleThird = function ($secondary) {
+    LeftMenu.prototype.toggleThird = function($secondary) {
 
 
         $secondary.next('.frame_lm_third').toggle();
 
     }
 
-    LeftMenu.prototype.slide = function () {
+    LeftMenu.prototype.slide = function() {
 
 
     };
 
     function Plugin(opt) {
 
-        return this.each(function () {
+        return this.each(function() {
 
             var $this = $(this);
 
@@ -100,12 +101,12 @@ const $ = require('jquery');
     $.fn.leftmenu = Plugin;
     $.fn.leftmenu.Constructor = LeftMenu;
 
-    $.fn.leftmenu.noConflict = function () {
+    $.fn.leftmenu.noConflict = function() {
         $.fn.leftmenu = old;
         return this;
     }
 
-    $(document).on('click.frame.leftmenu', '[data-menu="left"] .frame_left_menu_js', function (e) {
+    $(document).on('click.frame.leftmenu', '[data-menu="left"] .frame_left_menu_js', function(e) {
 
         var $this = $(this);
         var $menu = $this.closest('[data-menu="left"]');
@@ -160,11 +161,12 @@ const $ = require('jquery');
  * 鼠标经过二级菜单
  * 最后修改时间 2016-05-25
  */
-;(function ($) {
+;
+(function($) {
 
-    
 
-    var Bmenu = function (element, option) {
+
+    var Bmenu = function(element, option) {
         this.$element = $(element);
         this.options = $.extend({}, Bmenu.DEFAULTS, option);
     }
@@ -176,21 +178,21 @@ const $ = require('jquery');
         menuActiveClass: 'frame_menu_active'
     };
 
-    Bmenu.prototype.activeMenu = function () {
+    Bmenu.prototype.activeMenu = function() {
         this.$element.addClass(this.options.menuActiveClass);
     };
 
-    Bmenu.prototype.passiveMenu = function () {
+    Bmenu.prototype.passiveMenu = function() {
         this.$element.removeClass(this.options.menuActiveClass);
     };
 
-    Bmenu.prototype.showSecondary = function (secondary) {
+    Bmenu.prototype.showSecondary = function(secondary) {
         if (secondary.not(':animated')) {
             secondary.slideDown(this.options.duration);
         }
     };
 
-    Bmenu.prototype.hideSecondary = function (secondary) {
+    Bmenu.prototype.hideSecondary = function(secondary) {
         if (secondary.is(':animated')) {
             secondary.stop(true, true)
         }
@@ -198,31 +200,30 @@ const $ = require('jquery');
     };
 
     function Plugin(option) {
-        return this.each(function () {
+        return this.each(function() {
             var $this = $(this);
             var data = $this.data('frame.bmenu')
             if (!data) {
                 $this.data('frame.bmenu', (data = new Bmenu(this, option)))
-            }
-            ;
+            };
 
             var secondary = $this.next('[data-menu="secondary"]');
 
             data.showSecondary(secondary);
             data.activeMenu();
 
-            secondary.one('mouseenter.frame.bmenu', function () {
+            secondary.one('mouseenter.frame.bmenu', function() {
                 $(this).show();
                 data.activeMenu();
-            }).one('mouseleave.frame.bmenu', function () {
+            }).one('mouseleave.frame.bmenu', function() {
                 $(this).hide();
                 data.passiveMenu();
             });
 
-            $this.one('mouseenter.frame.bmenu', function () {
+            $this.one('mouseenter.frame.bmenu', function() {
                 data.showSecondary(secondary);
                 data.activeMenu();
-            }).one('mouseleave.frame.bmenu', function () {
+            }).one('mouseleave.frame.bmenu', function() {
                 data.hideSecondary(secondary);
                 data.passiveMenu();
             });
@@ -235,17 +236,17 @@ const $ = require('jquery');
     $.fn.bmenu = Plugin;
     $.fn.bmenu.Constructor = Bmenu;
 
-    $.fn.bmenu.noConflict = function () {
+    $.fn.bmenu.noConflict = function() {
         $.fn.bmenu = old;
         return this;
     }
 
-    $(document).on('mouseenter', '[data-menu="board"]', function () {
-        $(this).each(function () {
+    $(document).on('mouseenter', '[data-menu="board"]', function() {
+        $(this).each(function() {
             var durationValue;
             if ($(this).attr('data-board-duration')) {
                 durationValue = parseInt($(this).attr('data-board-duration'));
-                Plugin.call($(this), {duration: durationValue});
+                Plugin.call($(this), { duration: durationValue });
             } else {
                 Plugin.call($(this));
             }
@@ -257,7 +258,7 @@ const $ = require('jquery');
 
 /* 新左侧菜单交互 start */
 //一级菜单
-$(document).on('click', '.frame_leftmenu_mainitem_name', function () {
+$(document).on('click', '.frame_leftmenu_mainitem_name', function() {
     /*    var $this = $(this),
      $arrow = $this.next('.frame_leftmenu_arrow');
      if ($this.attr('data-disabled') === 'true') {
@@ -275,7 +276,7 @@ $(document).on('click', '.frame_leftmenu_mainitem_name', function () {
      }*/
 });
 //二级菜单
-$(document).on('click', '.frame_leftmenu_twograde_grounp .frame_left_menu_right_arrow', function (e) {
+$(document).on('click', '.frame_leftmenu_twograde_grounp .frame_left_menu_right_arrow', function(e) {
     e.stopPropagation();
     var $this = $(this),
         $secondMenu = $this.parent('.frame_leftmenu_twograde_grounp').next('.frame_leftmenu_lastgrade_ul');
@@ -289,7 +290,7 @@ $(document).on('click', '.frame_leftmenu_twograde_grounp .frame_left_menu_right_
 });
 
 //active 状态切换，selected 状态切换
-$(document).on('click', '.frame_leftmenu_mainitem_name,.frame_leftmenu_onegrade_name,.frame_leftmenu_twograde_grounp .frame_leftmenu_twograde_text', function () {
+$(document).on('click', '.frame_leftmenu_mainitem_name,.frame_leftmenu_onegrade_name,.frame_leftmenu_twograde_grounp .frame_leftmenu_twograde_text', function() {
 
     var $this = $(this);
 
@@ -301,6 +302,7 @@ $(document).on('click', '.frame_leftmenu_mainitem_name,.frame_leftmenu_onegrade_
         return false;
     }
     if (!$this.hasClass('active')) {
+        console.log($this)
         $this.closest('.frame_leftpart_container,.frame_left_menu_container').find('.active').removeClass('active');
         $this.addClass('active').prev('.frame_leftmenu_point').addClass('active');
         // li 也加上 active
@@ -354,12 +356,18 @@ $(document).on('click', '.frame_leftmenu_mainitem_name,.frame_leftmenu_onegrade_
     }
 });
 
-$(document).on('click', '.frame_leftmenu_mainitem_name', function () {
+$(document).on('click', '.frame_leftmenu_mainitem_name', function() {
     var $this = $(this);
+
     $this.closest('.frame_leftpart_container,.frame_left_menu_container').find('.active').removeClass('active');
     $this.parent('.frame_leftmenu_mainitem').addClass('active');
     $this.parent('.frame_leftmenu_mainitem').next('.frame_leftmenu_nextgrade_container').slideDown();
     $this.next().addClass('spread');
+    // if ($this.parent('.frame_leftmenu_mainitem').hasClass('selected')) {
+    //     console.log($this)
+
+    //     $this.parent('.frame_leftmenu_mainitem').addClass('active').addClass('selected');
+    // }
 
 });
 
@@ -375,20 +383,20 @@ $(document).on('click', '.frame_leftmenu_mainitem_name', function () {
  });*/
 
 // 圆点鼠标经过样式控制
-$(document).on('mouseenter', '.frame_leftmenu_onegrade_name', function () {
+$(document).on('mouseenter', '.frame_leftmenu_onegrade_name', function() {
     $(this).prev('.frame_leftmenu_point').addClass('hover');
-}).on('mouseleave', '.frame_leftmenu_onegrade_name', function () {
+}).on('mouseleave', '.frame_leftmenu_onegrade_name', function() {
     $(this).prev('.frame_leftmenu_point').removeClass('hover');
 });
 
-$(document).on('mouseenter', '.frame_leftmenu_twograde_text', function () {
+$(document).on('mouseenter', '.frame_leftmenu_twograde_text', function() {
     $(this).prev('.frame_leftmenu_twograde_arrow').addClass('hover');
-}).on('mouseleave', '.frame_leftmenu_twograde_text', function () {
+}).on('mouseleave', '.frame_leftmenu_twograde_text', function() {
     $(this).prev('.frame_leftmenu_twograde_arrow').removeClass('hover');
 });
 
 // 点击展开箭头
-$(document).on('click', '.frame_leftmenu_arrow', function () {
+$(document).on('click', '.frame_leftmenu_arrow', function() {
     //$(this).prev('.frame_leftmenu_mainitem_name').trigger('click');
     var $mainMenu = $(this).siblings('.frame_leftmenu_mainitem_name'),
         $arrow = $(this);
@@ -417,7 +425,8 @@ $(document).on('click', '.frame_leftmenu_arrow', function () {
  }
  });
  */
-$(document).on('click', '.frame_leftmenu_mainitem_name', function () {
+$(document).on('click', '.frame_leftmenu_mainitem_name', function() {
     $(this).closest('.frame_leftmenu_mainitem').addClass('selected').siblings().removeClass('selected');
+
 });
 /* 左侧菜单新增交互 end */

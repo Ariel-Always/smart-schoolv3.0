@@ -184,8 +184,8 @@ class App extends Component {
     }
     //操作左侧菜单，响应路由变化
     handleMenu = () => {
-        $('.frame_leftmenu_mainitem').removeClass('selected active');
-        $('.frame_leftmenu_mainitem').children('*').removeClass('active');
+        // $('.frame_leftmenu_mainitem').removeClass('selected active');
+        // $('.frame_leftmenu_mainitem').children('*').removeClass('active');
         let path = history.location.pathname.split('/')[1];
 
         let param = this.state.MenuParams;

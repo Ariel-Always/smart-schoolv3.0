@@ -1432,6 +1432,7 @@ class Menu extends React.Component {
 
     /*多层对象解构*/
     objectDeconstruction = (object, layer, ulDisbled) => {
+        // console.log(object,object.active ? 'active' : '')
         let myLayer = layer;
         /*级数*/
         if ('object' === typeof object && isNaN(object.length)) {
@@ -1450,7 +1451,7 @@ class Menu extends React.Component {
                                     {object.title}
                                 </span>
 
-                                <span className="frame_leftmenu_arrow" ></span>
+                                <span className={`frame_leftmenu_arrow ${object.selected ? 'spread' : ''}`} ></span>
 
                             </div>
                             <div className="frame_leftmenu_nextgrade_container" style={{ display: object.selected ? 'block' : 'none' }}>
@@ -1479,6 +1480,7 @@ class Menu extends React.Component {
                 }
             } else {
                 if (myLayer === 1) {/*最后一级*/
+                    // console.log(object)
                     return (
                         <div
                             className={`frame_leftmenu_mainitem no_child ${object.active ? 'active' : ''} ${object.selected ? 'selected' : ''} ${object.select ? 'selectd active' : ''} `}
