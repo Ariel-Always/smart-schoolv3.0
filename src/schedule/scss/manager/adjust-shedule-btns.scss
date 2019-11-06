@@ -38,6 +38,20 @@
 
     background-image:url("#{$image-url}/adjust-schedule.png");
 
+    display: inline-block;
+
+    height: 50px;
+
+    &:hover{
+
+      .adjust-list-wrapper{
+
+        display: block;
+
+      }
+
+    }
+
   }
 
   .see-adjust-log{
@@ -51,6 +65,8 @@
     position: absolute;
 
     z-index: 5;
+
+    display: none;
 
     background-color: #ffffff;
 

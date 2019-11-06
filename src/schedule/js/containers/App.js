@@ -22,11 +22,11 @@ import ModuleCommonActions from '../actions/ModuleCommonActions';
 
 import PeriodWeekTermActions from '../actions/PeriodWeekTermActions';
 
-import AdjustBtnsActions from '../actions/Manager/AdjustBtnsActions';
-
 import ASMAction from  '../actions/Manager/AddScheduleModalActions';
 
 import ABTMActions from '../actions/Manager/AdjustByTimeModalActions';
+
+import ABCRActions from '../actions/Manager/AdjustByClassRoomActions';
 
 import StopScheduleActions from '../actions/Manager/StopScheduleActions'
 
@@ -120,32 +120,7 @@ class App extends Component{
         ComPageRefresh.ComPageUpdate(dispatch);
 
     }
-    //将隐藏的adjustWrapper弹出或隐藏
-    adjustBtnsToggle(e){
 
-        const { dispatch,state } = this.props;
-
-        const { AdjustBtns } = state.Manager;
-
-        dispatch({type:AdjustBtnsActions.ADJUST_BTNS_TOGGLE});
-
-    }
-    //点击其他地方的时候隐藏弹出的btns
-    clickOthers(e){
-
-        const {dispatch} = this.props;
-
-        if (document.getElementById('adjust-schedule')){
-
-            if ((!document.getElementById('adjust-schedule').contains(e.target))&&(!document.getElementById('adjust-list-wrapper').contains(e.target))){
-
-                dispatch({type:AdjustBtnsActions.ADJUST_BTNS_HIDE});
-
-            }
-
-        }
-
-    }
     //弹出添加临时课程弹窗
     addScheduleModalShow(){
 
@@ -207,6 +182,16 @@ class App extends Component{
 
     }
 
+    //弹出调整教室弹窗
+
+    adjustByClassRoomShow(){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_SHOW});
+
+    }
+
 
     //导入课表
 
@@ -224,12 +209,6 @@ class App extends Component{
 
     }
 
-
-    componentDidMount(){
-
-        addEventListener('click',this.clickOthers.bind(this));
-
-    }
 
 
 
@@ -305,8 +284,6 @@ class App extends Component{
 
                                     <AdjustBtnsWrapper
 
-                                        adjustBtnsToggle={this.adjustBtnsToggle.bind(this)}
-
                                         adjustBtns={AdjustBtns}
 
                                         ScheduleSettingShow={this.ScheduleSettingShow.bind(this)}
@@ -320,6 +297,8 @@ class App extends Component{
                                         delScheduleShow = {this.delScheduleShow.bind(this)}
 
                                         adjustByTeacherShow = {this.adjustByTeacherShow.bind(this)}
+
+                                        adjustByClassRoomShow={this.adjustByClassRoomShow.bind(this)}
 
                                         Import={this.Import.bind(this)}>
 

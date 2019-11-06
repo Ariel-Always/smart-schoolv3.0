@@ -1,6 +1,6 @@
 import React,{Component} from "react";
 
-import {HashRouter as Router, Redirect,withRouter,Route, Switch} from "react-router-dom";
+import {HashRouter as Router, Redirect,withRouter,Route,Switch} from "react-router-dom";
 
 import ManagerComponent from "./Manager";
 

@@ -14,6 +14,8 @@ import ClassRoomTotalSingle from './ClassRoomTotalSingle';
 
 import AdjustByTeacherModal from "./AdjustByTeacherModal";
 
+import AdjustByClassRoom from "./AdjustByClassRoom";
+
 
 
 
@@ -67,6 +69,7 @@ class Index extends Component{
 
                 <AdjustByTeacherModal></AdjustByTeacherModal>
 
+                <AdjustByClassRoom></AdjustByClassRoom>
 
             </React.Fragment>
 
