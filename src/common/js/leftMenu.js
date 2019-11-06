@@ -355,11 +355,16 @@ $(document).on('click', '.frame_leftmenu_mainitem_name,.frame_leftmenu_onegrade_
 });
 
 $(document).on('click', '.frame_leftmenu_mainitem_name', function () {
+
     var $this = $(this);
+
+
     $this.closest('.frame_leftpart_container,.frame_left_menu_container').find('.active').removeClass('active');
     $this.parent('.frame_leftmenu_mainitem').addClass('active');
     $this.parent('.frame_leftmenu_mainitem').next('.frame_leftmenu_nextgrade_container').slideDown();
     $this.next().addClass('spread');
+
+
 
 });
 

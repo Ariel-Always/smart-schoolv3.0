@@ -16,7 +16,7 @@ class AdjustByClassRoom extends Component{
 
         const { dispatch } = this.props;
 
-        dispatch({type:ABCRActions.ADJUST_BY_TEACHER_HIDE});
+        dispatch({type:ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_HIDE});
 
     }
 
@@ -63,7 +63,16 @@ class AdjustByClassRoom extends Component{
 
                    ]}>
 
-                <AdjustByClassRoomContent></AdjustByClassRoomContent>
+                {
+
+                    Show?
+
+                        <AdjustByClassRoomContent></AdjustByClassRoomContent>
+
+                        :''
+
+                }
+
 
             </Modal>
 
