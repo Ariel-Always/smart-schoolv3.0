@@ -78,6 +78,8 @@ const STSPageUpdate = (opt) => {
 
                             return {
 
+                                ...i,
+
                                 type:i.ScheduleType,
 
                                 title:(i.ClassName!==''?i.ClassName:i.CourseClassName),
@@ -90,11 +92,7 @@ const STSPageUpdate = (opt) => {
 
                                 thirdTitle:i.ClassRoomName,
 
-                                thirdTitleID:i.ClassRoomID,
-
-                                WeekDay:i.WeekDay,
-
-                                ClassHourNO:i.ClassHourNO,
+                                thirdTitleID:i.ClassRoomID
 
                             };
 

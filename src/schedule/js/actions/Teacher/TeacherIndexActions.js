@@ -729,7 +729,7 @@ const ClassTotalInit = () => {
 };
 
 
-//获取
+//获取学生课表
 const ClassStudentPageInit = () =>{
 
   return (dispatch,getState) => {
@@ -766,7 +766,9 @@ const ClassStudentPageInit = () =>{
 
               const {ClassName, ClassID, ItemClassHour, ItemClassHourCount} = data;
 
-              dispatch({type: CSActions.TEACHER_CLASS_TOTAL_STUDENT_CLASSHOUR_UPDATE, data: {ItemClassHour, ItemClassHourCount}})
+              dispatch({type:CSActions.TEACHER_CS_CLASS_INFO_UPDATE,data:{ClassName,ClassID}});
+
+              dispatch({type: CSActions.TEACHER_CLASS_TOTAL_STUDENT_CLASSHOUR_UPDATE, data: {ItemClassHour, ItemClassHourCount}});
 
               ApiActions.GetSudentInfoByClassIDAndKey({ClassID,Key:'',dispatch}).then(json=>{
 

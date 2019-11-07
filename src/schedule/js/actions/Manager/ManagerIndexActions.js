@@ -78,6 +78,8 @@ const STSPageInit = () => {
 
                                 return {
 
+                                    ...i,
+
                                     type:i.ScheduleType,
 
                                     title:(i.ClassName!==''?i.ClassName:i.CourseClassName),
@@ -91,10 +93,6 @@ const STSPageInit = () => {
                                     thirdTitle:i.ClassRoomName,
 
                                     thirdTitleID:i.ClassRoomID,
-
-                                    WeekDay:i.WeekDay,
-
-                                    ClassHourNO:i.ClassHourNO
 
                                 };
 

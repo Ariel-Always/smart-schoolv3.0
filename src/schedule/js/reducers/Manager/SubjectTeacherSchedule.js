@@ -1,5 +1,7 @@
 import STSActions from '../../actions/Manager/SubjectTeacherScheduleActions';
 
+import SDMActions from '../../actions/ScheduleDetailModalActions';
+
 const SubjectTeacherSchedule = (state={
 
     schedule:[],
@@ -12,7 +14,15 @@ const SubjectTeacherSchedule = (state={
 
     loadingShow:true,
 
-    TeacherCount:0
+    TeacherCount:0,
+
+    ScheduleDetail:{
+
+        Show:false,
+
+        ModalLoading:false
+
+    }
 
 },actions) => {
 
@@ -30,7 +40,15 @@ const SubjectTeacherSchedule = (state={
 
                 loadingShow:true,
 
-                schedule:actions.data
+                schedule:actions.data,
+
+                ScheduleDetailModal:{
+
+                    Show:false,
+
+                    ModalLoading:false
+
+                }
 
             };
 
@@ -61,6 +79,10 @@ const SubjectTeacherSchedule = (state={
         case STSActions.LOADING_SHOW:
 
             return {...state,loadingShow:true};
+
+        case SDMActions.SCHEDULE_DETAIL_MODAL_SHOW:
+
+            return { ...state,ScheduleDetail:{...state.ScheduleDetailModal,Show:true,...actions.data}};
 
         default:
 

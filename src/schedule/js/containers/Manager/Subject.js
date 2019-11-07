@@ -14,9 +14,13 @@ import TermPick from '../../component/TermPick';
 
 import DoubleSingleTable from '../../component/DoubleSingleTable';
 
+import SDMActions from '../../actions/ScheduleDetailModalActions';
+
 import $ from 'jquery';
 
 import {connect} from 'react-redux';
+
+import ScheduleDetailModal from "../../component/ScheduleDetailModal";
 
 class Subject extends Component{
 
@@ -141,7 +145,17 @@ class Subject extends Component{
 
     }
 
+    //弹出课程详情弹窗
 
+    ScheduleDetailShow(Params){
+
+        console.log(Params);
+
+        const { dispatch } = this.props;
+
+        dispatch({type:SDMActions.SCHEDULE_DETAIL_MODAL_SHOW,data:Params});
+
+    }
 
 
 
@@ -151,6 +165,10 @@ class Subject extends Component{
         const {Manager,PeriodWeekTerm} = this.props;
 
         const {SubjectCourseGradeClassRoom,SubjectTeacherSchedule} = Manager;
+
+        const { ScheduleDetail } = SubjectTeacherSchedule;
+
+
 
         let dropList = [];
         //封装获取到的学科列表
@@ -239,13 +257,22 @@ class Subject extends Component{
                             schedulePageIndex={SubjectTeacherSchedule.pageIndex}
                             schedulePageSize={10}
                             onClickRow={(record) => this.clickRow.bind(this,record)}
-                            scrollToBottom={this.scrollToBottom.bind(this)}>
+                            scrollToBottom={this.scrollToBottom.bind(this)}
+                            ScheduleDetailShow={this.ScheduleDetailShow.bind(this)}>
 
                         </DoubleSingleTable>
 
                     </div>
 
                 </Loading>
+
+                <ScheduleDetailModal
+
+                    Params={ScheduleDetail}
+
+                >
+
+                </ScheduleDetailModal>
 
             </div>
 
