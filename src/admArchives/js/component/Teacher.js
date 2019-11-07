@@ -830,7 +830,7 @@ class Teacher extends React.Component {
                                 ref='dropMenuFirst'
                                 onChange={this.TeacherDropMenu.bind(this)}
                                 width={120}
-                                height={96}
+                                height={240}
                                 dropSelectd={this.state.selectSubject}
                                 dropList={DataState.SubjectTeacherMsg.returnData ? DataState.SubjectTeacherMsg.returnData.SubjectList : [{ value: 'all', title: '全部教师' }]}
                             ></DropDown>

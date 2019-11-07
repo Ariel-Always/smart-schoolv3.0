@@ -1,19 +1,20 @@
 import UpDataState from '../../actions/UpDataState';
 import history from '../../containers/history'
 
-const GetCoureClassAllMsg = (state = {Subject:'',Grade:''}, actions) => {
+const GetCoureClassAllMsg = (state = { Subject: '', Grade: '' }, actions) => {
     switch (actions.type) {
         case UpDataState.GET_COURE_CLASS_ALL_MSG:
             let data = handleData(actions.data, actions.func)
-            return Object.assign({}, state, { ...data });
+            return Object.assign({}, state, {...data });
         case UpDataState.SET_COURE_CLASS_ALL_MSG:
             // console.log(state)
             let setData = setNewData(state.MenuParams, actions.data, actions.subjectID)
-            return Object.assign({}, state, { MenuParams: setData,Grade:actions.subjectID?actions.data:'',Subject:actions.subjectID?actions.subjectID:actions.data==='all'?'': actions.data});
+            return Object.assign({}, state, { MenuParams: setData, Grade: actions.subjectID ? actions.data : '', Subject: actions.subjectID ? actions.subjectID : actions.data === 'all' ? '' : actions.data });
         default:
             return state;
     }
 };
+
 function setNewData(MenuParams, key, subjectID) {
     const { MenuBox, children } = MenuParams;
     let params = [];
@@ -32,7 +33,7 @@ function setNewData(MenuParams, key, subjectID) {
         }
         if (children)
             myChild = children.map((value) => {
-                if (value.key === key) {
+                if (value.key === subjectID + key) {
                     value.active = true;
                     value.selected = true;
                     if (subjectID === Params.key) {
@@ -47,16 +48,18 @@ function setNewData(MenuParams, key, subjectID) {
 
             })
         if (child.type === 'All') {
-            return { ...Params };
+            return {...Params };
         }
         return { children: myChild, ...Params };
 
     })
     return {
-        children: params, MenuBox: MenuBox
+        children: params,
+        MenuBox: MenuBox
     }
 
 }
+
 function handleData(data, func) {
     let oldData = data;
     let route = history.location.pathname;
@@ -69,16 +72,16 @@ function handleData(data, func) {
     let AllSelect = false;
     let Subject = '';
     let Grade = ''
-    //学科ID：{name：学科名，年级ID：年级名}
+        //学科ID：{name：学科名，年级ID：年级名}
     let Subjects = {};
 
     if (route === '/' || handleRoute === 'All') {
         AllActive = true;
         AllSelect = true;
-    }else if(handleRoute!=='Search'){
+    } else if (handleRoute !== 'Search') {
         Subject = routeID;
-    } 
-    if(classID){
+    }
+    if (classID) {
         Grade = classID
     }
     const { ItemSubject, ...newData } = data;
@@ -103,8 +106,8 @@ function handleData(data, func) {
             icon: 'menu20',
             onTitleClick: () => { func(child.SubjectID, 'Subject') }
         };
-        Subjects[child.SubjectID] = {subjectName:child.SubjectName};
-        if (handleRoute === 'Subject' && subjectID === 'all' && child.SubjectID === routeID ){
+        Subjects[child.SubjectID] = { subjectName: child.SubjectName };
+        if (handleRoute === 'Subject' && subjectID === 'all' && child.SubjectID === routeID) {
             //menu['selected'] = true;
             menu['active'] = true;
         }
@@ -112,28 +115,28 @@ function handleData(data, func) {
         ID.map((id, key) => {
             Grades[id] = name[key];
             Subjects[child.SubjectID][id] = name[key];
-            if(handleRoute === 'Subject' && subjectID === 'Class'&& child.SubjectID === routeID && classID ===id){
+            if (handleRoute === 'Subject' && subjectID === 'Class' && child.SubjectID === routeID && classID === id) {
                 childMenu.push({
-                    key: id,
+                    key: child.SubjectID + id,
                     title: name[key],
                     type: 'Class',
-                    selected:true,
-                    active:true,
+                    selected: true,
+                    active: true,
                     onTitleClick: () => { func(id, "Class", child.SubjectID) }
-                }) 
+                })
                 menu['selected'] = true;
-            }else 
-            childMenu.push({
-                key: id,
-                title: name[key],
-                type: 'Class',
-                onTitleClick: () => { func(id, "Class", child.SubjectID) }
-            })
+            } else
+                childMenu.push({
+                    key: child.SubjectID + id,
+                    title: name[key],
+                    type: 'Class',
+                    onTitleClick: () => { func(id, "Class", child.SubjectID) }
+                })
         })
         menu['children'] = childMenu
         children.push(menu)
         const { GradeIDs, GradesNames, ...item } = child;
-        return { ...item, Grades: Grades };
+        return {...item, Grades: Grades };
     })
 
     let MenuParams = {
@@ -146,6 +149,6 @@ function handleData(data, func) {
         initParams: ''
     };
 
-    return {Subjects:Subjects, newData: { ...newData, ItemSubject: newItem }, oldData: oldData, MenuParams: MenuParams ,Subject:Subject,Grade:Grade};
+    return { Subjects: Subjects, newData: {...newData, ItemSubject: newItem }, oldData: oldData, MenuParams: MenuParams, Subject: Subject, Grade: Grade };
 }
 export default GetCoureClassAllMsg;
