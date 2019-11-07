@@ -356,17 +356,10 @@ $(document).on('click', '.frame_leftmenu_mainitem_name,.frame_leftmenu_onegrade_
     }
 });
 
-<<<<<<< HEAD
-$(document).on('click', '.frame_leftmenu_mainitem_name', function () {
 
-    var $this = $(this);
-
-
-=======
 $(document).on('click', '.frame_leftmenu_mainitem_name', function() {
     var $this = $(this);
 
->>>>>>> 9630df1ed9ba90ade7de84394d046088da19cf81
     $this.closest('.frame_leftpart_container,.frame_left_menu_container').find('.active').removeClass('active');
     $this.parent('.frame_leftmenu_mainitem').addClass('active');
     $this.parent('.frame_leftmenu_mainitem').next('.frame_leftmenu_nextgrade_container').slideDown();
