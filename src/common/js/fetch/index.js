@@ -1,12 +1,17 @@
-import 'whatwg-fetch';
-import 'es6-promise';
-import { TESTKEY } from './SecretKey'
-import { AESEncryptionBody, AESEncryptionUrl, requestSecure, ErrorAlert } from './util'
-import { stringify } from 'querystring';
-import ReactDOM from 'react-dom'
-import React from 'react'
-import {TokenCheck} from '../disconnect'
-import config from '../config'
+import "whatwg-fetch";
+import "es6-promise";
+import { TESTKEY } from "./SecretKey";
+import {
+  AESEncryptionBody,
+  AESEncryptionUrl,
+  requestSecure,
+  ErrorAlert
+} from "./util";
+import { stringify } from "querystring";
+import ReactDOM from "react-dom";
+import React from "react";
+import { TokenCheck } from "../disconnect";
+import config from "../config";
 
 // 参数
 // url:请求服务对象
@@ -14,188 +19,209 @@ import config from '../config'
 // SecurityLevel:请求的安全等级，分1,2,3,4四个等级
 // content_type：请求的实体的数据的媒体类型，默认urlencoded格式，支持json
 
+function postData(
+  url,
+  paramsObj = {},
+  SecurityLevel = 1,
+  content_type = "urlencoded",
+  IsDesk = false,
+  element = true
+) {
+  let token = sessionStorage.getItem("token") || getQueryVariable("lg_tk");
 
-function postData(url, paramsObj = {}, SecurityLevel = 1, content_type = 'urlencoded', IsDesk = false, element = null) {
+  // if (!token && SecurityLevel !== 1) {
+  //     console.log('token无效，请重新登录');//后期会进行无token的事件操作
+  //     return new Promise(function (resolve, reject) {
+  //         if (resolve) {
+  //             resolve(stringify({ 'Status': 4001, 'Msg': "token无效，请重新登录" }));
+  //         } else {
+  //             reject(stringify({ 'Status': 4000, 'Msg': "错误！" }));
+  //         }
+  //     });
+  // }
+  let ContentTypeArr = [
+    "application/x-www-form-urlencoded",
+    "application/json"
+  ];
+  let ContentType = "";
+  if (content_type === "urlencoded") {
+    ContentType = ContentTypeArr[0];
+  } else if (content_type === "json") {
+    ContentType = ContentTypeArr[1];
+  } else {
+    ContentType = ContentTypeArr[0];
+  }
+  let result = fetch(url, {
+    method: "post", //*post、get、put、delete，此项为请求方法相关的配置
+    mode: "cors", //no-cors(跨域模式但服务器端不支持cors),*cors(跨域模式，需要服务器通过Access-control-Allow-Origin来
+    //允许指定的源进行跨域),same-origin(同源)
+    cache: "no-cache", //*no-cache,default,reload,force-cache,only-ifcached,此项为缓存相关配置
+    credentials: "omit", //*include(携带cookie)、same-origin(cookie同源携带)、omit(不携带)
 
-    let token = sessionStorage.getItem('token') || getQueryVariable('lg_tk');
+    headers: {
+      Accept: "application/json, text/plain, */*", //请求头，代表的、发送端（客户端）希望接收的数据类型
+      "Content-Type": ContentType, //实体头，代表发送端（客户端|服务器）发送的实体数据的数据类型
+      Authorization: requestSecure(paramsObj, TESTKEY, SecurityLevel)
+    },
+    redirect: "follow", //manual、*follow(自动重定向)、error，此项为重定向的相关配置
+    // referrer: 'no-referrer',//该首部字段会告知服务器请求的原始资源的URI
+    // 注意post时候参数的形式
+    body: AESEncryptionBody(paramsObj, TESTKEY, SecurityLevel, content_type) //此处需要和headers里的"Content-Type"相对应
+  });
+  // .then(data => data.json()).then(json => {
+  //     if (json.StatusCode === '401') {
+  //         TokenCheck(IsDesk);
+  //     }
+  // })
 
-    // if (!token && SecurityLevel !== 1) {
-    //     console.log('token无效，请重新登录');//后期会进行无token的事件操作
-    //     return new Promise(function (resolve, reject) {
-    //         if (resolve) {
-    //             resolve(stringify({ 'Status': 4001, 'Msg': "token无效，请重新登录" }));
-    //         } else {
-    //             reject(stringify({ 'Status': 4000, 'Msg': "错误！" }));
-    //         }
-    //     });
-    // }
-    let ContentTypeArr = ['application/x-www-form-urlencoded', 'application/json']
-    let ContentType = ''
-    if (content_type === 'urlencoded') {
-        ContentType = ContentTypeArr[0]
-    } else if (content_type === 'json') {
-        ContentType = ContentTypeArr[1]
-    } else {
-        ContentType = ContentTypeArr[0]
-    }
-    let result = fetch(url, {
-        method: 'post',//*post、get、put、delete，此项为请求方法相关的配置 
-        mode: 'cors',//no-cors(跨域模式但服务器端不支持cors),*cors(跨域模式，需要服务器通过Access-control-Allow-Origin来
-        //允许指定的源进行跨域),same-origin(同源)
-        cache: 'no-cache',//*no-cache,default,reload,force-cache,only-ifcached,此项为缓存相关配置
-        credentials: 'omit',//*include(携带cookie)、same-origin(cookie同源携带)、omit(不携带)
+  // result.then(res => {//做提前处理
+  //     console.log(res)
+  //     return res;
+  // }, err => {
 
-        headers: {
-            'Accept': 'application/json, text/plain, */*',//请求头，代表的、发送端（客户端）希望接收的数据类型
-            'Content-Type': ContentType,//实体头，代表发送端（客户端|服务器）发送的实体数据的数据类型
-            'Authorization': requestSecure(paramsObj, TESTKEY, SecurityLevel),
-        },
-        redirect: 'follow',//manual、*follow(自动重定向)、error，此项为重定向的相关配置
-        // referrer: 'no-referrer',//该首部字段会告知服务器请求的原始资源的URI
-        // 注意post时候参数的形式 
-        body: AESEncryptionBody(paramsObj, TESTKEY, SecurityLevel, content_type)//此处需要和headers里的"Content-Type"相对应
-    })
-    // .then(data => data.json()).then(json => {
-    //     if (json.StatusCode === '401') {
-    //         TokenCheck(IsDesk);
-    //     }
-    // })
-
-    // result.then(res => {//做提前处理
-    //     console.log(res)
-    //     return res;
-    // }, err => {
-
-    // })
-    result.then(res => {//做提前处理
-        let clone = res.clone()
+  // })
+  result
+    .then(
+      res => {
+        //做提前处理
+        let clone = res.clone();
         // console.log(clone.json())
-        return clone.json()
-    }, err => {
+        return clone.json();
+      },
+      err => {}
+    )
+    .then(json => {
+      // console.log(json, json.StatusCode === 200)
 
-    }).then(json => {
-        // console.log(json, json.StatusCode === 200)
-        if(!element)
-        return;
-        let title = ''
-        if (json.StatusCode === 400 || json.StatusCode === 500) {
-            if (json.StatusCode === 400) {
-                title = '操作出现未知异常，请重试或联系管理员'
-            } else {
-                title = '服务器出现未知异常，请重试或联系管理员'
-            }
+      handleStatusCode(json, element);
+    });
+  return result;
+}
+// 处理statusCode
+function handleStatusCode(json, element = true) {
+  if (!element || json.StatusCode === 200) return;
+  console.log(json.StatusCode);
 
-
-            ReactDOM.render(
-                // eslint-disable-next-line react/react-in-jsx-scope
-                <ErrorAlert
-                    show={true} title={title} />,
-                document.getElementById('alert')
-            )
-
-
-        }else if(json.StatusCode === 401){
-            TokenCheck()
-        }else if(json.StatusCode === 403){
-            window.location.href = config.ErrorProxy+'/Error.aspx?errcode=E011'
-        }
-    })
-    return result;
+  let title = "";
+  let isAllSelect = false;
+  let isSelect = {};
+  if (element === true) {
+    isAllSelect = true;
+  } else if (element instanceof Array) {
+    element.map(child => {
+      isSelect[child] = true;
+    });
+  } else {
+    console.log("参数错误");
+    return;
+  }
+  switch (json.StatusCode) {
+    case 400:
+      if (isAllSelect === true || isSelect[400]) title = json.Msg;
+      ReactDOM.render(
+        // eslint-disable-next-line react/react-in-jsx-scope
+        <ErrorAlert key={'alert' + '400-' + Math.round(Math.random()*10000)} show={true} title={title} />,
+        document.getElementById("alert")
+      );
+      break;
+    case 500:
+      if (isAllSelect === true || isSelect[500])
+        title = "服务器出现未知异常，请重试或联系管理员";
+      ReactDOM.render(
+        // eslint-disable-next-line react/react-in-jsx-scope
+        <ErrorAlert key={'alert' + '400-' + Math.round(Math.random()*10000)} show={true} title={title} />,
+        document.getElementById("alert")
+      );
+      break;
+    case 401:
+      TokenCheck();
+      break;
+    case 403:
+      window.location.href = config.ErrorProxy + "/Error.aspx?errcode=E011";
+      break;
+    default:
+      window.location.href = config.ErrorProxy + "/Error.aspx?errcode=E011";
+  }
 }
 
-function getData(url, SecurityLevel = 1, mode = 'cors', IsDesk = false, element = null) {
+function getData(
+  url,
+  SecurityLevel = 1,
+  mode = "cors",
+  IsDesk = false,
+  element = true
+) {
+  let token = sessionStorage.getItem("token") || getQueryVariable("lg_tk");
 
-    let token = sessionStorage.getItem('token') || getQueryVariable('lg_tk');
+  // if (!token && SecurityLevel !== 1) {
+  //     console.log('token无效，请重新登录');//后期会进行无token的事件操作
+  //     return new Promise(function (resolve, reject) {
+  //         if (resolve) {
+  //             resolve(stringify({ 'Status': 4001, 'Msg': "token无效，请重新登录" }));
+  //         } else {
+  //             reject(stringify({ 'Status': 4000, 'Msg': "错误！" }));
+  //         }
+  //     });
+  // }
 
+  let result = fetch(AESEncryptionUrl(url, TESTKEY, SecurityLevel, IsDesk), {
+    method: "get", //*post、get、put、delete，此项为请求方法相关的配置
+    mode: mode, //no-cors(跨域模式但服务器端不支持cors),*cors(跨域模式，需要服务器通过Access-control-Allow-Origin来
+    //允许指定的源进行跨域),same-origin(同源)
+    cache: "no-cache", //*no-cache,default,reload,force-cache,only-ifcached,此项为缓存相关配置
+    credentials: "omit", //*include(携带cookie)、same-origin(cookie同源携带)、omit(不携带)
 
-    // if (!token && SecurityLevel !== 1) {
-    //     console.log('token无效，请重新登录');//后期会进行无token的事件操作
-    //     return new Promise(function (resolve, reject) {
-    //         if (resolve) {
-    //             resolve(stringify({ 'Status': 4001, 'Msg': "token无效，请重新登录" }));
-    //         } else {
-    //             reject(stringify({ 'Status': 4000, 'Msg': "错误！" }));
-    //         }
-    //     });
-    // }
+    headers: {
+      Accept: "application/json, text/plain, */*", //请求头，代表的、发送端（客户端）希望接收的数据类型
+      "Content-Type": "application/x-www-form-urlencoded", //实体头，代表发送端（客户端|服务器）发送的实体数据的数据类型
+      Authorization: requestSecure(url, TESTKEY, SecurityLevel)
+    },
+    redirect: "follow" //manual、*follow(自动重定向)、error，此项为重定向的相关配置
+    // referrer: 'no-referrer',//该首部字段会告知服务器请求的原始资源的URI
+  });
 
+  // result.then(data => {
+  //     let json = data;
+  //     console.log(json)
+  //     if (json.StatusCode === '401') {
+  //         TokenCheck(IsDesk);
+  //     }
+  //     return data
+  // })
 
-    let result = fetch(AESEncryptionUrl(url, TESTKEY, SecurityLevel, IsDesk), {
-        method: 'get',//*post、get、put、delete，此项为请求方法相关的配置 
-        mode: mode,//no-cors(跨域模式但服务器端不支持cors),*cors(跨域模式，需要服务器通过Access-control-Allow-Origin来
-        //允许指定的源进行跨域),same-origin(同源)
-        cache: 'no-cache',//*no-cache,default,reload,force-cache,only-ifcached,此项为缓存相关配置
-        credentials: 'omit',//*include(携带cookie)、same-origin(cookie同源携带)、omit(不携带)
-
-        headers: {
-            'Accept': 'application/json, text/plain, */*',//请求头，代表的、发送端（客户端）希望接收的数据类型
-            'Content-Type': 'application/x-www-form-urlencoded',//实体头，代表发送端（客户端|服务器）发送的实体数据的数据类型
-            'Authorization': requestSecure(url, TESTKEY, SecurityLevel),
-        },
-        redirect: 'follow',//manual、*follow(自动重定向)、error，此项为重定向的相关配置
-        // referrer: 'no-referrer',//该首部字段会告知服务器请求的原始资源的URI
-
-    })
-
-    // result.then(data => {
-    //     let json = data;
-    //     console.log(json)
-    //     if (json.StatusCode === '401') {
-    //         TokenCheck(IsDesk);
-    //     }
-    //     return data
-    // })
-
-    result.then(res => {//做提前处理
-        let clone = res.clone()
+  result
+    .then(
+      res => {
+        //做提前处理
+        let clone = res.clone();
         // console.log(clone.json())
-        return clone.json()
-    }, err => {
+        return clone.json();
+      },
+      err => {}
+    )
+    .then(json => {
+      // console.log(json, json.StatusCode === 200)
+      handleStatusCode(json, element)
+    });
 
-    }).then(json => {
-        // console.log(json, json.StatusCode === 200)
-        if(!element)
-        return;
-        let title = ''
-        if (json.StatusCode === 400 || json.StatusCode === 500) {
-            if (json.StatusCode === 400) {
-                title = '操作出现未知异常，请重试或联系管理员'
-            } else {
-                title = '服务器出现未知异常，请重试或联系管理员'
-            }
-
-
-            ReactDOM.render(
-                // eslint-disable-next-line react/react-in-jsx-scope
-                <ErrorAlert
-                    show={true} title={title} />,
-                document.getElementById('alert')
-            )
-
-
-        }else if(json.StatusCode === 401){
-            TokenCheck()
-        }else if(json.StatusCode === 403){
-            window.location.href = config.ErrorProxy+'/Error.aspx?errcode=E011'
-        }
-    })
-
-    return result;
+  return result;
 }
 
 //获取url参数
 function getQueryVariable(variable) {
-    var query = window.location.search.substring(1) || window.location.href.split('?')[1] || window.location.href;
+  var query =
+    window.location.search.substring(1) ||
+    window.location.href.split("?")[1] ||
+    window.location.href;
 
-    console.log(query)
-    var vars = query.split("&");
-    for (var i = 0; i < vars.length; i++) {
-        var pair = vars[i].split("=");
-        if (pair[0] === variable) { return pair[1]; }
+  console.log(query);
+  var vars = query.split("&");
+  for (var i = 0; i < vars.length; i++) {
+    var pair = vars[i].split("=");
+    if (pair[0] === variable) {
+      return pair[1];
     }
-    return (false);
+  }
+  return false;
 }
-export {
-    postData,
-    getData
-}
+export { postData, getData };

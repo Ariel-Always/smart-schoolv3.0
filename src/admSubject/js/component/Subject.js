@@ -295,7 +295,7 @@ class Subject extends React.Component {
             if (json.StatusCode === 400) {
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'error',
-                    title: "失败",
+                    title: json.Msg,
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
                 console.log('错误码：' + json.StatusCode)

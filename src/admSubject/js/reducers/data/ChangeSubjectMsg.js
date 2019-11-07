@@ -1,20 +1,20 @@
 import UpDataState from '../../actions/UpDataState';
 const ChangeSubjectMsg = (state = {
-    SubjectName:'',
-    SubjectID:'',
-    GlobalGradeIDs:''
+    SubjectName: '',
+    SubjectID: '',
+    GlobalGradeIDs: ''
 }, actions) => {
     switch (actions.type) {
         case UpDataState.CHANGE_SUBJECT_MODAL_MSG:
             let data = handleData(actions.data)
-            return { ...data };
+            return {...data };
         case UpDataState.ADD_SUBJECT_MODAL_MSG:
             let add = {
                 GlobalGradeIDs: "",
                 SubjectID: 0,
                 SubjectName: ""
             }
-            return { ...add };
+            return {...add };
         case UpDataState.HANDLE_SUBJECT_MODAL_MSG:
             return Object.assign({}, state, {
                 GlobalGradeIDs: actions.data
@@ -22,12 +22,13 @@ const ChangeSubjectMsg = (state = {
         case UpDataState.HANDLE_SUBJECT_NAME_MODAL_MSG:
             return Object.assign({}, state, {
                 SubjectName: actions.data.SubjectName,
-                SubjectID:actions.data.SubjectID
+                SubjectID: actions.data.SubjectID
             })
         default:
             return state;
     }
 };
+
 function handleData(data) {
 
     let GlobalGradeIDs = handleGrade(data.P1Grade).concat(handleGrade(data.P2Grade)).concat(handleGrade(data.P3Grade)).join();
@@ -45,7 +46,7 @@ function handleGrade(grade) {
     let endGrade = '';
     let gradeArr1 = grade.split(',');
     if (!gradeArr1.length)
-        return '';
+        return [];
     let gradeArr2 = gradeArr1.map((child, index) => {
         return child.split('-')[0];
     })

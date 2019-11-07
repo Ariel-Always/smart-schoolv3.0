@@ -16,17 +16,18 @@ class App extends Component {
         let lg_preurl = window.location.href.split('lg_preurl=')[1];
 
         if (lg_preurl) {
-
+            // console.log(decodeURIComponent(decodeURIComponent(lg_preurl)))
+            // console.log(Public.getLg_tk(lg_preurl))
             this.setState({
-                toLogin: url + '&lg_preurl=' + lg_preurl
+                toLogin: url + '&lg_preurl=' + Public.getLg_tk(lg_preurl)
             })
 
         }
     }
     onSelfClick = () => {
-        let url = window.location.href;
+        // let url = window.location.href.split('lg_preurl=')[1];
         TokenCheck()
-        window.location.href = url
+        // window.location.href = url
     }
     onLoginClick = () => {
         sessionStorage.clear();

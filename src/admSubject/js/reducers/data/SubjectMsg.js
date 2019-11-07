@@ -22,7 +22,7 @@ const SubjectMsg = (state = {}, actions) => {
             let oldData = actions.data;
             let newData = handleData(SubjectItem)
 
-            return Object.assign({}, state, { ...data, SubjectItem: newData, oldData: oldData });
+            return Object.assign({}, state, {...data, SubjectItem: newData, oldData: oldData });
         case UpDataState.GET_SUBJECT_MODAL_MSG:
             let addSubjectMsg = handleAddSubjectMsg(actions.data.ItemSubject)
 
@@ -31,6 +31,7 @@ const SubjectMsg = (state = {}, actions) => {
             return state;
     }
 };
+
 function handleAddSubjectMsg(data = []) {
     let initData = [{ value: 0, title: '自定义', GlabalGrades: '' }]
     let endData = data instanceof Array && data.map((child, index) => {
@@ -41,12 +42,13 @@ function handleAddSubjectMsg(data = []) {
         return {
             value: value,
             title: title,
-            GlabalGrades: child.GlabalGrades,
+            GlabalGrades: child.Grades,
         }
     })
     let newData = initData.concat(endData)
     return newData;
 }
+
 function handleAllGrades(grade) {
     let endGrade = '';
     let gradeArr1 = grade.split(',');
@@ -57,15 +59,16 @@ function handleAllGrades(grade) {
     })
     return gradeArr2
 }
+
 function handleData(data) {
     data = data || []
     let newData = data instanceof Array && data.map((child, index) => {
         let SubjectName = handleSubjectName(child)
-        // {
-        //     SubjectID:child.SubjectID,
-        //     SubjectName:child.SubjectName,
-        //     SubjectImg:SubjectImg 
-        // }; 
+            // {
+            //     SubjectID:child.SubjectID,
+            //     SubjectName:child.SubjectName,
+            //     SubjectImg:SubjectImg 
+            // }; 
         let Grades = {
             P1Grades: handleGrade(child.P1Grade),
             P2Grades: handleGrade(child.P2Grade),
@@ -119,6 +122,7 @@ function handleSubjectName(Subject) {
         SubjectID: Subject.SubjectID
     }
 }
+
 function handleTeacher(teacher) {
     let teacherArr = teacher.split(',');
     let allTeacherArr = teacherArr instanceof Array && teacherArr.map((child, index) => {
@@ -139,6 +143,7 @@ function handleTeacher(teacher) {
     })
     return allTeacherArr;
 }
+
 function handleGrade(grade) {
 
     if (grade === '')
