@@ -147,8 +147,8 @@ const GetScheduleOfClassOne = async ({SchoolID,ClassID,WeekNO=0,dispatch}) => {
 
         2,
 
-        CONFIG.ScheduleProxy);
-        //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+        //CONFIG.ScheduleProxy);
+        'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
 
     if (res.StatusCode === 200){
 
@@ -211,6 +211,31 @@ const GetTeacherBySubjectIDAndKey = async ({SchoolID,PeriodID='',SubjectID='',Ke
 
 
 };
+
+
+//获取学生信息（含搜索）
+
+const GetSudentInfoByClassIDAndKey = async ({ClassID,Key='',dispatch}) => {
+
+    let res = await Method.getGetData(`/Schedule/api/GetSudentInfoByClassIDAndKey?ClassID=${ClassID}&Key=${Key}`,
+
+        2,
+
+        CONFIG.ScheduleProxy);
+
+    if (res.StatusCode === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常",ok:()=>{ return ()=>window.location.href='/error.aspx'}}));
+
+    }
+
+
+};
+
 
 
 
@@ -541,6 +566,33 @@ const ShiftClassHourModel = async ({SchoolID,CreateType=0,dispatch}) => {
         CONFIG.ScheduleProxy);
 
     //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+
+
+    if (res.StatusCode === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+};
+
+//获取班主任所在行政班的信息
+
+const GetClassInfoByGanger = async ({SchoolID,UserID,UserType,UserClass,dispatch}) => {
+
+    let res = await Method.getGetData(`/ScheduleTea/api/GetClassInfoByGanger?SchoolID=${SchoolID}&UserID=${UserID}&UserType=${UserType}&UserClass=${UserClass}`,
+
+        2,
+
+        //CONFIG.ScheduleProxy);
+
+    'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+
+    //'http://192.168.2.26:8084');
 
 
     if (res.StatusCode === 200){
@@ -1013,6 +1065,10 @@ export default {
 
     RevolveScheduleLog,
 
-    ShiftClassHourModel
+    ShiftClassHourModel,
+
+    GetClassInfoByGanger,
+
+    GetSudentInfoByClassIDAndKey
 
 }

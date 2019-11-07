@@ -1,0 +1,21 @@
+.class-total-student-wrapper{
+
+  .class-name{
+
+    float: left;
+
+    color: #333333;
+
+    margin-left: 18px;
+
+    line-height: 30px;
+
+    &.unset{
+
+      color: #999999;
+
+    }
+
+  }
+
+}

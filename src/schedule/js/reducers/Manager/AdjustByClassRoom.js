@@ -3,6 +3,7 @@ import ABCRActions from '../../actions/Manager/AdjustByClassRoomActions';
 
 
 
+
 const AdjustByClassRoom = (state={
 
     Show:false,
@@ -63,13 +64,13 @@ const AdjustByClassRoom = (state={
 
     classHourPlainOpts:[],
 
-    originTeacherTips:false,
+    OriginClassRoomTips:false,
 
-    originTeacherTipsTitle:'',
+    OriginClassRoomTipsTitle:'',
 
-    replaceTeacherTips:false,
+    TargetClassRoomTips:false,
 
-    replaceTeacherTipsTitle:'',
+    TargetClassRoomTipsTitle:'',
 
     classTips:false,
 
@@ -278,43 +279,193 @@ const AdjustByClassRoom = (state={
 
             return {...state,LoadingShow:true};
 
-         //所有的错误提示
 
-        case ABCRActions.REPLACE_SHCEDULE_ERROR_TIPS_SHOW:
+        case ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_RADIO_CHANGE:
+
+            return {
+
+                ...state,
+
+                activeRadio:actions.data
+
+            };
+
+        case ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_MONTHS_LIST_UPDATE:
+
+            return{
+
+                ...state,
+
+                monthsList:actions.data
+
+            };
+
+        case ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_MONTHS_CHECKED:
+
+            return{
+
+                ...state,
+
+                monthsCheckedList:actions.data
+
+            };
+
+        case ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_WEEK_LIST_UPDATE:
+
+            return{
+
+                ...state,
+
+                weeksList:actions.data
+
+            };
+
+        case ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_WEEK_CHECKED:
+
+            return{
+
+                ...state,
+
+                weeksCheckedList:actions.data
+
+            };
+
+        case ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_DATE_CHECKED:
+
+            return {
+
+                ...state,
+
+                dateCheckedList:actions.data
+
+            };
+
+        case ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_CLASSHOUR_DATE_CHECKED:
+
+            return {
+
+                ...state,
+
+                classHourDate:actions.data
+
+            };
+
+        case ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_CLASSHOUR_WEEK_DATE_LOADING_SHOW:
+
+            return {
+
+                ...state,
+
+                dateLoadingShow:true
+
+            };
+
+        case ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_CLASSHOUR_WEEK_DATE_LOADING_HIDE:
+
+            return {
+
+                ...state,
+
+                dateLoadingShow:false
+
+            };
+
+        case ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_CLASSHOUR_WEEK_DATE_UPDATE:
+
+            return {
+
+                ...state,
+
+                WeekNO:actions.data.WeekNO,
+
+                WeekDay:actions.data.WeekDay
+
+            };
+
+
+        case ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_CLASSHOUR_LOADING_SHOW:
+
+            return {
+
+                ...state,
+
+                classHourLoadingShow:true
+
+            };
+
+        case ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_CLASSHOUR_LOADING_HIDE:
+
+            return {
+
+                ...state,
+
+                classHourLoadingShow:false
+
+            };
+
+        case ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_CLASSHOUR_LIST_CHANGE:
+
+            return {
+
+                ...state,
+
+                classHourList:actions.data.classHourList,
+
+                classHourPlainOpts:actions.data.classHourPlainOpts,
+
+                classHourCheckedList:actions.data.classHourCheckedList
+
+            };
+
+        case ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_CLASSHOUR_CHECKED_LIST_CHANGE:
+
+            return {
+
+                ...state,
+
+                classHourCheckedList:actions.data
+
+            };
+
+
+
+        //所有的错误提示
+
+        case ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_ERROR_TIPS_SHOW:
 
             switch (actions.data.type) {
 
-                case 'originTeacher':
+                case 'OriginClassRoom':
 
-                    return {...state,replaceSchedule:{...state.replaceSchedule,originTeacherTips:true,originTeacherTipsTitle:actions.data.title}};
+                    return {...state,OriginClassRoomTips:true,OriginClassRoomTipsTitle:actions.data.title};
 
-                case 'replaceTeacher':
+                case 'TargetClassRoom':
 
-                    return {...state,replaceSchedule:{...state.replaceSchedule,replaceTeacherTips:true,replaceTeacherTipsTitle:actions.data.title}};
+                    return {...state,TargetClassRoomTips:true,TargetClassRoomTipsTitle:actions.data.title};
 
                 case 'class':
 
-                    return {...state,replaceSchedule:{...state.replaceSchedule,classTips:true,classTipsTitle:actions.data.title}};
+                    return {...state,classTips:true,classTipsTitle:actions.data.title};
 
                 case 'month':
 
-                    return {...state,replaceSchedule:{...state.replaceSchedule,monthTips:true,monthTipsTitle:actions.data.title}};
+                    return {...state,monthTips:true,monthTipsTitle:actions.data.title};
 
                 case 'week':
 
-                    return {...state,replaceSchedule:{...state.replaceSchedule,weekTips:true,weekTipsTitle:actions.data.title}};
+                    return {...state,weekTips:true,weekTipsTitle:actions.data.title};
 
                 case 'date':
 
-                    return {...state,replaceSchedule:{...state.replaceSchedule,dateTips:true,dateTipsTitle:actions.data.title}};
+                    return {...state,dateTips:true,dateTipsTitle:actions.data.title};
 
                 case 'classHourDate':
 
-                    return {...state,replaceSchedule:{...state.replaceSchedule,classHourDateTips:true,classHourDateTipsTitle:actions.data.title}};
+                    return {...state,classHourDateTips:true,classHourDateTipsTitle:actions.data.title};
 
                 case 'classHour':
 
-                    return {...state,replaceSchedule:{...state.replaceSchedule,classHourTips:true,classHourTipsTitle:actions.data.title}};
+                    return {...state,classHourTips:true,classHourTipsTitle:actions.data.title};
 
 
                 default:
@@ -323,41 +474,41 @@ const AdjustByClassRoom = (state={
 
             }
 
-        case ABCRActions.REPLACE_SHCEDULE_ERROR_TIPS_HIDE:
+        case ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_ERROR_TIPS_HIDE:
 
             switch (actions.data.type) {
 
-                case 'originTeacher':
+                case 'OriginClassRoom':
 
-                    return {...state,replaceSchedule:{...state.replaceSchedule,originTeacherTips:false}};
+                    return {...state,OriginClassRoomTips:false};
 
-                case 'replaceTeacher':
+                case 'TargetClassRoom':
 
-                    return {...state,replaceSchedule:{...state.replaceSchedule,replaceTeacherTips:false}};
+                    return {...state,TargetClassRoomTips:false};
 
                 case 'class':
 
-                    return {...state,replaceSchedule:{...state.replaceSchedule,classTips:false}};
+                    return {...state,classTips:false};
 
                 case 'month':
 
-                    return {...state,replaceSchedule:{...state.replaceSchedule,monthTips:false}};
+                    return {...state,monthTips:false};
 
                 case 'week':
 
-                    return {...state,replaceSchedule:{...state.replaceSchedule,weekTips:false}};
+                    return {...state,weekTips:false};
 
                 case 'date':
 
-                    return {...state,replaceSchedule:{...state.replaceSchedule,dateTips:false}};
+                    return {...state,dateTips:false};
 
                 case 'classHourDate':
 
-                    return {...state,replaceSchedule:{...state.replaceSchedule,classHourDateTips:false}};
+                    return {...state,classHourDateTips:false};
 
                 case 'classHour':
 
-                    return {...state,replaceSchedule:{...state.replaceSchedule,classHourTips:false}};
+                    return {...state,classHourTips:false};
 
 
                 default:

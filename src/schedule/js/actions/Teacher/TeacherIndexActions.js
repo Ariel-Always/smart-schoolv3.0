@@ -10,6 +10,10 @@ import STTActions from "../Teacher/SubjectTeacherTeacherActions";
 
 import TPActions from "./TeacherPersonalActions";
 
+import CTActions from "./ClassTotalActions";
+
+import CSActions from "./ClassStudentActions";
+
 import ApiActions from '../ApiActions';
 
 import $ from 'jquery';
@@ -437,9 +441,46 @@ const TeacherPersonalInit = () => {
 
             //将课程、学期、等等放到redux中
 
-            dispatch({type:SCGCRActions.SCGCR_INFO_INIT,data:res[0]});
-
             dispatch({type:TPActions.TP_NOW_WEEK_CHANGE,data:NowWeekNo});
+
+            if (res[0]){
+
+                dispatch({type:SCGCRActions.SCGCR_INFO_INIT,data:res[0]});
+
+            }
+
+            if (res[1]){
+
+                let schedule = res[1].ItemSchedule.map((item) => {
+
+                    return {
+
+                        title:item.SubjectName,
+
+                        titleID:item.SubjectID,
+
+                        secondTitle:(item.ClassName===''?item.CourseClassName:item.ClassName),
+
+                        secondTitleID:(item.ClassName===''?item.CourseClassID:item.ClassID),
+
+                        thirdTitle:item.ClassRoomName,
+
+                        thirdTitleID:item.ClassRoomID,
+
+                        WeekDay:item.WeekDay,
+
+                        ClassHourNO:item.ClassHourNO,
+
+                        ScheduleType:item.ScheduleType
+
+                    }
+
+
+                });
+
+                dispatch({type:TPActions.TP_SCHEDULE_CHANGE,data:{schedule}});
+
+            }
 
             dispatch({type:TPActions.TP_SCHEDULE_LOADING_HIDE});
 
@@ -453,12 +494,331 @@ const TeacherPersonalInit = () => {
 };
 
 
+//获取教师班级课表
+
+const ClassTotalInit = () => {
+
+    return (dispatch,getState)=>{
+
+        dispatch({type:CTActions.TEACHER_CLASS_TOTAL_LOADING_SHOW});
+
+        const { PeriodWeekTerm,LoginUser } = getState();
+
+        const { UserID,SchoolID,UserType,UserClass } = LoginUser;
+
+        const { WeekNO,ItemWeek } = PeriodWeekTerm;
+
+        let WeekList = [];
+
+        ItemWeek.map(item=>{
+
+            WeekList.push({
+
+                value:item.WeekNO,
+
+                title:item.WeekNO
+
+            });
+
+        });
+
+        dispatch({type:CTActions.TEACHER_CLASS_TOTAL_WEEK_LIST_UPDATE,data:WeekList});
+
+        dispatch({type:CTActions.TEACHER_CLASS_TOTAL_WEEK_CHANGE,data:WeekNO});
+
+
+        ApiActions.GetClassInfoByGanger({SchoolID,UserID,UserType,UserClass,dispatch}).then(data=>{
+
+            if (data){
+
+                const { ClassName,ClassID,ItemClassHour,ItemClassHourCount } = data;
+
+                dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_UPDATE,data:{ClassID,ClassName}});
+
+                dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_CLASSHOUR_UPDATE,data:{ItemClassHour,ItemClassHourCount}})
+
+                ApiActions.GetScheduleOfClassOne({SchoolID,ClassID,WeekNO,dispatch}).then(json=>{
+
+                    if (json){
+
+                        let Schedule = json.ItemSchedule.map((item) => {
+
+                            return {
+
+                                title:item.SubjectName,
+
+                                titleID:item.SubjectID,
+
+                                secondTitle:item.TeacherName,
+
+                                secondTitleID:item.TeacherID,
+
+                                thirdTitle:item.ClassRoomName,
+
+                                thirdTitleID:item.ClassRoomID,
+
+                                WeekDay:item.WeekDay,
+
+                                ClassHourNO:item.ClassHourNO,
+
+                                ScheduleType:item.ScheduleType
+
+                            }
+
+                        });
+
+                        json.ItemCourseClass.map(item=>{
+
+                            let ShiftClass = {
+
+                                ClassID:item.ClassID,
+
+                                WeekDay:item.WeekDay,
+
+                                ClassHourNO:item.ClassHourNO,
+
+                                IsShift:true
+
+                            };
+
+                            Schedule.push(ShiftClass);
+
+                        });
+
+                        dispatch({type:CTActions.TEACHER_CLASS_TOTAL_SCHEDULE_UPDATE,data:Schedule});
+
+                    }
+
+                    dispatch({type:CTActions.TEACHER_CLASS_TOTAL_LOADING_HIDE});
+
+                    dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
+
+                });
+
+
+            }
+
+        });
+
+
+       /* ApiActions.GetSubjectAndClassInfoByTeacherID({TeacherID:UserID,dispatch}).then(data=>{
+
+           if (data){
+
+               let ClassList = data.ItemClass.map(item=>{
+
+                  return {
+
+                      value:item.ClassID,
+
+                      title:item.ClassName
+
+                  }
+
+               });
+
+               let ClassID = '';
+
+               if (ClassList.length>1){
+
+                   ClassID = ClassList[0].value;
+
+                dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_DROP_SHOW});
+
+                dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_DROP_CHANGE,data:ClassList[0]});
+
+                dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_DROP_LIST_UPDATE,data:ClassList});
+
+               }else if (ClassList.length===1){
+
+                   ClassID = ClassList[0].value;
+
+                   dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_DROP_HIDE});
+
+                   dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_NANE_CHANGE,data:ClassList[0].title});
+
+                   dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_ID_CHANGE,data:ClassList[0].value});
+
+
+               }else{
+
+                   dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_DROP_HIDE});
+
+                   dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_ID_CHANGE,data:''});
+
+                   dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_NANE_CHANGE,data:''});
+
+               }
+
+               //如果有任课班级的情况下
+               if (ClassID){
+
+                    ApiActions.GetScheduleOfClassOne({SchoolID,ClassID,WeekNO,dispatch}).then(json=>{
+
+                       if (json){
+
+                           let Schedule = json.ItemSchedule.map((item) => {
+
+                               return {
+
+                                   title:item.SubjectName,
+
+                                   titleID:item.SubjectID,
+
+                                   secondTitle:item.TeacherName,
+
+                                   secondTitleID:item.TeacherID,
+
+                                   thirdTitle:item.ClassRoomName,
+
+                                   thirdTitleID:item.ClassRoomID,
+
+                                   WeekDay:item.WeekDay,
+
+                                   ClassHourNO:item.ClassHourNO,
+
+                                   ScheduleType:item.ScheduleType
+
+                               }
+
+                           });
+
+                           json.ItemCourseClass.map(item=>{
+
+                               let ShiftClass = {
+
+                                   ClassID:item.ClassID,
+
+                                   WeekDay:item.WeekDay,
+
+                                   ClassHourNO:item.ClassHourNO,
+
+                                   IsShift:true
+
+                               };
+
+                               Schedule.push(ShiftClass);
+
+                           });
+
+                           dispatch({type:CTActions.TEACHER_CLASS_TOTAL_SCHEDULE_UPDATE,data:Schedule});
+
+                       }
+
+                        dispatch({type:CTActions.TEACHER_CLASS_TOTAL_LOADING_HIDE});
+
+                        dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
+
+                    });
+
+               }else{//没有任课班级什么都不请求
+
+                   dispatch({type:CTActions.TEACHER_CLASS_TOTAL_LOADING_HIDE});
+
+                   dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
+
+               }
+
+
+           }
+
+        });*/
+
+    }
+
+};
+
+
+//获取
+const ClassStudentPageInit = () =>{
+
+  return (dispatch,getState) => {
+
+      dispatch({type: CSActions.TEACHER_CLASS_TOTAL_STUDENT_INIT});
+
+      const { PeriodWeekTerm,LoginUser } = getState();
+
+      const { SchoolID,UserID,UserType,UserClass } = LoginUser;
+
+      const { WeekNO,ItemWeek } = PeriodWeekTerm;
+
+      let WeekList = [];
+
+      ItemWeek.map(item=>{
+
+          WeekList.push({
+
+              value:item.WeekNO,
+
+              title:item.WeekNO
+
+          });
+
+      });
+
+      dispatch({type:CSActions.TEACHER_CS_WEEK_LIST_UPDATE,data:WeekList});
+
+      dispatch({type:CSActions.TEACHER_CS_WEEK_CHANGE,data:WeekNO});
+
+      ApiActions.GetClassInfoByGanger({SchoolID, UserID, UserType, UserClass, dispatch}).then(data => {
+
+          if (data) {
+
+              const {ClassName, ClassID, ItemClassHour, ItemClassHourCount} = data;
+
+              dispatch({type: CSActions.TEACHER_CLASS_TOTAL_STUDENT_CLASSHOUR_UPDATE, data: {ItemClassHour, ItemClassHourCount}})
+
+              ApiActions.GetSudentInfoByClassIDAndKey({ClassID,Key:'',dispatch}).then(json=>{
+
+                  if (json){
+
+                      let leftMenuData = [];
+
+                      let list = json.map((i) => {
+
+                          return {
+
+                              id:i.StudentID,
+
+                              name:i.StudentName
+
+                          }
+
+                      });
+
+                      dispatch({type:CSActions.TEACHER_CS_SEARCH_STUDENT_RESULT_UPDATE,data:list});
+
+                      dispatch({type:CSActions.TEACHER_CS_SEARCH_STU_RESULT_SHOW});
+
+                      dispatch({type:CSActions.TEACHER_CS_SEARCH_TITLE_SHOW,data:`${ClassName}学生列表`});
+
+                  }
+
+                  dispatch({type:CSActions.TEACHER_CS_LOADING_HIDE});
+
+                  dispatch({type:AppLoadingActions.APP_LOADING_HIDE})
+
+              })
+
+          }
+
+      });
+
+  }
+
+};
+
+
 export default {
 
     STSPageInit,
 
     STTPageInit,
 
-    TeacherPersonalInit
+    TeacherPersonalInit,
+
+    ClassTotalInit,
+
+    ClassStudentPageInit
 
 }

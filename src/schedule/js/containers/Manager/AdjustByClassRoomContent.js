@@ -10,6 +10,12 @@ import {ConfigProvider, DatePicker} from "antd";
 
 import zhCN from "antd/es/locale/zh_CN";
 
+import moment from 'moment';
+
+import 'moment/locale/zh-cn';
+
+moment.locale('zh-cn');
+
 
 
 
@@ -20,8 +26,6 @@ class AdjustByClassRoomContent extends Component{
         super(props);
 
         const { dispatch } = props;
-
-        console.log(123);
 
         dispatch(ABCRActions.PageInit());
 
@@ -163,9 +167,9 @@ class AdjustByClassRoomContent extends Component{
     //dateRanger改变date日历的显示方式
     dateRander(current,today){
 
-        const { replaceSchedule } = this.props;
+        const { AdjustByClassRoom } = this.props;
 
-        const { dateCheckedList } = replaceSchedule;
+        const { dateCheckedList } = AdjustByClassRoom;
 
         let currentDate = moment(current).format('L').replace(/\//g,'-');
 
@@ -206,13 +210,21 @@ class AdjustByClassRoomContent extends Component{
 
         const {
 
-            Show,LoadingShow,ClassRoomList,OriginClassRoom,TargetClassRoom,activeRadio,
+            LoadingShow,ClassRoomList,OriginClassRoom,TargetClassRoom,activeRadio,
 
             monthsList, monthsCheckedList, weeksList, weeksCheckedList,
 
             dateCheckedList, classHourDate, WeekNO, WeekDay, dateLoadingShow,
 
             classHourList, classHourCheckedList, classHourLoadingShow,
+
+            classTips,classTipsTitle,monthTips,monthTipsTitle,weekTips,
+
+            weekTipsTitle,dateTips,dateTipsTitle,classHourDateTips,classHourDateTipsTitle,
+
+            classHourTips, classHourTipsTitle,OriginClassRoomTips,OriginClassRoomTipsTitle,
+
+            TargetClassRoomTips,TargetClassRoomTipsTitle
 
         } = AdjustByClassRoom;
 
@@ -232,7 +244,7 @@ class AdjustByClassRoomContent extends Component{
 
         return (
 
-                <Loading tip="加载中..." type="loading" spinning={false}>
+                <Loading tip="加载中..." type="loading" spinning={LoadingShow}>
 
                     <div className="class-room-pick-wrapper clearfix">
 
@@ -258,6 +270,8 @@ class AdjustByClassRoomContent extends Component{
                                 }}>
 
                             </DropDown>
+
+                            <span className="error-tips" style={{display:`${OriginClassRoomTips?'inline-block':'none'}`}}>{OriginClassRoomTipsTitle}</span>
 
                         </div>
 
@@ -285,6 +299,9 @@ class AdjustByClassRoomContent extends Component{
                                 }}>
 
                             </DropDown>
+
+                            <span className="error-tips" style={{display:`${TargetClassRoomTips?'inline-block':'none'}`}}>{TargetClassRoomTipsTitle}</span>
+
 
                         </div>
 

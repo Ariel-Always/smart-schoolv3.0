@@ -517,6 +517,8 @@
 
       padding: 22px;
 
+      margin-top: 10px;
+
       background-color: #f8f8f8;
 
       border: 1px solid #d3d3c3;
@@ -636,6 +638,14 @@
 
     height: 26px;
 
+    .error-tips{
+
+      margin-top: 28px;
+
+      margin-left: 8px;
+
+    }
+
   }
 
   .target-class-room-wrapper{
@@ -648,6 +658,14 @@
 
     height: 26px;
 
+    .error-tips{
+
+      margin-top: 28px;
+
+      margin-left: 8px;
+
+    }
+
   }
 
   .arr-wrapper+.props{
@@ -656,6 +674,17 @@
 
   }
 
+  .class-room-pick-wrapper{
+
+    margin-top: 20px;
+
+  }
+
+  .deadline-wrapper{
+
+    margin-top: 26px;
+
+  }
 
 }
 
