@@ -37,11 +37,11 @@ class ClassStudent extends Component{
 
         const {dispatch} = this.props;
 
-        dispatch({type:CSActions.STT_NOW_WEEK_CHANGE,data:e.value});
+        dispatch({type:CSActions.TEACHER_CS_WEEK_CHANGE,data:e.value});
 
-        dispatch({type:CSActions.SCHEDULE_LOADING_SHOW});
+        dispatch({type:CSActions.TEACHER_CS_LOADING_SHOW});
 
-        dispatch(CSActions.STTWeekUpdate());
+        dispatch(CSActions.CSWeekUpdate());
 
     }
 
@@ -50,13 +50,13 @@ class ClassStudent extends Component{
 
         const {dispatch,Teacher} = this.props;
 
-        const {NowWeekNo} = Teacher.ClassStudent;
+        const {WeekNO} = Teacher.ClassStudent;
 
-        dispatch({type:CSActions.STT_NOW_WEEK_CHANGE,data:(NowWeekNo+1)});
+        dispatch({type:CSActions.TEACHER_CS_WEEK_CHANGE,data:(WeekNO+1)});
 
-        dispatch({type:CSActions.SCHEDULE_LOADING_SHOW});
+        dispatch({type:CSActions.TEACHER_CS_LOADING_SHOW});
 
-        dispatch(CSActions.STTWeekUpdate());
+        dispatch(CSActions.CSWeekUpdate());
 
     }
 
@@ -65,23 +65,23 @@ class ClassStudent extends Component{
 
         const {dispatch,Teacher} = this.props;
 
-        const {NowWeekNo} = Teacher.ClassStudent;
+        const {WeekNO} = Teacher.ClassStudent;
 
-        dispatch({type:CSActions.STT_NOW_WEEK_CHANGE,data:(NowWeekNo-1)});
+        dispatch({type:CSActions.TEACHER_CS_WEEK_CHANGE,data:(WeekNO-1)});
 
-        dispatch({type:CSActions.SCHEDULE_LOADING_SHOW});
+        dispatch({type:CSActions.TEACHER_CS_LOADING_SHOW});
 
-        dispatch(CSActions.STTWeekUpdate());
+        dispatch(CSActions.CSWeekUpdate());
 
     }
-    //左侧菜单选取某一个教师
+    //左侧菜单选取某一个学生
     menuPickClick(pickInfo){
 
         const {dispatch} = this.props;
 
-        dispatch({type:CSActions.SCHEDULE_LOADING_SHOW});
+        dispatch({type:CSActions.TEACHER_CS_LOADING_SHOW});
 
-        dispatch(CSActions.STTTeacherUpdate(pickInfo));
+        dispatch(CSActions.ClassStudentUpdate(pickInfo));
 
     }
 
@@ -97,7 +97,7 @@ class ClassStudent extends Component{
 
         }else{
 
-            dispatch(CSActions.STTTeacherSearch(e.value));
+            dispatch(CSActions.StudentSearch(e.value));
 
         }
 
@@ -110,11 +110,7 @@ class ClassStudent extends Component{
 
         const {dispatch} = this.props;
 
-        dispatch({type:CSActions.SEARCH_TEACHER_RESULT_HIDE});
-
-        dispatch({type:CSActions.TEACHER_STT_LEFT_MENU_SEARCH_INPUT_CHANGE,data:''});
-
-        dispatch({type:CSActions.TEACHER_STT_LEFT_MENU_CANCEL_BTN_HIDE});
+        dispatch(CSActions.CancelStuSearch());
 
     }
 
@@ -124,7 +120,7 @@ class ClassStudent extends Component{
 
         const { dispatch } = this.props;
 
-        dispatch({type:CSActions.TEACHER_STT_LEFT_MENU_SEARCH_INPUT_CHANGE,data:e.target.value});
+        dispatch({type:CSActions.TEACHER_CS_LEFT_MENU_SEARCH_INPUT_CHANGE,data:e.target.value});
 
     }
 
@@ -148,8 +144,6 @@ class ClassStudent extends Component{
 
         }
 
-        console.log(ClassStudent.ItemClassHour);
-
         return (
 
             <div className="subject-teacher-teacher-content clearfix">
@@ -168,7 +162,7 @@ class ClassStudent extends Component{
                         searchShow={ClassStudent.searchWrapperShow}
                         searchResult={ClassStudent.searchResult}
                         leftMenuSearchLoading={ClassStudent.searchLoadingShow}
-                        PickID={ClassStudent.pickTeacherID}
+                        PickID={ClassStudent.PickStudentID}
                         CancelBtnShow={ClassStudent.CancelBtnShow}
                         SearchValue={ClassStudent.SearchValue}
                         SearchValueChange={this.SearchValueChange.bind(this)}>
@@ -179,17 +173,17 @@ class ClassStudent extends Component{
 
                         {
 
-                            ClassStudent.pickTeacher!==''?
+                            ClassStudent.PickStudentID!==''?
 
                                 <React.Fragment>
 
-                                    <span className="teacher-name">{ClassStudent.pickTeacher}</span>
+                                    <span className="teacher-name">{ClassStudent.PickStudentName}</span>
 
                                     <span className="course-count"> (本周共<span className="count">{ClassStudent.ScheduleCount}</span>节课)</span>
 
                                 </React.Fragment>
 
-                                :<div className="please-select-teacher">请选择教师</div>
+                                :<div className="please-select-teacher">请选择学生</div>
 
                         }
 
@@ -220,8 +214,8 @@ class ClassStudent extends Component{
                         ItemClassHourCount={ClassStudent.ItemClassHourCount}
                         ItemClassHour={ClassStudent.ItemClassHour}
                         ItemWeek = {PeriodWeekTerm.ItemWeek}
-                        NowWeekNo={ClassStudent.NowWeekNo}
-                        schedule={ClassStudent.schedule}
+                        NowWeekNo={ClassStudent.WeekNO}
+                        schedule={ClassStudent.Schedule}
                         NowDate={PeriodWeekTerm.NowDate}>
 
                     </SingleDoubleTable>

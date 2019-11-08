@@ -1,0 +1,89 @@
+.schedule-detail-modal-wrapper{
+
+  color: #333333;
+
+  .modal-content-wrapper{
+
+    padding:14px 6px 0 6px;
+
+  }
+
+  .line-wrapper{
+
+    line-height: 24px;
+
+    margin-bottom: 12px;
+
+  }
+
+  .props{
+
+    float: left;
+
+    width: 64px;
+
+    text-align: right;
+
+    color: #999999;
+
+    margin-right: 8px;
+
+  }
+
+  .stop-btn{
+
+    width: 56px;
+
+    height: 24px;
+
+    line-height: 24px;
+
+    outline: none;
+
+    border:0;
+
+    cursor: pointer;
+
+    background-image: linear-gradient(90deg,
+            #ff593e 0%,
+            #ff4037 100%);
+
+    border-radius: 3px;
+
+    color: #Ffffff;
+
+    margin-left: 12px;
+
+    &:hover{
+
+      opacity: 0.7;
+
+    }
+
+  }
+
+  .schedule-type{
+
+    font-size:16px;
+
+    color: #999999;
+
+    &.going{
+
+      color: #009900;
+
+    }
+
+  }
+
+  .week-day{
+
+    .day{
+
+      color:#999999;
+
+    }
+
+  }
+
+}

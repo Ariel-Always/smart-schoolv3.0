@@ -1,11 +1,11 @@
 import {getData,postData} from "../../../common/js/fetch";
 
-/*const api = 'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev';*/
+import CONFIG from '../../../common/js/config';
 
-//const api = 'http://47.244.238.75:7300/mock/5d7e0519fdd0dc0457886a3c/webCloudDev';
+const api = CONFIG.AdmClassProxy;
 
 //获取数据以及封装数据格式
-const getGetData =  async (url,level,api = 'http://47.244.238.75:7300/mock/5d7e0519fdd0dc0457886a3c/webCloudDev') =>{
+const getGetData =  async (url,level,api,mode='cors',arr=[401,403]) =>{
 
     try {
 
@@ -13,7 +13,7 @@ const getGetData =  async (url,level,api = 'http://47.244.238.75:7300/mock/5d7e0
 
         try {
 
-            fetchAsync = await getData(api+url,level);
+            fetchAsync = await getData(api+url,level,mode,false,arr);
 
         }
         catch (e) {
@@ -36,14 +36,14 @@ const getGetData =  async (url,level,api = 'http://47.244.238.75:7300/mock/5d7e0
     }
 };
 //调用post接口
-const getPostData = async (url,data,level,api = 'http://47.244.238.75:7300/mock/5d7e0519fdd0dc0457886a3c/webCloudDev') =>{
+const getPostData = async (url,data,level,api,content_type='urlencoded',arr=[401,403]) =>{
 
     try {
         let fetchAsync = '';
 
         try {
 
-            fetchAsync = await postData(api+url,data,level);
+            fetchAsync = await postData(api+url,data,level,content_type,false,arr);
 
         }
         catch (e) {

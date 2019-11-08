@@ -2,8 +2,6 @@ import React,{Component} from 'react';
 
 import { Table } from "../../../common";
 
-import { message } from 'antd';
-
 import $ from 'jquery';
 
 class DoubleSingleTable extends Component{
@@ -39,13 +37,46 @@ class DoubleSingleTable extends Component{
 
     }
 
+    ScheduleDetailShow({Event,Params}) {
+
+        Event.stopPropagation();
+
+        const { ScheduleDetailShow,ItemClassHour } = this.props;
+
+        const { ClassHourNO } = Params;
+
+        console.log(ItemClassHour,ClassHourNO);
+
+       /* const { StartTime,EndTime } = ItemClassHour.find(item=>item.ClassHourNO===ClassHourNO);
+
+
+        Params['StartTime'] = StartTime;
+
+        Params['EndTime'] = EndTime;*/
+
+        if (ScheduleDetailShow){
+
+            ScheduleDetailShow(Params);
+
+        }
+
+    }
+
+
+
 
     render() {
 
-        const {ItemClassHourCount,ItemClassHour,leftColWidth,commonColWidth,rowOneHeight,rowTowHeight,commonRowHeight,schedule,onClickRow,scrollToBottom} = this.props;
+        const {
 
+            ItemClassHourCount,ItemClassHour,leftColWidth,ScheduleDetailShow
 
-        /*console.log(schedule,ItemClassHour);*/
+            ,commonColWidth,rowOneHeight,rowTowHeight,commonRowHeight,
+
+            schedule,onClickRow,scrollToBottom
+
+        } = this.props;
+
 
         //设置头部的td
 
@@ -159,8 +190,6 @@ class DoubleSingleTable extends Component{
                 //ant table
 
 
-
-
                 if(dataSource.length>0){
 
                     dataSource.map((item,key)=>{
@@ -179,20 +208,7 @@ class DoubleSingleTable extends Component{
 
                                         HasClass = true;
 
-                                        ClassObj = {
-
-                                            secondTitle:it.secondTitle,
-
-                                            secondTitleID:it.secondTitleID,
-
-                                            thirdTitle:it.thirdTitle,
-
-                                            thirdTitleID:it.thirdTitleID,
-
-                                            title:it.title,
-
-                                            titleID:it.titleID
-                                        }
+                                        ClassObj = it;
 
                                     }
 
@@ -216,15 +232,7 @@ class DoubleSingleTable extends Component{
 
                     });
 
-
-
-
                 }
-
-
-
-
-
 
                 let Title = <div className="course-time-th" >
 
@@ -248,9 +256,11 @@ class DoubleSingleTable extends Component{
 
                         }else{
 
+
+
                             return <div  className={`schedule-wrapper ${record.active?'active':''}`} style={{height:commonRowHeight}}>
 
-                                <div className="title" data-id={item.titleID}>{item.title}</div>
+                                <div className={`title ${item.type!==1?'unend':''}`} onClick={(e)=>{this.ScheduleDetailShow({Event:e,Params:item})}} data-id={item.titleID}>{item.title}</div>
 
                                 <div className="second-title" data-id={item.secondTitleID}>{item.secondTitle}</div>
 

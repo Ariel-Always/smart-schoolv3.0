@@ -393,6 +393,22 @@
 
       @include textOverFlow;
 
+      cursor: pointer;
+
+      text-decoration: underline;
+
+      &.unend{
+
+        color: #333333;
+
+      }
+
+      &:hover{
+
+        color: #ff6600;
+
+      }
+
     }
 
     .second-title,.third-title{

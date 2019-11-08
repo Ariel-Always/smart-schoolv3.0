@@ -1,4 +1,5 @@
 import ApiActions from "../ApiActions";
+import AppLoadingActions from "../AppLoadingActions";
 
 
 
@@ -14,6 +15,11 @@ const TEACHER_CLASS_TOTAL_STUDENT_INIT = 'TEACHER_CLASS_TOTAL_STUDENT_INIT';
 
 const TEACHER_CLASS_TOTAL_STUDENT_CLASSHOUR_UPDATE = 'TEACHER_CLASS_TOTAL_STUDENT_CLASSHOUR_UPDATE';
 
+//班级名称和ID初始化
+const TEACHER_CS_CLASS_INFO_UPDATE = 'TEACHER_CS_CLASS_INFO_UPDATE';
+
+
+
 
 //左侧菜单
 
@@ -23,13 +29,15 @@ const TEACHER_CS_SEARCH_STU_RESULT_SHOW = 'TEACHER_CS_SEARCH_STU_RESULT_SHOW';
 
 const TEACHER_CS_SEARCH_TITLE_SHOW = 'TEACHER_CS_SEARCH_TITLE_SHOW';
 
-const SEARCH_LOADING_SHOW = 'SEARCH_LOADING_SHOW';
+const TEACHER_CS_SEARCH_LOADING_SHOW = 'TEACHER_CS_SEARCH_LOADING_SHOW';
 
-const SEARCH_LOADING_HIDE = 'SEARCH_LOADING_HIDE';
+const TEACHER_CS_SEARCH_LOADING_HIDE = 'TEACHER_CS_SEARCH_LOADING_HIDE';
 
-const TEACHER_LIST_UPDATE = 'TEACHER_LIST_UPDATE';
 
-const CTT_SCHEDULE_CHANGE = 'CTT_SCHEDULE_CHANGE';
+
+//课表更新
+
+const TEACHER_CS_SCHEDULE_CHANGE = 'TEACHER_CS_SCHEDULE_CHANGE';
 
 
 //日期变化
@@ -39,32 +47,30 @@ const TEACHER_CS_WEEK_LIST_UPDATE = 'TEACHER_CS_WEEK_LIST_UPDATE';
 const TEACHER_CS_WEEK_CHANGE = 'TEACHER_CS_WEEK_CHANGE';
 
 
-const TEACHER_CTT_LEFT_MENU_SEARCH_INPUT_CHANGE = 'TEACHER_CTT_LEFT_MENU_SEARCH_INPUT_CHANGE';
+const TEACHER_CS_LEFT_MENU_SEARCH_INPUT_CHANGE = 'TEACHER_CS_LEFT_MENU_SEARCH_INPUT_CHANGE';
 
-const TEACHER_CTT_LEFT_MENU_CANCEL_BTN_SHOW = 'TEACHER_CTT_LEFT_MENU_CANCEL_BTN_SHOW';
+const TEACHER_CS_LEFT_MENU_CANCEL_BTN_SHOW = 'TEACHER_CS_LEFT_MENU_CANCEL_BTN_SHOW';
 
-const TEACHER_CTT_LEFT_MENU_CANCEL_BTN_HIDE = 'TEACHER_CTT_LEFT_MENU_CANCEL_BTN_HIDE';
+const TEACHER_CS_LEFT_MENU_CANCEL_BTN_HIDE = 'TEACHER_CS_LEFT_MENU_CANCEL_BTN_HIDE';
 
 //学科教师总表教师课表，教师更改
-const STTTeacherUpdate = (pickInfo) => {
+const ClassStudentUpdate = (pickInfo) => {
 
     return (dispatch,getState) => {
 
-        const { LoginUser,TEACHER,PeriodWeekTerm } = getState();
+        const { LoginUser,Teacher,PeriodWeekTerm } = getState();
 
         let { SchoolID } = LoginUser;
 
-        let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;
-
         let UserID = pickInfo.catChildrenId;
 
-        let UserType = 1;
+        let UserType = 2;
 
-        let NowWeekNo = TEACHER.SubjectTeacherTeacherSchedule.NowWeekNo;
+        let {WeekNO} = Teacher.ClassStudent;
 
         ApiActions.GetScheduleByUserID({
 
-            SchoolID,PeriodID,UserType,UserID,WeekNO:NowWeekNo,dispatch
+            SchoolID,PeriodID:'',UserType,UserID,WeekNO,dispatch
 
         }).then(data => {
 
@@ -72,7 +78,7 @@ const STTTeacherUpdate = (pickInfo) => {
 
                 let { ScheduleCount} = data;
 
-                let schedule = data.ItemSchedule.map((item) => {
+                let Schedule = data.ItemSchedule.map((item) => {
 
                     return {
 
@@ -99,9 +105,9 @@ const STTTeacherUpdate = (pickInfo) => {
 
                 });
 
-                dispatch({type:CTT_SCHEDULE_CHANGE,data:{ScheduleCount,schedule,pickTeacher:pickInfo.catChildrenName,pickTeacherID:pickInfo.catChildrenId}});
+                dispatch({type:TEACHER_CS_SCHEDULE_CHANGE,data:{ScheduleCount,Schedule,PickStudentName:pickInfo.catChildrenName,PickStudentID:pickInfo.catChildrenId}});
 
-                dispatch({type:SCHEDULE_LOADING_HIDE});
+                dispatch({type:TEACHER_CS_LOADING_HIDE});
 
             }
 
@@ -110,36 +116,34 @@ const STTTeacherUpdate = (pickInfo) => {
     }
 
 };
-//学科教师总表教师课表，周次变更
-const STTWeekUpdate = () => {
+//周次变更
+const CSWeekUpdate = () => {
 
     return (dispatch,getState) => {
 
-        const { TEACHER,LoginUser,PeriodWeekTerm } = getState();
+        const { Teacher,LoginUser,PeriodWeekTerm } = getState();
 
-        const { pickTeacher,pickTeacherID } = TEACHER.SubjectTeacherTeacherSchedule;
+        const { PickStudentID,PickStudentName } = Teacher.ClassStudent;
         //当没有选择教师的时候就不请求后台接口。
-        if (pickTeacher === ''){
+        if (PickStudentID === ''){
 
-            dispatch({type:CTT_SCHEDULE_CHANGE,data:{schedule:[]}});
+            dispatch({type:TEACHER_CS_SCHEDULE_CHANGE,data:{Schedule:[]}});
 
-            dispatch({type:SCHEDULE_LOADING_HIDE});
+            dispatch({type:TEACHER_CS_LOADING_HIDE});
 
         }else{
 
-            let SchoolID = LoginUser.SchoolID;
+            let {SchoolID} = LoginUser;
 
-            let UserID = pickTeacherID;
+            let UserID = PickStudentID;
 
-            let UserType = 1;
+            let UserType = 2;
 
-            let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;
-
-            let NowWeekNo = TEACHER.SubjectTeacherTeacherSchedule.NowWeekNo;
+            let { WeekNO } = Teacher.ClassStudent;
 
             ApiActions.GetScheduleByUserID({
 
-                SchoolID,PeriodID,UserType,UserID,WeekNO:NowWeekNo,dispatch
+                SchoolID,PeriodID:'',UserType,UserID,WeekNO,dispatch
 
             }).then(data => {
 
@@ -147,7 +151,7 @@ const STTWeekUpdate = () => {
 
                     let { ScheduleCount} = data;
 
-                    let schedule = data.ItemSchedule.map((item) => {
+                    let Schedule = data.ItemSchedule.map((item) => {
 
                         return {
 
@@ -174,11 +178,11 @@ const STTWeekUpdate = () => {
 
                     });
 
-                    dispatch({type:CTT_SCHEDULE_CHANGE,data:{ScheduleCount,schedule}});
-
-                    dispatch({type:SCHEDULE_LOADING_HIDE});
+                    dispatch({type:TEACHER_CS_SCHEDULE_CHANGE,data:{ScheduleCount,Schedule}});
 
                 }
+
+                dispatch({type:TEACHER_CS_LOADING_HIDE});
 
             });
 
@@ -188,30 +192,28 @@ const STTWeekUpdate = () => {
 
 };
 
-//科教师总表教师课表，搜索教师
-const STTTeacherSearch = (val) => {
+//搜索学生
+const StudentSearch = (val) => {
 
     return (dispatch,getState) => {
 
-        dispatch({type:SEARCH_LOADING_SHOW});
+        dispatch({type:TEACHER_CS_SEARCH_LOADING_SHOW});
 
-        dispatch({type:TEACHER_CTT_LEFT_MENU_CANCEL_BTN_SHOW});
+        dispatch({type:TEACHER_CS_LEFT_MENU_CANCEL_BTN_SHOW});
 
-        dispatch({type:SEARCH_TEACHER_RESULT_SHOW});
+        dispatch({type:TEACHER_CS_SEARCH_STU_RESULT_SHOW});
 
-        let { LoginUser,TEACHER,PeriodWeekTerm } = getState();
+        let { LoginUser,Teacher,PeriodWeekTerm } = getState();
 
-        let SchoolID = LoginUser.SchoolID;
+        let { SchoolID } = LoginUser;
 
-        let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;
-
-        let SubjectID ='';
+        let { ClassID } = Teacher.ClassStudent;
 
         let Key = val;
 
-        ApiActions.GetTeacherBySubjectIDAndKey({
+        ApiActions.GetSudentInfoByClassIDAndKey({
 
-            SchoolID,PeriodID,SubjectID:'',Key,dispatch
+            ClassID,Key,dispatch
 
         }).then(data => {
 
@@ -221,17 +223,17 @@ const STTTeacherSearch = (val) => {
 
                   return {
 
-                      id:item.Teacher,
+                      id:item.StudentID,
 
-                      name:item.TeacherName
+                      name:item.StudentName
 
                   }
 
                });
 
-                dispatch({type:SEARCH_TEACHER_RESULT_UPDATE,data:result});
+                dispatch({type:TEACHER_CS_SEARCH_STUDENT_RESULT_UPDATE,data:result});
 
-                dispatch({type:SEARCH_LOADING_HIDE});
+                dispatch({type:TEACHER_CS_SEARCH_LOADING_HIDE});
 
            }
 
@@ -241,15 +243,63 @@ const STTTeacherSearch = (val) => {
 
 };
 
+//取消学生搜索
+
+const CancelStuSearch = () => {
+
+  return (dispatch,getState) => {
+
+      dispatch({type:TEACHER_CS_LEFT_MENU_SEARCH_INPUT_CHANGE,data:''});
+
+      dispatch({type:TEACHER_CS_LEFT_MENU_CANCEL_BTN_HIDE});
+
+      dispatch({type:TEACHER_CS_SEARCH_LOADING_SHOW});
+
+      const { ClassID } = getState().Teacher.ClassStudent;
+
+      ApiActions.GetSudentInfoByClassIDAndKey({ClassID,Key:'',dispatch}).then(json=>{
+
+          if (json){
+
+              let leftMenuData = [];
+
+              let list = json.map((i) => {
+
+                  return {
+
+                      id:i.StudentID,
+
+                      name:i.StudentName
+
+                  }
+
+              });
+
+              dispatch({type:TEACHER_CS_SEARCH_STUDENT_RESULT_UPDATE,data:list});
+
+          }
+
+          dispatch({type:TEACHER_CS_SEARCH_LOADING_HIDE});
+
+      })
+
+
+
+  }
+
+};
+
+
+
 export default {
 
     TEACHER_CS_LOADING_SHOW,
 
     TEACHER_CS_LOADING_HIDE,
 
-    TEACHER_LIST_UPDATE,
+    TEACHER_CS_SCHEDULE_CHANGE,
 
-    CTT_SCHEDULE_CHANGE,
+    TEACHER_CS_CLASS_INFO_UPDATE,
 
     TEACHER_CLASS_TOTAL_STUDENT_CLASSHOUR_UPDATE,
 
@@ -263,22 +313,24 @@ export default {
 
     TEACHER_CS_WEEK_CHANGE,
 
-    SEARCH_LOADING_HIDE,
+    TEACHER_CS_SEARCH_LOADING_HIDE,
 
-    SEARCH_LOADING_SHOW,
+    TEACHER_CS_SEARCH_LOADING_SHOW,
 
     TEACHER_CLASS_TOTAL_STUDENT_INIT,
 
-    TEACHER_CTT_LEFT_MENU_SEARCH_INPUT_CHANGE,
+    TEACHER_CS_LEFT_MENU_SEARCH_INPUT_CHANGE,
 
-    TEACHER_CTT_LEFT_MENU_CANCEL_BTN_SHOW,
+    TEACHER_CS_LEFT_MENU_CANCEL_BTN_SHOW,
 
-    TEACHER_CTT_LEFT_MENU_CANCEL_BTN_HIDE,
+    TEACHER_CS_LEFT_MENU_CANCEL_BTN_HIDE,
 
-    STTTeacherUpdate,
+    ClassStudentUpdate,
 
-    STTWeekUpdate,
+    CSWeekUpdate,
 
-    STTTeacherSearch
+    StudentSearch,
+
+    CancelStuSearch
 
 }

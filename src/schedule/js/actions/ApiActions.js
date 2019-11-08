@@ -147,8 +147,8 @@ const GetScheduleOfClassOne = async ({SchoolID,ClassID,WeekNO=0,dispatch}) => {
 
         2,
 
-        //CONFIG.ScheduleProxy);
-        'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+        CONFIG.ScheduleProxy);
+        //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
 
     if (res.StatusCode === 200){
 
@@ -588,9 +588,9 @@ const GetClassInfoByGanger = async ({SchoolID,UserID,UserType,UserClass,dispatch
 
         2,
 
-        //CONFIG.ScheduleProxy);
+        CONFIG.ScheduleProxy);
 
-    'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+    //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
 
     //'http://192.168.2.26:8084');
 

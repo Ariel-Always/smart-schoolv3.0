@@ -205,7 +205,7 @@ const STTTeacherSearch = (val) => {
 
                   return {
 
-                      id:item.Teacher,
+                      id:item.TeacherID,
 
                       name:item.TeacherName
 

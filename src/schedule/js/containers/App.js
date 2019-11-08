@@ -49,6 +49,9 @@ import $ from 'jquery';
 import ComPageRefresh from '../actions/ComPageRefresh';
 
 
+
+
+
 class App extends Component{
 
     constructor(props) {
@@ -329,6 +332,7 @@ class App extends Component{
                <StopScheduleModal></StopScheduleModal>
 
                <DelScheduleModal></DelScheduleModal>
+
 
                <Alert type={AppAlert.type}
                       title={AppAlert.title}
