@@ -1,621 +1,839 @@
-import React from 'react'
-import CONFIG from '../../../common/js/config';
-import { connect } from 'react-redux';
-import { Alert, DetailsModal, DropDown, PagiNation, Search, Table, Button, CheckBox, CheckBoxGroup, Modal } from '../../../common/index'
+import React from "react";
+import CONFIG from "../../../common/js/config";
+import { connect } from "react-redux";
+import {
+  Alert,
+  DetailsModal,
+  DropDown,
+  PagiNation,
+  Search,
+  Table,
+  Button,
+  CheckBox,
+  CheckBoxGroup,
+  Modal
+} from "../../../common/index";
 //import '../../../common/scss/_left_menu.scss'
-import { Link, } from 'react-router-dom';
-import '../../scss/Student.scss'
+import { Link } from "react-router-dom";
+import "../../scss/Student.scss";
 import { postData, getData } from "../../../common/js/fetch";
-import md5 from 'md5'
-import { Tooltip, Input } from 'antd'
-import TipsContact from './TipsContact'
-import history from '../containers/history'
+import md5 from "md5";
+import { Tooltip, Input } from "antd";
+import TipsContact from "./TipsContact";
+import history from "../containers/history";
 //import EditModal from './EditModal'
 //import IconLocation from '../../images/icon-location.png'
-import actions from '../actions';
+import actions from "../actions";
 //import StudentChangeRecord from './StudentChangeRecord'
 class Student extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            //GradeArr:[{value:0,title:'全部年级'}]
-            secondDropList: [{ value: 0, title: '全部班级' }],
-            DropMenuShow: false,
-            selectedRowKeys: [],
-            columns: [
-                {
-                    title: '',
-                    dataIndex: 'handle',
-                    width: 70,
-                    key: 'key',
-                    align: 'left',
-                    render: handle => {
-                        return (
-                            <div className='registerTime-content'>
-                                <CheckBox value={handle.key} onChange={this.onCheckChange}></CheckBox>
-                                <span className='key-content'>{handle.OrderNo + 1 >= 10 ? handle.OrderNo + 1 : '0' + (handle.OrderNo + 1)}</span>
-                            </div>
-                        )
-                    }
-                },
-                {
-                    title: '姓名',
-                    align: 'center',
-                    key: 'UserName',
-                    width: 130,
-                    dataIndex: 'UserName',
-                    sorter: true,
-                    render: arr => {
-                        return (
-                            <div className='name-content'>
-                                <span className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.UserID)}>{arr.Name}</span><br />
-                                <span className='name-UserID'>(<span className='UserID-content'>{arr.UserID }</span>)</span>
-                            </div>
-                        )
-                    }
-
-                },
-                {
-                    title: '用户名',
-                    align: 'right',
-                    width: 120,
-                    dataIndex: 'ShortName',
-                    key: 'ShortName',
-                    sorter: true,
-                    render: ShortName => {
-                        return (
-                            <span className='UserName'>{ShortName?ShortName:'--'}</span>
-                        )
-                    }
-                },
-                {
-                    title: '个性签名',
-                    align: 'center',
-                    width: 300,
-                    dataIndex: 'Sign',
-                    key: 'Sign',
-                    render: Sign => {
-                        return (
-                            <span className='Sign' title={Sign}>{Sign?Sign:'--'}</span>
-                        )
-                    }
-                },
-                {
-                    title: '联系方式',
-                    align: 'center',
-                    width: 120,
-                    key: 'UserContact',
-                    dataIndex: 'UserContact',
-                    render: UserContact => {
-                        return (
-                            <Tooltip placement='topLeft' trigger='click' arrowPointAtCenter={true} title={<TipsContact data={UserContact}></TipsContact>}>
-                                <span className='UserContact' onClick={this.onUserContactClick.bind(this, UserContact)}>查看</span>
-                            </Tooltip>
-                        )
-                    }
-                },
-                {
-                    title: '操作',
-                    width: 120,
-                    align: 'center',
-                    key: 'handle',
-                    dataIndex: 'key',
-                    render: (key) => {
-
-                        return (
-                            <div className='handle-content'>
-                                <Button color='blue' type='default' onClick={this.onChangePwdClick.bind(this, key)} className='handle-btn'>重置密码</Button>
-
-                            </div>
-                        )
-                    }
-                }
-            ],
-            pagination: 1,
-            loading: false,
-            selectedAll: false,
-            checkedList: [],
-            checkAll: false,
-            studentModalVisible: false,
-            userKey: 0,
-            StudentChangeKey: 0,
-            ChangePwdMadalVisible: false,
-            alertShow: false,
-            alertTitle: '提示信息',
-            alertQueryShow: false,
-            alertQueryTitle: '查询提示~',
-            StudentDetailsMsgModalVisible: false,
-            addStudentModalVisible: false,
-            defaultPwd: '888888',
-            onClickKey: 0,
-            userMsgKey: 0,
-            keyword: '',
-            CancelBtnShow: 'n',
-            firstSelect: { value: 0, title: '全部年级' },
-            secondSelect: { value: 0, title: '全部班级' },
-            data: [{
-                key: 1,
-                UserName: { key: '01', PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg', UserName: '祝泽森' },
-                UserID: 'S00001',
-                Grader: '男',
-                GradeName: '一年级',
-                ClassName: '一年1班',
-                Others: {}
-            }],
-
-            StudentAccountData: [{
-                key: 0,
-                Name: {
-                    Name: '张心仪',
-                    UserID: '201700121245',
-                    key: 0
-                },
-                UserName: 'ZXSTU_001',
-                Sign: '人生重要的不是所站的位置，而是所朝的方向`````````````````11111111111',
-                Gender: '男',
-                UserImg: {
-                    PhotoPath: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
-                    PhotoPath_NOcache: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg'
-                }
-            }],
-            userMsg: props.DataState.LoginUser,
-            sortType: '',
-            sortFiled: ''
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      //GradeArr:[{value:0,title:'全部年级'}]
+      secondDropList: [{ value: 0, title: "全部班级" }],
+      DropMenuShow: false,
+      selectedRowKeys: [],
+      columns: [
+        {
+          title: "",
+          dataIndex: "handle",
+          width: 70,
+          key: "key",
+          align: "left",
+          render: handle => {
+            return (
+              <div className="registerTime-content">
+                <CheckBox
+                  value={handle.key}
+                  onChange={this.onCheckChange}
+                ></CheckBox>
+                <span className="key-content">
+                  {handle.OrderNo + 1 >= 10
+                    ? handle.OrderNo + 1
+                    : "0" + (handle.OrderNo + 1)}
+                </span>
+              </div>
+            );
+          }
+        },
+        {
+          title: "姓名",
+          align: "center",
+          key: "UserName",
+          width: 130,
+          dataIndex: "UserName",
+          sorter: true,
+          render: arr => {
+            return (
+              <div className="name-content">
+                <span
+                  className="name-UserName"
+                  onClick={this.onUserNameClick.bind(this, arr.UserID)}
+                >
+                  {arr.Name}
+                </span>
+                <br />
+                <span className="name-UserID">
+                  (<span className="UserID-content">{arr.UserID}</span>)
+                </span>
+              </div>
+            );
+          }
+        },
+        {
+          title: "用户名",
+          align: "center",
+          width: 120,
+          dataIndex: "ShortName",
+          key: "ShortName",
+          sorter: true,
+          render: ShortName => {
+            return (
+              <span className="UserName">{ShortName ? ShortName : "--"}</span>
+            );
+          }
+        },
+        {
+          title: "个性签名",
+          align: "center",
+          width: 300,
+          dataIndex: "Sign",
+          key: "Sign",
+          render: Sign => {
+            return (
+              <span className="Sign" title={Sign}>
+                {Sign ? Sign : "--"}
+              </span>
+            );
+          }
+        },
+        {
+          title: "联系方式",
+          align: "center",
+          width: 120,
+          key: "UserContact",
+          dataIndex: "UserContact",
+          render: UserContact => {
+            return (
+              <Tooltip
+                placement="topLeft"
+                trigger="click"
+                arrowPointAtCenter={true}
+                title={<TipsContact data={UserContact}></TipsContact>}
+              >
+                <span
+                  className="UserContact"
+                  onClick={this.onUserContactClick.bind(this, UserContact)}
+                >
+                  查看
+                </span>
+              </Tooltip>
+            );
+          }
+        },
+        {
+          title: "操作",
+          width: 132,
+          align: "center",
+          key: "handle",
+          dataIndex: "key",
+          render: key => {
+            return (
+              <div className="handle-content">
+                <Button
+                  color="blue"
+                  type="default"
+                  onClick={this.onChangePwdClick.bind(this, key)}
+                  className="handle-btn"
+                >
+                  重置密码
+                </Button>
+              </div>
+            );
+          }
         }
-    }
-    componentWillMount() {
-        const { dispatch } = this.props;
-        let pwd = '888888';
-
-        dispatch(actions.UpDataState.getChangeInputValue(pwd));
-    }
-    componentWillReceiveProps() {
-        let Grades = this.props.DataState.GradeClassMsg.Grades ? this.props.DataState.GradeClassMsg.Grades : [];
-        let len = Grades.lenght;
-        let GradeArr = [{ value: 0, title: '全部年级' }];
-
-        for (let i = 0; i < len; i++) {
-            let Grade = { value: Grades[i].GradeID, title: Grades[i].GradeName }
-            GradeArr.push(Grade)
+      ],
+      pagination: 1,
+      loading: false,
+      selectedAll: false,
+      checkedList: [],
+      checkAll: false,
+      studentModalVisible: false,
+      userKey: 0,
+      StudentChangeKey: 0,
+      ChangePwdMadalVisible: false,
+      alertShow: false,
+      alertTitle: "提示信息",
+      alertQueryShow: false,
+      alertQueryTitle: "查询提示~",
+      StudentDetailsMsgModalVisible: false,
+      addStudentModalVisible: false,
+      defaultPwd: "888888",
+      onClickKey: 0,
+      userMsgKey: 0,
+      keyword: "",
+      CancelBtnShow: "n",
+      firstSelect: { value: 0, title: "全部年级" },
+      secondSelect: { value: 0, title: "全部班级" },
+      data: [
+        {
+          key: 1,
+          UserName: {
+            key: "01",
+            PhotoPath:
+              "http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg",
+            UserName: "祝泽森"
+          },
+          UserID: "S00001",
+          Grader: "男",
+          GradeName: "一年级",
+          ClassName: "一年1班",
+          Others: {}
         }
+      ],
 
-        this.setState({
-            GradeArr: GradeArr
-        })
-
-    }
-
-
-
-    StudentDropMenu = (e) => {
-        const { dispatch, DataState } = this.props;
-
-        let Classes = [{ value: 0, title: '全部班级' }];
-
-        //console.log(this.refs.dropMenuSecond)
-        if (e.value !== 0) {
-            let ClassArr = DataState.GradeClassMsg.returnData.AllClasses[e.value];
-            ClassArr.map((Class) => {
-                Classes.push(Class);
-            })
-            //Classes.push(this.props.DataState.GradeClassMsg.returnData.AllClasses[e.value]);
-            //this.refs.dropMenuSecond.state.dropList = Classes;]
-            this.setState({
-                secondDropList: Classes,
-            })
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&gradeID=' + e.value+this.state.sortFiled+this.state.sortType));
-            this.setState({
-                DropMenuShow: true,
-                firstSelect: e,
-                searchValue: '',
-                pagination: 1,
-                CancelBtnShow: 'n'
-            })
-        } else {
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10'+this.state.sortFiled+this.state.sortType));
-            this.setState({
-                DropMenuShow: false,
-                secondSelect: { value: 0, title: '全部班级' },
-                searchValue: '',
-                pagination: 1,
-                CancelBtnShow: 'n'
-            })
+      StudentAccountData: [
+        {
+          key: 0,
+          Name: {
+            Name: "张心仪",
+            UserID: "201700121245",
+            key: 0
+          },
+          UserName: "ZXSTU_001",
+          Sign:
+            "人生重要的不是所站的位置，而是所朝的方向`````````````````11111111111",
+          Gender: "男",
+          UserImg: {
+            PhotoPath:
+              "http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg",
+            PhotoPath_NOcache:
+              "http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg"
+          }
         }
+      ],
+      userMsg: props.DataState.LoginUser,
+      sortType: "",
+      sortFiled: ""
+    };
+  }
+  componentWillMount() {
+    const { dispatch } = this.props;
+    let pwd = "888888";
 
-    }
+    dispatch(actions.UpDataState.getChangeInputValue(pwd));
+  }
+  componentWillReceiveProps() {
+    let Grades = this.props.DataState.GradeClassMsg.Grades
+      ? this.props.DataState.GradeClassMsg.Grades
+      : [];
+    let len = Grades.lenght;
+    let GradeArr = [{ value: 0, title: "全部年级" }];
 
-    StudentDropMenuSecond = (e) => {
-        const { dispatch, DataState } = this.props;
-        this.setState({
-            secondSelect: e,
-            searchValue: '',
-            pagination: 1,
-            CancelBtnShow: 'n'
-        })
-        if (e.value !== 0)
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&gradeID=' + this.state.firstSelect.value + '&classID=' + e.value+this.state.sortFiled+this.state.sortType));
-        else
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&gradeID=' + this.state.firstSelect.value+this.state.sortFiled+this.state.sortType));
+    for (let i = 0; i < len; i++) {
+      let Grade = { value: Grades[i].GradeID, title: Grades[i].GradeName };
+      GradeArr.push(Grade);
     }
-    //搜索
-    StudentSearch = (e) => {
-        const { dispatch } = this.props;
-
-        if (e.value === '') {
-            dispatch(actions.UpUIState.showErrorAlert({
-                type: 'btn-warn',
-                title: "关键词不能为空",
-                ok: this.onAlertWarnOk.bind(this),
-                cancel: this.onAlertWarnClose.bind(this),
-                close: this.onAlertWarnClose.bind(this)
-            }));
-        } else {
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&keyword=' + e.value + '&gradeID=' + this.state.firstSelect.value + '&classID=' + this.state.secondSelect.value+this.state.sortFiled+this.state.sortType));
-            this.setState({
-                checkedList: [],
-                checkAll: false,
-                keyword: e.value,
-                CancelBtnShow: 'y'
-            })
-        }
-    }
-
-    //搜索change
-    onChangeSearch = (e) => {
-        this.setState({
-            searchValue: e.target.value
-        })
-    }
- // 取消搜索
- onCancelSearch = (e) => {
-    const { dispatch } = this.props
 
     this.setState({
-        CancelBtnShow: 'n',
-        keyword: '',
-        searchValue: e.value
-    })
-    dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' +  (this.state.firstSelect.value ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value ? '&classID=' + this.state.secondSelect.value : '')+this.state.sortFiled+this.state.sortType));
-   
+      GradeArr: GradeArr
+    });
+  }
 
-}
-    onSelectChange = (e) => {
+  StudentDropMenu = e => {
+    const { dispatch, DataState } = this.props;
 
-        //this.setState({ selectedRowKeys });
+    let Classes = [{ value: 0, title: "全部班级" }];
+
+    //console.log(this.refs.dropMenuSecond)
+    if (e.value !== 0) {
+      let ClassArr = DataState.GradeClassMsg.returnData.AllClasses[e.value];
+      ClassArr.map(Class => {
+        Classes.push(Class);
+      });
+      //Classes.push(this.props.DataState.GradeClassMsg.returnData.AllClasses[e.value]);
+      //this.refs.dropMenuSecond.state.dropList = Classes;]
+      this.setState({
+        secondDropList: Classes
+      });
+      dispatch(
+        actions.UpDataState.getGradeStudentPreview(
+          "/GetStudentToPage?SchoolID=" +
+            this.state.userMsg.SchoolID +
+            "&PageIndex=0&PageSize=10&gradeID=" +
+            e.value +
+            this.state.sortFiled +
+            this.state.sortType
+        )
+      );
+      this.setState({
+        DropMenuShow: true,
+        firstSelect: e,
+        searchValue: "",
+        checkedList: [],
+        checkAll: false,
+        keyword: "",
+        pagination: 1,
+        CancelBtnShow: "n"
+      });
+    } else {
+      dispatch(
+        actions.UpDataState.getGradeStudentPreview(
+          "/GetStudentToPage?SchoolID=" +
+            this.state.userMsg.SchoolID +
+            "&PageIndex=0&PageSize=10" +
+            this.state.sortFiled +
+            this.state.sortType
+        )
+      );
+      this.setState({
+        DropMenuShow: false,
+        secondSelect: { value: 0, title: "全部班级" },
+        searchValue: "",
+        firstSelect: e,
+        pagination: 1,
+        checkedList: [],
+        checkAll: false,
+        keyword: "",
+        CancelBtnShow: "n"
+      });
     }
+  };
 
-    onUserContactClick = (UserContact) => {
+  StudentDropMenuSecond = e => {
+    const { dispatch, DataState } = this.props;
+    this.setState({
+      secondSelect: e,
+      searchValue: "",
+      keyword: "",
+      pagination: 1,
+      CancelBtnShow: "n",
+      checkedList: [],
+      checkAll: false
+    });
+    if (e.value !== 0)
+      dispatch(
+        actions.UpDataState.getGradeStudentPreview(
+          "/GetStudentToPage?SchoolID=" +
+            this.state.userMsg.SchoolID +
+            "&PageIndex=0&PageSize=10&gradeID=" +
+            this.state.firstSelect.value +
+            "&classID=" +
+            e.value +
+            this.state.sortFiled +
+            this.state.sortType
+        )
+      );
+    else
+      dispatch(
+        actions.UpDataState.getGradeStudentPreview(
+          "/GetStudentToPage?SchoolID=" +
+            this.state.userMsg.SchoolID +
+            "&PageIndex=0&PageSize=10&gradeID=" +
+            this.state.firstSelect.value +
+            this.state.sortFiled +
+            this.state.sortType
+        )
+      );
+  };
+  //搜索
+  StudentSearch = e => {
+    const { dispatch } = this.props;
 
-        // this.setState({
-        //     StudentChangeMadalVisible: true,
-        //     StudentChangeKey: key
-        // })
+    if (e.value === "") {
+      dispatch(
+        actions.UpUIState.showErrorAlert({
+          type: "btn-warn",
+          title: "关键词不能为空",
+          ok: this.onAlertWarnOk.bind(this),
+          cancel: this.onAlertWarnClose.bind(this),
+          close: this.onAlertWarnClose.bind(this)
+        })
+      );
+    } else {
+      dispatch(
+        actions.UpDataState.getGradeStudentPreview(
+          "/GetStudentToPage?SchoolID=" +
+            this.state.userMsg.SchoolID +
+            "&PageIndex=0&PageSize=10&keyword=" +
+            e.value +
+            (this.state.firstSelect.value
+              ? "&gradeID=" + this.state.firstSelect.value
+              : "") +
+            (this.state.secondSelect.value
+              ? "&classID=" + this.state.secondSelect.value
+              : "") +
+            this.state.sortFiled +
+            this.state.sortType
+        )
+      );
+      this.setState({
+        checkedList: [],
+        checkAll: false,
+        keyword: e.value,
+        CancelBtnShow: "y"
+      });
     }
-    // onChangePwdClick = (e, key) => {
-    //     console.log(e, key)
-    //     this.setState({
-    //         StudentChangeMadalVisible: true,
-    //         StudentChangeKey: key
-    //     })
-    // }
+  };
 
-    onMouseEnterName = () => {
+  //搜索change
+  onChangeSearch = e => {
+    this.setState({
+      searchValue: e.target.value
+    });
+  };
+  // 取消搜索
+  onCancelSearch = e => {
+    const { dispatch } = this.props;
 
+    this.setState({
+      CancelBtnShow: "n",
+      keyword: "",
+      checkedList: [],
+      checkAll: false,
+pagination:1,
+      searchValue: e.value
+    });
+    dispatch(
+      actions.UpDataState.getGradeStudentPreview(
+        "/GetStudentToPage?SchoolID=" +
+          this.state.userMsg.SchoolID +
+          "&PageIndex=" +
+          (0) +
+          "&PageSize=10" +
+          (this.state.firstSelect.value
+            ? "&gradeID=" + this.state.firstSelect.value
+            : "") +
+          (this.state.secondSelect.value
+            ? "&classID=" + this.state.secondSelect.value
+            : "") +
+          this.state.sortFiled +
+          this.state.sortType
+      )
+    );
+  };
+  onSelectChange = e => {
+    //this.setState({ selectedRowKeys });
+  };
+
+  onUserContactClick = UserContact => {
+    // this.setState({
+    //     StudentChangeMadalVisible: true,
+    //     StudentChangeKey: key
+    // })
+  };
+  // onChangePwdClick = (e, key) => {
+  //   // console.log(e, key)
+  //     this.setState({
+  //         StudentChangeMadalVisible: true,
+  //         StudentChangeKey: key
+  //     })
+  // }
+
+  onMouseEnterName = () => {};
+  OnCheckAllChange = e => {
+    const { DataState, dispatch } = this.props;
+    if (e.target.checked) {
+      this.setState({
+        checkedList: DataState.GradeStudentPreview.keyList,
+        checkAll: e.target.checked
+      });
+    } else {
+      this.setState({
+        checkedList: [],
+        checkAll: e.target.checked
+      });
     }
-    OnCheckAllChange = (e) => {
-        const { DataState, dispatch } = this.props;
-        if (e.target.checked) {
+  };
+  onCheckBoxGroupChange = checkedList => {
+    const { DataState, dispatch } = this.props;
+    this.setState({
+      checkedList,
+      checkAll:
+        checkedList.length === DataState.GradeStudentPreview.keyList.length
+          ? true
+          : false
+    });
+  };
+  handleStudentModalOk = e => {
+    this.setState({
+      studentModalVisible: false
+    });
+  };
+  handleStudentModalCancel = e => {
+    this.setState({
+      studentModalVisible: false
+    });
+  };
+  ChangePwdMadalOk = e => {
+    this.setState({
+      ChangePwdMadalVisible: false
+    });
+  };
+  ChangePwdMadalOk = e => {
+    this.setState({
+      ChangePwdMadalVisible: false
+    });
+  };
+
+  onChangePwdAllClick = () => {
+    const { dispatch } = this.props;
+    if (this.state.checkedList.length === 0) {
+      dispatch(
+        actions.UpUIState.showErrorAlert({
+          type: "btn-warn",
+          title: "你还没有选择哦~",
+          ok: this.onAlertWarnOk.bind(this),
+          cancel: this.onAlertWarnClose.bind(this),
+          close: this.onAlertWarnClose.bind(this)
+        })
+      );
+      return;
+    } else {
+      dispatch(
+        actions.UpUIState.showErrorAlert({
+          type: "btn-query",
+          title: "确定批量重置密码？",
+          ok: this.onAlertQueryOk.bind(this, "888888"),
+          cancel: this.onAlertQueryClose.bind(this),
+          close: this.onAlertQueryClose.bind(this)
+        })
+      );
+    }
+  };
+  //table点击重置密码
+  onChangePwdClick = key => {
+    const { dispatch, DataState } = this.props;
+    let data = this.state.StudentAccountData;
+    let pwd = "888888";
+    // console.log(key)
+    this.setState({
+      ChangePwdMadalVisible: true,
+      onClickKey: key
+    });
+  };
+  // 重置密码ok
+  onPwdchangeOk = pwd => {
+    const { dispatch, DataState } = this.props;
+    let url = "/ResetPwd";
+    let UserMsg = DataState.LoginUser;
+    if (this.state.defaultPwd === "") {
+      dispatch(
+        actions.UpUIState.showErrorAlert({
+          type: "btn-query",
+          title: "密码不能为空",
+          ok: this.onAlertQueryClose.bind(this),
+          cancel: this.onAlertQueryClose.bind(this),
+          close: this.onAlertQueryClose.bind(this)
+        })
+      );
+      return;
+    } else {
+      postData(
+        CONFIG.UserAccountProxy + url,
+        {
+          userID:
+            DataState.GradeStudentPreview.newList[this.state.onClickKey].Others
+              .UserID,
+          userType: 2,
+          newPwd: md5(this.state.defaultPwd)
+        },
+        2
+      )
+        .then(res => {
+          return res.json();
+        })
+        .then(json => {
+          if (json.StatusCode === 200) {
+            dispatch(
+              actions.UpUIState.showErrorAlert({
+                type: "success",
+                title: "操作成功",
+                onHide: this.onAlertWarnHide.bind(this)
+              })
+            );
             this.setState({
-                checkedList: DataState.GradeStudentPreview.keyList,
-                checkAll: e.target.checked
-            })
-        } else {
-            this.setState({
-                checkedList: [],
-                checkAll: e.target.checked
-            })
-        }
-    }
-    onCheckBoxGroupChange = (checkedList) => {
-        const { DataState, dispatch } = this.props;
-        this.setState({
-            checkedList,
-            checkAll: checkedList.length === DataState.GradeStudentPreview.keyList.length ? true : false
-        })
-    }
-    handleStudentModalOk = (e) => {
-        this.setState({
-            studentModalVisible: false
-        })
-    }
-    handleStudentModalCancel = (e) => {
-        this.setState({
-            studentModalVisible: false
-        })
-    }
-    ChangePwdMadalOk = (e) => {
-        this.setState({
-            ChangePwdMadalVisible: false
-        })
-    }
-    ChangePwdMadalOk = (e) => {
-        this.setState({
-            ChangePwdMadalVisible: false
-        })
-    }
-
-    onChangePwdAllClick = () => {
-        const { dispatch } = this.props;
-        if (this.state.checkedList.length === 0) {
-
-            dispatch(actions.UpUIState.showErrorAlert({
-                type: 'btn-warn',
-                title: "你还没有选择哦~",
-                ok: this.onAlertWarnOk.bind(this),
-                cancel: this.onAlertWarnClose.bind(this),
-                close: this.onAlertWarnClose.bind(this)
-            }));
-            return;
-        } else {
-
-            dispatch(actions.UpUIState.showErrorAlert({
-                type: 'btn-query',
-                title: "确定批量重置密码？",
-                ok: this.onAlertQueryOk.bind(this, '888888'),
-                cancel: this.onAlertQueryClose.bind(this),
-                close: this.onAlertQueryClose.bind(this)
-            }));
-        }
-    }
-    //table点击重置密码
-    onChangePwdClick = (key) => {
-        const { dispatch, DataState } = this.props;
-        let data = this.state.StudentAccountData;
-        let pwd = '888888';
-        // console.log(key)
-        this.setState({
-            ChangePwdMadalVisible: true,
-            onClickKey: key
-        })
-    }
-    // 重置密码ok
-    onPwdchangeOk = (pwd) => {
-        const { dispatch, DataState } = this.props;
-        let url = '/ResetPwd';
-        let UserMsg = DataState.LoginUser;
-        if (this.state.defaultPwd === '') {
-            dispatch(actions.UpUIState.showErrorAlert({
-                type: 'btn-query',
-                title: "密码不能为空",
-                ok: this.onAlertQueryClose.bind(this),
-                cancel: this.onAlertQueryClose.bind(this),
-                close: this.onAlertQueryClose.bind(this)
-            }));
-            return;
-        } else {
-            postData(CONFIG.UserAccountProxy + url,
-                {
-                    userID: DataState.GradeStudentPreview.newList[this.state.onClickKey].Others.UserID,
-                    userType: 2,
-                    newPwd: md5(this.state.defaultPwd)
-                },
-                2).then(res => {
-                    if (res.StatusCode === '401') {
-                        console.log('错误码：' + res.StatusCode)
-                    }
-                    return res.json()
-                }).then(json => {
-                    if (json.StatusCode === 400) {
-                        console.log(json.StatusCode)
-                    } else if (json.StatusCode === 200) {
-                        dispatch(actions.UpUIState.showErrorAlert({
-                            type: 'success',
-                            title: "操作成功",
-                            onHide: this.onAlertWarnHide.bind(this)
-                        }));
-                        this.setState({
-                            ChangePwdMadalVisible: false,
-                            defaultPwd: '888888'
-                        })
-                        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&keyword=' + this.state.keyword + (this.state.firstSelect.value ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value ? '&classID=' + this.state.secondSelect.value : '')+this.state.sortFiled+this.state.sortType));
-
-                    }
-
-                });
-        }
-
-    }
-     //关闭
-     onAlertWarnHide = () => {
-        const { dispatch } = this.props;
-        //console.log('ddd')
-        dispatch(actions.UpUIState.hideErrorAlert())
-
-    }
-    // 重置密码close
-    onPwdchangeClose = () => {
-        this.setState({
-            ChangePwdMadalVisible: false,
-            defaultPwd: '888888'
-        })
-    }
-    onPwdchange = (e) => {
-        const { dispatch } = this.props;
-        this.setState({
-            defaultPwd: e.target.value
-        })
-    }
-    onAlertWarnClose = () => {
-        const { dispatch } = this.props;
-        dispatch(actions.UpUIState.hideErrorAlert());
-    }
-    onAlertWarnOk = () => {
-        const { dispatch } = this.props;
-        dispatch(actions.UpUIState.hideErrorAlert());
-    }
-    onAlertQueryClose = () => {
-        const { dispatch } = this.props;
-        dispatch(actions.UpUIState.hideErrorAlert());
-    }
-    onAlertQueryOk = (pwd) => {
-        let url = '/ResetPwd';
-        const { dispatch, DataState } = this.props;
-        dispatch(actions.UpUIState.hideErrorAlert());
-        let userIDs = this.state.checkedList.map((child, index) => {
-            return DataState.GradeStudentPreview.newList[child].Others.UserID
-        })
-        postData(CONFIG.UserAccountProxy + url,
-            {
-                userID: userIDs.join(),
-                userType: 2,
-                newPwd: md5(this.state.defaultPwd)
-            },
-            2).then(res => {
-                if (res.StatusCode === '401') {
-                    console.log('错误码：' + res.StatusCode)
-                }
-                return res.json()
-            }).then(json => {
-                if (json.StatusCode === 400) {
-                    console.log(json.StatusCode)
-                } else if (json.StatusCode === 200) {
-                    dispatch(actions.UpUIState.showErrorAlert({
-                        type: 'success',
-                        title: "操作成功",
-                        onHide: this.onAlertWarnHide.bind(this)
-                    }));
-                    this.setState({
-                        checkedList: [],
-                        checkAll: false
-                    })
-                    dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&keyword=' + this.state.keyword + (this.state.firstSelect.value ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value ? '&classID=' + this.state.secondSelect.value : '')+this.state.sortFiled+this.state.sortType));
-
-                }
-
+              ChangePwdMadalVisible: false,
+              defaultPwd: "888888",
+              checkedList: [],
+              checkAll: false
             });
-
+            dispatch(
+              actions.UpDataState.getGradeStudentPreview(
+                "/GetStudentToPage?SchoolID=" +
+                  this.state.userMsg.SchoolID +
+                  "&PageIndex=" +
+                  (this.state.pagination - 1) +
+                  "&PageSize=10&keyword=" +
+                  this.state.keyword +
+                  (this.state.firstSelect.value
+                    ? "&gradeID=" + this.state.firstSelect.value
+                    : "") +
+                  (this.state.secondSelect.value
+                    ? "&classID=" + this.state.secondSelect.value
+                    : "") +
+                  this.state.sortFiled +
+                  this.state.sortType
+              )
+            );
+          }
+        });
     }
-    //分页
-    onPagiNationChange = (value) => {
-        const { dispatch } = this.props;
-        this.setState({
-            pagination: value
-        })
-        let firstSelect = '';
-        let secondSelect = '';
-        let keyword = ''
-        if (this.state.firstSelect.value !== 0) {
-            firstSelect = '&gradeID=' + this.state.firstSelect.value
-        }
-        if (this.state.secondSelect.value !== 0) {
-            secondSelect = '&classID=' + this.state.secondSelect.value
-        }
-        if (this.state.keyword !== '') {
-            keyword = '&keyword=' + this.state.keyword
-        }
-        this.setState({
+  };
+  //关闭
+  onAlertWarnHide = () => {
+    const { dispatch } = this.props;
+    //console.log('ddd')
+    dispatch(actions.UpUIState.hideErrorAlert());
+  };
+  // 重置密码close
+  onPwdchangeClose = () => {
+    this.setState({
+      ChangePwdMadalVisible: false,
+      defaultPwd: "888888"
+    });
+  };
+  onPwdchange = e => {
+    const { dispatch } = this.props;
+    this.setState({
+      defaultPwd: e.target.value
+    });
+  };
+  onAlertWarnClose = () => {
+    const { dispatch } = this.props;
+    dispatch(actions.UpUIState.hideErrorAlert());
+  };
+  onAlertWarnOk = () => {
+    const { dispatch } = this.props;
+    dispatch(actions.UpUIState.hideErrorAlert());
+  };
+  onAlertQueryClose = () => {
+    const { dispatch } = this.props;
+    dispatch(actions.UpUIState.hideErrorAlert());
+  };
+  onAlertQueryOk = pwd => {
+    let url = "/ResetPwd";
+    const { dispatch, DataState } = this.props;
+    dispatch(actions.UpUIState.hideErrorAlert());
+    let userIDs = this.state.checkedList.map((child, index) => {
+      return DataState.GradeStudentPreview.newList[child].Others.UserID;
+    });
+    postData(
+      CONFIG.UserAccountProxy + url,
+      {
+        userID: userIDs.join(),
+        userType: 2,
+        newPwd: md5(this.state.defaultPwd)
+      },
+      2
+    )
+      .then(res => {
+        return res.json();
+      })
+      .then(json => {
+        if (json.StatusCode === 200) {
+          dispatch(
+            actions.UpUIState.showErrorAlert({
+              type: "success",
+              title: "操作成功",
+              onHide: this.onAlertWarnHide.bind(this)
+            })
+          );
+          this.setState({
             checkedList: [],
-            checkAll: false,
-            firstSelectStr: firstSelect,
-            secondSelectStr: secondSelect,
-            keywordStr: keyword
-        })
-        dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (--value) + '&PageSize=10' + keyword + firstSelect + secondSelect+this.state.sortFiled+this.state.sortType));
-
-    }
-
-    //table改变，进行排序操作
-    onTableChange = (a, b, sorter) => {
-        const { DataState, dispatch } = this.props;
-        let firstSelect = '';
-        let secondSelect = '';
-        let keyword = ''
-        if (this.state.firstSelect.value !== 0) {
-            firstSelect = '&gradeID=' + this.state.firstSelect.value
+            checkAll: false
+          });
+          dispatch(
+            actions.UpDataState.getGradeStudentPreview(
+              "/GetStudentToPage?SchoolID=" +
+                this.state.userMsg.SchoolID +
+                "&PageIndex=" +
+                (this.state.pagination - 1) +
+                "&PageSize=10&keyword=" +
+                this.state.keyword +
+                (this.state.firstSelect.value
+                  ? "&gradeID=" + this.state.firstSelect.value
+                  : "") +
+                (this.state.secondSelect.value
+                  ? "&classID=" + this.state.secondSelect.value
+                  : "") +
+                this.state.sortFiled +
+                this.state.sortType
+            )
+          );
         }
-        if (this.state.secondSelect.value !== 0) {
-            secondSelect = '&classID=' + this.state.secondSelect.value
-        }
-        if (this.state.keyword !== '') {
-            keyword = '&keyword=' + this.state.keyword
-        }
-        console.log(sorter)
-        if (sorter && (sorter.columnKey === 'UserName' || sorter.columnKey === 'ShortName')) {
-            let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID + '&sortFiled=' + sorter.columnKey + '&PageSize=10&' + sortType + '&PageIndex=' + (this.state.pagination - 1) + keyword + firstSelect +'&sortFiled=' + sorter.columnKey +'&'+sortType));
-            this.setState({
-                sortType: '&' + sortType,
-                sortFiled: '&sortFiled=' + sorter.columnKey
-            })
-        }else if(sorter){
-            dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + this.state.userMsg.SchoolID  + '&PageSize=10'  + '&PageIndex=' + (this.state.pagination - 1) + keyword + firstSelect + secondSelect));
-            this.setState({
-                sortType: '',
-                sortFiled: ''
-            })
-        }
+      });
+  };
+  //分页
+  onPagiNationChange = value => {
+    const { dispatch } = this.props;
+    this.setState({
+      pagination: value
+    });
+    let firstSelect = "";
+    let secondSelect = "";
+    let keyword = "";
+    if (this.state.firstSelect.value !== 0) {
+      firstSelect = "&gradeID=" + this.state.firstSelect.value;
     }
-    onUserNameClick = (UserID) => {
-        const { dispatch } = this.props;
-        dispatch(actions.UpDataState.getUserMsg('/GetUserDetail?userid=' + UserID))
+    if (this.state.secondSelect.value !== 0) {
+      secondSelect = "&classID=" + this.state.secondSelect.value;
+    }
+    if (this.state.keyword !== "") {
+      keyword = "&keyword=" + this.state.keyword;
+    }
+    this.setState({
+      checkedList: [],
+      checkAll: false,
+      firstSelectStr: firstSelect,
+      secondSelectStr: secondSelect,
+      keywordStr: keyword
+    });
+    dispatch(
+      actions.UpDataState.getGradeStudentPreview(
+        "/GetStudentToPage?SchoolID=" +
+          this.state.userMsg.SchoolID +
+          "&PageIndex=" +
+          --value +
+          "&PageSize=10" +
+          keyword +
+          firstSelect +
+          secondSelect +
+          this.state.sortFiled +
+          this.state.sortType
+      )
+    );
+  };
 
-        this.setState({
-            StudentDetailsMsgModalVisible: true,
+  //table改变，进行排序操作
+  onTableChange = (a, b, sorter) => {
+    const { DataState, dispatch } = this.props;
+    let firstSelect = "";
+    let secondSelect = "";
+    let keyword = "";
+    if (this.state.firstSelect.value !== 0) {
+      firstSelect = "&gradeID=" + this.state.firstSelect.value;
+    }
+    if (this.state.secondSelect.value !== 0) {
+      secondSelect = "&classID=" + this.state.secondSelect.value;
+    }
+    if (this.state.keyword !== "") {
+      keyword = "&keyword=" + this.state.keyword;
+    }
+    // console.log(sorter)
+    if (
+      sorter &&
+      (sorter.columnKey === "UserName" || sorter.columnKey === "ShortName")
+    ) {
+      let sortType =
+        sorter.order === "descend"
+          ? "SortType=DESC"
+          : sorter.order === "ascend"
+          ? "SortType=ASC"
+          : "";
+      this.setState({
+        checkedList: [],
+        checkAll: false,
+        sortType: "&" + sortType,
+        sortFiled: "&sortFiled=" + sorter.columnKey
+      });
+      dispatch(
+        actions.UpDataState.getGradeStudentPreview(
+          "/GetStudentToPage?SchoolID=" +
+            this.state.userMsg.SchoolID +
+            "&sortFiled=" +
+            sorter.columnKey +
+            "&PageSize=10&" +
+            sortType +
+            "&PageIndex=" +
+            (this.state.pagination - 1) +
+            keyword +
+            firstSelect +
+            "&sortFiled=" +
+            sorter.columnKey +
+            "&" +
+            sortType
+        )
+      );
+    } else if (sorter) {
+      this.setState({
+        sortType: "",
+        sortFiled: "",
+        checkedList: [],
+        checkAll: false
+      });
+      dispatch(
+        actions.UpDataState.getGradeStudentPreview(
+          "/GetStudentToPage?SchoolID=" +
+            this.state.userMsg.SchoolID +
+            "&PageSize=10" +
+            "&PageIndex=" +
+            (this.state.pagination - 1) +
+            keyword +
+            firstSelect +
+            secondSelect
+        )
+      );
+    }
+  };
+  onUserNameClick = UserID => {
+    const { dispatch } = this.props;
+    dispatch(actions.UpDataState.getUserMsg("/GetUserDetail?userid=" + UserID));
 
-        })
-    }
-    StudentDetailsMsgModalOk = () => {
-        this.setState({
-            StudentDetailsMsgModalVisible: false,
-
-        })
-    }
-    StudentDetailsMsgModalCancel = () => {
-        this.setState({
-            StudentDetailsMsgModalVisible: false,
-
-        })
-    }
-    onAddStudent = (e, ) => {
-        this.setState({
-            addStudentModalVisible: true,
-            userKey: 'add'
-        })
-    }
-    handleAddStudentModalOk = (e) => {
-        this.setState({
-            addStudentModalVisible: false
-        })
-    }
-    handleAddStudentModalCancel = (e) => {
-        this.setState({
-            addStudentModalVisible: false
-        })
-    }
-    render() {
-        const { UIState, DataState } = this.props;
-        const data = {
-            userName: '康欣',
-            userImg: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
-            Gende: '男',
-            userText: '学如逆水行舟，不进则退',
-            userID: '20170025444',
-            userGrade: '一年级',
-            userClass: '1班',
-            userIDCard: '',
-            userPhone: '15626248624',
-            userMail: '1519406168@qq.com',
-            userAddress: '蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团'
-        };
-        return (
-            <div className='Student'>
-                <div className='Student-box'>
-                    <div className='Student-top'>
-                        <span className='top-tips'>
-                            <span className='tips menu39 '>学生账号管理</span>
-                        </span>
-                        {/* <div className='top-nav'>
+    this.setState({
+      StudentDetailsMsgModalVisible: true
+    });
+  };
+  StudentDetailsMsgModalOk = () => {
+    this.setState({
+      StudentDetailsMsgModalVisible: false
+    });
+  };
+  StudentDetailsMsgModalCancel = () => {
+    this.setState({
+      StudentDetailsMsgModalVisible: false
+    });
+  };
+  onAddStudent = e => {
+    this.setState({
+      addStudentModalVisible: true,
+      userKey: "add"
+    });
+  };
+  handleAddStudentModalOk = e => {
+    this.setState({
+      addStudentModalVisible: false
+    });
+  };
+  handleAddStudentModalCancel = e => {
+    this.setState({
+      addStudentModalVisible: false
+    });
+  };
+  render() {
+    const { UIState, DataState } = this.props;
+    const data = {
+      userName: "康欣",
+      userImg:
+        "http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg",
+      Gende: "男",
+      userText: "学如逆水行舟，不进则退",
+      userID: "20170025444",
+      userGrade: "一年级",
+      userClass: "1班",
+      userIDCard: "",
+      userPhone: "15626248624",
+      userMail: "1519406168@qq.com",
+      userAddress: "蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团"
+    };
+    return (
+      <div className="Student">
+        <div className="Student-box">
+          <div className="Student-top">
+            <span className="top-tips">
+              <span className="tips menu39 ">学生账号管理</span>
+            </span>
+            {/* <div className='top-nav'>
                             <Link className='link'  to='/GraduteArchives' replace>查看毕业生档案</Link>
                             <span className='divide'>|</span>
                             <Link className='link' target='_blank' to='/RegisterExamine' replace>学生注册审核</Link>
@@ -624,71 +842,95 @@ class Student extends React.Component {
                             <span className='divide'>|</span>
                             <Link className='link' to='/ImportStudent' replace>导入学生</Link>
                         </div> */}
-                    </div>
-                    <hr className='Student-hr' />
-                    <div className='Student-content'>
-                        <div className='content-top'>
-                            <DropDown
-                                ref='dropMenuFirst'
-                                onChange={this.StudentDropMenu}
-                                width={120}
-                                height={240}
-
-                                dropSelectd={this.state.firstSelect}
-                                dropList={DataState.GradeClassMsg.returnData ? DataState.GradeClassMsg.returnData.grades : [{ value: 0, title: '全部年级' }]}
-                            ></DropDown>
-                            <DropDown
-                                ref='dropMenuSecond'
-                                width={120}
-                                height={240}
-
-                                style={{ display: this.state.DropMenuShow ? 'block' : 'none' }}
-                                dropSelectd={this.state.secondSelect}
-                                dropList={this.state.secondDropList}
-                                onChange={this.StudentDropMenuSecond}
-                            ></DropDown>
-                            <Search placeHolder='请输入关键字搜索...'
-                                onClickSearch={this.StudentSearch}
-                                Value={this.state.searchValue}
-                                onChange={this.onChangeSearch.bind(this)}
-                                CancelBtnShow={this.state.CancelBtnShow}
-                                onCancelSearch={this.onCancelSearch}
-                                height={30}
-                            ></Search>
-                        </div>
-                        <div className='content-render'>
-                            <div>
-                                <CheckBoxGroup style={{ width: '100%' }} value={this.state.checkedList} onChange={this.onCheckBoxGroupChange.bind(this)}>
-                                    <Table
-                                        className='table'
-                                        columns={this.state.columns}
-                                        pagination={false}
-                                        loading={UIState.AppLoading.TableLoading}
-                                        onChange={this.onTableChange.bind(this)}
-                                        dataSource={DataState.GradeStudentPreview.newList} >
-
-                                    </Table>
-                                </CheckBoxGroup>
-                                <CheckBox style={{ display: DataState.GradeStudentPreview.Total === 0 ? 'none' : 'inline-block' }} className='checkAll-box' onChange={this.OnCheckAllChange} checked={this.state.checkAll}>
-                                    全选
-                                    <Button onClick={this.onChangePwdAllClick} className='changePwdAll' color='blue'>批量重置密码</Button>
-                                </CheckBox>
-                                <div className='pagination-box'>
-                                    <PagiNation
-                                        showQuickJumper
-                                        current={this.state.pagination}
-                                        hideOnSinglepage={true}
-                                        total={DataState.GradeStudentPreview.Total}
-                                        onChange={this.onPagiNationChange}
-                                    ></PagiNation>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+          </div>
+          <hr className="Student-hr" />
+          <div className="Student-content">
+            <div className="content-top">
+              <DropDown
+                ref="dropMenuFirst"
+                onChange={this.StudentDropMenu}
+                width={120}
+                height={240}
+                dropSelectd={this.state.firstSelect}
+                dropList={
+                  DataState.GradeClassMsg.returnData
+                    ? DataState.GradeClassMsg.returnData.grades
+                    : [{ value: 0, title: "全部年级" }]
+                }
+              ></DropDown>
+              <DropDown
+                ref="dropMenuSecond"
+                width={120}
+                height={240}
+                style={{ display: this.state.DropMenuShow ? "block" : "none" }}
+                dropSelectd={this.state.secondSelect}
+                dropList={this.state.secondDropList}
+                onChange={this.StudentDropMenuSecond}
+              ></DropDown>
+              <Search
+                placeHolder="请输入学号或姓名进行搜索"
+                onClickSearch={this.StudentSearch}
+                Value={this.state.searchValue}
+                onChange={this.onChangeSearch.bind(this)}
+                CancelBtnShow={this.state.CancelBtnShow}
+                onCancelSearch={this.onCancelSearch}
+                width={250}
+                height={30}
+              ></Search>
+            </div>
+            <div className="content-render">
+              <div>
+                <CheckBoxGroup
+                  style={{ width: "100%" }}
+                  value={this.state.checkedList}
+                  onChange={this.onCheckBoxGroupChange.bind(this)}
+                >
+                  <Table
+                    className="table"
+                    columns={this.state.columns}
+                    pagination={false}
+                    loading={UIState.AppLoading.TableLoading}
+                    onChange={this.onTableChange.bind(this)}
+                    dataSource={DataState.GradeStudentPreview.newList}
+                  ></Table>
+                </CheckBoxGroup>
+                <CheckBox
+                  style={{
+                    display:
+                      DataState.GradeStudentPreview.Total === 0
+                        ? "none"
+                        : "inline-block"
+                  }}
+                  className="checkAll-box"
+                  onChange={this.OnCheckAllChange}
+                  checked={this.state.checkAll}
+                >
+                  全选
+                  <Button
+                    onClick={this.onChangePwdAllClick}
+                    className="changePwdAll"
+                    color="blue"
+                  >
+                    批量重置密码
+                  </Button>
+                </CheckBox>
+                <div className="pagination-box">
+                  <PagiNation
+                    showQuickJumper
+                    current={this.state.pagination}
+                    hideOnSinglepage={true}
+                    total={DataState.GradeStudentPreview.Total}
+                    onChange={this.onPagiNationChange}
+                    // showTotal={(total, range) => `共${DataState.GradeStudentPreview.Total/10} 页 `}
+                  ></PagiNation>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-                {/* 模态框 */}
-                {/* <Modal
+        {/* 模态框 */}
+        {/* <Modal
                     ref='handleStudentMadal'
                     bodyStyle={{ padding: 0 }}
                     type='1'
@@ -700,7 +942,7 @@ class Student extends React.Component {
                 >
                     <EditModal userKey={this.state.userKey}></EditModal>
                 </Modal> */}
-                {/* <Modal
+        {/* <Modal
                     ref='StudentChangeMadal'
                     bodyStyle={{ padding: 0 }}
                     type='2'
@@ -730,17 +972,15 @@ class Student extends React.Component {
                 >
                     <EditModal type='student' userKey={this.state.userKey}></EditModal>
                 </Modal> */}
-                <DetailsModal
-                    ref='StudentDetailsMsgModal'
-                    visible={this.state.StudentDetailsMsgModalVisible}
-                    onOk={this.StudentDetailsMsgModalOk}
-                    onCancel={this.StudentDetailsMsgModalCancel}
-                    data={DataState.GetUserMsg}
-                    type='student'
-                >
-
-                </DetailsModal>
-                {/* <AntdModal
+        <DetailsModal
+          ref="StudentDetailsMsgModal"
+          visible={this.state.StudentDetailsMsgModalVisible}
+          onOk={this.StudentDetailsMsgModalOk}
+          onCancel={this.StudentDetailsMsgModalCancel}
+          data={DataState.GetUserMsg}
+          type="student"
+        ></DetailsModal>
+        {/* <AntdModal
                     ref='changePwdMadal'
                     
                     footer={null}
@@ -753,25 +993,59 @@ class Student extends React.Component {
 
                     </div>
                 </AntdModal> */}
-                {/* 提示框 */}
-                <Alert show={this.state.ChangePwdMadalVisible}
-                    type={'btn-query'}
-                    abstract={<div className='alert-pwd'><span className='alert-pwd-tips'>新密码：</span><Input size='small' onChange={this.onPwdchange.bind(this)} style={{ width: 120 + 'px' }} value={this.state.defaultPwd}></Input></div>}
-                    title={this.state.ChangePwdMadalVisible ? (<p className='alert-Title'>确定重置<span className='alert-Title-name'>{DataState.GradeStudentPreview.newList[this.state.onClickKey].UserName.Name}</span><span className='alert-Title-id'>({DataState.GradeStudentPreview.newList[this.state.onClickKey].UserName.UserID})</span> 的密码？</p>) : ''}
-                    onOk={this.onPwdchangeOk.bind(this)}
-                    onCancel={this.onPwdchangeClose}
-                    onClose={this.onPwdchangeClose}
-                ></Alert>
+        {/* 提示框 */}
+        <Alert
+          show={this.state.ChangePwdMadalVisible}
+          type={"btn-query"}
+          abstract={
+            <div className="alert-pwd">
+              <span className="alert-pwd-tips">新密码：</span>
+              <Input
+                size="small"
+                onChange={this.onPwdchange.bind(this)}
+                style={{ width: 120 + "px" }}
+                value={this.state.defaultPwd}
+              ></Input>
             </div>
-        )
-    }
+          }
+          title={
+            this.state.ChangePwdMadalVisible ? (
+              <p className="alert-Title">
+                确定重置
+                <span className="alert-Title-name">
+                  {
+                    DataState.GradeStudentPreview.newList[this.state.onClickKey]
+                      .UserName.Name
+                  }
+                </span>
+                <span className="alert-Title-id">
+                  (
+                  {
+                    DataState.GradeStudentPreview.newList[this.state.onClickKey]
+                      .UserName.UserID
+                  }
+                  )
+                </span>{" "}
+                的密码？
+              </p>
+            ) : (
+              ""
+            )
+          }
+          onOk={this.onPwdchangeOk.bind(this)}
+          onCancel={this.onPwdchangeClose}
+          onClose={this.onPwdchangeClose}
+        ></Alert>
+      </div>
+    );
+  }
 }
 
-const mapStateToProps = (state) => {
-    let { UIState, DataState } = state;
-    return {
-        UIState,
-        DataState
-    }
+const mapStateToProps = state => {
+  let { UIState, DataState } = state;
+  return {
+    UIState,
+    DataState
+  };
 };
-export default connect(mapStateToProps)(Student)
+export default connect(mapStateToProps)(Student);

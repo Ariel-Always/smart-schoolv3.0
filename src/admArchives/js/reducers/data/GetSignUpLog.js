@@ -62,7 +62,7 @@ function handleData(data) {
 }
 
 function getStatus(oldData, newData) {
-    console.log(oldData, newData)
+    // console.log(oldData, newData)
 
     return newData.StatusCount - oldData.StatusCount;
 }

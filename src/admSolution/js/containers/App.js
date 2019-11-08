@@ -50,8 +50,8 @@ class App extends Component {
             let timeRun = setInterval(function () {
                 if (sessionStorage.getItem('UserInfo')) {
                     dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
-                    clearInterval(timeRun)
                     dispatch(actions.UpDataState.getTeachingSolutionMsg('/ListTeachingSolutions?beginTime=&endTime=&pageSize=9&currentPage=1&userId=' + JSON.parse(sessionStorage.getItem('UserInfo')).UserID))
+                    clearInterval(timeRun)
 
                 }
             }, 1000)
@@ -73,7 +73,7 @@ class App extends Component {
     }
     //重命名
     onResetNameChange = (e) => {
-        console.log(e.target.value)
+        // console.log(e.target.value)
         const { dispatch } = this.props;
         this.setState({
             resetName: e.target.value
@@ -84,7 +84,7 @@ class App extends Component {
         const { DataState, dispatch } = this.props;
         let url = '/EditTeachingSolution';
         let UserMsg = DataState.LoginUser;
-        console.log(this.state.resetName)
+        // console.log(this.state.resetName)
         if (this.state.resetName === DataState.GetSolutionID.Solution.SolutionName || this.state.resetName === '') {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-error',
@@ -102,9 +102,7 @@ class App extends Component {
         }, 2).then(res => {
             return res.json()
         }).then(json => {
-            if (json.StatusCode === 400) {
-                console.log('错误码：' + json.StatusCode)
-            } else if (json.StatusCode === 200) {
+            if (json.StatusCode === 200) {
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
                     title: "成功",

@@ -168,7 +168,7 @@ class Button extends React.Component {
 
 
         }
-        console.log(style)
+      // console.log(style)
         return { style };
     }
     render() {
@@ -223,7 +223,7 @@ class Input extends React.Component {
 
     //onChange
     onInputChange = (e) => {
-        console.log(e.target.value)
+      // console.log(e.target.value)
         this.setState({
             value: e.target.value
         })
@@ -1985,7 +1985,7 @@ class DetailsModal extends React.Component {
 
     render() {
         let { type, data, children, ...params } = this.props;
-        console.log(params)
+      // console.log(params)
         if (type === 'student') {
 
         }

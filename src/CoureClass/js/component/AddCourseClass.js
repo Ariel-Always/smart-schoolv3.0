@@ -76,11 +76,11 @@ class AddCourseClass extends React.Component {
 
     // //学科选择
     // onSelectSubjectChange = (value) => {
-    //     console.log(value)
+    //   // console.log(value)
     // }
     // //年级选择
     // onSelectGradeChange = (value) => {
-    //     console.log(value)
+    //   // console.log(value)
     // }
     //选择教师
     onTeacherSelectClick = () => {
@@ -102,7 +102,8 @@ class AddCourseClass extends React.Component {
     //选择教师模态框
     AddTeacherModalOk = () => {
         const { DataState, UIState, dispatch } = this.props;
-        let teacher = DataState.GetCourseClassDetailsHandleClassMsg.transfer.Teacher;
+        let teacher = Object.keys(DataState.GetCourseClassDetailsHandleClassMsg.transfer.Teacher).length!==0?DataState.GetCourseClassDetailsHandleClassMsg.transfer.Teacher:DataState.GetCourseClassDetailsHandleClassMsg.selectData.Teacher;
+
         dispatch(actions.UpDataState.setSubjectTeacherMsg(teacher))
         dispatch(actions.UpUIState.AddTeacherModalClose())
     }
@@ -119,6 +120,7 @@ class AddCourseClass extends React.Component {
     AddStudentModalOk = () => {
         const { DataState, UIState, dispatch } = this.props;
         let Student = DataState.GetCourseClassDetailsHandleClassMsg.transfer.Student;
+        
         dispatch(actions.UpDataState.setCourseClassStudentMsg(Student))
 
         dispatch(actions.UpUIState.AddStudentModalClose())
@@ -141,7 +143,7 @@ class AddCourseClass extends React.Component {
         this.setState({
             tableSource: data
         })
-        console.log(id, newData);
+      // console.log(id, newData);
         dispatch(actions.UpDataState.setCourseClassStudentMsg(data))
 
     }
@@ -196,7 +198,7 @@ class AddCourseClass extends React.Component {
     //选择年级
     onSelectGradeChange = (value) => {
         const { DataState, UIState, dispatch } = this.props;
-        console.log(value)
+      // console.log(value)
         this.setState({
             GradeSelect: value,
             // SubjectSelect: value

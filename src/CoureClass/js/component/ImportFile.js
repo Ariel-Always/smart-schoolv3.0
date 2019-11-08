@@ -38,7 +38,7 @@ class ImportFile extends React.Component {
     }
     componentDidMount() {
         $.get('/UserMgr/TeachInfoMgr/Import.aspx?SchoolID='+this.state.userMsg.SchoolID+'&Type=courseclass&UserID='+this.state.userMsg.UserID+'&UserName='+this.state.userMsg.UserName+'&Token='+ sessionStorage.getItem('token'),function(data){
-            console.log(data)
+          // console.log(data)
             $('#content-box').html(data)
         })
 
@@ -51,7 +51,7 @@ class ImportFile extends React.Component {
         //     }
         // })
         // getData(CONFIG.UserInfoProxy+'/Import.aspx?Token=0111&UserType=Student',1,'no-cors').then(data => {
-        //     console.log(data)
+        //   // console.log(data)
         //     $('#content-box').html(data)
         // })
         // let route = history.location.pathname.split('/');
@@ -72,7 +72,7 @@ class ImportFile extends React.Component {
         //     // referrer: 'no-referrer',//该首部字段会告知服务器请求的原始资源的URI
 
         // }).then(data => {
-        //     console.log(data)
+        //   // console.log(data)
         //     $('#content-box').html(data)
         // })
     }

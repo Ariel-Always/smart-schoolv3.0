@@ -1,7 +1,7 @@
 import UpDataState from '../../actions/UpDataState';
 
 function handleData(data) {
-    console.log(data)
+ //  console.log(data)
     if (data === null) {
         return {
             userName: '',

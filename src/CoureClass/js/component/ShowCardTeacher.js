@@ -17,7 +17,7 @@ class ShowCardTeacher extends React.Component {
 
     //编辑教学班
     onHandleClick = (classID) => {
-        console.log(classID)
+      // console.log(classID)
         const { dispatch, DataState, UIState } = this.props;
         dispatch(actions.UpUIState.ChangeCourseClassModalOpen())
         dispatch(actions.UpDataState.getCourseClassDetailsHandleClassMsg('/GetCourseClassDetail?courseClassID=' + classID))
@@ -26,7 +26,7 @@ class ShowCardTeacher extends React.Component {
     onDeleteClick = (classID) => {
         const { dispatch, DataState, UIState } = this.props;
        
-        console.log(classID)
+      // console.log(classID)
         
         dispatch(actions.UpUIState.showErrorAlert({
             type: 'btn-warn',
@@ -49,7 +49,7 @@ class ShowCardTeacher extends React.Component {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
-                console.log('错误码：' + json.StatusCode)
+              // console.log('错误码：' + json.StatusCode)
             } else if (json.StatusCode === 200) {
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
@@ -77,7 +77,7 @@ class ShowCardTeacher extends React.Component {
     }
     //查看教学班
     onCheckClick = (classID) => {
-        console.log(classID)
+      // console.log(classID)
         const { dispatch, DataState, UIState } = this.props;
         dispatch(actions.UpUIState.CourseClassDetailsModalOpen())
         dispatch(actions.UpDataState.getCourseClassDetailsMsg('/GetCourseClassDetail?courseClassID='+classID))

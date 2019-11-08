@@ -141,7 +141,7 @@ class SelectStudent extends React.Component {
         let oldStudent = DataState.GetCourseClassDetailsHandleClassMsg.selectData.Student;//上次改变生成的数据
 
         let checkAll = e.target.checked;
-        console.log(this.state.plainOptions)
+      // console.log(this.state.plainOptions)
         if (checkAll) {
             let newStudent = []
             popStudent.map((child, index) => {//全选的
@@ -167,7 +167,7 @@ class SelectStudent extends React.Component {
             let newCheckList = transferStudent.map((child, index) => {
                 return child.StudentID
             })
-            console.log(newCheckList)
+          // console.log(newCheckList)
             this.setState({
                 checkAll: true,
                 checkList: newCheckList
@@ -227,7 +227,7 @@ class SelectStudent extends React.Component {
         //checklist去掉未选的
         let newTransfer = transfer;
         let newTrans = [];
-        console.log(newTransfer, oldCheckList, newCheckList)
+      // console.log(newTransfer, oldCheckList, newCheckList)
         let isSelectList = [];
         oldCheckList.map((child, index) => {
             let isSelect = true;
@@ -253,7 +253,7 @@ class SelectStudent extends React.Component {
                 isSelectList.push(child)
             }
         })
-        console.log(newTrans)
+      // console.log(newTrans)
         let transtrans = [];
         newTransfer.map((child, index) => {
             let a = true;
@@ -288,11 +288,11 @@ class SelectStudent extends React.Component {
                 newList.push(child);
             }
         })
-        console.log(transtrans, transerNewData)
+      // console.log(transtrans, transerNewData)
         newTrans = transtrans.concat(transerNewData);
         let endCheckList = isSelectList.concat(newList);
 
-        console.log(value, endCheckList)
+      // console.log(value, endCheckList)
         this.setState({
             checkList: endCheckList,
             checkAll: value.length === this.state.plainOptions.length ? true : false

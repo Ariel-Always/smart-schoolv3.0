@@ -57,7 +57,7 @@ class RegisterExamine extends React.Component {
         }
         history.listen(() => {//路由监听
             let pathname = history.location.pathname;
-            console.log(pathname.split('/')[2])
+          // console.log(pathname.split('/')[2])
             if (pathname.split('/')[2] === 'RegisterDidExamine') {
                 this.setState({
                     handleClick: false
@@ -77,7 +77,7 @@ class RegisterExamine extends React.Component {
     }
 
     UserExamineMadalOk = (e) => {
-        console.log(e)
+      // console.log(e)
         this.setState({
             UserExamineModalVisible: false,
             loading: true
@@ -89,7 +89,7 @@ class RegisterExamine extends React.Component {
         }, 3000)
     }
     UserExamineMadalCancel = (e) => {
-        console.log(e)
+      // console.log(e)
         this.setState({
             UserExamineModalVisible: false
         })

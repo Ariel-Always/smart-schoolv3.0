@@ -92,7 +92,7 @@ class CourseClassDetails extends React.Component {
     render() {
         const { DataState ,UIState} = this.props;
         let GetCourseClassDetailsMsg = DataState.GetCourseClassDetailsMsg;
-        console.log(GetCourseClassDetailsMsg)
+      // console.log(GetCourseClassDetailsMsg)
         return (
             <React.Fragment>
                 <div className='CourseClassDetails'>

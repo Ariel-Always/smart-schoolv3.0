@@ -14,8 +14,8 @@ class Search extends React.Component {
             columns: [
                 {
                     title: '序号',
-                    align: 'center',
-                    width: 70,
+                    align: 'left',
+                    width: 100,
                     key: 'OrderNO',
                     dataIndex: 'OrderNO',
                     render: OrderNO => {
@@ -30,45 +30,49 @@ class Search extends React.Component {
                 },
                 {
                     title: '班级名称',
-                    align: 'center',
+                    width: 130,
+                    align: 'left',
                     dataIndex: 'CourseClass',
                     key: 'CourseClass',
                     render: courseClass => {
                         return (
                             <React.Fragment>
-                                <span onClick={this.onCourseClassClick.bind(this, courseClass.ClassID)} className='courseClass-name'>{courseClass.ClassName}</span>
+                                <span title={courseClass.ClassName} onClick={this.onCourseClassClick.bind(this, courseClass.ClassID)} className='courseClass-name'>{courseClass.ClassName}</span>
                             </React.Fragment>
                         )
                     }
                 },
                 {
                     title: '年级',
+                    width: 100,
                     align: 'center',
                     dataIndex: 'CourseClass',
                     key: 'Grade',
                     render: courseClass => {
                         return (
                             <React.Fragment>
-                                <span className='Grade'>{courseClass.GradeName}</span>
+                                <span title={courseClass.GradeName} className='Grade'>{courseClass.GradeName}</span>
                             </React.Fragment>
                         )
                     }
                 },
                 {
                     title: '学科',
+                    width: 100,
                     align: 'center',
                     dataIndex: 'CourseClass',
                     key: 'Subject',
                     render: courseClass => {
                         return (
                             <React.Fragment>
-                                <span className='SubjectName'>{courseClass.SubjectName}</span>
+                                <span title={courseClass.SubjectName} className='SubjectName'>{courseClass.SubjectName}</span>
                             </React.Fragment>
                         )
                     }
                 },
                 {
                     title: '任课教师',
+                    width: 150,
                     align: 'center',
                     dataIndex: 'ClassMsg',
                     key: 'ClassMsg',
@@ -76,8 +80,8 @@ class Search extends React.Component {
                         return (
                             <React.Fragment>
                                 <img className='Class-img' alt={Class.TeacherName} src={Class.TeacherImg} />
-                                <span className='Class-name'>{Class.TeacherName}</span>
-                                <span className='Class-id'>{'(' + Class.TeacherID + ')'}</span>
+                                <span title={Class.TeacherName} className='Class-name'>{Class.TeacherName}</span>
+                                <span title={Class.TeacherID} className='Class-id'>{'(' + Class.TeacherID + ')'}</span>
                             </React.Fragment>
                         )
                     }
@@ -85,11 +89,12 @@ class Search extends React.Component {
                 {
                     title: '学生人数',
                     align: 'center',
+                    width: 100,
                     dataIndex: 'StudentCount',
                     key: 'StudentCount',
                     render: StudentCount => {
                         return (
-                            <span className='StudentCount'>{StudentCount}</span>
+                            <span title={StudentCount} className='StudentCount'>{StudentCount}</span>
 
                         )
                     }
@@ -97,6 +102,7 @@ class Search extends React.Component {
                 {
                     title: '操作',
                     align: 'center',
+                    width: 190,
                     key: 'handle',
                     dataIndex: 'key',
                     render: (key) => {

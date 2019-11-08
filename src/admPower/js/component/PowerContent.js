@@ -27,7 +27,7 @@ class PowerContent extends React.Component {
         if (DataState.GetUserPowerMsg.Power) {
 
 
-            // console.log(DataState.GetUserPowerMsg.Power.student[0].Status)
+            // // console.log(DataState.GetUserPowerMsg.Power.student[0].Status)
             this.setState({
                 radioValue: DataState.GetUserPowerMsg.Power.student[0].Status
             })
@@ -35,7 +35,7 @@ class PowerContent extends React.Component {
         }
     }
     onRadioChange = (value, id) => {
-        console.log(value, id)
+        // console.log(value, id)
         const { DataState, UIState, dispatch } = this.props;
         let Power = DataState.GetUserPowerMsg.Power;
         let UserMsg = DataState.LoginUser;
@@ -50,31 +50,30 @@ class PowerContent extends React.Component {
             SchoolID: this.state.userMsg.SchoolID,
             Status: value ? 1 : 0
         }, 2).then((res) => {
-            this.setState({
-                disabled: false
-            })
+            
             return res.json()
         }).then(json => {
-            if (json.StatusCode === 400) {
-                console.log('错误码：' + json.StatusCode)
-            } else if (json.StatusCode === 200) {
+            if (json.StatusCode === 200) {
+                this.setState({
+                    disabled: false
+                })
                 if (json.Data === null) {
                     Power = this.handlePower(Power, value ? 1 : 0, id)
                     dispatch(actions.UpDataState.setUserPowerMsg(Power));
                 } else if (json.Data === -2) {
-                    console.log('参数错误')
+                    // console.log('参数错误')
                 } else if (json.Data === -10) {
-                    console.log('接口发生未知异常')
+                    // console.log('接口发生未知异常')
                 }
 
             }
         }).catch(err => {
-            console.log(err)
+            // console.log(err)
         });
     }
     //
     onChangeRadio = (e) => {
-        console.log(e.target.value, this.state.radioValue)
+        // console.log(e.target.value, this.state.radioValue)
         const { DataState, UIState, dispatch } = this.props;
         let Power = DataState.GetUserPowerMsg.Power;
         let UserMsg = DataState.LoginUser;
@@ -91,28 +90,27 @@ class PowerContent extends React.Component {
             SchoolID: UserMsg.SchoolID,
             Status: value
         }, 2).then((res) => {
+            
+            return res.json()
+        }).then(json => {
+           if (json.StatusCode === 200) {
             this.setState({
                 disabled: false
             })
-            return res.json()
-        }).then(json => {
-            if (json.StatusCode === 400) {
-                console.log('错误码：' + json.StatusCode)
-            } else if (json.StatusCode === 200) {
                 if (json.Data === null) {
                     Power = this.handlePower(Power, value, id)
                     dispatch(actions.UpDataState.setUserPowerMsg(Power));
                 } else if (json.Data === -1) {
-                    console.log('状态')
+                    // console.log('状态')
                 } else if (json.Data === -2) {
-                    console.log('参数错误')
+                    // console.log('参数错误')
                 } else if (json.Data === -10) {
-                    console.log('接口发生未知异常')
+                    // console.log('接口发生未知异常')
                 }
 
             }
         }).catch(err => {
-            console.log(err)
+            // console.log(err)
         });
         // this.setState({
         //     radioValue: e.target.value
@@ -133,7 +131,7 @@ class PowerContent extends React.Component {
     render() {
         const { DataState, UIState } = this.props;
         let Power = DataState.GetUserPowerMsg.Power;
-        console.log(Power)
+        // console.log(Power)
         return (
             <div id='powerContent' className='powerContent'>
                 <div className='power-box'>

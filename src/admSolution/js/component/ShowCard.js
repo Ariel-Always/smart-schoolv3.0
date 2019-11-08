@@ -17,7 +17,7 @@ class ShowCard extends React.Component {
 
     //重命名
     onResetNameClick = (data) => {
-        console.log(data)
+        // console.log(data)
         const { dispatch, DataState, UIState } = this.props;
         dispatch(actions.UpDataState.getSolutionID({ SolutionID: data.SolutionID, SolutionName: data.SolutionName }))
         dispatch(actions.UpUIState.ResetNameModalOpen())
@@ -26,7 +26,7 @@ class ShowCard extends React.Component {
     onDeleteClick = (SolutionID) => {
         const { dispatch, DataState, UIState } = this.props;
 
-        console.log(SolutionID)
+        // console.log(SolutionID)
         dispatch(actions.UpUIState.showErrorAlert({
             type: 'btn-warn',
             title: "您确定删除？",
@@ -55,7 +55,7 @@ class ShowCard extends React.Component {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
-                console.log('错误码：' + json.StatusCode)
+                // console.log('错误码：' + json.StatusCode)
             } else if (json.StatusCode === 200) {
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
@@ -80,7 +80,7 @@ class ShowCard extends React.Component {
     //         return res.json()
     //     }).then(json => {
     //         if (json.Status === 400) {
-    //             console.log('错误码：' + json.Status)
+    //             // console.log('错误码：' + json.Status)
     //         } else if (json.Status === 200) {
     //             dispatch(actions.UpUIState.showErrorAlert({
     //                 type: 'success',
@@ -111,7 +111,7 @@ class ShowCard extends React.Component {
     }
     //查看教学班
     onCheckClick = (solutionID) => {
-        console.log(solutionID)
+        // console.log(solutionID)
         const { dispatch, DataState, UIState } = this.props;
         dispatch(actions.UpDataState.getTeachingSolutionDetailsMsg('/GetTeachingSolution?SolutionID=' + solutionID))
         dispatch(actions.UpUIState.TeachingSolutionDetailsModalOpen())

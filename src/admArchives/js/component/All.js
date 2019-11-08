@@ -146,7 +146,7 @@ class All extends React.Component {
                         }
                     },
                     formatter: function (params) {
-                        console.log(params)
+                      // console.log(params)
                     }
                 }],
                 barMinHeight: 0,          // 最小高度改为0
@@ -185,7 +185,7 @@ class All extends React.Component {
 
 
             Chart_student.on('click', function (params) {
-                console.log(nextProps, DataState.AllUserPreview)
+              // console.log(nextProps, DataState.AllUserPreview)
                 let grade = DataState.AllUserPreview.NewGrades[params.name];
                 history.push('/UserArchives/Student/' + grade.GradeID)
                 dispatch(actions.UpDataState.getGradeStudentPreview('/GetStudentToPage?SchoolID=' + userMsg.SchoolID + '&GradeID=' + grade.GradeID + '&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC', { value: grade.GradeID, title: grade.GradeName }));
@@ -269,7 +269,7 @@ class All extends React.Component {
 
     render() {
         const { UIState, DataState } = this.props;
-        console.log(DataState)
+      // console.log(DataState)
         return (
             <div className='All'>
                 <div className='All-box All-user'>

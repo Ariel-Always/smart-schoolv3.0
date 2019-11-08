@@ -99,10 +99,22 @@ function postData(
 }
 // 处理statusCode
 function handleStatusCode(json, element = true) {
-  if (!element || json.StatusCode === 200) return;
-  console.log(json.StatusCode);
-
   let title = "";
+  if (json.StatusCode === undefined) {
+    title = "服务器出现未知异常，请重试或联系管理员";
+    ReactDOM.render(
+      // eslint-disable-next-line react/react-in-jsx-scope
+      <ErrorAlert
+        key={"alert" + "400-" + Math.round(Math.random() * 10000)}
+        show={true}
+        title={title}
+      />,
+      document.getElementById("alert")
+    );
+  }
+  if (!element || json.StatusCode === 200) return;
+  // console.log(json.StatusCode);
+
   let isAllSelect = false;
   let isSelect = {};
   if (element === true) {
@@ -117,27 +129,39 @@ function handleStatusCode(json, element = true) {
   }
   switch (json.StatusCode) {
     case 400:
-      if (isAllSelect === true || isSelect[400]) title = json.Msg;
-      ReactDOM.render(
-        // eslint-disable-next-line react/react-in-jsx-scope
-        <ErrorAlert key={'alert' + '400-' + Math.round(Math.random()*10000)} show={true} title={title} />,
-        document.getElementById("alert")
-      );
+      if (isAllSelect || isSelect[400]) {
+        title = json.Msg;
+        ReactDOM.render(
+          // eslint-disable-next-line react/react-in-jsx-scope
+          <ErrorAlert
+            key={"alert" + "400-" + Math.round(Math.random() * 10000)}
+            show={true}
+            title={title}
+          />,
+          document.getElementById("alert")
+        );
+      }
       break;
     case 500:
-      if (isAllSelect === true || isSelect[500])
+      if (isAllSelect || isSelect[500]) {
         title = "服务器出现未知异常，请重试或联系管理员";
-      ReactDOM.render(
-        // eslint-disable-next-line react/react-in-jsx-scope
-        <ErrorAlert key={'alert' + '400-' + Math.round(Math.random()*10000)} show={true} title={title} />,
-        document.getElementById("alert")
-      );
+        ReactDOM.render(
+          // eslint-disable-next-line react/react-in-jsx-scope
+          <ErrorAlert
+            key={"alert" + "400-" + Math.round(Math.random() * 10000)}
+            show={true}
+            title={title}
+          />,
+          document.getElementById("alert")
+        );
+      }
       break;
     case 401:
-      TokenCheck();
+      if (isAllSelect || isSelect[401]) TokenCheck();
       break;
     case 403:
-      window.location.href = config.ErrorProxy + "/Error.aspx?errcode=E011";
+      if (isAllSelect || isSelect[403])
+        window.location.href = config.ErrorProxy + "/Error.aspx?errcode=E011";
       break;
     default:
       window.location.href = config.ErrorProxy + "/Error.aspx?errcode=E011";
@@ -201,7 +225,7 @@ function getData(
     )
     .then(json => {
       // console.log(json, json.StatusCode === 200)
-      handleStatusCode(json, element)
+      handleStatusCode(json, element);
     });
 
   return result;

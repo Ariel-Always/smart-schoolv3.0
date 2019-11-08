@@ -34,9 +34,7 @@ const getTeachingSolutionMsg = (url) => {
 
             return res.json()
         }).then(json => {
-            if (json.StatusCode === 400) {
-                console.log('错误码：' + json.StatusCode)
-            } else if (json.StatusCode === 200) {
+            if (json.StatusCode === 200) {
 
                 dispatch({ type: GET_TEACHING_SOLUTION_MSG, data: json.Data });
                 dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
@@ -54,9 +52,7 @@ const getTeachingSolutionDetailsMsg = (url) => {
 
             return res.json()
         }).then(json => {
-            if (json.StatusCode === 400) {
-                console.log('错误码：' + json.StatusCode)
-            } else if (json.StatusCode === 200) {
+            if (json.StatusCode === 200) {
 
                 dispatch({ type: GET_TEACHING_SOLUTION_DETAILS_MSG, data: json.Data });
                 dispatch(actions.UpUIState.ModalLoadingClose());

@@ -34,13 +34,13 @@ class ChangeSubject extends React.Component {
         let selectGrade = [];
         // if (this.state.type === 'change') {
         //     DataState.PeriodMsg.value.map((child, index) => {
-        //         console.log(child)
+        //         // console.log(child)
         //         if (index === 0)
         //             return;
         //         let GradesArr = child.Grades.split(',');
 
         //         let selectGrades = DataState.ChangeSubjectMsg.GlobalGradeIDs.split(',');
-        //         console.log(selectGrades)
+        //         // console.log(selectGrades)
         //         let mySelect = [];
 
         //         GradesArr.map((child2, index) => {
@@ -52,22 +52,22 @@ class ChangeSubject extends React.Component {
 
 
         //         selectGrade.push(mySelect)
-        //         console.log(selectGrade)
+        //         // console.log(selectGrade)
 
         //     })
         //     this.setState({
         //         selectGrade: selectGrade
         //     })
         // }
-        // console.log(DataState.PeriodMsg.value  instanceof Array)
+        // // console.log(DataState.PeriodMsg.value  instanceof Array)
         DataState.PeriodMsg.value instanceof Array && DataState.PeriodMsg.value.map((child, index) => {
-            // console.log(child)
+            // // console.log(child)
             if (index === 0)
                 return;
             let GradesArr = child.Grades.split(',');
 
             let selectGrades = DataState.ChangeSubjectMsg.GlobalGradeIDs.split(',');
-            // console.log(selectGrades)
+            // // console.log(selectGrades)
             let mySelect = [];
 
             GradesArr.map((child2, index) => {
@@ -79,7 +79,7 @@ class ChangeSubject extends React.Component {
 
 
             selectGrade.push(mySelect)
-            console.log(selectGrade)
+            // console.log(selectGrade)
 
         })
         this.setState({
@@ -95,7 +95,7 @@ class ChangeSubject extends React.Component {
     }
     componentWillReceiveProps(nextProps) {
         const { DataState, UIState } = nextProps;
-        //console.log(nextProps)
+        //// console.log(nextProps)
         if (this.state.type === 'change')
             this.setState({
                 GlobalGradeIDs: DataState.ChangeSubjectMsg.GlobalGradeIDs,
@@ -104,13 +104,13 @@ class ChangeSubject extends React.Component {
         let selectGrade = [];
 
         DataState.PeriodMsg.value instanceof Array && DataState.PeriodMsg.value.map((child, index) => {
-            //console.log(child)
+            //// console.log(child)
             if (index === 0)
                 return;
             let GradesArr = child.Grades.split(',');
 
             let selectGrades = DataState.ChangeSubjectMsg.GlobalGradeIDs.split(',');
-            //console.log(selectGrades)
+            //// console.log(selectGrades)
             let mySelect = [];
 
             GradesArr.map((child2, index) => {
@@ -122,7 +122,7 @@ class ChangeSubject extends React.Component {
 
 
             selectGrade.push(mySelect)
-            //console.log(selectGrade)
+            //// console.log(selectGrade)
             this.setState({
                 selectGrade: selectGrade
             })
@@ -183,7 +183,7 @@ class ChangeSubject extends React.Component {
     //添加学科下拉菜单
     dropMenuSubject = (value) => {
         const { dispatch, DataState, UIState } = this.props;
-        console.log(value)
+        // console.log(value)
         let GlabalGrades = '';
         if (value.value === 0) {
             this.setState({
