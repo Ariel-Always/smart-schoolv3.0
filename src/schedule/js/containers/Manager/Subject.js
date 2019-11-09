@@ -14,13 +14,15 @@ import TermPick from '../../component/TermPick';
 
 import DoubleSingleTable from '../../component/DoubleSingleTable';
 
-import SDMActions from '../../actions/ScheduleDetailModalActions';
-
 import $ from 'jquery';
 
 import {connect} from 'react-redux';
 
 import ScheduleDetailModal from "../../component/ScheduleDetailModal";
+
+import ChangeTimeModal from '../../component/ChangeTimeModal';
+
+
 
 class Subject extends Component{
 
@@ -149,11 +151,37 @@ class Subject extends Component{
 
     ScheduleDetailShow(Params){
 
-        console.log(Params);
+        const { dispatch } = this.props;
+
+        dispatch(STSAction.ScheduleDetailShow(Params));
+
+    }
+
+
+    //停课
+
+    StopSchedule(params){
 
         const { dispatch } = this.props;
 
-        dispatch({type:SDMActions.SCHEDULE_DETAIL_MODAL_SHOW,data:Params});
+        dispatch(STSAction.StopSchedule(params));
+
+    }
+
+    //恢复上课
+    RebackStopSchedule(params){
+
+        const { dispatch } = this.props;
+
+        dispatch(STSAction.RebackStopSchedule(params));
+
+    }
+
+    //调整时间弹窗
+
+    ChangeTimeShow(params){
+
+        dispatch(STSAction.ChangeTimeShow(params));
 
     }
 
@@ -166,7 +194,7 @@ class Subject extends Component{
 
         const {SubjectCourseGradeClassRoom,SubjectTeacherSchedule} = Manager;
 
-        const { ScheduleDetail } = SubjectTeacherSchedule;
+        const { ScheduleDetail,ChangeTimeModal } = SubjectTeacherSchedule;
 
 
 
@@ -270,9 +298,23 @@ class Subject extends Component{
 
                     Params={ScheduleDetail}
 
+                    StopSchedule={this.StopSchedule.bind(this)}
+
+                    RebackStopSchedule={this.RebackStopSchedule.bind(this)}
+
+                    ChangeTimeShow={this.ChangeTimeShow.bind(this)}
+
                 >
 
                 </ScheduleDetailModal>
+
+                <ChangeTimeModal
+
+                    Params={ChangeTimeModal}
+
+                >
+
+                </ChangeTimeModal>
 
             </div>
 

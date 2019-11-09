@@ -45,14 +45,12 @@ class DoubleSingleTable extends Component{
 
         const { ClassHourNO } = Params;
 
-        console.log(ItemClassHour,ClassHourNO);
-
-       /* const { StartTime,EndTime } = ItemClassHour.find(item=>item.ClassHourNO===ClassHourNO);
+        const { StartTime,EndTime } = ItemClassHour.find(item=>item.ClassHourNO===ClassHourNO);
 
 
         Params['StartTime'] = StartTime;
 
-        Params['EndTime'] = EndTime;*/
+        Params['EndTime'] = EndTime;
 
         if (ScheduleDetailShow){
 

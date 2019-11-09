@@ -23,7 +23,7 @@ class PartData extends Component{
 
                                         <div className="partdata-tab-content">
 
-                                            <div className="partdata-tab-title">{item.GradeName}</div>
+                                            <div className="partdata-tab-title" title={item.GradeName}>{item.GradeName}</div>
 
                                             <table className="partdata-tab-table">
 
@@ -87,7 +87,7 @@ class PartData extends Component{
                                 <a onClick={(e)=>ClassClick({id:item.ClassID,name:item.ClassName})}>
 
                                     <div className="partdata-tab-content">
-                                        <div className="partdata-tab-title">{item.ClassName}</div>
+                                        <div className="partdata-tab-title" title={item.ClassName}>{item.ClassName}</div>
                                         <table className="partdata-tab-table">
                                             <tbody>
                                             <tr>

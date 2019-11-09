@@ -2,10 +2,10 @@ import {getData,postData} from "../../../common/js/fetch";
 
 import CONFIG from '../../../common/js/config';
 
-const api = CONFIG.ScheduleProxy;
+const API = CONFIG.ScheduleProxy;
 
 //获取数据以及封装数据格式
-const getGetData =  async (url,level,api,mode='cors',arr=[401,403]) =>{
+const getGetData =  async (url,level,api=API,mode='cors',arr=false) =>{
     try {
         let fetchAsync = '';
         try {
@@ -29,7 +29,7 @@ const getGetData =  async (url,level,api,mode='cors',arr=[401,403]) =>{
     }
 };
 //调用post接口
-const getPostData = async (url,data,level,api,content_type='json',arr=[401,403]) =>{
+const getPostData = async (url,data,level,api=API,content_type='json',arr=false) =>{
 
     try {
         let fetchAsync = '';
