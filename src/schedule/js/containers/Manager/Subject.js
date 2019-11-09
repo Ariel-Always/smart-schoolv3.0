@@ -181,6 +181,8 @@ class Subject extends Component{
 
     ChangeTimeShow(params){
 
+        const { dispatch } = this.props;
+
         dispatch(STSAction.ChangeTimeShow(params));
 
     }
@@ -194,7 +196,7 @@ class Subject extends Component{
 
         const {SubjectCourseGradeClassRoom,SubjectTeacherSchedule} = Manager;
 
-        const { ScheduleDetail,ChangeTimeModal } = SubjectTeacherSchedule;
+        const { ScheduleDetail,ChangeTime } = SubjectTeacherSchedule;
 
 
 
@@ -310,7 +312,7 @@ class Subject extends Component{
 
                 <ChangeTimeModal
 
-                    Params={ChangeTimeModal}
+                    Params={ChangeTime}
 
                 >
 

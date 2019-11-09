@@ -22,7 +22,7 @@ const SubjectTeacherSchedule = (state={
 
     },
 
-    ChangeTimeModal:{
+    ChangeTime:{
 
         Show:false,
 
@@ -115,12 +115,15 @@ const SubjectTeacherSchedule = (state={
 
         case STSActions.MANAGER_STS_SCHEDULE_DETAIL_MODAL_HIDE:
 
-            return { ...state,ScheduleDetail:{...state.ScheduleDetailModal,Show:false}};
+            return { ...state,ScheduleDetail:{...state.ScheduleDetail,Show:false}};
 
         case STSActions.MANAGER_STS_CHANGE_TIME_MODAL_SHOW:
 
-            return {...state,ChangeTimeModal:{...state.ChangeTimeModal,Show:true,ModalLoading:true}};
+            return {...state,ChangeTime:{...state.ChangeTime,Show:true,ModalLoading:true}};
 
+        case STSActions.MANAGER_STS_CHANGE_TIME_MODAL_INIT:
+
+            return {...state,ChangeTime:{...state.ChangeTime,...actions.data}};
 
         default:
 
