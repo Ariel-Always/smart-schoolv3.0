@@ -10,9 +10,9 @@ const LogRecordPreview = (state = { unreadLogCount: 0, LogRecord: {
                     
         case UpDataState.GET_LOG_RECORD_PREVIEW:
             let { List, ...others } = actions.data;
-            console.log(List, others)
+            // console.log(List, others)
             let list = handleData(List, actions.pageIndex, actions.pageSize);
-            //console.log(actions.GradeID||{value:List.newList[0].child.GradeID,title:List.newList[0].child.GradeName})
+            //// console.log(actions.GradeID||{value:List.newList[0].child.GradeID,title:List.newList[0].child.GradeName})
             return Object.assign({}, state, { LogRecord: { ...others, List:list } });
         default:
             return state;

@@ -24,7 +24,7 @@ class LogDynamic extends React.Component {
                     dataIndex: 'OrderNo',
                     key: 'OrderNo',
                     width: 68,
-                    align: 'center',
+                    align: 'left',
                     render: key => {
                         return (
                             <div className='registerTime-content'>
@@ -52,7 +52,7 @@ class LogDynamic extends React.Component {
                 {
                     title: '用户档案',
                     align: 'left',
-                    width: 100,
+                    width: 92,
                     key: 'UserName',
                     dataIndex: 'UserName',
                     sorter: true,
@@ -71,7 +71,7 @@ class LogDynamic extends React.Component {
                     align: 'center',
                     dataIndex: 'UserType_Txt',
                     key: 'UserType_Txt',
-                    width: 130,
+                    width: 120,
                     render: UserType_Txt => {
                         return (
                             <span title={UserType_Txt} className='UserType_Txt'>{UserType_Txt ? UserType_Txt : '--'}</span>
@@ -82,7 +82,7 @@ class LogDynamic extends React.Component {
                     title: '操作类型',
                     align: 'center',
                     dataIndex: 'OperationType_Txt',
-                    width: 130,
+                    width: 120,
                     key: 'OperationType_Txt',
                     render: OperationType_Txt => {
                         return (
@@ -92,7 +92,7 @@ class LogDynamic extends React.Component {
                 },
                 {
                     title: '操作次数',
-                    width: 130,
+                    width: 120,
                     align: 'center',
                     key: 'OperationCount',
                     dataIndex: 'OperationCount',
@@ -104,7 +104,7 @@ class LogDynamic extends React.Component {
                 },
                 {
                     title: '操作内容',
-                    width: 450,
+                    width: 410,
                     align: 'left',
                     key: 'Logs',
                     dataIndex: 'Logs',
@@ -126,7 +126,7 @@ class LogDynamic extends React.Component {
                 {
                     title: '操作',
                     align: 'center',
-                    width: 130,
+                    width: 120,
                     key: 'handle',
                     dataIndex: 'key',
                     render: (key) => {
@@ -257,11 +257,11 @@ class LogDynamic extends React.Component {
                     title: "成功",
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
-                dispatch(actions.UpDataState.getUnreadLogPreview('/GetUnreadLogToPage?OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex=0&PageSize=10&OnlineUserID=' + this.state.userMsg.UserID))
+                dispatch(actions.UpDataState.getUnreadLogPreview('/GetUnreadLogToPage?OperationType=' + this.state.HandleTypeSelect.value + '&UserType=' + this.state.FileTypeSelect.value + '&PageIndex='+this.state.pagination+'&PageSize=10&OnlineUserID=' + this.state.userMsg.UserID))
                 this.setState({
                     checkedList: [],
                     checkAll: false,
-                    pagination: 1
+                    // pagination: 1
 
                 })
             }

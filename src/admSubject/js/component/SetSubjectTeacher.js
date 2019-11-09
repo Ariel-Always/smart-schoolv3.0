@@ -36,7 +36,7 @@ class SetSubjectTeacher extends React.Component {
         //请求链接和参数
         let url = '/GetTeacherInfoBySubjectAndKey?schoolID='+DataState.LoginUser.SchoolID+'&subjectID=' + DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.SubjectID + '&key=';
         //获取初始全部学科信息
-        console.log(url)
+        // console.log(url)
         dispatch(actions.UpDataState.getSubjectTeacherMsg(url, 'All', AllGrades));
         this.state = {
             dropSelect: dropSelect,
@@ -94,7 +94,7 @@ class SetSubjectTeacher extends React.Component {
     //添加学科下拉菜单
     dropMenuTeacher = (index, value) => {
         const { dispatch, DataState, UIState } = this.props;
-        console.log(value)
+        // console.log(value)
         let GlabalGrades = '';
         if (value.value === 0) {
             this.setState({
@@ -139,10 +139,10 @@ class SetSubjectTeacher extends React.Component {
     //search下拉菜单事件
     onDropClickSearch = (grades, index, value) => {
         const { dispatch, DataState } = this.props;
-        // console.log(this.state.UserMsg.SchoolID)
+        // // console.log(this.state.UserMsg.SchoolID)
         let url = '/GetTeacherInfoBySubjectAndKey?schoolID='+this.state.UserMsg.SchoolID+'&subjectID=' + DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.SubjectID + '&key=' + value.value;
 
-        console.log(grades, index, value)
+        // console.log(grades, index, value)
         dispatch({ type: actions.UpUIState.SEARCH_LOADING_OPEN });
         dispatch(actions.UpDataState.getSubjectTeacherMsg(url, grades));
         this.setState({
@@ -155,7 +155,7 @@ class SetSubjectTeacher extends React.Component {
         let url = '/AddSubject';
         let dropSelect = this.state.dropSelect;
         dropSelect[index] = { title: value.value, value: value.id }
-        console.log(grades, index, value, dropSelect)
+        // console.log(grades, index, value, dropSelect)
         this.setState({
             dropSelect: dropSelect
         })
@@ -213,7 +213,7 @@ class SetSubjectTeacher extends React.Component {
                                 GradeName = '高中';
                             }
 
-                            console.log(this.state.initDropSelect[index], this.state.dropSelect[index] )
+                            // console.log(this.state.initDropSelect[index], this.state.dropSelect[index] )
 
                             if (!DataState.SetSubjectTeacherMsg.SubjectTeacherList || !DataState.SetSubjectTeacherMsg.SubjectTeacherList[Grades])
                                 return

@@ -39,7 +39,7 @@ function AESEncryptionBody(paramsObj, CRYPTOJSKEY = COMMONKEY, SecurityLevel, co
     }
 }
 //AES加密传输参数：get
-function AESEncryptionUrl(url, CRYPTOJSKEY = COMMONKEY, SecurityLevel) {//加密所使用的的key，需要与服务器端的解密key相对应
+function AESEncryptionUrl(url, CRYPTOJSKEY = COMMONKEY, SecurityLevel,IsDesk) {//加密所使用的的key，需要与服务器端的解密key相对应
     let newUrl = url;
     let urlArray = url.split('?');
     let params = urlArray[1];

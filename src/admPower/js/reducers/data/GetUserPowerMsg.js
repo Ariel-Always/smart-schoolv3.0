@@ -16,7 +16,7 @@ const GetUserPowerMsg = (state = {Power:{},data:[]}, actions) => {
     }
 };
 function handleData(data) {
-    console.log(data)
+    // console.log(data)
     let newData = {}
     data instanceof Array && data.map((child, index) => {
         if (!newData[child.Category]) {

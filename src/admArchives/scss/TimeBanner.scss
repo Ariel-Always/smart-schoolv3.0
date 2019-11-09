@@ -1,26 +1,26 @@
 .timeBanner_tips {
-  position: absolute;
-  height: 14px;
-  right: 0;
-  font-size: 14px;
-  line-height: 16px;
-  color: #333333;
-  top: 50%;
-  transform: translateY(-50%);
-
-  .tips_num {
-    color: #ff0000;
-  }
-  .tips_handle {
-    color: #0099ff;
-  }
+    position: absolute;
+    height: 14px;
+    right: 0;
+    font-size: 14px;
+    line-height: 16px;
+    color: #333333;
+    top: 50%;
+    transform: translateY(-50%);
+    .tips_num {
+        color: #ff0000;
+    }
+    .tips_handle {
+        color: #0099ff;
+    }
 }
 
 .btn-toGraduate {
-  right: 0;
-  position: absolute;
-  color: #fff;
-  height: 24px;
-  top: 50%;
-  transform: translateY(-50%);
+    right: 0;
+    position: absolute;
+    color: #fff;
+    height: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
 }

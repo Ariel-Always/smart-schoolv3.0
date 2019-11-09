@@ -78,7 +78,7 @@ class HandleCourseClass extends React.Component {
     //选择教师模态框
     AddTeacherModalOk = () => {
         const { DataState, UIState, dispatch } = this.props;
-        let teacher = DataState.GetCourseClassDetailsHandleClassMsg.transfer.Teacher;
+        let teacher = Object.keys(DataState.GetCourseClassDetailsHandleClassMsg.transfer.Teacher).length!==0?DataState.GetCourseClassDetailsHandleClassMsg.transfer.Teacher:DataState.GetCourseClassDetailsHandleClassMsg.selectData.Teacher;
         dispatch(actions.UpDataState.setSubjectTeacherMsg(teacher))
         dispatch(actions.UpUIState.AddTeacherModalClose())
     }

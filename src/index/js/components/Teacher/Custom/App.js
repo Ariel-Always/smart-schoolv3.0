@@ -268,7 +268,7 @@ class App extends React.Component {
         dispatch(TeacherCustomActions.setAlterTips({
             TeacherId: LoginUser.UserID,
             SectionID: 2
-        }, 'tool'))
+        }, 'App'))
     }
     render() {
         const { Teacher, AppLoading } = this.props;

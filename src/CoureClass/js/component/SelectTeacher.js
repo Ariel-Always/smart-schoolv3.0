@@ -26,7 +26,7 @@ class SelectTeacher extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         const { DataState, UIState } = nextProps;
-        let selectTeacherID = DataState.GetCourseClassDetailsHandleClassMsg.transfer.Teacher.length!==0?DataState.GetCourseClassDetailsHandleClassMsg.transfer.Teacher.value:DataState.GetCourseClassDetailsHandleClassMsg.selectData.Teacher.value;
+        let selectTeacherID = Object.keys(DataState.GetCourseClassDetailsHandleClassMsg.transfer.Teacher).length!==0?DataState.GetCourseClassDetailsHandleClassMsg.transfer.Teacher.value:DataState.GetCourseClassDetailsHandleClassMsg.selectData.Teacher.value;
 
         this.setState({
             selectTeacherID: selectTeacherID
@@ -38,18 +38,44 @@ class SelectTeacher extends React.Component {
     onClickSearch = (value) => {
         const { DataState, UIState, dispatch } = this.props;
         // console.log(value.value)
-        this.setState({
-            CancelBtnShow: 'y',
-            keyword: value.value,
-            
-        })
-        dispatch(actions.UpDataState.getSubjectTeacherMsg('/GetTeacherInfoBySubjectAndKey?schoolID='+this.state.UserMsg.SchoolID+'&key='+value.value+'&subjectID='+this.state.subject))
+        if(value.value===''){
+            dispatch(
+                actions.UpUIState.showErrorAlert({
+                  type: "btn-error",
+                  title: "关键字不能为空",
+                  ok: this.onAppAlertOK.bind(this),
+                  cancel: this.onAppAlertCancel.bind(this),
+                  close: this.onAppAlertClose.bind(this)
+                })
+              );
+        }else{
+            this.setState({
+                CancelBtnShow: 'y',
+                keyword: value.value,
+                
+            })
+            dispatch(actions.UpDataState.getSubjectTeacherMsg('/GetTeacherInfoBySubjectAndKey?schoolID='+this.state.UserMsg.SchoolID+'&key='+value.value+'&subjectID='+this.state.subject))
+        }
+        
 
     }
+    onAppAlertOK() {
+        const { dispatch } = this.props;
+        dispatch(actions.UpUIState.hideErrorAlert());
+        //window.location.href = "/html/login"
+      }
+      onAppAlertCancel() {
+        const { dispatch } = this.props;
+        dispatch(actions.UpUIState.hideErrorAlert());
+      }
+      onAppAlertClose() {
+        const { dispatch } = this.props;
+        dispatch(actions.UpUIState.hideErrorAlert());
+      }
     //选择教师
     onSelectTeacherClick = (value, title) => {
         const { DataState, UIState, dispatch } = this.props;
-        console.log(value, title)
+      // console.log(value, title)
         // this.setState({
         //     selectTeacherID: value
         // })

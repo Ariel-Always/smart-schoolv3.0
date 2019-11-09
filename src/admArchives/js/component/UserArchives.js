@@ -140,7 +140,7 @@ class UserArchives extends React.Component {
       history.push("/UserArchives/All");
     }
     let path = history.location.pathname.split("/")[2];
-    console.log(path);
+  // console.log(path);
     let param = this.state.MenuParams;
     let len = param.children.length;
 
@@ -153,19 +153,19 @@ class UserArchives extends React.Component {
         this.setState({
           MenuParams: param
         });
-        console.log(param)
+      // console.log(param)
       }
     }
   };
   //左侧菜单每项的点击事件
   handleClick = key => {
-    console.log(key);
+  // console.log(key);
     if (key !== "All") {
       history.push("/UserArchives/" + key + "/all");
     } else {
       history.push("/UserArchives/" + key);
     }
-    console.log(this.state.MenuParams)
+  // console.log(this.state.MenuParams)
     // this.handleMenu();
   };
   //每个组件的下拉菜单的数据请求
@@ -173,7 +173,7 @@ class UserArchives extends React.Component {
 
   render() {
     const { UIState, DataState } = this.props;
-    console.log(this.state.MenuParams)
+  // console.log(this.state.MenuParams)
     return (
       <React.Fragment>
         <Frame

@@ -111,14 +111,14 @@ class SolutionDetails extends React.Component {
         }
         let str = Math.round(fileSize/Math.pow(1024,i)*100)/100;
         let Size = str.toString()+myUnit;
-        // console.log(i,myUnit,Size)
+        // // console.log(i,myUnit,Size)
         return Size;
         
     }
 
     //浏览
     onCheckClassClick = (key) => {
-        console.log(key)
+        // console.log(key)
     }
     
     render() {

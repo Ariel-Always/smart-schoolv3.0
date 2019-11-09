@@ -149,7 +149,7 @@ function handleGrade(grade) {
     if (grade === '')
         return '';
     let GradeArr = grade.split(',');
-    console.log(grade, GradeArr)
+    // console.log(grade, GradeArr)
     let sort = [];
     let Grades = [];
     let returnGrade = '';

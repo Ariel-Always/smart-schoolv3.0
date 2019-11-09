@@ -30,17 +30,22 @@ class App extends Component {
         let route = history.location.pathname;
         //判断token是否存在
         TokenCheck_Connect()
-        this.requestData(route);
         let token = sessionStorage.getItem('token')
-        console.log(sessionStorage.getItem('UserInfo'))
+        // console.log(sessionStorage.getItem('UserInfo'))
+        
         if (sessionStorage.getItem('UserInfo')) {
             dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
+        this.requestData(route);
+
         }
         else {
             getUserInfo(token, '000');
+            let that = this
             let timeRun = setInterval(function () {
                 if (sessionStorage.getItem('UserInfo')) {
                     dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
+                    that.requestData(route);
+
                     clearInterval(timeRun)
                 }
             }, 1000)
@@ -59,7 +64,7 @@ class App extends Component {
 
         history.listen(() => {//路由监听
             let route = history.location.pathname;
-            console.log(route)
+            // console.log(route)
 
         })
     }
@@ -87,12 +92,15 @@ class App extends Component {
     // 请求每个组件主要渲染的数据
     requestData = (route) => {
         const { dispatch,DataState } = this.props;
+        if(!DataState.LoginUser.SchoolID&&!JSON.parse(sessionStorage.getItem('UserInfo'))){
+            return;
+        }
         let UserMsg = DataState.LoginUser.SchoolID?DataState.LoginUser:JSON.parse(sessionStorage.getItem('UserInfo'))
-        console.log(DataState.LoginUser.SchoolID,UserMsg)
+        // console.log(DataState.LoginUser.SchoolID,UserMsg)
 
         let pathArr = route.split('/');
         let handleRoute = pathArr[1];
-        console.log(route)
+        // console.log(route)
         if (route === '/') {
             //dispatch(actions.UpDataState.getAllUserPreview('/ArchivesAll'));
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });

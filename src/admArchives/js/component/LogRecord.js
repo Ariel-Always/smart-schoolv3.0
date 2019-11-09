@@ -55,7 +55,7 @@ class LogRecord extends React.Component {
                 {
                     title: '用户档案',
                     align: 'left',
-                    width: 130,
+                    width: 90,
                     key: 'UserName',
                     dataIndex: 'UserName',
                     sorter: true,
@@ -74,7 +74,7 @@ class LogRecord extends React.Component {
                     align: 'center',
                     dataIndex: 'UserType_Txt',
                     key: 'UserType_Txt',
-                    width: 130,
+                    width: 110,
                     render: UserType_Txt => {
                         return (
                             <span title={UserType_Txt} className='UserType_Txt'>{UserType_Txt ? UserType_Txt : '--'}</span>
@@ -85,7 +85,7 @@ class LogRecord extends React.Component {
                     title: '操作类型',
                     align: 'center',
                     dataIndex: 'OperationType_Txt',
-                    width: 130,
+                    width: 120,
                     key: 'OperationType_Txt',
                     render: OperationType_Txt => {
                         return (
@@ -95,7 +95,7 @@ class LogRecord extends React.Component {
                 },
                 {
                     title: '变更内容',
-                    width: 130,
+                    width: 100,
                     align: 'center',
                     key: 'OperatorDetail',
                     dataIndex: 'OperatorDetail',
@@ -111,7 +111,7 @@ class LogRecord extends React.Component {
                 },
                 {
                     title: <span>姓名<br></br>工号</span>,
-                    width: 170,
+                    width: 120,
                     align: 'center',
                     key: 'Operator',
                     dataIndex: 'Operator',
@@ -127,7 +127,7 @@ class LogRecord extends React.Component {
                 {
                     title: '操作时间',
                     align: 'center',
-                    width: 230,
+                    width: 210,
                     key: 'LogTime',
                     dataIndex: 'LogTime',
                     render: (LogTime) => {

@@ -19,7 +19,7 @@ class TeachingSolution extends Component {
     //分页改变回调
     onPaginationChange = (page) => {
         const { dispatch } = this.props;
-        console.log(page)
+        // console.log(page)
         dispatch(actions.UpDataState.getTeachingSolutionMsg('/ListTeachingSolutions?beginTime=&endTime=&pageSize=9&currentPage='+page+'&userId=' + JSON.parse(sessionStorage.getItem('UserInfo')).UserID))
 
     }

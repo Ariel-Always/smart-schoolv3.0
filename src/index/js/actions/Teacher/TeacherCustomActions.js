@@ -226,7 +226,7 @@ const getAlterTips = (url, type = 'Website') => {
 }
 // 获取提示
 const setAlterTips = (data, type = 'Website') => {
-    let url = '/SubjectResMgr/CommonMgr/Teacher/SetFirstUse'
+    let url = '/SubjectResMgr/CommonMgr/Teacher/SetNotNotify'
     
     return (dispatch) => {
         if (type === 'Website') {

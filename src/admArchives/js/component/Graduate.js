@@ -51,7 +51,7 @@ class Graduate extends React.Component {
                 {
                     title: '姓名',
                     align: 'left',
-                    width: 70,
+                    width: 92,
                     key: 'UserName',
                     dataIndex: 'UserName',
                     sorter: true,
@@ -69,7 +69,7 @@ class Graduate extends React.Component {
                     align: 'center',
                     dataIndex: 'UserID',
                     key: 'UserID',
-                    width: 130,
+                    width: 120,
                     sorter: true,
                     render: UserID => {
                         return (
@@ -81,7 +81,7 @@ class Graduate extends React.Component {
                     title: '毕业年份',
                     align: 'center',
                     dataIndex: 'Grade',
-                    width: 100,
+                    width: 110,
                     key: 'Grade',
                     render: Grade => {
                         return (
@@ -91,7 +91,7 @@ class Graduate extends React.Component {
                 },
                 {
                     title: '班级',
-                    width: 100,
+                    width: 110,
                     align: 'center',
                     key: 'Class',
                     dataIndex: 'Class',
@@ -103,7 +103,7 @@ class Graduate extends React.Component {
                 },
                 {
                     title: '毕业去向',
-                    width: 130,
+                    width: 140,
                     align: 'center',
                     key: 'JobType',
                     dataIndex: 'JobType',
@@ -117,7 +117,7 @@ class Graduate extends React.Component {
                     }
                 }, {
                     title: '联系电话',
-                    width: 130,
+                    width: 140,
                     align: 'center',
                     key: 'Telephone',
                     dataIndex: 'Telephone',
@@ -131,7 +131,7 @@ class Graduate extends React.Component {
                 {
                     title: '操作',
                     align: 'center',
-                    width: 200,
+                    width: 270,
                     key: 'handleMsg',
                     dataIndex: 'handleMsg',
                     render: (handleMsg, i) => {
@@ -157,6 +157,7 @@ class Graduate extends React.Component {
             keyword: '',
             CancelBtnShow: 'n',
             pagination: 1,
+            searchValue:'',
             columnKey: '',
             order: '',
             detailData: '',
@@ -171,7 +172,8 @@ class Graduate extends React.Component {
             secondSelect: { value: 0, title: '全部班级' },
             searchValue: '',
             pagination: 1,
-            CancelBtnShow: 'n'
+            CancelBtnShow: 'n',
+            keyword:''
         })
         if (e.value) {
             this.setState({ secondDropMenuShow: true })
@@ -187,7 +189,9 @@ class Graduate extends React.Component {
             secondSelect: e,
             searchValue: '',
             pagination: 1,
-            CancelBtnShow: 'n'
+            CancelBtnShow: 'n',
+            keyword:''
+
         })
         dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?SchoolID=' + this.state.userMsg.SchoolID + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (e.value !== 0 ? '&classID=' + e.value : '') + '&PageIndex=0&PageSize=10' + (this.state.columnKey ? '&sortFiled=' + this.state.columnKey : '') + (this.state.order ? '&SortType=' + this.state.order : '')));
 
@@ -196,11 +200,7 @@ class Graduate extends React.Component {
     StudentSearch = (e) => {
         const { dispatch, DataState } = this.props;
 
-        this.setState({
-            keyword: e.value,
-            CancelBtnShow: 'y',
-            pagination: 1,
-        })
+        
         if (e.value === '') {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-warn',
@@ -210,6 +210,11 @@ class Graduate extends React.Component {
                 close: this.onAlertWarnClose.bind(this)
             }));
         } else {
+            this.setState({
+                keyword: e.value,
+                CancelBtnShow: 'y',
+                pagination: 1,
+            })
             dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&keyword=' + e.value + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + '' + (this.state.columnKey ? '&sortFiled=' + this.state.columnKey : '') + (this.state.order ? '&SortType=' + this.state.order : '')));
 
         }
@@ -227,10 +232,11 @@ class Graduate extends React.Component {
         this.setState({
             CancelBtnShow: 'n',
             keyword: '',
-            searchValue: ''
+            searchValue: '',
+            pagination:1
 
         })
-        dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + '' + (this.state.columnKey ? '&sortFiled=' + this.state.columnKey : '') + (this.state.order ? '&SortType=' + this.state.order : '')));
+        dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (0) + '&PageSize=10' + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + '' + (this.state.columnKey ? '&sortFiled=' + this.state.columnKey : '') + (this.state.order ? '&SortType=' + this.state.order : '')));
 
     }
     //table 多选组
@@ -261,7 +267,7 @@ class Graduate extends React.Component {
         //console.log(sorter)
         if (sorter && (sorter.columnKey === 'UserName' || sorter.columnKey === 'UserID')) {
             let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
-            dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?SchoolID=' + this.state.userMsg.SchoolID + (this.state.keyword ? '&keyword=' + this.state.keyword : '') + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + '&sortFiled=' + sorter.columnKey + '&PageIndex=0&PageSize=10&' + sortType));
+            dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?SchoolID=' + this.state.userMsg.SchoolID + (this.state.keyword ? '&keyword=' + this.state.keyword : '') + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + '&sortFiled=' + sorter.columnKey + '&PageIndex='+(this.state.pagination-1)+'&PageSize=10&' + sortType));
             this.setState({
                 checkedList: [],
                 checkAll: false,
@@ -269,10 +275,10 @@ class Graduate extends React.Component {
                 order: sorter.order === "descend" ? 'DESC' : sorter.order === "ascend" ? 'ASC' : ''
             })
         } else {
-            dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?PageIndex=0&PageSize=10&schoolID=' + this.state.userMsg.SchoolID))
+            dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?PageIndex='+(this.state.pagination-1)+'&PageSize=10&schoolID=' + this.state.userMsg.SchoolID+ (this.state.keyword ? '&keyword=' + this.state.keyword : '') ))
             this.setState({
                 columnKey: '',
-                order: ''
+                order: '',
             })
         }
     }
@@ -281,11 +287,11 @@ class Graduate extends React.Component {
         const { dispatch, DataState } = this.props;
 
         //console.log(e)
-        dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?SchoolID=' + this.state.userMsg.SchoolID + (this.state.keyword ? '&keyword=' + this.state.keyword : '') + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + '&PageIndex=' + (--e) + '&PageSize=10' + (this.state.columnKey ? '&sortFiled=' + this.state.columnKey : '') + (this.state.order ? '&SortType=' + this.state.order : '')));
+        dispatch(actions.UpDataState.getGraduatePreview('/GetGraduate?SchoolID=' + this.state.userMsg.SchoolID + (this.state.keyword ? '&keyword=' + this.state.keyword : '') + (this.state.firstSelect.value !== 0 ? '&gradeID=' + this.state.firstSelect.value : '') + (this.state.secondSelect.value !== 0 ? '&classID=' + this.state.secondSelect.value : '') + '&PageIndex=' + (e-1) + '&PageSize=10' + (this.state.columnKey ? '&sortFiled=' + this.state.columnKey : '') + (this.state.order ? '&SortType=' + this.state.order : '')));
         this.setState({
             checkedList: [],
             checkAll: false,
-            pagination: ++e
+            pagination: e
         })
     }
     // colunm 事件
@@ -378,15 +384,16 @@ class Graduate extends React.Component {
             2).then(res => {
                 return res.json()
             }).then(json => {
-                if (json.StatusCode !== 200) {
-                    dispatch(actions.UpUIState.showErrorAlert({
-                        type: 'btn-error',
-                        title: json.Msg,
-                        ok: this.onAppAlertOK.bind(this),
-                        cancel: this.onAppAlertCancel.bind(this),
-                        close: this.onAppAlertClose.bind(this)
-                    }));
-                } else {
+                // if (json.StatusCode !== 200) {
+                //     dispatch(actions.UpUIState.showErrorAlert({
+                //         type: 'btn-error',
+                //         title: json.Msg,
+                //         ok: this.onAppAlertOK.bind(this),
+                //         cancel: this.onAppAlertCancel.bind(this),
+                //         close: this.onAppAlertClose.bind(this)
+                //     }));
+                // } else
+                if(json.StatusCode === 200) {
                     dispatch(actions.UpUIState.showErrorAlert({
                         type: 'success',
                         title: "成功",
@@ -433,15 +440,16 @@ class Graduate extends React.Component {
             2).then(res => {
                 return res.json()
             }).then(json => {
-                if (json.StatusCode !== 200) {
-                    dispatch(actions.UpUIState.showErrorAlert({
-                        type: 'btn-error',
-                        title: json.Msg,
-                        ok: this.onAppAlertOK.bind(this),
-                        cancel: this.onAppAlertCancel.bind(this),
-                        close: this.onAppAlertClose.bind(this)
-                    }));
-                } else {
+                // if (json.StatusCode !== 200) {
+                //     dispatch(actions.UpUIState.showErrorAlert({
+                //         type: 'btn-error',
+                //         title: json.Msg,
+                //         ok: this.onAppAlertOK.bind(this),
+                //         cancel: this.onAppAlertCancel.bind(this),
+                //         close: this.onAppAlertClose.bind(this)
+                //     }));
+                // } else {
+                    if (json.StatusCode === 200) {
                     dispatch(actions.UpUIState.showErrorAlert({
                         type: 'success',
                         title: "成功",

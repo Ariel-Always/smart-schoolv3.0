@@ -30,13 +30,13 @@ class Class extends React.Component {
                 },
                 {
                     title: '班级名称',
-                    align: 'center',
+                    align: 'left',
                     dataIndex: 'CourseClass',
                     key: 'CourseClass',
                     render: courseClass => {
                         return (
                             <React.Fragment>
-                                <span onClick={this.onCourseClassClick.bind(this, courseClass.ClassID)} className='courseClass-name'>{courseClass.ClassName}</span>
+                                <span title={courseClass.ClassName} onClick={this.onCourseClassClick.bind(this, courseClass.ClassID)} className='courseClass-name'>{courseClass.ClassName}</span>
                             </React.Fragment>
                         )
                     }
@@ -50,8 +50,8 @@ class Class extends React.Component {
                         return (
                             Class.TeacherID===0||Class.TeacherID?(<React.Fragment>
                                 <img className='Class-img' alt={Class.TeacherName} src={Class.TeacherImg} />
-                                <span className='Class-name'>{Class.TeacherName}</span>
-                                <span className='Class-id'>{'(' + Class.TeacherID + ')'}</span>
+                                <span title={Class.TeacherName} className='Class-name'>{Class.TeacherName}</span>
+                                <span title={Class.TeacherID} className='Class-id'>{'(' + Class.TeacherID + ')'}</span>
                             </React.Fragment>):<span>--</span>
                         )
                     }
@@ -63,7 +63,7 @@ class Class extends React.Component {
                     key: 'StudentCount',
                     render: StudentCount => {
                         return (
-                            <span className='StudentCount'>{StudentCount}</span>
+                            <span title={StudentCount} className='StudentCount'>{StudentCount}</span>
 
                         )
                     }
@@ -151,7 +151,7 @@ class Class extends React.Component {
     }
     //列表分页改变事件
     onPagiNationChange = (value) => {
-        console.log(value)
+      // console.log(value)
         const { dispatch, DataState } = this.props;
 
         let route = history.location.pathname;
@@ -216,7 +216,7 @@ class Class extends React.Component {
     })
     courseClassID = courseClassID.join()
 
-        console.log(this.state.checkedList)
+      // console.log(this.state.checkedList)
         if (len === 0) {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-error',
@@ -270,7 +270,7 @@ class Class extends React.Component {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
-                console.log('错误码：' + json.StatusCode)
+              // console.log('错误码：' + json.StatusCode)
             } else if (json.StatusCode === 200) {
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
@@ -305,7 +305,7 @@ class Class extends React.Component {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
-                console.log('错误码：' + json.StatusCode)
+              // console.log('错误码：' + json.StatusCode)
             } else if (json.StatusCode === 200) {
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
@@ -326,7 +326,9 @@ class Class extends React.Component {
     }
     render() {
         const { DataState, UIState } = this.props;
-        let tips = DataState.GetClassAllMsg.allClass.subject && DataState.GetCoureClassAllMsg.Subjects && DataState.GetCoureClassAllMsg.Subjects[DataState.GetClassAllMsg.allClass.subject].subjectName? DataState.GetCoureClassAllMsg.Subjects[DataState.GetClassAllMsg.allClass.subject].subjectName + '教学班>' + DataState.GetCoureClassAllMsg.Subjects[DataState.GetClassAllMsg.allClass.subject][DataState.GetClassAllMsg.allClass.Class] : '';
+        
+        // console.log(DataState.GetClassAllMsg.allClass.subject , DataState.GetCoureClassAllMsg)
+        let tips = DataState.GetClassAllMsg.allClass.subject && DataState.GetCoureClassAllMsg.Subjects && DataState.GetCoureClassAllMsg.Subjects[DataState.GetClassAllMsg.allClass.subject].subjectName? DataState.GetCoureClassAllMsg.Subjects[DataState.GetClassAllMsg.allClass.subject].subjectName + '教学班>' +( DataState.GetCoureClassAllMsg.Subjects[DataState.GetClassAllMsg.allClass.subject][DataState.GetClassAllMsg.allClass.Class]?DataState.GetCoureClassAllMsg.Subjects[DataState.GetClassAllMsg.allClass.subject][DataState.GetClassAllMsg.allClass.Class]:'' ):'';
         let Total = DataState.GetClassAllMsg.allClass ? DataState.GetClassAllMsg.allClass.CourseClassCount : 0
         return (
             <div className='Class'>

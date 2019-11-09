@@ -57,7 +57,7 @@ class Teacher extends React.Component {
                 {
                     title: '用户名',
                     width: 120,
-                    align: 'right',
+                    align: 'center',
                     dataIndex: 'ShortName',
                     key: 'ShortName',
                     sorter: true,
@@ -95,7 +95,7 @@ class Teacher extends React.Component {
                 },
                 {
                     title: '操作',
-                    width: 120,
+                    width: 132,
                     align: 'center',
                     key: 'handle',
                     dataIndex: 'key',
@@ -203,9 +203,15 @@ class Teacher extends React.Component {
             SubjectSelect: e,
             searchValue: '',
             pagination: 1,
-            CancelBtnShow: 'n'
+            CancelBtnShow: 'n',
+            checkedList: [],
+                checkAll: false,
+                keyword:'',
         })
+        if(e.value !== 0)
         dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&SubjectIDs=' + e.value+this.state.sortFiled+this.state.sortType));
+        else 
+        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10' +this.state.sortFiled+this.state.sortType));
 
     }
 
@@ -226,7 +232,10 @@ class Teacher extends React.Component {
             this.setState({
                 keyword: e.value,
                 CancelBtnShow: 'y',
-                pagination: 1
+                pagination: 1,
+                checkedList: [],
+                checkAll: false,
+               
             })
             dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=0&PageSize=10&keyword=' + e.value + '&SubjectIDs=' + (this.state.SubjectSelect.value ? this.state.SubjectSelect.value : '')+this.state.sortFiled+this.state.sortType));
 
@@ -245,27 +254,30 @@ class Teacher extends React.Component {
         this.setState({
             CancelBtnShow: 'n',
             keyword: '',
-            searchValue: e.value
-
+            searchValue: e.value,
+            checkedList: [],
+pagination:1,
+checkAll: false,
+            
         })
-        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10' + '&SubjectIDs=' + (this.state.SubjectSelect.value ? this.state.SubjectSelect.value : '')+this.state.sortFiled+this.state.sortType));
+        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (0) + '&PageSize=10' + '&SubjectIDs=' + (this.state.SubjectSelect.value ? this.state.SubjectSelect.value : '')+this.state.sortFiled+this.state.sortType));
 
 
     }
     onSelectChange = (e) => {
-        console.log(e)
+      // console.log(e)
         //this.setState({ selectedRowKeys });
     }
 
     onUserContactClick = (UserContact) => {
-        console.log(UserContact)
+      // console.log(UserContact)
         // this.setState({
         //     TeacherChangeMadalVisible: true,
         //     TeacherChangeKey: key
         // })
     }
     // onChangePwdClick = (e, key) => {
-    //     console.log(e, key)
+    //   // console.log(e, key)
     //     this.setState({
     //         TeacherChangeMadalVisible: true,
     //         TeacherChangeKey: key
@@ -277,7 +289,7 @@ class Teacher extends React.Component {
     }
     OnCheckAllChange = (e) => {
         const { DataState, dispatch } = this.props
-        console.log(e)
+      // console.log(e)
         if (e.target.checked) {
             this.setState({
                 checkedList: DataState.SubjectTeacherPreview.keyList,
@@ -298,25 +310,25 @@ class Teacher extends React.Component {
         })
     }
     handleTeacherModalOk = (e) => {
-        console.log(e)
+      // console.log(e)
         this.setState({
             TeacherModalVisible: false
         })
     }
     handleTeacherModalCancel = (e) => {
-        console.log(e)
+      // console.log(e)
         this.setState({
             TeacherModalVisible: false
         })
     }
     ChangePwdMadalOk = (e) => {
-        console.log(e)
+      // console.log(e)
         this.setState({
             ChangePwdMadalVisible: false
         })
     }
     ChangePwdMadalOk = (e) => {
-        console.log(e)
+      // console.log(e)
         this.setState({
             ChangePwdMadalVisible: false
         })
@@ -324,7 +336,7 @@ class Teacher extends React.Component {
 
     onChangePwdAllClick = () => {
         const { dispatch } = this.props;
-        console.log(this.state.checkedList)
+      // console.log(this.state.checkedList)
         if (this.state.checkedList.length === 0) {
 
             dispatch(actions.UpUIState.showErrorAlert({
@@ -362,7 +374,7 @@ class Teacher extends React.Component {
         const { dispatch, DataState } = this.props;
         let url = '/ResetPwd';
         let UserMsg = DataState.LoginUser;
-        console.log(this.state.defaultPwd, md5(this.state.defaultPwd))
+      // console.log(this.state.defaultPwd, md5(this.state.defaultPwd))
         if (this.state.defaultPwd === '') {
             dispatch(actions.UpUIState.showErrorAlert({
                 type: 'btn-query',
@@ -381,12 +393,12 @@ class Teacher extends React.Component {
                 },
                 2).then(res => {
                     if (res.StatusCode === '401') {
-                        console.log('错误码：' + res.StatusCode)
+                      // console.log('错误码：' + res.StatusCode)
                     }
                     return res.json()
                 }).then(json => {
                     if (json.StatusCode === 400) {
-                        console.log(json.StatusCode)
+                      // console.log(json.StatusCode)
                     } else if (json.StatusCode === 200) {
                         dispatch(actions.UpUIState.showErrorAlert({
                             type: 'success',
@@ -395,7 +407,10 @@ class Teacher extends React.Component {
                         }));
                         this.setState({
                             ChangePwdMadalVisible: false,
-                            defaultPwd: '888888'
+                            defaultPwd: '888888',
+                            checkedList: [],
+                checkAll: false,
+                
                         })
                         dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (this.state.pagination - 1) + '&PageSize=10&keyword=' + this.state.keyword + '&SubjectIDs=' + (this.state.SubjectSelect.value ? this.state.SubjectSelect.value : '')+this.state.sortFiled+this.state.sortType));
 
@@ -421,7 +436,7 @@ class Teacher extends React.Component {
     }
     onPwdchange = (e) => {
         const { dispatch } = this.props;
-        console.log(e.target.value)
+      // console.log(e.target.value)
         this.setState({
             defaultPwd: e.target.value
         })
@@ -454,12 +469,12 @@ class Teacher extends React.Component {
             },
             2).then(res => {
                 if (res.StatusCode === '401') {
-                    console.log('错误码：' + res.StatusCode)
+                  // console.log('错误码：' + res.StatusCode)
                 }
                 return res.json()
             }).then(json => {
                 if (json.StatusCode === 400) {
-                    console.log(json.StatusCode)
+                  // console.log(json.StatusCode)
                 } else if (json.StatusCode === 200) {
                     dispatch(actions.UpUIState.showErrorAlert({
                         type: 'success',
@@ -481,7 +496,10 @@ class Teacher extends React.Component {
     onPagiNationChange = (value) => {
         const { dispatch } = this.props;
         this.setState({
-            pagination: value
+            pagination: value,
+            checkedList: [],
+                checkAll: false,
+                
         })
 
         let SubjectIDs = '';
@@ -493,7 +511,7 @@ class Teacher extends React.Component {
         if (this.state.keyword !== '') {
             keyword = '&keyword=' + this.state.keyword
         }
-        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (--value) + '&PageSize=10' + keyword + SubjectIDs+this.state.sortFiled+this.state.sortType));
+        dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageIndex=' + (value - 1) + '&PageSize=10' + keyword + SubjectIDs+this.state.sortFiled+this.state.sortType));
 
     }
     onUserNameClick = (UserID) => {
@@ -517,20 +535,20 @@ class Teacher extends React.Component {
         })
     }
     onAddTeacher = (e, ) => {
-        console.log(e)
+      // console.log(e)
         this.setState({
             addTeacherModalVisible: true,
             userKey: 'add'
         })
     }
     handleAddTeacherModalOk = (e) => {
-        console.log(e)
+      // console.log(e)
         this.setState({
             addTeacherModalVisible: false
         })
     }
     handleAddTeacherModalCancel = (e) => {
-        console.log(e)
+      // console.log(e)
         this.setState({
             addTeacherModalVisible: false
         })
@@ -550,17 +568,25 @@ class Teacher extends React.Component {
         //console.log(sorter)
         if (sorter && (sorter.columnKey === 'UserName' || sorter.columnKey === 'ShortName')) {
             let sortType = sorter.order === "descend" ? 'SortType=DESC' : sorter.order === "ascend" ? 'SortType=ASC' : '';
-            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&sortFiled=' + sorter.columnKey + 'PageSize=10&' + sortType + '&PageIndex=' + (this.state.pagination - 1) + keyword + SubjectSelect));
             this.setState({
                 sortType: '&' + sortType,
-                sortFiled: '&sortFiled=' + sorter.columnKey
+                sortFiled: '&sortFiled=' + sorter.columnKey,
+                checkedList: [],
+                checkAll: false,
+                
             })
+            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&sortFiled=' + sorter.columnKey + 'PageSize=10&' + sortType + '&PageIndex=' + (this.state.pagination - 1) + keyword + SubjectSelect));
+            
         } else if (sorter) {
-            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageSize=10' + '&PageIndex=' + (this.state.pagination - 1) + keyword + SubjectSelect));
             this.setState({
                 sortType: '',
-                sortFiled: ''
+                sortFiled: '',
+                checkedList: [],
+                checkAll: false,
+                
             })
+            dispatch(actions.UpDataState.getSubjectTeacherPreview('/GetTeacherToPage?SchoolID=' + this.state.userMsg.SchoolID + '&PageSize=10' + '&PageIndex=' + (this.state.pagination - 1) + keyword + SubjectSelect));
+            
         }
     }
     render() {
@@ -605,15 +631,16 @@ class Teacher extends React.Component {
                                 height={240}
 
                                 dropSelectd={this.state.SubjectSelect}
-                                dropList={DataState.SubjectTeacherMsg.returnData ? DataState.SubjectTeacherMsg.returnData.SubjectList : [{ value: 0, title: '全部年级' }]}
+                                dropList={DataState.SubjectTeacherMsg.returnData ? DataState.SubjectTeacherMsg.returnData.SubjectList : [{ value: 0, title: '全部学科' }]}
                             ></DropDown>
 
-                            <Search placeHolder='请输入关键字搜索...'
+                            <Search placeHolder='请输入工号或姓名进行搜索'
                                 onClickSearch={this.TeacherSearch}
                                 Value={this.state.searchValue}
                                 onChange={this.onChangeSearch.bind(this)}
                                 onCancelSearch={this.onCancelSearch}
                                 CancelBtnShow={this.state.CancelBtnShow}
+                                width={250}
                                 height={30}
                             ></Search>
                         </div>

@@ -215,7 +215,7 @@ class Dynamic extends React.Component {
     }
     //操作时间事件
     onStartTimeSelectOk = (time) => {
-        console.log(time)
+      // console.log(time)
     }
     onStartTimeSelectChange = (Moment, time) => {
         //console.log(time.valueOf())
@@ -225,10 +225,10 @@ class Dynamic extends React.Component {
         })
     }
     onEndTimeSelectOk = (time) => {
-        console.log(time)
+      // console.log(time)
     }
     onEndTimeSelectChange = (Moment, time) => {
-        console.log(time)
+      // console.log(time)
         this.setState({
             endTime: time,
             endMomentTime: Moment
@@ -315,7 +315,7 @@ class Dynamic extends React.Component {
             for (let index = 0; index < pageSize; index++) {
                 plainOptions.push(index + defaultPageSize * (pagination - 1))
             }
-            console.log(plainOptions, pageSize, dataSource)
+          // console.log(plainOptions, pageSize, dataSource)
             this.setState({
                 plainOptions: plainOptions
             })
@@ -340,7 +340,7 @@ class Dynamic extends React.Component {
         let len = checkedList.length;
         let LogID = '';
         let source = this.state.dataSource;
-        console.log(checkedList, source)
+      // console.log(checkedList, source)
         checkedList.map((child, index) => {
             if (index !== len - 1)
                 LogID += source[child].LogID + ',';
@@ -368,7 +368,7 @@ class Dynamic extends React.Component {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 400) {
-                console.log('错误码：' + json.StatusCode)
+              // console.log('错误码：' + json.StatusCode)
             } else if (json.StatusCode === 200) {
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
@@ -406,7 +406,7 @@ class Dynamic extends React.Component {
     //页数变化
     onPaginationChange = (value) => {
         const { DataState, UIState } = this.props;
-        console.log(value)
+      // console.log(value)
         this.setState({
             pagination: value,
             checkAll: false,

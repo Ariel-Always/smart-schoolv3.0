@@ -29,7 +29,7 @@ const GetGraduateGradeClassMsg = (state = { Grade: [{ value: 0, title: '全部' 
     switch (actions.type) {
         case UpDataState.GET_GRADUATE_GRADE_CLASS_MSG:
             let returnData = handleData(actions.data);
-            console.log(returnData)
+            // console.log(returnData)
             return Object.assign({}, state, { ...returnData });
         default:
             return state;

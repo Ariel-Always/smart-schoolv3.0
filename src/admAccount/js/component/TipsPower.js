@@ -28,7 +28,7 @@ function Power(props) {
     const data = props.power;
     const dataList = data.PowerChild.map((child, index) => {
         return (
-            <span className='powerText' key={child.value+index}>{child.PowerChildName}<span className='text-after'>，</span></span>
+            <span className='powerText' key={child.value+index}>{child.PowerChildName}{index!==data.PowerChild.length-1?<span className='text-after'>，</span>:''}</span>
         )
     })
     return (

@@ -27,13 +27,11 @@ const getLoginUser = (data) => {
 const getUserPowerMsg = (url) => {
     return (dispatch) => {
         getData(CONFIG.PowerProxy + url, 2).then(res => {
-            console.log(res)
+            // console.log(res)
             return res.json()
         }).then(json => {
-            if (json.StatusCode === 400) {
-                console.log('错误码：' + json.StatusCode)
-            } else if (json.StatusCode === 200) {
-                console.log(json.Data)
+            if (json.StatusCode === 200) {
+                // console.log(json.Data)
                 dispatch({ type: GET_USER_POWER_MSG, data: json.Data });
                 dispatch({ type: actions.UpUIState.RIGHT_LOADING_CLOSE })
 

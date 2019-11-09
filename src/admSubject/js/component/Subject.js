@@ -155,7 +155,7 @@ class Subject extends React.Component {
     //删除
     onDeleteSubjectClick = (key) => {
         const { dispatch } = this.props;
-        console.log(key)
+        // console.log(key)
         dispatch(actions.UpUIState.showErrorAlert({
             type: 'btn-warn',
             title: "你确定删除吗？",
@@ -176,7 +176,7 @@ class Subject extends React.Component {
         const { dispatch, DataState, UIState } = this.props;
         let url = '/DeleteSubjectForSchoolOne';
         let userMsg = DataState.LoginUser;
-        console.log(userMsg)
+        // console.log(userMsg)
         dispatch(actions.UpUIState.hideErrorAlert());
         postData(CONFIG.SubjectProxy + url, {
             schoolID: this.state.UserMsg.SchoolID,
@@ -186,9 +186,7 @@ class Subject extends React.Component {
         }, 2, 'json').then(res => {
             return res.json()
         }).then(json => {
-            if (json.StatusCode === 400) {
-                console.log('错误码：' + json.StatusCode)
-            } else if (json.StatusCode === 200) {
+            if (json.StatusCode === 200) {
                 dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID=' + this.state.SubjectSelect.value + '&pageSize=8&pageIndex=1'));
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
@@ -232,14 +230,15 @@ class Subject extends React.Component {
             dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
             return res.json()
         }).then(json => {
-            if (json.StatusCode === 400) {
-                dispatch(actions.UpUIState.showErrorAlert({
-                    type: 'error',
-                    title: "失败",
-                    onHide: this.onAlertWarnHide.bind(this)
-                }));
-                console.log('错误码：' + json.StatusCode)
-            } else if (json.StatusCode === 200) {
+            // if (json.StatusCode === 400) {
+            //     dispatch(actions.UpUIState.showErrorAlert({
+            //         type: 'error',
+            //         title: "失败",
+            //         onHide: this.onAlertWarnHide.bind(this)
+            //     }));
+            //     // console.log('错误码：' + json.StatusCode)
+            // } else 
+            if (json.StatusCode === 200) {
                 dispatch(actions.UpUIState.changeSubjectModalClose())
                 dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID=' + this.state.SubjectSelect.value + '&pageSize=8&pageIndex=1'));
                 dispatch(actions.UpUIState.showErrorAlert({
@@ -292,14 +291,15 @@ class Subject extends React.Component {
             dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
             return res.json()
         }).then(json => {
-            if (json.StatusCode === 400) {
-                dispatch(actions.UpUIState.showErrorAlert({
-                    type: 'error',
-                    title: json.Msg,
-                    onHide: this.onAlertWarnHide.bind(this)
-                }));
-                console.log('错误码：' + json.StatusCode)
-            } else if (json.StatusCode === 200) {
+            // if (json.StatusCode === 400) {
+            //     dispatch(actions.UpUIState.showErrorAlert({
+            //         type: 'error',
+            //         title: json.Msg,
+            //         onHide: this.onAlertWarnHide.bind(this)
+            //     }));
+            //     // console.log('错误码：' + json.StatusCode)
+            // } else 
+            if (json.StatusCode === 200) {
                 dispatch(actions.UpUIState.addSubjectModalClose())
                 dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID=' + this.state.SubjectSelect.value + '&pageSize=8&pageIndex=1'));
 
@@ -372,14 +372,15 @@ class Subject extends React.Component {
             dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
             return res.json()
         }).then(json => {
-            if (json.StatusCode === 400) {
-                dispatch(actions.UpUIState.showErrorAlert({
-                    type: 'error',
-                    title: "失败",
-                    onHide: this.onAlertWarnHide.bind(this)
-                }));
-                console.log('错误码：' + json.StatusCode)
-            } else if (json.StatusCode === 200) {
+            // if (json.StatusCode === 400) {
+            //     dispatch(actions.UpUIState.showErrorAlert({
+            //         type: 'error',
+            //         title: "失败",
+            //         onHide: this.onAlertWarnHide.bind(this)
+            //     }));
+            //     // console.log('错误码：' + json.StatusCode)
+            // } else 
+            if (json.StatusCode === 200) {
                 dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID=' + this.state.SubjectSelect.value + '&pageSize=8&pageIndex=1'));
                 dispatch(actions.UpUIState.setSubjectTeacherModalClose())
                 dispatch(actions.UpUIState.showErrorAlert({
@@ -397,7 +398,7 @@ class Subject extends React.Component {
     }
     render() {
         const { DataState, UIState } = this.props;
-        console.log(UIState.SetSubjectTeacher.setSubjectTeacherModalShow)
+        // console.log(UIState.SetSubjectTeacher.setSubjectTeacherModalShow)
 
         return (
             <React.Fragment>
