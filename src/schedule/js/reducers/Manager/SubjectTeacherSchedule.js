@@ -1,7 +1,5 @@
 import STSActions from '../../actions/Manager/SubjectTeacherScheduleActions';
 
-import SDMActions from '../../actions/ScheduleDetailModalActions';
-
 const SubjectTeacherSchedule = (state={
 
     schedule:[],
@@ -17,6 +15,14 @@ const SubjectTeacherSchedule = (state={
     TeacherCount:0,
 
     ScheduleDetail:{
+
+        Show:false,
+
+        ModalLoading:true
+
+    },
+
+    ChangeTime:{
 
         Show:false,
 
@@ -80,9 +86,44 @@ const SubjectTeacherSchedule = (state={
 
             return {...state,loadingShow:true};
 
-        case SDMActions.SCHEDULE_DETAIL_MODAL_SHOW:
+        case STSActions.MANAGER_STS_SCHEDULE_DETAIL_MODAL_SHOW:
 
-            return { ...state,ScheduleDetail:{...state.ScheduleDetailModal,Show:true,...actions.data}};
+            return {...state,ScheduleDetail:{...state.ScheduleDetail,Show:true,ModalLoading:true}};
+
+        case STSActions.MANAGER_STS_SCHEDULE_DETAIL_MODAL_LOADING_HIDE:
+
+            return {...state,ScheduleDetail:{...state.ScheduleDetail,ModalLoading:false}};
+
+        case STSActions.MANAGER_STS_SCHEDULE_DETAIL_MODAL_LOADING_SHOW:
+
+            return {...state,ScheduleDetail:{...state.ScheduleDetail,ModalLoading:true}};
+
+        case STSActions.MANAGER_STS_SCHEDULE_DETAIL_MODAL_INIT:
+
+            return {
+
+                ...state,
+
+                ScheduleDetail:{
+
+                    ...state.ScheduleDetail,
+
+                    ...actions.data
+
+                }
+            };
+
+        case STSActions.MANAGER_STS_SCHEDULE_DETAIL_MODAL_HIDE:
+
+            return { ...state,ScheduleDetail:{...state.ScheduleDetail,Show:false}};
+
+        case STSActions.MANAGER_STS_CHANGE_TIME_MODAL_SHOW:
+
+            return {...state,ChangeTime:{...state.ChangeTime,Show:true,ModalLoading:true}};
+
+        case STSActions.MANAGER_STS_CHANGE_TIME_MODAL_INIT:
+
+            return {...state,ChangeTime:{...state.ChangeTime,...actions.data}};
 
         default:
 

@@ -1,6 +1,6 @@
-import Method from "../Method";
-
 import ApiActions from '../ApiActions';
+
+import AppAlertActions from "../AppAlertActions";
 
 const SUBJECT_TEACHER_SCHEDULE_INIT = 'SUBJECT_TEACHER_SCHEDULE_INIT';
 
@@ -17,6 +17,36 @@ const STS_PAGE_ADD = 'STS_PAGE_ADD';
 const LOADING_SHOW = 'LOADING_SHOW';
 
 const LOADING_HIDE = 'LOADING_HIDE';
+
+//课程详情弹窗开启和关闭
+const MANAGER_STS_SCHEDULE_DETAIL_MODAL_SHOW = 'SCHEDULE_DETAIL_MODAL_SHOW';
+
+const MANAGER_STS_SCHEDULE_DETAIL_MODAL_HIDE = 'SCHEDULE_DETAIL_MODAL_HIDE';
+
+//loading
+
+const MANAGER_STS_SCHEDULE_DETAIL_MODAL_LOADING_SHOW = 'MANAGER_STS_SCHEDULE_DETAIL_MODAL_LOADING_SHOW';
+
+const MANAGER_STS_SCHEDULE_DETAIL_MODAL_LOADING_HIDE = 'MANAGER_STS_SCHEDULE_DETAIL_MODAL_LOADING_HIDE';
+
+const MANAGER_STS_SCHEDULE_DETAIL_MODAL_INIT = 'MANAGER_STS_SCHEDULE_DETAIL_MODAL_INIT';
+
+
+//调整时间
+const MANAGER_STS_CHANGE_TIME_MODAL_SHOW = 'MANAGER_STS_CHANGE_TIME_MODAL_SHOW';
+
+const MANAGER_STS_CHANGE_TIME_MODAL_HIDE = 'MANAGER_STS_CHANGE_TIME_MODAL_HIDE';
+
+//loading
+
+const MANAGER_STS_CHANGE_TIME_MODAL_LOADING_SHOW = 'MANAGER_STS_CHANGE_TIME_MODAL_LOADING_SHOW';
+
+const MANAGER_STS_CHANGE_TIME_MODAL_LOADING_HIDE = 'MANAGER_STS_CHANGE_TIME_MODAL_LOADING_HIDE';
+
+const MANAGER_STS_CHANGE_TIME_MODAL_INIT = 'MANAGER_STS_CHANGE_TIME_MODAL_INIT';
+
+
+
 
 
 //学科教师总表学科课表界面更新
@@ -138,6 +168,133 @@ const STSPageUpdate = (opt) => {
 
 
 
+//课程详情弹窗
+
+const ScheduleDetailShow = (Params) => {
+
+    return (dispatch,getState)=>{
+
+        const { SchoolID } = getState().LoginUser;
+
+        const { TeacherID,ScheduleID,ClassDate,ClassHourNO } = Params;
+
+        dispatch({type:MANAGER_STS_SCHEDULE_DETAIL_MODAL_SHOW});
+
+        ApiActions.GetScheduleDetailByUserID({SchoolID,TeacherID,ScheduleID,ClassDate,ClassHourNO,dispatch}).then(data=>{
+
+            if (data){
+
+                dispatch({type:MANAGER_STS_SCHEDULE_DETAIL_MODAL_INIT,data:data});
+
+            }
+
+            dispatch({type:MANAGER_STS_SCHEDULE_DETAIL_MODAL_LOADING_HIDE});
+
+        })
+
+    }
+
+};
+
+//停课
+const StopSchedule = (params) => {
+
+  return (dispatch,getState) => {
+
+        const { SchoolID } = getState().LoginUser;
+
+        const { TeacherID,ClassDate,ClassHourNO,ScheduleID } = params;
+
+        ApiActions.OverScheduleAndGetTea({ScheduleID,SchoolID,TeacherID,ClassDate,ClassHourNO,dispatch}).then(data=>{
+
+           if (data===0){
+
+                dispatch(AppAlertActions.alertSuccess({title:'停课成功!'}));
+
+                dispatch(ScheduleModalInfoUpdate({SchoolID,TeacherID,ScheduleID,ClassDate,ClassHourNO}));
+
+           }
+
+        });
+
+    }
+
+};
+
+//恢复停课
+const RebackStopSchedule = (params) => {
+
+    return (dispatch,getState) => {
+
+        const { SchoolID } = getState().LoginUser;
+
+        const { TeacherID,ClassDate,ClassHourNO,ScheduleID } = params;
+
+        ApiActions.CancelOverScheduleAndGetTea({ScheduleID,SchoolID,TeacherID,ClassDate,ClassHourNO,dispatch}).then(data=>{
+
+            if (data===0){
+
+                dispatch(AppAlertActions.alertSuccess({title:'恢复上课成功!'}));
+
+                dispatch(ScheduleModalInfoUpdate({SchoolID,TeacherID,ScheduleID,ClassDate,ClassHourNO}));
+
+            }
+
+        });
+
+    }
+
+};
+
+
+//调整时间弹窗出现
+
+const ChangeTimeShow = (params) =>{
+
+    return (dispatch,getState) => {
+
+        const { ClassDate,WeekNO,ClassHourNO,StartEndTime,WeekDay,ClassHourName } = params;
+
+        const { ItemWeek } = getState().PeriodWeekTerm;
+
+        const { ItemClassHour } = getState().Manager.SubjectCourseGradeClassRoom;
+
+        dispatch({ type:MANAGER_STS_CHANGE_TIME_MODAL_SHOW});
+
+        dispatch({type:MANAGER_STS_CHANGE_TIME_MODAL_INIT,data:{WeekDay,WeekNO,ClassDate,ClassHourNO,ItemClassHour,ItemWeek}})
+
+
+    }
+
+};
+
+
+
+//更新课程安排详情的内容
+
+const ScheduleModalInfoUpdate = ({SchoolID,TeacherID,ScheduleID,ClassDate,ClassHourNO}) => {
+
+  return dispatch => {
+
+      dispatch({type:MANAGER_STS_SCHEDULE_DETAIL_MODAL_LOADING_SHOW});
+
+      ApiActions.GetScheduleDetailByUserID({SchoolID,TeacherID,ScheduleID,ClassDate,ClassHourNO,dispatch}).then(data=>{
+
+          if (data){
+
+              dispatch({type:MANAGER_STS_SCHEDULE_DETAIL_MODAL_INIT,data:data});
+
+          }
+
+          dispatch({type:MANAGER_STS_SCHEDULE_DETAIL_MODAL_LOADING_HIDE});
+
+      })
+
+  }
+
+};
+
+
 export default {
 
     SUBJECT_TEACHER_SCHEDULE_INIT,
@@ -156,6 +313,37 @@ export default {
 
     LOADING_HIDE,
 
-    STSPageUpdate
+    MANAGER_STS_SCHEDULE_DETAIL_MODAL_SHOW,
+
+    MANAGER_STS_SCHEDULE_DETAIL_MODAL_HIDE,
+
+    MANAGER_STS_SCHEDULE_DETAIL_MODAL_LOADING_HIDE,
+
+    MANAGER_STS_SCHEDULE_DETAIL_MODAL_INIT,
+
+    MANAGER_STS_SCHEDULE_DETAIL_MODAL_LOADING_SHOW,
+
+    //调整时间
+    MANAGER_STS_CHANGE_TIME_MODAL_SHOW,
+
+    MANAGER_STS_CHANGE_TIME_MODAL_HIDE,
+
+//loading
+
+    MANAGER_STS_CHANGE_TIME_MODAL_LOADING_SHOW,
+
+    MANAGER_STS_CHANGE_TIME_MODAL_LOADING_HIDE,
+
+    MANAGER_STS_CHANGE_TIME_MODAL_INIT,
+
+    STSPageUpdate,
+
+    ScheduleDetailShow,
+
+    StopSchedule,
+
+    RebackStopSchedule,
+
+    ChangeTimeShow
 
 }

@@ -458,6 +458,9 @@ ul{
   float: left;
   max-width: 126px;
   cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   &.active {
     color: #fff;
   }

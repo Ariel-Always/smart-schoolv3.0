@@ -1702,7 +1702,7 @@ class MenuLeftNoLink extends React.Component {
                                     {/* {第二级别块}*/}
                                     <div className={`frame_leftmenu_mainitem`} data-id={item.id}>
 
-                                        <span className={`frame_leftmenu_mainitem_name ${item.menu ? item.menu : ''}`} onClick={() => { menuClick({ ident: item.ident, id: item.id, name: item.name }) }}>{item.name}</span>
+                                        <span  title={item.name} className={`frame_leftmenu_mainitem_name ${item.menu ? item.menu : ''}`} onClick={() => { menuClick({ ident: item.ident, id: item.id, name: item.name }) }}>{item.name}</span>
 
                                         <span className={`frame_leftmenu_arrow`}></span>
 
@@ -1718,7 +1718,7 @@ class MenuLeftNoLink extends React.Component {
 
                                                         <span className={`frame_leftmenu_point`}></span>
 
-                                                        <span className={`frame_leftmenu_onegrade_name frame_ellipsis`} onClick={() => { menuClick({ ident: i.ident, id: i.id, preId: item.id, preName: item.name, name: i.name }) }}>{i.name}</span>
+                                                        <span className={`frame_leftmenu_onegrade_name frame_ellipsis`} onClick={() => { menuClick({ ident: i.ident, id: i.id, preId: item.id, preName: item.name, name: i.name }) }} title={i.name}>{i.name}</span>
 
                                                     </li>
                                                 })
@@ -1733,7 +1733,7 @@ class MenuLeftNoLink extends React.Component {
                                 //如果没有第二级直接返回，同时pathname和NavLink的参数相同处于活动状态
                                 return <div key={key} className={`frame_leftmenu_mainitem no_child ${item.default ? 'active selected' : ''}`} data-id={item.id}>
 
-                                    <span className={`frame_leftmenu_mainitem_name ${item.menu ? item.menu : ''}`} onClick={() => { menuClick({ ident: item.ident, id: item.id, name: item.name }) }}>{item.name}</span>
+                                    <span className={`frame_leftmenu_mainitem_name ${item.menu ? item.menu : ''}`} onClick={() => { menuClick({ ident: item.ident, id: item.id, name: item.name }) }} title={item.name}>{item.name}</span>
 
                                 </div>
                             }

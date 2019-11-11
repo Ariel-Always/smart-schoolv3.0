@@ -1,0 +1,34 @@
+.component-change-time-wrapper{
+
+  color: #333333;
+
+  .week-no-wrapper{
+
+    text-align: center;
+
+    line-height: 30px;
+
+    .prev,
+    .next{
+
+      color: #0099ff;
+      
+      &:hover{
+
+        color: #ff6600;
+        
+      }
+
+    }
+
+    .now-week{
+
+      font-size: 20px;
+
+      margin: 0 42px;
+
+    }
+
+  }
+
+}
