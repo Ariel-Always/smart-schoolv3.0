@@ -18,6 +18,7 @@ import LogPreview from './data/LogPreview';
 import UserMsg from './data/UserMsg';
 import LogRecordPreview from './data/LogRecordPreview';
 import GetPicUrl from './data/GetPicUrl';
+import GetUserLog from './data/GetUserLog';
 const DataState=combineReducers(
     {
         LoginUser,
@@ -38,6 +39,7 @@ const DataState=combineReducers(
         LogPreview,
         UserMsg,
         LogRecordPreview,
-        GetPicUrl
+        GetPicUrl,
+        GetUserLog
     });
 export default DataState;

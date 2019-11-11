@@ -9,7 +9,8 @@ import {
   Button,
   CheckBox,
   CheckBoxGroup,
-  Modal
+  Modal,
+  Empty
 } from "../../../common/index";
 //import '../../../common/scss/_left_menu.scss'
 import { Link } from "react-router-dom";
@@ -162,7 +163,6 @@ class Student extends React.Component {
           render: key => {
             return (
               <div className="handle-content">
-                {/* <Button color='blue' type='default' onClick={this.StudentChange.bind(this, key)} className='handle-btn'>查看变记录</Button> */}
                 <Button
                   color="blue"
                   type="default"
@@ -170,6 +170,14 @@ class Student extends React.Component {
                   className="handle-btn"
                 >
                   编辑
+                </Button>
+                <Button
+                  color="blue"
+                  type="default"
+                  onClick={this.StudentChange.bind(this, key)}
+                  className="check-btn"
+                >
+                  查看变记录
                 </Button>
               </div>
             );
@@ -214,7 +222,8 @@ class Student extends React.Component {
       CancelBtnShow: "n",
       searchValue: "",
       sortType: "",
-      sortFiled: ""
+      sortFiled: "",
+      studentChangeUserLog: {}
     };
   }
   componentWillReceiveProps(nextProps) {
@@ -434,11 +443,16 @@ class Student extends React.Component {
     });
   };
 
-  StudentChange = (e, key) => {
+  StudentChange = key => {
     //  console.log(e, key)
+    const { dispatch, DataState } = this.props;
+    
+    let innerID = DataState.GradeStudentPreview.newList[key].Others.InnerID;
+    let url = '/GetUserLog?innerID='+innerID
+    // console.log(innerID)
+    dispatch(actions.UpDataState.getUserLog(url,'student'))
     this.setState({
-      StudentChangeMadalVisible: true,
-      StudentChangeKey: key
+      studentChangeUserLog: DataState.GradeStudentPreview.newList[key].Others
     });
   };
 
@@ -573,16 +587,16 @@ class Student extends React.Component {
     });
   };
   StudentChangeMadalOk = e => {
-    //  console.log(e)
-    this.setState({
-      StudentChangeMadalVisible: false
-    });
+    const { dispatch } = this.props;
+
+    dispatch({ type: actions.UpUIState.STUDENT_CHANGE_MODAL_CLOSE });
   };
   StudentChangeMadalCancel = e => {
     //  console.log(e)
-    this.setState({
-      StudentChangeMadalVisible: false
-    });
+    const { dispatch } = this.props;
+
+    dispatch({ type: actions.UpUIState.STUDENT_CHANGE_MODAL_CLOSE });
+
   };
 
   onDeleteAllClick = () => {
@@ -1115,7 +1129,7 @@ class Student extends React.Component {
       searchValue: "",
       checkAll: false,
       checkedList: [],
-      pagination:1
+      pagination: 1
     });
     dispatch(
       actions.UpDataState.getGradeStudentPreview(
@@ -1128,7 +1142,7 @@ class Student extends React.Component {
             ? "&classID=" + this.state.secondSelect.value
             : "") +
           "&PageIndex=" +
-          (0) +
+          0 +
           "&PageSize=10" +
           this.state.sortType +
           this.state.sortFiled,
@@ -1301,11 +1315,12 @@ class Student extends React.Component {
           bodyStyle={{ padding: 0 }}
           type="2"
           width={650}
-          visible={this.state.StudentChangeMadalVisible}
+          visible={UIState.AppModal.StudentChangeMadalVisible}
           onOk={this.StudentChangeMadalOk}
           onCancel={this.StudentChangeMadalCancel}
         >
-          <div className="modal-studentChange">
+          {DataState.GetUserLog.UserLog instanceof Array &&
+          DataState.GetUserLog.UserLog.length > 0 ?(<div className="modal-studentChange">
             <div className="content-top">
               <img
                 src={IconLocation}
@@ -1313,12 +1328,24 @@ class Student extends React.Component {
                 height="40"
                 alt="icon-location"
               />
-              <span className="top-text">毛峰的档案变更记录</span>
+              <span className="top-text">
+                {this.state.studentChangeUserLog.UserName}的档案变更记录
+              </span>
             </div>
             <div className="content">
-              <StudentChangeRecord data={""}></StudentChangeRecord>
+              {UIState.AppModal.StudentChangeMadalVisible ? (
+                <StudentChangeRecord data={DataState.GetUserLog.UserLog}></StudentChangeRecord>
+              ) : (
+                ""
+              )}
             </div>
-          </div>
+          </div>): (
+            <Empty
+              type="4"
+              title="该用户暂无档案变更记录"
+              style={{ marginTop: "200px", transform: "translateY(-50%)" }}
+            ></Empty>
+          )}
         </Modal>
         <Modal
           ref="handleTeacherMadal"

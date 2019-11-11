@@ -154,7 +154,6 @@ $image-url: "../images";
                         display: flex;
                         flex-flow: row nowrap;
                         justify-content: center;
-                        justify-content: center;
                         align-items: center;
                     }
                     .handle-btn {
@@ -168,7 +167,14 @@ $image-url: "../images";
                         margin-right: 2px;
                     }
                     .check-btn {
-                        //width:100px;
+                        float: right;
+                        height: 24px;
+                        width: 100px;
+                        line-height: 24px;
+                        font-size: 14px;
+                        padding: 0;
+                        text-align: center;
+                        margin-right: 2px;
                     }
                 }
                 .checkAll-box {

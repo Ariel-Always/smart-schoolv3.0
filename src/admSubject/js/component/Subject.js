@@ -89,7 +89,8 @@ class Subject extends React.Component {
                 }
             ],
             SubjectSelect: { value: '', title: '全部学段' },
-            UserMsg: props.DataState.LoginUser
+            UserMsg: props.DataState.LoginUser,
+            pagination:1
         }
     }
     // 钩子
@@ -131,6 +132,9 @@ class Subject extends React.Component {
     //操作分页
     onPagiNationChange = (value) => {
         const { dispatch } = this.props;
+        this.setState({
+            pagination:value
+        })
         dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID='+(this.state.SubjectSelect.value?this.state.SubjectSelect.value:'')+'&pageSize=8&pageIndex=' + value));
     }
 
@@ -187,6 +191,9 @@ class Subject extends React.Component {
             return res.json()
         }).then(json => {
             if (json.StatusCode === 200) {
+                this.setState({
+                    pagination:1
+                })
                 dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID=' + this.state.SubjectSelect.value + '&pageSize=8&pageIndex=1'));
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
@@ -240,7 +247,7 @@ class Subject extends React.Component {
             // } else 
             if (json.StatusCode === 200) {
                 dispatch(actions.UpUIState.changeSubjectModalClose())
-                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID=' + this.state.SubjectSelect.value + '&pageSize=8&pageIndex=1'));
+                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID=' + this.state.SubjectSelect.value + '&pageSize=8&pageIndex='+this.state.pagination));
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
                     title: "成功",
@@ -300,6 +307,9 @@ class Subject extends React.Component {
             //     // console.log('错误码：' + json.StatusCode)
             // } else 
             if (json.StatusCode === 200) {
+                this.setState({
+                    pagination:1
+                })
                 dispatch(actions.UpUIState.addSubjectModalClose())
                 dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID=' + this.state.SubjectSelect.value + '&pageSize=8&pageIndex=1'));
 
@@ -381,7 +391,8 @@ class Subject extends React.Component {
             //     // console.log('错误码：' + json.StatusCode)
             // } else 
             if (json.StatusCode === 200) {
-                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID=' + this.state.SubjectSelect.value + '&pageSize=8&pageIndex=1'));
+                
+                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID=' + this.state.SubjectSelect.value + '&pageSize=8&pageIndex='+this.state.pagination));
                 dispatch(actions.UpUIState.setSubjectTeacherModalClose())
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
@@ -435,7 +446,7 @@ class Subject extends React.Component {
                                     showQuickJumper
                                     defaultCurrent={DataState.SubjectMsg ? DataState.SubjectMsg.PageIndex : 1}
                                     defaultPageSize={8}
-
+                                    current={this.state.pagination}
                                     total={DataState.SubjectMsg ? DataState.SubjectMsg.Total : 0}
                                     onChange={this.onPagiNationChange.bind(this)}
 

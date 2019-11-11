@@ -174,7 +174,12 @@ class ChangeSubject extends React.Component {
                 return child
             })
         }
-        let grade = selectGrade.join();
+        let newGrade = []
+        selectGrade.map((child)=>{
+            if(child.length!==0)
+            newGrade.push(child)
+        })
+        let grade = newGrade.join();
         if (grade.slice(0, 1) === ',')
             grade = grade.slice(1)
         dispatch(actions.UpDataState.handleSubjectModalMsg(grade))

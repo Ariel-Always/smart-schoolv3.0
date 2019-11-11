@@ -100,6 +100,20 @@ function postData(
 // 处理statusCode
 function handleStatusCode(json, element = true) {
   let title = "";
+  if(!json){
+    title = "服务器出现未知异常，请重试或联系管理员";
+    ReactDOM.render(
+      // eslint-disable-next-line react/react-in-jsx-scope
+      <ErrorAlert
+        key={"alert" + "400-" + Math.round(Math.random() * 10000)}
+        show={true}
+        title={title}
+      />,
+      document.getElementById("alert")
+    );
+    return;
+
+  }
   if (json.StatusCode === undefined) {
     title = "服务器出现未知异常，请重试或联系管理员";
     ReactDOM.render(
@@ -111,6 +125,8 @@ function handleStatusCode(json, element = true) {
       />,
       document.getElementById("alert")
     );
+    return;
+
   }
   if (!element || json.StatusCode === 200) return;
   // console.log(json.StatusCode);

@@ -34,6 +34,7 @@ function handleData(data,pageIndex,pageSize) {
 
         //let {UserID,Grader,GradeName,ClassName,PhotoPath,UserName,...others} = child;
         list.handleMsg = { ...child, key: index, ...NewSubject };
+        list.Others = child
         let person = {
             userName: child.UserName,
             userImg: child.PhotoPath,
