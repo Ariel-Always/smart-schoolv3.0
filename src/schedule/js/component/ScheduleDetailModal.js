@@ -8,7 +8,7 @@ class ScheduleDetailModal extends Component{
 
     render() {
 
-        const { Params,StopSchedule,RebackStopSchedule,ChangeTimeShow } = this.props;
+        const { Params,ScheduleDetailClose,StopSchedule,RebackStopSchedule,ChangeTimeShow } = this.props;
 
         const  { Show,ModalLoading,itemSchedule,itemScheduleLog=[],itemScheduleHistory=[] } = Params;
 
@@ -118,56 +118,6 @@ class ScheduleDetailModal extends Component{
 
         let WeekDayTitle = '';
 
-      /*  switch (WeekDay) {
-
-            case 0:
-
-                WeekDayTitle = '星期一';
-
-                break;
-
-            case 1:
-
-                WeekDayTitle = '星期二';
-
-                break;
-
-            case 2:
-
-                WeekDayTitle = '星期三';
-
-                break;
-
-            case 3:
-
-                WeekDayTitle = '星期四';
-
-                break;
-
-            case 4:
-
-                WeekDayTitle = '星期五';
-
-                break;
-
-            case 5:
-
-                WeekDayTitle = '星期六';
-
-                break;
-
-            case 6:
-
-                WeekDayTitle = '星期日';
-
-                break;
-
-            default:
-
-                WeekDayTitle = '';
-
-        }*/
-
 
 
         return (
@@ -186,7 +136,7 @@ class ScheduleDetailModal extends Component{
 
                    className="schedule-detail-modal-wrapper"
 
-                   //onCancel={this.alertClose.bind(this)}
+                   onCancel={e=>ScheduleDetailClose()}
 
             >
 
@@ -252,7 +202,7 @@ class ScheduleDetailModal extends Component{
 
                                             :
 
-                                            <button className="adjust-btn adjust-time" onClick={()=>ChangeTimeShow({StartEndTime,WeekDay,ClassHourName,ClassDate:NowClassDate,ClassHourNO:NowClassHourNO,WeekNO,})}>调整时间</button>
+                                            <button className="adjust-btn adjust-time" onClick={()=>ChangeTimeShow({StartEndTime,WeekDay,ClassHourName,ClassDate:NowClassDate,ClassHourNO:NowClassHourNO,WeekNO,TeacherID:NowTeacherID,NowClassRoomID,NowClassRoomName,ScheduleID})}>调整时间</button>
 
                                         :''
 

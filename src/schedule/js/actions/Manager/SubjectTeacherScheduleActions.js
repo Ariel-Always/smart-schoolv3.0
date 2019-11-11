@@ -32,12 +32,10 @@ const MANAGER_STS_SCHEDULE_DETAIL_MODAL_LOADING_HIDE = 'MANAGER_STS_SCHEDULE_DET
 const MANAGER_STS_SCHEDULE_DETAIL_MODAL_INIT = 'MANAGER_STS_SCHEDULE_DETAIL_MODAL_INIT';
 
 
-//调整时间
+//调整时间弹窗
 const MANAGER_STS_CHANGE_TIME_MODAL_SHOW = 'MANAGER_STS_CHANGE_TIME_MODAL_SHOW';
 
 const MANAGER_STS_CHANGE_TIME_MODAL_HIDE = 'MANAGER_STS_CHANGE_TIME_MODAL_HIDE';
-
-//loading
 
 const MANAGER_STS_CHANGE_TIME_MODAL_LOADING_SHOW = 'MANAGER_STS_CHANGE_TIME_MODAL_LOADING_SHOW';
 
@@ -45,7 +43,7 @@ const MANAGER_STS_CHANGE_TIME_MODAL_LOADING_HIDE = 'MANAGER_STS_CHANGE_TIME_MODA
 
 const MANAGER_STS_CHANGE_TIME_MODAL_INIT = 'MANAGER_STS_CHANGE_TIME_MODAL_INIT';
 
-
+const MANAGER_STS_CHANGE_TIME_MODAL_CLASSHOUR_PICK = 'MANAGER_STS_CHANGE_TIME_MODAL_CLASSHOUR_PICK';
 
 
 
@@ -63,8 +61,6 @@ const STSPageUpdate = (opt) => {
         let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;
 
         let {NowWeekNo,ItemSubjectSelect,schedule,pageIndex} = Manager.SubjectTeacherSchedule;
-
-        console.log(NowWeekNo);
 
         let SubjectID = '';
 
@@ -253,20 +249,106 @@ const ChangeTimeShow = (params) =>{
 
     return (dispatch,getState) => {
 
-        const { ClassDate,WeekNO,ClassHourNO,StartEndTime,WeekDay,ClassHourName } = params;
+        const { ClassDate,ClassHourNO,StartEndTime,WeekDay,
 
-        const { ItemWeek } = getState().PeriodWeekTerm;
+            ClassHourName,ClassHourType,TeacherID,ScheduleID,NowClassRoomID,NowClassRoomName
 
-        const { ItemClassHour } = getState().Manager.SubjectCourseGradeClassRoom;
+        } = params;
+
+        const { ItemWeek,NowDate } = getState().PeriodWeekTerm;
+
+        const { ItemClassHour,ItemClassHourCount,NowClassHourNO } = getState().Manager.SubjectCourseGradeClassRoom;
+
+        const WeekNO = getState().Manager.SubjectTeacherSchedule.NowWeekNo;
 
         dispatch({ type:MANAGER_STS_CHANGE_TIME_MODAL_SHOW});
 
-        dispatch({type:MANAGER_STS_CHANGE_TIME_MODAL_INIT,data:{WeekDay,WeekNO,ClassDate,ClassHourNO,ItemClassHour,ItemWeek}})
+        dispatch({type:MANAGER_STS_CHANGE_TIME_MODAL_INIT,data:{TeacherID,ScheduleID,NowClassRoomID,NowClassRoomName,StartEndTime,ClassHourType,NowDate,WeekDay,ItemClassHourCount,NowClassHourNO:4,WeekNO,ClassDate,ClassHourNO,ItemClassHour,ItemWeek}});
+
+        dispatch({type:MANAGER_STS_CHANGE_TIME_MODAL_LOADING_HIDE});
 
 
     }
 
 };
+
+
+//点击某一个课时
+
+const SelectClassHour = (params) => {
+
+    return (dispatch,getState) => {
+
+        const { SelectWeekDay,SelectClassHourNO,SelectDate } = params;
+
+        dispatch({type:MANAGER_STS_CHANGE_TIME_MODAL_CLASSHOUR_PICK,data:{SelectWeekDay,SelectClassHourNO,SelectDate}})
+
+    }
+
+};
+
+
+
+
+//调整时间切换周次
+
+const WeekPick = (WeekNO) => {
+
+    return (dispatch,getState) => {
+
+        dispatch({type:MANAGER_STS_CHANGE_TIME_MODAL_INIT,data:{WeekNO}});
+
+    }
+
+};
+
+//点击提交调整时间
+const ChangeTimeCommit = () =>{
+
+    return (dispatch,getState)=>{
+
+        const { SelectDate,SelectClassHourNO,TeacherID,ClassDate,ClassHourNO,ScheduleID,NowClassRoomID,NowClassRoomName } = getState().Manager.SubjectTeacherSchedule.ChangeTime;
+
+        if (SelectDate){
+
+            dispatch({type:MANAGER_STS_CHANGE_TIME_MODAL_LOADING_SHOW});
+
+            const { SchoolID } = getState().LoginUser;
+
+            const ScheduleClassDateAndClassHourNO = `${SelectDate},${SelectClassHourNO}`;
+
+            ApiActions.CancelOverScheduleAfterChangeClassRoomAndGetTea({
+
+                SchoolID,ScheduleID,ScheduleClassDateAndClassHourNO,ClassDate,ClassHourNO,
+
+                NowClassRoomID,NowClassRoomName,TeacherID,dispatch
+
+            }).then(data=>{
+
+                if (data===0){
+
+                    dispatch(AppAlertActions.alertSuccess({title:"调整时间成功！"}));
+
+                    dispatch(ScheduleModalInfoUpdate(SchoolID,TeacherID,ScheduleID,ClassDate,ClassHourNO));
+
+                }
+
+                dispatch({type:MANAGER_STS_CHANGE_TIME_MODAL_LOADING_HIDE});
+
+            })
+
+        }else {
+
+            dispatch(AppAlertActions.alertWarn({title:"请选择调整的时间！"}));
+
+        }
+
+    }
+
+};
+
+
+
 
 
 
@@ -336,6 +418,8 @@ export default {
 
     MANAGER_STS_CHANGE_TIME_MODAL_INIT,
 
+    MANAGER_STS_CHANGE_TIME_MODAL_CLASSHOUR_PICK,
+
     STSPageUpdate,
 
     ScheduleDetailShow,
@@ -344,6 +428,12 @@ export default {
 
     RebackStopSchedule,
 
-    ChangeTimeShow
+    ChangeTimeShow,
+
+    SelectClassHour,
+
+    WeekPick,
+
+    ChangeTimeCommit
 
 }

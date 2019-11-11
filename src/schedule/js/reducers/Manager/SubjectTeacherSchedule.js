@@ -26,7 +26,13 @@ const SubjectTeacherSchedule = (state={
 
         Show:false,
 
-        ModalLoading:false
+        ModalLoading:false,
+
+        SelectWeekDay:'',
+
+        SelectClassHourNO:0,
+
+        SelectDate:''
 
     }
 
@@ -121,9 +127,25 @@ const SubjectTeacherSchedule = (state={
 
             return {...state,ChangeTime:{...state.ChangeTime,Show:true,ModalLoading:true}};
 
+        case STSActions.MANAGER_STS_CHANGE_TIME_MODAL_HIDE:
+
+            return {...state,ChangeTime:{...state.ChangeTime,Show:false}};
+
+        case STSActions.MANAGER_STS_CHANGE_TIME_MODAL_LOADING_SHOW:
+
+            return {...state,ChangeTime:{...state.ChangeTime,ModalLoading:true}};
+
+        case STSActions.MANAGER_STS_CHANGE_TIME_MODAL_LOADING_HIDE:
+
+            return {...state,ChangeTime:{...state.ChangeTime,ModalLoading:false}};
+
         case STSActions.MANAGER_STS_CHANGE_TIME_MODAL_INIT:
 
-            return {...state,ChangeTime:{...state.ChangeTime,...actions.data}};
+            return {...state,ChangeTime:{...state.ChangeTime,SelectWeekDay:'',SelectClassHourNO:0,...actions.data}};
+
+        case STSActions.MANAGER_STS_CHANGE_TIME_MODAL_CLASSHOUR_PICK:
+
+            return { ...state,ChangeTime:{...state.ChangeTime,...actions.data}};
 
         default:
 

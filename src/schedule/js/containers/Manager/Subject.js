@@ -177,6 +177,16 @@ class Subject extends Component{
 
     }
 
+    //关闭弹窗
+
+    ScheduleDetailClose(){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:STSAction.MANAGER_STS_SCHEDULE_DETAIL_MODAL_HIDE});
+
+    }
+
     //调整时间弹窗
 
     ChangeTimeShow(params){
@@ -187,6 +197,45 @@ class Subject extends Component{
 
     }
 
+    //调整时间弹窗点击某一个课时
+
+    SelectClassHour(params){
+
+        const { dispatch } = this.props;
+
+        dispatch(STSAction.SelectClassHour(params));
+
+    }
+
+
+    //调整时间弹窗切换周次
+
+    WeekPick(WeekNO){
+
+        const { dispatch } = this.props;
+
+        dispatch(STSAction.WeekPick(WeekNO));
+
+    }
+
+    //调整时间弹窗关闭
+
+    CloseChangeTime(){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:STSAction.MANAGER_STS_CHANGE_TIME_MODAL_HIDE});
+
+    }
+
+    //点击调整时间弹窗确定
+    ChangeTimeCommit(){
+
+        const { dispatch } = this.props;
+
+        dispatch(STSAction.ChangeTimeCommit());
+
+    }
 
 
 
@@ -306,6 +355,8 @@ class Subject extends Component{
 
                     ChangeTimeShow={this.ChangeTimeShow.bind(this)}
 
+                    ScheduleDetailClose={this.ScheduleDetailClose.bind(this)}
+
                 >
 
                 </ScheduleDetailModal>
@@ -313,6 +364,14 @@ class Subject extends Component{
                 <ChangeTimeModal
 
                     Params={ChangeTime}
+
+                    SelectClassHour={this.SelectClassHour.bind(this)}
+
+                    WeekPick={this.WeekPick.bind(this)}
+
+                    CloseChangeTime={this.CloseChangeTime.bind(this)}
+
+                    ChangeTimeCommit={this.ChangeTimeCommit.bind(this)}
 
                 >
 

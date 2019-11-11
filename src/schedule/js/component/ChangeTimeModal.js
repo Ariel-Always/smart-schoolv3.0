@@ -36,6 +36,14 @@ class ChangeTimeModal extends Component{
 
     }
 
+    //判断转化为时间戳
+
+    ToTime(time){
+
+       return new Date(time).getTime();
+
+    }
+
 
 
 
@@ -43,13 +51,15 @@ class ChangeTimeModal extends Component{
 
     render() {
 
-        const  { Params } = this.props;
+        const  { Params,SelectClassHour,WeekPick,CloseChangeTime,ChangeTimeCommit } = this.props;
 
         const {
 
-            Show=false,ModalLoading=false,WeekNO=0,
+            Show=false,ModalLoading=true,WeekNO=0,ClassDate='',NowClassHourNO=1,
 
-            ItemClassHour=[],ItemWeek=[]
+            ItemClassHour=[],ItemWeek=[],ItemClassHourCount,NowDate,WeekDay,
+
+            ClassHourType,ClassHourNO,StartEndTime,SelectWeekDay='',SelectClassHourNO=0
 
         } = Params;
 
@@ -59,6 +69,7 @@ class ChangeTimeModal extends Component{
         //th
         let ths = [];
 
+        let TimeList = [];
 
         //计算时间
         if (ItemWeek.length>0){
@@ -127,11 +138,15 @@ class ChangeTimeModal extends Component{
 
                     DateTitle = StartDate;
 
+                    TimeList.push(DateTitle);
+
                 }else{
 
                     StartTime = this.getNextDay(StartTime);
 
                     DateTitle = StartTime;
+
+                    TimeList.push(DateTitle);
 
                 }
 
@@ -150,9 +165,39 @@ class ChangeTimeModal extends Component{
         }
 
 
+        let FooterClassHourType = '';
+
+        switch (ClassHourType) {
+
+            case 1:
+
+                FooterClassHourType = '上午';
+
+                break;
+
+            case 2:
+
+                FooterClassHourType = '下午';
+
+                break;
+
+            case 3:
+
+                FooterClassHourType = '晚上';
+
+                break;
+
+            default:
+
+                FooterClassHourType = '';
+
+        }
 
 
+        let courseTotal = 0;
 
+
+        let MaxWeek =  ItemWeek.length>0?ItemWeek[ItemWeek.length-1].WeekNO:1;
 
         return (
 
@@ -168,7 +213,9 @@ class ChangeTimeModal extends Component{
 
                    className="component-change-time-wrapper"
 
-                //onCancel={this.alertClose.bind(this)}
+                   onCancel={e=>CloseChangeTime()}
+
+                   onOk={e=>ChangeTimeCommit()}
 
             >
 
@@ -178,11 +225,11 @@ class ChangeTimeModal extends Component{
 
                         <div className="week-no-wrapper">
 
-                                <span className="prev">&lt;上一周</span>
+                                <span className={`prev ${WeekNO<=1?'disabled':''}`} onClick={WeekNO<=1?e=>{}:e=>WeekPick(WeekNO-1)}>&lt;上一周</span>
 
                                 <span className="now-week">第{WeekNO}周</span>
 
-                                <span className="next">下一周&gt;</span>
+                                <span className={`next ${WeekNO>=MaxWeek?'disabled':''}`} onClick={WeekNO>=MaxWeek?e=>{}:e=>WeekPick(WeekNO+1)}>下一周&gt;</span>
 
                         </div>
 
@@ -202,7 +249,167 @@ class ChangeTimeModal extends Component{
 
                                 </thead>
 
+                                <tbody>
 
+                                {
+
+                                    ItemClassHour&&ItemClassHour.map((item,key) => {
+
+                                        let firstTd = '';
+                                        //判断上下午，以及合并单元格
+
+
+                                        ItemClassHourCount.map((i) => {
+
+                                            if (key===courseTotal){
+
+                                                let noon = '';
+
+                                                switch (i.ClassHourType) {
+
+                                                    case 1:
+
+                                                        noon = "上午";
+
+                                                        break;
+
+                                                    case 2:
+
+                                                        noon = "下午";
+
+                                                        break;
+
+                                                    case 3:
+
+                                                        noon = "晚上";
+
+                                                        break;
+
+                                                    default:
+
+                                                        noon = "上午";
+
+                                                        break;
+
+                                                }
+
+                                                firstTd = <td  className="noon"  rowSpan={i.CountType}>{noon}</td>;
+
+                                                courseTotal += i.CountType;
+
+                                                return;
+
+                                            }
+
+                                        });
+
+                                        let tds = [];
+
+
+                                            //从周一开始判断
+                                        for (let i =0; i <= 6; i++){
+
+                                                let CanSelect = false;
+
+                                                let NowTime = this.ToTime(NowDate);
+
+                                                let Time = this.ToTime(TimeList[i]);
+
+                                                if (NowTime<Time){
+
+                                                    CanSelect = true;
+
+                                                }else if (NowTime===Time) {
+
+                                                    if (item.ClassHourNO>NowClassHourNO){
+
+                                                        CanSelect = true;
+
+                                                    }
+
+                                                }
+
+                                                if (CanSelect){
+
+                                                    if (SelectWeekDay===i&&SelectClassHourNO===item.ClassHourNO){
+
+                                                        tds.push(<td key={i} className={`shedule`} >
+
+                                                            <div className='select active'>已选择</div>
+
+                                                        </td>);
+
+                                                    }else{
+
+                                                        tds.push(<td key={i} className={`shedule`} >
+
+                                                            <div className='select' onClick={e=>{ SelectClassHour({SelectWeekDay:i,SelectClassHourNO:item.ClassHourNO,SelectDate:TimeList[i]}) }}>选择</div>
+
+                                                        </td>);
+
+                                                    }
+
+                                                }else{
+
+                                                    tds.push(<td key={i} className={`shedule`} >
+
+                                                        <div ></div>
+
+                                                    </td>);
+
+                                                }
+
+                                            }
+
+                                        return  <tr key={key}>
+
+                                            {
+                                                firstTd===''?<React.Fragment></React.Fragment>:firstTd
+                                            }
+
+                                            <td className={`course-time course${key+1}`} >
+
+                                                <div className="course-time-title" >第{item.ClassHourNO}节</div>
+
+                                                <div className="course-time-time">{item.StartTime}-{item.EndTime}</div>
+
+                                            </td>
+
+                                            {
+
+                                                tds
+
+                                            }
+
+                                        </tr>
+
+                                    })
+
+                                }
+
+                                <tr>
+
+                                    <td colSpan={9} className="footer-info">
+
+                                        <span className="dec">原上课时间:</span>
+
+                                        <span>第{WeekNO}周</span>
+
+                                        <span>{WeekDay}</span>
+
+                                        <span className="footer-class-date">({ClassDate})</span>
+
+                                        <span>{FooterClassHourType}</span>
+
+                                        <span>第{ClassHourNO}节</span>
+
+                                        <span className="footer-time">({StartEndTime})</span>
+
+                                    </td>
+
+                                </tr>
+
+                                </tbody>
 
                             </table>
 

@@ -613,9 +613,9 @@ const GetScheduleDetailByUserID = async ({SchoolID,TeacherID,ScheduleID,ClassDat
 
     let res = await Method.getGetData(`/ScheduleTea/api/GetScheduleDetailByUserID?SchoolID=${SchoolID}&TeacherID=${TeacherID}&ScheduleID=${ScheduleID}&ClassDate=${ClassDate}&ClassHourNO=${ClassHourNO}`,
 
-        2,
+        2,);
 
-    'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+    //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
 
     //'http://192.168.2.26:8084');
 
@@ -1025,8 +1025,8 @@ const OverScheduleAndGetTea = async ({ SchoolID,TeacherID,ClassDate,ClassHourNO,
 
         },2,
 
-        //CONFIG.ScheduleProxy);
-    'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+        CONFIG.ScheduleProxy);
+    //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
 
     if (res.StatusCode === 200){
 
@@ -1051,8 +1051,34 @@ const CancelOverScheduleAndGetTea = async ({ SchoolID,TeacherID,ClassDate,ClassH
 
         },2,
 
-        //CONFIG.ScheduleProxy);
-        'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+        CONFIG.ScheduleProxy);
+        //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+
+    if (res.StatusCode === 200){
+
+        return res.ErrCode;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
+
+//调整时间
+
+const CancelOverScheduleAfterChangeClassRoomAndGetTea = async ({ SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,ScheduleClassDateAndClassHourNO,NowClassRoomID,NowClassRoomName,dispatch}) => {
+
+    let res = await Method.getPostData(`/ScheduleTea/api/CancelOverScheduleAfterChangeClassRoomAndGetTea`,{
+
+            SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,ScheduleClassDateAndClassHourNO,NowClassRoomID,NowClassRoomName,
+
+        },2);
+
+    //'http://192.168.2.26:8084');
+    //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
 
     if (res.StatusCode === 200){
 
@@ -1153,6 +1179,8 @@ export default {
 
     OverScheduleAndGetTea,
 
-    CancelOverScheduleAndGetTea
+    CancelOverScheduleAndGetTea,
+
+    CancelOverScheduleAfterChangeClassRoomAndGetTea
 
 }
