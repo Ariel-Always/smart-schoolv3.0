@@ -10,7 +10,8 @@ import {
   Button,
   CheckBox,
   CheckBoxGroup,
-  Modal
+  Modal,
+  Empty
 } from "../../../common/index";
 import { Link } from "react-router-dom";
 import CONFIG from "../../../common/js/config";
@@ -151,7 +152,14 @@ class Leader extends React.Component {
                 >
                   编辑
                 </Button>
-                {/* <Button color='blue' type='default' onClick={this.LeaderChange.bind(this, key)} className='handle-btn check-btn'>查看变更记录</Button> */}
+                <Button
+                  color="blue"
+                  type="default"
+                  onClick={this.LeaderChange.bind(this, key)}
+                  className="check-btn"
+                >
+                  查看变更记录
+                </Button>
               </div>
             );
           }
@@ -162,7 +170,8 @@ class Leader extends React.Component {
       userMsg: props.DataState.LoginUser,
       LeaderDetailsMsgModalVisible: false,
       sortType: "",
-      sortFiled: ""
+      sortFiled: "",
+      leaderChangeUserLog:{}
     };
   }
   // 点击全选
@@ -307,6 +316,16 @@ class Leader extends React.Component {
   // 编辑记录
   LeaderChange = key => {
     // console.log(key)
+    const { dispatch, DataState } = this.props;
+
+    let innerID = DataState.SchoolLeaderPreview.newList[key].Others.InnerID;
+    let url = "/GetUserLog?innerID=" + innerID;
+    // console.log(innerID)
+    dispatch(actions.UpDataState.getUserLog(url, "leader"));
+    this.setState({
+      leaderChangeUserLog:
+        DataState.SchoolLeaderPreview.newList[key].Others
+    });
   };
   // 编辑领导
   LeaderEdit = key => {
@@ -612,6 +631,20 @@ class Leader extends React.Component {
 
     dispatch(actions.UpUIState.AddLeaderModalClose());
   };
+
+  LeaderChangeMadalOk = e => {
+    const { dispatch } = this.props;
+
+    dispatch({ type: actions.UpUIState.LEADER_CHANGE_MODAL_CLOSE });
+  };
+  LeaderChangeMadalCancel = e => {
+    //  console.log(e)
+    const { dispatch } = this.props;
+
+    dispatch({ type: actions.UpUIState.LEADER_CHANGE_MODAL_CLOSE });
+
+  };
+
   render() {
     const { UIState, DataState } = this.props;
 
@@ -722,15 +755,16 @@ class Leader extends React.Component {
           )}
         </Modal>
         <Modal
-          ref="LeaderChangeMadal"
+          ref="StudentChangeMadal"
           bodyStyle={{ padding: 0 }}
           type="2"
           width={650}
-          visible={this.state.LeaderChangeMadalVisible}
+          visible={UIState.AppModal.LeaderChangeMadalVisible}
           onOk={this.LeaderChangeMadalOk}
           onCancel={this.LeaderChangeMadalCancel}
         >
-          <div className="modal-studentChange">
+          {DataState.GetUserLog.UserLog instanceof Array &&
+          DataState.GetUserLog.UserLog.length > 0 ?(<div className="modal-studentChange">
             <div className="content-top">
               <img
                 src={IconLocation}
@@ -738,12 +772,24 @@ class Leader extends React.Component {
                 height="40"
                 alt="icon-location"
               />
-              <span className="top-text">毛峰的档案变更记录</span>
+              <span className="top-text">
+                {this.state.leaderChangeUserLog.UserName}的档案变更记录
+              </span>
             </div>
             <div className="content">
-              <StudentChangeRecord data={""}></StudentChangeRecord>
+              {UIState.AppModal.LeaderChangeMadalVisible ? (
+                <StudentChangeRecord data={DataState.GetUserLog.UserLog}></StudentChangeRecord>
+              ) : (
+                ""
+              )}
             </div>
-          </div>
+          </div>): (
+            <Empty
+              type="4"
+              title="该用户暂无档案变更记录"
+              style={{ marginTop: "200px", transform: "translateY(-50%)" }}
+            ></Empty>
+          )}
         </Modal>
       </div>
     );

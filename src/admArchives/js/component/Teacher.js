@@ -9,7 +9,8 @@ import {
   Button,
   CheckBox,
   CheckBoxGroup,
-  Modal
+  Modal,
+  Empty
 } from "../../../common/index";
 //import '../../../common/scss/_left_menu.scss'
 import { Link } from "react-router-dom";
@@ -21,7 +22,7 @@ import history from "../containers/history";
 import EditModal from "./EditModal";
 import IconLocation from "../../images/icon-location.png";
 import actions from "../actions";
-import TeacherChangeRecord from "./TeacherChangeRecord";
+import StudentChangeRecord from "./StudentChangeRecord";
 import "../../scss/Teacher.scss";
 class Teacher extends React.Component {
   constructor(props) {
@@ -162,7 +163,6 @@ class Teacher extends React.Component {
           render: handleMsg => {
             return (
               <div className="handle-content">
-                {/* <Button color='blue' type='default' onClick={this.TeacherChange.bind(this, handleMsg)} className='handle-btn'>查看变记录</Button> */}
                 <Button
                   color="blue"
                   type="default"
@@ -170,6 +170,14 @@ class Teacher extends React.Component {
                   className="handle-btn"
                 >
                   编辑
+                </Button>
+                <Button
+                  color="blue"
+                  type="default"
+                  onClick={this.TeacherChange.bind(this, handleMsg)}
+                  className="check-btn"
+                >
+                  查看变记录
                 </Button>
               </div>
             );
@@ -213,7 +221,8 @@ class Teacher extends React.Component {
       CancelBtnShow: "n",
       searchValue: "",
       sortType: "",
-      sortFiled: ""
+      sortFiled: "",
+      teacherChangeUserLog: {}
     };
   }
   componentWillReceiveProps(nextProps) {
@@ -269,13 +278,13 @@ class Teacher extends React.Component {
       );
       return;
     } else {
-        this.setState({
-            checkedList: [],
-            checkAll: false,
-            keyword: "&keyword=" + e.value,
-            CancelBtnShow: "y",
-            pagination: 1
-          });
+      this.setState({
+        checkedList: [],
+        checkAll: false,
+        keyword: "&keyword=" + e.value,
+        CancelBtnShow: "y",
+        pagination: 1
+      });
       dispatch(
         actions.UpDataState.getSubjectTeacherPreview(
           "/GetTeacherToPage?SchoolID=" +
@@ -289,7 +298,6 @@ class Teacher extends React.Component {
           this.state.selectSubject
         )
       );
-      
     }
   };
 
@@ -304,10 +312,16 @@ class Teacher extends React.Component {
     });
   };
 
-  TeacherChange = (e, handleMsg) => {
+  TeacherChange = e => {
+    const { dispatch, DataState } = this.props;
+
+    let innerID = DataState.SubjectTeacherPreview.newList[e.key].Others.InnerID;
+    let url = "/GetUserLog?innerID=" + innerID;
+    // console.log(innerID)
+    dispatch(actions.UpDataState.getUserLog(url, "teacher"));
     this.setState({
-      TeacherChangeMadalVisible: true,
-      TeacherChangeKey: handleMsg.key
+      teacherChangeUserLog:
+        DataState.SubjectTeacherPreview.newList[e.key].Others
     });
   };
 
@@ -448,8 +462,6 @@ class Teacher extends React.Component {
                 )
               );
               dispatch(actions.UpUIState.editAlltModalTipsVisible());
-
-              
             }
           });
       }
@@ -615,8 +627,6 @@ class Teacher extends React.Component {
                 )
               );
               dispatch(actions.UpUIState.editAlltModalTipsVisible());
-
-              
             }
           });
       }
@@ -632,16 +642,14 @@ class Teacher extends React.Component {
     });
   };
   TeacherChangeMadalOk = e => {
-    // console.log(e);
-    this.setState({
-      TeacherChangeMadalVisible: false
-    });
+    const { dispatch } = this.props;
+
+    dispatch({ type: actions.UpUIState.TEACHER_CHANGE_MODAL_CLOSE });
   };
   TeacherChangeMadalCancel = e => {
-    // console.log(e);
-    this.setState({
-      TeacherChangeMadalVisible: false
-    });
+    const { dispatch } = this.props;
+
+    dispatch({ type: actions.UpUIState.TEACHER_CHANGE_MODAL_CLOSE });
   };
 
   onDeleteAllClick = () => {
@@ -743,10 +751,10 @@ class Teacher extends React.Component {
     const { dispatch, DataState } = this.props;
     // console.log(this.state.selectSubject)
     this.setState({
-        checkedList: [],
-        checkAll: false,
-        pagination: e
-      });
+      checkedList: [],
+      checkAll: false,
+      pagination: e
+    });
     dispatch(
       actions.UpDataState.getSubjectTeacherPreview(
         "/GetTeacherToPage?SchoolID=" +
@@ -930,12 +938,12 @@ class Teacher extends React.Component {
           : sorter.order === "ascend"
           ? "SortType=ASC"
           : "";
-          this.setState({
-            checkedList: [],
-            checkAll: false,
-            sortType: "&" + sortType,
-            sortFiled: "&sortFiled=" + sorter.columnKey
-          });
+      this.setState({
+        checkedList: [],
+        checkAll: false,
+        sortType: "&" + sortType,
+        sortFiled: "&sortFiled=" + sorter.columnKey
+      });
       dispatch(
         actions.UpDataState.getSubjectTeacherPreview(
           "/GetTeacherToPage?SchoolID=" +
@@ -952,14 +960,13 @@ class Teacher extends React.Component {
           this.state.selectSubject
         )
       );
-      
     } else if (sorter && !sorter.columnKey) {
-        this.setState({
-            checkedList: [],
-            checkAll: false,
-            sortType: "",
-            sortFiled: ""
-          });
+      this.setState({
+        checkedList: [],
+        checkAll: false,
+        sortType: "",
+        sortFiled: ""
+      });
       dispatch(
         actions.UpDataState.getSubjectTeacherPreview(
           "/GetTeacherToPage?SchoolID=" +
@@ -973,7 +980,6 @@ class Teacher extends React.Component {
           this.state.selectSubject
         )
       );
-      
     }
   };
   //搜索change
@@ -989,10 +995,10 @@ class Teacher extends React.Component {
     this.setState({
       CancelBtnShow: "n",
       keyword: "",
-      searchValue:'',
+      searchValue: "",
       checkAll: false,
       checkedList: [],
-      pagination:1
+      pagination: 1
     });
     dispatch(
       actions.UpDataState.getSubjectTeacherPreview(
@@ -1001,7 +1007,7 @@ class Teacher extends React.Component {
           "&SubjectIDs=" +
           this.state.selectSubject.value +
           "&PageIndex=" +
-          (0) +
+          0 +
           "&PageSize=10" +
           this.state.sortType +
           this.state.sortFiled,
@@ -1156,7 +1162,7 @@ class Teacher extends React.Component {
             ""
           )}
         </Modal>
-        <Modal
+        {/* <Modal
           ref="TeacherChangeMadal"
           bodyStyle={{ padding: 0 }}
           type="2"
@@ -1179,6 +1185,47 @@ class Teacher extends React.Component {
               <TeacherChangeRecord data={""}></TeacherChangeRecord>
             </div>
           </div>
+        </Modal> */}
+        <Modal
+          ref="StudentChangeMadal"
+          bodyStyle={{ padding: 0 }}
+          type="2"
+          width={650}
+          visible={UIState.AppModal.TeacherChangeMadalVisible}
+          onOk={this.TeacherChangeMadalOk}
+          onCancel={this.TeacherChangeMadalCancel}
+        >
+          {DataState.GetUserLog.UserLog instanceof Array &&
+          DataState.GetUserLog.UserLog.length > 0 ? (
+            <div className="modal-studentChange">
+              <div className="content-top">
+                <img
+                  src={IconLocation}
+                  width="30"
+                  height="40"
+                  alt="icon-location"
+                />
+                <span className="top-text">
+                  {this.state.teacherChangeUserLog.UserName}的档案变更记录
+                </span>
+              </div>
+              <div className="content">
+                {UIState.AppModal.TeacherChangeMadalVisible ? (
+                  <StudentChangeRecord
+                    data={DataState.GetUserLog.UserLog}
+                  ></StudentChangeRecord>
+                ) : (
+                  ""
+                )}
+              </div>
+            </div>
+          ) : (
+            <Empty
+              type="4"
+              title="该用户暂无档案变更记录"
+              style={{ marginTop: "200px", transform: "translateY(-50%)" }}
+            ></Empty>
+          )}
         </Modal>
         <DetailsModal
           ref="TeacherDetailsMsgModal"
