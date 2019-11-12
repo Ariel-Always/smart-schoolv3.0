@@ -22,6 +22,8 @@ import ScheduleDetailModal from "../../component/ScheduleDetailModal";
 
 import ChangeTimeModal from '../../component/ChangeTimeModal';
 
+import AdjustClassRoomModal from "../../component/AdjustClassRoomModal";
+
 
 
 class Subject extends Component{
@@ -237,6 +239,24 @@ class Subject extends Component{
 
     }
 
+    //撤销调整时间
+    RebackTime(params){
+
+        const { dispatch } = this.props;
+
+        dispatch(STSAction.RebackTime(params));
+
+    }
+
+    //调整教室弹窗
+    AdjustClassRoomShow(params){
+
+        const { dispatch } = this.props;
+
+        dispatch(STSAction.AdjustClassRoomShow(params));
+
+    }
+
 
 
     render() {
@@ -245,7 +265,7 @@ class Subject extends Component{
 
         const {SubjectCourseGradeClassRoom,SubjectTeacherSchedule} = Manager;
 
-        const { ScheduleDetail,ChangeTime } = SubjectTeacherSchedule;
+        const { ScheduleDetail,ChangeTime,AdjustClassRoom } = SubjectTeacherSchedule;
 
 
 
@@ -357,6 +377,10 @@ class Subject extends Component{
 
                     ScheduleDetailClose={this.ScheduleDetailClose.bind(this)}
 
+                    RebackTime={this.RebackTime.bind(this)}
+
+                    AdjustClassRoomShow={this.AdjustClassRoomShow.bind(this)}
+
                 >
 
                 </ScheduleDetailModal>
@@ -376,6 +400,14 @@ class Subject extends Component{
                 >
 
                 </ChangeTimeModal>
+
+                <AdjustClassRoomModal
+
+                    Params={AdjustClassRoom}
+
+                >
+
+                </AdjustClassRoomModal>
 
             </div>
 

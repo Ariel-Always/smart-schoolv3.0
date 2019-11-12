@@ -45,6 +45,18 @@ const MANAGER_STS_CHANGE_TIME_MODAL_INIT = 'MANAGER_STS_CHANGE_TIME_MODAL_INIT';
 
 const MANAGER_STS_CHANGE_TIME_MODAL_CLASSHOUR_PICK = 'MANAGER_STS_CHANGE_TIME_MODAL_CLASSHOUR_PICK';
 
+//调整教室弹窗
+
+const MANAGER_STS_ADJUST_CLASSROOM_MODAL_SHOW = 'MANAGER_STS_ADJUST_CLASSROOM_MODAL_SHOW';
+
+const MANAGER_STS_ADJUST_CLASSROOM_MODAL_HIDE = 'MANAGER_STS_ADJUST_CLASSROOM_MODAL_HIDE';
+
+const MANAGER_STS_ADJUST_CLASSROOM_MODAL_LOADING_SHOW = 'MANAGER_STS_ADJUST_CLASSROOM_MODAL_LOADING_SHOW';
+
+const MANAGER_STS_ADJUST_CLASSROOM_MODAL_LOADING_HIDE = 'MANAGER_STS_ADJUST_CLASSROOM_MODAL_LOADING_HIDE';
+
+const MANAGER_STS_ADJUST_CLASSROOM_MODAL_INIT = 'MANAGER_STS_ADJUST_CLASSROOM_MODA_INIT';
+
 
 
 //学科教师总表学科课表界面更新
@@ -242,6 +254,34 @@ const RebackStopSchedule = (params) => {
 
 };
 
+//撤销时间调整
+
+const RebackTime = (params) => {
+
+    return (dispatch,getState) => {
+
+        const { SchoolID } = getState().LoginUser;
+
+        const { TeacherID,ClassDate,ClassHourNO,ScheduleID } = params;
+
+        ApiActions.CancelChangeDateAndGetTea({ScheduleID,SchoolID,TeacherID,ClassDate,ClassHourNO,dispatch}).then(data=>{
+
+            if (data===0){
+
+                dispatch(AppAlertActions.alertSuccess({title:'撤销调整时间成功!'}));
+
+                dispatch(ScheduleModalInfoUpdate({SchoolID,TeacherID,ScheduleID,ClassDate,ClassHourNO}));
+
+            }
+
+        });
+
+    }
+
+};
+
+
+
 
 //调整时间弹窗出现
 
@@ -263,7 +303,7 @@ const ChangeTimeShow = (params) =>{
 
         dispatch({ type:MANAGER_STS_CHANGE_TIME_MODAL_SHOW});
 
-        dispatch({type:MANAGER_STS_CHANGE_TIME_MODAL_INIT,data:{TeacherID,ScheduleID,NowClassRoomID,NowClassRoomName,StartEndTime,ClassHourType,NowDate,WeekDay,ItemClassHourCount,NowClassHourNO:4,WeekNO,ClassDate,ClassHourNO,ItemClassHour,ItemWeek}});
+        dispatch({type:MANAGER_STS_CHANGE_TIME_MODAL_INIT,data:{TeacherID,ScheduleID,NowClassRoomID,NowClassRoomName,StartEndTime,ClassHourType,NowDate,WeekDay,ItemClassHourCount,NowClassHourNO,WeekNO,ClassDate,ClassHourNO,ItemClassHour,ItemWeek}});
 
         dispatch({type:MANAGER_STS_CHANGE_TIME_MODAL_LOADING_HIDE});
 
@@ -317,7 +357,7 @@ const ChangeTimeCommit = () =>{
 
             const ScheduleClassDateAndClassHourNO = `${SelectDate},${SelectClassHourNO}`;
 
-            ApiActions.CancelOverScheduleAfterChangeClassRoomAndGetTea({
+            ApiActions.ChangeDateAndGetTea({
 
                 SchoolID,ScheduleID,ScheduleClassDateAndClassHourNO,ClassDate,ClassHourNO,
 
@@ -346,6 +386,66 @@ const ChangeTimeCommit = () =>{
     }
 
 };
+
+
+
+//调整教室弹窗show
+
+const AdjustClassRoomShow = (params) => {
+
+  return (dispatch,getState)=>{
+
+      const { ClassDate,ClassHourNO,TeacherID,ScheduleID,NowClassRoomID,NowClassRoomName } = params;
+
+      const { SchoolID } = getState().LoginUser;
+
+      dispatch({ type:MANAGER_STS_ADJUST_CLASSROOM_MODAL_SHOW});
+
+      let ClassRoomList = [];
+
+      ApiActions.GetAllOptionForAddSchedule({SchoolID,dispatch}).then(data=>{
+
+          if (data){
+
+              ClassRoomList = data.ItemClassRoomType.map(item=>{
+
+               let List = [];
+
+               data.ItemClassRoom.map(i=>{
+
+                   if (i.ClassRoomTypeID===item.ClassRoomTypeID&&i.ClassRoomID!==NowClassRoomID){
+
+                       List.push({ID:i.ClassRoomID,Name:i.ClassRoomName});
+
+                   }
+
+               });
+
+               return {
+
+                   ID:item.ClassRoomTypeID,
+
+                   Name:item.ClassRoomTypeName,
+
+                   List
+
+               }
+
+            });
+
+          }
+
+          dispatch({type:MANAGER_STS_ADJUST_CLASSROOM_MODAL_INIT,data:{ClassDate,ClassHourNO,TeacherID,ScheduleID,NowClassRoomID,ClassRoomList}});
+
+      });
+
+      dispatch({type:MANAGER_STS_ADJUST_CLASSROOM_MODAL_LOADING_HIDE});
+
+  }
+
+};
+
+
 
 
 
@@ -410,8 +510,6 @@ export default {
 
     MANAGER_STS_CHANGE_TIME_MODAL_HIDE,
 
-//loading
-
     MANAGER_STS_CHANGE_TIME_MODAL_LOADING_SHOW,
 
     MANAGER_STS_CHANGE_TIME_MODAL_LOADING_HIDE,
@@ -419,6 +517,18 @@ export default {
     MANAGER_STS_CHANGE_TIME_MODAL_INIT,
 
     MANAGER_STS_CHANGE_TIME_MODAL_CLASSHOUR_PICK,
+
+    //调整教室弹窗
+
+    MANAGER_STS_ADJUST_CLASSROOM_MODAL_SHOW,
+
+    MANAGER_STS_ADJUST_CLASSROOM_MODAL_HIDE,
+
+    MANAGER_STS_ADJUST_CLASSROOM_MODAL_LOADING_SHOW,
+
+    MANAGER_STS_ADJUST_CLASSROOM_MODAL_LOADING_HIDE,
+
+    MANAGER_STS_ADJUST_CLASSROOM_MODAL_INIT,
 
     STSPageUpdate,
 
@@ -434,6 +544,10 @@ export default {
 
     WeekPick,
 
-    ChangeTimeCommit
+    ChangeTimeCommit,
+
+    RebackTime,
+
+    AdjustClassRoomShow
 
 }

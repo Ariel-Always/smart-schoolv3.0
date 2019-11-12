@@ -1,0 +1,106 @@
+.component-adjust-classroom-wrapper{
+
+  color: #333333;
+
+  .ant-spin-nested-loading{
+
+    position: absolute;
+
+    left: 0;
+
+    top:0;
+
+    width: 100%;
+
+  }
+
+  .content-wrapper{
+
+    position: absolute;
+
+    width: 100%;
+
+  }
+
+  .header-search{
+
+    height: 40px;
+
+    background-color: #eeeeee;
+
+    .search_container{
+
+      float: right;
+
+      margin-top: 6px;
+
+      margin-right:12px;
+
+    }
+
+  }
+
+  .left-classroom-type{
+
+    float: left;
+
+    background-color: #e7e7e7;
+
+  }
+
+  .class-room-type-item{
+
+    width: 178px;
+
+    height: 50px;
+
+    color: #666666;
+
+    line-height: 50px;
+
+    text-align: left;
+
+    text-indent: 32px;
+
+    position: relative;
+
+    cursor: pointer;
+
+    &:after{
+
+      position: absolute;
+
+      content: '';
+
+      left: 22px;
+
+      top: 22px;
+
+      width: 4px;
+
+      height: 4px;
+
+      border:1px solid #9aafb5;
+
+    }
+
+
+    &.active{
+
+      color: #0083e8;
+
+      font-weight: bold;
+
+      background-color: #ffffff;
+
+      &:after{
+
+        border:1px solid #0083e8;
+
+      }
+
+    }
+
+  }
+
+}

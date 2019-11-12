@@ -26,13 +26,25 @@ const SubjectTeacherSchedule = (state={
 
         Show:false,
 
-        ModalLoading:false,
+        ModalLoading:true,
 
         SelectWeekDay:'',
 
         SelectClassHourNO:0,
 
         SelectDate:''
+
+    },
+
+    AdjustClassRoom:{
+
+        Show:false,
+
+        ModalLoading:true,
+
+        ClassRoomList:[],
+
+        ClassRoomTabActive:0
 
     }
 
@@ -60,7 +72,35 @@ const SubjectTeacherSchedule = (state={
 
                     ModalLoading:false
 
+                },
+
+
+                ChangeTime:{
+
+                    Show:false,
+
+                    ModalLoading:true,
+
+                    SelectWeekDay:'',
+
+                    SelectClassHourNO:0,
+
+                    SelectDate:''
+
+                },
+
+                AdjustClassRoom:{
+
+                    Show:false,
+
+                    ModalLoading:true,
+
+                    ClassRoomList:[],
+
+                    ClassRoomTabActive:0
+
                 }
+
 
             };
 
@@ -146,6 +186,28 @@ const SubjectTeacherSchedule = (state={
         case STSActions.MANAGER_STS_CHANGE_TIME_MODAL_CLASSHOUR_PICK:
 
             return { ...state,ChangeTime:{...state.ChangeTime,...actions.data}};
+
+        case STSActions.MANAGER_STS_ADJUST_CLASSROOM_MODAL_SHOW:
+
+            return {...state,AdjustClassRoom:{...state.AdjustClassRoom,Show:true,ModalLoading:true}};
+
+        case STSActions.MANAGER_STS_ADJUST_CLASSROOM_MODAL_HIDE:
+
+            return {...state,AdjustClassRoom:{...state.AdjustClassRoom,Show:false}};
+
+        case STSActions.MANAGER_STS_ADJUST_CLASSROOM_MODAL_LOADING_SHOW:
+
+            return {...state,AdjustClassRoom:{...state.AdjustClassRoom,ModalLoading:true}};
+
+        case STSActions.MANAGER_STS_ADJUST_CLASSROOM_MODAL_LOADING_HIDE:
+
+            return {...state,AdjustClassRoom:{...state.AdjustClassRoom,ModalLoading:false}};
+
+        case STSActions.MANAGER_STS_ADJUST_CLASSROOM_MODAL_INIT:
+
+            return {...state,AdjustClassRoom:{...state.AdjustClassRoom,...actions.data}};
+
+
 
         default:
 

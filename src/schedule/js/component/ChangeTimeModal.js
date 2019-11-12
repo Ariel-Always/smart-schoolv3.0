@@ -55,7 +55,7 @@ class ChangeTimeModal extends Component{
 
         const {
 
-            Show=false,ModalLoading=true,WeekNO=0,ClassDate='',NowClassHourNO=1,
+            Show=false,ModalLoading=true,WeekNO=0,ClassDate='',NowClassHourNO=0,
 
             ItemClassHour=[],ItemWeek=[],ItemClassHourCount,NowDate,WeekDay,
 
@@ -320,6 +320,8 @@ class ChangeTimeModal extends Component{
                                                     CanSelect = true;
 
                                                 }else if (NowTime===Time) {
+
+                                                    console.log(NowClassHourNO);
 
                                                     if (item.ClassHourNO>NowClassHourNO){
 
