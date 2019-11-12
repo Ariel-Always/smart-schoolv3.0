@@ -11,6 +11,7 @@ if (process.env.NODE_ENV === 'development'){
         TokenProxy:'http://192.168.129.1:30103',
         SubjectProxy:'http://192.168.129.1:30103/Subject/api',
         CourseClassProxy:'http://192.168.129.1:30103/CourseClass/api',
+        MyCourseClassProxy:'http://192.168.129.1:30103',
         UserAccountProxy:'http://192.168.129.1:30103/UserMgr/UserAccount',
         TeachingSolutionProxy:'http://192.168.129.1:30103/SubjectResMgr/TeachingSolutionMgr/Teacher',
         AdmClassProxy:"http://192.168.129.1:30103",
@@ -60,6 +61,7 @@ if (process.env.NODE_ENV === 'production'){
         CustomProxy:'',
         PicProxy:'',
         ErrorProxy:'',
+        MyCourseClassProxy:'',
         XTestProxy:'/UserMgr/UserInfoMgr'
     }
 

@@ -33,7 +33,7 @@ class HandleCourseClass extends React.Component {
         })
     }
     componentWillMount() {
-        // const { DataState, dispatch } = this.props;
+        const { DataState, dispatch } = this.props;
         // //获取路由
         // let route = history.location.pathname;
         // let pathArr = route.split('/');
@@ -47,6 +47,18 @@ class HandleCourseClass extends React.Component {
         //     DataState.GetCourseClassDetailsHandleClassMsg.selectData.Teacher = { value: UserMsg.UserID, title: UserMsg.UserName };
         //     //dispatch(actions.UpDataState.setSubjectTeacherTransferMsg({value:UserMsg.UserID,title:UserMsg.UserName}))
         // }
+        if(this.props.type==='Teacher'){
+            let Subjects = DataState.GetTeacherSubjectAndGradeMsg.Subjects;
+            
+            if(Subjects.length===1){
+                this.setState({
+                    SubjectSelect:Subjects[0],
+                    Subject: Subjects[0],
+                })
+            }
+            dispatch(actions.UpDataState.setCourseClassDataMsg({ Subject: Subjects[0] }))
+
+        }
 
     }
     //数据绑定
@@ -171,7 +183,7 @@ class HandleCourseClass extends React.Component {
                                 dropSelectd={{ value:data?data.SubjectID:'', title: data?data.SubjectName:'' }}
                                 onChange={this.onSelectSubjectChange.bind(this)}
                             ></DropDown> */}
-                                <span className='noChange SubjectName'>{data ? data.SubjectName : ''}</span>
+                                <span title={data.SubjectName} className='noChange SubjectName'>{data ? data.SubjectName : ''}</span>
                             </span>
 
                         </div>
@@ -186,7 +198,7 @@ class HandleCourseClass extends React.Component {
                                 dropSelectd={{ value: data?data.GradeID:'', title: data?data.GradeName:'' }}
                                 onChange={this.onSelectGradeChange.bind(this)}
                             ></DropDown> */}
-                                <span className='noChange GradeName'>{data ? data.GradeName : ''}</span>
+                                <span title={data.GradeName} className='noChange GradeName'>{data ? data.GradeName : ''}</span>
 
                             </span>
                         </div>
@@ -196,11 +208,11 @@ class HandleCourseClass extends React.Component {
                                 {/* <Input readOnly unselectable="on" onClick={this.onTeacherSelectClick.bind(this)} className='teacherName selectTeacher' type='text' value={data.selectData ? data.selectData.Teacher.title : ''} style={{ width: 150 + 'px' }} onChange={this.onCourseClassNameChange.bind(this)} />
                                 <span onClick={this.onTeacherSelectClick.bind(this)} className='teacher-select'>选择</span> */}
                                 {handleRoute !== 'Teacher' ? (<span className='right'>
-                                    <Input readOnly unselectable="on" onClick={this.onTeacherSelectClick.bind(this)} className='teacherName selectTeacher' type='text' value={data.selectData ? data.selectData.Teacher.title : ''} style={{ width: 150 + 'px' }} onChange={this.onCourseClassNameChange.bind(this)} />
+                                    <Input readOnly unselectable="on" onClick={this.onTeacherSelectClick.bind(this)} className=' selectTeacher' type='text' value={data.selectData ? data.selectData.Teacher.title : ''} style={{ width: 150 + 'px' }} onChange={this.onCourseClassNameChange.bind(this)} />
                                     <span onClick={this.onTeacherSelectClick.bind(this)} className='teacher-select'>选择</span>
                                 </span>) : (
                                         <span className='right'>
-                                            <span className='noChange teacherName'>{data.selectData ? data.selectData.Teacher.title : ''}</span>
+                                            <span title={data.selectData ? data.selectData.Teacher.title : ''} className='noChange teacherName'>{data.selectData ? data.selectData.Teacher.title : ''}</span>
                                         </span>
                                     )}
                         </div>
@@ -229,10 +241,10 @@ class HandleCourseClass extends React.Component {
                                             {
                                                 this.state.tableSource.map((child, index) => {
                                                     return (
-                                                        <span className='content-card' key={child.StudentID}>
-                                                            {child.StudentName}
-                                                            <span className='card-id'>{child.StudentID}</span>
-                                                            <span onClick={this.onDeleteStudentClick.bind(this, index)} className='icon-x'>x</span>
+                                                        <span className='content-card' key={child.StudentID+index}>
+                                                            <span title={child.StudentName} className='card-name'>{child.StudentName}</span>
+                                                            <span title={child.StudentID} className='card-id'>{child.StudentID}</span>
+                                                            <span onClick={this.onDeleteStudentClick.bind(this, index)} className='icon-x'></span>
                                                         </span>
                                                     )
                                                 })

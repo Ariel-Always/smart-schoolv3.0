@@ -336,7 +336,10 @@ class Search extends React.Component {
                     title: "成功",
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
-
+                this.setState({
+                    checkedList: [],
+                    checkAll: false
+                })
                 dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=' + 1 + '&key=&pageSize=10&subjectID=' + SubjectID + '&gradeID=' + GradeID));
 
             }

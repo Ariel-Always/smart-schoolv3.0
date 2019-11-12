@@ -12,6 +12,7 @@ import GetCourseClassDynamicMsg from './data/GetCourseClassDynamicMsg';
 import GetCourseClassRecordMsg from './data/GetCourseClassRecordMsg';
 import GetLogDetailsMsg from './data/GetLogDetailsMsg';
 import GetTeacherCourseClassMsg from './data/GetTeacherCourseClassMsg';
+import GetTeacherSubjectAndGradeMsg from './data/GetTeacherSubjectAndGradeMsg';
 
 
 const DataState=combineReducers(
@@ -28,7 +29,8 @@ const DataState=combineReducers(
         GetCourseClassDynamicMsg,
         GetLogDetailsMsg,
         GetCourseClassRecordMsg,
-        GetTeacherCourseClassMsg
+        GetTeacherCourseClassMsg,
+        GetTeacherSubjectAndGradeMsg
         
     });
 export default DataState;

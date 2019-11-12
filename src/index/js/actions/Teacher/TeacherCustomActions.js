@@ -12,7 +12,7 @@ const GET_WEBSITE_ALTER_TIPS = 'GET_WEBSITE_ALTER_TIPS'
 const GET_APP_ALTER_TIPS = 'GET_APP_ALTER_TIPS'
 const GET_TOOL_ALTER_TIPS = 'GET_TOOL_ALTER_TIPS'
 const GET_DATABASE_ALTER_TIPS = 'GET_DATABASE_ALTER_TIPS'
-const getCustomData = (key, techerID, keyword = '', subjectID = '', periodId = 'A,B,C') => {
+const getCustomData = (key, techerID, keyword = '', subjectID = '', periodId = '') => {
     let url = '';//桌面数据
     let url2 = '';//备选
     let urlTips = '/SubjectResMgr/CommonMgr/Teacher/IsNotify?TeacherId=' + techerID
