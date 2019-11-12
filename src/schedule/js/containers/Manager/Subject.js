@@ -22,6 +22,8 @@ import ScheduleDetailModal from "../../component/ScheduleDetailModal";
 
 import ChangeTimeModal from '../../component/ChangeTimeModal';
 
+import AdjustClassRoomModal from "../../component/AdjustClassRoomModal";
+
 
 
 class Subject extends Component{
@@ -237,6 +239,121 @@ class Subject extends Component{
 
     }
 
+    //撤销调整时间
+    RebackTime(params){
+
+        const { dispatch } = this.props;
+
+        dispatch(STSAction.RebackTime(params));
+
+    }
+
+    //调整教室弹窗
+    AdjustClassRoomShow(params){
+
+        const { dispatch } = this.props;
+
+        dispatch(STSAction.AdjustClassRoomShow(params));
+
+    }
+
+    //调整教室弹窗切换选中教室事件
+
+    ChangeClassRoomPick(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:STSAction.MANAGER_STS_ADJUST_CLASSROOM_MODAL_CHECKED_CHANGE,data:e.target.value});
+
+    }
+
+    //调整教室教室类型切换
+
+    ChangeClassRoomType(key){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:STSAction.MANAGER_STS_ADJUST_CLASSROOM_MODAL_CLASSROOM_TYPE_CHANGE,data:key});
+
+    }
+
+    //调整教室搜索值变化
+
+    SearchValueChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:STSAction.MANAGER_STS_ADJUST_CLASSROOM_MODAL_SEARCH_VALUE_CHANGE,data:e.target.value});
+
+
+    }
+
+    //点击教室搜索
+
+    ClassRoomSearchClick(SearchValue){
+
+        const { dispatch } = this.props;
+
+        dispatch(STSAction.ClassRoomSearchClick(SearchValue))
+
+    }
+
+    //取消搜索教室
+
+    ClassRoomSearchCancel(){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:STSAction.MANAGER_STS_ADJUST_CLASSROOM_MODAL_SEARCH_CANCEL_BTN_HIDE});
+
+        dispatch({type:STSAction.MANAGER_STS_ADJUST_CLASSROOM_MODAL_SEARCH_WRAPPER_HIDE});
+
+        dispatch({type:STSAction.MANAGER_STS_ADJUST_CLASSROOM_MODAL_SEARCH_VALUE_CHANGE,data:''});
+
+    }
+
+
+    //关闭调整教室弹窗
+
+    CloseAdjustClassRoom(){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:STSAction.MANAGER_STS_ADJUST_CLASSROOM_MODAL_HIDE});
+
+    }
+
+    //调整教室弹窗提交
+    AdjustClassRoomCommit(){
+
+        const { dispatch } = this.props;
+
+        dispatch(STSAction.AdjustClassRoomCommit());
+
+    }
+
+    //撤销教室调整
+
+    RebackClassRoom(params){
+
+        const { dispatch } = this.props;
+
+        dispatch(STSAction.RebackClassRoom(params));
+
+    }
+
+    //找人代课弹窗出现
+
+    ChooseReplaceTeacherShow(params){
+
+        const { dispatch } = this.props;
+
+        dispatch(STSAction.ChooseReplaceTeacherShow(params));
+
+    }
+
+
+
 
 
     render() {
@@ -245,7 +362,7 @@ class Subject extends Component{
 
         const {SubjectCourseGradeClassRoom,SubjectTeacherSchedule} = Manager;
 
-        const { ScheduleDetail,ChangeTime } = SubjectTeacherSchedule;
+        const { ScheduleDetail,ChangeTime,AdjustClassRoom } = SubjectTeacherSchedule;
 
 
 
@@ -357,6 +474,14 @@ class Subject extends Component{
 
                     ScheduleDetailClose={this.ScheduleDetailClose.bind(this)}
 
+                    RebackTime={this.RebackTime.bind(this)}
+
+                    AdjustClassRoomShow={this.AdjustClassRoomShow.bind(this)}
+
+                    RebackClassRoom={this.RebackClassRoom.bind(this)}
+
+                    ChooseReplaceTeacherShow={this.ChooseReplaceTeacherShow.bind(this)}
+
                 >
 
                 </ScheduleDetailModal>
@@ -376,6 +501,28 @@ class Subject extends Component{
                 >
 
                 </ChangeTimeModal>
+
+                <AdjustClassRoomModal
+
+                    Params={AdjustClassRoom}
+
+                    ChangeClassRoomPick={this.ChangeClassRoomPick.bind(this)}
+
+                    ChangeClassRoomType={this.ChangeClassRoomType.bind(this)}
+
+                    SearchValueChange={this.SearchValueChange.bind(this)}
+
+                    ClassRoomSearchClick={this.ClassRoomSearchClick.bind(this)}
+
+                    ClassRoomSearchCancel={this.ClassRoomSearchCancel.bind(this)}
+
+                    CloseAdjustClassRoom={this.CloseAdjustClassRoom.bind(this)}
+
+                    AdjustClassRoomCommit={this.AdjustClassRoomCommit.bind(this)}
+
+                >
+
+                </AdjustClassRoomModal>
 
             </div>
 

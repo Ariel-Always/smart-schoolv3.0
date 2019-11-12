@@ -26,13 +26,47 @@ const SubjectTeacherSchedule = (state={
 
         Show:false,
 
-        ModalLoading:false,
+        ModalLoading:true,
 
         SelectWeekDay:'',
 
         SelectClassHourNO:0,
 
         SelectDate:''
+
+    },
+
+    AdjustClassRoom:{
+
+        Show:false,
+
+        ModalLoading:true,
+
+        ClassRoomList:[],
+
+        ClassRoomTabActive:0,
+
+        CheckedValue:'',
+
+        SearchValue:'',
+
+        CancelBtnShow:'n',
+
+        SearchWrapperShow:false,
+
+        SearchList:[],
+
+        SearchLoading:false
+
+    },
+
+    ReplaceSchedule:{
+
+        Show:false,
+
+        ModalLoading:true,
+
+        SearchLoading:false
 
     }
 
@@ -60,7 +94,57 @@ const SubjectTeacherSchedule = (state={
 
                     ModalLoading:false
 
+                },
+
+
+                ChangeTime:{
+
+                    Show:false,
+
+                    ModalLoading:true,
+
+                    SelectWeekDay:'',
+
+                    SelectClassHourNO:0,
+
+                    SelectDate:''
+
+                },
+
+                AdjustClassRoom:{
+
+                    Show:false,
+
+                    ModalLoading:true,
+
+                    ClassRoomList:[],
+
+                    ClassRoomTabActive:0,
+
+                    CheckedValue:'',
+
+                    SearchValue:'',
+
+                    CancelBtnShow:'n',
+
+                    SearchWrapperShow:false,
+
+                    SearchList:[],
+
+                    SearchLoading:false
+
+                },
+
+                ReplaceSchedule:{
+
+                    Show:false,
+
+                    ModalLoading:true,
+
+                    SearchLoading:false
+
                 }
+
 
             };
 
@@ -146,6 +230,101 @@ const SubjectTeacherSchedule = (state={
         case STSActions.MANAGER_STS_CHANGE_TIME_MODAL_CLASSHOUR_PICK:
 
             return { ...state,ChangeTime:{...state.ChangeTime,...actions.data}};
+
+        case STSActions.MANAGER_STS_ADJUST_CLASSROOM_MODAL_SHOW:
+
+            return {
+
+                ...state,
+
+                AdjustClassRoom:{
+
+                    ...state.AdjustClassRoom,
+
+                    Show:true,
+
+                    ModalLoading:true,
+
+                    ClassRoomList:[],
+
+                    ClassRoomTabActive:0,
+
+                    CheckedValue:'',
+
+                    SearchValue:'',
+
+                    CancelBtnShow:'n',
+
+                    SearchWrapperShow:false,
+
+                    SearchList:[],
+
+                    SearchLoading:false
+
+                }
+
+            };
+
+        case STSActions.MANAGER_STS_ADJUST_CLASSROOM_MODAL_HIDE:
+
+            return {...state,AdjustClassRoom:{...state.AdjustClassRoom,Show:false}};
+
+        case STSActions.MANAGER_STS_ADJUST_CLASSROOM_MODAL_LOADING_SHOW:
+
+            return {...state,AdjustClassRoom:{...state.AdjustClassRoom,ModalLoading:true}};
+
+        case STSActions.MANAGER_STS_ADJUST_CLASSROOM_MODAL_LOADING_HIDE:
+
+            return {...state,AdjustClassRoom:{...state.AdjustClassRoom,ModalLoading:false}};
+
+        case STSActions.MANAGER_STS_ADJUST_CLASSROOM_MODAL_INIT:
+
+            return {...state,AdjustClassRoom:{...state.AdjustClassRoom,...actions.data}};
+
+
+        case STSActions.MANAGER_STS_ADJUST_CLASSROOM_MODAL_CHECKED_CHANGE:
+
+            return { ...state,AdjustClassRoom:{...state.AdjustClassRoom,CheckedValue:actions.data}};
+
+        case STSActions.MANAGER_STS_ADJUST_CLASSROOM_MODAL_CLASSROOM_TYPE_CHANGE:
+
+            return { ...state,AdjustClassRoom:{...state.AdjustClassRoom,CheckedValue:'',ClassRoomTabActive:actions.data}};
+
+        case STSActions.MANAGER_STS_ADJUST_CLASSROOM_MODAL_SEARCH_VALUE_CHANGE:
+
+            return { ...state,AdjustClassRoom:{...state.AdjustClassRoom,SearchValue:actions.data}};
+
+        case STSActions.MANAGER_STS_ADJUST_CLASSROOM_MODAL_SEARCH_WRAPPER_SHOW:
+
+            return { ...state,AdjustClassRoom:{...state.AdjustClassRoom,SearchWrapperShow:true}};
+
+        case STSActions.MANAGER_STS_ADJUST_CLASSROOM_MODAL_SEARCH_WRAPPER_HIDE:
+
+            return { ...state,AdjustClassRoom:{...state.AdjustClassRoom,SearchWrapperShow:false}};
+
+        case STSActions.MANAGER_STS_ADJUST_CLASSROOM_MODAL_SEARCH_CANCEL_BTN_SHOW:
+
+            return { ...state,AdjustClassRoom:{...state.AdjustClassRoom,CancelBtnShow:'y'}};
+
+        case STSActions.MANAGER_STS_ADJUST_CLASSROOM_MODAL_SEARCH_CANCEL_BTN_HIDE:
+
+            return { ...state,AdjustClassRoom:{...state.AdjustClassRoom,CancelBtnShow:'n'}};
+
+        case STSActions.MANAGER_STS_ADJUST_CLASSROOM_MODAL_SEARCH_LIST_UPDATE:
+
+            return { ...state,AdjustClassRoom:{...state.AdjustClassRoom,SearchList:actions.data}};
+
+        case STSActions.MANAGER_STS_ADJUST_CLASSROOM_MODAL_SEARCH_LOADING_SHOW:
+
+            return { ...state,AdjustClassRoom:{...state.AdjustClassRoom,SearchLoading:true}};
+
+        case STSActions.MANAGER_STS_ADJUST_CLASSROOM_MODAL_SEARCH_LOADING_HIDE:
+
+            return { ...state,AdjustClassRoom:{...state.AdjustClassRoom,SearchLoading:false}};
+
+        case STSActions.MANAGER_STS_REPLACE_SCHEDULE_MODAL_SHOW:
+
+            return { ...state,ReplaceSchedule:{...state.ReplaceSchedule,Show:true,ModalLoading:true}};
 
         default:
 

@@ -8,7 +8,13 @@ class ScheduleDetailModal extends Component{
 
     render() {
 
-        const { Params,ScheduleDetailClose,StopSchedule,RebackStopSchedule,ChangeTimeShow } = this.props;
+        const { Params,ScheduleDetailClose,StopSchedule,
+
+            RebackStopSchedule,ChangeTimeShow,RebackTime,
+
+            AdjustClassRoomShow,RebackClassRoom,ChooseReplaceTeacherShow
+
+        } = this.props;
 
         const  { Show,ModalLoading,itemSchedule,itemScheduleLog=[],itemScheduleHistory=[] } = Params;
 
@@ -198,7 +204,7 @@ class ScheduleDetailModal extends Component{
 
                                         ReplaceClassDate?
 
-                                            <button className="adjust-btn reback">恢复时间</button>
+                                            <button className="adjust-btn reback" onClick={()=>RebackTime({ClassDate:NowClassDate,ClassHourNO:NowClassHourNO,TeacherID:NowTeacherID,ScheduleID})}>恢复时间</button>
 
                                             :
 
@@ -242,7 +248,7 @@ class ScheduleDetailModal extends Component{
 
                                             :
 
-                                            <button className="adjust-btn">找人代课</button>
+                                            <button className="adjust-btn" onClick={e=>ChooseReplaceTeacherShow({ClassDate:NowClassDate,ClassHourNO:NowClassHourNO,TeacherID:NowTeacherID,ScheduleID})}>找人代课</button>
 
                                         :''
 
@@ -266,11 +272,11 @@ class ScheduleDetailModal extends Component{
 
                                         ReplaceClassRoomID?
 
-                                            <button className="adjust-btn reback">恢复教室</button>
+                                            <button className="adjust-btn reback" onClick={e=>RebackClassRoom({ClassDate:NowClassDate,ClassHourNO:NowClassHourNO,TeacherID:NowTeacherID,ScheduleID})}>恢复教室</button>
 
                                             :
 
-                                            <button className="adjust-btn">调整教室</button>
+                                            <button className="adjust-btn" onClick={e=>AdjustClassRoomShow({ClassDate:NowClassDate,ClassHourNO:NowClassHourNO,TeacherID:NowTeacherID,ScheduleID,NowClassRoomID,NowClassRoomName})}>调整教室</button>
 
                                         :''
 

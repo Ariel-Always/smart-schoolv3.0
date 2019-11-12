@@ -551,9 +551,32 @@ class Modal extends React.Component {
 class Radio extends React.Component {
     render() {
         const { children, type, ...reset } = this.props;
+
+        let ClassName = '';
+
+        switch (type) {
+
+            case 'gray':
+
+                ClassName = 'ant-radio-gray';
+
+                break;
+
+            case 'green':
+
+                ClassName = 'ant-radio-green';
+
+                break;
+
+            default:
+
+                ClassName = '';
+
+        }
+
         return (
             <ConfigProvider locale={zhCN}>
-                <AntRadio className={type && type === 'gray' ? 'ant-radio-gray' : ''} {...reset}>{children}</AntRadio>
+                <AntRadio className={ClassName} {...reset}>{children}</AntRadio>
             </ConfigProvider>
         );
     }
