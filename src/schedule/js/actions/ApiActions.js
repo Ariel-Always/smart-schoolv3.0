@@ -1093,11 +1093,64 @@ const ChangeDateAndGetTea = async ({ SchoolID,TeacherID,ClassDate,ClassHourNO,Sc
 
 };
 
+
 //撤销调整时间
 
 const CancelChangeDateAndGetTea = async ({ SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,dispatch}) => {
 
     let res = await Method.getPostData(`/ScheduleTea/api/CancelChangeDateAndGetTea`,{
+
+        SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID
+
+    },2);
+
+    //'http://192.168.2.26:8084');
+    //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+
+    if (res.StatusCode === 200){
+
+        return res.ErrCode;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
+
+//调整教室
+
+const ChangeClassRoomAndGetTea = async ({ SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,ScheduleClassRoomID,dispatch}) => {
+
+    let res = await Method.getPostData(`/ScheduleTea/api/ChangeClassRoomAndGetTea`,{
+
+        SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,ScheduleClassRoomID
+
+    },2);
+
+    //'http://192.168.2.26:8084');
+    //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+
+    if (res.StatusCode === 200){
+
+        return res.ErrCode;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
+
+//撤销教室调整
+
+const CancelChangeClassRoomAndGetTea = async ({ SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,dispatch}) => {
+
+    let res = await Method.getPostData(`/ScheduleTea/api/CancelChangeClassRoomAndGetTea`,{
 
         SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID
 
@@ -1210,6 +1263,10 @@ export default {
 
     ChangeDateAndGetTea,
 
-    CancelChangeDateAndGetTea
+    CancelChangeDateAndGetTea,
+
+    ChangeClassRoomAndGetTea,
+
+    CancelChangeClassRoomAndGetTea
 
 }

@@ -2,7 +2,7 @@
 
   color: #333333;
 
-  .ant-spin-nested-loading{
+  .ant-modal-body>.ant-spin-nested-loading{
 
     position: absolute;
 
@@ -48,6 +48,16 @@
 
   }
 
+  .right-classroom-content{
+
+    .emptyBox{
+
+      margin-top: 120px;
+
+    }
+
+  }
+
   .class-room-type-item{
 
     width: 178px;
@@ -74,7 +84,7 @@
 
       left: 22px;
 
-      top: 22px;
+      top: 24px;
 
       width: 4px;
 
@@ -98,6 +108,72 @@
         border:1px solid #0083e8;
 
       }
+
+    }
+
+  }
+
+  .ant-radio-group{
+
+    display: block;
+
+    .class-room-item{
+
+      margin: 0 14px;
+
+      height: 48px;
+
+      line-height: 48px;
+
+      padding-left: 18px;
+
+      &:nth-child(2n){
+
+        background-color:#fafafa;
+
+        border-top: 1px solid #eeeeee;
+
+        border-bottom: 1px solid #eeeeee;
+
+      }
+
+    }
+
+    .room-type{
+
+      color: #999999;
+
+    }
+
+  }
+
+  .footer-origin{
+
+    height: 50px;
+
+    border-top: 1px solid #96d4e3;
+
+    border-bottom: 1px solid #96d4e3;
+
+    line-height: 50px;
+
+    padding-left: 24px;
+
+  }
+
+  .origin-title{
+
+    color: #ff6600;
+
+    font-weight: bold;
+    
+  }
+
+  .class-room-search-wrapper{
+
+    .emptyBox{
+
+      margin-top: 50px;
 
     }
 

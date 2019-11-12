@@ -1,6 +1,6 @@
 import React,{ Component } from 'react';
 
-import { Modal,Loading,Search } from "../../../common";
+import {Modal, Loading, Search, Radio, RadioGroup, Empty} from "../../../common";
 
 import ScrollBars from 'react-custom-scrollbars';
 
@@ -8,9 +8,21 @@ class AdjustClassRoomModal extends Component{
 
     render() {
 
-        const  { Params } = this.props;
+        const  { Params,ChangeClassRoomPick,ChangeClassRoomType,SearchValueChange,
 
-        const { Show,ModalLoading,ClassRoomList=[],ClassRoomTabActive } = Params;
+            ClassRoomSearchClick,ClassRoomSearchCancel,CloseAdjustClassRoom,
+
+            AdjustClassRoomCommit
+
+        } = this.props;
+
+        const { Show,ModalLoading,ClassRoomList=[],ClassRoomTabActive,CheckedValue,
+
+            NowClassRoomName,SearchValue,CancelBtnShow,SearchWrapperShow,SearchList,
+
+            SearchLoading
+
+        } = Params;
 
         return (
 
@@ -28,59 +40,158 @@ class AdjustClassRoomModal extends Component{
 
                    className="component-adjust-classroom-wrapper"
 
-                  /* onCancel={e=>CloseChangeTime()}
+                   onCancel={e=>CloseAdjustClassRoom()}
 
-                   onOk={e=>ChangeTimeCommit()}*/
+                   onOk={e=>AdjustClassRoomCommit()}
 
             >
 
-                <Loading spinning={false}>
+                <Loading spinning={ModalLoading}>
 
                     <div className="content-wrapper">
 
                         <div className="header-search clearfix">
 
-                            <Search width={220} placeHolder='输入教室名称进行搜索'></Search>
+                            <Search
+
+                                width={220}
+
+                                Value={SearchValue}
+
+                                CancelBtnShow={CancelBtnShow}
+
+                                onChange={e=>SearchValueChange(e)}
+
+                                placeHolder='输入教室名称进行搜索'
+
+                                onClickSearch={e=>ClassRoomSearchClick(SearchValue)}
+
+                                onCancelSearch={e=>ClassRoomSearchCancel()}
+                            >
+
+                            </Search>
 
                         </div>
 
-                        <div className="left-classroom-type">
+                        {
 
-                            <ScrollBars style={{width:178,height:390}}>
+                            SearchWrapperShow?
 
-                            {
+                                <div className="class-room-search-wrapper">
 
-                                ClassRoomList.map((item,key)=>{
+                                    <Loading spinning={SearchLoading}>
 
-                                    return <div key={key} className={`class-room-type-item ${key===ClassRoomTabActive?'active':''}`}>
+                                        <ScrollBars style={{width:680,height:390}}>
 
-                                            {item.Name}
+                                            {
+
+                                                SearchList.length>0?
+
+                                                    <RadioGroup value={CheckedValue} onChange={e=>ChangeClassRoomPick(e)}>
+
+                                                        {
+
+                                                            SearchList.map((item,key)=>{
+
+                                                                return <div key={key} className="class-room-item">
+
+                                                                    <Radio type="green" value={item.ID}>
+
+                                                                        <span>{item.Name}</span>
+
+                                                                        <span className="room-type">[{item.TypeName}]</span>
+
+                                                                    </Radio>
+
+                                                                </div>
+
+                                                            })
+
+                                                        }
+
+                                                    </RadioGroup>
+
+                                                    :<Empty type="5" title="没有搜索到内容,请换个搜索词试试"></Empty>
+
+                                            }
+
+
+
+                                    </ScrollBars>
+
+                                    </Loading>
+
+                                </div>
+
+                                :
+
+                                <React.Fragment>
+
+                                    <div className="left-classroom-type">
+
+                                        <ScrollBars style={{width:178,height:390}}>
+
+                                            {
+
+                                                ClassRoomList.map((item,key)=>{
+
+                                                    return <div key={key} className={`class-room-type-item ${key===ClassRoomTabActive?'active':''}`} onClick={e=>ChangeClassRoomType(key)}>
+
+                                                        {item.Name}
+
+                                                    </div>
+
+                                                })
+
+                                            }
+
+                                        </ScrollBars>
 
                                     </div>
 
-                                })
+                                    <div className="right-classroom-content">
 
-                            }
+                                        <ScrollBars style={{width:502,height:390}}>
 
-                            </ScrollBars>
+                                            {
 
-                        </div>
+                                                ClassRoomList[ClassRoomTabActive]&&ClassRoomList[ClassRoomTabActive].List.length>0?
 
-                        <div className="right-classroom-content">
+                                                    <RadioGroup value={CheckedValue} onChange={(e)=>{ChangeClassRoomPick(e)}}>
 
-                            <ScrollBars style={{width:502,height:390}}>
+                                                        {
 
-                                {
+                                                            ClassRoomList[ClassRoomTabActive].List.map((item,key)=>{
 
-                                    ClassRoomList[ClassRoomTabActive]?ClassRoomList[ClassRoomTabActive].List.map((item,key)=>{
+                                                                return <div key={key} className="class-room-item">
 
-                                        return <div className="right-classroom-item">{item.Name}</div>
+                                                                    <Radio type="green" value={item.ID}>{item.Name}</Radio>
 
-                                    }):''
+                                                                </div>
 
-                                }
+                                                            })
 
-                            </ScrollBars>
+                                                        }
+
+                                                    </RadioGroup>
+
+                                                    :<Empty type="3" title="没有相关的教室信息"></Empty>
+
+                                            }
+
+                                        </ScrollBars>
+
+                                    </div>
+
+                                </React.Fragment>
+
+                        }
+
+                        <div className="footer-origin">
+
+                            <span className="origin-title">原教室:</span>
+
+                            <span className="origin-class-room">{NowClassRoomName}</span>
 
                         </div>
 
