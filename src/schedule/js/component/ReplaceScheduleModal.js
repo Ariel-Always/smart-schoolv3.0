@@ -1,17 +1,124 @@
 import React,{ Component } from 'react';
 
+import {Modal, Loading, Search} from "../../../common";
+
+import ScrollBars from 'react-custom-scrollbars';
+
 class ReplaceScheduleModal extends Component{
 
     render() {
 
-        const  { props } = this.props;
+        const  {
+
+            Params,ReplaceTeacherPick,SearchValueChange,ReplaceSearchClick,ReplaceSearchCancel,
+
+            ReplaceScheduleClose,ReplaceScheduleCommit
+
+        } = this.props;
+
+        const {
+
+            Show=false,ModalLoading=true,SearchValue='',CancelBtnShow='n',
+
+            SearchWrapperShow=false,TeacherList=[],ActiveTeacherID='',
+
+            SearchList=[],SearchLoadingShow=false
+
+        } = Params;
+
 
         return (
 
-            <div>
+            <Modal type={1}
 
-            </div>
+                   title='选择代课教师'
 
+                   visible={Show}
+
+                   width={680}
+
+                   bodyStyle={{height:324}}
+
+                   mask={true}
+
+                   cancelText="取消"
+
+                   className="component-replace-schedule-wrapper"
+
+                   onCancel={e=>ReplaceScheduleClose()}
+
+                   onOk={e=>ReplaceScheduleCommit()}
+
+            >
+
+                <Loading spinning={ModalLoading}>
+
+                    <div className="content-wrapper">
+
+                        <div className="header-search clearfix">
+
+                            <Search
+
+                                width={220}
+
+                                Value={SearchValue}
+
+                                CancelBtnShow={CancelBtnShow}
+
+                                onChange={e=>SearchValueChange(e)}
+
+                                placeHolder='输入教室名称进行搜索'
+
+                                onClickSearch={e=>ReplaceSearchClick(SearchValue)}
+
+                                onCancelSearch={e=>ReplaceSearchCancel()}
+                            >
+
+                            </Search>
+
+                        </div>
+
+                        <div className="teacher-list-wrapper">
+
+                            <Loading spinning={SearchLoadingShow}>
+
+                                <ScrollBars style={{width:680,height:276}}>
+
+                                    <div className="list-wrapper clearfix">
+
+                                {
+
+                                    SearchWrapperShow?
+
+                                        SearchList.map((item,key)=>{
+
+                                            return <div key={key} className={`teacher-item ${ActiveTeacherID===item.ID?'active':''}`} title={item.Name} onClick={e=>ReplaceTeacherPick(item.ID)}>{item.Name}</div>
+
+                                        })
+
+                                        :
+
+                                        TeacherList.map((item,key)=>{
+
+                                            return <div key={key} className={`teacher-item ${ActiveTeacherID===item.ID?'active':''}`} title={item.Name} onClick={e=>ReplaceTeacherPick(item.ID)}>{item.Name}</div>
+
+                                        })
+
+                                }
+
+                                </div>
+
+                                </ScrollBars>
+
+                            </Loading>
+
+                        </div>
+
+                    </div>
+
+                </Loading>
+
+            </Modal>
 
         );
 

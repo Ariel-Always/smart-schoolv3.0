@@ -81,6 +81,32 @@ const MANAGER_STS_ADJUST_CLASSROOM_MODAL_SEARCH_LOADING_HIDE = 'MANAGER_STS_ADJU
 
 const MANAGER_STS_REPLACE_SCHEDULE_MODAL_SHOW = 'MANAGER_STS_REPLACE_SCHEDULE_MODAL_SHOW';
 
+const MANAGER_STS_REPLACE_SCHEDULE_MODAL_HIDE = 'MANAGER_STS_REPLACE_SCHEDULE_MODAL_HIDE';
+
+const MANAGER_STS_REPLACE_SCHEDULE_MODAL_LOADING_SHOW = 'MANAGER_STS_REPLACE_SCHEDULE_MODAL_LOADING_SHOW';
+
+const MANAGER_STS_REPLACE_SCHEDULE_MODAL_LOADING_HIDE = 'MANAGER_STS_REPLACE_SCHEDULE_MODAL_LOADING_HIDE';
+
+const MANAGER_STS_REPLACE_SCHEDULE_MODAL_INIT = 'MANAGER_STS_REPLACE_SCHEDULE_MODAL_INIT';
+
+const MANAGER_STS_REPLACE_SCHEDULE_MODAL_TEACHER_PICK = 'MANAGER_STS_REPLACE_SCHEDULE_MODAL_TEACHER_PICK';
+
+const MANAGER_STS_REPLACE_SCHEDULE_MODAL_INPUT_CHANGE = 'MANAGER_STS_REPLACE_SCHEDULE_MODAL_INPUT_CHANGE';
+
+const MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_CANCEL_BTN_SHOW = 'MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_CANCEL_BTN_SHOW';
+
+const MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_CANCEL_BTN_HIDE = 'MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_CANCEL_BTN_HIDE';
+
+const MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_WRAPPER_SHOW = 'MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_WRAPPER_SHOW';
+
+const MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_WRAPPER_HIDE = 'MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_WRAPPER_HIDE';
+
+const MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_LIST_UPDATE = 'MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_LIST_UPDATE';
+
+const MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_LOADING_SHOW = 'MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_LOADING_SHOW';
+
+const MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_LOADING_HIDE = 'MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_LOADING_HIDE';
+
 
 //学科教师总表学科课表界面更新
 const STSPageUpdate = (opt) => {
@@ -631,9 +657,140 @@ const ChooseReplaceTeacherShow = (params) => {
 
         dispatch({type:MANAGER_STS_REPLACE_SCHEDULE_MODAL_SHOW});
 
+        ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,PeriodID:'',SubjectID,Key:'',dispatch}).then(data=>{
+
+            if (data){
+
+                let TeacherList = data.map(item=>{
+
+                    return {
+
+                        ID:item.TeacherID,
+
+                        Name:item.TeacherName
+
+                    }
+
+                });
+
+                dispatch({type:MANAGER_STS_REPLACE_SCHEDULE_MODAL_INIT,data:{TeacherList,TeacherID,ClassDate,ClassHourNO,ScheduleID}});
+
+            }
+
+            dispatch({type:MANAGER_STS_REPLACE_SCHEDULE_MODAL_LOADING_HIDE});
+
+        })
+
     }
 
 };
+
+//找人代课搜索
+
+const ReplaceSearchClick = (SearchValue) => {
+
+    return (dispatch,getState)=>{
+
+        const Key = SearchValue;
+
+        if (Key){
+
+            dispatch({type:MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_LOADING_SHOW});
+
+            dispatch({type:MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_CANCEL_BTN_SHOW});
+
+            dispatch({type:MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_WRAPPER_SHOW});
+
+            const { SchoolID } = getState().LoginUser;
+
+            const { SubjectID } = getState().Manager.SubjectTeacherSchedule.ScheduleDetailModal;
+
+            let SearchList = [];
+
+            ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,PeriodID:'',SubjectID,Key,dispatch}).then(data=>{
+
+                if (data){
+
+                    data.map(item=>{
+
+                        SearchList.push({
+
+                            ID:item.TeacherID,
+
+                            Name:item.TeacherName
+
+                        });
+
+                    })
+
+                }
+
+                dispatch({type:MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_LIST_UPDATE,data:SearchList});
+
+
+
+                dispatch({type:MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_LOADING_HIDE});
+
+            });
+
+        }else{
+
+            dispatch(AppAlertActions.alertWarn({title:"搜索值不能为空！"}));
+
+        }
+
+    }
+
+};
+
+
+//找人代课提交
+
+const ReplaceScheduleCommit = () => {
+
+
+    return (dispatch,getState)=>{
+
+        const { ActiveTeacherID,TeacherID,ClassDate,ClassHourNO,ScheduleID } = getState().Manager.SubjectTeacherSchedule.ReplaceSchedule;
+
+        const { SchoolID } = getState().LoginUser;
+
+        if (ActiveTeacherID){
+
+            dispatch({type:MANAGER_STS_REPLACE_SCHEDULE_MODAL_LOADING_SHOW});
+
+            ApiActions.ChangeTeacher({
+
+                SchoolID,ScheduleID,TeacherID,ClassHourNO,ClassDate,
+
+                ScheduleTeacherID:ActiveTeacherID,dispatch
+
+            }).then(data=>{
+
+                if (data===0){
+
+                    dispatch({type:MANAGER_STS_REPLACE_SCHEDULE_MODAL_HIDE});
+
+                    dispatch(AppAlertActions.alertSuccess({title:"找人代课成功！"}));
+
+                    dispatch(ScheduleModalInfoUpdate({SchoolID,TeacherID,ScheduleID,ClassDate,ClassHourNO}));
+
+                }
+
+                dispatch({type:MANAGER_STS_REPLACE_SCHEDULE_MODAL_LOADING_HIDE});
+
+            });
+
+        }else{
+
+            dispatch(AppAlertActions.alertWarn({title:"请选择一个教师!"}));
+
+        }
+
+    }
+
+};
+
 
 
 
@@ -743,6 +900,32 @@ export default {
 
     MANAGER_STS_REPLACE_SCHEDULE_MODAL_SHOW,
 
+    MANAGER_STS_REPLACE_SCHEDULE_MODAL_HIDE,
+
+    MANAGER_STS_REPLACE_SCHEDULE_MODAL_LOADING_HIDE,
+
+    MANAGER_STS_REPLACE_SCHEDULE_MODAL_LOADING_SHOW,
+
+    MANAGER_STS_REPLACE_SCHEDULE_MODAL_INIT,
+
+    MANAGER_STS_REPLACE_SCHEDULE_MODAL_TEACHER_PICK,
+
+    MANAGER_STS_REPLACE_SCHEDULE_MODAL_INPUT_CHANGE,
+
+    MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_CANCEL_BTN_SHOW,
+
+    MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_CANCEL_BTN_HIDE,
+
+    MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_WRAPPER_SHOW,
+
+    MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_WRAPPER_HIDE,
+
+    MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_LIST_UPDATE,
+
+    MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_LOADING_SHOW,
+
+    MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_LOADING_HIDE,
+
     STSPageUpdate,
 
     ScheduleDetailShow,
@@ -769,6 +952,10 @@ export default {
 
     RebackClassRoom,
 
-    ChooseReplaceTeacherShow
+    ChooseReplaceTeacherShow,
+
+    ReplaceSearchClick,
+
+    ReplaceScheduleCommit
 
 }

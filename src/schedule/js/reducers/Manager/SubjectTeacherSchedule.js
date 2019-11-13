@@ -66,7 +66,19 @@ const SubjectTeacherSchedule = (state={
 
         ModalLoading:true,
 
-        SearchLoading:false
+        SearchLoading:false,
+
+        TeacherList:[],
+
+        SearchList:[],
+
+        CancelBtnShow:'n',
+
+        SearchValue:'',
+
+        SearchLoadingShow:false,
+
+        ActiveTeacherID:'',
 
     }
 
@@ -141,7 +153,19 @@ const SubjectTeacherSchedule = (state={
 
                     ModalLoading:true,
 
-                    SearchLoading:false
+                    SearchLoading:false,
+
+                    TeacherList:[],
+
+                    ActiveTeacherID:'',
+
+                    SearchList:[],
+
+                    CancelBtnShow:'n',
+
+                    SearchValue:'',
+
+                    SearchLoadingShow:false
 
                 }
 
@@ -324,7 +348,85 @@ const SubjectTeacherSchedule = (state={
 
         case STSActions.MANAGER_STS_REPLACE_SCHEDULE_MODAL_SHOW:
 
-            return { ...state,ReplaceSchedule:{...state.ReplaceSchedule,Show:true,ModalLoading:true}};
+            return {
+
+                ...state,
+
+                ReplaceSchedule:{
+
+                    ...state.ReplaceSchedule,
+
+                    Show:true,
+
+                    ModalLoading:true,
+
+                    SearchWrapperShow:false,
+
+                    SearchList:[],
+
+                    ActiveTeacherID:'',
+
+                    CancelBtnShow:'n',
+
+                    SearchValue:'',
+
+                    SearchLoadingShow:false
+
+                }
+
+            };
+
+        case STSActions.MANAGER_STS_REPLACE_SCHEDULE_MODAL_HIDE:
+
+            return { ...state,ReplaceSchedule:{...state.ReplaceSchedule,Show:false}};
+
+        case STSActions.MANAGER_STS_REPLACE_SCHEDULE_MODAL_LOADING_SHOW:
+
+            return { ...state,ReplaceSchedule:{...state.ReplaceSchedule,ModalLoading:true}};
+
+        case STSActions.MANAGER_STS_REPLACE_SCHEDULE_MODAL_LOADING_HIDE:
+
+            return { ...state,ReplaceSchedule:{...state.ReplaceSchedule,ModalLoading:false}};
+
+        case STSActions.MANAGER_STS_REPLACE_SCHEDULE_MODAL_INIT:
+
+            return { ...state,ReplaceSchedule:{...state.ReplaceSchedule,...actions.data}};
+
+        case STSActions.MANAGER_STS_REPLACE_SCHEDULE_MODAL_TEACHER_PICK:
+
+            return { ...state,ReplaceSchedule:{...state.ReplaceSchedule,ActiveTeacherID:actions.data}};
+
+        case STSActions.MANAGER_STS_REPLACE_SCHEDULE_MODAL_INPUT_CHANGE:
+
+            return { ...state,ReplaceSchedule:{...state.ReplaceSchedule,SearchValue:actions.data}};
+
+        case STSActions.MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_CANCEL_BTN_SHOW:
+
+            return { ...state,ReplaceSchedule:{...state.ReplaceSchedule,CancelBtnShow:'y'}};
+
+        case STSActions.MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_CANCEL_BTN_HIDE:
+
+            return { ...state,ReplaceSchedule:{...state.ReplaceSchedule,CancelBtnShow:'n'}};
+
+        case STSActions.MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_WRAPPER_SHOW:
+
+            return { ...state,ReplaceSchedule:{...state.ReplaceSchedule,SearchWrapperShow:true}};
+
+        case STSActions.MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_WRAPPER_HIDE:
+
+            return { ...state,ReplaceSchedule:{...state.ReplaceSchedule,SearchWrapperShow:false}};
+
+        case STSActions.MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_LIST_UPDATE:
+
+            return { ...state,ReplaceSchedule:{...state.ReplaceSchedule,SearchList:actions.data}};
+
+        case STSActions.MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_LOADING_SHOW:
+
+            return { ...state,ReplaceSchedule:{...state.ReplaceSchedule,SearchLoadingShow:true}};
+
+        case STSActions.MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_LOADING_HIDE:
+
+            return { ...state,ReplaceSchedule:{...state.ReplaceSchedule,SearchLoadingShow:false}};
 
         default:
 
