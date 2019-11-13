@@ -52,6 +52,22 @@ class App extends Component {
       showLeftMenu: true,
       UserMsg: JSON.parse(sessionStorage.getItem("UserInfo"))
     };
+    
+
+    // if()
+    // dispatch(
+    //     actions.UpDataState.getCoureClassAllMsg(
+    //       "/GetCouseclassSumarry?schoolID=" +
+    //         JSON.parse(sessionStorage.getItem("UserInfo")).SchoolID,
+    //       this.MenuClcik
+    //     )
+    //   );
+  }
+
+  componentWillMount() {
+    const { dispatch, DataState } = this.props;
+
+    // 获取接口数据
     let route = history.location.pathname;
     // let UserMsg = DataState.LoginUser.SchoolID ? DataState.LoginUser : JSON.parse(sessionStorage.getItem('UserInfo'))
     let that = this;
@@ -66,6 +82,8 @@ class App extends Component {
           JSON.parse(sessionStorage.getItem("UserInfo"))
         )
       );
+      if(JSON.parse(sessionStorage.getItem("UserInfo")).UserType==='0')
+
       dispatch(
         actions.UpDataState.getCoureClassAllMsg(
           "/GetCouseclassSumarry?schoolID=" +
@@ -84,6 +102,7 @@ class App extends Component {
               JSON.parse(sessionStorage.getItem("UserInfo"))
             )
           );
+          if(JSON.parse(sessionStorage.getItem("UserInfo")).UserType==='0')
           dispatch(
             actions.UpDataState.getCoureClassAllMsg(
               "/GetCouseclassSumarry?schoolID=" +
@@ -99,22 +118,6 @@ class App extends Component {
       }, 1000);
       //dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
     }
-
-    // if()
-    // dispatch(
-    //     actions.UpDataState.getCoureClassAllMsg(
-    //       "/GetCouseclassSumarry?schoolID=" +
-    //         JSON.parse(sessionStorage.getItem("UserInfo")).SchoolID,
-    //       this.MenuClcik
-    //     )
-    //   );
-  }
-
-  componentWillMount() {
-    const { dispatch, DataState } = this.props;
-
-    // 获取接口数据
-
     history.listen(() => {
       //路由监听
       let route = history.location.pathname;
@@ -166,14 +169,33 @@ class App extends Component {
     let routeID = pathArr[2];
     let subjectID = pathArr[3];
     let classID = pathArr[4];
-    this.setState({
-      showBarner: true,
-      showLeftMenu: true
-    });
+    console.log(UserMsg)
     // console.log(route, routeID, subjectID)
     dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
     if (route === "/") {
-      history.push("/All");
+      if(UserMsg.UserType==='1'){
+        history.push("/Teacher");
+        return;
+      }else if(UserMsg.UserType==='0'){
+        history.push("/All");
+      }else{
+        console.log('用户没有权限访问')
+        return;
+      }
+      // this.setState({
+      //   showBarner: true,
+      //   showLeftMenu: true
+      // });
+      // dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+      // if (!DataState.GetCoureClassAllMsg.MenuParams) return;
+      // dispatch(actions.UpDataState.setCoureClassAllMsg("all"));
+      // dispatch(
+      //   actions.UpDataState.getCoureClassAllMsg(
+      //     "/GetCouseclassSumarry?schoolID=" + UserMsg.SchoolID,
+      //     this.MenuClcik
+      //   )
+      // );
+    } else if (UserMsg.UserType==='0' && handleRoute === "All") {
       dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
       if (!DataState.GetCoureClassAllMsg.MenuParams) return;
       dispatch(actions.UpDataState.setCoureClassAllMsg("all"));
@@ -183,17 +205,11 @@ class App extends Component {
           this.MenuClcik
         )
       );
-    } else if (handleRoute === "All") {
-      dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-      if (!DataState.GetCoureClassAllMsg.MenuParams) return;
-      dispatch(actions.UpDataState.setCoureClassAllMsg("all"));
-      dispatch(
-        actions.UpDataState.getCoureClassAllMsg(
-          "/GetCouseclassSumarry?schoolID=" + UserMsg.SchoolID,
-          this.MenuClcik
-        )
-      );
-    } else if (handleRoute === "Subject" && subjectID === "all") {
+      this.setState({
+        showBarner: true,
+        showLeftMenu: true
+      });
+    } else if (UserMsg.UserType==='0' && handleRoute === "Subject" && subjectID === "all") {
       dispatch({ type: actions.UpUIState.RIGHT_LOADING_OPEN });
       //if (DataState.getSubjectAllMsg[routeID] === undefined)
       dispatch(
@@ -204,8 +220,16 @@ class App extends Component {
       );
       if (!DataState.GetCoureClassAllMsg.MenuParams) return;
       dispatch(actions.UpDataState.setCoureClassAllMsg(routeID));
-    } else if (handleRoute === "Subject" && subjectID === "Class") {
-        console.log('/')
+      this.setState({
+        showBarner: true,
+        showLeftMenu: true
+      });
+    } else if (UserMsg.UserType==='0'&&handleRoute === "Subject" && subjectID === "Class") {
+        // console.log('/')
+        this.setState({
+          showBarner: true,
+          showLeftMenu: true
+        });
       dispatch(
         actions.UpDataState.getSubjectAllMsg(
           "/GetSubjectCouseclassSumarry?subjectID=" + routeID,
@@ -227,9 +251,13 @@ class App extends Component {
 
       if (!DataState.GetCoureClassAllMsg.MenuParams) return;
       dispatch(actions.UpDataState.setCoureClassAllMsg(classID, routeID));
-    } else if (handleRoute === "Search") {
+    } else if (UserMsg.UserType==='0'&&handleRoute === "Search") {
       // if (!DataState.GetCoureClassAllMsg.MenuParams)
       //     return;
+      this.setState({
+      showBarner: true,
+      showLeftMenu: true
+    });
       dispatch(
         actions.UpDataState.getClassAllMsg(
           "/GetGradeCouseclassDetailForPage?schoolID=" +
@@ -242,7 +270,7 @@ class App extends Component {
             GradeID
         )
       );
-    } else if (handleRoute === "Log") {
+    } else if (UserMsg.UserType==='0'&&handleRoute === "Log") {
       // if (!DataState.GetCoureClassAllMsg.MenuParams)
       //     return;
       //dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss'));
@@ -250,12 +278,21 @@ class App extends Component {
         showBarner: false,
         showLeftMenu: false
       });
-    } else if (handleRoute === "Teacher") {
+    } else if (UserMsg.UserType==='1'&&handleRoute === "Teacher") {
+
       dispatch(
         actions.UpDataState.getTeacherCourseClassMsg(
           "/GetCourseClassByUserID?schoolID=" +
             UserMsg.SchoolID +
             "&teacherID=" +
+            UserMsg.UserID
+        )
+      );
+      dispatch(
+        actions.UpDataState.getSubjectAndGradeInfoForTeacher(
+          "/GetSubjectAndGradeInfoForTeacher?schoolID=" +
+            UserMsg.SchoolID +
+            "&userID=" +
             UserMsg.UserID
         )
       );
@@ -270,7 +307,14 @@ class App extends Component {
         showLeftMenu: false
       });
     } else {
-      history.push("/All");
+      if(UserMsg.UserType==='1'){
+        history.push("/Teacher");
+      }else if(UserMsg.UserType==='0'){
+        history.push("/All");
+      }else{
+        console.log('用户没有权限访问')
+        return;
+      }
     }
   };
 
@@ -372,35 +416,39 @@ class App extends Component {
               onHide: this.onAlertWarnHide.bind(this)
             })
           );
-
-          //dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=1&pageSize=10', routeID, classID));
-          if (handleRoute === "Search") {
-            dispatch(
-              actions.UpDataState.getClassAllMsg(
-                "/GetGradeCouseclassDetailForPage?schoolID=" +
-                  this.state.UserMsg.SchoolID +
-                  "&key=" +
-                  routeID +
-                  "&pageIndex=1&pageSize=10&subjectID=" +
-                  SubjectID +
-                  "&gradeID=" +
-                  GradeID
-              )
-            );
-          } else {
-            dispatch(
-              actions.UpDataState.getClassAllMsg(
-                "/GetGradeCouseclassDetailForPage?schoolID=" +
-                  this.state.UserMsg.SchoolID +
-                  "&key=&pageIndex=1&pageSize=10&subjectID=" +
-                  routeID +
-                  "&gradeID=" +
-                  classID,
-                routeID,
-                classID
-              )
-            );
+          if(userMsg.UserType==='0'){
+            if (handleRoute === "Search") {
+              dispatch(
+                actions.UpDataState.getClassAllMsg(
+                  "/GetGradeCouseclassDetailForPage?schoolID=" +
+                    this.state.UserMsg.SchoolID +
+                    "&key=" +
+                    routeID +
+                    "&pageIndex=1&pageSize=10&subjectID=" +
+                    SubjectID +
+                    "&gradeID=" +
+                    GradeID
+                )
+              );
+            } else {
+              dispatch(
+                actions.UpDataState.getClassAllMsg(
+                  "/GetGradeCouseclassDetailForPage?schoolID=" +
+                    this.state.UserMsg.SchoolID +
+                    "&key=&pageIndex=1&pageSize=10&subjectID=" +
+                    routeID +
+                    "&gradeID=" +
+                    classID,
+                  routeID,
+                  classID
+                )
+              );
+            }
+          }else if(userMsg.UserType==='1'){
+            history.push("/Teacher");
           }
+          //dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=1&pageSize=10', routeID, classID));
+          
         }
       });
     dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
@@ -409,6 +457,7 @@ class App extends Component {
     dispatch(actions.UpDataState.setCourseClassStudentMsg([]));
     dispatch(actions.UpDataState.setSubjectTeacherMsg([]));
     dispatch(actions.UpDataState.setClassStudentTransferMsg([]));
+    dispatch(actions.UpDataState.setClassStudentTransferTransferMsg([]));
     dispatch(actions.UpDataState.setSubjectTeacherTransferMsg([]));
   };
   //关闭
@@ -424,6 +473,7 @@ class App extends Component {
     dispatch(actions.UpDataState.setCourseClassStudentMsg([]));
     dispatch(actions.UpDataState.setSubjectTeacherMsg([]));
     dispatch(actions.UpDataState.setClassStudentTransferMsg([]));
+    dispatch(actions.UpDataState.setClassStudentTransferTransferMsg([]));
     dispatch(actions.UpDataState.setSubjectTeacherTransferMsg([]));
     dispatch(actions.UpUIState.ChangeCourseClassModalClose());
     dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
@@ -547,7 +597,11 @@ class App extends Component {
               onHide: this.onAlertWarnHide.bind(this)
             })
           );
-          history.push("/All");
+          if(userMsg.UserType==='0'){
+            history.push("/All");
+          }else if(userMsg.UserType==='1'){
+            history.push("/Teacher");
+          }
           // dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=1&pageSize=10&subjectID='+routeID+'&gradeID='+classID, routeID, classID));
         }
       });
@@ -559,6 +613,7 @@ class App extends Component {
     dispatch(actions.UpDataState.setCourseClassStudentMsg([]));
     dispatch(actions.UpDataState.setSubjectTeacherMsg([]));
     dispatch(actions.UpDataState.setClassStudentTransferMsg([]));
+    dispatch(actions.UpDataState.setClassStudentTransferTransferMsg([]));
     dispatch(actions.UpDataState.setSubjectTeacherTransferMsg([]));
   };
   AddCourseClassModalCancel = () => {
@@ -719,7 +774,7 @@ class App extends Component {
             spinning={UIState.AppLoading.modalLoading}
           >
             {UIState.AddCourseClassModalShow.Show ? (
-              <AddCourseClass></AddCourseClass>
+              <AddCourseClass type={DataState.LoginUser.UserType==='0'?'Admin':DataState.LoginUser.UserType==='1'?'Teacher':false}></AddCourseClass>
             ) : (
               ""
             )}

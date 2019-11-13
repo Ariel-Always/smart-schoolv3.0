@@ -45,6 +45,7 @@ const SET_SUBJECT_TEACHER_TRANSFER_MSG = 'SET_SUBJECT_TEACHER_TRANSFER_MSG'
 //学生中转
 const SET_CLASS_STUDENT_TRANSFER_MSG = 'SET_CLASS_STUDENT_TRANSFER_MSG'
 
+const SET_CLASS_STUDENT_TRANSFER_TRANSFER_MSG = 'SET_CLASS_STUDENT_TRANSFER_TRANSFER_MSG'
 //编辑/添加教学班-获取年级班级信息
 const GET_GRADE_CLASS_MSG = 'GET_GRADE_CLASS_MSG';
 //编辑/添加教学班-获取年级班级信息
@@ -244,6 +245,13 @@ const setClassStudentTransferMsg = (student) => {
         dispatch({ type: SET_CLASS_STUDENT_TRANSFER_MSG, data: student })
     }
 }
+
+//编辑教学班-设置学生中转的中转
+const setClassStudentTransferTransferMsg = (student) => {
+    return (dispatch) => {
+        dispatch({ type: SET_CLASS_STUDENT_TRANSFER_TRANSFER_MSG, data: student })
+    }
+}
 //获取年级行政班信息
 const getGradeClassMsg = (url) => {
     return (dispatch) => {
@@ -376,7 +384,9 @@ export default {
     setSubjectTeacherTransferMsg,
     SET_SUBJECT_TEACHER_TRANSFER_MSG,
     SET_CLASS_STUDENT_TRANSFER_MSG,
+    SET_CLASS_STUDENT_TRANSFER_TRANSFER_MSG,
     setClassStudentTransferMsg,
+    setClassStudentTransferTransferMsg,
 
     GET_GRADE_CLASS_MSG,
     getGradeClassMsg,

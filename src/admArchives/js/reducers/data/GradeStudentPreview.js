@@ -29,7 +29,7 @@ function handleData(data,pageIndex,pageSize){
         list.ClassName = child.ClassName;
         list.OrderNo = { key: index, OrderNo: index + pageIndex * pageSize };
         let {UserID,Grader,GradeName,ClassName,PhotoPath,UserName,...others} = child;
-        list.Others = others;
+        list.Others = child;
         let person = {
             userName:child.UserName,
             userImg:child.PhotoPath,

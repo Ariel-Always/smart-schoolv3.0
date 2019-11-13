@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import actions from '../actions';
 import '../../scss/CourseClassDetails.scss'
 import history from '../containers/history'
-import { Table, Button,DetailsModal } from "../../../common";
+import { Table, Button,DetailsModal,Empty } from "../../../common";
 
 class CourseClassDetails extends React.Component {
     constructor(props) {
@@ -92,6 +92,7 @@ class CourseClassDetails extends React.Component {
     render() {
         const { DataState ,UIState} = this.props;
         let GetCourseClassDetailsMsg = DataState.GetCourseClassDetailsMsg;
+        let dataSource = GetCourseClassDetailsMsg ? GetCourseClassDetailsMsg.TableSource : []
       // console.log(GetCourseClassDetailsMsg)
         return (
             <React.Fragment>
@@ -103,14 +104,14 @@ class CourseClassDetails extends React.Component {
                         <span className='tips-content grade'><span className='tips'>年级：</span>{GetCourseClassDetailsMsg ? GetCourseClassDetailsMsg.GradeName : ''}</span>
                         <span className='tips-content studentCount'><span className='tips'>学生人数：</span>{GetCourseClassDetailsMsg ? GetCourseClassDetailsMsg.StudentCount : ''}</span>
                     </div>
-                    <Table
+                    {dataSource instanceof Array && dataSource.length > 0?(<Table
                         scroll={{ y: 390 }}
                         className='table'
                         columns={this.state.columns}
                         pagination={false}
-                        dataSource={GetCourseClassDetailsMsg ? GetCourseClassDetailsMsg.TableSource : []}>
+                        dataSource={dataSource}>
 
-                    </Table>
+                    </Table>):<Empty type='4' title={'暂无学生'} style={{ marginTop: '238.5px', transform: 'translateY(-50%)' }}></Empty>}
                 </div>
                 <DetailsModal
                     ref='SubjectDetailsMsgModal'

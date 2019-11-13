@@ -86,7 +86,9 @@ function handleWebsiteMain(data) {
     return main
 }
 function handleWebsiteAlter(data) {
-    let newData = data.map((child, index) => {
+    if(!(data instanceof Array))
+    return []
+    let newData =  data.map((child, index) => {
         let List = child.List.map((child1, index1) => {
             let number = Math.random() * 3
             let myColor = number > 2 ? 'blue' : number > 1 ? 'orange' : 'green';
@@ -101,6 +103,8 @@ function handleWebsiteAlter(data) {
     return newData;
 }
 function handleAlter(data) {
+    if(!(data instanceof Array))
+    return []
     let newData = data.map((child, index) => {
             let number = Math.random() * 3
             let myColor = number > 2 ? 'blue' : number > 1 ? 'orange' : 'green';

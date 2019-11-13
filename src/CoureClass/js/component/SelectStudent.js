@@ -50,21 +50,24 @@ class SelectStudent extends React.Component {
             return child.StudentID;
         })
         // console.log(ClassStudent)
-        let plainOptions = ClassStudent.propStudent ? ClassStudent.propStudent.map((child, index) => {
+        let plainOptions = ClassStudent.propStudent ? ClassStudent.propStudent.map((child, index) => {//该行政班的学生
             return child.StudentID
         }) : []
 
         let selectList = [];
         let len = plainOptions.length;
+      // console.log(checkList,selectStudent,transfer)
+        let isOld = {}
         checkList.map((child, index) => {
-
             plainOptions.map(key => {
-                if (key === child) {
+                if (key === child&&!isOld[key]) {//防止重复自减
                     len--;
+                    isOld[key] = true
                 }
             })
 
         })
+        // console.log(len)
         this.setState({
             checkList: checkList,
             plainOptions: plainOptions,
@@ -82,7 +85,7 @@ class SelectStudent extends React.Component {
     //搜索
     onClickSearch = (value) => {
         const { DataState, UIState, dispatch } = this.props;
-        let gradeID = DataState.GetCourseClassDetailsHandleClassMsg.GradeID;
+        let gradeID = DataState.GetCourseClassDetailsHandleClassMsg.selectData.Grade.value;
         // console.log(value.value);
         if (value.value === '') {
             dispatch(actions.UpUIState.showErrorAlert({
@@ -98,7 +101,7 @@ class SelectStudent extends React.Component {
             show: true,
             CancelBtnShow: 'y',
             keyword: value.value,
-            selectClassTab: '',
+            // selectClassTab: '',
             leftShow: false
         })
         dispatch(actions.UpDataState.searchClassStudentMsg('/GetStudentForAddOrEditCourseClassByKey?schoolID=' + this.state.UserMsg.SchoolID + '&gradeID=' + gradeID + '&key=' + value.value))
@@ -126,8 +129,8 @@ class SelectStudent extends React.Component {
             show: true,
             checkAll: false
         })
-        let oldStudent = DataState.GetCourseClassDetailsHandleClassMsg.selectData.Student;
-        dispatch(actions.UpDataState.setClassStudentTransferMsg(oldStudent))
+        // let oldStudent = DataState.GetCourseClassDetailsHandleClassMsg.selectData.Student;
+        // dispatch(actions.UpDataState.setClassStudentTransferMsg(oldStudent))
         dispatch(actions.UpDataState.getClassStudentMsg('/GetStudentForAddOrEditCourseClassByGroupID?schoolID=' + this.state.UserMsg.SchoolID + '&classID=' + id))
 
     }
@@ -147,7 +150,7 @@ class SelectStudent extends React.Component {
             popStudent.map((child, index) => {//全选的
                 let isNewStudent = false;
                 let unEqual = true;
-                oldStudent.map((oldChild, oldIndex) => {
+                transfer.map((oldChild, oldIndex) => {
                     // if (oldChild.StudentID !== child.StudentID && oldIndex === oldStudent.length - 1 && unEqual) {
                     //     isNewStudent = true;
                     // } else if (oldChild.StudentID === child.StudentID) {
@@ -155,28 +158,31 @@ class SelectStudent extends React.Component {
                     // }
                     if (oldChild.StudentID === child.StudentID) {
                         unEqual = false;
+                        isNewStudent=true 
                     }
                 })
-                if (!isNewStudent) {
+                if (!isNewStudent) {//去除重复的
                     newStudent.push(child);
                 }
             })
 
             //生成全选后的数组
-            let transferStudent = newStudent.concat(oldStudent);
+            let transferStudent = newStudent.concat(transfer);
             let newCheckList = transferStudent.map((child, index) => {
                 return child.StudentID
             })
+          // console.log(newCheckList,oldStudent,newStudent,transferStudent)
+
           // console.log(newCheckList)
             this.setState({
-                checkAll: true,
+                checkAll: checkAll,
                 checkList: newCheckList
             })
             //dispatch(actions.UpDataState.setClassStudentTransferMsg('/CourseClass_searchStudentID?gradeID='+this.state.selectClassTab+'&school=sss&key'+value))
             dispatch(actions.UpDataState.setClassStudentTransferMsg(transferStudent))
         } else {
             let newStudent = []
-            oldStudent.map((child, index) => {//取消全选的
+            transfer.map((child, index) => {//取消全选的
                 let Equal = false;
                 popStudent.map((oldChild, oldIndex) => {
                     if (oldChild.StudentID === child.StudentID) {
@@ -292,7 +298,7 @@ class SelectStudent extends React.Component {
         newTrans = transtrans.concat(transerNewData);
         let endCheckList = isSelectList.concat(newList);
 
-      // console.log(value, endCheckList)
+    // // console.log(value, endCheckList)
         this.setState({
             checkList: endCheckList,
             checkAll: value.length === this.state.plainOptions.length ? true : false
@@ -358,6 +364,7 @@ class SelectStudent extends React.Component {
                                         ClassList.map((child, index) => {
                                             return (
                                                 <li
+                                                title={child.ClassName}
                                                     onClick={this.onClickTabClick.bind(this, child.ClassID)}
                                                     className={`selectContent ${this.state.selectClassTab === child.ClassID ? 'active' : ''}`}
                                                     key={child.ClassID}
@@ -387,8 +394,8 @@ class SelectStudent extends React.Component {
                                                     return (
                                                         <li className='selectContent' key={child.StudentID}>
                                                             <CheckBox value={child.StudentID}>
-                                                                <span className='studentName'>{child.StudentName}</span>
-                                                                <span className='studentID'>{'[' + child.StudentID + ']'}</span>
+                                                                <span title={child.StudentName} className='studentName'>{child.StudentName}</span>
+                                                                <span title={child.StudentID} className='studentID'>{'[' + child.StudentID + ']'}</span>
                                                             </CheckBox>
                                                         </li>
                                                     )

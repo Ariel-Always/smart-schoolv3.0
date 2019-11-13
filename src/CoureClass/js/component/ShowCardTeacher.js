@@ -5,6 +5,7 @@ import { postData, getData } from '../../../common/js/fetch'
 import '../../scss/ShowCard.scss'
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
 import CONFIG from '../../../common/js/config';
+import history from "../containers/history";
 
 class ShowCardTeacher extends React.Component {
     constructor(props) {
@@ -37,26 +38,33 @@ class ShowCardTeacher extends React.Component {
         }));
 
     }
+     //关闭
+  onAlertWarnHide = () => {
+    const { dispatch } = this.props;
+    dispatch(actions.UpUIState.hideErrorAlert());
+  };
     //单个删除
     onAppAlertDeleteOK = (id) => {
         const { dispatch, DataState, UIState } = this.props;
-        
-        let url = '/DeleteSubject';
+        let userMsg = DataState.LoginUser
+        let url = '/DeleteCourseClass';
         dispatch(actions.UpUIState.hideErrorAlert());
         postData(CONFIG.CourseClassProxy + url, {
-            courseClassID: id
+            courseClassIDs: id,
+            schoolID:userMsg.SchoolID,
+            userID:userMsg.UserID,
+            userType:userMsg.UserType
         },2,'json').then(res => {
             return res.json()
         }).then(json => {
-            if (json.StatusCode === 400) {
-              // console.log('错误码：' + json.StatusCode)
-            } else if (json.StatusCode === 200) {
+            if (json.StatusCode === 200) {
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
                     title: "成功",
                     onHide: this.onAlertWarnHide.bind(this)
                 }));
-            dispatch(actions.UpDataState.getTeacherCourseClassMsg('/GetCourseClassByUserID?schoolID='+this.state.UserMsg.SchoolID+'&userID='+this.state.UserMsg.SchoolID));
+                history.push('/Teacher')
+            // dispatch(actions.UpDataState.getTeacherCourseClassMsg('/GetCourseClassByUserID?schoolID='+this.state.UserMsg.SchoolID+'&userID='+this.state.UserMsg.SchoolID));
                
             }
         })

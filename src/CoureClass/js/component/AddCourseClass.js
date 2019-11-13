@@ -43,10 +43,27 @@ class AddCourseClass extends React.Component {
             //dispatch(actions.UpDataState.setSubjectTeacherTransferMsg({value:UserMsg.UserID,title:UserMsg.UserName}))
         }
 
+        if(this.props.type==='Teacher'){
+            let Subjects = DataState.GetTeacherSubjectAndGradeMsg.Subjects;
+            
+            if(Subjects.length===1){
+                this.setState({
+                    SubjectSelect:Subjects[0],
+                    Subject: Subjects[0],
+                })
+            }
+            dispatch(actions.UpDataState.setCourseClassDataMsg({ Subject: Subjects[0] }))
+
+        }
+
+    }
+    componentDidMount(){
+
     }
     componentWillReceiveProps(nextProps) {
         const { DataState, UIState } = nextProps;
-        let data = nextProps.DataState.GetCourseClassDetailsHandleClassMsg
+        let data = nextProps.DataState.GetCourseClassDetailsHandleClassMsg;
+        
         this.setState({
             courseClassName: data.selectData ? data.selectData.CourseClass.CourseClassName : '',
             TeacherName: data.selectData ? data.selectData.Teacher.TeacherName : '',
@@ -235,6 +252,11 @@ class AddCourseClass extends React.Component {
     render() {
         const { DataState, UIState } = this.props;
         //获取路由
+      // console.log(this.props.type)
+        if(!this.props.type){
+            return
+        }
+        let type = this.props.type;
         let route = history.location.pathname;
         let pathArr = route.split('/');
         let handleRoute = pathArr[1];
@@ -244,30 +266,46 @@ class AddCourseClass extends React.Component {
         //*************** */
 
         let data = DataState.GetCourseClassDetailsHandleClassMsg;
-        let Subjects = DataState.GetCoureClassAllMsg.Subjects;
         let SubjectDropList = [{ value: 0, title: '请选择学科' }];
         let GradeDropList = [{ value: 0, title: '请选择年级' }];
         let tableSource = data.TableSource ? data.TableSource : [];
         let teacher = data.selectData ? data.selectData.Teacher.length !== 0 ? data.selectData.Teacher : {} : {};
-        for (let index in Subjects) {
-            SubjectDropList.push({
-                value: index,
-                title: Subjects[index].subjectName
-            })
-            let Grade = [];
-            for (let child in Subjects[index]) {
-                if (child !== 'subjectName') {
+        if(type==='Admin'){
+            let Subjects = DataState.GetCoureClassAllMsg.Subjects;
 
-                    Grade.push({
-                        value: child,
-                        title: Subjects[index][child]
-                    })
-
+            for (let index in Subjects) {
+                SubjectDropList.push({
+                    value: index,
+                    title: Subjects[index].subjectName
+                })
+                let Grade = [];
+                for (let child in Subjects[index]) {
+                    if (child !== 'subjectName') {
+    
+                        Grade.push({
+                            value: child,
+                            title: Subjects[index][child]
+                        })
+    
+                    }
                 }
+                GradeDropList[index] = Grade;
+    
             }
-            GradeDropList[index] = Grade;
+        }else if(type==='Teacher'){
+            let Subjects = DataState.GetTeacherSubjectAndGradeMsg.Subjects;
+            Subjects.map((child,index)=>{
+                SubjectDropList.push({
+                    value: child.value,
+                    title: child.title
+                })
+                GradeDropList[child.value] = child.grade;
+
+            })
+            
 
         }
+        
         // console.log(SubjectDropList)
         return (
             <React.Fragment>
@@ -284,14 +322,18 @@ class AddCourseClass extends React.Component {
                         <div className='row-column'>
                             <span className='left'>学科：</span>
                             <span className='right '>
-                                <DropDown
+                                {type!=='Teacher'||DataState.GetTeacherSubjectAndGradeMsg.Subjects.length!==1?(<DropDown
                                     width={150}
                                     height={98}
                                     type='simple'
                                     dropList={SubjectDropList}
                                     dropSelectd={this.state.SubjectSelect}
                                     onChange={this.onSelectSubjectChange.bind(this)}
-                                ></DropDown>
+                                ></DropDown>):
+                                (
+                                    <span title={this.state.SubjectSelect.title} className='noChange SubjectName'>{this.state.SubjectSelect.title}</span>
+                                )
+                                }
 
                             </span>
 
@@ -315,11 +357,11 @@ class AddCourseClass extends React.Component {
                         <div className='row-column'>
                             <span className='left'>任课老师：</span>
                             {handleRoute !== 'Teacher' ? (<span className='right'>
-                                <Input readOnly unselectable="on" onClick={this.onTeacherSelectClick.bind(this)} className='teacherName selectTeacher' type='text' value={data.selectData ? data.selectData.Teacher.title : ''} style={{ width: 150 + 'px' }} onChange={this.onCourseClassNameChange.bind(this)} />
+                                <Input readOnly unselectable="on" onClick={this.onTeacherSelectClick.bind(this)} className=' selectTeacher' type='text' value={data.selectData ? data.selectData.Teacher.title : ''} style={{ width: 150 + 'px' }} onChange={this.onCourseClassNameChange.bind(this)} />
                                 <span onClick={this.onTeacherSelectClick.bind(this)} className='teacher-select'>选择</span>
                             </span>) : (
                                     <span className='right'>
-                                        <span className='noChange teacherName'>{data.selectData ? data.selectData.Teacher.title : ''}</span>
+                                        <span title={data.selectData.Teacher.title} className='noChange teacherName'>{data.selectData ? data.selectData.Teacher.title : ''}</span>
                                     </span>
                                 )}
                         </div>
@@ -349,9 +391,10 @@ class AddCourseClass extends React.Component {
                                                 this.state.tableSource.map((child, index) => {
                                                     return (
                                                         <span className='content-card' key={child.StudentID}>
-                                                            {child.StudentName}
-                                                            <span className='card-id'>{child.StudentID}</span>
-                                                            <span onClick={this.onDeleteStudentClick.bind(this, index)} className='icon-x'>x</span>
+                                                            <span title={child.StudentName} className='card-name'>{child.StudentName}</span>
+                                                            <span title={child.StudentID} className='card-id'>{child.StudentID}</span>
+                                                            
+                                                            <span onClick={this.onDeleteStudentClick.bind(this, index)} className='icon-x'></span>
                                                         </span>
                                                     )
                                                 })
@@ -392,7 +435,9 @@ class AddCourseClass extends React.Component {
         )
     }
 }
-
+AddCourseClass.defaultProps = {
+    type: 'Admin'
+  };
 const mapStateToProps = (state) => {
     let { UIState, DataState } = state;
     return {
