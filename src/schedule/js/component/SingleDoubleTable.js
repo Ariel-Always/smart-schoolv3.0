@@ -44,7 +44,13 @@ class SingleDoubleTable extends Component{
 
         //根据课程
 
-        let courseTotal = 0;
+        let courseTotal = {
+
+            ClassHourIndex:0,
+
+            TypeIndex:0
+
+        };
 
         let ths =[];
         //查找到当天是周几
@@ -187,45 +193,51 @@ class SingleDoubleTable extends Component{
 
 
 
-                        ItemClassHourCount.map((i) => {
+                        ItemClassHourCount.map((i,k) => {
 
-                            if (key===courseTotal){
+                            if (key===courseTotal.ClassHourIndex){
 
-                                let noon = '';
+                                if (k===courseTotal.TypeIndex){
 
-                               switch (i.ClassHourType) {
+                                    let noon = '';
 
-                                   case 1:
+                                    switch (i.ClassHourType) {
 
-                                       noon = "上午";
+                                        case 1:
 
-                                       break;
+                                            noon = "上午";
 
-                                   case 2:
+                                            break;
 
-                                       noon = "下午";
+                                        case 2:
 
-                                       break;
+                                            noon = "下午";
 
-                                   case 3:
+                                            break;
 
-                                       noon = "晚上";
+                                        case 3:
 
-                                       break;
+                                            noon = "晚上";
 
-                                   default:
+                                            break;
 
-                                       noon = "上午";
+                                        default:
 
-                                       break;
+                                            noon = "上午";
 
-                               }
+                                            break;
 
-                                firstTd = <td style={{width:leftOneWidth}} className="noon"  rowSpan={i.CountType}>{noon}</td>;
+                                    }
 
-                                courseTotal += i.CountType;
+                                    firstTd = <td style={{width:leftOneWidth}} className="noon"  rowSpan={i.CountType}>{noon}</td>;
 
-                               return;
+                                    courseTotal.ClassHourIndex += i.CountType;
+
+                                    courseTotal.TypeIndex+=1;
+
+                                    return;
+
+                                }
 
                             }
 
