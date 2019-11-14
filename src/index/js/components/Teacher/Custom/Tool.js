@@ -349,6 +349,22 @@ class Tool extends React.Component {
       )
     );
   };
+  // 添加工具
+  onAddCustomClick = () => {
+    const { dispatch, Teacher } = this.props;
+    let SubjectID = Teacher.HeaderSetting.SubjectSelect.id;
+    let SubjectName = Teacher.HeaderSetting.SubjectSelect.name;
+
+    
+    dispatch(
+      TeacherCustomActions.setHandleToolInitData({
+        
+      })
+    );
+    dispatch({
+      type: TeacherCustomActions.TEACHER_ADD_TOOL_CUSTOM_MODAL_OPEN
+    });
+  };
   render() {
     const { Teacher, AppLoading } = this.props;
     let MainData = Teacher.TeacherCustomData.ToolData;
@@ -391,7 +407,7 @@ class Tool extends React.Component {
           >
               
               <div className="add-box" style={{marginTop:Teacher.TeacherCustomData.TipsShow.ToolTipsShow?'46px':'16px'}}>
-                <span className="btn-add">
+                <span onClick={this.onAddCustomClick.bind(this)} className="btn-add">
                   <i className="add-icon"></i>
                   <span className="add-text">添加</span>{" "}
                 </span>

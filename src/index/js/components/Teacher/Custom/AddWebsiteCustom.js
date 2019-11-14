@@ -1,12 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
 import {
-  Table,
-  Button,
-  PagiNation,
+  
   CheckBox,
   CheckBoxGroup,
-  Tips
+  Tips,
+  DropDown
 } from "../../../../../common";
 import { Input } from "antd";
 import TeacherCustomActions from "../../../actions/Teacher/TeacherCustomActions";
@@ -19,8 +18,31 @@ class AddWebsiteCustom extends React.Component {
     super(props);
     this.state = {
       WebName: "",
-      WebNameTipsTitle:'网站名称不能为空'
+      WebNameTipsTitle: "网站名称不能为空",
+      WebAddress: "",
+      WebAddressTipsTitle: "网站地址不能为空",
+      Subject: {},
+      WebType: {},
+      Period: {},
+      WebTypeList: []
     };
+  }
+
+  componentWillMount() {
+    const { dispatch, Teacher } = this.props;
+    let WebData = Teacher.WebsiteData;
+    let TeacherCustomData = Teacher.TeacherCustomData;
+    this.setState({
+      WebName: WebData.WebName,
+      WebAddress: WebData.WebAddress,
+      Subject: {
+        SubjectName: WebData.SubjectName,
+        SubjectID: WebData.SubjectID
+      },
+      WebType: WebData.WebType,
+      Period: WebData.PeriodID,
+      WebTypeList: TeacherCustomData.WebTypeList
+    });
   }
   //   网站名称修改
   onWebNameChange = e => {
@@ -29,7 +51,104 @@ class AddWebsiteCustom extends React.Component {
     });
   };
   // 网站名称修改失去焦点
-  onWebNameBlur = e => {};
+  onWebNameBlur = e => {
+    const { dispatch } = this.props;
+    // console.log(e.target.value);
+    let value = e.target.value;
+    if (value === "") {
+      dispatch(
+        TeacherCustomActions.setCustomTipsVisible({ WebNameTipsVisible: true })
+      );
+    } else {
+      dispatch(
+        TeacherCustomActions.setHandleWebsiteData({
+          WebName: value
+        })
+      );
+      dispatch(
+        TeacherCustomActions.setCustomTipsVisible({ WebNameTipsVisible: false })
+      );
+    }
+  };
+
+  //   网站地址修改
+  onWebAddressChange = e => {
+    this.setState({
+      WebAddress: e.target.value
+    });
+  };
+  // 网站地址修改失去焦点
+  onWebAddressBlur = e => {
+    const { dispatch } = this.props;
+    let Test = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\*\+,;=.]+$/;
+    // console.log(e.target.value);
+    let value = e.target.value;
+    let isTrue = Test.test(value);
+
+    if (value === "") {
+      this.setState({
+        WebAddressTipsTitle: "网站地址不能为空"
+      });
+      dispatch(
+        TeacherCustomActions.setCustomTipsVisible({
+          WebAddressTipsVisible: true
+        })
+      );
+    } else if (!isTrue) {
+      this.setState({
+        WebAddressTipsTitle: "网站地址格式错误"
+      });
+      dispatch(
+        TeacherCustomActions.setCustomTipsVisible({
+          WebAddressTipsVisible: true
+        })
+      );
+    } else {
+      this.setState({
+        WebAddressTipsTitle: "网站地址不能为空"
+      });
+      dispatch(
+        TeacherCustomActions.setHandleWebsiteData({
+          WebAddress: value
+        })
+      );
+      dispatch(
+        TeacherCustomActions.setCustomTipsVisible({
+          WebAddressTipsVisible: false
+        })
+      );
+    }
+  };
+
+  // 类型选择
+  onDropMenuChange = e => {
+    const { dispatch } = this.props;
+    console.log(e);
+    this.setState({
+      WebType: e
+    });
+    dispatch(
+      TeacherCustomActions.setHandleWebsiteData({
+        WebAddress: e
+      })
+    );
+  };
+
+  // 选择学段
+  changeCheckBox = Period => {
+    const { dispatch } = this.props;
+    if (Period.length === 0) {
+      return;
+    }
+    this.setState({
+      Period: Period
+    });
+    dispatch(
+      TeacherCustomActions.setHandleWebsiteData({
+        SubjectID: Period
+      })
+    );
+  };
   render() {
     const { LoginUser, Teacher, AppLoading } = this.props;
     return (
@@ -38,18 +157,75 @@ class AddWebsiteCustom extends React.Component {
           <span className="left">网站名称:</span>
           <Tips
             overlayClassName="tips"
-            visible={EditModalTipsVisible.TitleIDVisible}
+            visible={Teacher.TeacherTipsVisible.WebNameTipsVisible}
             title={this.state.WebNameTipsTitle}
           >
             <Input
               className="right webName"
               placeholder="请输入网站名称.."
-              maxLength='200'
+              maxLength={200}
               onChange={this.onWebNameChange.bind(this)}
               onBlur={this.onWebNameBlur.bind(this)}
               value={this.state.WebName}
             ></Input>
           </Tips>
+        </div>
+        <div className="row clearfix">
+          <span className="left">网站地址:</span>
+          <Tips
+            overlayClassName="tips"
+            visible={Teacher.TeacherTipsVisible.WebAddressTipsVisible}
+            title={this.state.WebAddressTipsTitle}
+          >
+            <Input
+              className="right webAddress"
+              placeholder="http(s)://"
+              maxLength={400}
+              onChange={this.onWebAddressChange.bind(this)}
+              onBlur={this.onWebAddressBlur.bind(this)}
+              value={this.state.WebAddress}
+            ></Input>
+          </Tips>
+        </div>
+        <div className="row clearfix">
+          <span className="left">适用学科:</span>
+          <span className="right subject">
+            {this.state.Subject.SubjectName}
+          </span>
+        </div>
+        <div className="row clearfix">
+          <span className="left">网站分类:</span>
+          <DropDown
+            ref="dropMenu"
+            className="right WebType"
+            style={{ zIndex: 2 }}
+            onChange={this.onDropMenuChange.bind(this)}
+            width={110}
+            height={240}
+            dropSelectd={this.state.WebType}
+            dropList={this.state.WebTypeList}
+          ></DropDown>
+        </div>
+        <div className="row clearfix">
+          <span className="left">适用学段:</span>
+          <CheckBoxGroup
+            onChange={this.changeCheckBox.bind(this)}
+            className={"right checkedBoxGroupMap PeriodList"}
+            value={this.state.Period}
+          >
+            {Teacher.TeacherCustomData.PeriodList instanceof Array &&
+              Teacher.TeacherCustomData.PeriodList.map((child, index) => {
+                return (
+                  <CheckBox
+                    className={"checkedBoxMap Period"}
+                    key={index}
+                    value={child.value}
+                  >
+                    {child.title}
+                  </CheckBox>
+                );
+              })}
+          </CheckBoxGroup>
         </div>
       </div>
     );
