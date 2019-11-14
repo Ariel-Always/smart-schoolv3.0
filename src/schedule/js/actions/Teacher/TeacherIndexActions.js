@@ -123,6 +123,8 @@ const STSPageInit = () => {
 
                                            return {
 
+                                               ...i,
+
                                                type:i.ScheduleType,
 
                                                title:(i.ClassName!==''?i.ClassName:i.CourseClassName),
@@ -455,6 +457,8 @@ const TeacherPersonalInit = () => {
 
                     return {
 
+                        ...item,
+
                         title:item.SubjectName,
 
                         titleID:item.SubjectID,
@@ -544,6 +548,8 @@ const ClassTotalInit = () => {
                         let Schedule = json.ItemSchedule.map((item) => {
 
                             return {
+
+                                ...item,
 
                                 title:item.SubjectName,
 

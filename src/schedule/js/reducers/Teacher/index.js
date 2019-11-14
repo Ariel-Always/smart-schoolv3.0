@@ -14,6 +14,8 @@ import ClassTotal from './ClassTotal';
 
 import ClassStudent from './ClassStudent';
 
+import AddTempScheduleModal from './AddTempScheduleModal';
+
 const Teacher = combineReducers({
 
     SubjectTeacherSubjectSchedule,
@@ -28,7 +30,9 @@ const Teacher = combineReducers({
 
     ClassTotal,
 
-    ClassStudent
+    ClassStudent,
+
+    AddTempScheduleModal
 
 });
 

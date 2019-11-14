@@ -12,11 +12,13 @@ class ScheduleDetailModal extends Component{
 
             RebackStopSchedule,ChangeTimeShow,RebackTime,
 
-            AdjustClassRoomShow,RebackClassRoom,ChooseReplaceTeacherShow
+            AdjustClassRoomShow,RebackClassRoom,ChooseReplaceTeacherShow,
+
+            RebackReplaceSchedule
 
         } = this.props;
 
-        const  { Show,ModalLoading,itemSchedule,itemScheduleLog=[],itemScheduleHistory=[] } = Params;
+        const  { Show=false,ModalLoading=true,itemSchedule=[{}],itemScheduleLog=[],itemScheduleHistory=[] } = Params;
 
 
         const {
@@ -244,7 +246,7 @@ class ScheduleDetailModal extends Component{
 
                                         ReplaceTeacherID?
 
-                                            <button className="reback adjust-btn">恢复教师</button>
+                                            <button className="reback adjust-btn" onClick={e=>RebackReplaceSchedule({ClassDate:NowClassDate,ClassHourNO:NowClassHourNO,TeacherID:NowTeacherID,ScheduleID})}>恢复教师</button>
 
                                             :
 

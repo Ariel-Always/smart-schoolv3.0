@@ -127,7 +127,7 @@ class LeftMenu extends Component{
 
                                         :
 
-                                        <Empty type="5"></Empty>
+                                        <Empty type="5" title="没有数据"></Empty>
 
                                 }
 

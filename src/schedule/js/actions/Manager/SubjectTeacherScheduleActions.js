@@ -19,9 +19,9 @@ const LOADING_SHOW = 'LOADING_SHOW';
 const LOADING_HIDE = 'LOADING_HIDE';
 
 //课程详情弹窗开启和关闭
-const MANAGER_STS_SCHEDULE_DETAIL_MODAL_SHOW = 'SCHEDULE_DETAIL_MODAL_SHOW';
+const MANAGER_STS_SCHEDULE_DETAIL_MODAL_SHOW = 'MANAGER_STS_SCHEDULE_DETAIL_MODAL_SHOW';
 
-const MANAGER_STS_SCHEDULE_DETAIL_MODAL_HIDE = 'SCHEDULE_DETAIL_MODAL_HIDE';
+const MANAGER_STS_SCHEDULE_DETAIL_MODAL_HIDE = 'MANAGER_STS_SCHEDULE_DETAIL_MODAL_HIDE';
 
 //loading
 
@@ -792,7 +792,35 @@ const ReplaceScheduleCommit = () => {
 };
 
 
+//找人代课撤销
 
+const RebackReplaceSchedule = (params) => {
+
+    return (dispatch,getState) => {
+
+        const { TeacherID,ClassDate,ClassHourNO,ScheduleID } = params;
+
+        const { SchoolID } = getState().LoginUser;
+
+        ApiActions.CancelChangeTeacherAndGetTea({
+
+            TeacherID,ClassDate,ClassHourNO,ScheduleID,SchoolID,dispatch
+
+        }).then(data=>{
+
+            if (data===0){
+
+                dispatch(AppAlertActions.alertSuccess({title:"撤销成功！"}));
+
+                dispatch(ScheduleModalInfoUpdate({SchoolID,TeacherID,ScheduleID,ClassDate,ClassHourNO}));
+
+            }
+
+        })
+
+    }
+
+};
 
 
 
@@ -840,6 +868,8 @@ export default {
     LOADING_SHOW,
 
     LOADING_HIDE,
+
+    //课程详情
 
     MANAGER_STS_SCHEDULE_DETAIL_MODAL_SHOW,
 
@@ -928,6 +958,8 @@ export default {
 
     STSPageUpdate,
 
+    //从这里开始是课程详情的弹窗
+
     ScheduleDetailShow,
 
     StopSchedule,
@@ -956,6 +988,8 @@ export default {
 
     ReplaceSearchClick,
 
-    ReplaceScheduleCommit
+    ReplaceScheduleCommit,
+
+    RebackReplaceSchedule
 
 }

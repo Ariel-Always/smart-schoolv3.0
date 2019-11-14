@@ -57,9 +57,9 @@ class ChangeTimeModal extends Component{
 
             Show=false,ModalLoading=true,WeekNO=0,ClassDate='',NowClassHourNO=0,
 
-            ItemClassHour=[],ItemWeek=[],ItemClassHourCount,NowDate,WeekDay,
+            ItemClassHour=[],ItemWeek=[],ItemClassHourCount=[],NowDate='',WeekDay='',
 
-            ClassHourType,ClassHourNO,StartEndTime,SelectWeekDay='',SelectClassHourNO=0
+            ClassHourType='',ClassHourNO='',StartEndTime='',SelectWeekDay='',SelectClassHourNO=0
 
         } = Params;
 
@@ -315,8 +315,6 @@ class ChangeTimeModal extends Component{
 
                                         });
 
-                                        console.log(courseTotal);
-
                                         let tds = [];
 
 
@@ -329,15 +327,22 @@ class ChangeTimeModal extends Component{
 
                                                 let Time = this.ToTime(TimeList[i]);
 
+                                                //判断当天日期是否大于正在上的日期
                                                 if (NowTime<Time){
 
                                                     CanSelect = true;
 
-                                                }else if (NowTime===Time) {
+                                                }else if (NowTime===Time) {//如果当天日期和正在上课日期相同
 
-                                                    if (item.ClassHourNO>NowClassHourNO){
+                                                    //如果有现在正在上的课时的话，判断正在上的课时，如果没有的话默认当天不可选择
 
-                                                        CanSelect = true;
+                                                    if (NowClassHourNO){
+
+                                                        if (item.ClassHourNO>NowClassHourNO){
+
+                                                            CanSelect = true;
+
+                                                        }
 
                                                     }
 
