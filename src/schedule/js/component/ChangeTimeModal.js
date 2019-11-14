@@ -194,7 +194,13 @@ class ChangeTimeModal extends Component{
         }
 
 
-        let courseTotal = 0;
+        let courseTotal = {
+
+            ClassHourIndex:0,
+
+            TypeIndex:0
+
+        };
 
 
         let MaxWeek =  ItemWeek.length>0?ItemWeek[ItemWeek.length-1].WeekNO:1;
@@ -259,49 +265,57 @@ class ChangeTimeModal extends Component{
                                         //判断上下午，以及合并单元格
 
 
-                                        ItemClassHourCount.map((i) => {
+                                        ItemClassHourCount.map((i,k) => {
 
-                                            if (key===courseTotal){
+                                            if (key===courseTotal.ClassHourIndex){
 
-                                                let noon = '';
+                                                if (k===courseTotal.TypeIndex){
 
-                                                switch (i.ClassHourType) {
+                                                    let noon = '';
 
-                                                    case 1:
+                                                    switch (i.ClassHourType) {
 
-                                                        noon = "上午";
+                                                        case 1:
 
-                                                        break;
+                                                            noon = "上午";
 
-                                                    case 2:
+                                                            break;
 
-                                                        noon = "下午";
+                                                        case 2:
 
-                                                        break;
+                                                            noon = "下午";
 
-                                                    case 3:
+                                                            break;
 
-                                                        noon = "晚上";
+                                                        case 3:
 
-                                                        break;
+                                                            noon = "晚上";
 
-                                                    default:
+                                                            break;
 
-                                                        noon = "上午";
+                                                        default:
 
-                                                        break;
+                                                            noon = "上午";
+
+                                                            break;
+
+                                                    }
+
+                                                    firstTd = <td  className="noon"  rowSpan={i.CountType}>{noon}</td>;
+
+                                                    courseTotal.ClassHourIndex += i.CountType;
+
+                                                    courseTotal.TypeIndex+=1;
+
+                                                    return;
 
                                                 }
-
-                                                firstTd = <td  className="noon"  rowSpan={i.CountType}>{noon}</td>;
-
-                                                courseTotal += i.CountType;
-
-                                                return;
 
                                             }
 
                                         });
+
+                                        console.log(courseTotal);
 
                                         let tds = [];
 
@@ -320,8 +334,6 @@ class ChangeTimeModal extends Component{
                                                     CanSelect = true;
 
                                                 }else if (NowTime===Time) {
-
-                                                    console.log(NowClassHourNO);
 
                                                     if (item.ClassHourNO>NowClassHourNO){
 

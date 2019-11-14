@@ -24,6 +24,7 @@ import ChangeTimeModal from '../../component/ChangeTimeModal';
 
 import AdjustClassRoomModal from "../../component/AdjustClassRoomModal";
 
+import ReplaceScheduleModal from '../../component/ReplaceScheduleModal';
 
 
 class Subject extends Component{
@@ -352,6 +353,69 @@ class Subject extends Component{
 
     }
 
+    //找人代课教师选择
+
+    ReplaceTeacherPick(ID){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:STSAction.MANAGER_STS_REPLACE_SCHEDULE_MODAL_TEACHER_PICK,data:ID});
+
+    }
+
+    //找人代课输入框改变
+
+    ReplaceSearchValueChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:STSAction.MANAGER_STS_REPLACE_SCHEDULE_MODAL_INPUT_CHANGE,data:e.target.value});
+
+    }
+
+    //点击代课教师搜索
+
+    ReplaceSearchClick(SearchValue){
+
+        const { dispatch } = this.props;
+
+        dispatch(STSAction.ReplaceSearchClick(SearchValue));
+
+    }
+
+    //取消搜索教师
+
+    ReplaceSearchCancel(){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:STSAction.MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_CANCEL_BTN_HIDE});
+
+        dispatch({type:STSAction.MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_WRAPPER_HIDE});
+
+        dispatch({type:STSAction.MANAGER_STS_REPLACE_SCHEDULE_MODAL_INPUT_CHANGE,data:''});
+
+    }
+
+    //关闭找人代课弹窗
+
+    ReplaceScheduleClose(){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:STSAction.MANAGER_STS_REPLACE_SCHEDULE_MODAL_HIDE});
+
+    }
+
+    //找人代课弹窗提交
+    ReplaceScheduleCommit(){
+
+        const { dispatch } = this.props;
+
+        dispatch(STSAction.ReplaceScheduleCommit());
+
+    }
+
 
 
 
@@ -362,7 +426,7 @@ class Subject extends Component{
 
         const {SubjectCourseGradeClassRoom,SubjectTeacherSchedule} = Manager;
 
-        const { ScheduleDetail,ChangeTime,AdjustClassRoom } = SubjectTeacherSchedule;
+        const { ScheduleDetail,ChangeTime,AdjustClassRoom,ReplaceSchedule } = SubjectTeacherSchedule;
 
 
 
@@ -523,6 +587,28 @@ class Subject extends Component{
                 >
 
                 </AdjustClassRoomModal>
+
+                <ReplaceScheduleModal
+
+                    Params={ReplaceSchedule}
+
+                    ReplaceTeacherPick={this.ReplaceTeacherPick.bind(this)}
+
+                    SearchValueChange={this.ReplaceSearchValueChange.bind(this)}
+
+                    ReplaceSearchClick={this.ReplaceSearchClick.bind(this)}
+
+                    ReplaceSearchCancel={this.ReplaceSearchCancel.bind(this)}
+
+                    ReplaceScheduleClose={this.ReplaceScheduleClose.bind(this)}
+
+                    ReplaceScheduleCommit={this.ReplaceScheduleCommit.bind(this)}
+
+                >
+
+
+
+                </ReplaceScheduleModal>
 
             </div>
 
