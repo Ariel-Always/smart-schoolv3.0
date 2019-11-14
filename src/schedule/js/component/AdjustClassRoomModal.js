@@ -16,11 +16,11 @@ class AdjustClassRoomModal extends Component{
 
         } = this.props;
 
-        const { Show,ModalLoading,ClassRoomList=[],ClassRoomTabActive,CheckedValue,
+        const { Show=false,ModalLoading=true,ClassRoomList=[],ClassRoomTabActive='',CheckedValue='',
 
-            NowClassRoomName,SearchValue,CancelBtnShow,SearchWrapperShow,SearchList,
+            NowClassRoomName='',SearchValue='',CancelBtnShow=false,SearchWrapperShow=false,SearchList=[],
 
-            SearchLoading
+            SearchLoading=false
 
         } = Params;
 

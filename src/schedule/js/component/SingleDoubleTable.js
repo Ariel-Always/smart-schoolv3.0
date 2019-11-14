@@ -30,6 +30,7 @@ class SingleDoubleTable extends Component{
     }
 
 
+
     render() {
 
         const {
@@ -38,7 +39,7 @@ class SingleDoubleTable extends Component{
 
             ItemWeek,NowWeekNo,commonWidth,leftOneWidth,leftTwoWidth,
 
-            schedule,NowDate,OptionalClassShow
+            schedule,NowDate,OptionalClassShow,ScheduleDetailShow
 
         } = this.props;
 
@@ -271,7 +272,7 @@ class SingleDoubleTable extends Component{
 
                                                         <React.Fragment>
 
-                                                            <div className={`title ${it.ScheduleType===1?'':'active'}`} title={it.title} data-id={it.titleID}>{it.title}</div>
+                                                            <div className={`title ${it.ScheduleType===1?'':'active'}`} onClick={ScheduleDetailShow?(e)=>ScheduleDetailShow(it):()=>{}} title={it.title} data-id={it.titleID}>{it.title}</div>
 
                                                             <div className="second-title" title={it.secondTitle} data-id={it.secondTitleID}>{it.secondTitle}</div>
 

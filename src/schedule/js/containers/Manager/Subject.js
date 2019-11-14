@@ -416,7 +416,15 @@ class Subject extends Component{
 
     }
 
+    //找人代课撤销
 
+    RebackReplaceSchedule(params){
+
+        const { dispatch } = this.props;
+
+        dispatch(STSAction.RebackReplaceSchedule(params));
+
+    }
 
 
 
@@ -545,6 +553,8 @@ class Subject extends Component{
                     RebackClassRoom={this.RebackClassRoom.bind(this)}
 
                     ChooseReplaceTeacherShow={this.ChooseReplaceTeacherShow.bind(this)}
+
+                    RebackReplaceSchedule={this.RebackReplaceSchedule.bind(this)}
 
                 >
 

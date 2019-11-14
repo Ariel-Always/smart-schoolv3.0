@@ -316,6 +316,8 @@ const ClassTotalInit = () => {
 
                                     return {
 
+                                        ...i,
+
                                         type:i.ScheduleType,
 
                                         title:i.SubjectName,
@@ -578,6 +580,8 @@ const ClassRoomTotalInit = () => {
                                 if (i.ClassRoomID === item.ClassRoomID){
 
                                     return {
+
+                                        ...i,
 
                                         type:i.ScheduleType,
 
