@@ -25,7 +25,7 @@ const getLoginUser = (data) => {
 };
 
 
-//设置教学方案
+//获取教学方案
 const getTeachingSolutionMsg = (url) => {
     return (dispatch) => {
         getData(CONFIG.TeachingSolutionProxy + url, 2).then(res => {
@@ -43,7 +43,7 @@ const getTeachingSolutionMsg = (url) => {
         });
     }
 }
-//获取教学方案
+//获取教学方案详情
 const getTeachingSolutionDetailsMsg = (url) => {
     return (dispatch) => {
         getData(CONFIG.TeachingSolutionProxy + url, 2).then(res => {

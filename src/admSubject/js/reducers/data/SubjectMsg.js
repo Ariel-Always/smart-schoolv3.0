@@ -9,10 +9,10 @@ import Politics from '../../../images/Politics.png';
 import Maths from '../../../images/Math.png';
 import Chinese from '../../../images/Chinese.png';
 import Others from '../../../images/Others.png';
-import Science from '../../../images/Others.png';
-import IT from '../../../images/Others.png';
-import PE from '../../../images/Others.png';
-import Art from '../../../images/Others.png';
+import Science from '../../../images/Science.png';
+import IT from '../../../images/IT.png';
+import PE from '../../../images/PE.png';
+import Art from '../../../images/Art.png';
 
 
 const SubjectMsg = (state = {}, actions) => {
@@ -89,7 +89,7 @@ function handleData(data) {
 function handleSubjectName(Subject) {
     let SubjectLogo = Others;
     if (Subject.IsDefault) {
-        if (Subject.SubjectID === 'S2-English' || Subject.SubjectID === 'S3-English' || Subject.SubjectID === 'S4-English')
+        if (Subject.SubjectID === 'S1-English' ||Subject.SubjectID === 'S2-English' || Subject.SubjectID === 'S3-English' || Subject.SubjectID === 'S4-English')
             SubjectLogo = English;
         else if (Subject.SubjectID === 'S2-Maths')
             SubjectLogo = Maths;
@@ -109,9 +109,9 @@ function handleSubjectName(Subject) {
             SubjectLogo = Biology;
         else if (Subject.SubjectID === 'Science')
             SubjectLogo = Science;
-        else if (Subject.SubjectID === 'IT')
+        else if (Subject.SubjectID === 'S2-IT')
             SubjectLogo = IT;
-        else if (Subject.SubjectID === 'PE')
+        else if (Subject.SubjectID === 'S2-PE')
             SubjectLogo = PE;
         else if (Subject.SubjectID === 'Art')
             SubjectLogo = Art;

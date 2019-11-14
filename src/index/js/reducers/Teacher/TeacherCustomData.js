@@ -100,6 +100,9 @@ function handleWebsiteAlter(data) {
         child.List = List;
         return child;
     })
+    if(data.length===0){
+        newData = [{List:[]}]
+    }
     return newData;
 }
 function handleAlter(data) {
@@ -113,6 +116,9 @@ function handleAlter(data) {
             child.Img = child.ModuleLogoPath||child.ImgUrl || (UrlGetIcon(child.Url) + '/favicon.ico')// data数据处理:img
             return child
     })
+    // if(data.length===0){
+    //     newData = [{List:[]}]
+    // }
     return [{List:newData}];
     
 }

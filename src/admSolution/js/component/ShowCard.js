@@ -117,6 +117,15 @@ class ShowCard extends React.Component {
         dispatch(actions.UpUIState.TeachingSolutionDetailsModalOpen())
 
     }
+    // 背景
+    RandomBG = () => {
+        let number = Math.round(Math.random()*10)
+        if(number<=8){
+            return number
+        }else{
+            return this.RandomBG()
+        }
+    }
     render() {
         let To = '';
 
@@ -127,29 +136,32 @@ class ShowCard extends React.Component {
 
                 <div className='box-main'>
                     <div className='main-content'>
-                        <p className='content-tips'>{this.props.params.SolutionName}</p>
+                        <p title={this.props.params.SolutionName} className={`content-tips  ${'content_bg'+this.RandomBG()}`}>{this.props.params.SolutionName}</p>
 
                         <div className='content-details'>
                             <div className='details-row clearfix'>
                                 <span className='left'>学科：</span>
-                                <span className='right subjectName'>{this.props.params.SubjectName}</span>
+                                <span title={this.props.params.SubjectName} className='right subjectName'>{this.props.params.SubjectName}</span>
                             </div>
 
                             <div className='details-row clearfix'>
                                 <span className='left'>文件数量：</span>
-                                <span className='right'>{this.props.params.FilesCount}</span>
+                                <span title={this.props.params.FilesCount} className='right'>{this.props.params.FilesCount}</span>
                             </div>
                             <div className='details-row clearfix'>
                                 <span className='left'>创建时间：</span>
-                                <span className='right'>{this.props.params.CreateTime}</span>
+                                <span title={this.props.params.CreateTime} className='right'>{this.props.params.CreateTime}</span>
                             </div>
 
                         </div>
-                        <hr className='content-hr'></hr>
+                        {/* <hr className='content-hr'></hr> */}
                         <div className='handle-content'>
                             <span onClick={this.onResetNameClick.bind(this, this.props.params)} className='btn  resetName'>重命名</span>
-                            <Button shape='round' color='red' onClick={this.onDeleteClick.bind(this, this.props.params.SolutionID)} className='btn Delete' value='删除' />
-                            <Button shape='round' color='green' onClick={this.onCheckClick.bind(this, this.props.params.SolutionID)} className='btn Check' value='查看' />
+                            <span className='icon-delete'></span>
+                            <span  onClick={this.onDeleteClick.bind(this, this.props.params.SolutionID)} className='btn Delete'  >删除</span>
+                            <span className='icon-delete'></span>
+
+                            <span  onClick={this.onCheckClick.bind(this, this.props.params.SolutionID)} className='btn Check'  >查看</span>
                             
                         </div>
                     </div>

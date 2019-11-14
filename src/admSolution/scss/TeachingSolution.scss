@@ -1,77 +1,59 @@
-
 #TeachingSolution {
-  position: relative;
-  // padding: 42px 62px;
-  text-align: center;
-  width: 1200px;
-//   height: 754px;
-  //background: #fff;
-  border-radius: 12px;
-
-  //公用
-  .content-box {
     position: relative;
-    text-align: left;
-    margin: 0 auto;
-    // width: 1120px;
-
-    .box-top {
-      position: relative;
-      margin: 0;
-      height: 37px;
-
-      .top-tips {
-        float: left;
-        .tips {
-          font-size: 18px;
-          line-height: 37px;
-          color: #333333;
-          padding-left: 21px;
-          //margin-left:-21px;
-          background-size: 17px 17px;
-          background-position: left center;
+    // padding: 42px 62px;
+    text-align: center;
+    width: 1200px;
+    //   height: 754px;
+    //background: #fff;
+    border-radius: 12px;
+    //公用
+    .content-box {
+        position: relative;
+        text-align: left;
+        // margin: 0 auto;
+        // width: 1120px;
+        .box-top {
+            position: relative;
+            margin: 0;
+            height: 28px;
+            z-index: 2;
+            // height: 37px;
+            .top-period {
+                // display: inline-block;
+                float: left;
+                height: 28px;
+                .period-tips {
+                    display: inline-block;
+                    line-height: 1;
+                    font-size: 14px;
+                    color: #999999;
+                    text-align: center;
+                    width: 33px;
+                    vertical-align: middle;
+                }
+            }
+            .top-search {
+                float: right;
+            }
         }
-
-        .tip-menu {
-          background-image: url(../images/icon-location-small.png);
-          background-repeat: no-repeat;
-          background-size: 14px 19px;
+        .box-content {
+            width: 100%;
+            padding-top: 20px;
+            // overflow: auto;
+            .ShowCard {
+                float: left;
+                margin-right: 29px;
+                margin-bottom: 29px;
+                &:nth-of-type(4n) {
+                    margin-right: 0;
+                }
+            }
         }
-      }
-      .top-to {
-        position: absolute;
-        top: 0;
-        right: 0;
-        font-size: 14px;
-        line-height: 37px;
-        color: #0099ff;
-      }
-    }
-    .top-hr {
-      position: relative;
-      border: 0.5px dashed #ccc;
-      width: 1122px;
-
-      margin: 0 auto;
-    }
-  }
-  .box-content {
-    width: 100%;
-    padding-top: 36px;;
-    overflow: auto;
-    .ShowCard{
-        float: left;
-        margin-right: 18px;
-        margin-bottom: 28px;
-        &:nth-of-type(4n){
-            margin-right: 0;
+        .ant-pagination {
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
         }
-    }
-  }
-    .ant-pagination{
-      position: relative;
-      display: inline-block;
-      left: 50%;
-      transform: translateX(-50%)
     }
 }
