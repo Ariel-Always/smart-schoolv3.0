@@ -1,0 +1,22 @@
+#AddWebsiteCustom {
+    padding: 22px 37px;
+    .row {
+        width: 100%;
+        height: 30px;
+        .left {
+            float: left;
+            width: 66px;
+            height: 30px;
+            line-height: 30px;
+            font-size: 14px;
+        }
+        .right {
+            float: left;
+            height: 30px;
+            line-height: 30px;
+        }
+        .webName {
+            width: 360px;
+        }
+    }
+}

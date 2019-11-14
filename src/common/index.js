@@ -534,7 +534,7 @@ class Modal extends React.Component {
                         {this.props.okText ? this.props.okText : '确定'}
                     </Button>,
                     <Button key='onCancel' size="small" color="blue" onClick={this.state.onCancel}>
-                        {this.props.cancelText ? this.props.cancelText : '关闭'}
+                        {this.props.cancelText ? this.props.cancelText : '取消'}
                     </Button>,
 
                 ]}

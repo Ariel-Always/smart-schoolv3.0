@@ -8,6 +8,9 @@ import HeaderActions from '../../actions/Teacher/HeaderActions';
 
 import TeacherPageActions from '../../actions/Teacher/TeacherPageActions';
 
+import TeacherCustomActions from '../../actions/Teacher/TeacherCustomActions';
+
+
 import ModuleActions from '../../actions/Teacher/ModuleActions';
 
 import Header from '../../components/Teacher/Header';
@@ -21,6 +24,8 @@ import { Modal, Loading } from '../../../../common'
 import { getQueryVariable, LogOut } from "../../../../common/js/disconnect";
 
 import TeacherCustomContent from '../../components/Teacher/TeacherCustomContent'
+
+import AddWebsiteCustom from '../../components/Teacher/Custom/AddWebsiteCustom'
 
 class Index extends Component {
 
@@ -282,6 +287,18 @@ class Index extends Component {
         const { dispatch, Teacher } = this.props
         dispatch({ type: HeaderActions.TEACHER_CUSTOM_MODAL_CLOSE })
     }
+
+    // 桌面定制-添加网站
+    CustomWebsiteMadalOk = () => {
+        const { dispatch, Teacher } = this.props
+        dispatch({ type: TeacherCustomActions.TEACHER_ADD_WEBSITE_CUSTOM_MODAL_CLOSE })
+    }
+
+    // 桌面定制-关闭-添加网站
+    CustomWebsiteMadalCancel = () => {
+        const { dispatch, Teacher } = this.props
+        dispatch({ type: TeacherCustomActions.TEACHER_ADD_WEBSITE_CUSTOM_MODAL_CLOSE })
+    }
     render() {
 
         const { LoginUser, Teacher, AppLoading } = this.props;
@@ -328,20 +345,20 @@ class Index extends Component {
                     onCancel={this.TeacherCustomModalCancel}>
                         {Teacher.TeacherCustomModalShow.Show?(<TeacherCustomContent></TeacherCustomContent>):''}
                 </Modal>
-                {/* <Modal ref='CustomWebsiteMadal'
-                    bodyStyle={{ padding: 0, height: 334 + 'px' }}
+                <Modal ref='CustomWebsiteMadal'
+                    bodyStyle={{ padding: 0, height: 245 + 'px' }}
                     type='1'
-                    title={'添加桌面'}
-                    width={850}
+                    title={'添加网站'}
+                    width={585}
                     destroyOnClose={true}
-                    visible={Teacher.TeacherCustomModalShow.AddCustomModalShow}
+                    visible={Teacher.TeacherCustomModalShow.AddWebsiteCustomModalShow}
                     onCancel={this.CustomWebsiteMadalCancel}
                     onOk={this.CustomWebsiteMadalOk}
                     >
                     <Loading opacity={false} spinning={AppLoading.modalLoading}>
-                        
+                        {Teacher.TeacherCustomModalShow.AddWebsiteCustomModalShow?(<AddWebsiteCustom></AddWebsiteCustom>):''}
                     </Loading>
-                </Modal> */}
+                </Modal>
             </div>
 
         );

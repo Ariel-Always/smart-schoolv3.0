@@ -12,7 +12,12 @@ const GET_WEBSITE_ALTER_TIPS = 'GET_WEBSITE_ALTER_TIPS'
 const GET_APP_ALTER_TIPS = 'GET_APP_ALTER_TIPS'
 const GET_TOOL_ALTER_TIPS = 'GET_TOOL_ALTER_TIPS'
 const GET_DATABASE_ALTER_TIPS = 'GET_DATABASE_ALTER_TIPS'
-const getCustomData = (key, techerID, keyword = '', subjectID = '', periodId = '') => {
+
+const TEACHER_ADD_WEBSITE_CUSTOM_MODAL_OPEN = 'TEACHER_ADD_WEBSITE_CUSTOM_MODAL_OPEN'
+
+const TEACHER_ADD_WEBSITE_CUSTOM_MODAL_CLOSE = 'TEACHER_ADD_WEBSITE_CUSTOM_MODAL_CLOSE'
+
+const getCustomData = (key, techerID, keyword = '', subjectID = '', periodId = '0') => {
     let url = '';//桌面数据
     let url2 = '';//备选
     let urlTips = '/SubjectResMgr/CommonMgr/Teacher/IsNotify?TeacherId=' + techerID
@@ -50,9 +55,7 @@ const getCustomData = (key, techerID, keyword = '', subjectID = '', periodId = '
                 getData(CONFIG.CustomProxy + url2, 2).then(res => {
                     return res.json()
                 }).then(json => {
-                    if (json.Status === 400) {
-                        console.log('错误码：' + json.Status)
-                    } else if (json.StatusCode === 200) {
+                    if (json.StatusCode === 200) {
                         dispatch({ type: GET_CUSTOM_DATA, data: data1, data2: json.Data, key: key });
                         dispatch({ type: AppLoadingActions.CUSTOM_OPACITY_LOADING_CLOSE });
                         dispatch({ type: AppLoadingActions.CUSTOM_LOADING_CLOSE });
@@ -121,9 +124,7 @@ const fetchCustomData = (url, dataType = 'Website') => {
         }, 2, 'json').then(res => {
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.StatusCode === 200) {
+            if (json.StatusCode === 200) {
 
                 dispatch({ type: AppLoadingActions.CUSTOM_LOADING_CLOSE });
             }
@@ -152,9 +153,7 @@ const fetchDeleteCustomData = (url, ID,dataType='Website') => {
         }, 2, 'json').then(res => {
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.StatusCode === 200) {
+            if (json.StatusCode === 200) {
 
                 dispatch({ type: AppLoadingActions.CUSTOM_LOADING_CLOSE });
             }
@@ -176,9 +175,7 @@ const getAlterPeriodData = (url) => {
         getData(CONFIG.CustomProxy + url, 2).then(res => {
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.StatusCode === 200) {
+            if (json.StatusCode === 200) {
                 dispatch({ type: GET_ALTER_PERIOD_DATA, data: json.Data })
             }
         });
@@ -192,9 +189,7 @@ const getAlterData = (url) => {
         getData(CONFIG.CustomProxy + url, 2).then(res => {
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.StatusCode === 200) {
+            if (json.StatusCode === 200) {
                 dispatch({ type: GET_ALTER_DATA, data: json.Data })
             }
         });
@@ -208,9 +203,7 @@ const getAlterTips = (url, type = 'Website') => {
         getData(CONFIG.CustomProxy + url, 2).then(res => {
             return res.json()
         }).then(json => {
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.StatusCode === 200) {
+            if (json.StatusCode === 200) {
                 if (type === 'Website') {
                     dispatch({ type: GET_WEBSITE_ALTER_TIPS, data: json.Data })
                 } else if (type === 'App') {
@@ -245,9 +238,7 @@ const setAlterTips = (data, type = 'Website') => {
         }).then(json => {
             dispatch({ type: AppLoadingActions.CUSTOM_LOADING_CLOSE });
 
-            if (json.Status === 400) {
-                console.log('错误码：' + json.Status)
-            } else if (json.StatusCode === 200) {
+            if (json.StatusCode === 200) {
 
 
             }
@@ -281,6 +272,8 @@ export default {
     GET_APP_ALTER_TIPS,
     GET_TOOL_ALTER_TIPS,
     GET_DATABASE_ALTER_TIPS,
-    setAlterTips
+    setAlterTips,
+    TEACHER_ADD_WEBSITE_CUSTOM_MODAL_CLOSE,
+    TEACHER_ADD_WEBSITE_CUSTOM_MODAL_OPEN
 
 }

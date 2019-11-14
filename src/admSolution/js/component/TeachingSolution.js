@@ -1,63 +1,212 @@
-import React, { Component } from 'react';
-import { Frame, Menu, Loading, Alert, PagiNation } from "../../../common";
-import { connect } from 'react-redux';
-import '../../scss/TeachingSolution.scss'
-import ShowCard from './ShowCard'
-import { getData, postData } from '../../../common/js/fetch'
-import actions from '../actions';
-
+import React, { Component } from "react";
+import {
+  Frame,
+  Menu,
+  Loading,
+  Alert,
+  PagiNation,
+  DropDown,
+  Search,
+  Empty
+} from "../../../common";
+import { connect } from "react-redux";
+import "../../scss/TeachingSolution.scss";
+import ShowCard from "./ShowCard";
+import { getData, postData } from "../../../common/js/fetch";
+import actions from "../actions";
 
 class TeachingSolution extends Component {
-    constructor(props) {
-        super(props);
-        const { dispatch } = props;
-        this.state = {
+  constructor(props) {
+    super(props);
+    const { dispatch } = props;
+    this.state = {
+      dropSelect: { value: 0, title: "全部" },
+      DropList: [
+        { value: 0, title: "全部" },
+        { value: 1, title: "上学期" },
+        { value: 2, title: "本学期" },
+        { value: 3, title: "下学期" }
+      ],
+      CancelBtnShow: "n",
+      keyword: "",
+      searchValue: "",
+      userMsg: props.DataState.LoginUser,
 
-        }
+    };
+  }
+
+  //分页改变回调
+  onPaginationChange = page => {
+    const { dispatch } = this.props;
+    // console.log(page)
+    this.setState({
+      pagination: page
+    });
+    dispatch(
+      actions.UpDataState.getTeachingSolutionMsg(
+        "/ListTeachingSolutions?period=" +
+          this.state.keyword +
+          "&beginTime=&endTime=&pageSize=12&currentPage=" +
+          page +
+          "&userId=" +
+          this.state.userMsg.UserID
+      )
+    );
+  };
+  // 学期下拉
+  periodDropMenuSecond = e => {
+    const { dispatch, DataState } = this.props;
+    this.props.upData({ period: e });
+    this.setState({
+      dropSelect: e
+    });
+    dispatch(
+      actions.UpDataState.getTeachingSolutionMsg(
+        "/ListTeachingSolutions?period=" +
+          this.state.keyword +
+          "&beginTime=&endTime=&pageSize=12&currentPage=" +
+          this.state.pagination +
+          "&userId=" +
+          this.state.userMsg.UserID
+      )
+    );
+  };
+  // 搜索
+  SolutionSearch = e => {
+    const { dispatch, DataState } = this.props;
+
+    if (e.value === "") {
+      dispatch(
+        actions.UpUIState.showErrorAlert({
+          type: "btn-error",
+          title: "你还没有输入关键字哦~",
+          ok: this.onAppAlertOK.bind(this),
+          cancel: this.onAppAlertCancel.bind(this),
+          close: this.onAppAlertClose.bind(this)
+        })
+      );
+      return;
     }
+    this.setState({
+      keyword: "&keyword=" + e.value,
+      CancelBtnShow: "y",
+      pagination: 1
+    });
+    dispatch(
+      actions.UpDataState.getTeachingSolutionMsg(
+        "/ListTeachingSolutions?period=&keyword=" +
+          e.value +
+          "&beginTime=&endTime=&pageSize=12&currentPage=" +
+          this.state.pagination +
+          "&userId=" +
+          this.state.userMsg.UserID
+      )
+    );
+  };
+  //搜索change
+  onChangeSearch = e => {
+    this.setState({
+      searchValue: e.target.value
+    });
+  };
+  // 取消搜索
+  onCancelSearch = e => {
+    const { dispatch } = this.props;
+    this.setState({
+      CancelBtnShow: "n",
+      keyword: "",
+      searchValue: "",
 
-    //分页改变回调
-    onPaginationChange = (page) => {
-        const { dispatch } = this.props;
-        // console.log(page)
-        dispatch(actions.UpDataState.getTeachingSolutionMsg('/ListTeachingSolutions?beginTime=&endTime=&pageSize=9&currentPage='+page+'&userId=' + JSON.parse(sessionStorage.getItem('UserInfo')).UserID))
+      pagination: 1
+    });
+    dispatch(
+      actions.UpDataState.getTeachingSolutionMsg(
+        "/ListTeachingSolutions?period=&keyword=&beginTime=&endTime=&pageSize=12&currentPage=" +
+          this.state.pagination +
+          "&userId=" +
+          this.state.userMsg.UserID
+      )
+    );
+  };
+  //提示事件
+  onAppAlertOK() {
+    const { dispatch } = this.props;
+    dispatch(actions.UpUIState.hideErrorAlert());
+  }
+  onAppAlertCancel() {
+    const { dispatch } = this.props;
+    dispatch(actions.UpUIState.hideErrorAlert());
+  }
+  onAppAlertClose() {
+    const { dispatch } = this.props;
+    dispatch(actions.UpUIState.hideErrorAlert());
+  }
+  render() {
+    const { DataState, UIState } = this.props;
 
-    }
-    render() {
-        const { DataState, UIState } = this.props;
-
-        return (
-            <div id='TeachingSolution'>
-                <div className='content-box'>
-                    
-                    <div className='box-content'>
-                        {DataState.GetTeachingSolutionMsg.solutionData.map((child, index) => {
-                            return <ShowCard key={index} params={child}></ShowCard>
-                        })}
-
-                    </div>
-
-                    <PagiNation
-                        className='pagination'
-                        hideOnsinglePage={true}
-                        pageSize={12}
-                        showQuickJumper={true}
-                        total={DataState.GetTeachingSolutionMsg.TotalPage}
-                        onChange={this.onPaginationChange.bind(this)}
-                    ></PagiNation>
-
-                </div>
-
+    return (
+      <div id="TeachingSolution">
+        <div className="content-box">
+          <div className="box-top">
+            <div className='top-period'>
+            <span className='period-tips'>学期</span>
+            <DropDown
+              ref="dropMenu"
+              width={108}
+              height={240}
+            //   title={"学期"}
+            //   className="top-period"
+              dropSelectd={this.state.dropSelect}
+              dropList={this.state.DropList}
+              onChange={this.periodDropMenuSecond.bind(this)}
+            ></DropDown>
             </div>
-        )
-    }
+            <Search
+              placeHolder="输入关键词搜索.."
+              onClickSearch={this.SolutionSearch.bind(this)}
+              height={30}
+              width={250}
+              className='top-search'
+              Value={this.state.searchValue}
+              onCancelSearch={this.onCancelSearch}
+              onChange={this.onChangeSearch.bind(this)}
+              CancelBtnShow={this.state.CancelBtnShow}
+            ></Search>
+          </div>
+          <div className="box-content">
+            {DataState.GetTeachingSolutionMsg.solutionData instanceof Array && DataState.GetTeachingSolutionMsg.solutionData.length > 0 ?DataState.GetTeachingSolutionMsg.solutionData.map(
+              (child, index) => {
+                return <ShowCard key={index} params={child}></ShowCard>;
+              }
+            ):(
+                <Empty
+                  type="4"
+                  className="Empty"
+                //   title="您还没有添加教学方案哦~"
+                ></Empty>
+              )}
+          </div>
+
+          <PagiNation
+            className="pagination"
+            hideOnsinglePage={true}
+            pageSize={12}
+            current={this.state.pagination}
+            showQuickJumper={true}
+            total={DataState.GetTeachingSolutionMsg.TotalPage}
+            onChange={this.onPaginationChange.bind(this)}
+          ></PagiNation>
+        </div>
+      </div>
+    );
+  }
 }
 
-const mapStateToProps = (state) => {
-    let { UIState, DataState } = state;
-    return {
-        UIState,
-        DataState
-    }
+const mapStateToProps = state => {
+  let { UIState, DataState } = state;
+  return {
+    UIState,
+    DataState
+  };
 };
 export default connect(mapStateToProps)(TeachingSolution);
