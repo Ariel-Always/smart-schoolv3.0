@@ -1,5 +1,7 @@
 import ApiActions from "../ApiActions";
 
+import AppAlertActions from '../AppAlertActions';
+
 const MANAGER_CLASS_ROOM_TOTAL_INIT = 'MANAGER_CLASS_ROOM_TOTAL_INIT';
 
 
