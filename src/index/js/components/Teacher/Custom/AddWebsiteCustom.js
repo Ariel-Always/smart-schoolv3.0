@@ -53,9 +53,11 @@ class AddWebsiteCustom extends React.Component {
   // 网站名称修改失去焦点
   onWebNameBlur = e => {
     const { dispatch } = this.props;
+    let Test = /\S/
+
     // console.log(e.target.value);
     let value = e.target.value;
-    if (value === "") {
+    if (!Test.test(value)) {
       dispatch(
         TeacherCustomActions.setCustomTipsVisible({ WebNameTipsVisible: true })
       );

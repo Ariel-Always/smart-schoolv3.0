@@ -40,9 +40,10 @@ class ToolCustom extends React.Component {
   // 工具名称修改失去焦点
   onToolNameBlur = e => {
     const { dispatch } = this.props;
+    let Test = /\S/
     // console.log(e.target.value);
     let value = e.target.value;
-    if (value === "") {
+    if (!Test.test(value)) {
       dispatch(
         TeacherCustomActions.setCustomTipsVisible({ ToolNameTipsVisible: true })
       );
@@ -75,13 +76,13 @@ class ToolCustom extends React.Component {
     );
   };
 
-  //   网站地址修改
+  //   工具地址修改
   onToolUrlChange = e => {
     this.setState({
       ToolUrl: e.target.value
     });
   };
-  // 网站地址修改失去焦点
+  // 工具地址修改失去焦点
   onToolUrlBlur = e => {
     const { dispatch } = this.props;
     let Test = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\*\+,;=.]+$/;
@@ -170,7 +171,7 @@ class ToolCustom extends React.Component {
                 className="right ToolUrl"
                 placeholder="请输入访问参数..."
                 maxLength={200}
-                autoSize={
+                autosize={
                   {minRows: 2, maxRows: 3}
                 }
                 onChange={this.onToolUrlChange.bind(this)}

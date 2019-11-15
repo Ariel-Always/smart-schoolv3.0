@@ -447,7 +447,7 @@ class Index extends Component {
     let ToolData = Teacher.ToolData;
     let TeacherTipsVisible = Teacher.TeacherTipsVisible;
     let isHaveFalse = false;
-    let url = "/SubjectResMgr/ToolsMgr/Teacher/AddToolsInfo";
+    let url = "/SubjectResMgr/ToolMgr/Teacher/AddToolsInfo";
     if (ToolData.ToolName === "") {
       isHaveFalse = true;
       dispatch(
@@ -482,7 +482,8 @@ class Index extends Component {
         Name: ToolData.ToolName,
         Url: ToolData.ToolUrl,
         Type: ToolData.ToolType,
-        ImgUrl: ''||ToolData.ToolImgUrl,
+        ImgUrl: 'www.baidu.com'||ToolData.ToolImgUrl,
+        GroupID:'Group002'
         
       },
       2
@@ -502,7 +503,7 @@ class Index extends Component {
           });
           dispatch(
             TeacherCustomActions.getCustomData(
-              'Tool',
+              'tool',
               LoginUser.UserID,
               "",
               "S2-Chinese" || Teacher.HeaderSetting.SubjectSelect.id
@@ -514,6 +515,91 @@ class Index extends Component {
 
   // 桌面定制-关闭-添加工具
   AddCustomToolMadalCancel = () => {
+    const { dispatch, Teacher } = this.props;
+    dispatch(
+      TeacherCustomActions.setCustomTipsVisible({
+        ToolNameTipsVisible: false,
+                ToolUrlTipsVisible: false
+      })
+    );
+    dispatch(TeacherCustomActions.setHandleToolInitData({}));
+    dispatch({
+      type: TeacherCustomActions.TEACHER_ADD_TOOL_CUSTOM_MODAL_CLOSE
+    });
+  };
+   // 桌面定制-修改工具
+   EditCustomToolMadalOk = () => {
+    const { dispatch, Teacher, LoginUser } = this.props;
+    let ToolData = Teacher.ToolData;
+    let TeacherTipsVisible = Teacher.TeacherTipsVisible;
+    let isHaveFalse = false;
+    let url = "/SubjectResMgr/ToolMgr/Teacher/EditToolsInfo";
+    if (ToolData.ToolName === "") {
+      isHaveFalse = true;
+      dispatch(
+        TeacherCustomActions.setCustomTipsVisible({ ToolNameTipsVisible: true })
+      );
+    }
+
+    if (ToolData.ToolUrl === "") {
+      isHaveFalse = true;
+      dispatch(
+        TeacherCustomActions.setCustomTipsVisible({
+            ToolUrlTipsVisible: true
+        })
+      );
+    }
+
+    if (
+      TeacherTipsVisible.ToolNameTipsVisible ||
+      TeacherTipsVisible.ToolUrlTipsVisible
+    ) {
+      isHaveFalse = true;
+    }
+    if (isHaveFalse) {
+      return;
+    }
+
+    
+    postData(
+      config.CustomProxy + url,
+      {
+        TeacherID:LoginUser.UserID,
+        Name: ToolData.ToolName,
+        Url: ToolData.ToolUrl,
+        Type: ToolData.ToolType,
+        ImgUrl: 'www.baidu.com'||ToolData.ToolImgUrl,
+        ID:ToolData.ToolID
+      },
+      2
+    )
+      .then(data => data.json())
+      .then(json => {
+        if (json.StatusCode === 200) {
+          dispatch(
+            TeacherCustomActions.setCustomTipsVisible({
+                ToolNameTipsVisible: false,
+                ToolUrlTipsVisible: false
+            })
+          );
+          dispatch(TeacherCustomActions.setHandleToolInitData({}));
+          dispatch({
+            type: TeacherCustomActions.TEACHER_EDIT_TOOL_CUSTOM_MODAL_CLOSE
+          });
+          dispatch(
+            TeacherCustomActions.getCustomData(
+              'tool',
+              LoginUser.UserID,
+              "",
+              "S2-Chinese" || Teacher.HeaderSetting.SubjectSelect.id
+            )
+          );
+        }
+      });
+  };
+
+  // 桌面定制-关闭-修改工具
+  EditCustomToolMadalCancel = () => {
     const { dispatch, Teacher } = this.props;
     dispatch(
       TeacherCustomActions.setCustomTipsVisible({
@@ -623,6 +709,26 @@ class Index extends Component {
         >
           <Loading opacity={false} spinning={AppLoading.modalLoading}>
             {Teacher.TeacherCustomModalShow.AddToolCustomModalShow ? (
+              <ToolCustom></ToolCustom>
+            ) : (
+              ""
+            )}
+          </Loading>
+        </Modal>
+
+        <Modal
+          ref="EditCustomToolMadal"
+          bodyStyle={{ padding: 0, height: 256 + "px" }}
+          type="1"
+          title={"修改工具"}
+          width={684}
+          destroyOnClose={true}
+          visible={Teacher.TeacherCustomModalShow.EditToolCustomModalShow}
+          onCancel={this.EditCustomToolMadalCancel}
+          onOk={this.EditCustomToolMadalOk}
+        >
+          <Loading opacity={false} spinning={AppLoading.modalLoading}>
+            {Teacher.TeacherCustomModalShow.EditToolCustomModalShow ? (
               <ToolCustom></ToolCustom>
             ) : (
               ""

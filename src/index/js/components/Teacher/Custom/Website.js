@@ -297,7 +297,7 @@ class Website extends React.Component {
     console.log(source);
     dispatch(
       TeacherCustomActions.setHandleWebsiteInitData({
-        WebsiteId:source.ID,
+        WebsiteId: source.ID,
         SubjectID,
         WebName: source.Name,
         WebAddress: source.Url,
@@ -542,6 +542,9 @@ class Website extends React.Component {
                                 </Draggable>
                               </div>
                             ))}
+                          {/* <Draggable draggableId={"main-test"} index={100}>
+                            <div style={{width:'50px',height:'100px' ,background:'#aaa'}}></div>
+                          </Draggable> */}
                           {provided.placeholder}
                         </div>
                       </div>

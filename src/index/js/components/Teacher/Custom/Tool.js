@@ -99,7 +99,7 @@ class Tool extends React.Component {
     let MainData = Teacher.TeacherCustomData.ToolData;
     let AlterData = Teacher.TeacherCustomData.ToolAlterData;
     let dataObj = {};
-    console.log(result);
+    // console.log(result);
     //        result:{ combine: null
     // destination: {droppableId: "droppable2", index: 4}
     // draggableId: "item-4"
@@ -237,21 +237,19 @@ class Tool extends React.Component {
   // card编辑
   onResetClick = source => {
     const { Teacher, dispatch } = this.props;
-    let MainData = Teacher.TeacherCustomData.ToolData;
-    let AlterData = Teacher.TeacherCustomData.ToolAlterData;
-    let dataObj = {};
-    dataObj["ToolData"] = MainData;
-    dataObj["ToolAlterData"] = AlterData;
-    let destination = { droppableId: "main", index: -1 };
     dispatch(
-      TeacherCustomActions.setCustomData("alter", dataObj, source, destination)
+      TeacherCustomActions.setHandleToolInitData({
+        ToolName:source.Name,
+        ToolUrl:source.Url,
+        ToolType:source.Name,
+        ToolImgUrl:source.ImgUrl,
+        ToolID: source.ID,
+
+      })
     );
-    dispatch(
-      TeacherCustomActions.fetchCustomData(
-        "/SubjectResMgr/ToolMgr/Teacher/EditDeskTop",
-        "tool"
-      )
-    );
+    dispatch({
+      type: TeacherCustomActions.TEACHER_EDIT_TOOL_CUSTOM_MODAL_OPEN
+    });
   };
   // 学段下拉
   onDropMenuChange = value => {
@@ -358,7 +356,6 @@ class Tool extends React.Component {
     
     dispatch(
       TeacherCustomActions.setHandleToolInitData({
-        
       })
     );
     dispatch({
@@ -454,13 +451,7 @@ class Tool extends React.Component {
                                         },
                                         item.ID
                                       )}
-                                      onResetClick={this.onResetClick.bind(
-                                        this,
-                                        {
-                                          droppableId: "main-" + item.ID,
-                                          index: index
-                                        }
-                                      )}
+                                      onResetClick={this.onResetClick}
                                       onEditClick={this.onEditClick.bind(this, {
                                         droppableId: "main-" + item.ID,
                                         index: index

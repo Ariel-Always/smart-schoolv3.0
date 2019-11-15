@@ -17,7 +17,7 @@ const TeacherCustomData = (
       DataBaseTipsShow: false
     },
     WebTypeList: [],
-    PeriodList:[]
+    PeriodList: []
   },
   actions
 ) => {
@@ -92,44 +92,45 @@ function handleWebTypeList(data) {
 function handleData(data, data2, key) {
   if (key === "tool") {
     return {
-      ToolData: handleWebsiteMain(data),
-      ToolAlterData: handleAlter(data2)
+      ToolData: handleWebsiteMain(data, key),
+      ToolAlterData: handleAlter(data2, key)
     };
   } else if (key === "App") {
     return {
-      AppData: handleWebsiteMain(data),
-      AppAlterData: handleAlter(data2)
+      AppData: handleWebsiteMain(data, key),
+      AppAlterData: handleAlter(data2, key)
     };
   } else if (key === "Website") {
     return {
-      WebsiteData: handleWebsiteMain(data),
-      WebsiteAlterData: handleWebsiteAlter(data2)
+      WebsiteData: handleWebsiteMain(data, key),
+      WebsiteAlterData: handleWebsiteAlter(data2, key)
     };
   } else if (key === "database") {
     return {
-      DataBaseData: handleWebsiteMain(data),
-      DataBaseAlterData: handleAlter(data2)
+      DataBaseData: handleWebsiteMain(data, key),
+      DataBaseAlterData: handleAlter(data2, key)
     };
   }
 }
 
-function handleWebsiteMain(data) {
+function handleWebsiteMain(data, key) {
   let main = [];
   data instanceof Array &&
     data.map((child, index) => {
       if (!child.IsGroup) {
-        main = Sort(main, child);
+        main = Sort(main, child,key);
       } else {
         let group = [];
         child.List.map((child2, index2) => {
-          group = Sort(group, child2);
+          group = Sort(group, child2,key);
         });
-        group.map((child2, index2) => {
+        group = group.map((child2, index2) => {
           child2.key = index2;
+          child2.type = key;
           return child2;
         });
         child.List = group;
-        main = Sort(main, child);
+        main = Sort(main, child,key);
       }
     });
   main.map((child, index) => {
@@ -138,13 +139,14 @@ function handleWebsiteMain(data) {
   });
   return main;
 }
-function handleWebsiteAlter(data) {
+function handleWebsiteAlter(data, key) {
   if (!(data instanceof Array)) return [];
   let newData = data.map((child, index) => {
     let List = child.List.map((child1, index1) => {
       let number = Math.random() * 3;
       let myColor = number > 2 ? "blue" : number > 1 ? "orange" : "green";
       child1.myColor = myColor; //设计颜色
+      child.type = key;
       child1.Img =
         child1.ModuleLogoPath ||
         child1.ImgUrl ||
@@ -160,13 +162,14 @@ function handleWebsiteAlter(data) {
   }
   return newData;
 }
-function handleAlter(data) {
+function handleAlter(data, key) {
   if (!(data instanceof Array)) return [];
   let newData = data.map((child, index) => {
     let number = Math.random() * 3;
     let myColor = number > 2 ? "blue" : number > 1 ? "orange" : "green";
     child.myColor = myColor; //设计颜色
-    child.key = child.OrderNo;
+    child.type = key;
+    child.key = child.OrderNo||index;
     child.Img =
       child.ModuleLogoPath ||
       child.ImgUrl ||
@@ -179,7 +182,7 @@ function handleAlter(data) {
   return [{ List: newData }];
 }
 // 排序
-function Sort(dataArr, data) {
+function Sort(dataArr, data,key) {
   let end = dataArr;
   let first = true;
   let number = Math.random() * 3;
@@ -187,6 +190,8 @@ function Sort(dataArr, data) {
   data.myColor = myColor; //设计颜色
   let Img = data.ImgUrl || UrlGetIcon(data.Url) + "/favicon.ico"; // data数据处理:img
   data.Img = Img;
+  data.type= key;
+  // data.Url = Url;
   if (data.IsGroup) {
     data.Name = data.GroupName;
     data.ID = data.GroupId;
