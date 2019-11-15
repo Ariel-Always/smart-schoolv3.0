@@ -19,7 +19,7 @@ const ADJUST_BY_TEACHER_LOADING_SHOW = 'ADJUST_BY_TEACHER_LOADING_SHOW';
 
 const ADJUST_BY_TEACHER_LOADING_HIDE = 'ADJUST_BY_TEACHER_LOADING_HIDE';
 
-
+const ADJUST_BY_TEACHER_CLASS_HOURS_LIST_UPDATE = 'ADJUST_BY_TEACHER_CLASS_HOURS_LIST_UPDATE';
 
 
 
@@ -243,6 +243,22 @@ const replaceScheduleInit = () => {
                     }
 
                 });
+
+                let ClassHourList = data.ItemClassHour.map(item=>{
+
+                    return {
+
+                        ID:item.ClassHourNO,
+
+                        Type:item.ClassHourType,
+
+                        Name:item.ClassHourName
+
+                    }
+
+                });
+
+                dispatch({type:ADJUST_BY_TEACHER_CLASS_HOURS_LIST_UPDATE,data:ClassHourList});
 
                 dispatch({type:ADJUST_BY_TEACHER_TEACHER_LIST_UPDATE,data:teacherList});
 
@@ -1423,13 +1439,150 @@ const changeTimeNewTimeChange = (date) => {
 
         dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"date",value:date}});
 
+        let { newClassRoomDrop,newClassHourDrop } = getState().Teacher.AdjustByTeacherModal.changeTime;
+
         if (date !== ''){
 
             let { SchoolID } = getState().LoginUser;
 
-            let GetWeekInfoByDate = ApiActions.GetWeekInfoByDate({SchoolID,ClassDate:date,dispatch});
+            const { ClassHourList } = getState().Teacher.AdjustByTeacherModal;
 
-            let GetAllOptionForAddSchedule = ApiActions.GetAllOptionForAddSchedule({SchoolID,dispatch});
+            ApiActions.GetWeekInfoByDate({SchoolID,ClassDate:date,dispatch}).then(data=>{
+
+                if (data){
+
+                    let WeekNO = data.WeekNO;
+
+                    let weekDay = data.WeekDay;
+
+                    let WeekDay = '';
+
+                    switch (weekDay) {
+
+                        case 0:
+
+                            WeekDay = '星期一';
+
+                            break;
+
+                        case 1:
+
+                            WeekDay = '星期二';
+
+                            break;
+
+                        case 2:
+
+                            WeekDay = '星期三';
+
+                            break;
+
+                        case 3:
+
+                            WeekDay = '星期四';
+
+                            break;
+
+                        case 4:
+
+                            WeekDay = '星期五';
+
+                            break;
+
+                        case 5:
+
+                            WeekDay = '星期六';
+
+                            break;
+
+                        case 6:
+
+                            WeekDay = '星期日';
+
+                            break;
+
+                        default:
+
+                            WeekDay = '星期一';
+
+                    }
+
+                    dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:'weekChange',value:{WeekNO,WeekDay}}});
+
+                    let ClassHour = ClassHourList.map(item => {
+
+                        let title = '';
+
+                        switch (item.Type) {
+
+
+                            case 1:
+
+                                title = '上午';
+
+                                break;
+
+                            case 2:
+
+                                title = '下午';
+
+                                break;
+
+                            case 3:
+
+                                title = '晚上';
+
+                                break;
+
+                            default:
+
+                                title = ''
+
+                        }
+
+                        let titleWrapper = <span>第{item.ID}节 <span className="noon">({title})</span></span>;
+
+                        return {
+
+                            value:item.ID,
+
+                            title:titleWrapper
+
+                        }
+
+                    });
+
+                    dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"classHourListChange",value:ClassHour}});
+
+                    dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"classHourAbled"}});
+
+                }
+
+            });
+
+            if (newClassRoomDrop.value!=='none'&&newClassHourDrop.value!=='none'){
+
+                ApiActions.ClassRoomIsUseded({ClassDate:date,ClassHourNO:newClassHourDrop.value,ClassRoomID:newClassRoomDrop.value,dispatch}).then(data=>{
+
+                    if (data){
+
+                        if (data.Useded === 1){
+
+                            dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"errorTipsShow"}});
+
+                        }else{
+
+                            dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"errorTipsHide"}});
+
+                        }
+
+                    }
+
+                })
+
+            }
+
+           /* let GetAllOptionForAddSchedule = ApiActions.GetAllOptionForAddSchedule({SchoolID,dispatch});
 
             Promise.all([GetWeekInfoByDate,GetAllOptionForAddSchedule]).then(res => {
 
@@ -1555,7 +1708,7 @@ const changeTimeNewTimeChange = (date) => {
                 }
 
 
-            });
+            });*/
 
 
         }else{
@@ -1587,6 +1740,7 @@ const changeTimeNewClassHourPick = (info) => {
 
       dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"weekChange",value:{...newWeek,ClassHour:info.title}}});
 
+
       ApiActions.GetClassRoomIsNotBusy({ClassHourNO:info.value,ClassDate:newDate,dispatch}).then(data => {
 
           if (data){
@@ -1611,7 +1765,7 @@ const changeTimeNewClassHourPick = (info) => {
               if (newClassRoomDrop.value !== 'none'){
 
 
-                  ApiActions.ClassRoomIsUseded({ClassRoomID:newClassRoomDrop.value,ClassDate:newDate,ClassHourNO:newClassHourDrop.value,dispatch}).then(data=>{
+                  ApiActions.ClassRoomIsUseded({ClassRoomID:newClassRoomDrop.value,ClassDate:newDate,ClassHourNO:info.value,dispatch}).then(data=>{
 
                         //是否被占用的接口
 
@@ -1650,9 +1804,31 @@ const changeTimeNewClassRoomPick = (info) => {
 
     return (dispatch,getState) =>{
 
-        dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"errorTipsHide"}});
+        let { newDate,newClassHourDrop } = getState().Teacher.AdjustByTeacherModal.changeTime;
 
         dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"classRoomDrop",value:info}});
+
+        if (newDate!==''&&newClassHourDrop.value!=='none'){
+
+            ApiActions.ClassRoomIsUseded({ClassDate:newDate,ClassHourNO:newClassHourDrop.value,ClassRoomID:info.value,dispatch}).then(data=>{
+
+                if (data){
+
+                    if (data.Useded === 1){
+
+                        dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"errorTipsShow"}});
+
+                    }else{
+
+                        dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"errorTipsHide"}});
+
+                    }
+
+                }
+
+            })
+
+        }
 
     }
 
@@ -2907,6 +3083,8 @@ export default {
     ADJUST_BY_TEACHER_LOADING_SHOW,
 
     ADJUST_BY_TEACHER_LOADING_HIDE,
+
+    ADJUST_BY_TEACHER_CLASS_HOURS_LIST_UPDATE,
 
     REPLACE_SHCEDULE_TEACHER_SSUBJECT_DROP_SHOW,
 

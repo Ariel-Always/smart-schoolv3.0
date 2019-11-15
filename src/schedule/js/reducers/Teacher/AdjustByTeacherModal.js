@@ -13,6 +13,8 @@ const AdjustByTeacherModal = (state={
 
     LoadingShow:true,
 
+    ClassHourList:[],
+
     replaceSchedule:{
 
         loadingShow:true,
@@ -310,6 +312,8 @@ const AdjustByTeacherModal = (state={
                 LoadingShow:true,
 
                 teacherList:[],
+
+                ClassHourList:[],
 
                 replaceSchedule:{
 
@@ -626,6 +630,10 @@ const AdjustByTeacherModal = (state={
         case ABTActions.ADJUST_BY_TEACHER_LOADING_SHOW:
 
             return {...state,LoadingShow:true};
+
+        case ABTActions.ADJUST_BY_TEACHER_CLASS_HOURS_LIST_UPDATE:
+
+            return { ...state,ClassHourList:actions.data };
 
         case ABTActions.REPLACE_SHCEDULE_TEACHER_SSUBJECT_DROP_SHOW:
 

@@ -1,5 +1,6 @@
 import ApiActions from "../ApiActions";
 
+import AppAlertActions from '../AppAlertActions';
 
 const TEACHER_CLASS_TOTAL_INIT = 'TEACHER_CLASS_TOTAL_INIT';
 

@@ -2,6 +2,8 @@ import React from 'react';
 
 import ApiActions from '../ApiActions';
 
+import AppAlertActions from '../AppAlertActions';
+
 const TP_NOW_WEEK_CHANGE = 'TP_NOW_WEEK_CHANGE';
 
 const TEACHER_PERSONAL_SCHEDULE_INIT = 'TEACHER_PERSONAL_SCHEDULE_INIT';
