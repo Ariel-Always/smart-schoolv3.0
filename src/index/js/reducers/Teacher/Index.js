@@ -8,6 +8,12 @@ import TeacherCustomModalShow from './TeacherCustomModalShow';
 
 import TeacherCustomData from './TeacherCustomData';
 
+import TeacherTipsVisible from './TeacherTipsVisible';
+
+import WebsiteData from './WebsiteData';
+
+import ToolData from './ToolData';
+
 
 
 const Index  = combineReducers({
@@ -19,6 +25,12 @@ const Index  = combineReducers({
     TeacherCustomModalShow,
 
     TeacherCustomData,
+
+    TeacherTipsVisible,
+
+    WebsiteData,
+
+    ToolData
 
 });
 

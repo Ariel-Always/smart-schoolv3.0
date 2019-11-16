@@ -81,7 +81,8 @@ class Website extends React.Component {
         { value: "1", title: "小学" },
         { value: "2", title: "初中" },
         { value: "4", title: "高中" }
-      ]
+      ],
+      period: "0"
     };
     this.onDragEnd = this.onDragEnd.bind(this);
   }
@@ -94,6 +95,7 @@ class Website extends React.Component {
     });
   }
   componentWillMount() {
+    const { dispatch } = this.props;
     let StudyLevel = this.state.userMsg.StudyLevel;
     let dropList = [
       { value: "0", title: "全部学段" },
@@ -101,23 +103,29 @@ class Website extends React.Component {
       { value: "2", title: "初中" },
       { value: "4", title: "高中" }
     ];
+    let period = 0;
     let firstSelect = { value: "0", title: "全部学段" };
     if (StudyLevel === "A") {
       firstSelect = { value: "1", title: "小学" };
+      period = "7";
     } else if (StudyLevel === "B") {
       firstSelect = { value: "2", title: "初中" };
       dropList = [
         { value: "2", title: "初中" },
         { value: "4", title: "高中" }
       ];
+      period = "6";
     } else if (StudyLevel === "C") {
       firstSelect = { value: "4", title: "高中" };
       dropList = [{ value: "4", title: "高中" }];
+      period = "4";
     }
     this.setState({
       firstSelect: firstSelect,
-      dropList: dropList
+      dropList: dropList,
+      period: period
     });
+    dispatch(TeacherCustomActions.getPeriodList(dropList));
   }
   // 从id选择列表
   id2List = {
@@ -264,20 +272,45 @@ class Website extends React.Component {
   // card编辑
   onResetClick = source => {
     const { Teacher, dispatch } = this.props;
-    let MainData = Teacher.TeacherCustomData.WebsiteData;
-    let AlterData = Teacher.TeacherCustomData.WebsiteAlterData;
-    let dataObj = {};
-    dataObj["WebsiteData"] = MainData;
-    dataObj["WebsiteAlterData"] = AlterData;
-    let destination = { droppableId: "main", index: -1 };
+    // let MainData = Teacher.TeacherCustomData.WebsiteData;
+    // let AlterData = Teacher.TeacherCustomData.WebsiteAlterData;
+    // let dataObj = {};
+    // dataObj["WebsiteData"] = MainData;
+    // dataObj["WebsiteAlterData"] = AlterData;
+    // let destination = { droppableId: "main", index: -1 };
+    // dispatch(
+    //   TeacherCustomActions.setCustomData("alter", dataObj, source, destination)
+    // );
+    // dispatch(
+    //   TeacherCustomActions.fetchCustomData(
+    //     "/SubjectResMgr/WebSiteMgr/Teacher/EditDeskTop"
+    //   )
+    // );
+    let SubjectID = Teacher.HeaderSetting.SubjectSelect.id;
+    let SubjectName = Teacher.HeaderSetting.SubjectSelect.name;
+
+    let url =
+      "/SubjectResMgr/WebSetting/GetTypeList?SubjectID=" +
+      SubjectID +
+      "&Period=" +
+      this.state.period;
+    console.log(source);
     dispatch(
-      TeacherCustomActions.setCustomData("alter", dataObj, source, destination)
+      TeacherCustomActions.setHandleWebsiteInitData({
+        WebsiteId: source.ID,
+        SubjectID,
+        WebName: source.Name,
+        WebAddress: source.Url,
+        SubjectName,
+        WebType: { value: source.SubTypeId, title: source.SubTypeName },
+        PeriodID: [this.state.firstSelect.value],
+        PeriodName: [this.state.firstSelect.title]
+      })
     );
-    dispatch(
-      TeacherCustomActions.fetchCustomData(
-        "/SubjectResMgr/WebSiteMgr/Teacher/EditDeskTop"
-      )
-    );
+    dispatch(TeacherCustomActions.getTypeList(url, "edit"));
+    dispatch({
+      type: TeacherCustomActions.TEACHER_EDIT_WEBSITE_CUSTOM_MODAL_OPEN
+    });
   };
   // 学段下拉
   onDropMenuChange = value => {
@@ -377,8 +410,27 @@ class Website extends React.Component {
   };
   // 添加网站
   onAddCustomClick = () => {
-    const { dispatch } = this.props;
-    dispatch({type:TeacherCustomActions.TEACHER_ADD_WEBSITE_CUSTOM_MODAL_OPEN})
+    const { dispatch, Teacher } = this.props;
+    let SubjectID = Teacher.HeaderSetting.SubjectSelect.id;
+    let SubjectName = Teacher.HeaderSetting.SubjectSelect.name;
+
+    let url =
+      "/SubjectResMgr/WebSetting/GetTypeList?SubjectID=" +
+      SubjectID +
+      "&Period=" +
+      this.state.period;
+    dispatch(
+      TeacherCustomActions.setHandleWebsiteInitData({
+        SubjectID,
+        SubjectName,
+        PeriodID: [this.state.firstSelect.value],
+        PeriodName: [this.state.firstSelect.title]
+      })
+    );
+    dispatch(TeacherCustomActions.getTypeList(url));
+    dispatch({
+      type: TeacherCustomActions.TEACHER_ADD_WEBSITE_CUSTOM_MODAL_OPEN
+    });
   };
   render() {
     const { Teacher, AppLoading } = this.props;
@@ -426,14 +478,12 @@ class Website extends React.Component {
                     : "16px"
                 }}
               >
-                <span className="btn-add" onClick={this.onAddCustomClick.bind(this)}>
+                <span
+                  className="btn-add"
+                  onClick={this.onAddCustomClick.bind(this)}
+                >
                   <i className="add-icon"></i>
-                  <span
-                    
-                    className="add-text"
-                  >
-                    添加
-                  </span>
+                  <span className="add-text">添加</span>
                 </span>
               </div>
               <DragDropContext onDragEnd={this.onDragEnd}>
@@ -478,13 +528,7 @@ class Website extends React.Component {
                                         },
                                         item.ID
                                       )}
-                                      onResetClick={this.onResetClick.bind(
-                                        this,
-                                        {
-                                          droppableId: "main-" + item.ID,
-                                          index: index
-                                        }
-                                      )}
+                                      onResetClick={this.onResetClick}
                                       onEditClick={this.onEditClick.bind(this, {
                                         droppableId: "main-" + item.ID,
                                         index: index
@@ -498,6 +542,9 @@ class Website extends React.Component {
                                 </Draggable>
                               </div>
                             ))}
+                          {/* <Draggable draggableId={"main-test"} index={100}>
+                            <div style={{width:'50px',height:'100px' ,background:'#aaa'}}></div>
+                          </Draggable> */}
                           {provided.placeholder}
                         </div>
                       </div>
@@ -515,6 +562,7 @@ class Website extends React.Component {
                       个）
                     </span>
                   </span>
+                  {/* {this.state.dropList.length!==1?( */}
                   <DropDown
                     ref="dropMenu"
                     style={{ zIndex: 2 }}
@@ -524,6 +572,7 @@ class Website extends React.Component {
                     dropSelectd={this.state.firstSelect}
                     dropList={this.state.dropList}
                   ></DropDown>
+                  {/* ):<span className='noSelect'>{this.state.firstSelect.title}</span>} */}
                   <Search
                     placeHolder="输入关键词搜索..."
                     onClickSearch={this.StudentSearch.bind(this)}
@@ -557,7 +606,9 @@ class Website extends React.Component {
                                 <p className="alter-header">
                                   <i className="header-icon-1"></i>
                                   <span className="header-text">
-                                    {child.SubTypeName?child.SubTypeName:'最近使用'}
+                                    {child.SubTypeName
+                                      ? child.SubTypeName
+                                      : "最近使用"}
                                   </span>
                                   <i className="header-icon-2"></i>
                                 </p>
@@ -596,13 +647,7 @@ class Website extends React.Component {
                                             },
                                             item.ID
                                           )}
-                                          onResetClick={this.onResetClick.bind(
-                                            this,
-                                            {
-                                              droppableId: "alter" + index,
-                                              index: index1
-                                            }
-                                          )}
+                                          onResetClick={this.onResetClick}
                                           provided={provided}
                                           snapshot={snapshot}
                                           style={getItemStyle(

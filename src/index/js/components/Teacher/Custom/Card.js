@@ -64,7 +64,7 @@ class Card extends React.Component {
                 {this.props.data.IsCreatedByMe?
                 <div  className='handle-box'>
                     <span onClick={() => {this.props.onDeleteClick()}} className='delete'></span>
-                    <span onClick={() => {this.props.onResetClick()}} className='reset'></span>
+                    <span onClick={() => {this.props.onResetClick(data)}} className='reset'></span>
                 </div>:''}
             </div>
         )

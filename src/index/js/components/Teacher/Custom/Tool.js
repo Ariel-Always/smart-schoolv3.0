@@ -99,7 +99,7 @@ class Tool extends React.Component {
     let MainData = Teacher.TeacherCustomData.ToolData;
     let AlterData = Teacher.TeacherCustomData.ToolAlterData;
     let dataObj = {};
-    console.log(result);
+    // console.log(result);
     //        result:{ combine: null
     // destination: {droppableId: "droppable2", index: 4}
     // draggableId: "item-4"
@@ -237,21 +237,19 @@ class Tool extends React.Component {
   // card编辑
   onResetClick = source => {
     const { Teacher, dispatch } = this.props;
-    let MainData = Teacher.TeacherCustomData.ToolData;
-    let AlterData = Teacher.TeacherCustomData.ToolAlterData;
-    let dataObj = {};
-    dataObj["ToolData"] = MainData;
-    dataObj["ToolAlterData"] = AlterData;
-    let destination = { droppableId: "main", index: -1 };
     dispatch(
-      TeacherCustomActions.setCustomData("alter", dataObj, source, destination)
+      TeacherCustomActions.setHandleToolInitData({
+        ToolName:source.Name,
+        ToolUrl:source.Url,
+        ToolType:source.Name,
+        ToolImgUrl:source.ImgUrl,
+        ToolID: source.ID,
+
+      })
     );
-    dispatch(
-      TeacherCustomActions.fetchCustomData(
-        "/SubjectResMgr/ToolMgr/Teacher/EditDeskTop",
-        "tool"
-      )
-    );
+    dispatch({
+      type: TeacherCustomActions.TEACHER_EDIT_TOOL_CUSTOM_MODAL_OPEN
+    });
   };
   // 学段下拉
   onDropMenuChange = value => {
@@ -349,6 +347,21 @@ class Tool extends React.Component {
       )
     );
   };
+  // 添加工具
+  onAddCustomClick = () => {
+    const { dispatch, Teacher } = this.props;
+    let SubjectID = Teacher.HeaderSetting.SubjectSelect.id;
+    let SubjectName = Teacher.HeaderSetting.SubjectSelect.name;
+
+    
+    dispatch(
+      TeacherCustomActions.setHandleToolInitData({
+      })
+    );
+    dispatch({
+      type: TeacherCustomActions.TEACHER_ADD_TOOL_CUSTOM_MODAL_OPEN
+    });
+  };
   render() {
     const { Teacher, AppLoading } = this.props;
     let MainData = Teacher.TeacherCustomData.ToolData;
@@ -391,7 +404,7 @@ class Tool extends React.Component {
           >
               
               <div className="add-box" style={{marginTop:Teacher.TeacherCustomData.TipsShow.ToolTipsShow?'46px':'16px'}}>
-                <span className="btn-add">
+                <span onClick={this.onAddCustomClick.bind(this)} className="btn-add">
                   <i className="add-icon"></i>
                   <span className="add-text">添加</span>{" "}
                 </span>
@@ -438,13 +451,7 @@ class Tool extends React.Component {
                                         },
                                         item.ID
                                       )}
-                                      onResetClick={this.onResetClick.bind(
-                                        this,
-                                        {
-                                          droppableId: "main-" + item.ID,
-                                          index: index
-                                        }
-                                      )}
+                                      onResetClick={this.onResetClick}
                                       onEditClick={this.onEditClick.bind(this, {
                                         droppableId: "main-" + item.ID,
                                         index: index
