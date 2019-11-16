@@ -52,7 +52,9 @@
       border:1px solid #67a6de;
       @include box-shadow(0px 6px 10px -1px #95BFE5);
       .cooperate{
-        display: block;
+       @include flex;
+       @include justify-content(center);
+
       }
       &:before{
         background-color: #67a6de;
@@ -167,7 +169,17 @@
   text-align: center;
   color: #ffffff;
   display: none;
-  &:hover{
-    text-decoration:underline;
+
+  &>div:not(.line){
+
+    text-decoration: underline;
+
+    &:hover{
+
+      opacity: 0.8;
+
+    }
+
   }
+
 }

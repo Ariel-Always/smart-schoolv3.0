@@ -1,9 +1,14 @@
 import React,{Component} from 'react';
+
 import GradeContent from "./GradeContent";
+
 import ClassContent from "./ClassContent";
+
 import StudentContent from "./StudentContent";
 
 import {connect} from 'react-redux';
+
+import TeacherClassCharge from './Teacher/TeacherClassCharge';
 
 
 
@@ -14,47 +19,79 @@ class ContentContainer extends Component{
 
         const {ComponentChange} = this.props.UIState;
 
+        const {UserType} = this.props.LoginUser;
+
         return (
+
+
                 <div>
 
                     {
-                        ComponentChange.stu?
 
-                            <GradeContent info = {ComponentChange.stuInfo}></GradeContent>
+                        parseInt(UserType)===0?
+
+                            <React.Fragment>
+
+                                {
+                                    ComponentChange.stu?
+
+                                        <GradeContent info = {ComponentChange.stuInfo}></GradeContent>
+
+                                        :''
+
+                                }
+                                {
+                                    ComponentChange.grade?
+
+                                        <ClassContent info ={ ComponentChange.gradeInfo } key={ ComponentChange.gradeInfo.id }></ClassContent>
+
+                                        :''
+
+                                }
+                                {
+                                    ComponentChange.class?
+
+                                        <StudentContent info ={ ComponentChange.classInfo } key={ComponentChange.classInfo.id}></StudentContent>
+
+                                        :''
+
+                                }
+
+                            </React.Fragment>
 
                             :''
 
                     }
+
                     {
-                        ComponentChange.grade?
 
-                            <ClassContent info ={ ComponentChange.gradeInfo } key={ ComponentChange.gradeInfo.id }></ClassContent>
+                        parseInt(UserType)===1?
 
-                            :''
-
-                    }
-                    {
-                        ComponentChange.class?
-
-                            <StudentContent info ={ ComponentChange.classInfo } key={ComponentChange.classInfo.id}></StudentContent>
+                            <TeacherClassCharge></TeacherClassCharge>
 
                             :''
 
                     }
+
 
                     {/*</Switch>*/}
 
                 </div>
+
         );
     }
 }
 
 const  mapStateToProps = (state) => {
 
-    let {UIState} = state;
+    let {UIState,DataState} = state;
+
+    const { LoginUser } = DataState;
 
     return {
-        UIState
+        UIState,
+
+        LoginUser
     }
 
 };

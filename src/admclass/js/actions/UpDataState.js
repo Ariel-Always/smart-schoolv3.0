@@ -965,9 +965,9 @@ const getGangerSubjects = async ({SchoolID,dispatch}) => {
 
 //获取所有的任课教师
 
-const getAllTeacher = async ({SchoolID,SubjectIDs='',Keyword,UserID,dispatch}) => {
+const getAllTeacher = async ({SchoolID,SubjectIDs='',Keyword,PageIndex=0,PageSize=0,UserID,dispatch}) => {
 
-    let res = await Method.getGetData(`/UserMgr/ClassMgr/GetTeacherToPage?SchoolID=${SchoolID}&SubjectIDs=${SubjectIDs}${Keyword?`&Keyword=${Keyword}`:''}${UserID?`&UserID=${UserID}`:''}`,2,CONFIG.AdmClassProxy);
+    let res = await Method.getGetData(`/UserMgr/ClassMgr/GetTeacherToPage?SchoolID=${SchoolID}&PageIndex=${PageIndex}&PageSize=${PageSize}&SubjectIDs=${SubjectIDs}${Keyword?`&Keyword=${Keyword}`:''}${UserID?`&UserID=${UserID}`:''}`,2);
 
     if (res.StatusCode === 200){
 

@@ -87,7 +87,7 @@ class StudentTabWrapper extends Component{
 
                                                         <div className="cooperate">
 
-                                                            <div onClick={()=>{MonitorClick({UserID:item.UserID,isMonitor})}}>{isMonitor?'取消班长':'设为班长'}</div>
+                                                            <div className="set-monitor" onClick={()=>{MonitorClick({UserID:item.UserID,isMonitor})}}>{isMonitor?'取消班长':'设为班长'}</div>
 
                                                         </div>
 

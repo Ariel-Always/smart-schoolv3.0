@@ -6,6 +6,10 @@ import UIState from './UIState';
 
 import RouterSet from './RouterSet';
 
+import ModuleSetting from './ModuleSettings';
+
+import Teacher from './Teacher';
+
 export let initialState = {};
 
 let rootReducers = combineReducers({
@@ -14,7 +18,11 @@ let rootReducers = combineReducers({
 
     UIState,
 
-    RouterSet
+    RouterSet,
+
+    ModuleSetting,
+
+    Teacher
 
 });
 

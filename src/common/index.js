@@ -594,9 +594,32 @@ class RadioGroup extends React.Component {
 class CheckBox extends React.Component {
     render() {
         const { children, type, ...reset } = this.props;
+
+        let CheckClassName = '';
+
+        switch (type) {
+
+            case 'gray':
+
+                CheckClassName = 'ant-checkbox-gray';
+
+                break;
+
+            case 'circle':
+
+                CheckClassName = 'ant-checkbox-circle';
+
+                break;
+
+            default:
+
+                CheckClassName = '';
+
+        }
+
         return (
             <ConfigProvider locale={zhCN}>
-                <AntCheckBox className={type && type === 'gray' ? 'ant-checkbox-gray' : ''} {...reset}>{children}</AntCheckBox>
+                <AntCheckBox className={CheckClassName} {...reset}>{children}</AntCheckBox>
             </ConfigProvider>
         );
     }
@@ -641,6 +664,7 @@ class PagiNation extends React.Component {
             hideOnSinglePage,
             size,
             showQuickJumper,
+            className,
             ...reset
         } = this.props;
 
@@ -652,7 +676,8 @@ class PagiNation extends React.Component {
                     showQuickJumper={size === 'micro' ? true : {
                         goButton: <span className="pagination_go_button">Go</span>
                     }}
-                    className={size && size === 'micro' ? 'micro' : ''}
+                    className={`${className?className:''} ${size && size === 'micro' ? 'micro' : ''}`}
+
                     size={size}
                 >{children}</AntPagination>
             </ConfigProvider>

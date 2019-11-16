@@ -86,9 +86,9 @@
             background-repeat: no-repeat;
             font-size:14px;
             color: #ffffff;
-        &:hover{
-                text-decoration: underline;
-            }
+      &:hover{
+        text-decoration: underline;
+      }
         }
     .reset{
             background-image: url("#{$image-url}/reset.png");

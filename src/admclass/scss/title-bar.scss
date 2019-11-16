@@ -11,6 +11,10 @@
   &.icon2{
     background-image: url("#{$image-url}/title-icon2.png");
   }
+
+  &.icon3{
+    background-image: url("#{$image-url}/title-icon3.png");
+  }
 }
 .title-word{
   font-size:18px;

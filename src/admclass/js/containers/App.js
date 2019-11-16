@@ -18,15 +18,25 @@ import UpDataState from '../actions/UpDataState';
 
 import RouterSetActions from '../actions/RouterSetActions';
 
-import logo from '../../images/logo.png';
+import ModuleActions from '../actions/ModuleActions';
 
 import Banner from '../component/Banner';
+
+import TeacherBtnBanner from '../component/Teacher/TeacherBtnBanner';
 
 import ContentContainer from './ContentContainer';
 
 import AddClassModal from '../component/AddClassModal';
 
 import Import from "./Import";
+
+import logo from "../../images/logo.png";
+
+import TeacherLogo from '../../images/teacher-logo.png';
+
+import AppAlertActions from "../actions/AppAlertActions";
+
+import TMActions from '../actions/Teacher/TeacherModalActions';
 
 
 class App extends Component{
@@ -47,15 +57,104 @@ class App extends Component{
 
             let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
 
+            const {UserType,UserClass} = UserInfo;
+
             dispatch({type:UpDataState.GET_LOGIN_USER_INFO,data:UserInfo});
 
             if (hash.includes('Import')){//导入界面
 
                 dispatch({type:RouterSetActions.ROUTER_SET_TO_IMPORT});
 
+                //判断用户类型
+                if (parseInt(UserType)===0){
+
+                    dispatch({type:ModuleActions.MODULE_SETTING_INFO_UPDATE,data:{
+
+                            ShowLeftMenu:false,
+
+                            ShowBarner:false,
+
+                            ModuleInfo:{
+
+                                cnname:'行政班管理',
+
+                                enname:"Administration class management",
+
+                                image:logo
+
+                            }
+
+                        }});
+
+                }else if (parseInt(UserType)===1) {
+
+                    dispatch({type:ModuleActions.MODULE_SETTING_INFO_UPDATE,data:{
+
+                            ShowLeftMenu:false,
+
+                            ShowBarner:false,
+
+                            ModuleInfo:{
+
+                                cnname:'班级管理',
+
+                                enname:"Class management",
+
+                                image:TeacherLogo
+
+                            }
+
+                        }});
+
+                }
+
             }else{//非导入界面
 
                 dispatch({type:RouterSetActions.ROUTER_SET_TO_DEFAULT});
+
+                let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
+
+                if (parseInt(UserType)===0){
+
+                    dispatch({type:ModuleActions.MODULE_SETTING_INFO_UPDATE,data:{
+
+                            ShowLeftMenu:true,
+
+                            ShowBarner:true,
+
+                            ModuleInfo:{
+
+                                cnname:'行政班管理',
+
+                                enname:"Administration class management",
+
+                                image:logo
+
+                            }
+
+                        }});
+
+                }else if (parseInt(UserType)===1) {
+
+                    dispatch({type:ModuleActions.MODULE_SETTING_INFO_UPDATE,data:{
+
+                            ShowLeftMenu:false,
+
+                            ShowBarner:true,
+
+                            ModuleInfo:{
+
+                                cnname:'班级管理',
+
+                                enname:"Class management",
+
+                                image:TeacherLogo
+
+                            }
+
+                        }});
+
+                }
 
                 dispatch(UpDataState.getPageInit());
 
@@ -63,12 +162,13 @@ class App extends Component{
 
         }else{
 
-
             let getUserInfo = setInterval(()=>{
 
                 if (sessionStorage.getItem('UserInfo')){
 
                     let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
+
+                    const { UserType } = UserInfo;
 
                     dispatch({type:UpDataState.GET_LOGIN_USER_INFO,data:UserInfo});
 
@@ -76,9 +176,94 @@ class App extends Component{
 
                         dispatch({type:RouterSetActions.ROUTER_SET_TO_IMPORT});
 
+                        //判断用户类型
+                        if (parseInt(UserType)===0){
+
+                            dispatch({type:ModuleActions.MODULE_SETTING_INFO_UPDATE,data:{
+
+                                    ShowLeftMenu:false,
+
+                                    ShowBarner:false,
+
+                                    ModuleInfo:{
+
+                                        cnname:'行政班管理',
+
+                                        enname:"Administration class management",
+
+                                        image:logo
+
+                                    }
+
+                                }});
+
+                        }else if (parseInt(UserType)===1) {
+
+                            dispatch({type:ModuleActions.MODULE_SETTING_INFO_UPDATE,data:{
+
+                                    ShowLeftMenu:false,
+
+                                    ShowBarner:false,
+
+                                    ModuleInfo:{
+
+                                        cnname:'班级管理',
+
+                                        enname:"Class management",
+
+                                        image:TeacherLogo
+
+                                    }
+
+                                }});
+
+                        }
+
                     }else{//非导入界面
 
                         dispatch({type:RouterSetActions.ROUTER_SET_TO_DEFAULT});
+
+                        if (parseInt(UserType)===0){
+
+                            dispatch({type:ModuleActions.MODULE_SETTING_INFO_UPDATE,data:{
+
+                                    ShowLeftMenu:true,
+
+                                    ShowBarner:true,
+
+                                    ModuleInfo:{
+
+                                        cnname:'行政班管理',
+
+                                        enname:"Administration class management",
+
+                                        image:logo
+
+                                    }
+
+                                }});
+
+                        }else if (parseInt(UserType)===1) {
+
+                            dispatch({type:ModuleActions.MODULE_SETTING_INFO_UPDATE,data:{
+
+                                    ShowLeftMenu:false,
+
+                                    ShowBarner:true,
+
+                                    ModuleInfo:{
+
+                                        cnname:'班级管理',
+
+                                        enname:"Class management",
+
+                                        image:TeacherLogo
+
+                                    }
+
+                                }});
+
+                        }
 
                         dispatch(UpDataState.getPageInit());
 
@@ -281,14 +466,57 @@ class App extends Component{
     }
 
 
+    //教师端弹出教师弹窗
+    TeacherTeacherModalShow(opt){
 
+        const {dispatch,ClassCharge} = this.props;
+
+        switch (opt.type) {
+
+            case 1:
+                dispatch({type:TMActions.TEACHER_TEACHER_MODAL_SHOW});
+
+                break;
+
+            case 2:
+
+                dispatch({type:TMActions.TEACHER_TEACHER_MODAL_SHOW,options:{
+
+                        originTeacherShow:true,
+
+                        originTeacherInfo:opt.originTeacherInfo,
+
+                        originTeacherTitle:"原任课教师",
+
+                        newTeacherTitle:"新任课教师",
+
+                        modalTitle:"更改任课教师",
+
+                        type:2,
+
+                        SubjectID:opt.originTeacherInfo.SubjectID
+
+                    }});
+
+                break;
+
+            default:
+
+                dispatch({type:TMActions.TEACHER_TEACHER_MODAL_SHOW});
+
+        }
+        //初始化所有的教师和学科的数据
+
+        dispatch(TMActions.getTeacherData({ClassID:ClassCharge.ActiveClassID,...opt}));
+
+    }
 
 
 
 
     render() {
 
-        const {UIState,DataState,RouterSet} = this.props;
+        const {UIState,DataState,RouterSet,ModuleSetting} = this.props;
 
         const { Grades = []} = DataState.SchoolGradeClasses;//左侧菜单的年级和班级信息
 
@@ -340,20 +568,42 @@ class App extends Component{
                     }
 
                         <Frame type="triangle"
-                               showLeftMenu={RouterSet.router==='/'?true:false}
-                               showBarner={RouterSet.router==='/'?true:false}
+                               showLeftMenu={ModuleSetting.ShowLeftMenu}
+                               showBarner={ModuleSetting.ShowBarner}
                                style={{display:`${UIState.AppLoading.show?'none':'block'}`}}
                                userInfo={{name:DataState.LoginUser.UserName,image:DataState.LoginUser.PhotoPath}}
-                               module={{cnname:"行政班管理",enname:"Administration class management",image:logo}}
+                               module={ModuleSetting.ModuleInfo}
                         >
                             {/*banner*/}
 
                             <div ref="frame-time-barner">
 
-                                <Banner addClass={this.addClass.bind(this)}
-                                        Import={this.Import.bind(this)}>
 
-                                </Banner>
+
+                                {
+
+                                    parseInt(DataState.LoginUser.UserType)===0?
+
+                                        <Banner addClass={this.addClass.bind(this)}
+                                                Import={this.Import.bind(this)}>
+
+                                        </Banner>
+
+                                        :''
+
+                                }
+
+                                {
+
+                                    parseInt(DataState.LoginUser.UserType)===1?
+
+                                        <TeacherBtnBanner TeacherModalShow ={this.TeacherTeacherModalShow.bind(this)}>
+
+                                        </TeacherBtnBanner>
+
+                                        :''
+
+                                }
 
                             </div>
 
@@ -422,7 +672,6 @@ class App extends Component{
 
                         </Modal>
 
-
                 </Router>
 
 
@@ -431,7 +680,9 @@ class App extends Component{
 }
 const  mapStateToProps = (state) => {
 
-    let {UIState,DataState,RouterSet} = state;
+    let {UIState,DataState,RouterSet,ModuleSetting,Teacher} = state;
+
+    const { ClassCharge } = Teacher;
 
     return {
 
@@ -439,7 +690,11 @@ const  mapStateToProps = (state) => {
 
         DataState,
 
-        RouterSet
+        RouterSet,
+
+        ModuleSetting,
+
+        ClassCharge
 
     }
 
