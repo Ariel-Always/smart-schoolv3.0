@@ -10,6 +10,8 @@ const ClassCharge = (state={
 
     TeacherPower:false,
 
+    TeacherLoading:false,
+
     Teacher:{
 
         Total:0,
@@ -83,6 +85,18 @@ const ClassCharge = (state={
         case CCActions.TEACHER_CLASS_CHARGE_LOADING_SHOW:
 
             return { ...state,ClassLoadingShow:true };
+
+        case CCActions.TEACHER_CLASS_CHARGE_TEACHER_LIST_UPDATE:
+
+            return { ...state,Teacher:actions.data};
+
+        case CCActions.TEACHER_CLASS_CHARGE_TEACHER_LOADING_SHOW:
+
+            return {...state,TeacherLoading:true};
+
+        case CCActions.TEACHER_CLASS_CHARGE_TEACHER_LOADING_HIDE:
+
+            return {...state,TeacherLoading:false};
 
         case CCActions.TEACHER_CLASS_CHARGE_STUDENT_LIST_UPDATE:
 

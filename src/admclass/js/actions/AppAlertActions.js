@@ -1,4 +1,6 @@
-import UIState from './UpUIState';
+const SHOW_ERROR_ALERT = 'SHOW_ERROR_ALERT';
+
+const CLOSE_ERROR_ALERT = 'CLOSE_ERROR_ALERT';
 
 const alertSuccess = ({title,hide}) => {
 
@@ -6,7 +8,7 @@ const alertSuccess = ({title,hide}) => {
 
         dispatch({
 
-            type:UIState.SHOW_ERROR_ALERT,
+            type:SHOW_ERROR_ALERT,
 
             data:{
 
@@ -30,7 +32,7 @@ const alertError = ({title,cancel,close,ok}) => {
 
         dispatch({
 
-            type:UIState.SHOW_ERROR_ALERT,
+            type:SHOW_ERROR_ALERT,
 
             data:{
 
@@ -58,7 +60,7 @@ const alertWarn = ({title,cancel,ok,close}) => {
 
         dispatch({
 
-            type:UIState.SHOW_ERROR_ALERT,
+            type:SHOW_ERROR_ALERT,
 
             data:{
 
@@ -86,7 +88,7 @@ const alertQuery = ({title,cancel,ok,close}) => {
 
         dispatch({
 
-            type:UIState.SHOW_ERROR_ALERT,
+            type:SHOW_ERROR_ALERT,
 
             data:{
 
@@ -114,7 +116,7 @@ const alertTips = ({title,cancel,ok,close}) => {
 
         dispatch({
 
-            type:UIState.SHOW_ERROR_ALERT,
+            type:SHOW_ERROR_ALERT,
 
             data:{
 
@@ -138,7 +140,7 @@ const alertTips = ({title,cancel,ok,close}) => {
 
 const closeAlert = (dispatch) => {
 
-  return () => dispatch({type:UIState.CLOSE_ERROR_ALERT});
+  return () => dispatch({type:CLOSE_ERROR_ALERT});
 
 };
 
@@ -152,6 +154,10 @@ export default {
 
     alertTips,
 
-    alertQuery
+    alertQuery,
+
+    SHOW_ERROR_ALERT,
+
+    CLOSE_ERROR_ALERT
 
 }

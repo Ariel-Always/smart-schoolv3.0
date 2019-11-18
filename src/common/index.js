@@ -592,8 +592,9 @@ class RadioGroup extends React.Component {
     }
 }
 class CheckBox extends React.Component {
+
     render() {
-        const { children, type, ...reset } = this.props;
+        const { children,className,type, ...reset } = this.props;
 
         let CheckClassName = '';
 
@@ -619,7 +620,7 @@ class CheckBox extends React.Component {
 
         return (
             <ConfigProvider locale={zhCN}>
-                <AntCheckBox className={CheckClassName} {...reset}>{children}</AntCheckBox>
+                <AntCheckBox className={`${className} ${CheckClassName}`} {...reset}>{children}</AntCheckBox>
             </ConfigProvider>
         );
     }

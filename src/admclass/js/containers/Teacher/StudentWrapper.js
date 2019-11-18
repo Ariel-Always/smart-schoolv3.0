@@ -152,7 +152,7 @@ class StudentWrapper extends Component{
 
                                                     StudentPower?
 
-                                                        <CheckBox  type="circle" value={JSON.stringify({id:item.UserID,name:item.UserName})}></CheckBox>
+                                                        <CheckBox  type="gray" value={JSON.stringify({id:item.UserID,name:item.UserName})}></CheckBox>
 
                                                         :''
 

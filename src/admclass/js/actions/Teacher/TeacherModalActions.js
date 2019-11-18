@@ -3,6 +3,8 @@ import AppAlertActions from '../../actions/AppAlertActions';
 
 import ApiActions from '../../actions/ApiActions';
 
+import CCActions from '../../actions/Teacher/ClassChargeActions';
+
 
 const TEACHER_TEACHER_MODAL_SHOW = 'TEACHER_TEACHER_MODAL_SHOW';
 const TEACHER_TEACHER_MODAL_HIDE = 'TEACHER_TEACHER_MODAL_HIDE';
@@ -29,6 +31,10 @@ const TEACHER_TEACHER_MODAL_UPDATE_ORIGIN_TEACHER = 'TEACHER_TEACHER_MODAL_UPDAT
 const TEACHER_TEACHER_MODAL_ORIGIN_TEACHER_SHOW = 'TEACHER_TEACHER_MODAL_ORIGIN_TEACHER_SHOW';
 const TEACHER_TEACHER_MODAL_ORIGIN_TEACHER_HIDE = 'TEACHER_TEACHER_MODAL_ORIGIN_TEACHER_HIDE';
 const TEACHER_TEACHER_MODAL_NEW_TEACHER_TITLE = 'TEACHER_TEACHER_MODAL_NEW_TEACHER_TITLE';
+
+
+
+
 
 
 //教师弹框获取所有的教师和学科的数据
@@ -306,7 +312,7 @@ const updateTeacher = (classInfo) => {
 
             });
 
-            dispatch({type:TEACHER_TEACHER_MODAL_MODAL_HIDE});
+            dispatch({type:TEACHER_TEACHER_MODAL_HIDE});
 
         });
 
@@ -324,17 +330,11 @@ const delSubjectTeacher = ({ClassID,SubjectID}) => {
 
             if (data===0){
 
+                dispatch({type:AppAlertActions.CLOSE_ERROR_ALERT});
+
                 dispatch(AppAlertActions.alertSuccess({title:"删除成功！"}));
 
-                ApiActions.GetClassTeacher({ClassID,dispatch}).then(data=>{
-
-                    if (data){
-
-                        dispatch({type:GET_THE_CLASS_THEACHERS,data:data});
-
-                    }
-
-                });
+                dispatch(CCActions.TeacherUpdate());
 
             }
 

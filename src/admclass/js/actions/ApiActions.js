@@ -145,7 +145,7 @@ const SetCourseClassTeacher =  async ({ClassID,SubjectID,UserID='',dispatch}) =>
 
     if (res.StatusCode === 200){
 
-        return res.Msg;
+        return res.ErrCode;
 
     }else{
 

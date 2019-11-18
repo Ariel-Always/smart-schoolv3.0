@@ -126,8 +126,6 @@ class TeacherClassCharge extends Component{
 
             </Loading>
 
-
-
         </div>
 
     }

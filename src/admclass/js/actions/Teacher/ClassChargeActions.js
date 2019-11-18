@@ -7,7 +7,9 @@ import AppLoadingActions from '../AppLoadingActions';
 import ModuleActions from '../ModuleActions';
 
 import TeacherLogo from '../../../images/teacher-logo.png';
+
 import AppAlertActions from "../AppAlertActions";
+
 import PaginationActions from "../PaginationActions";
 
 const  TEACHER_CLASS_CHARGE_PAGE_INIT = 'TEACHER_CLASS_CHARGE_PAGE_INIT';
@@ -23,6 +25,11 @@ const  TEACHER_CLASS_CHARGE_LOADING_HIDE = 'TEACHER_CLASS_CHARGE_LOADING_HIDE';
 
 //教师
 
+const TEACHER_CLASS_CHARGE_TEACHER_LOADING_SHOW = 'TEACHER_CLASS_CHARGE_TEACHER_LOADING_SHOW';
+
+const TEACHER_CLASS_CHARGE_TEACHER_LOADING_HIDE = 'TEACHER_CLASS_CHARGE_TEACHER_LOADING_HIDE';
+
+const TEACHER_CLASS_CHARGE_TEACHER_LIST_UPDATE = 'TEACHER_CLASS_CHARGE_TEACHER_LIST_UPDATE';
 
 
 //学生变化
@@ -45,6 +52,7 @@ const TEACHER_CLASS_CHARGE_STUDENT_SEARCH_CANCEL_HIDE = 'TEACHER_CLASS_CHARGE_ST
 const TEACHER_CLASS_CHARGE_STUDENT_LOADING_SHOW = 'TEACHER_CLASS_CHARGE_STUDENT_LOADING_SHOW';
 
 const TEACHER_CLASS_CHARGE_STUDENT_LOADING_HIDE = 'TEACHER_CLASS_CHARGE_STUDENT_LOADING_HIDE';
+
 
 
 
@@ -172,6 +180,32 @@ const ClassInfoUpdate  = (ClassID) =>{
 
 };
 
+
+//教师更新
+
+const TeacherUpdate = () =>{
+
+    return (dispatch,getState)=>{
+
+        dispatch({type:TEACHER_CLASS_CHARGE_TEACHER_LOADING_SHOW});
+
+        const { ActiveClassID } = getState().Teacher.ClassCharge;
+
+        ApiActions.GetClassTeacher({ClassID:ActiveClassID,dispatch}).then(data=>{
+
+            if (data){
+
+                dispatch({type:TEACHER_CLASS_CHARGE_TEACHER_LIST_UPDATE,data:data});
+
+            }
+
+            dispatch({type:TEACHER_CLASS_CHARGE_TEACHER_LOADING_HIDE});
+
+        })
+
+    }
+
+};
 
 //学生更新
 
@@ -366,6 +400,12 @@ export default {
 
     TEACHER_CLASS_CHARGE_STUDENT_LOADING_HIDE,
 
+    TEACHER_CLASS_CHARGE_TEACHER_LIST_UPDATE,
+
+    TEACHER_CLASS_CHARGE_TEACHER_LOADING_SHOW,
+
+    TEACHER_CLASS_CHARGE_TEACHER_LOADING_HIDE,
+
     PageInit,
 
     ClassChange,
@@ -376,6 +416,8 @@ export default {
 
     StuCancelSearch,
 
-    StudentPageChange
+    StudentPageChange,
+
+    TeacherUpdate
 
 }

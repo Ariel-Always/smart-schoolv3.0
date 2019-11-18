@@ -169,9 +169,9 @@ class TeacherWrapper extends Component{
     //点击OK的时候
     teacherModalOk(e){
 
-        const {dispatch,UIState,info} =this.props;
+        const {dispatch,Teacher} =this.props;
 
-        const {AddTeacherModal} = UIState;
+        const {AddTeacherModal} = Teacher;
 
         //先判断是否选中一个新的教师
 
@@ -224,157 +224,161 @@ class TeacherWrapper extends Component{
 
         const { TeacherModal } = Teacher;
 
-        const { TeacherPower } = ClassCharge;
+        const { TeacherPower,TeacherLoading } = ClassCharge;
 
         const { Total,List } = ClassCharge.Teacher;
 
         return <div className="teacher-teacher-list-wrapper">
 
-            <TitleBar type="icon3" title="班级教师" abstract={`(共${Total}人)`}></TitleBar>
+            <Loading spinning={TeacherLoading}>
 
-            <div className="teacher-list-wrapper clearfix">
+                <TitleBar type="icon3" title="班级教师" abstract={`(共${Total}人)`}></TitleBar>
 
-                {
-                    List.length>0?
+                <div className="teacher-list-wrapper clearfix">
 
-                        List.map((item,key) => {
+                    {
+                        List.length>0?
 
-                        let projects = '';
+                            List.map((item,key) => {
 
-                        switch (item.SubjectName) {
-                            case '语文':
-                            case '物理':
-                                projects = 'physics';
-                                break;
-                            case '英语':
-                            case '生物':
-                                projects = 'english';
-                                break;
-                            case '数学':
-                            case '政治':
-                                projects = 'math';
-                                break;
-                            case '历史':
-                            case '地理':
-                                projects = 'history';
-                                break;
-                            default:
-                                projects = 'other';
-                        }
+                            let projects = '';
 
-                        return <div key={key} className="admclass-teacher-item clearfix">
+                            switch (item.SubjectName) {
+                                case '语文':
+                                case '物理':
+                                    projects = 'physics';
+                                    break;
+                                case '英语':
+                                case '生物':
+                                    projects = 'english';
+                                    break;
+                                case '数学':
+                                case '政治':
+                                    projects = 'math';
+                                    break;
+                                case '历史':
+                                case '地理':
+                                    projects = 'history';
+                                    break;
+                                default:
+                                    projects = 'other';
+                            }
 
-                            <div className="admclass-teacher-photo" style={{backgroundImage:`url(${item.PhotoPath})`}}></div>
+                            return <div key={key} className="admclass-teacher-item clearfix">
 
-                            <div className="admclass-teacher-info">
+                                <div className="admclass-teacher-photo" style={{backgroundImage:`url(${item.PhotoPath})`}}></div>
 
-                                <div className="admclass-teacher-tab">
+                                <div className="admclass-teacher-info">
 
-                                    <div className="admclass-teacher-name" title={item.UserName}>{item.UserName}</div>
+                                    <div className="admclass-teacher-tab">
+
+                                        <div className="admclass-teacher-name" title={item.UserName}>{item.UserName}</div>
+
+                                    </div>
+
+                                    <div className="admclass-teacher-id" title={item.UserID}>{item.UserID}</div>
 
                                 </div>
 
-                                <div className="admclass-teacher-id" title={item.UserID}>{item.UserID}</div>
+                                <div className={`admclass-teacher-project ${projects}`} title={item.SubjectName}>{item.SubjectName}</div>
+
+                                    {
+
+                                        TeacherPower?
+
+                                            <div className="cooperate">
+
+                                                <div className="reset" onClick={() => TeacherModalShow({type:2,originTeacherInfo:{id:item.UserID,name:item.UserName,photo:item.PhotoPath,SubjectID:item.SubjectID,SubjectName:item.SubjectName}})}>更改</div>
+
+                                                <div className="line"></div>
+
+                                                <div className="delete" onClick={()=>this.delSubjectTeacher({SubjectID:item.SubjectID})}>删除</div>
+
+                                            </div>
+
+                                            :''
+
+                                    }
 
                             </div>
 
-                            <div className={`admclass-teacher-project ${projects}`} title={item.SubjectName}>{item.SubjectName}</div>
+                        })
 
-                                {
+                            :<Empty type="3" title="还没有任课教师，请先添加！"></Empty>
 
-                                    TeacherPower?
+                    }
 
-                                        <div className="cooperate">
+                </div>
 
-                                            <div className="reset" onClick={() => TeacherModalShow({type:2,originTeacherInfo:{id:item.UserID,name:item.UserName,photo:item.PhotoPath,SubjectID:item.SubjectID,SubjectName:item.SubjectName}})}>更改</div>
+                <Modal type={1} title={TeacherModal.modalTitle}
 
-                                            <div className="line"></div>
+                       visible={TeacherModal.show}
 
-                                            <div className="delete" onClick={()=>this.delSubjectTeacher({SubjectID:item.SubjectID})}>删除</div>
+                       mask={true} width={1000}
 
-                                        </div>
+                       bodyStyle={{height:536}}
 
-                                        :''
+                       maskClosable={true}
 
-                                }
+                       className="addTeacherModal"
 
-                        </div>
+                       onCancel={this.teacherModalHide.bind(this)}
 
-                    })
+                       cancelText = "取消"
 
-                        :<Empty type="3" title="还没有任课教师，请先添加！"></Empty>
+                       onOk = {this.teacherModalOk.bind(this)}>
 
-                }
+                    <AddTeacherModal
 
-            </div>
+                        loadingShow={TeacherModal.loadingShow}
 
-            <Modal type={1} title={TeacherModal.modalTitle}
+                        subjects={TeacherModal.subjects}
 
-                   visible={TeacherModal.show}
+                        teacherList = {TeacherModal.teacherList}
 
-                   mask={true} width={1000}
+                        subjectsSelect = {TeacherModal.subjectsSelect}
 
-                   bodyStyle={{height:536}}
+                        itemClick={this.itemLick.bind(this)}
 
-                   maskClosable={true}
+                        closeShow={TeacherModal.closeShow}
 
-                   className="addTeacherModal"
+                        newPickTeacher = {{
+                            id:TeacherModal.newPickTeacher.id,
+                            name:TeacherModal.newPickTeacher.name,
+                            photo:TeacherModal.newPickTeacher.photo
+                        }}
 
-                   onCancel={this.teacherModalHide.bind(this)}
+                        originTeacherShow = {TeacherModal.originTeacherShow}
 
-                   cancelText = "取消"
+                        originTeacherInfo = {TeacherModal.originTeacherInfo}
 
-                   onOk = {this.teacherModalOk.bind(this)}>
+                        newTeacherTitle = {TeacherModal.newTeacherTitle}
 
-                <AddTeacherModal
+                        originTeacherTitle={TeacherModal.originTeacherTitle}
 
-                    loadingShow={TeacherModal.loadingShow}
+                        teacherModalDropChange = {this.teacherModalDropChange.bind(this)}
 
-                    subjects={TeacherModal.subjects}
+                        teacherLoadingShow = {TeacherModal.teacherLoadingShow}
 
-                    teacherList = {TeacherModal.teacherList}
+                        inputContent = {TeacherModal.inputContent}
 
-                    subjectsSelect = {TeacherModal.subjectsSelect}
+                        inputContentChange = {this.teacherModalInputContentChange.bind(this)}
 
-                    itemClick={this.itemLick.bind(this)}
+                        searchBtnClick = {this.teacherSearchBtnClick.bind(this)}
 
-                    closeShow={TeacherModal.closeShow}
+                        emptyShow = {TeacherModal.emptyShow}
 
-                    newPickTeacher = {{
-                        id:TeacherModal.newPickTeacher.id,
-                        name:TeacherModal.newPickTeacher.name,
-                        photo:TeacherModal.newPickTeacher.photo
-                    }}
+                        searchClose = {this.teacherSearchClose.bind(this)}
 
-                    originTeacherShow = {TeacherModal.originTeacherShow}
+                        subjectDropDisabled={TeacherModal.subjectDropDisabled}
 
-                    originTeacherInfo = {TeacherModal.originTeacherInfo}
+                    >
 
-                    newTeacherTitle = {TeacherModal.newTeacherTitle}
+                    </AddTeacherModal>
 
-                    originTeacherTitle={TeacherModal.originTeacherTitle}
+                </Modal>
 
-                    teacherModalDropChange = {this.teacherModalDropChange.bind(this)}
-
-                    teacherLoadingShow = {TeacherModal.teacherLoadingShow}
-
-                    inputContent = {TeacherModal.inputContent}
-
-                    inputContentChange = {this.teacherModalInputContentChange.bind(this)}
-
-                    searchBtnClick = {this.teacherSearchBtnClick.bind(this)}
-
-                    emptyShow = {TeacherModal.emptyShow}
-
-                    searchClose = {this.teacherSearchClose.bind(this)}
-
-                    subjectDropDisabled={TeacherModal.subjectDropDisabled}
-
-                >
-
-                </AddTeacherModal>
-
-            </Modal>
+            </Loading>
 
         </div>
 
