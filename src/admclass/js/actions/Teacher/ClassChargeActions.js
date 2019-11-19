@@ -11,6 +11,7 @@ import TeacherLogo from '../../../images/teacher-logo.png';
 import AppAlertActions from "../AppAlertActions";
 
 import PaginationActions from "../PaginationActions";
+import StudentsCheckList from "../../reducers/data/StudentsCheckList";
 
 const  TEACHER_CLASS_CHARGE_PAGE_INIT = 'TEACHER_CLASS_CHARGE_PAGE_INIT';
 
@@ -53,6 +54,12 @@ const TEACHER_CLASS_CHARGE_STUDENT_LOADING_SHOW = 'TEACHER_CLASS_CHARGE_STUDENT_
 
 const TEACHER_CLASS_CHARGE_STUDENT_LOADING_HIDE = 'TEACHER_CLASS_CHARGE_STUDENT_LOADING_HIDE';
 
+const TEACHER_CLASS_CHARGE_STUDENT_CHECK_CHANGE = 'TEACHER_CLASS_CHARGE_STUDENT_CHECK_CHANGE';
+
+const TEACHER_CLASS_CHARGE_STUDENT_CHECK_ALL_FALSE = 'TEACHER_CLASS_CHARGE_STUDENT_CHECK_ALL_FALSE';
+
+const TEACHER_CLASS_CHARGE_STUDENT_CHECK_ALL_TRUE = 'TEACHER_CLASS_CHARGE_STUDENT_CHECK_ALL_TRUE';
+
 
 
 
@@ -70,9 +77,9 @@ const PageInit = () =>{
 
                 const ActiveClassID = data.Class[0].ClassID;
 
-                let StudentPower = true;
+                let StudentPower = false;
 
-                let TeacherPower = true;
+                let TeacherPower = false;
 
                 data.Power.map((item,key)=>{
 
@@ -80,7 +87,7 @@ const PageInit = () =>{
 
                         if (item.Status===1){
 
-                            StuPower = true;
+                            StudentPower = true;
 
                         }
 
@@ -156,6 +163,8 @@ const ClassInfoUpdate  = (ClassID) =>{
 
             let Teacher,Student = {};
 
+            let StudentPlainOptions = [];
+
             if (json1){
 
                 Teacher = json1;
@@ -166,9 +175,17 @@ const ClassInfoUpdate  = (ClassID) =>{
 
                 Student = json2;
 
+                StudentPlainOptions = Student.List.map(item=>{
+
+                   return item.UserID
+
+                });
+
             }
 
-            dispatch({type:TEACHER_CLASS_CHARGE_ACTIVE_CLASS_INFO_INIT,data:{Teacher,Student}});
+
+
+            dispatch({type:TEACHER_CLASS_CHARGE_ACTIVE_CLASS_INFO_INIT,data:{Teacher,Student,StudentPlainOptions}});
 
             dispatch({type:TEACHER_CLASS_CHARGE_LOADING_HIDE});
 
@@ -223,7 +240,15 @@ const StudentUpdate = (PageIndex) =>{
 
             if (data){
 
-                dispatch({type:TEACHER_CLASS_CHARGE_STUDENT_LIST_UPDATE,data:data});
+                const { List } = data;
+
+                const StudentPlainOptions = List.map(item=>{
+
+                    return item.UserID
+
+                });
+
+                dispatch({type:TEACHER_CLASS_CHARGE_STUDENT_LIST_UPDATE,data:{Student:data,StudentPlainOptions}});
 
             }
 
@@ -369,6 +394,108 @@ const StudentPageChange = (PageIndex) => {
 };
 
 
+//点击学生选择
+
+const StuCheckedChange = (e)=>{
+
+    return (dispatch,getState)=>{
+
+        dispatch({type:TEACHER_CLASS_CHARGE_STUDENT_CHECK_CHANGE,data:e});
+
+        let { StudentPlainOptions,StudentCheckList } = getState().Teacher.ClassCharge;
+
+        if (StudentPlainOptions.length===StudentCheckList.length){
+
+            dispatch({type:TEACHER_CLASS_CHARGE_STUDENT_CHECK_ALL_TRUE});
+
+        }else{
+
+            dispatch({type:TEACHER_CLASS_CHARGE_STUDENT_CHECK_ALL_FALSE});
+
+        }
+
+    }
+
+};
+
+//学生全选或者全不选\
+const StudentCheckAll = (CheckAll)=>{
+
+    return (dispatch,getState)=>{
+
+        let { StudentPlainOptions } = getState().Teacher.ClassCharge;
+
+        let StudentCheckList = [];
+
+        if (CheckAll){
+
+            dispatch({type:TEACHER_CLASS_CHARGE_STUDENT_CHECK_ALL_FALSE});
+
+        }else{
+
+            StudentCheckList = StudentPlainOptions;
+
+            dispatch({type:TEACHER_CLASS_CHARGE_STUDENT_CHECK_ALL_TRUE});
+
+        }
+
+        dispatch({type:TEACHER_CLASS_CHARGE_STUDENT_CHECK_CHANGE,data:StudentCheckList});
+
+
+    }
+
+};
+
+
+
+//删除学生
+const DelStudent = ()=>{
+
+    return (dispatch,getState)=>{
+
+        const { StudentCheckList } = getState().Teacher.ClassCharge;
+
+        const { SchoolID } = getState().DataState.LoginUser;
+
+        if (StudentCheckList.length>0){
+
+            const UserIDs = StudentCheckList.join(',');
+
+            dispatch(AppAlertActions.alertQuery({title:"您确定要删除这些学生吗？",ok:()=>{
+
+                   return ()=>DelStudentOk({UserIDs,SchoolID,dispatch});
+
+                }}));
+
+
+        }else{
+
+            dispatch(AppAlertActions.alertWarn({title:"请先选择学生"}));
+
+        }
+
+    }
+
+};
+
+const DelStudentOk = ({SchoolID,UserIDs,dispatch})=>{
+
+    return ApiActions.DeleteStudent({SchoolID,UserIDs,dispatch}).then(data=>{
+
+        if (data===0){
+
+            dispatch({type:AppAlertActions.CLOSE_ERROR_ALERT});
+
+            dispatch({type:AppAlertActions.alertSuccess({title:"删除成功！"})});
+
+            dispatch(StudentUpdate(0));
+
+        }
+
+    });
+
+};
+
 
 export default {
 
@@ -406,6 +533,12 @@ export default {
 
     TEACHER_CLASS_CHARGE_TEACHER_LOADING_HIDE,
 
+    TEACHER_CLASS_CHARGE_STUDENT_CHECK_CHANGE,
+
+    TEACHER_CLASS_CHARGE_STUDENT_CHECK_ALL_TRUE,
+
+    TEACHER_CLASS_CHARGE_STUDENT_CHECK_ALL_FALSE,
+
     PageInit,
 
     ClassChange,
@@ -418,6 +551,14 @@ export default {
 
     StudentPageChange,
 
-    TeacherUpdate
+    TeacherUpdate,
+
+    StuCheckedChange,
+
+    StudentCheckAll,
+
+    DelStudent,
+
+    StudentUpdate
 
 }

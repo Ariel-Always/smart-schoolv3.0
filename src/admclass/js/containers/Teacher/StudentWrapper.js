@@ -4,9 +4,13 @@ import {connect} from 'react-redux';
 
 import TitleBar from '../../component/TitleBar';
 
-import {Empty, CheckBox, CheckBoxGroup, Button, PagiNation, Loading,Search} from "../../../../common";
+import {Empty,Modal,CheckBox, CheckBoxGroup, Button, PagiNation, Loading,Search} from "../../../../common";
 
 import CCActions from '../../actions/Teacher/ClassChargeActions'
+
+import StudentInfo from './StudentInfoModal';
+
+import SIMActions from '../../actions/Teacher/StudentInfoModalActions';
 
 
 
@@ -65,9 +69,71 @@ class StudentWrapper extends Component{
 
         const { dispatch } = this.props;
 
-        console.log(e);
-
         dispatch(CCActions.StudentPageChange(e));
+
+    }
+
+    //点击某一个学生
+
+    StuCheckedChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch(CCActions.StuCheckedChange(e));
+
+    }
+
+    //学生全选或者取消全选
+
+    StudentCheckAll(CheckAll){
+
+        const { dispatch } = this.props;
+
+        dispatch(CCActions.StudentCheckAll(CheckAll));
+
+    }
+
+    //删除学生
+
+    DelStudent(){
+
+        const { dispatch } = this.props;
+
+        dispatch(CCActions.DelStudent());
+
+    }
+
+    //关闭添加或者编辑学生弹窗
+
+    StudentModalHide(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:SIMActions.TEACHER_STUDENT_INFO_MODAL_ERROR_TIPS_HIDE,data:{type:""}});
+
+        dispatch({type:SIMActions.TEACHER_STUDENT_INFO_MODAL_HIDE});
+
+    }
+
+    //点击确定
+
+    StudentModalOk(e){
+
+        const { dispatch } = this.props;
+
+        dispatch(SIMActions.StudentModalOk());
+
+    }
+
+    //点击弹出编辑学生详情弹窗
+
+    EditorModalShow(UserID){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:SIMActions.TEACHER_STUDENT_INFO_EDITOR_STUDENT_ID_CHANGE,data:UserID});
+
+        dispatch({type:SIMActions.TEACHER_STUDENT_INFO_MODAL_SHOW});
 
     }
 
@@ -76,13 +142,13 @@ class StudentWrapper extends Component{
 
     render(){
 
-        const { ClassCharge } = this.props;
+        const { ClassCharge,StudentInfoModal } = this.props;
 
 
 
         const {
 
-            StuCheckList,allChecked,StudentPower,TeacherPower,
+            StudentCheckList,StudentAllCheck,StudentPower,TeacherPower,
 
             StudentSearchValue,StuCancelSearchBtn,StudentLoading,
 
@@ -108,7 +174,7 @@ class StudentWrapper extends Component{
 
                         <React.Fragment>
 
-                            <CheckBoxGroup className="clearfix" value={StuCheckList} onChange={(e)=>{onCheckChange(e)}}>
+                            <CheckBoxGroup className="clearfix" value={StudentCheckList} onChange={this.StuCheckedChange.bind(this)}>
 
                                 {
                                     List.map((item,key) => {
@@ -152,7 +218,7 @@ class StudentWrapper extends Component{
 
                                                     StudentPower?
 
-                                                        <CheckBox  type="gray" value={JSON.stringify({id:item.UserID,name:item.UserName})}></CheckBox>
+                                                        <CheckBox type="circle" value={item.UserID}></CheckBox>
 
                                                         :''
 
@@ -170,7 +236,7 @@ class StudentWrapper extends Component{
 
                                                                 <div className="line"></div>
 
-                                                                <div className="editor-stu">编辑</div>
+                                                                <div className="editor-stu" onClick={this.EditorModalShow.bind(this,item.UserID)}>编辑</div>
 
                                                             </React.Fragment>
 
@@ -198,9 +264,9 @@ class StudentWrapper extends Component{
 
                                     <div className="person-checkgroup-wrapper">
 
-                                        <CheckBox checked={allChecked} onChange={()=>{this.onChangeAll()}}>全选</CheckBox>
+                                        <CheckBox checked={StudentAllCheck} onChange={this.StudentCheckAll.bind(this,StudentAllCheck)}>全选</CheckBox>
 
-                                        <Button size="small" className="person-adjust-btn" color="red" onClick={e=>adjustBtnClick(e)}>删除</Button>
+                                        <Button size="small" className="person-adjust-btn" color="red" onClick={this.DelStudent.bind(this)}>删除</Button>
 
                                     </div>
 
@@ -223,6 +289,42 @@ class StudentWrapper extends Component{
 
             </Loading>
 
+            <Modal type={1} title={StudentInfoModal.Title}
+
+                   visible={StudentInfoModal.Show}
+
+                   mask={true} width={810}
+
+                   bodyStyle={{height:420}}
+
+                   maskClosable={true}
+
+                   className="student-modal"
+
+                   cancelText = "取消"
+
+                   onCancel={this.StudentModalHide.bind(this)}
+
+                   onOk = {this.StudentModalOk.bind(this)}
+            >
+
+                <Loading spinning={StudentInfoModal.Loading}>
+
+                    {
+
+                        StudentInfoModal.Show?
+
+                            <StudentInfo></StudentInfo>
+
+                            :''
+
+                    }
+
+                </Loading>
+
+
+            </Modal>
+
         </div>
 
     }
@@ -231,11 +333,13 @@ class StudentWrapper extends Component{
 
 const mapStateToProps = (state)=>{
 
-    const{ ClassCharge } = state.Teacher;
+    const{ ClassCharge,StudentInfoModal } = state.Teacher;
 
     return {
 
-        ClassCharge
+        ClassCharge,
+
+        StudentInfoModal
 
     }
 

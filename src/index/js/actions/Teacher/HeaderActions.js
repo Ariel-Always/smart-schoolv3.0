@@ -1,7 +1,7 @@
 import ModulesActions from "./ModuleActions";
 
 import TeacherPageActions from './TeacherPageActions';
-import AppLoadingActions from "../AppLoadingActions";
+
 
 const TEACHER_HEADER_MENU_TOGGLE = 'TEACHER_HEADER_MENU_TOGGLE';
 

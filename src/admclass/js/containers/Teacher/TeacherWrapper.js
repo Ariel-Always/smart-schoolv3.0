@@ -28,9 +28,9 @@ class TeacherWrapper extends Component{
 
 
     //弹出添加教师的弹窗
-    addTeacherModalShow(opt){
+    TeacherModalShow(opt){
 
-        const {dispatch,info} = this.props;
+        const {dispatch,ClassCharge} = this.props;
 
         switch (opt.type) {
 
@@ -61,49 +61,13 @@ class TeacherWrapper extends Component{
 
                 break;
 
-            case 3:
-
-                dispatch({type:TMActions.TEACHER_TEACHER_MODAL_SHOW,options:{
-
-                        originTeacherShow:false,
-
-                        modalTitle:"设置班主任",
-
-                        newTeacherTitle:"班主任",
-
-                        type:3
-
-                    }});
-
-                break;
-
-            case 4:
-
-                dispatch({type:TMActions.TEACHER_TEACHER_MODAL_SHOW,options:{
-
-                        originTeacherShow:true,
-
-                        originTeacherInfo:opt.originTeacherInfo,
-
-                        originTeacherTitle:"原班主任",
-
-                        newTeacherTitle:"新班主任",
-
-                        modalTitle:"更改班主任",
-
-                        type:4
-
-                    }});
-
-                break;
-
             default:
 
                 dispatch({type:TMActions.TEACHER_TEACHER_MODAL_SHOW});
 
         }
         //初始化所有的教师和学科的数据
-        dispatch(TMActions.getAddTeacherData({ClassID:info.id,...opt}));
+        dispatch(TMActions.getTeacherData({ClassID:ClassCharge.ActiveClassID,...opt}));
 
     }
 
@@ -140,9 +104,9 @@ class TeacherWrapper extends Component{
     //教师弹窗点击搜索按钮
     teacherSearchBtnClick(e){
 
-        const {dispatch,UIState} = this.props;
+        const {dispatch,Teacher} = this.props;
 
-        const {inputContent} = UIState.AddTeacherModal;
+        const {inputContent} = Teacher.TeacherModal;
 
         if (inputContent!==''){//输入的列表中不等于空
 
@@ -157,7 +121,7 @@ class TeacherWrapper extends Component{
 
     teacherSearchClose(e){
 
-        const {dispatch,UIState} = this.props;
+        const {dispatch} = this.props;
 
         dispatch({type:TMActions.TEACHER_TEACHER_MODAL_CLOSE_HIDE});
 
@@ -169,17 +133,17 @@ class TeacherWrapper extends Component{
     //点击OK的时候
     teacherModalOk(e){
 
-        const {dispatch,Teacher} =this.props;
+        const {dispatch,Teacher,ClassCharge} =this.props;
 
-        const {AddTeacherModal} = Teacher;
+        const {TeacherModal} = Teacher;
 
         //先判断是否选中一个新的教师
 
-        if (AddTeacherModal.subjectsSelect.value!=='none'){
+        if (TeacherModal.subjectsSelect.value!=='none'){
 
-            if (AddTeacherModal.newPickTeacher.id){
+            if (TeacherModal.newPickTeacher.id){
 
-                dispatch(TMActions.updateTeacher({ClassID:info.id}));
+                dispatch(TMActions.updateTeacher({ClassID:ClassCharge.ActiveClassID}));
 
             }else{
 
@@ -288,7 +252,7 @@ class TeacherWrapper extends Component{
 
                                             <div className="cooperate">
 
-                                                <div className="reset" onClick={() => TeacherModalShow({type:2,originTeacherInfo:{id:item.UserID,name:item.UserName,photo:item.PhotoPath,SubjectID:item.SubjectID,SubjectName:item.SubjectName}})}>更改</div>
+                                                <div className="reset" onClick={() => this.TeacherModalShow({type:2,originTeacherInfo:{id:item.UserID,name:item.UserName,photo:item.PhotoPath,SubjectID:item.SubjectID,SubjectName:item.SubjectName}})}>更改</div>
 
                                                 <div className="line"></div>
 

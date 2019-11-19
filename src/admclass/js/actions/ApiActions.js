@@ -103,7 +103,44 @@ const GetTeacherToPage = async ({SchoolID,SubjectIDs='',Keyword,PageIndex=0,Page
 
 };
 
+//获取资源服务器地址
 
+
+const GetResHttpServerAddr = async ({dispatch}) => {
+
+    let res = await Method.getGetData(`/Global/GetResHttpServerAddr`,2);
+
+    if (res.StatusCode === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
+
+//获取用户详情
+
+const GetUserDetail = async ({UserID,dispatch}) => {
+
+    let res = await Method.getGetData(`/UserMgr/UserInfoMgr/GetUserDetail?UserID=${UserID}`,2);
+
+    if (res.StatusCode === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
 
 
 
@@ -156,8 +193,74 @@ const SetCourseClassTeacher =  async ({ClassID,SubjectID,UserID='',dispatch}) =>
 
 };
 
+//删除学生
+
+const DeleteStudent =  async ({SchoolID,UserIDs,dispatch}) => {
+
+    let res = await Method.getPostData(`/UserMgr/UserInfoMgr/DeleteStudent`,{
+
+        SchoolID,UserIDs,
+
+    },2);
+
+    if (res.StatusCode === 200){
+
+        return res.ErrCode;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
 
 
+};
+
+//新增学生
+
+const AddStudent =  async ({UserID,UserName,Gender,classID,PhotoPath,IDCardNo='',Email='',Telephone='',HomeAdress='',dispatch}) => {
+
+    let res = await Method.getPostData(`/UserMgr/UserInfoMgr/AddStudent`,{
+
+        UserID,UserName,Gender,classID,PhotoPath,IDCardNo,Email,Telephone,HomeAdress
+
+    },2);
+
+    if (res.StatusCode === 200){
+
+        return res.ErrCode;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
+
+//编辑学生
+
+const EditStudent =  async ({UserID,UserName,Gender,classID,PhotoPath,IDCardNo='',Email='',Telephone='',HomeAdress='',dispatch}) => {
+
+    let res = await Method.getPostData(`/UserMgr/UserInfoMgr/EditStudent`,{
+
+        UserID,UserName,Gender,classID,PhotoPath,IDCardNo,Email,Telephone,HomeAdress
+
+    },2);
+
+    if (res.StatusCode === 200){
+
+        return res.ErrCode;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
 
 
 
@@ -177,6 +280,16 @@ export default {
 
     GetTeacherToPage,
 
-    SetCourseClassTeacher
+    SetCourseClassTeacher,
+
+    DeleteStudent,
+
+    GetResHttpServerAddr,
+
+    AddStudent,
+
+    GetUserDetail,
+
+    EditStudent
 
 }

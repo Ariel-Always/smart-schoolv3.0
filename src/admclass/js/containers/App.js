@@ -34,9 +34,9 @@ import logo from "../../images/logo.png";
 
 import TeacherLogo from '../../images/teacher-logo.png';
 
-import AppAlertActions from "../actions/AppAlertActions";
-
 import TMActions from '../actions/Teacher/TeacherModalActions';
+
+import SIMActions from '../actions/Teacher/StudentInfoModalActions';
 
 
 class App extends Component{
@@ -511,6 +511,16 @@ class App extends Component{
 
     }
 
+    //弹出添加学生的弹窗
+
+    AddStudentShow(e){
+
+        const {dispatch} = this.props;
+
+        dispatch({type:SIMActions.TEACHER_STUDENT_INFO_MODAL_SHOW});
+
+    }
+
 
 
 
@@ -597,7 +607,13 @@ class App extends Component{
 
                                     parseInt(DataState.LoginUser.UserType)===1?
 
-                                        <TeacherBtnBanner TeacherModalShow ={this.TeacherTeacherModalShow.bind(this)}>
+                                        <TeacherBtnBanner
+
+                                            TeacherModalShow ={this.TeacherTeacherModalShow.bind(this)}
+
+                                            AddStudentShow={this.AddStudentShow.bind(this)}
+
+                                        >
 
                                         </TeacherBtnBanner>
 

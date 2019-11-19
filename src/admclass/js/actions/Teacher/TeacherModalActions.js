@@ -150,8 +150,6 @@ const  teacherSearchBtnClick = () => {
         //展示loading
         dispatch({type:TEACHER_TEACHER_MODAL_LIST_LOADING_SHOW});
 
-        dispatch({type:TEACHER_TEACHER_MODAL_CLOSE_SHOW});
-
         let { type,subjectsSelect,inputContent } = getState().Teacher.TeacherModal;
 
         let { SchoolID } = getState().DataState.LoginUser;
@@ -174,9 +172,11 @@ const  teacherSearchBtnClick = () => {
 
         }else{
 
+            dispatch({type:TEACHER_TEACHER_MODAL_CLOSE_SHOW});
+
             SubjectID = subjectsSelect.value;
 
-            getAllTeacher({SchoolID,SubjectIDs:SubjectID,UserID,Keyword:inputContent,dispatch}).then(data=>{
+            ApiActions.GetTeacherToPage({SchoolID,SubjectIDs:SubjectID,UserID,Keyword:inputContent,dispatch}).then(data=>{
 
                 if (data){
 
@@ -233,7 +233,7 @@ const teacherSearchClose = () => {
 
         }
 
-        getAllTeacher({SchoolID,SubjectIDs:SubjectID,UserID}).then(data=>{
+        ApiActions.GetTeacherToPage({SchoolID,SubjectIDs:SubjectID,UserID}).then(data=>{
 
             if (data){
 
@@ -294,25 +294,17 @@ const updateTeacher = (classInfo) => {
 
         }
 
-        setTeacher({ClassID,SubjectID,UserID:newTeacherId,dispatch}).then(data=>{
+        ApiActions.SetCourseClassTeacher({ClassID,SubjectID,UserID:newTeacherId,dispatch}).then(data=>{
 
-            if (data==='success'){
+            if (data===0){
 
                 dispatch(AppAlertActions.alertSuccess({title:tips}));
 
+                dispatch({type:TEACHER_TEACHER_MODAL_HIDE});
+
             }
 
-            getTeachers({ClassID,dispatch}).then(data=>{
-
-                if (data){
-
-                    dispatch({type:GET_THE_CLASS_THEACHERS,data:data});
-
-                }
-
-            });
-
-            dispatch({type:TEACHER_TEACHER_MODAL_HIDE});
+            dispatch(CCActions.TeacherUpdate());
 
         });
 

@@ -238,8 +238,13 @@ class Index extends Component {
 
   // 桌面定制-关闭
   TeacherCustomModalCancel = () => {
+
     const { dispatch, Teacher } = this.props;
+
     dispatch({ type: HeaderActions.TEACHER_CUSTOM_MODAL_CLOSE });
+
+
+
   };
 
   // 桌面定制-添加网站

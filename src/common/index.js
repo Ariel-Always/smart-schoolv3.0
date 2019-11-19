@@ -620,7 +620,7 @@ class CheckBox extends React.Component {
 
         return (
             <ConfigProvider locale={zhCN}>
-                <AntCheckBox className={`${className} ${CheckClassName}`} {...reset}>{children}</AntCheckBox>
+                <AntCheckBox className={`${className?className:''} ${CheckClassName}`} {...reset}>{children}</AntCheckBox>
             </ConfigProvider>
         );
     }
