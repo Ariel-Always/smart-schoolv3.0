@@ -20,7 +20,11 @@ const ClassCharge = (state={
 
     },
 
-    StuCheckList:[],
+    StudentsPlainOptions:[],
+
+    StudentAllCheck:false,
+
+    StudentCheckList:[],
 
     StudentPower:false,
 
@@ -70,6 +74,10 @@ const ClassCharge = (state={
 
                 StudentPage:1,
 
+                StudentCheckList:[],
+
+                StudentAllCheck:false,
+
                 ...actions.data
 
             };
@@ -100,7 +108,7 @@ const ClassCharge = (state={
 
         case CCActions.TEACHER_CLASS_CHARGE_STUDENT_LIST_UPDATE:
 
-            return { ...state,Student:actions.data};
+            return { ...state,StudentCheckList:[],StudentAllCheck:false,...actions.data};
 
         case CCActions.TEACHER_CLASS_CHARGE_STUDENT_SEARCH_VALUE_CHANGE:
 
@@ -133,6 +141,18 @@ const ClassCharge = (state={
         case CCActions.TEACHER_CLASS_CHARGE_STUDENT_LOADING_HIDE:
 
             return { ...state,StudentLoading:false };
+
+        case CCActions.TEACHER_CLASS_CHARGE_STUDENT_CHECK_CHANGE:
+
+            return { ...state,StudentCheckList:actions.data };
+
+        case CCActions.TEACHER_CLASS_CHARGE_STUDENT_CHECK_ALL_TRUE:
+
+            return { ...state,StudentAllCheck:true };
+
+        case CCActions.TEACHER_CLASS_CHARGE_STUDENT_CHECK_ALL_FALSE:
+
+            return { ...state,StudentAllCheck:false };
 
         default:
 

@@ -1,14 +1,16 @@
 //灰色的checkbox组件
-$grayColor:#758992;
+$GrayColor:#758992;
+
+$CircleColor:#67a6de;
 
 
 .ant-checkbox-wrapper.ant-checkbox-gray{
   .ant-checkbox{
     vertical-align: middle;
     &:hover{
-      border-color: $grayColor;
+      border-color: $GrayColor;
       .ant-checkbox-inner{
-        border-color:$grayColor;
+        border-color:$GrayColor;
       }
     }
   }
@@ -27,7 +29,7 @@ $grayColor:#758992;
   }
   .ant-checkbox-disabled{
     .ant-checkbox-inner{
-      border-color: $grayColor!important;
+      border-color: $GrayColor!important;
       background-color:#cfcfcf;
       &:after{
         left: 2px;
@@ -41,12 +43,12 @@ $grayColor:#758992;
     }
   }
   .ant-checkbox-input:focus+.ant-checkbox-inner{
-    border-color: $grayColor;
+    border-color: $GrayColor;
   }
   .ant-checkbox-inner{
     width: 12px;
     height: 12px;
-    border-color: $grayColor;
+    border-color: $GrayColor;
     &:after{
       width:8px;
       height: 8px;
@@ -55,7 +57,7 @@ $grayColor:#758992;
       content:'';
       @include transform(rotate(0deg));
       border:0;
-      background-color:$grayColor;
+      background-color:$GrayColor;
     }
   }
 }
@@ -64,9 +66,9 @@ $grayColor:#758992;
   .ant-checkbox{
     vertical-align: middle;
     &:hover{
-      border-color: #67a6de;
+      border-color: $CircleColor;
       .ant-checkbox-inner{
-        border-color:#67a6de;
+        border-color:$CircleColor;
       }
     }
   }
@@ -77,7 +79,7 @@ $grayColor:#758992;
   }
   .ant-checkbox-checked{
     .ant-checkbox-inner{
-      background-color: #ffffff;
+      background-color:$CircleColor;
     }
     &:after{
       border:0;
@@ -85,8 +87,8 @@ $grayColor:#758992;
   }
   .ant-checkbox-disabled{
     .ant-checkbox-inner{
-      border-color: $grayColor!important;
-      background-color:#cfcfcf;
+      border-color: $GrayColor!important;
+      background-color:$CircleColor;
       &:after{
         left: 2px;
         top: 2px;
@@ -99,7 +101,7 @@ $grayColor:#758992;
     }
   }
   .ant-checkbox-input:focus+.ant-checkbox-inner{
-    border-color: $grayColor;
+    border-color: $GrayColor;
   }
   .ant-checkbox-inner{
     width: 20px;
@@ -107,14 +109,10 @@ $grayColor:#758992;
     border-color:#abbfd1;
     @include border-radius(50%);
     &:after{
-      width:8px;
-      height: 8px;
-      left:1px;
-      top:1px;
-      content:'';
-      @include transform(rotate(0deg));
-      border:0;
-      background-color:$grayColor;
+      width: 6px;
+      height: 12px;
+      left:4px;
+      top:8px;
     }
   }
 }

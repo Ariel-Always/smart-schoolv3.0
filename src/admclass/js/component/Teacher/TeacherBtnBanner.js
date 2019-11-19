@@ -17,7 +17,7 @@ class TeacherBtnBanner extends Component{
 
     render(){
 
-        const { ClassCharge,TeacherModalShow } = this.props;
+        const { ClassCharge,TeacherModalShow,AddStudentShow } = this.props;
 
         const { StudentPower,TeacherPower } = ClassCharge;
 
@@ -32,7 +32,7 @@ class TeacherBtnBanner extends Component{
 
                         <Button color="blue" className="import-class">导入学生</Button>
 
-                        <Button color="blue" className="import-class">添加学生</Button>
+                        <Button color="blue" className="import-class" onClick={e=>AddStudentShow(e)}>添加学生</Button>
 
                         <Button color="blue" className="import-teacher">学生注册审核</Button>
 
