@@ -20,6 +20,7 @@ if (process.env.NODE_ENV === 'development'){
         PicProxy:'http://192.168.129.1:30103',
 
         CustomProxy:"http://192.168.129.1:30103",
+        WebsiteProxy:"http://192.168.2.114:8090",
         ScheduleProxy:"http://192.168.129.1:30103",
         Xproxy:'http://192.168.129.1:30103/UserMgr/UserInfoMgr',
         PowerProxy:'http://192.168.129.1:30103/UserMgr/PowerMgr',
@@ -60,6 +61,7 @@ if (process.env.NODE_ENV === 'production'){
         PersonalProxy:"",
         CustomProxy:'',
         PicProxy:'',
+        WebsiteProxy:'',
         ErrorProxy:'',
         MyCourseClassProxy:'',
         XTestProxy:'/UserMgr/UserInfoMgr'

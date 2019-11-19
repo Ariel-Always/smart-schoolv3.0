@@ -207,10 +207,32 @@ function getLg_tk(url) {
     lg_tk = 'lg_tk=' + lg_tk;
     return Url.replace(lg_tk, "")
 }
+// 处理url适合获取icon
+const UrlGetIcon = url => {
+    let urlArr = "";
+    // console.log(url,url instanceof String,typeof url)
+    if (typeof url !== "string") {
+      return;
+    }
+    if (url.indexOf("://") !== "-1") {
+      urlArr = url
+        .split("/")
+        .slice(0, 3)
+        .join("/");
+      // console.log(urlArr)
+      return urlArr;
+    } else {
+      urlArr = url.split("/")[0];
+      // console.log(urlArr)
+  
+      return urlArr;
+    }
+  };
 export default {
     deepCompare,
     getQueryVariable,
     getUrlQueryVariable,
     comparisonObject,
-    getLg_tk
+    getLg_tk,
+    UrlGetIcon
 }

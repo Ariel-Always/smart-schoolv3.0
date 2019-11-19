@@ -1,13 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
-import { CheckBox, CheckBoxGroup, Tips, DropDown } from "../../../../../common";
+import { CheckBox, CheckBoxGroup, Tips, DropDown } from "../../../common";
 import { Input } from "antd";
-import TeacherCustomActions from "../../../actions/Teacher/TeacherCustomActions";
-import { postData, getData } from "../../../../../common/js/fetch";
-import CONFIG from "../../../../../common/js/config";
-import "../../../../scss/AddWebsiteCustom.scss";
+import actions from "../actions";
+import { postData, getData } from "../../../common/js/fetch";
+import CONFIG from "../../../common/js/config";
+import "../../scss/WebsiteCustom.scss";
 
-class AddWebsiteCustom extends React.Component {
+class WebsiteCustom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -17,27 +17,27 @@ class AddWebsiteCustom extends React.Component {
       WebAddressTipsTitle: "网站地址不能为空",
       Subject: {},
       WebType: {},
-      Period: {},
+      Period: [],
       WebTypeList: []
     };
   }
 
   componentWillMount() {
-    const { dispatch, Teacher } = this.props;
-    let WebData = Teacher.WebsiteData;
-    let TeacherCustomData = Teacher.TeacherCustomData;
+    const { dispatch, DataState,UIState } = this.props;
+    let WebData = DataState.WebsiteData;
+    let TypeList = DataState.GetMenuData.TypeList;
+    let PeriodList = DataState.GetMenuData.PeriodList;
+    let SubjectList = DataState.GetMenuData.SubjectList;
+
     this.setState({
       WebName: WebData.WebName,
       WebAddress: WebData.WebAddress,
-      Subject: {
-        SubjectName: WebData.SubjectName,
-        SubjectID: WebData.SubjectID
-      },
-      WebType: WebData.WebType,
-      WebTypeList: TeacherCustomData.WebTypeList
+      Subject: WebData.Subject.value?WebData.Subject:SubjectList.slice(1,2)[0],
+      WebType: WebData.WebType.value? WebData.WebType:TypeList.slice(1,2)[0],
+      WebTypeList: TypeList.slice(1),
+      SubjectList:SubjectList.slice(1)
     });
 
-    let PeriodList = Teacher.TeacherCustomData.PeriodList;
     let newPeriodList = [];
     let Period = [];
     PeriodList instanceof Array &&
@@ -50,6 +50,7 @@ class AddWebsiteCustom extends React.Component {
     if (WebData.PeriodID[0] !==  '0') {
       Period = WebData.PeriodID;
     }
+    console.log(Period)
     this.setState({
       Period: Period,
       PeriodList: newPeriodList
@@ -70,16 +71,16 @@ class AddWebsiteCustom extends React.Component {
     let value = e.target.value;
     if (!Test.test(value)) {
       dispatch(
-        TeacherCustomActions.setCustomTipsVisible({ WebNameTipsVisible: true })
+        actions.UpUIState.AppTipsVisible({ WebNameTipsVisible: true })
       );
     } else {
       dispatch(
-        TeacherCustomActions.setHandleWebsiteData({
+        actions.UpDataState.setWebsiteData({
           WebName: value
         })
       );
       dispatch(
-        TeacherCustomActions.setCustomTipsVisible({ WebNameTipsVisible: false })
+        actions.UpUIState.AppTipsVisible({ WebNameTipsVisible: false })
       );
     }
   };
@@ -103,7 +104,7 @@ class AddWebsiteCustom extends React.Component {
         WebAddressTipsTitle: "网站地址不能为空"
       });
       dispatch(
-        TeacherCustomActions.setCustomTipsVisible({
+        actions.UpUIState.AppTipsVisible({
           WebAddressTipsVisible: true
         })
       );
@@ -112,7 +113,7 @@ class AddWebsiteCustom extends React.Component {
         WebAddressTipsTitle: "网站地址格式错误"
       });
       dispatch(
-        TeacherCustomActions.setCustomTipsVisible({
+        actions.UpUIState.AppTipsVisible({
           WebAddressTipsVisible: true
         })
       );
@@ -121,12 +122,12 @@ class AddWebsiteCustom extends React.Component {
         WebAddressTipsTitle: "网站地址不能为空"
       });
       dispatch(
-        TeacherCustomActions.setHandleWebsiteData({
+        actions.UpDataState.setWebsiteData({
           WebAddress: value
         })
       );
       dispatch(
-        TeacherCustomActions.setCustomTipsVisible({
+        actions.UpUIState.AppTipsVisible({
           WebAddressTipsVisible: false
         })
       );
@@ -141,12 +142,24 @@ class AddWebsiteCustom extends React.Component {
       WebType: e
     });
     dispatch(
-      TeacherCustomActions.setHandleWebsiteData({
+      actions.UpDataState.setWebsiteData({
         WebAddress: e
       })
     );
   };
-
+ // 学科选择
+ onDropMenuSubjectChange = e => {
+  const { dispatch } = this.props;
+  console.log(e);
+  this.setState({
+    Subject: e
+  });
+  dispatch(
+    actions.UpDataState.setWebsiteData({
+      Subject: e
+    })
+  );
+};
   // 选择学段
   changeCheckBox = Period => {
     const { dispatch } = this.props;
@@ -157,20 +170,20 @@ class AddWebsiteCustom extends React.Component {
       Period: Period
     });
     dispatch(
-      TeacherCustomActions.setHandleWebsiteData({
+      actions.UpDataState.setWebsiteData({
         PeriodID: Period
       })
     );
   };
   render() {
-    const { LoginUser, Teacher, AppLoading } = this.props;
+    const { LoginUser, DataState,UIState } = this.props;
     return (
-      <div className="AddWebsiteCustom" id="AddWebsiteCustom">
+      <div className="WebsiteCustom" id="WebsiteCustom">
         <div className="row clearfix">
           <span className="left">网站名称:</span>
           <Tips
             overlayClassName="tips"
-            visible={Teacher.TeacherTipsVisible.WebNameTipsVisible}
+            visible={UIState.AppTipsVisible.WebNameTipsVisible}
             title={this.state.WebNameTipsTitle}
           >
             <Input
@@ -187,7 +200,7 @@ class AddWebsiteCustom extends React.Component {
           <span className="left">网站地址:</span>
           <Tips
             overlayClassName="tips"
-            visible={Teacher.TeacherTipsVisible.WebAddressTipsVisible}
+            visible={UIState.AppTipsVisible.WebAddressTipsVisible}
             title={this.state.WebAddressTipsTitle}
           >
             <Input
@@ -202,9 +215,16 @@ class AddWebsiteCustom extends React.Component {
         </div>
         <div className="row clearfix">
           <span className="left">适用学科:</span>
-          <span className="right subject">
-            {this.state.Subject.SubjectName}
-          </span>
+          <DropDown
+            ref="WebNameDropMenu"
+            className="right Subject"
+            style={{ zIndex: 2 }}
+            onChange={this.onDropMenuSubjectChange.bind(this)}
+            width={110}
+            height={240}
+            dropSelectd={this.state.Subject}
+            dropList={this.state.SubjectList}
+          ></DropDown>
         </div>
         <div className="row clearfix">
           <span className="left">网站分类:</span>
@@ -249,14 +269,10 @@ class AddWebsiteCustom extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { LoginUser, Teacher, AppLoading } = state;
-
+  let { UIState, DataState } = state;
   return {
-    LoginUser,
-
-    Teacher,
-
-    AppLoading
+    UIState,
+    DataState
   };
 };
-export default connect(mapStateToProps)(AddWebsiteCustom);
+export default connect(mapStateToProps)(WebsiteCustom);
