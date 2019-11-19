@@ -77,9 +77,9 @@ const PageInit = () =>{
 
                 const ActiveClassID = data.Class[0].ClassID;
 
-                let StudentPower = true;
+                let StudentPower = false;
 
-                let TeacherPower = true;
+                let TeacherPower = false;
 
                 data.Power.map((item,key)=>{
 
@@ -87,7 +87,7 @@ const PageInit = () =>{
 
                         if (item.Status===1){
 
-                            StuPower = true;
+                            StudentPower = true;
 
                         }
 
