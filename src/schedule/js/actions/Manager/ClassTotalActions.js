@@ -135,7 +135,7 @@ const ClassTotalPageUpdate = (opt) =>{
 
         let NextPageIndex = 1;
         //判断已选中的学科是否为全部学科
-        if (GradeDropSelectd.value!==0){
+        if (GradeDropSelectd.value!=='none'){
 
             GradeID = GradeDropSelectd.value;
 

@@ -34,9 +34,9 @@ class App extends Component{
 
         dispatch({type:MSActions.MODULE_SETTINGS_UPDATE,data:{
 
-                moduleCnName:"调课记录",
+                moduleCnName:"调课日志",
 
-                moduleEnName:"Transfer Record",
+                moduleEnName:"Transfer Log",
 
                 logo:logo,
 
