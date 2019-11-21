@@ -63,7 +63,7 @@ async function QueryPower({ UserInfo, ModuleID }) {
     if (data) {
       return true;
     } else {
-        // window.location.href = config.ErrorProxy + "/Error.aspx?errcode=E011";
+        window.location.href = config.ErrorProxy + "/Error.aspx?errcode=E011";
 
       return false;
     }
@@ -87,8 +87,8 @@ async function QueryAdminPower({ ModuleID, isSkip = true }) {
       HavePower = true;
     } else {
       if (isSkip) {
-        // window.location.href =
-        //   config.ErrorProxy + "/Error.aspx?errcode=E011";
+        window.location.href =
+          config.ErrorProxy + "/Error.aspx?errcode=E011";
         // alert('我没权限')
         HavePower = false;
       } else {

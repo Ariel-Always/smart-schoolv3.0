@@ -194,7 +194,7 @@ class App extends Component {
     }
     let havePower = QueryPower({
       UserInfo: userMsg,
-      ModuleID: PROFILE_MODULEID
+      ModuleID: ACCOUNT_MODULEID
     });
     havePower.then(res => {
       if (res) {
