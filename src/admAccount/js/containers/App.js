@@ -30,7 +30,10 @@ import "../../scss/index.scss";
 import $ from "jquery";
 import { getData } from "../../../common/js/fetch";
 import actions from "../actions";
+import { QueryPower, QueryAdminPower } from "../../../common/js/power";
+
 //import { urlAll, proxy } from './config'
+const ACCOUNT_MODULEID = "000-2-0-10"; //用户账号管理模块ID
 
 class App extends Component {
   constructor(props) {
@@ -105,7 +108,7 @@ class App extends Component {
 
   componentWillMount() {
     //this.handleMenu()
-    const { dispatch } = this.props;
+    const { dispatch, DataState } = this.props;
 
     let route = history.location.pathname;
     // 获取接口数据
@@ -163,68 +166,91 @@ class App extends Component {
     const { dispatch, DataState } = this.props;
     let pathArr = route.split("/");
     let handleRoute = pathArr[1];
-    // console.log(
-    //     DataState.LoginUser,
-    //     JSON.parse(sessionStorage.getItem("UserInfo"))
-    //   );
+
     if (
       !DataState.LoginUser.SchoolID &&
       !JSON.parse(sessionStorage.getItem("UserInfo"))
     ) {
       return;
     }
-    // console.log(
-    //   DataState.LoginUser,
-    //   JSON.parse(sessionStorage.getItem("UserInfo"))
-    // );
+
     let userMsg = DataState.LoginUser.SchoolID
       ? DataState.LoginUser
       : JSON.parse(sessionStorage.getItem("UserInfo"));
-    if (route === "/") {
-      //dispatch(actions.UpDataState.getAllUserPreview('/ArchivesAll'));
-      dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-    } else if (handleRoute === "Student") {
-      //dispatch(actions.UpDataState.getAllUserPreview('/Archives' + handleRoute));
-      dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-      if (!this.props.DataState.GradeClassMsg.returnData.grades)
-        dispatch(actions.UpDataState.getGradeClassMsg("/GetGradeClassTree"));
-      dispatch(
-        actions.UpDataState.getGradeStudentPreview(
-          "/GetStudentToPage?SchoolID=" +
-            userMsg.SchoolID +
-            "&PageIndex=0&PageSize=10"
-        )
-      );
-    } else if (handleRoute === "Teacher") {
-      dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-      if (!this.props.DataState.SubjectTeacherMsg.returnData)
-        dispatch(actions.UpDataState.getSubjectTeacherMsg("/GetSubject"));
-      dispatch(
-        actions.UpDataState.getSubjectTeacherPreview(
-          "/GetTeacherToPage?SchoolID=" +
-            userMsg.SchoolID +
-            "&PageIndex=0&PageSize=10"
-        )
-      );
-    } else if (handleRoute === "Leader") {
-      dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-      dispatch(
-        actions.UpDataState.getSchoolLeaderPreview(
-          "/GetSchoolLeader?SchoolID=" + userMsg.SchoolID
-        )
-      );
-    } else if (handleRoute === "Admin") {
-      dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-      dispatch(
-        actions.UpDataState.getAdminPreview(
-          "/GetAdminToPage?SchoolID=" +
-            userMsg.SchoolID +
-            "&PageIndex=0&PageSize=10"
-        )
-      );
-    } else {
-      history.push("/");
+      let AdminPower = true;
+
+    if (userMsg.UserType === "0" && userMsg.UserClass === "1") {
+      let Menu = this.state.MenuParams;
+      let children = Menu.children;
+      if(children[children.length-1].key==='Admin'){
+        children.pop();
+
+      }
+      Menu.children = children;
+      this.setState({
+        MenuParams: Menu
+      });
+      AdminPower = false;
     }
+    let havePower = QueryPower({
+      UserInfo: userMsg,
+      ModuleID: PROFILE_MODULEID
+    });
+    havePower.then(res => {
+      if (res) {
+        if (route === "/") {
+          //dispatch(actions.UpDataState.getAllUserPreview('/ArchivesAll'));
+          dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+        } else if (handleRoute === "Student") {
+          //dispatch(actions.UpDataState.getAllUserPreview('/Archives' + handleRoute));
+          dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+          if (!this.props.DataState.GradeClassMsg.returnData.grades)
+            dispatch(
+              actions.UpDataState.getGradeClassMsg("/GetGradeClassTree")
+            );
+          dispatch(
+            actions.UpDataState.getGradeStudentPreview(
+              "/GetStudentToPage?SchoolID=" +
+                userMsg.SchoolID +
+                "&PageIndex=0&PageSize=10"
+            )
+          );
+        } else if (handleRoute === "Teacher") {
+          dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+          if (!this.props.DataState.SubjectTeacherMsg.returnData)
+            dispatch(actions.UpDataState.getSubjectTeacherMsg("/GetSubject"));
+          dispatch(
+            actions.UpDataState.getSubjectTeacherPreview(
+              "/GetTeacherToPage?SchoolID=" +
+                userMsg.SchoolID +
+                "&PageIndex=0&PageSize=10"
+            )
+          );
+        } else if (handleRoute === "Leader") {
+          dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+          dispatch(
+            actions.UpDataState.getSchoolLeaderPreview(
+              "/GetSchoolLeader?SchoolID=" + userMsg.SchoolID
+            )
+          );
+        } else if (handleRoute === "Admin") {
+          if(!AdminPower){
+            history.push("/");
+            return;
+          }
+          dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+          dispatch(
+            actions.UpDataState.getAdminPreview(
+              "/GetAdminToPage?SchoolID=" +
+                userMsg.SchoolID +
+                "&PageIndex=0&PageSize=10"
+            )
+          );
+        } else {
+          history.push("/");
+        }
+      }
+    });
   };
   //操作左侧菜单，响应路由变化
   handleMenu = () => {
@@ -338,7 +364,7 @@ class App extends Component {
     );
   }
 }
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   let { UIState, DataState } = state;
   return {
     UIState,

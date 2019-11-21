@@ -41,6 +41,8 @@ import { postData, getData } from "../../../common/js/fetch";
 
 import actions from "../actions";
 //import { urlAll, proxy } from './config'
+import { QueryPower, QueryAdminPower } from "../../../common/js/power";
+const COURECLASS_MODULEID = "000-2-0-17"; //教学班管理
 
 class App extends Component {
   constructor(props) {
@@ -82,15 +84,7 @@ class App extends Component {
           JSON.parse(sessionStorage.getItem("UserInfo"))
         )
       );
-      if(JSON.parse(sessionStorage.getItem("UserInfo")).UserType==='0')
-
-      dispatch(
-        actions.UpDataState.getCoureClassAllMsg(
-          "/GetCouseclassSumarry?schoolID=" +
-            JSON.parse(sessionStorage.getItem("UserInfo")).SchoolID,
-          this.MenuClcik
-        )
-      );
+      
 
       this.requestData(route);
     } else {
@@ -102,14 +96,7 @@ class App extends Component {
               JSON.parse(sessionStorage.getItem("UserInfo"))
             )
           );
-          if(JSON.parse(sessionStorage.getItem("UserInfo")).UserType==='0')
-          dispatch(
-            actions.UpDataState.getCoureClassAllMsg(
-              "/GetCouseclassSumarry?schoolID=" +
-                JSON.parse(sessionStorage.getItem("UserInfo")).SchoolID,
-              this.MenuClcik
-            )
-          );
+          
 
           that.requestData(route);
 
@@ -161,161 +148,179 @@ class App extends Component {
     let UserMsg = DataState.LoginUser.SchoolID
       ? DataState.LoginUser
       : JSON.parse(sessionStorage.getItem("UserInfo"));
-    let SubjectID = DataState.GetCoureClassAllMsg.Subject;
-    let GradeID = DataState.GetCoureClassAllMsg.Grade;
 
-    let pathArr = route.split("/");
-    let handleRoute = pathArr[1];
-    let routeID = pathArr[2];
-    let subjectID = pathArr[3];
-    let classID = pathArr[4];
-    console.log(UserMsg)
-    // console.log(route, routeID, subjectID)
-    dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-    if (route === "/") {
-      if(UserMsg.UserType==='1'){
-        history.push("/Teacher");
-        return;
-      }else if(UserMsg.UserType==='0'){
-        history.push("/All");
-      }else{
-        console.log('用户没有权限访问')
-        return;
-      }
-      // this.setState({
-      //   showBarner: true,
-      //   showLeftMenu: true
-      // });
-      // dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-      // if (!DataState.GetCoureClassAllMsg.MenuParams) return;
-      // dispatch(actions.UpDataState.setCoureClassAllMsg("all"));
-      // dispatch(
-      //   actions.UpDataState.getCoureClassAllMsg(
-      //     "/GetCouseclassSumarry?schoolID=" + UserMsg.SchoolID,
-      //     this.MenuClcik
-      //   )
-      // );
-    } else if (UserMsg.UserType==='0' && handleRoute === "All") {
-      dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-      if (!DataState.GetCoureClassAllMsg.MenuParams) return;
-      dispatch(actions.UpDataState.setCoureClassAllMsg("all"));
-      dispatch(
-        actions.UpDataState.getCoureClassAllMsg(
-          "/GetCouseclassSumarry?schoolID=" + UserMsg.SchoolID,
-          this.MenuClcik
-        )
-      );
-      this.setState({
-        showBarner: true,
-        showLeftMenu: true
+      let havePower = QueryPower({
+        UserInfo: UserMsg,
+        ModuleID: COURECLASS_MODULEID
       });
-    } else if (UserMsg.UserType==='0' && handleRoute === "Subject" && subjectID === "all") {
-      dispatch({ type: actions.UpUIState.RIGHT_LOADING_OPEN });
-      //if (DataState.getSubjectAllMsg[routeID] === undefined)
-      dispatch(
-        actions.UpDataState.getSubjectAllMsg(
-          "/GetSubjectCouseclassSumarry?subjectID=" + routeID,
-          routeID
-        )
-      );
-      if (!DataState.GetCoureClassAllMsg.MenuParams) return;
-      dispatch(actions.UpDataState.setCoureClassAllMsg(routeID));
-      this.setState({
-        showBarner: true,
-        showLeftMenu: true
-      });
-    } else if (UserMsg.UserType==='0'&&handleRoute === "Subject" && subjectID === "Class") {
-        // console.log('/')
-        this.setState({
-          showBarner: true,
-          showLeftMenu: true
-        });
-      dispatch(
-        actions.UpDataState.getSubjectAllMsg(
-          "/GetSubjectCouseclassSumarry?subjectID=" + routeID,
-          routeID
-        )
-      );
-      dispatch(
-        actions.UpDataState.getClassAllMsg(
-          "/GetGradeCouseclassDetailForPage?schoolID=" +
-            UserMsg.SchoolID +
-            "&key=&pageIndex=1&pageSize=10&subjectID=" +
-            routeID +
-            "&gradeID=" +
-            classID,
-          routeID,
-          classID
-        )
-      );
-
-      if (!DataState.GetCoureClassAllMsg.MenuParams) return;
-      dispatch(actions.UpDataState.setCoureClassAllMsg(classID, routeID));
-    } else if (UserMsg.UserType==='0'&&handleRoute === "Search") {
-      // if (!DataState.GetCoureClassAllMsg.MenuParams)
-      //     return;
-      this.setState({
-      showBarner: true,
-      showLeftMenu: true
-    });
-      dispatch(
-        actions.UpDataState.getClassAllMsg(
-          "/GetGradeCouseclassDetailForPage?schoolID=" +
-            UserMsg.SchoolID +
-            "&key=" +
-            routeID +
-            "&pageIndex=1&pageSize=10&subjectID=" +
-            SubjectID +
-            "&gradeID=" +
-            GradeID
-        )
-      );
-    } else if (UserMsg.UserType==='0'&&handleRoute === "Log") {
-      // if (!DataState.GetCoureClassAllMsg.MenuParams)
-      //     return;
-      //dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss'));
-      this.setState({
-        showBarner: false,
-        showLeftMenu: false
-      });
-    } else if (UserMsg.UserType==='1'&&handleRoute === "Teacher") {
-
-      dispatch(
-        actions.UpDataState.getTeacherCourseClassMsg(
-          "/GetCourseClassByUserID?schoolID=" +
-            UserMsg.SchoolID +
-            "&teacherID=" +
-            UserMsg.UserID
-        )
-      );
-      dispatch(
-        actions.UpDataState.getSubjectAndGradeInfoForTeacher(
-          "/GetSubjectAndGradeInfoForTeacher?schoolID=" +
-            UserMsg.SchoolID +
-            "&userID=" +
-            UserMsg.UserID
-        )
-      );
-
-      this.setState({
-        showBarner: true,
-        showLeftMenu: false
-      });
-    } else if (handleRoute === "ImportFile") {
-      this.setState({
-        showBarner: false,
-        showLeftMenu: false
-      });
-    } else {
-      if(UserMsg.UserType==='1'){
-        history.push("/Teacher");
-      }else if(UserMsg.UserType==='0'){
-        history.push("/All");
-      }else{
-        console.log('用户没有权限访问')
-        return;
-      }
-    }
+      havePower.then(res => {
+        console.log(res)
+        if (res) {
+          let SubjectID = DataState.GetCoureClassAllMsg.Subject;
+          let GradeID = DataState.GetCoureClassAllMsg.Grade;
+      
+          let pathArr = route.split("/");
+          let handleRoute = pathArr[1];
+          let routeID = pathArr[2];
+          let subjectID = pathArr[3];
+          let classID = pathArr[4];
+          // console.log(UserMsg)
+          if(UserMsg.UserType==='0'||UserMsg.UserType==='7')
+          dispatch(
+            actions.UpDataState.getCoureClassAllMsg(
+              "/GetCouseclassSumarry?schoolID=" +
+              UserMsg.SchoolID,
+              this.MenuClcik
+            )
+          );
+          // console.log(route, routeID, subjectID)
+          dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+          if (route === "/") {
+            if(UserMsg.UserType==='1'){
+              history.push("/Teacher");
+              return;
+            }else if(UserMsg.UserType==='0'||UserMsg.UserType==='7'){
+              history.push("/All");
+            }else{
+              console.log('用户没有权限访问')
+              return;
+            }
+            // this.setState({
+            //   showBarner: true,
+            //   showLeftMenu: true
+            // });
+            // dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+            // if (!DataState.GetCoureClassAllMsg.MenuParams) return;
+            // dispatch(actions.UpDataState.setCoureClassAllMsg("all"));
+            // dispatch(
+            //   actions.UpDataState.getCoureClassAllMsg(
+            //     "/GetCouseclassSumarry?schoolID=" + UserMsg.SchoolID,
+            //     this.MenuClcik
+            //   )
+            // );
+          } else if ((UserMsg.UserType==='0'||UserMsg.UserType==='7') && handleRoute === "All") {
+            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+            if (!DataState.GetCoureClassAllMsg.MenuParams) return;
+            dispatch(actions.UpDataState.setCoureClassAllMsg("all"));
+            dispatch(
+              actions.UpDataState.getCoureClassAllMsg(
+                "/GetCouseclassSumarry?schoolID=" + UserMsg.SchoolID,
+                this.MenuClcik
+              )
+            );
+            this.setState({
+              showBarner: true,
+              showLeftMenu: true
+            });
+          } else if ((UserMsg.UserType==='0'||UserMsg.UserType==='7') && handleRoute === "Subject" && subjectID === "all") {
+            dispatch({ type: actions.UpUIState.RIGHT_LOADING_OPEN });
+            //if (DataState.getSubjectAllMsg[routeID] === undefined)
+            dispatch(
+              actions.UpDataState.getSubjectAllMsg(
+                "/GetSubjectCouseclassSumarry?subjectID=" + routeID,
+                routeID
+              )
+            );
+            if (!DataState.GetCoureClassAllMsg.MenuParams) return;
+            dispatch(actions.UpDataState.setCoureClassAllMsg(routeID));
+            this.setState({
+              showBarner: true,
+              showLeftMenu: true
+            });
+          } else if ((UserMsg.UserType==='0'||UserMsg.UserType==='7')&&handleRoute === "Subject" && subjectID === "Class") {
+              // console.log('/')
+              this.setState({
+                showBarner: true,
+                showLeftMenu: true
+              });
+            dispatch(
+              actions.UpDataState.getSubjectAllMsg(
+                "/GetSubjectCouseclassSumarry?subjectID=" + routeID,
+                routeID
+              )
+            );
+            dispatch(
+              actions.UpDataState.getClassAllMsg(
+                "/GetGradeCouseclassDetailForPage?schoolID=" +
+                  UserMsg.SchoolID +
+                  "&key=&pageIndex=1&pageSize=10&subjectID=" +
+                  routeID +
+                  "&gradeID=" +
+                  classID,
+                routeID,
+                classID
+              )
+            );
+      
+            if (!DataState.GetCoureClassAllMsg.MenuParams) return;
+            dispatch(actions.UpDataState.setCoureClassAllMsg(classID, routeID));
+          } else if ((UserMsg.UserType==='0'||UserMsg.UserType==='7')&&handleRoute === "Search") {
+            // if (!DataState.GetCoureClassAllMsg.MenuParams)
+            //     return;
+            this.setState({
+            showBarner: true,
+            showLeftMenu: true
+          });
+            dispatch(
+              actions.UpDataState.getClassAllMsg(
+                "/GetGradeCouseclassDetailForPage?schoolID=" +
+                  UserMsg.SchoolID +
+                  "&key=" +
+                  routeID +
+                  "&pageIndex=1&pageSize=10&subjectID=" +
+                  SubjectID +
+                  "&gradeID=" +
+                  GradeID
+              )
+            );
+          } else if ((UserMsg.UserType==='0'||UserMsg.UserType==='7')&&handleRoute === "Log") {
+            // if (!DataState.GetCoureClassAllMsg.MenuParams)
+            //     return;
+            //dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss'));
+            this.setState({
+              showBarner: false,
+              showLeftMenu: false
+            });
+          } else if (UserMsg.UserType==='1'&&handleRoute === "Teacher") {
+      
+            dispatch(
+              actions.UpDataState.getTeacherCourseClassMsg(
+                "/GetCourseClassByUserID?schoolID=" +
+                  UserMsg.SchoolID +
+                  "&teacherID=" +
+                  UserMsg.UserID
+              )
+            );
+            dispatch(
+              actions.UpDataState.getSubjectAndGradeInfoForTeacher(
+                "/GetSubjectAndGradeInfoForTeacher?schoolID=" +
+                  UserMsg.SchoolID +
+                  "&userID=" +
+                  UserMsg.UserID
+              )
+            );
+      
+            this.setState({
+              showBarner: true,
+              showLeftMenu: false
+            });
+          } else if (handleRoute === "ImportFile") {
+            this.setState({
+              showBarner: false,
+              showLeftMenu: false
+            });
+          } else {
+            if(UserMsg.UserType==='1'){
+              history.push("/Teacher");
+            }else if(UserMsg.UserType==='0'||UserMsg.UserType==='7'){
+              history.push("/All");
+            }else{
+              console.log('用户没有权限访问')
+              return;
+            }
+          }
+        }})
+    
   };
 
   MenuClcik = (id, type, sub = null) => {

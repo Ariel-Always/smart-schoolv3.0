@@ -479,6 +479,8 @@ const getLogRecordPreview = url => {
             pageSize: pageSize
           });
           dispatch(actions.UpUIState.TableLoadingClose());
+          dispatch(actions.UpUIState.RightLoadingClose());
+
         }
       });
   };

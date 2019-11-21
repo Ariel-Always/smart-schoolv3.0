@@ -17,7 +17,8 @@ import $ from 'jquery'
 import { getData } from '../../../common/js/fetch'
 import actions from '../actions';
 //import { urlAll, proxy } from './config'
-
+import { QueryPower, QueryAdminPower } from "../../../common/js/power";
+const SUBJECT_MODULEID = "000-2-0-18"; //学科管理
 
 class App extends Component {
     constructor(props) {
@@ -97,23 +98,30 @@ class App extends Component {
         }
         let UserMsg = DataState.LoginUser.SchoolID?DataState.LoginUser:JSON.parse(sessionStorage.getItem('UserInfo'))
         // console.log(DataState.LoginUser.SchoolID,UserMsg)
-
-        let pathArr = route.split('/');
-        let handleRoute = pathArr[1];
-        // console.log(route)
-        if (route === '/') {
-            //dispatch(actions.UpDataState.getAllUserPreview('/ArchivesAll'));
-            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-            if (!this.props.DataState.PeriodMsd)
-                dispatch(actions.UpDataState.getPeriodMsg('/GetPeriodBySchoolID?schoolID=' + UserMsg.SchoolID));
-            dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + UserMsg.SchoolID + '&periodID=&pageSize=8&pageIndex=1'));
-            if (!this.props.DataState.SubjectMsg.addSubjectMsg)
-                dispatch(actions.UpDataState.getSubjectModalMsg('/GetSubjectInfoForAddBySchool?schoolID=' + UserMsg.SchoolID));
-
-        } else {
-            history.push('/')
-        }
-
+        let havePower = QueryPower({
+            UserInfo: UserMsg,
+            ModuleID: SUBJECT_MODULEID
+          });
+          havePower.then(res => {
+            if (res) {
+                let pathArr = route.split('/');
+                let handleRoute = pathArr[1];
+                // console.log(route)
+                if (route === '/') {
+                    //dispatch(actions.UpDataState.getAllUserPreview('/ArchivesAll'));
+                    dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+                    if (!this.props.DataState.PeriodMsd)
+                        dispatch(actions.UpDataState.getPeriodMsg('/GetPeriodBySchoolID?schoolID=' + UserMsg.SchoolID));
+                    dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + UserMsg.SchoolID + '&periodID=&pageSize=8&pageIndex=1'));
+                    if (!this.props.DataState.SubjectMsg.addSubjectMsg)
+                        dispatch(actions.UpDataState.getSubjectModalMsg('/GetSubjectInfoForAddBySchool?schoolID=' + UserMsg.SchoolID));
+        
+                } else {
+                    history.push('/')
+                }
+        
+            }})
+        
 
     }
 
