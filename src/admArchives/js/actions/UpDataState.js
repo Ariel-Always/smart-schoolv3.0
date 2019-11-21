@@ -69,6 +69,8 @@ const GET_USER_MSG = "GET_USER_MSG";
 const GET_PIC_URL = "GET_PIC_URL";
 // 获取图片对象
 const GET_PIC_OBJECT = "GET_PIC_OBJECT";
+// 获取班主任所带的行政班
+const GET_TEACHER_CLASS_DATA = "GET_TEACHER_CLASS_DATA";
 
 // 获取变更记录
 const GET_USER_LOG = "GET_USER_LOG";
@@ -305,6 +307,8 @@ const getDidSignUpLog = url => {
         if (json.StatusCode === 200) {
           dispatch({ type: GET_DID_SIGN_UP_LOG_MSG, data: json.Data });
           dispatch(actions.UpUIState.TableLoadingClose());
+          dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+
         }
       });
   };
@@ -322,6 +326,8 @@ const getWillSignUpLog = url => {
         if (json.StatusCode === 200) {
           dispatch({ type: GET_WILL_SIGN_UP_LOG_MSG, data: json.Data });
           dispatch(actions.UpUIState.TableLoadingClose());
+          dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+
         }
       });
   };
@@ -530,6 +536,36 @@ const getUserLog = (url, type = "student") => {
       });
   };
 };
+
+//获取班主任所带的行政班
+const getTeacherClassMsg = (url,route='0') => {
+  return (dispatch,getState) => {
+    dispatch({ type: actions.UpUIState.APP_LOADING_OPEN });
+
+    getData(CONFIG.AdmClassProxy + url, 2)
+      .then(res => {
+        return res.json();
+      })
+      .then(json => {
+        if (json.StatusCode === 200) {
+          dispatch({ type: GET_TEACHER_CLASS_DATA, data: json.Data });
+          let {DataState} = getState();
+          if(DataState.GradeClassMsg.TeacherClass instanceof Array || DataState.GradeClassMsg.TeacherClass[0]){
+            dispatch(
+              getDidSignUpLog(
+                "/GetSignUpLogToPage?SchoolID=" +
+                DataState.LoginUser.SchoolID +
+                  "&PageIndex=0&PageSize=10&status="+route+"&classID=" +
+                  DataState.GradeClassMsg.TeacherClass[0].value
+              )
+            );
+            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+
+          }
+        }
+      });
+  };
+};
 export default {
   getLoginUser,
   getAllUserPreview,
@@ -600,5 +636,7 @@ export default {
   getPicObject,
   GET_PIC_OBJECT,
   GET_USER_LOG,
-  getUserLog
+  getUserLog,
+  GET_TEACHER_CLASS_DATA,
+  getTeacherClassMsg
 };

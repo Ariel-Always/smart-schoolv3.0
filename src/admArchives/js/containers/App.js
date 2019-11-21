@@ -148,6 +148,7 @@ class App extends Component {
       : JSON.parse(sessionStorage.getItem("UserInfo"));
       let havePower = QueryPower({ UserInfo: userMsg, ModuleID: PROFILE_MODULEID })
       havePower.then(res=> {
+        // console.log(res)
         if (res) {
           let AdminPower = true;
           if (userMsg.UserType === "7" && userMsg.UserClass === "2") {
@@ -157,7 +158,7 @@ class App extends Component {
           let handleRoute = pathArr[2];
           let ID = pathArr[3];
           // console.log('ddd')
-          if (route === "/" || route.split("/")[1] === "UserArchives") {
+          if ((userMsg.UserType === "0"||userMsg.UserType === "7") &&( route === "/" || route.split("/")[1] === "UserArchives")) {
             // dispatch(actions.UpDataState.getAllUserPreview('/GetSummary'));
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
             if (handleRoute) {
@@ -290,7 +291,7 @@ class App extends Component {
             } else {
               history.push("/UserArchives/All");
             }
-          } else if (route.split("/")[1] === "RegisterExamine") {
+          } else if (((userMsg.UserType === "1"&&userMsg.UserClass[2]==='1')||userMsg.UserType === "0"||userMsg.UserType === "7") &&route.split("/")[1] === "RegisterExamine") {
             //dispatch(actions.UpDataState.getAllUserPreview('/RegisterExamine'));
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
             if (!this.props.DataState.GradeClassMsg.returnData)
@@ -306,7 +307,7 @@ class App extends Component {
             ) {
               history.push("/RegisterExamine/RegisterWillExamine");
             }
-          } else if (route.split("/")[1] === "ImportFile") {
+          } else if ((userMsg.UserType === "0"||userMsg.UserType === "7") &&route.split("/")[1] === "ImportFile") {
             //dispatch(actions.UpDataState.getAllUserPreview('/RegisterExamine'));
             if (
               route.split("/")[2] !== "Student" &&
@@ -317,7 +318,16 @@ class App extends Component {
             }
             dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
           } else {
-            history.push("/UserArchives/All");
+            if((userMsg.UserType === "0"||userMsg.UserType === "7") ){
+              history.push("/UserArchives/All");
+
+            }else if(userMsg.UserType === "1"&&userMsg.UserClass[2]==='1'){
+              history.push("/RegisterExamine/RegisterWillExamine");
+
+            }else{
+                 window.location.href = config.ErrorProxy + "/Error.aspx?errcode=E011";
+              
+            }
           }
         }
       })

@@ -68,17 +68,18 @@ async function QueryPower({ UserInfo, ModuleID }) {
       return false;
     }
   } else if (UserType === "1") {
-    //教务主任
+    //教师
     let data = await QueryOtherPower({ SchoolID, ModuleID,UserType:'1' });
+    console.log(data)
     if (data) {
       return true;
     } else {
-      window.location.href = config.ErrorProxy + "/Error.aspx?errcode=E011";
+      // window.location.href = config.ErrorProxy + "/Error.aspx?errcode=E011";
 
       return false;
     }
   } else {
-    window.location.href = config.ErrorProxy + "/Error.aspx?errcode=E011";
+    // window.location.href = config.ErrorProxy + "/Error.aspx?errcode=E011";
     return false;
   }
 }
