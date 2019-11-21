@@ -282,7 +282,10 @@ class App extends Component {
               showLeftMenu: false
             });
           } else if (UserMsg.UserType==='1'&&handleRoute === "Teacher") {
-      
+            this.setState({
+              showBarner: true,
+              showLeftMenu: false
+            });
             dispatch(
               actions.UpDataState.getTeacherCourseClassMsg(
                 "/GetCourseClassByUserID?schoolID=" +
@@ -300,10 +303,7 @@ class App extends Component {
               )
             );
       
-            this.setState({
-              showBarner: true,
-              showLeftMenu: false
-            });
+            
           } else if (handleRoute === "ImportFile") {
             this.setState({
               showBarner: false,
