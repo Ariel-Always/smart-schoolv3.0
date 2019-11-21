@@ -100,7 +100,7 @@ function postData(
 // 处理statusCode
 function handleStatusCode(json, element = true) {
   let title = "";
-  return
+  // return
   if(!json){
     title = "服务器出现未知异常，请重试或联系管理员";
     ReactDOM.render(

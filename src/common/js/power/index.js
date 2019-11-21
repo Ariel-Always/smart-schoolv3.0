@@ -74,12 +74,12 @@ async function QueryPower({ UserInfo, ModuleID }) {
     if (data) {
       return true;
     } else {
-      // window.location.href = config.ErrorProxy + "/Error.aspx?errcode=E011";
+      window.location.href = config.ErrorProxy + "/Error.aspx?errcode=E011";
 
       return false;
     }
   } else {
-    // window.location.href = config.ErrorProxy + "/Error.aspx?errcode=E011";
+    window.location.href = config.ErrorProxy + "/Error.aspx?errcode=E011";
     return false;
   }
 }
