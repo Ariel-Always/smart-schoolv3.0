@@ -933,7 +933,7 @@ class RegisterWillExamine extends React.Component {
                 onChange={this.StudentDropMenuSecond}
               ></DropDown>
             </div>
-          ) : (
+          ) : TeacherClass.length>1? (
             <DropDown
               width={120}
               height={240}
@@ -941,7 +941,8 @@ class RegisterWillExamine extends React.Component {
               dropList={TeacherClass}
               onChange={this.TeacherDropMenuSecond}
             ></DropDown>
-          )}
+          ):
+          <span className='single'>{this.state.TeacherClassSelect.title}</span>}
           <Search
             placeHolder="请输入学号或姓名进行搜索"
             onClickSearch={this.LogSearch.bind(this)}
