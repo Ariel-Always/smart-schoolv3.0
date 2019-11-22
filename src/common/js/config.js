@@ -30,7 +30,8 @@ if (process.env.NODE_ENV === 'development'){
         MockLoginProxy:'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev',
         PersonalProxy:"http://192.168.129.1:30103",
         ErrorProxy:"http://192.168.129.1:30103",
-        XTestProxy:'http://192.168.129.1:30103/UserMgr/UserInfoMgr'
+        XTestProxy:'http://192.168.129.1:30103/UserMgr/UserInfoMgr',
+        Import:'http://192.168.129.1:30103'
 
     }
 
@@ -62,7 +63,8 @@ if (process.env.NODE_ENV === 'production'){
         PicProxy:'',
         ErrorProxy:'',
         MyCourseClassProxy:'',
-        XTestProxy:'/UserMgr/UserInfoMgr'
+        XTestProxy:'/UserMgr/UserInfoMgr',
+        Import:''
     }
 
 }
