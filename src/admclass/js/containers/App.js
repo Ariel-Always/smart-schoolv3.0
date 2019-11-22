@@ -524,6 +524,8 @@ class App extends Component{
 
 
 
+
+
     render() {
 
         const {UIState,DataState,RouterSet,ModuleSetting} = this.props;

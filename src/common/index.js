@@ -1451,9 +1451,19 @@ class Alert extends React.Component {
 
 class Menu extends React.Component {
     constructor(props) {
+
         super(props);
-        this.state = {}
+
+        window.AppRightContentChange = this.AppRightContentChange.bind(this);
+
+        this.state={
+
+            Height:'auto'
+
+        }
+
     }
+
 
     /*参数解构*/
     paramsDeconstruction(props) {
@@ -1477,6 +1487,38 @@ class Menu extends React.Component {
     }
 
 
+
+
+    AppRightContentChange(ContentHeight){
+
+        if (ContentHeight>0){
+
+            let DefalutHeight = window.innerHeight;
+
+            let maxHeight = 0;
+
+            let LeftHeight = this.LeftMenu.clientHeight;
+
+
+
+            if (ContentHeight+60<DefalutHeight){
+
+                maxHeight = ContentHeight - 88;
+
+
+            }else{
+
+                maxHeight = DefalutHeight - 80;
+
+            }
+
+
+
+            this.setState({Height:maxHeight});
+
+        }
+
+    }
 
 
     /*多层对象解构*/
@@ -1628,7 +1670,17 @@ class Menu extends React.Component {
                 style={{ width: this.state.MenuBoxWidth, display: this.state.MenuBoxShow }}
             >
                 <div className={`MenuBox_top ${this.state.MenuBoxTopPic}`}></div>
-                <div id="frame_left_menu_container" className="frame_left_menu_container" >{this.state.menuDom}</div>
+
+                    <div id="frame_left_menu_container" ref={ref=>this.LeftMenu=ref} className="frame_left_menu_container" >
+
+                        <Scrollbars autoHeight autoHide autoHeightMax={this.state.Height} style={{ width: 240}}>
+
+                        {this.state.menuDom}
+
+                        </Scrollbars>
+
+                    </div>
+
             </div>
         )
     }
@@ -1727,6 +1779,53 @@ class MenuLeft extends React.Component {
 class MenuLeftNoLink extends React.Component {
 
 
+    constructor(props) {
+
+        super(props);
+
+        window.AppRightContentChange = this.AppRightContentChange.bind(this);
+
+        this.state={
+
+            Height:'auto'
+
+        }
+
+    }
+
+
+    AppRightContentChange(ContentHeight){
+
+        if (ContentHeight>0){
+
+            let DefalutHeight = window.innerHeight;
+
+            let maxHeight = 0;
+
+            let LeftHeight = this.LeftMenu.clientHeight;
+
+
+
+            if (ContentHeight+60<DefalutHeight){
+
+                maxHeight = ContentHeight - 88;
+
+
+            }else{
+
+                maxHeight = DefalutHeight - 80;
+
+            }
+
+
+
+           this.setState({Height:maxHeight});
+
+        }
+
+    }
+
+
     render() {
         //menu和icon图标
         const { Menu, Icon, menuClick } = this.props;
@@ -1737,9 +1836,9 @@ class MenuLeftNoLink extends React.Component {
 
                 <div className={`frame_left_menu_pic ${Icon ? Icon : 'pic1'}`}></div>
 
-                <div id="frame_left_menu_container" className="frame_left_menu_container">
+                <div id="frame_left_menu_container" ref={ref=>this.LeftMenu=ref} className="frame_left_menu_container">
 
-                  {/*  <Scrollbars autoHeight autoHide autoHeightMax={window.innerHeight-80} style={{ width: 240}}>*/}
+                    <Scrollbars autoHeight autoHide autoHeightMax={this.state.Height} style={{ width: 240}}>
 
                     {
                         Menu && Menu.map((item, key) => {
@@ -1789,7 +1888,7 @@ class MenuLeftNoLink extends React.Component {
                         })
                     }
 
-                    {/*</Scrollbars>*/}
+                    </Scrollbars>
 
                 </div>
 
@@ -1841,9 +1940,9 @@ class Frame extends React.Component {
 
     }
 
-    componentWillUpdate(){
+    componentDidUpdate(){
 
-        let defalutHeight = window.innerHeight;
+      /*  let defalutHeight = window.innerHeight;
 
         let contentHeight  = $('.frame-content-rightside').height();
 
@@ -1868,8 +1967,9 @@ class Frame extends React.Component {
 
           'max-height':maxHeight+'px'
 
-      });
+      });*/
 
+      window.AppRightContentChange(this.RightContent.clientHeight);
 
     }
 
@@ -2005,7 +2105,7 @@ class Frame extends React.Component {
 
                         contentShow?
 
-                            <div className={`frame-content-rightside ${showLeftMenu ? '' : 'frame-fluid'}`}>
+                            <div ref={ref=>this.RightContent=ref} id="frame-content-rightside" className={`frame-content-rightside ${showLeftMenu ? '' : 'frame-fluid'}`}>
 
                                 {rightContent}
 
