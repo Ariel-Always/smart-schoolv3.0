@@ -44,7 +44,7 @@
                 th {
                     padding: 0;
                     &:first-of-type {
-                        padding: 0 10px;
+                        padding-left: 30px;
                     }
                 }
             }
@@ -58,7 +58,7 @@
                     white-space: nowrap;
                     &:first-of-type {
                         // padding: 10px 39px
-                        padding: 10px;
+                        padding-left: 30px;
                     }
                     &:last-of-type {
                         //width: 320px;
@@ -98,22 +98,46 @@
                 color: #333333;
                 line-height: 18px;
                 margin-right: 3px;
+                display: inline-block;
+                max-width: 60px;
+                overflow: hidden; //超出一行文字自动隐藏
+                text-overflow: ellipsis; //文字隐藏后添加省略号
+                vertical-align: bottom;
+                white-space: nowrap; //强制不换行
             }
             .Class-id {
                 font-size: 12px;
                 line-height: 18px;
                 color: #999999;
                 vertical-align: text-top;
+                span {
+                    display: inline-block;
+                    max-width: 50px;
+                    overflow: hidden; //超出一行文字自动隐藏
+                    text-overflow: ellipsis; //文字隐藏后添加省略号
+                    vertical-align: bottom;
+                    white-space: nowrap; //强制不换行
+                }
             }
             .Grade {
                 font-size: 14px;
                 line-height: 18px;
                 color: #999999;
+                display: inline-block;
+                width: 90px;
+                overflow: hidden; //超出一行文字自动隐藏
+                text-overflow: ellipsis; //文字隐藏后添加省略号
+                white-space: nowrap; //强制不换行
             }
             .SubjectName {
                 font-size: 14px;
                 line-height: 18px;
                 color: #333333;
+                display: inline-block;
+                width: 90px;
+                overflow: hidden; //超出一行文字自动隐藏
+                text-overflow: ellipsis; //文字隐藏后添加省略号
+                white-space: nowrap; //强制不换行
             }
             .StudentCount {
                 font-size: 14px;
@@ -136,7 +160,7 @@
             }
             .checkAll-box {
                 margin-top: 10px;
-                margin-left: 10px;
+                margin-left: 30px;
                 .deleteAll {
                     color: #fff;
                     width: 56px;

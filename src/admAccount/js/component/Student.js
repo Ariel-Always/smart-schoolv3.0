@@ -69,12 +69,13 @@ class Student extends React.Component {
                 <span
                   className="name-UserName"
                   onClick={this.onUserNameClick.bind(this, arr.UserID)}
+                  title={arr.Name}
                 >
                   {arr.Name}
                 </span>
                 <br />
                 <span className="name-UserID">
-                  (<span className="UserID-content">{arr.UserID}</span>)
+                  (<span className="UserID-content" title={arr.UserID}>{arr.UserID}</span>)
                 </span>
               </div>
             );
@@ -89,7 +90,7 @@ class Student extends React.Component {
           sorter: true,
           render: ShortName => {
             return (
-              <span className="UserName">{ShortName ? ShortName : "--"}</span>
+              <span className="UserName" title={ShortName}>{ShortName ? ShortName : "--"}</span>
             );
           }
         },
@@ -1012,13 +1013,15 @@ pagination:1,
             this.state.ChangePwdMadalVisible ? (
               <p className="alert-Title">
                 确定重置
-                <span className="alert-Title-name">
+                <span title={DataState.GradeStudentPreview.newList[this.state.onClickKey]
+                      .UserName.Name} className="alert-Title-name">
                   {
                     DataState.GradeStudentPreview.newList[this.state.onClickKey]
                       .UserName.Name
                   }
                 </span>
-                <span className="alert-Title-id">
+                <span title={DataState.GradeStudentPreview.newList[this.state.onClickKey]
+                      .UserName.UserID} className="alert-Title-id">
                   (
                   {
                     DataState.GradeStudentPreview.newList[this.state.onClickKey]

@@ -1,33 +1,37 @@
-.tips-Box{
+.tips-Box {
     padding: 10px 16px;
-
-    .box-top{
+    .box-top {
         position: relative;
-
-        .top-tip{
+        .top-tip {
             font-size: 14px;
-	        line-height: 26px;
-	        color: #720000;
+            line-height: 26px;
+            color: #720000;
         }
     }
-
-    .box-content{
+    .box-content {
         padding: 8px 16px;
-        .content{
+        .content {
             position: relative;
             height: 28px;
             width: 195px;
             margin: 8px 0;
             display: inline-block;
-            .content-text{
+            img {
+                float: left;
+            }
+            .content-text {
+                float: left;
                 line-height: 28px;
                 text-align: left;
                 margin-left: 9px;
                 color: #333;
                 font-size: 16px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
-            .content-null{
-                color:#999;
+            .content-null {
+                color: #999;
             }
         }
     }

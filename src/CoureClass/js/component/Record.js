@@ -57,7 +57,7 @@ class Record extends React.Component {
                     render: OperateTypeName => {
                         return (
                             <React.Fragment>
-                                <span className='OperateTypeName'>{OperateTypeName}</span>
+                                <span title={OperateTypeName} className='OperateTypeName'>{OperateTypeName}</span>
                             </React.Fragment>
                         )
                     }
@@ -94,32 +94,34 @@ class Record extends React.Component {
                     render: OperatorID => {
                         return (
                             <React.Fragment>
-                                <span className='OperatorID'>{OperatorID}</span>
+                                <span title={OperatorID} className='OperatorID'>{OperatorID}</span>
                             </React.Fragment>
                         )
                     }
                 },
                 {
                     title: '操作人名称',
+                    width: 146,
                     align: 'center',
                     dataIndex: 'OperatorName',
                     key: 'OperatorName',
                     render: OperatorName => {
                         return (
                             <React.Fragment>
-                                <span className='OperatorName'>{OperatorName}</span>
+                                <span title={OperatorName} className='OperatorName'>{OperatorName}</span>
                             </React.Fragment>
                         )
                     }
                 },
                 {
                     title: '更新时间',
+                    width: 146,
                     align: 'center',
                     dataIndex: 'OperateTime',
                     key: 'OperateTime',
                     render: OperateTime => {
                         return (
-                            <span className='OperateTime'>{OperateTime}</span>
+                            <span title={OperateTime} className='OperateTime'>{OperateTime}</span>
                         )
                     }
                 }
@@ -167,9 +169,13 @@ class Record extends React.Component {
         })
     }
     onHandleTypeChange = (value) => {
+        const { dispatch, DataState } = this.props;
+        let userMsg = DataState.LoginUser;
         this.setState({
             handleTypeSelected:value
         })
+        dispatch(actions.UpDataState.getCourseClassRecordMsg('/GetGourseClassLogForPage?userID=' + userMsg.UserID + '&userType=' + userMsg.UserType + '&schoolID=' + userMsg.SchoolID + '&startDate=' + this.state.startTime + '&endDate=' + this.state.endTime + '&operateType=' + value.value))
+
     }
     //查看详情
     onOperateParamsClick = (IDs) =>  {

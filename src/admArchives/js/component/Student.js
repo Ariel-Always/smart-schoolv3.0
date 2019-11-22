@@ -18,6 +18,7 @@ import "../../scss/Student.scss";
 import CONFIG from "../../../common/js/config";
 import { postData, getData } from "../../../common/js/fetch";
 import Public from "../../../common/js/public";
+import { Scrollbars } from "react-custom-scrollbars";
 
 import history from "../containers/history";
 import EditModal from "./EditModal";
@@ -446,11 +447,11 @@ class Student extends React.Component {
   StudentChange = key => {
     //  console.log(e, key)
     const { dispatch, DataState } = this.props;
-    
+
     let innerID = DataState.GradeStudentPreview.newList[key].Others.InnerID;
-    let url = '/GetUserLog?innerID='+innerID
+    let url = "/GetUserLog?innerID=" + innerID;
     // console.log(innerID)
-    dispatch(actions.UpDataState.getUserLog(url,'student'))
+    dispatch(actions.UpDataState.getUserLog(url, "student"));
     this.setState({
       studentChangeUserLog: DataState.GradeStudentPreview.newList[key].Others
     });
@@ -596,7 +597,6 @@ class Student extends React.Component {
     const { dispatch } = this.props;
 
     dispatch({ type: actions.UpUIState.STUDENT_CHANGE_MODAL_CLOSE });
-
   };
 
   onDeleteAllClick = () => {
@@ -1320,26 +1320,34 @@ class Student extends React.Component {
           onCancel={this.StudentChangeMadalCancel}
         >
           {DataState.GetUserLog.UserLog instanceof Array &&
-          DataState.GetUserLog.UserLog.length > 0 ?(<div className="modal-studentChange">
-            <div className="content-top">
-              <img
-                src={IconLocation}
-                width="30"
-                height="40"
-                alt="icon-location"
-              />
-              <span className="top-text">
-                {this.state.studentChangeUserLog.UserName}的档案变更记录
-              </span>
+          DataState.GetUserLog.UserLog.length > 0 ? (
+            <div className="modal-studentChange">
+              <div className="content-top">
+                <img
+                  src={IconLocation}
+                  width="30"
+                  height="40"
+                  alt="icon-location"
+                />
+                <span className="top-text">
+                  {this.state.studentChangeUserLog.UserName}的档案变更记录
+                </span>
+              </div>
+                <div className="content">
+                <Scrollbars style={{ width: 100 + "%", height: 280 + "px" }}>
+
+                  {UIState.AppModal.StudentChangeMadalVisible ? (
+                    <StudentChangeRecord
+                      data={DataState.GetUserLog.UserLog}
+                    ></StudentChangeRecord>
+                  ) : (
+                    ""
+                  )}
+              </Scrollbars>
+
+                </div>
             </div>
-            <div className="content">
-              {UIState.AppModal.StudentChangeMadalVisible ? (
-                <StudentChangeRecord data={DataState.GetUserLog.UserLog}></StudentChangeRecord>
-              ) : (
-                ""
-              )}
-            </div>
-          </div>): (
+          ) : (
             <Empty
               type="4"
               title="该用户暂无档案变更记录"

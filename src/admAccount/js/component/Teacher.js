@@ -47,8 +47,8 @@ class Teacher extends React.Component {
                     render: arr => {
                         return (
                             <div className='name-content'>
-                                <span className='name-UserName' onClick={this.onUserNameClick.bind(this, arr.UserID)}>{arr.Name}</span><br />
-                                <span className='name-UserID'>(<span className='UserID-content'>{arr.UserID}</span>)</span>
+                                <span className='name-UserName' title={arr.Name} onClick={this.onUserNameClick.bind(this, arr.UserID)}>{arr.Name}</span><br />
+                                <span className='name-UserID' title={arr.UserID}>(<span className='UserID-content'>{arr.UserID}</span>)</span>
                             </div>
                         )
                     }
@@ -63,7 +63,7 @@ class Teacher extends React.Component {
                     sorter: true,
                     render: ShortName => {
                         return (
-                            <span className='UserName'>{ShortName ? ShortName : '--'}</span>
+                            <span title={ShortName} className='UserName'>{ShortName ? ShortName : '--'}</span>
                         )
                     }
                 },
@@ -745,7 +745,7 @@ checkAll: false,
                 <Alert show={this.state.ChangePwdMadalVisible}
                     type={'btn-query'}
                     abstract={<div className='alert-pwd'><span className='alert-pwd-tips'>新密码：</span><Input size='small' onChange={this.onPwdchange.bind(this)} style={{ width: 120 + 'px' }} value={this.state.defaultPwd}></Input></div>}
-                    title={this.state.ChangePwdMadalVisible ? (<p className='alert-Title'>确定重置<span className='alert-Title-name'>{DataState.SubjectTeacherPreview.newList[this.state.onClickKey].UserName.Name}</span><span className='alert-Title-id'>({DataState.SubjectTeacherPreview.newList[this.state.onClickKey].UserName.UserID})</span> 的密码？</p>) : ''}
+                    title={this.state.ChangePwdMadalVisible ? (<p className='alert-Title'>确定重置<span title={DataState.SubjectTeacherPreview.newList[this.state.onClickKey].UserName.Name} className='alert-Title-name'>{DataState.SubjectTeacherPreview.newList[this.state.onClickKey].UserName.Name}</span><span title={DataState.SubjectTeacherPreview.newList[this.state.onClickKey].UserName.UserID} className='alert-Title-id'>({DataState.SubjectTeacherPreview.newList[this.state.onClickKey].UserName.UserID})</span> 的密码？</p>) : ''}
                     onOk={this.onPwdchangeOk}
                     onCancel={this.onPwdchangeClose}
                     onClose={this.onPwdchangeClose}

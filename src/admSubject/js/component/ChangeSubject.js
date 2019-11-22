@@ -234,7 +234,7 @@ class ChangeSubject extends React.Component {
                 <div className='chageSubject'>
                     <div className='row clearfix'>
                         <span className='culonm-1'>学科名称：</span>
-                        <span style={{ display: this.state.type === 'change' ? 'block' : 'none' }} className='culonm-2'><span className='subjectName'>{this.state.type === 'change' ? DataState.ChangeSubjectMsg.SubjectName : '错误'}</span></span>
+                        <span style={{ display: this.state.type === 'change' ? 'block' : 'none' }} className='culonm-2'><span title={DataState.ChangeSubjectMsg.SubjectName} className='subjectName'>{this.state.type === 'change' ? DataState.ChangeSubjectMsg.SubjectName : '错误'}</span></span>
                         <div className='culonm-2 dropMenuBox' style={{ display: this.state.type === 'add' ? 'block' : 'none' }}>
                             <DropDown
                                 ref='dropMenuSubject'
@@ -279,7 +279,7 @@ class ChangeSubject extends React.Component {
                                 return (
                                     <div className='checkBoxGroup' key={index}>
                                         <CheckBox className={`checkAll ${checkGroup ? 'select' : ''}`} onChange={this.onCheckBoxChange.bind(this, index)} checked={checkGroup}>
-                                            <span className='checkContent'>{child.title}</span>
+                                            <span title={child.title} className='checkContent'>{child.title}</span>
                                         </CheckBox>
                                         <span className='delete'></span>
                                         <CheckBoxGroup onChange={this.onCheckBoxGroupChange.bind(this, index)} value={mySelect}>
@@ -290,7 +290,7 @@ class ChangeSubject extends React.Component {
                                                             <div className='newCheckBoxStyle'>
                                                                 <CheckBox value={child2} onChange={this.onCheck}></CheckBox>
                                                             </div>
-                                                            <span className='checkBox-tips'>{defaultGrades[child2]}</span>
+                                                            <span title={defaultGrades[child2]} className='checkBox-tips'>{defaultGrades[child2]}</span>
                                                         </div>
                                                     </label>
                                                 )

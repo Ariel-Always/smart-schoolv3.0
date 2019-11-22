@@ -180,7 +180,7 @@ class SetSubjectTeacher extends React.Component {
                 <div className='SetSubjectTeacher'>
                     <div className='row clearfix'>
                         <span className='culonm-1'>学科名称：</span>
-                        <span className='culonm-2'><span className='subjectName'>{DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.SubjectName}</span></span>
+                        <span className='culonm-2'><span title={DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.SubjectName} className='subjectName'>{DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.SubjectName}</span></span>
                     </div>
                     {/* <div className='row clearfix'>
                         <span className='culonm-1'>小学教研组长：</span>

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import logo from "../../images/admAriHeadImg-1.png";
+import logo from "../../images/icon-logo.png";
 import { Menu, Loading, Alert } from "../../../common";
 import Frame from "../../../common/Frame";
 

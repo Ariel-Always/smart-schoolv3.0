@@ -1,59 +1,73 @@
-.frame-block-zh-name,.frame-block-en-name{
+.frame-block-zh-name,
+.frame-block-en-name {
     margin-left: -16px;
 }
 
-    .img-introduce{
-        position: relative;
-        display: inline-block;
-        margin-top: 127px;
-        width: auto;
-        margin-left: 50%;
-        transform: translateX(-50%);
-    }
-    .introduce-tips{
-        position: relative;
-        display: inline-block;
+.img-introduce {
+    position: relative;
+    display: inline-block;
+    margin-top: 127px;
+    width: auto;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
 
-        width: auto;
-        margin-left: 50%;
-        transform: translateX(-50%);
-        .tips-1{
-            line-height: 48px;
-            font-size: 16px;
-            color: #333;
-        }
-        .tips-2{
-            margin-left: -20px;
+.introduce-tips {
+    position: relative;
+    display: inline-block;
+    width: auto;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    .tips-1 {
+        line-height: 48px;
+        font-size: 16px;
+        color: #333;
+    }
+    .tips-2 {
+        margin-left: -20px;
+        line-height: 24px;
+        font-size: 14px;
+        white-space: nowrap;
+        color: #ff6600;
+        .tips-4 {
             line-height: 24px;
             font-size: 14px;
-            white-space: nowrap;
-            color: #ff6600;
-            .tips-4{
-                line-height: 24px;
-                font-size: 14px;
-                color: #666;
-            }
-            .tips-3{
-                margin-right: 16px;
-            }
+            color: #666;
+        }
+        .tips-3 {
+            margin-right: 16px;
         }
     }
+}
 
- .alert-Title{
+.alert-Title {
     font-size: 16px;
-	line-height: 24px;
+    line-height: 24px;
     color: #333333;
-    .alert-Title-name{
+    .alert-Title-name {
         color: #ff6600;
+        display: inline-block;
+        max-width: 90px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        vertical-align: bottom;
     }
-    .alert-Title-id{
+    .alert-Title-id {
         color: #999999;
+        display: inline-block;
+        max-width: 90px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        vertical-align: bottom;
     }
- }  
- .alert-pwd{
+}
+
+.alert-pwd {
     white-space: nowrap;
-    .alert-pwd-tips{
+    .alert-pwd-tips {
         font-size: 14px;
         color: #999999;
     }
- } 
+}

@@ -23,6 +23,7 @@ class Class extends React.Component {
           title: "序号",
           align: "left",
           key: "OrderNO",
+          width:158,
           dataIndex: "OrderNO",
           render: OrderNO => {
             return (
@@ -42,6 +43,7 @@ class Class extends React.Component {
           title: "班级名称",
           align: "left",
           dataIndex: "CourseClass",
+          width:150,
           key: "CourseClass",
           render: courseClass => {
             return (
@@ -64,6 +66,7 @@ class Class extends React.Component {
           title: "任课教师",
           align: "center",
           dataIndex: "ClassMsg",
+          width:200,
           key: "ClassMsg",
           render: Class => {
             return Class.TeacherID === 0 || Class.TeacherID ? (
@@ -77,7 +80,7 @@ class Class extends React.Component {
                   {Class.TeacherName}
                 </span>
                 <span title={Class.TeacherID} className="Class-id">
-                  {"(" + Class.TeacherID + ")"}
+                  (<span> {Class.TeacherID }</span>)
                 </span>
               </React.Fragment>
             ) : (
@@ -89,6 +92,7 @@ class Class extends React.Component {
           title: "学生人数",
           align: "center",
           dataIndex: "StudentCount",
+          width:165,
           key: "StudentCount",
           render: StudentCount => {
             return (
@@ -101,6 +105,7 @@ class Class extends React.Component {
         {
           title: "操作",
           align: "center",
+          width:185,
           key: "handle",
           dataIndex: "key",
           render: key => {

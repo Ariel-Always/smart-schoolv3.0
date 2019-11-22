@@ -44,7 +44,7 @@ class GraduateJobType extends React.Component {
             <div className='GraduateJobType'>
                 <div className='row'>
                     <span className='left'>学生：</span>
-                    <span className='right UserName'>{GraduateChangeMsg.UserName}<span className='UserID'>({GraduateChangeMsg.UserID})</span></span>
+                    <span title={GraduateChangeMsg.UserName} className='right UserName'>{GraduateChangeMsg.UserName}<span title={GraduateChangeMsg.UserID} className='UserID'>({GraduateChangeMsg.UserID})</span></span>
                 </div>
                 <div className='row'>
                     <span className='left'>去向类型：</span>

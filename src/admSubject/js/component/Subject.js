@@ -22,7 +22,7 @@ class Subject extends React.Component {
                         return (
                             <div className='SubjectName-content'>
                                 <img className='SubjectName-img' alt={arr.SubjectName} src={arr.SubjectImg} width={80} height={50} />
-                                <span className='SubjectName-name'>{arr.SubjectName}</span>
+                                <span title={arr.SubjectName} className='SubjectName-name'>{arr.SubjectName}</span>
                             </div>
                         )
                     }
@@ -36,9 +36,9 @@ class Subject extends React.Component {
                     render: Grades => {
                         return (
                             <React.Fragment>
-                                <span style={{ display: Grades.P1Grades ? 'block' : 'none' }} className='Grades P1Grades'><span className='grades-tips'>小学：</span>{Grades.P1Grades}</span>
-                                <span style={{ display: Grades.P2Grades ? 'block' : 'none' }} className='Grades P2Grades'><span className='grades-tips'>初中：</span>{Grades.P2Grades}</span>
-                                <span style={{ display: Grades.P3Grades ? 'block' : 'none' }} className='Grades P3Grades'><span className='grades-tips'>高中：</span>{Grades.P3Grades}</span>
+                                <span title={Grades.P1Grades} style={{ display: Grades.P1Grades ? 'block' : 'none' }} className='Grades P1Grades'><span className='grades-tips'>小学：</span>{Grades.P1Grades}</span>
+                                <span title={Grades.P2Grades} style={{ display: Grades.P2Grades ? 'block' : 'none' }} className='Grades P2Grades'><span className='grades-tips'>初中：</span>{Grades.P2Grades}</span>
+                                <span title={Grades.P3Grades} style={{ display: Grades.P3Grades ? 'block' : 'none' }} className='Grades P3Grades'><span className='grades-tips'>高中：</span>{Grades.P3Grades}</span>
                             </React.Fragment>
                         )
                     }

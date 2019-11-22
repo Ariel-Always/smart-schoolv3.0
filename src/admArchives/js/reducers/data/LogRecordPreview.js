@@ -32,6 +32,7 @@ function handleData(data, pageIndex, pageSize) {
         list.UserType_Txt = child.UserType_Txt;
         list.UserType = child.UserType;
         list.LogID = child.LogID;
+        list.Deleted = child.Deleted;
         list.LogTime = child.LogTime;
         list.OperatorIP = child.OperatorIP;
         list.OperatorDetail=[]
