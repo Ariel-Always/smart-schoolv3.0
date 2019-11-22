@@ -408,6 +408,12 @@ class Website extends React.Component {
       )
     );
   };
+  // 仅仅关闭提示
+  onOnlyCancelTipsClick = () => {
+    const { dispatch, LoginUser } = this.props;
+    dispatch({ type: TeacherCustomActions.GET_WEBSITE_ALTER_TIPS, data: false });
+   
+  };
   // 添加网站
   onAddCustomClick = () => {
     const { dispatch, Teacher } = this.props;
@@ -457,10 +463,12 @@ class Website extends React.Component {
                 </span>
               </div>
               <div className="tips-handle">
-                <span className="handle-text">不再提示</span>
+                <span className="handle-text"
+                  onClick={this.onCancelTipsClick.bind(this)}
+                  >不再提示</span>
                 <span
                   className="handle-cancel"
-                  onClick={this.onCancelTipsClick.bind(this)}
+                  onClick={this.onOnlyCancelTipsClick.bind(this)}
                 ></span>
               </div>
             </div>
@@ -505,7 +513,7 @@ class Website extends React.Component {
                             MainData.map((item, index) => (
                               <div
                                 className="Card-protect"
-                                key={"main-" + item.ID}
+                                key={"main-" + item.ID+index}
                               >
                                 <Draggable
                                   draggableId={"main-" + item.ID}

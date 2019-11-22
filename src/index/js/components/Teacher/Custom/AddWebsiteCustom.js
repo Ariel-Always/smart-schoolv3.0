@@ -1,12 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import {
-  
-  CheckBox,
-  CheckBoxGroup,
-  Tips,
-  DropDown
-} from "../../../../../common";
+import { CheckBox, CheckBoxGroup, Tips, DropDown } from "../../../../../common";
 import { Input } from "antd";
 import TeacherCustomActions from "../../../actions/Teacher/TeacherCustomActions";
 import { postData, getData } from "../../../../../common/js/fetch";
@@ -40,8 +34,25 @@ class AddWebsiteCustom extends React.Component {
         SubjectID: WebData.SubjectID
       },
       WebType: WebData.WebType,
-      Period: WebData.PeriodID,
       WebTypeList: TeacherCustomData.WebTypeList
+    });
+
+    let PeriodList = Teacher.TeacherCustomData.PeriodList;
+    let newPeriodList = [];
+    let Period = [];
+    PeriodList instanceof Array &&
+      PeriodList.map((child, index) => {
+        if (child.value !== "0") {
+          newPeriodList.push(child);
+          Period.push(child.value);
+        }
+      });
+    if (WebData.PeriodID[0] !==  '0') {
+      Period = WebData.PeriodID;
+    }
+    this.setState({
+      Period: Period,
+      PeriodList: newPeriodList
     });
   }
   //   网站名称修改
@@ -53,7 +64,7 @@ class AddWebsiteCustom extends React.Component {
   // 网站名称修改失去焦点
   onWebNameBlur = e => {
     const { dispatch } = this.props;
-    let Test = /\S/
+    let Test = /\S/;
 
     // console.log(e.target.value);
     let value = e.target.value;
@@ -147,7 +158,7 @@ class AddWebsiteCustom extends React.Component {
     });
     dispatch(
       TeacherCustomActions.setHandleWebsiteData({
-        SubjectID: Period
+        PeriodID: Period
       })
     );
   };
@@ -215,8 +226,11 @@ class AddWebsiteCustom extends React.Component {
             className={"right checkedBoxGroupMap PeriodList"}
             value={this.state.Period}
           >
-            {Teacher.TeacherCustomData.PeriodList instanceof Array &&
-              Teacher.TeacherCustomData.PeriodList.map((child, index) => {
+            {this.state.PeriodList instanceof Array &&
+              this.state.PeriodList.map((child, index) => {
+                // if(child.value==='0'){
+                //   return;
+                // }
                 return (
                   <CheckBox
                     className={"checkedBoxMap Period"}

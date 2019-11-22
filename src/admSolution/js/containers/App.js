@@ -27,6 +27,8 @@ import "../../scss/index.scss";
 import $ from "jquery";
 import actions from "../actions";
 //import { urlAll, proxy } from './config'
+import { QueryPower, QueryAdminPower } from "../../../common/js/power";
+const POWER_MODULEID = "000-2-0-09"; //用户权限管理模块ID
 
 class App extends Component {
   constructor(props) {

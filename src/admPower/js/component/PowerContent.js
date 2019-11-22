@@ -24,7 +24,7 @@ class PowerContent extends React.Component {
     }
     componentWillReceiveProps(nextProps) {
         const { DataState, UIState } = nextProps;
-        if (DataState.GetUserPowerMsg.Power) {
+        if (DataState.GetUserPowerMsg.Power.student) {
 
 
             // // console.log(DataState.GetUserPowerMsg.Power.student[0].Status)

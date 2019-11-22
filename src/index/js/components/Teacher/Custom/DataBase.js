@@ -349,6 +349,12 @@ class DataBase extends React.Component {
       )
     );
   };
+  // 仅仅关闭提示
+  onOnlyCancelTipsClick = () => {
+    const { dispatch, LoginUser } = this.props;
+    dispatch({ type:TeacherCustomActions.GET_DATABASE_ALTER_TIPS, data: false });
+
+  };
   render() {
     const { Teacher, AppLoading } = this.props;
     let MainData = Teacher.TeacherCustomData.DataBaseData;
@@ -360,45 +366,57 @@ class DataBase extends React.Component {
       <Loading opacity={false} spinning={AppLoading.customOpacityLoading}>
         <Loading spinning={AppLoading.customLoading}>
           <div id="DataBase">
-          <div
-                style={{
-                  display: Teacher.TeacherCustomData.TipsShow.DataBaseTipsShow
-                    ? "block"
-                    : "none"
-                }}
-                className="my-Tips"
-              >
-                <div className="tips-left">
-                  <i className="tips-icon"></i>
-                  <span className="tips-text">
-                    操作提示: 拖放图标可调整资源库的摆放顺序或进行分组。
-                  </span>
-                </div>
-                <div className="tips-handle">
-                  <span className="handle-text">不再提示</span>
-                  <span
-                    className="handle-cancel"
-                    onClick={this.onCancelTipsClick.bind(this)}
-                  ></span>
-                </div>
+            <div
+              style={{
+                display: Teacher.TeacherCustomData.TipsShow.DataBaseTipsShow
+                  ? "block"
+                  : "none"
+              }}
+              className="my-Tips"
+            >
+              <div className="tips-left">
+                <i className="tips-icon"></i>
+                <span className="tips-text">
+                  操作提示: 拖放图标可调整资源库的摆放顺序或进行分组。
+                </span>
               </div>
+              <div className="tips-handle">
+                <span
+                  className="handle-text"
+                  onClick={this.onCancelTipsClick.bind(this)}
+                >
+                  不再提示
+                </span>
+                <span
+                  className="handle-cancel"
+                  onClick={this.onOnlyCancelTipsClick.bind(this)}
+                ></span>
+              </div>
+            </div>
             <Scrollbars
               style={{
                 width: 1150 + "px",
                 height: 682 + "px"
               }}
             >
-              
               {/* <div className='add-box'>
                             <span className='btn-add'><i className='add-icon'></i><span className='add-text'>添加</span> </span>
                         </div> */}
-              <DragDropContext  onDragEnd={this.onDragEnd}>
+              <DragDropContext onDragEnd={this.onDragEnd}>
                 <Droppable droppableId="main" direction="horizontal">
                   {(provided, snapshot) => {
                     //provided生成的数据，snapshot监听拖拽时的数据变化，snapshot:{draggingFromThisWith: null,draggingOverWith: null,isDraggingOver: false},draggingFromThisWith为拖拽对象的id，draggingOverWith为拖拽对象在该区域的id，isDraggingOver为是否有拖拽事件
                     // console.log(provided, snapshot)
                     return (
-                      <div style={{marginTop:Teacher.TeacherCustomData.TipsShow.DataBaseTipsShow?'46px':'16px'}} className="main-box">
+                      <div
+                        style={{
+                          marginTop: Teacher.TeacherCustomData.TipsShow
+                            .DataBaseTipsShow
+                            ? "46px"
+                            : "16px"
+                        }}
+                        className="main-box"
+                      >
                         <p className="main-header">已添加至桌面的资源库:</p>
                         <div
                           ref={provided.innerRef}
@@ -411,7 +429,7 @@ class DataBase extends React.Component {
                             MainData.map((item, index) => (
                               <div
                                 className="Card-protect"
-                                key={"main-" + item.ID}
+                                key={"main-" + item.ID+index}
                               >
                                 <Draggable
                                   draggableId={"main-" + item.ID}

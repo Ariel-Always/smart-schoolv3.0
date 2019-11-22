@@ -69,6 +69,8 @@ class UserArchives extends React.Component {
   }
 
   componentWillMount() {
+    const {DataState,UIState} = this.props
+    let userMsg = DataState.LoginUser;
     this.handleMenu();
     let route = history.location.pathname;
     // 获取接口数据
@@ -78,6 +80,20 @@ class UserArchives extends React.Component {
     let pathArr = route.split("/");
     let handleRoute = pathArr[2];
     let ID = pathArr[3];
+    if(userMsg.UserType === "7" && userMsg.UserClass === "2"){
+      let Menu = this.state.MenuParams;
+      let children = Menu.children
+      if(children[children.length-1].key==='Leader'){
+        Menu.children.pop();
+      }
+
+      // Menu.children = children;
+      this.setState(
+        {
+          MenuParams:Menu
+        }
+      )
+    }
     // 获取接口数据
     if (handleRoute === "Graduate") {
       this.setState({

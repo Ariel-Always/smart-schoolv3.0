@@ -28,12 +28,17 @@ import $ from "jquery";
 import { getData } from "../../../common/js/fetch";
 import actions from "../actions";
 import { urlAll, proxy } from "./config";
+import { QueryPower, QueryAdminPower } from "../../../common/js/power";
+
+const PROFILE_MODULEID = "000-2-0-05"; //用户档案管理模块ID
 
 class App extends Component {
   constructor(props) {
     super(props);
     const { dispatch } = props;
-    this.state = {};
+    this.state = {
+      AdminPower: true
+    };
     let route = history.location.pathname;
     //判断token是否存在
 
@@ -49,7 +54,7 @@ class App extends Component {
       this.requestData(route);
     } else {
       getUserInfo(token, "000");
-      let that = this
+      let that = this;
       let timeRun = setInterval(function() {
         if (sessionStorage.getItem("UserInfo")) {
           dispatch(
@@ -133,168 +138,200 @@ class App extends Component {
   requestData = route => {
     const { dispatch, DataState } = this.props;
     if (
-        !DataState.LoginUser.SchoolID &&
-        !JSON.parse(sessionStorage.getItem("UserInfo"))
-      ) {
-        return;
-      }
+      !DataState.LoginUser.SchoolID &&
+      !JSON.parse(sessionStorage.getItem("UserInfo"))
+    ) {
+      return;
+    }
     let userMsg = DataState.LoginUser.SchoolID
       ? DataState.LoginUser
       : JSON.parse(sessionStorage.getItem("UserInfo"));
-
-    let pathArr = route.split("/");
-    let handleRoute = pathArr[2];
-    let ID = pathArr[3];
-    // console.log('ddd')
-    if (route === "/" || route.split("/")[1] === "UserArchives") {
-      // dispatch(actions.UpDataState.getAllUserPreview('/GetSummary'));
-      dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-      if (handleRoute) {
-        //dispatch(actions.UpDataState.getAllUserPreview('/Archives' + handleRoute));
-        dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-        if (handleRoute === "Student") {
-          if (!Object.keys(DataState.GradeClassMsg.returnData).length)
-            dispatch(
-              actions.UpDataState.getGradeClassMsg(
-                "/GetGradeClassTree?schoolID=" + userMsg.SchoolID
-              )
-            );
-
-          if (ID === "all") {
-            dispatch(
-              actions.UpDataState.getGradeStudentPreview(
-                "/GetStudentToPage?SchoolID=" +
-                  userMsg.SchoolID +
-                  "&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC"
-              )
-            );
+      let havePower = QueryPower({ UserInfo: userMsg, ModuleID: PROFILE_MODULEID })
+      havePower.then(res=> {
+        // console.log(res)
+        if (res) {
+          let AdminPower = true;
+          if (userMsg.UserType === "7" && userMsg.UserClass === "2") {
+            AdminPower = false;
+          }
+          let pathArr = route.split("/");
+          let handleRoute = pathArr[2];
+          let ID = pathArr[3];
+          // console.log('ddd')
+          if ((userMsg.UserType === "0"||userMsg.UserType === "7") &&( route === "/" || route.split("/")[1] === "UserArchives")) {
+            // dispatch(actions.UpDataState.getAllUserPreview('/GetSummary'));
+            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+            if (handleRoute) {
+              //dispatch(actions.UpDataState.getAllUserPreview('/Archives' + handleRoute));
+              dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+              if (handleRoute === "Student") {
+                if (!Object.keys(DataState.GradeClassMsg.returnData).length)
+                  dispatch(
+                    actions.UpDataState.getGradeClassMsg(
+                      "/GetGradeClassTree?schoolID=" + userMsg.SchoolID
+                    )
+                  );
+    
+                if (ID === "all") {
+                  dispatch(
+                    actions.UpDataState.getGradeStudentPreview(
+                      "/GetStudentToPage?SchoolID=" +
+                        userMsg.SchoolID +
+                        "&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC"
+                    )
+                  );
+                } else {
+                  // console.log("sss");
+                  dispatch(
+                    actions.UpDataState.getGradeStudentPreview(
+                      "/GetStudentToPage?SchoolID=" +
+                        userMsg.SchoolID +
+                        "&GradeID=" +
+                        ID +
+                        "&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC",
+                      ""
+                    )
+                  );
+                }
+              } else if (handleRoute === "Teacher") {
+                // console.log("Teacher：" + DataState.SubjectTeacherMsg.returnData);
+                if (!DataState.SubjectTeacherMsg.returnData || ID !== "all")
+                  //学科信息
+                  dispatch(
+                    actions.UpDataState.getSubjectTeacherMsg(
+                      "/GetSubject?schoolID=" + userMsg.SchoolID,
+                      ID
+                    )
+                  );
+                if (!DataState.TeacherTitleMsg.returnData) {
+                  //职称
+                  dispatch(
+                    actions.UpDataState.getTeacherTitleMsg(
+                      "/GetTitle?schoolID=" + userMsg.SchoolID
+                    )
+                  );
+                }
+                if (ID === "all") {
+                  dispatch(
+                    actions.UpDataState.getSubjectTeacherPreview(
+                      "/GetTeacherToPage?SchoolID=" +
+                        userMsg.SchoolID +
+                        "&SubjectIDs=all&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC"
+                    )
+                  );
+                } else {
+                  dispatch(
+                    actions.UpDataState.getSubjectTeacherPreview(
+                      "/GetTeacherToPage?SchoolID=" +
+                        userMsg.SchoolID +
+                        "&SubjectIDs=" +
+                        ID +
+                        "&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC"
+                    )
+                  );
+                }
+              } else if (handleRoute === "Leader") {
+                if (!AdminPower) {
+                  history.push("/UserArchives/All");
+                  return;
+                }
+                dispatch(
+                  actions.UpDataState.getSchoolLeaderPreview(
+                    "/GetSchoolLeader?SchoolID=" +
+                      userMsg.SchoolID +
+                      "&SortFiled=UserID&SortType=ASC"
+                  )
+                );
+              } else if (handleRoute === "Graduate") {
+                if (DataState.GetGraduateGradeClassMsg.Grade.length <= 1)
+                  dispatch(
+                    actions.UpDataState.getGraduateGradeClassMsg(
+                      "/GetGradeClassOfGraduate?SchoolID=" + userMsg.SchoolID
+                    )
+                  );
+                dispatch(
+                  actions.UpDataState.getGraduatePreview(
+                    "/GetGraduate?PageIndex=0&PageSize=10&schoolID=" +
+                      userMsg.SchoolID
+                  )
+                );
+              } else if (handleRoute === "LogDynamic") {
+                if (!AdminPower) {
+                  history.push("/UserArchives/All");
+                  return;
+                }
+                dispatch(actions.UpUIState.RightLoadingOpen());
+    
+                dispatch(
+                  actions.UpDataState.getUnreadLogPreview(
+                    "/GetUnreadLogToPage?UserType=-1&OperationType=-1&PageIndex=0&PageSize=10&OnlineUserID=" +
+                      userMsg.UserID
+                  )
+                );
+              } else if (handleRoute === "LogRecord") {
+                if (!AdminPower) {
+                  history.push("/UserArchives/All");
+                  return;
+                }
+                dispatch(actions.UpUIState.RightLoadingOpen());
+                dispatch(
+                  actions.UpDataState.getLogRecordPreview(
+                    "/GetAllLogToPage?SchoolID=" +
+                      userMsg.SchoolID +
+                      "&UserType=-1&OperationType=-1&PageIndex=0&PageSize=10"
+                  )
+                );
+              } else if (handleRoute === "All") {
+                dispatch(actions.UpDataState.getAllUserPreview("/GetSummary"));
+                dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+              } else {
+                history.push("/UserArchives/All");
+                // console.log(handleRoute);
+              }
+            } else {
+              history.push("/UserArchives/All");
+            }
+          } else if (((userMsg.UserType === "1"&&userMsg.UserClass[2]==='1')||userMsg.UserType === "0"||userMsg.UserType === "7") &&route.split("/")[1] === "RegisterExamine") {
+            //dispatch(actions.UpDataState.getAllUserPreview('/RegisterExamine'));
+            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+            if (!this.props.DataState.GradeClassMsg.returnData)
+              dispatch(
+                actions.UpDataState.getGradeClassMsg(
+                  "/GetGradeClassTree?schoolID=" + userMsg.SchoolID
+                )
+              );
+    
+            if (
+              route.split("/")[2] !== "RegisterWillExamine" &&
+              route.split("/")[2] !== "RegisterDidExamine"
+            ) {
+              history.push("/RegisterExamine/RegisterWillExamine");
+            }
+          } else if ((userMsg.UserType === "0"||userMsg.UserType === "7") &&route.split("/")[1] === "ImportFile") {
+            //dispatch(actions.UpDataState.getAllUserPreview('/RegisterExamine'));
+            if (
+              route.split("/")[2] !== "Student" &&
+              route.split("/")[2] !== "Teacher" &&
+              route.split("/")[2] !== "Leader"
+            ) {
+              history.push("/UserArchives/All");
+            }
+            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
           } else {
-          // console.log("sss");
-            dispatch(
-              actions.UpDataState.getGradeStudentPreview(
-                "/GetStudentToPage?SchoolID=" +
-                  userMsg.SchoolID +
-                  "&GradeID=" +
-                  ID +
-                  "&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC",
-                ""
-              )
-            );
-          }
-        } else if (handleRoute === "Teacher") {
-        // console.log("Teacher：" + DataState.SubjectTeacherMsg.returnData);
-          if (!DataState.SubjectTeacherMsg.returnData || ID !== "all")
-            //学科信息
-            dispatch(
-              actions.UpDataState.getSubjectTeacherMsg(
-                "/GetSubject?schoolID=" + userMsg.SchoolID,
-                ID
-              )
-            );
-          if (!DataState.TeacherTitleMsg.returnData) {
-            //职称
-            dispatch(
-              actions.UpDataState.getTeacherTitleMsg(
-                "/GetTitle?schoolID=" + userMsg.SchoolID
-              )
-            );
-          }
-          if (ID === "all") {
-            dispatch(
-              actions.UpDataState.getSubjectTeacherPreview(
-                "/GetTeacherToPage?SchoolID=" +
-                  userMsg.SchoolID +
-                  "&SubjectIDs=all&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC"
-              )
-            );
-          } else {
-            dispatch(
-              actions.UpDataState.getSubjectTeacherPreview(
-                "/GetTeacherToPage?SchoolID=" +
-                  userMsg.SchoolID +
-                  "&SubjectIDs=" +
-                  ID +
-                  "&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC"
-              )
-            );
-          }
-        } else if (handleRoute === "Leader") {
-          dispatch(
-            actions.UpDataState.getSchoolLeaderPreview(
-              "/GetSchoolLeader?SchoolID=" +
-                userMsg.SchoolID +
-                "&SortFiled=UserID&SortType=ASC"
-            )
-          );
-        } else if (handleRoute === "Graduate") {
-          if (DataState.GetGraduateGradeClassMsg.Grade.length <= 1)
-            dispatch(
-              actions.UpDataState.getGraduateGradeClassMsg(
-                "/GetGradeClassOfGraduate?SchoolID=" + userMsg.SchoolID
-              )
-            );
-          dispatch(
-            actions.UpDataState.getGraduatePreview(
-              "/GetGraduate?PageIndex=0&PageSize=10&schoolID=" +
-                userMsg.SchoolID
-            )
-          );
-        } else if (handleRoute === "LogDynamic") {
-          dispatch(actions.UpUIState.RightLoadingOpen());
+            if((userMsg.UserType === "0"||userMsg.UserType === "7") ){
+              history.push("/UserArchives/All");
 
-          dispatch(
-            actions.UpDataState.getUnreadLogPreview(
-              "/GetUnreadLogToPage?UserType=-1&OperationType=-1&PageIndex=0&PageSize=10&OnlineUserID=" +
-                userMsg.UserID
-            )
-          );
-        } else if (handleRoute === "LogRecord") {
-          dispatch(
-            actions.UpDataState.getLogRecordPreview(
-              "/GetAllLogToPage?SchoolID=" +
-                userMsg.SchoolID +
-                "&UserType=-1&OperationType=-1&PageIndex=0&PageSize=10"
-            )
-          );
-        } else if (handleRoute === "All") {
-          dispatch(actions.UpDataState.getAllUserPreview("/GetSummary"));
-          dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-        } else {
-          history.push("/UserArchives/All");
-        // console.log(handleRoute);
+            }else if(userMsg.UserType === "1"&&userMsg.UserClass[2]==='1'){
+              history.push("/RegisterExamine/RegisterWillExamine");
+
+            }else{
+                 window.location.href = config.ErrorProxy + "/Error.aspx?errcode=E011";
+              
+            }
+          }
         }
-      } else {
-        history.push("/UserArchives/All");
-      }
-    } else if (route.split("/")[1] === "RegisterExamine") {
-      //dispatch(actions.UpDataState.getAllUserPreview('/RegisterExamine'));
-      dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-      if (!this.props.DataState.GradeClassMsg.returnData)
-        dispatch(
-          actions.UpDataState.getGradeClassMsg(
-            "/GetGradeClassTree?schoolID=" + userMsg.SchoolID
-          )
-        );
-
-      if (
-        route.split("/")[2] !== "RegisterWillExamine" &&
-        route.split("/")[2] !== "RegisterDidExamine"
-      ) {
-        history.push("/RegisterExamine/RegisterWillExamine");
-      }
-    } else if (route.split("/")[1] === "ImportFile") {
-      //dispatch(actions.UpDataState.getAllUserPreview('/RegisterExamine'));
-      if (
-        route.split("/")[2] !== "Student" &&
-        route.split("/")[2] !== "Teacher" &&
-        route.split("/")[2] !== "Leader"
-      ) {
-        history.push("/UserArchives/All");
-      }
-      dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-    } else {
-      history.push("/UserArchives/All");
-    }
+      })
+    
   };
   //操作左侧菜单，响应路由变化
   handleMenu = () => {
@@ -303,12 +340,12 @@ class App extends Component {
       history.location.pathname === "/UserArchives"
     ) {
       history.push("/UserArchives/All");
-    // console.log(this.state);
+      // console.log(this.state);
     }
   };
   //左侧菜单每项的点击事件
   handleClick = key => {
-  // console.log(key);
+    // console.log(key);
     history.push("/" + key);
   };
   //每个组件的下拉菜单的数据请求

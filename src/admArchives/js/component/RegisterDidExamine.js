@@ -159,24 +159,24 @@ class RegisterDidExamine extends React.Component {
           title: "状态",
           align: "center",
           width: 150,
-          dataIndex: "StatusCode",
-          key: "StatusCode",
-          render: StatusCode => {
+          dataIndex: "Status",
+          key: "Status",
+          render: Status => {
             return (
               <div className="handle-content">
                 <span
                   title={
-                    StatusCode.StatusCode === 1
+                    Status.Status === 1
                       ? "审核通过"
-                      : StatusCode.StatusCode === 2
+                      : Status.Status === 2
                       ? "审核未通过"
                       : "未审核"
                   }
                   className={`handle-tips `}
                 >
-                  {StatusCode.StatusCode === 1
+                  {Status.Status === 1
                     ? "审核通过"
-                    : StatusCode.StatusCode === 2
+                    : Status.Status === 2
                     ? "审核未通过"
                     : "未审核"}
                 </span>
@@ -206,19 +206,47 @@ class RegisterDidExamine extends React.Component {
       sortFiled: "",
       keyword: "",
       CancelBtnShow: "n",
-      searchValue: ""
+      searchValue: "",
+      secondParam:'',
+      TeacherClassSelect: {},
+      firstParam: ""
     };
   }
 
-  componentWillMount() {}
-
+  componentWillMount() {
+    const { dispatch, DataState } = this.props;
+    let userMsg = DataState.LoginUser;
+    let isWho = "1";
+    if (userMsg.UserType === "0" && userMsg.UserType === "7") {
+      isWho = "1";
+    } else if (userMsg.UserType === "1" && userMsg.UserClass[2] === "1") {
+      isWho = "2";
+    }
+    this.setState({
+      isWho: isWho
+    });
+  }
+  componentWillReceiveProps(nextProps) {
+    const { dispatch, DataState } = nextProps;
+    let TeacherClass = DataState.GradeClassMsg.TeacherClass;
+    if (
+      Object.keys(this.state.TeacherClassSelect).length === 0 &&
+      TeacherClass[0]
+    ) {
+      this.setState({
+        TeacherClassSelect: TeacherClass[0],
+        secondParam: "&classID=" + TeacherClass[0].value
+      });
+    }
+  }
   StudentDropMenu = e => {
     const { dispatch } = this.props;
 
     //console.log(e);
     let Classes = [{ value: 0, title: "全部班级" }];
     this.setState({
-      firstSelect: e
+      firstSelect: e,
+      secondParam: ""
     });
     ////console.log(this.refs.dropMenuSecond)
     if (e.value !== 0) {
@@ -234,6 +262,7 @@ class RegisterDidExamine extends React.Component {
         secondDropList: Classes,
         pagination: 1,
         keyword: "",
+        firstParam: "&gradeID=" + e.value,
         CancelBtnShow: "n",
         searchValue: ""
       });
@@ -266,6 +295,8 @@ class RegisterDidExamine extends React.Component {
         DropMenuShow: false,
         pagination: 1,
         keyword: "",
+        secondParam: "",
+        firstParam: "",
         CancelBtnShow: "n",
         searchValue: "",
         secondSelect: { value: 0, title: "全部班级" }
@@ -283,23 +314,29 @@ class RegisterDidExamine extends React.Component {
       searchValue: ""
     });
     if (e.value === 0) {
+      this.setState({
+        secondParam: ""
+      });
       dispatch(
         actions.UpDataState.getDidSignUpLog(
           "/GetSignUpLogToPage?SchoolID=" +
             this.state.userMsg.SchoolID +
-            "&PageIndex=0&PageSize=10&status=1&gradeID=" +
-            this.state.firstSelect.value +
+            "&PageIndex=0&PageSize=10&status=1" +
+            this.state.firstParam +
             this.state.sortType +
             this.state.sortFiled
         )
       );
     } else {
+      this.setState({
+        secondParam: "&classID=" + e.value
+      });
       dispatch(
         actions.UpDataState.getDidSignUpLog(
           "/GetSignUpLogToPage?SchoolID=" +
             this.state.userMsg.SchoolID +
-            "&PageIndex=0&PageSize=10&status=1&gradeID=" +
-            this.state.firstSelect.value +
+            "&PageIndex=0&PageSize=10&status=1" +
+            this.state.firstParam +
             "&classID=" +
             e.value +
             this.state.sortType +
@@ -308,7 +345,52 @@ class RegisterDidExamine extends React.Component {
       );
     }
   };
+  TeacherDropMenuSecond = e => {
+    const { dispatch } = this.props;
 
+    this.setState({
+      TeacherClassSelect: e,
+      checkedList: [],
+      checkAll: false,
+      pagination: 1,
+      keyword: "",
+      CancelBtnShow: "n",
+      searchValue: ""
+    });
+    if (e.value === 0) {
+      this.setState({
+        secondParam: ""
+      });
+      dispatch(
+        actions.UpDataState.getDidSignUpLog(
+          "/GetSignUpLogToPage?SchoolID=" +
+            this.state.userMsg.SchoolID +
+            "&PageIndex=0&PageSize=10&status=1" +
+            this.state.firstParam +
+            this.state.sortType +
+            this.state.sortFiled
+        )
+      );
+    } else {
+      this.setState({
+        secondParam: "&classID=" + e.value
+      });
+      dispatch(
+        actions.UpDataState.getDidSignUpLog(
+          "/GetSignUpLogToPage?SchoolID=" +
+            this.state.userMsg.SchoolID +
+            "&PageIndex=0&PageSize=10&status=1" +
+            this.state.firstParam +
+            "&classID=" +
+            e.value +
+            this.state.sortType +
+            this.state.sortFiled
+        )
+      );
+    }
+
+    //dispatch(actions.UpDataState.getGradeStudentPreview('/ArchivesStudent?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
+  };
   OnCheckAllChange = e => {
     //console.log(e.target.checked, this.state.keyList)
     if (e.target.checked) {
@@ -354,12 +436,8 @@ class RegisterDidExamine extends React.Component {
           this.state.sortType +
           this.state.sortFiled +
           (this.state.keyword ? "&Keyword=" + this.state.keyword : "") +
-          (this.state.firstSelect.value
-            ? "&gradeID=" + this.state.firstSelect.value
-            : "") +
-          (this.state.secondSelect.value
-            ? "&classID=" + this.state.secondSelect.value
-            : "")
+          this.state.firstParam +
+          this.state.secondParam
       )
     );
   };
@@ -471,43 +549,42 @@ class RegisterDidExamine extends React.Component {
           : sorter.order === "ascend"
           ? "SortType=ASC"
           : "";
-          this.setState({
-            sortType: "&" + sortType,
-            sortFiled: "&sortFiled=" + sorter.columnKey
-          });
+      this.setState({
+        sortType: "&" + sortType,
+        sortFiled: "&sortFiled=" + sorter.columnKey
+      });
       dispatch(
         actions.UpDataState.getDidSignUpLog(
           "/GetSignUpLogToPage?SchoolID=" +
             this.state.userMsg.SchoolID +
-            "&PageIndex="+(this.state.pagination-1)+"&PageSize=10&status=1&sortFiled=" +
+            "&PageIndex=" +
+            (this.state.pagination - 1) +
+            "&PageSize=10&status=1&sortFiled=" +
             sorter.columnKey +
-            sortType+(this.state.keyword ? "&Keyword=" + this.state.keyword : "")+(this.state.firstSelect.value
-                ? "&gradeID=" + this.state.firstSelect.value
-                : "") +
-              (this.state.secondSelect.value
-                ? "&classID=" + this.state.secondSelect.value
-                : "")
+            "&" +sortType +
+            (this.state.keyword ? "&Keyword=" + this.state.keyword : "") +
+            this.state.firstParam +
+            this.state.secondParam
         )
       );
-    }else if (sorter) {
-        this.setState({
-          sortType: "",
-          sortFiled: ""
-        });
-        dispatch(
-            actions.UpDataState.getDidSignUpLog(
-              "/GetSignUpLogToPage?SchoolID=" +
-                this.state.userMsg.SchoolID +
-                "&PageIndex="+(this.state.pagination-1)+"&PageSize=10&status=1" +
-                (this.state.keyword ? "&Keyword=" + this.state.keyword : "")+(this.state.firstSelect.value
-                    ? "&gradeID=" + this.state.firstSelect.value
-                    : "") +
-                  (this.state.secondSelect.value
-                    ? "&classID=" + this.state.secondSelect.value
-                    : "")
-            )
-          );
-      }
+    } else if (sorter) {
+      this.setState({
+        sortType: "",
+        sortFiled: ""
+      });
+      dispatch(
+        actions.UpDataState.getDidSignUpLog(
+          "/GetSignUpLogToPage?SchoolID=" +
+            this.state.userMsg.SchoolID +
+            "&PageIndex=" +
+            (this.state.pagination - 1) +
+            "&PageSize=10&status=1" +
+            (this.state.keyword ? "&Keyword=" + this.state.keyword : "") +
+            this.state.firstParam +
+            this.state.secondParam
+        )
+      );
+    }
   };
   //搜索
   LogSearch = e => {
@@ -524,28 +601,24 @@ class RegisterDidExamine extends React.Component {
       );
       return;
     } else {
-        this.setState({
-            keyword: e.value,
-            CancelBtnShow: "y",
-            pagination: 1
-          });
+      this.setState({
+        keyword: e.value,
+        CancelBtnShow: "y",
+        pagination: 1
+      });
       dispatch(
         actions.UpDataState.getDidSignUpLog(
           "/GetSignUpLogToPage?SchoolID=" +
             this.state.userMsg.SchoolID +
             "&PageIndex=" +
-            (0) +
+            0 +
             "&PageSize=10&status=1" +
             this.state.sortType +
             this.state.sortFiled +
             "&Keyword=" +
             e.value +
-            (this.state.firstSelect.value
-              ? "&gradeID=" + this.state.firstSelect.value
-              : "") +
-            (this.state.secondSelect.value
-              ? "&classID=" + this.state.secondSelect.value
-              : "")
+            this.state.firstParam +
+            this.state.secondParam
         )
       );
     }
@@ -583,21 +656,19 @@ class RegisterDidExamine extends React.Component {
         "/GetSignUpLogToPage?SchoolID=" +
           this.state.userMsg.SchoolID +
           "&PageIndex=" +
-          (0) +
+          0 +
           "&PageSize=10&status=1" +
           this.state.sortType +
-          this.state.sortFiled 
-          +(this.state.firstSelect.value
-            ? "&gradeID=" + this.state.firstSelect.value
-            : "") +
-          (this.state.secondSelect.value
-            ? "&classID=" + this.state.secondSelect.value
-            : "")
+          this.state.sortFiled +
+          this.state.firstParam +
+          this.state.secondParam
       )
     );
   };
   render() {
     const { UIState, DataState } = this.props;
+    let TeacherClass = DataState.GradeClassMsg.TeacherClass;
+
     // const data = {
     //     userName: '康欣',
     //     userImg: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
@@ -616,25 +687,39 @@ class RegisterDidExamine extends React.Component {
     return (
       <React.Fragment>
         <div className="main-select">
-          <DropDown
-            onChange={this.StudentDropMenu}
-            width={120}
-            height={96}
-            dropSelectd={this.state.firstSelect}
-            dropList={
-              DataState.GradeClassMsg.returnData
-                ? DataState.GradeClassMsg.returnData.grades
-                : [{ value: 0, title: "全部年级" }]
-            }
-          ></DropDown>
-          <DropDown
-            width={120}
-            height={96}
-            style={{ display: this.state.DropMenuShow ? "block" : "none" }}
-            dropSelectd={this.state.secondSelect}
-            dropList={this.state.secondDropList}
-            onChange={this.StudentDropMenuSecond}
-          ></DropDown>
+          {this.state.isWho === "1" ? (
+            <div>
+              <DropDown
+                onChange={this.StudentDropMenu}
+                width={120}
+                height={240}
+                dropSelectd={this.state.firstSelect}
+                dropList={
+                  DataState.GradeClassMsg.returnData
+                    ? DataState.GradeClassMsg.returnData.grades
+                    : [{ value: 0, title: "全部年级" }]
+                }
+              ></DropDown>
+              <DropDown
+                width={120}
+                height={240}
+                style={{ display: this.state.DropMenuShow ? "block" : "none" }}
+                dropSelectd={this.state.secondSelect}
+                dropList={this.state.secondDropList}
+                onChange={this.StudentDropMenuSecond}
+              ></DropDown>
+            </div>
+          ) :
+          TeacherClass.length>1? (
+            <DropDown
+              width={120}
+              height={240}
+              dropSelectd={this.state.TeacherClassSelect}
+              dropList={TeacherClass}
+              onChange={this.TeacherDropMenuSecond}
+            ></DropDown>
+          ):
+          <span className='single'>{this.state.TeacherClassSelect.title}</span>}
           <Search
             placeHolder="请输入学号或姓名进行搜索"
             onClickSearch={this.LogSearch}

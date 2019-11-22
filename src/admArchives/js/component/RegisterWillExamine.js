@@ -209,26 +209,53 @@ class RegisterWillExamine extends React.Component {
       alertQueryTitle: "查询提示~",
       firstSelect: { value: 0, title: "全部年级" },
       secondSelect: { value: 0, title: "全部班级" },
+      TeacherClassSelect:{},
+      firstParam: "",
+      secondParam: "",
       handleUserMsg: [],
       pageindex: 0,
-      pagination:1,
+      pagination: 1,
       StudentDetailsMsgModalVisible: false,
       sortType: "",
       sortFiled: "",
       keyword: "",
       CancelBtnShow: "n",
-      searchValue: ""
+      searchValue: "",
+      isWho: "1"
     };
   }
 
-  componentWillMount() {}
+  componentWillMount() {
+    const { dispatch, DataState } = this.props;
+    let userMsg = DataState.LoginUser;
+    let isWho = "1";
+    if (userMsg.UserType === "0" && userMsg.UserType === "7") {
+      isWho = "1";
+    } else if (userMsg.UserType === "1" && userMsg.UserClass[2] === "1") {
+      isWho = "2";
+    }
+    this.setState({
+      isWho:isWho
+    })
+  }
+  componentWillReceiveProps(nextProps){
+    const {dispatch,DataState} = nextProps;
+    let TeacherClass = DataState.GradeClassMsg.TeacherClass;
+    if(Object.keys(this.state.TeacherClassSelect).length===0&&TeacherClass[0]){
+      this.setState({
+        TeacherClassSelect:TeacherClass[0],
+        secondParam:"&classID=" +TeacherClass[0].value
+      })
+    }
+  }
 
   StudentDropMenu = e => {
     const { dispatch } = this.props;
     //console.log(e);
     let Classes = [{ value: 0, title: "全部班级" }];
     this.setState({
-      firstSelect: e
+      firstSelect: e,
+      secondParam: ""
     });
     ////console.log(this.refs.dropMenuSecond)
     if (e.value !== 0) {
@@ -243,6 +270,7 @@ class RegisterWillExamine extends React.Component {
       this.setState({
         secondDropList: Classes,
         checkedList: [],
+        firstParam: "&gradeID=" + e.value,
         checkAll: false,
         pagination: 1,
         keyword: "",
@@ -254,8 +282,8 @@ class RegisterWillExamine extends React.Component {
           "/GetSignUpLogToPage?SchoolID=" +
             this.state.userMsg.SchoolID +
             "&PageIndex=0&PageSize=10&status=0&gradeID=" +
-            e.value+
-            this.state.sortType+
+            e.value +
+            this.state.sortType +
             this.state.sortFiled
         )
       );
@@ -268,8 +296,8 @@ class RegisterWillExamine extends React.Component {
         actions.UpDataState.getWillSignUpLog(
           "/GetSignUpLogToPage?SchoolID=" +
             this.state.userMsg.SchoolID +
-            "&PageIndex=0&PageSize=10&status=0"+
-            this.state.sortType+
+            "&PageIndex=0&PageSize=10&status=0" +
+            this.state.sortType +
             this.state.sortFiled
         )
       );
@@ -278,6 +306,8 @@ class RegisterWillExamine extends React.Component {
         checkedList: [],
         checkAll: false,
         pagination: 1,
+        secondParam: "",
+        firstParam: "",
         keyword: "",
         CancelBtnShow: "n",
         searchValue: "",
@@ -299,26 +329,32 @@ class RegisterWillExamine extends React.Component {
       searchValue: ""
     });
     if (e.value === 0) {
+      this.setState({
+        secondParam: ""
+      });
       dispatch(
         actions.UpDataState.getWillSignUpLog(
           "/GetSignUpLogToPage?SchoolID=" +
             this.state.userMsg.SchoolID +
-            "&PageIndex=0&PageSize=10&status=0&gradeID=" +
-            this.state.firstSelect.value+
-            this.state.sortType+
+            "&PageIndex=0&PageSize=10&status=0" +
+            this.state.firstParam +
+            this.state.sortType +
             this.state.sortFiled
         )
       );
     } else {
+      this.setState({
+        secondParam: "&classID=" + e.value
+      });
       dispatch(
         actions.UpDataState.getWillSignUpLog(
           "/GetSignUpLogToPage?SchoolID=" +
             this.state.userMsg.SchoolID +
-            "&PageIndex=0&PageSize=10&status=0&gradeID=" +
-            this.state.firstSelect.value +
+            "&PageIndex=0&PageSize=10&status=0" +
+            this.state.firstParam +
             "&classID=" +
-            e.value+
-            this.state.sortType+
+            e.value +
+            this.state.sortType +
             this.state.sortFiled
         )
       );
@@ -326,7 +362,52 @@ class RegisterWillExamine extends React.Component {
 
     //dispatch(actions.UpDataState.getGradeStudentPreview('/ArchivesStudent?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
   };
+  TeacherDropMenuSecond = e => {
+    const { dispatch } = this.props;
 
+    this.setState({
+      TeacherClassSelect: e,
+      checkedList: [],
+      checkAll: false,
+      pagination: 1,
+      keyword: "",
+      CancelBtnShow: "n",
+      searchValue: ""
+    });
+    if (e.value === 0) {
+      this.setState({
+        secondParam: ""
+      });
+      dispatch(
+        actions.UpDataState.getWillSignUpLog(
+          "/GetSignUpLogToPage?SchoolID=" +
+            this.state.userMsg.SchoolID +
+            "&PageIndex=0&PageSize=10&status=0" +
+            this.state.firstParam +
+            this.state.sortType +
+            this.state.sortFiled
+        )
+      );
+    } else {
+      this.setState({
+        secondParam: "&classID=" + e.value
+      });
+      dispatch(
+        actions.UpDataState.getWillSignUpLog(
+          "/GetSignUpLogToPage?SchoolID=" +
+            this.state.userMsg.SchoolID +
+            "&PageIndex=0&PageSize=10&status=0" +
+            this.state.firstParam +
+            "&classID=" +
+            e.value +
+            this.state.sortType +
+            this.state.sortFiled
+        )
+      );
+    }
+
+    //dispatch(actions.UpDataState.getGradeStudentPreview('/ArchivesStudent?SchoolID=schoolID&GradeID=gradeID&ClassID=ClassID&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC'));
+  };
   OnCheckAllChange = e => {
     //console.log(e.target.checked, this.state.keyList)
     if (e.target.checked) {
@@ -352,6 +433,7 @@ class RegisterWillExamine extends React.Component {
     const { DataState } = this.props;
     let arr = this.state.data;
     //arr[Others.key-1].Others[isExamined] = !arr[Others.key-1].Others[isExamined];
+    console.log(DataState.GetSignUpLog.WillData.returnData[key].UserMsg,key)
     this.setState({
       UserExamineModalVisible: true,
       handleUserMsg: DataState.GetSignUpLog.WillData.returnData[key].UserMsg
@@ -360,26 +442,25 @@ class RegisterWillExamine extends React.Component {
   onPagiNationChange = e => {
     const { dispatch } = this.props;
     this.setState({
-      pagination: e ,
+      pagination: e,
       checkedList: [],
-      checkAll: false,
+      checkAll: false
     });
     dispatch(
-        actions.UpDataState.getWillSignUpLog(
-          "/GetSignUpLogToPage?SchoolID=" +
-            this.state.userMsg.SchoolID +
-            "&PageIndex="+(this.state.pagination-1)+"&PageSize=10&status=0"+
-            (this.state.keyword?'&Keyword='+this.state.keyword:'')+
-            (this.state.firstSelect.value?"&gradeID=" +
-            this.state.firstSelect.value:'') +
-            (this.state.secondSelect.value?"&classID=" +
-            this.state.secondSelect.value:'') +
-            this.state.sortType +
-      this.state.sortFiled
-        )
-      );
-    }
-  
+      actions.UpDataState.getWillSignUpLog(
+        "/GetSignUpLogToPage?SchoolID=" +
+          this.state.userMsg.SchoolID +
+          "&PageIndex=" +
+          (this.state.pagination - 1) +
+          "&PageSize=10&status=0" +
+          (this.state.keyword ? "&Keyword=" + this.state.keyword : "") +
+          this.state.firstParam +
+          this.state.secondParam +
+          this.state.sortType +
+          this.state.sortFiled
+      )
+    );
+  };
 
   onUserNameClick = key => {
     const { DataState } = this.props;
@@ -444,21 +525,19 @@ class RegisterWillExamine extends React.Component {
   onPassQueryOk = () => {
     const { dispatch, DataState } = this.props;
     let checkList = this.state.checkedList;
-    let StatusCodeCount = DataState.GetSignUpLog.newStatusCode;
+    let StatusCodeCount = DataState.GetSignUpLog.newStatus;
     let logID = checkList.map((child, index) => {
       return DataState.GetSignUpLog.WillData.returnData[child - 1].UserMsg
         .logID;
     });
-    let url = "/SignUpLogAudit";
-    dispatch(
-      actions.UpDataState.setSignUpLogCountMsg(StatusCodeCount + logID.length)
-    );
+    let url = "/SignUpLogAuditMulti";
+    
     //console.log(StatusCodeCount)
     postData(
       CONFIG.UserInfoProxy + url,
       {
         LogID: logID.join(),
-        StatusCode: 1
+        Status: 1
       },
       2
     )
@@ -475,43 +554,45 @@ class RegisterWillExamine extends React.Component {
           });
 
           // dispatch(actions.UpDataState.setSignUpLogCountMsg(++StatusCodeCount))
-
-        //   if (this.state.firstSelect.value === 0) {
-            dispatch(
-              actions.UpDataState.getWillSignUpLog(
-                "/GetSignUpLogToPage?SchoolID=" +
-                  this.state.userMsg.SchoolID +
-                  "&PageIndex="+(this.state.pagination-1)+"&PageSize=10&status=0"+
-                  (this.state.keyword?'&Keyword='+this.state.keyword:'')+
-                  (this.state.firstSelect.value?"&gradeID=" +
-                  this.state.firstSelect.value:'') +
-                  (this.state.secondSelect.value?"&classID=" +
-                  this.state.secondSelect.value:'') +
-                  this.state.sortType +
-            this.state.sortFiled
-              )
-            );
-        //   } else if (this.state.secondSelect.value === 0)
-        //     dispatch(
-        //       actions.UpDataState.getWillSignUpLog(
-        //         "/GetSignUpLogToPage?SchoolID=" +
-        //           this.state.userMsg.SchoolID +
-        //           "&PageIndex=0&PageSize=10&status=0&gradeID=" +
-        //           this.state.firstSelect.value
-        //       )
-        //     );
-        //   else {
-        //     dispatch(
-        //       actions.UpDataState.getWillSignUpLog(
-        //         "/GetSignUpLogToPage?SchoolID=" +
-        //           this.state.userMsg.SchoolID +
-        //           "&PageIndex=0&PageSize=10&status=0&gradeID=" +
-        //           this.state.firstSelect.value +
-        //           "&classID=" +
-        //           this.state.secondSelect.value
-        //       )
-        //     );
-        //   }
+          dispatch(
+            actions.UpDataState.setSignUpLogCountMsg(StatusCodeCount + logID.length)
+          );
+          //   if (this.state.firstSelect.value === 0) {
+          dispatch(
+            actions.UpDataState.getWillSignUpLog(
+              "/GetSignUpLogToPage?SchoolID=" +
+                this.state.userMsg.SchoolID +
+                "&PageIndex=" +
+                (this.state.pagination - 1) +
+                "&PageSize=10&status=0" +
+                (this.state.keyword ? "&Keyword=" + this.state.keyword : "") +
+                this.state.firstParam +
+                this.state.secondParam +
+                this.state.sortType +
+                this.state.sortFiled
+            )
+          );
+          //   } else if (this.state.secondSelect.value === 0)
+          //     dispatch(
+          //       actions.UpDataState.getWillSignUpLog(
+          //         "/GetSignUpLogToPage?SchoolID=" +
+          //           this.state.userMsg.SchoolID +
+          //           "&PageIndex=0&PageSize=10&status=0&gradeID=" +
+          //           this.state.firstSelect.value
+          //       )
+          //     );
+          //   else {
+          //     dispatch(
+          //       actions.UpDataState.getWillSignUpLog(
+          //         "/GetSignUpLogToPage?SchoolID=" +
+          //           this.state.userMsg.SchoolID +
+          //           "&PageIndex=0&PageSize=10&status=0&gradeID=" +
+          //           this.state.firstSelect.value +
+          //           "&classID=" +
+          //           this.state.secondSelect.value
+          //       )
+          //     );
+          //   }
         }
       });
   };
@@ -523,17 +604,15 @@ class RegisterWillExamine extends React.Component {
       return DataState.GetSignUpLog.WillData.returnData[child - 1].UserMsg
         .logID;
     });
-    let StatusCodeCount = DataState.GetSignUpLog.newStatusCode;
-    let url = "/SignUpLogAudit";
-    dispatch(
-      actions.UpDataState.setSignUpLogCountMsg(StatusCodeCount + logID.length)
-    );
+    let StatusCodeCount = DataState.GetSignUpLog.newStatus;
+    let url = "/SignUpLogAuditMulti";
+    
 
     postData(
       CONFIG.UserInfoProxy + url,
       {
         LogID: logID.join(),
-        StatusCode: 2
+        Status: 2
       },
       2
     )
@@ -549,19 +628,21 @@ class RegisterWillExamine extends React.Component {
             checkList: []
           });
           // dispatch(actions.UpDataState.setSignUpLogCountMsg(StatusCodeCount + logID.length));
-
+          dispatch(
+            actions.UpDataState.setSignUpLogCountMsg(StatusCodeCount + logID.length)
+          );
           dispatch(
             actions.UpDataState.getWillSignUpLog(
               "/GetSignUpLogToPage?SchoolID=" +
                 this.state.userMsg.SchoolID +
-                "&PageIndex="+(this.state.pagination-1)+"&PageSize=10&status=0"+
-                (this.state.keyword?'&Keyword='+this.state.keyword:'')+
-                (this.state.firstSelect.value?"&gradeID=" +
-                this.state.firstSelect.value:'') +
-                (this.state.secondSelect.value?"&classID=" +
-                this.state.secondSelect.value:'') +
+                "&PageIndex=" +
+                (this.state.pagination - 1) +
+                "&PageSize=10&status=0" +
+                (this.state.keyword ? "&Keyword=" + this.state.keyword : "") +
+                this.state.firstParam +
+                this.state.secondParam +
                 this.state.sortType +
-          this.state.sortFiled
+                this.state.sortFiled
             )
           );
         }
@@ -592,15 +673,14 @@ class RegisterWillExamine extends React.Component {
   //不通过
   UserExamineMadalFail = userMsg => {
     const { dispatch, DataState } = this.props;
-    let StatusCodeCount = DataState.GetSignUpLog.newStatusCode;
+    let newStatus = DataState.GetSignUpLog.newStatus;
     let url = "/SignUpLogAudit";
-    dispatch(actions.UpDataState.setSignUpLogCountMsg(++StatusCodeCount));
 
     postData(
       CONFIG.UserInfoProxy + url,
       {
         LogID: userMsg.logID,
-        StatusCode: 2
+        Status: 2
       },
       2
     )
@@ -611,21 +691,23 @@ class RegisterWillExamine extends React.Component {
         if (json.StatusCode === 200) {
           this.setState({
             UserExamineModalVisible: false,
-            checkList:[],
-            checkAll:false
+            checkList: [],
+            checkAll: false
           });
+          dispatch(actions.UpDataState.setSignUpLogCountMsg(++newStatus));
+
           dispatch(
             actions.UpDataState.getWillSignUpLog(
               "/GetSignUpLogToPage?SchoolID=" +
                 this.state.userMsg.SchoolID +
-                "&PageIndex="+(this.state.pagination-1)+"&PageSize=10&status=0"+
-                (this.state.keyword?'&Keyword='+this.state.keyword:'')+
-                (this.state.firstSelect.value?"&gradeID=" +
-                this.state.firstSelect.value:'') +
-                (this.state.secondSelect.value?"&classID=" +
-                this.state.secondSelect.value:'') +
+                "&PageIndex=" +
+                (this.state.pagination - 1) +
+                "&PageSize=10&status=0" +
+                (this.state.keyword ? "&Keyword=" + this.state.keyword : "") +
+                this.state.firstParam +
+                this.state.secondParam +
                 this.state.sortType +
-          this.state.sortFiled
+                this.state.sortFiled
             )
           );
         }
@@ -635,13 +717,13 @@ class RegisterWillExamine extends React.Component {
   UserExamineMadalOk = userMsg => {
     const { dispatch, DataState } = this.props;
     let url = "/SignUpLogAudit";
-    let StatusCodeCount = DataState.GetSignUpLog.newStatusCode;
-    dispatch(actions.UpDataState.setSignUpLogCountMsg(++StatusCodeCount));
+    let newStatus = DataState.GetSignUpLog.newStatus;
+    console.log(userMsg)
     postData(
       CONFIG.UserInfoProxy + url,
       {
         LogID: userMsg.logID,
-        StatusCode: 1
+        Status: 1
       },
       2
     )
@@ -652,23 +734,24 @@ class RegisterWillExamine extends React.Component {
         if (json.StatusCode === 200) {
           this.setState({
             UserExamineModalVisible: false,
-            checkAll:false,
-            checkList:[]
+            checkAll: false,
+            checkList: []
           });
           // dispatch(actions.UpDataState.setSignUpLogCountMsg(++StatusCodeCount));
+          dispatch(actions.UpDataState.setSignUpLogCountMsg(++newStatus));
 
           dispatch(
             actions.UpDataState.getWillSignUpLog(
               "/GetSignUpLogToPage?SchoolID=" +
                 this.state.userMsg.SchoolID +
-                "&PageIndex="+(this.state.pagination-1)+"&PageSize=10&status=0"+
-                (this.state.keyword?'&Keyword='+this.state.keyword:'')+
-                (this.state.firstSelect.value?"&gradeID=" +
-                this.state.firstSelect.value:'') +
-                (this.state.secondSelect.value?"&classID=" +
-                this.state.secondSelect.value:'') +
+                "&PageIndex=" +
+                (this.state.pagination - 1) +
+                "&PageSize=10&status=0" +
+                (this.state.keyword ? "&Keyword=" + this.state.keyword : "")+
+                this.state.firstParam +
+                this.state.secondParam +
                 this.state.sortType +
-          this.state.sortFiled
+                this.state.sortFiled
             )
           );
         }
@@ -701,12 +784,10 @@ class RegisterWillExamine extends React.Component {
             "&PageIndex=0&PageSize=10&status=0&keyword=" +
             e.value +
             this.state.sortType +
-            this.state.sortFiled+(this.state.firstSelect.value
-                ? "&gradeID=" + this.state.firstSelect.value
-                : "") +
-              (this.state.secondSelect.value
-                ? "&classID=" + this.state.secondSelect.value
-                : "")
+            this.state.sortFiled +
+            
+            this.state.firstParam +
+            this.state.secondParam 
         )
       );
     }
@@ -740,14 +821,11 @@ class RegisterWillExamine extends React.Component {
             (this.state.pagination - 1) +
             "&PageSize=10&status=0&sortFiled=" +
             sorter.columnKey +
-            "&PageSize=10&" +
+            
             sortType +
-            (this.state.keyword ? "&Keyword=" + this.state.keyword : "")+(this.state.firstSelect.value
-                ? "&gradeID=" + this.state.firstSelect.value
-                : "") +
-              (this.state.secondSelect.value
-                ? "&classID=" + this.state.secondSelect.value
-                : "")
+            (this.state.keyword ? "&Keyword=" + this.state.keyword : "") +
+            this.state.firstParam +
+            this.state.secondParam 
         )
       );
     } else if (sorter) {
@@ -761,13 +839,10 @@ class RegisterWillExamine extends React.Component {
             this.state.userMsg.SchoolID +
             "&PageIndex=" +
             (this.state.pagination - 1) +
-            "&PageSize=10&status=0&PageSize=10" +
-            (this.state.keyword ? "&Keyword=" + this.state.keyword : "")+(this.state.firstSelect.value
-                ? "&gradeID=" + this.state.firstSelect.value
-                : "") +
-              (this.state.secondSelect.value
-                ? "&classID=" + this.state.secondSelect.value
-                : "")
+            "&PageSize=10&status=0" +
+            (this.state.keyword ? "&Keyword=" + this.state.keyword : "")+
+            this.state.firstParam +
+            this.state.secondParam 
         )
       );
     }
@@ -806,19 +881,17 @@ class RegisterWillExamine extends React.Component {
       actions.UpDataState.getWillSignUpLog(
         "/GetSignUpLogToPage?SchoolID=" +
           this.state.userMsg.SchoolID +
-          "&PageIndex=0&PageSize=10&status=0&PageSize=10" +
+          "&PageIndex=0&PageSize=10&status=0" +
           this.state.sortType +
-          this.state.sortFiled+(this.state.firstSelect.value
-            ? "&gradeID=" + this.state.firstSelect.value
-            : "") +
-          (this.state.secondSelect.value
-            ? "&classID=" + this.state.secondSelect.value
-            : "")
+          this.state.sortFiled +
+          this.state.firstParam +
+          this.state.secondParam 
       )
     );
   };
   render() {
     const { UIState, DataState } = this.props;
+    let TeacherClass = DataState.GradeClassMsg.TeacherClass;
     const data = {
       userName: "康欣",
       userImg:
@@ -838,25 +911,38 @@ class RegisterWillExamine extends React.Component {
     return (
       <React.Fragment>
         <div className="main-select">
-          <DropDown
-            onChange={this.StudentDropMenu}
-            width={120}
-            height={96}
-            dropSelectd={this.state.firstSelect}
-            dropList={
-              DataState.GradeClassMsg.returnData
-                ? DataState.GradeClassMsg.returnData.grades
-                : [{ value: 0, title: "全部年级" }]
-            }
-          ></DropDown>
-          <DropDown
-            width={120}
-            height={96}
-            style={{ display: this.state.DropMenuShow ? "block" : "none" }}
-            dropSelectd={this.state.secondSelect}
-            dropList={this.state.secondDropList}
-            onChange={this.StudentDropMenuSecond}
-          ></DropDown>
+          {this.state.isWho === "1" ? (
+            <div>
+              <DropDown
+                onChange={this.StudentDropMenu}
+                width={120}
+                height={240}
+                dropSelectd={this.state.firstSelect}
+                dropList={
+                  DataState.GradeClassMsg.returnData
+                    ? DataState.GradeClassMsg.returnData.grades
+                    : [{ value: 0, title: "全部年级" }]
+                }
+              ></DropDown>
+              <DropDown
+                width={120}
+                height={240}
+                style={{ display: this.state.DropMenuShow ? "block" : "none" }}
+                dropSelectd={this.state.secondSelect}
+                dropList={this.state.secondDropList}
+                onChange={this.StudentDropMenuSecond}
+              ></DropDown>
+            </div>
+          ) : TeacherClass.length>1? (
+            <DropDown
+              width={120}
+              height={240}
+              dropSelectd={this.state.TeacherClassSelect}
+              dropList={TeacherClass}
+              onChange={this.TeacherDropMenuSecond}
+            ></DropDown>
+          ):
+          <span className='single'>{this.state.TeacherClassSelect.title}</span>}
           <Search
             placeHolder="请输入学号或姓名进行搜索"
             onClickSearch={this.LogSearch.bind(this)}
@@ -916,14 +1002,14 @@ class RegisterWillExamine extends React.Component {
             <PagiNation
               showQuickJumper
               current={this.state.pagination}
-                    hideOnSinglepage={true}
+              hideOnSinglepage={true}
               total={DataState.GetSignUpLog.WillData.Total}
               onChange={this.onPagiNationChange}
             ></PagiNation>
           </div>
         </div>
 
-        <DetailsModal
+        {this.state.UserExamineModalVisible?(<DetailsModal
           ref="StudentDetailsMsgModal"
           visible={this.state.UserExamineModalVisible}
           onOk={this.UserExamineMadalOk.bind(this, this.state.handleUserMsg)}
@@ -934,9 +1020,9 @@ class RegisterWillExamine extends React.Component {
           )}
           data={this.state.handleUserMsg}
           type="examine"
-        ></DetailsModal>
+        ></DetailsModal>):''}
         <DetailsModal
-          ref="StudentDetailsMsgModal"
+          ref="StudentDetailsMsgModals"
           visible={this.state.StudentDetailsMsgModalVisible}
           onOk={this.StudentDetailsMsgModalOk}
           onCancel={this.StudentDetailsMsgModalCancel}
