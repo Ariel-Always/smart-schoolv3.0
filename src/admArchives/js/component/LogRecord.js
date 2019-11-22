@@ -32,7 +32,7 @@ class LogRecord extends React.Component {
                         return (
                             <div className='registerTime-content'>
                                 {/* <CheckBox value={key.key} onChange={this.onCheckChange}></CheckBox> */}
-                                <span className='key-content'>{LogID}</span>
+                                <span title={LogID} className='key-content'>{LogID}</span>
                             </div>
                         )
                     }

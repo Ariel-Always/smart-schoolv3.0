@@ -507,14 +507,14 @@ class Graduate extends React.Component {
                                     ref='dropMenuFirst'
                                     onChange={this.StudentDropMenu}
                                     width={120}
-                                    height={96}
+                                    height={240}
                                     dropSelectd={this.state.firstSelect}
                                     dropList={DataState.GetGraduateGradeClassMsg.Grade}
                                 ></DropDown>
                                 <DropDown
                                     ref='dropMenuSecond'
                                     width={120}
-                                    height={96}
+                                    height={240}
                                     style={{ display: this.state.secondDropMenuShow ? 'block' : 'none' }}
                                     dropSelectd={this.state.secondSelect}
                                     dropList={DataState.GetGraduateGradeClassMsg.Class[this.state.firstSelect.value]}

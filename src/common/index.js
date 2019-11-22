@@ -1495,6 +1495,7 @@ class Menu extends React.Component {
                                 <span
                                     className={`frame_leftmenu_mainitem_name ${object.icon} ${object.active ? 'active' : ''} `}
                                     onClick={() => object.onTitleClick(object.key)}
+                                    title={object.title}
 
                                 >
                                     {object.title}
@@ -1519,7 +1520,7 @@ class Menu extends React.Component {
                                 <span
                                     className="frame_leftmenu_twograde_text"
                                     onClick={() => object.onTitleClick(object.key)}
-
+                                    title={object.title}
                                 >{object.title}</span>
                                 <span className="frame_left_menu_right_arrow" ></span>
                             </div>
@@ -1538,6 +1539,7 @@ class Menu extends React.Component {
                             <span
                                 className={`frame_leftmenu_mainitem_name ${object.icon} ${object.active ? 'active' : ''} `}
                                 onClick={() => object.onTitleClick(object.key)}
+                                title={object.title}
                             >
                                 {object.title}
                             </span>
@@ -1554,7 +1556,7 @@ class Menu extends React.Component {
                             <span
                                 className={`frame_leftmenu_onegrade_name frame_ellipsis ${object.active ? 'active' : ''} ${object.selected ? 'selected' : ''} `}
                                 onClick={() => object.onTitleClick(object.key)}
-
+                                title={object.title}
                             >
                                 {object.title}</span>
                         </li>
@@ -1570,7 +1572,7 @@ class Menu extends React.Component {
                             <span
                                 className="frame_leftmenu_onegrade_name frame_ellipsis"
                                 onClick={() => object.onTitleClick(object.key)}
-
+                                title={object.title}
                             >
                                 {object.title}</span>
                         </li>
@@ -2068,8 +2070,8 @@ class DetailsModal extends React.Component {
                     <div className='top-img'>
                         <img width={80} height={80} alt={data.userName} src={data.userImg} ></img>
                     </div>
-                    <p className='top-userName'>{data.userName}<span style={{ opacity: 0.64, marginLeft: 3 + 'px' }}>{(data.Gende === '男' ? '♂' :  data.Gende === '女' ? '♀' : '')}</span></p>
-                    <p className='top-userText'>{data.userText}</p>
+                    <p className='top-userName' title={data.userName}>{data.userName}<span style={{ opacity: 0.64, marginLeft: 3 + 'px' }}>{(data.Gende === '男' ? '♂' :  data.Gende === '女' ? '♀' : '')}</span></p>
+                    <p className='top-userText' title={data.userText}>{data.userText}</p>
                 </div>
                 <div className='modal-content'>
                     <div className='content-box'>
@@ -2077,79 +2079,80 @@ class DetailsModal extends React.Component {
                             <span className='col-left'>
                                 {type === 'student'|| type === 'graduate'? '学号' : '工号'}
                             </span>
-                            <span className='col-right'>{data.userID ? data.userID : <span className='content-null'>未填写</span>}</span>
+                            <span className='col-right' title={data.userID}>{data.userID ? data.userID : <span className='content-null'>未填写</span>}</span>
                         </div>
                         <div className='row' style={{ display: type === 'graduate' ? 'block' : 'none' }}>
                             <span className='col-left'>
                                 {'毕业年份'}
                             </span>
-                            <span className='col-right'>{data.year ? data.year+'年' : <span className='content-null'>未填写</span>}</span>
+                            <span className='col-right' title={data.year+'年'}>{data.year ? data.year+'年' : <span className='content-null'>未填写</span>}</span>
                         </div>
                         <div className='row' style={{ display: type === 'graduate' ? 'block' : 'none' }}>
                             <span className='col-left'>
                                 {'班级'}
                             </span>
-                            <span className='col-right'>{data.userClass ? data.userClass : <span className='content-null'>未填写</span>}</span>
+                            <span className='col-right' title={data.userClass}>{data.userClass ? data.userClass : <span className='content-null'>未填写</span>}</span>
                         </div>
                         <div className='row' style={{ display: type !== 'leader'&&type !== 'graduate'&&type !== 'admin' ? 'block' : 'none' }}>
                             <span className='col-left'>
                                 {type === 'student'||type==='examine'? '班级' : '所教学科'}
                             </span>
-                            <span className='col-right'>{type === 'student'||type==='examine'? data.userGrade && data.userClass ? (data.userGrade + ' > ' + data.userClass) : <span className='content-null'>未填写</span> : data.subjectName ? data.subjectName : <span className='content-null'>未填写</span>}</span>
+                            <span className='col-right' title={type === 'student'||type==='examine'?data.userGrade && data.userClass ? (data.userGrade + ' > ' + data.userClass) : '':data.subjectName ? data.subjectName:''}>
+                                {type === 'student'||type==='examine'? data.userGrade && data.userClass ? (data.userGrade + ' > ' + data.userClass) : <span className='content-null'>未填写</span> : data.subjectName ? data.subjectName : <span className='content-null'>未填写</span>}</span>
                         </div>
                         <div className='row' style={{ display: type === 'teacher' ? 'block' : 'none' }}>
                             <span className='col-left'>
                                 {'职称'}
                             </span>
-                            <span className='col-right'>{data.titleName ? data.titleName : <span className='content-null'>未填写</span>}</span>
+                            <span className='col-right' title={data.titleName}>{data.titleName ? data.titleName : <span className='content-null'>未填写</span>}</span>
                         </div>
                         <div className='row' style={{ display: type === 'leader' ? 'block' : 'none' }}>
                             <span className='col-left'>
                                 {'行政职务'}
                             </span>
-                            <span className='col-right'>{data.Position ? data.Position : <span className='content-null'>未填写</span>}</span>
+                            <span className='col-right' title={data.Position}>{data.Position ? data.Position : <span className='content-null'>未填写</span>}</span>
                         </div>
                         <div className='row' style={{ display: type === 'graduate' ? 'block' : 'none' }}>
                             <span className='col-left'>
                                 {'毕业去向'}
                             </span>
-                            <span className='col-right'>{data.hasTrack ? (<span><span style={{marginRight:10+'px'}}>{data.jobType}</span><span>{data.discription}</span></span>) : <span className='content-null'>--</span>}</span>
+                            <span className='col-right' title={(data.jobType?data.jobType:'')+' '+(data.discription?data.discription:'')}>{data.hasTrack ? (<span className='text-overflow'><span className='text' style={{marginRight:10+'px'}}>{data.jobType}</span><span className='text'>{data.discription}</span></span>) : <span className='content-null'>--</span>}</span>
                         </div>
                         <div className='row' style={{ marginTop: 20 + 'px' }}>
                             <span className='col-left'>
                                 {'身份证号码'}
                             </span>
-                            <span className='col-right'>{data.userIDCard ? data.userIDCard : <span className='content-null'>未填写</span>}</span>
+                            <span className='col-right' title={data.userIDCard}>{data.userIDCard ? data.userIDCard : <span className='content-null'>未填写</span>}</span>
                         </div>
                         <div className='row'>
                             <span className='col-left'>
                                 {'联系电话'}
                             </span>
-                            <span className='col-right'>{data.userPhone ? data.userPhone : <span className='content-null'>未填写</span>}</span>
+                            <span className='col-right' title={data.userPhone}>{data.userPhone ? data.userPhone : <span className='content-null'>未填写</span>}</span>
                         </div>
                         <div className='row'>
                             <span className='col-left'>
                                 {'电子邮箱'}
                             </span>
-                            <span className='col-right'>{data.userMail ? data.userMail : <span className='content-null'>未填写</span>}</span>
+                            <span className='col-right' title={data.userMail}>{data.userMail ? data.userMail : <span className='content-null'>未填写</span>}</span>
                         </div>
                         <div className='row row-adress'>
                             <span className='col-left'>
                                 {'家庭住址'}
                             </span>
-                            <span className='col-right'>{data.userAddress ? data.userAddress : <span className='content-null'>未填写</span>}</span>
+                            <span className='col-right' title={data.userAddress}>{data.userAddress ? data.userAddress : <span className='content-null'>未填写</span>}</span>
                         </div>
                         <div className='row' style={{ marginTop: 20 + 'px', display: type === 'examine' ? 'block' : 'none' }}>
                             <span className='col-left'>
                                 {'注册时间'}
                             </span>
-                            <span className='col-right'>{data.userRegisterTime ? data.userRegisterTime : <span className='content-null'>未填写</span>}</span>
+                            <span className='col-right' title={data.userRegisterTime}>{data.userRegisterTime ? data.userRegisterTime : <span className='content-null'>未填写</span>}</span>
                         </div>
                         <div className='row' style={{ marginBottom: 20 + 'px', display: type === 'examine' ? 'block' : 'none' }}>
                             <span className='col-left' >
                                 {'注册IP'}
                             </span>
-                            <span className='col-right'>{data.userRegisterIP ? data.userRegisterIP : <span className='content-null'>未填写</span>}</span>
+                            <span className='col-right'  title={data.userRegisterIP}>{data.userRegisterIP ? data.userRegisterIP : <span className='content-null'>未填写</span>}</span>
                         </div>
                     </div>
                 </div>

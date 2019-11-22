@@ -70,11 +70,12 @@ class Admin extends React.Component {
                 <span
                   className="name-UserName"
                   onClick={this.onUserNameClick.bind(this, arr.UserID)}
+                  title={arr.Name}
                 >
                   {arr.Name}
                 </span>
                 <br />
-                <span className="name-UserID">
+                <span className="name-UserID" title={arr.UserID}>
                   (<span className="UserID-content">{arr.UserID}</span>)
                 </span>
               </div>
@@ -90,7 +91,7 @@ class Admin extends React.Component {
           sorter: true,
           render: ShortName => {
             return (
-              <span className="UserName">{ShortName ? ShortName : "--"}</span>
+              <span title={ShortName} className="UserName">{ShortName ? ShortName : "--"}</span>
             );
           }
         },
@@ -1160,13 +1161,15 @@ checkedList: [],
             this.state.ChangePwdMadalVisible ? (
               <p className="alert-Title">
                 确定重置
-                <span className="alert-Title-name">
+                <span title={DataState.AdminPreview.newList[this.state.onClickKey]
+                      .UserName.Name} className="alert-Title-name">
                   {
                     DataState.AdminPreview.newList[this.state.onClickKey]
                       .UserName.Name
                   }
                 </span>
-                <span className="alert-Title-id">
+                <span title={DataState.AdminPreview.newList[this.state.onClickKey]
+                      .UserName.UserID} className="alert-Title-id">
                   (
                   {
                     DataState.AdminPreview.newList[this.state.onClickKey]

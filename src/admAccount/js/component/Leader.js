@@ -70,10 +70,10 @@ class Leader extends React.Component {
                 </span>
                 <br />
                 <span title={arr.UserID} className="name-UserID">
-                  ({" "}
+                  (
                   <span className="overflow-text">
                     {arr.UserID ? arr.UserID : "--"}
-                  </span>{" "}
+                  </span>
                   )
                 </span>
               </div>
@@ -709,13 +709,15 @@ class Leader extends React.Component {
             this.state.ChangePwdMadalVisible ? (
               <p className="alert-Title">
                 确定重置
-                <span className="alert-Title-name">
+                <span title={DataState.SchoolLeaderPreview.newList[this.state.onClickKey]
+                      .UserName.Name} className="alert-Title-name">
                   {
                     DataState.SchoolLeaderPreview.newList[this.state.onClickKey]
                       .UserName.Name
                   }
                 </span>
-                <span className="alert-Title-id">
+                <span title={DataState.SchoolLeaderPreview.newList[this.state.onClickKey]
+                      .UserName.UserID} className="alert-Title-id">
                   (
                   {
                     DataState.SchoolLeaderPreview.newList[this.state.onClickKey]

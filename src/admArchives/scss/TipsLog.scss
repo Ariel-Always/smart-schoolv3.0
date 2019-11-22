@@ -1,52 +1,56 @@
-.tips-Box{
+.tips-Box {
     padding: 10px 16px;
     max-height: 400px;
     overflow: auto;
-
-    .box-top{
+    .box-top {
         position: relative;
-
-        .top-tip{
+        .top-tip {
             font-size: 14px;
-	        line-height: 26px;
-	        color: #720000;
+            line-height: 26px;
+            color: #720000;
         }
     }
-
-    .box-content{
+    .box-content {
         // padding: 8px 16px;
-        .content{
+        position: relative;
+        max-width: 400px;
+        .content {
             position: relative;
             height: 28px;
             //width: 195px;
             margin: 8px 0;
             display: inline-block;
-            .content-text{
+            .content-text {
+                display: inline-block;
+                max-width: 400px;
                 line-height: 28px;
                 text-align: left;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
                 // margin-left: 9px;
                 color: #333;
                 font-size: 16px;
             }
-            .content-null{
-                color:#999;
+            .content-null {
+                color: #999;
             }
         }
     }
 }
 
-.ant-tooltip{
+.ant-tooltip {
     max-width: 999px!important;
-    .ant-tooltip-arrow:before{
-      background-color: #fff;
+    .ant-tooltip-arrow:before {
+        background-color: #fff;
     }
-    .ant-tooltip-inner{
-      background-color: #fff;
-      min-height:0;
-      min-width: 0;
-      font-size: 12px;
-      line-height: 14px;
-      color: #333;
-      white-space:nowrap;
+    .ant-tooltip-inner {
+        background-color: #fff;
+        min-height: 0;
+        min-width: 0;
+        font-size: 12px;
+        line-height: 14px;
+        color: #333;
+        white-space: nowrap;
     }
-  }
+}

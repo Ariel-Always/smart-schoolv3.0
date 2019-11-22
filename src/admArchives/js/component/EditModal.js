@@ -875,7 +875,7 @@ class EditModal extends React.Component {
                         </div>
                     </div>
                     <div className="row clearfix row-subject" style={{ display: this.state.type === 'teacher' ? 'block' : 'none' }}>
-                        <span className='culonm-1'>
+                        <span className='culonm-1 Subject'>
                             <span className='must-icon'>*</span>所教学科：
                         </span>
                         <div className='culonm-2'>

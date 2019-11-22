@@ -17,6 +17,7 @@ import { Link } from "react-router-dom";
 import CONFIG from "../../../common/js/config";
 import { postData, getData } from "../../../common/js/fetch";
 import Public from "../../../common/js/public";
+import { Scrollbars } from "react-custom-scrollbars";
 
 import history from "../containers/history";
 import EditModal from "./EditModal";
@@ -1210,6 +1211,8 @@ class Teacher extends React.Component {
                 </span>
               </div>
               <div className="content">
+              <Scrollbars style={{ width: 100 + "%", height: 280 + "px" }}>
+
                 {UIState.AppModal.TeacherChangeMadalVisible ? (
                   <StudentChangeRecord
                     data={DataState.GetUserLog.UserLog}
@@ -1217,6 +1220,7 @@ class Teacher extends React.Component {
                 ) : (
                   ""
                 )}
+                </Scrollbars>
               </div>
             </div>
           ) : (

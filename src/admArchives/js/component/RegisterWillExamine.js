@@ -735,7 +735,7 @@ class RegisterWillExamine extends React.Component {
           this.setState({
             UserExamineModalVisible: false,
             checkAll: false,
-            checkList: []
+            checkedList: []
           });
           // dispatch(actions.UpDataState.setSignUpLogCountMsg(++StatusCodeCount));
           dispatch(actions.UpDataState.setSignUpLogCountMsg(++newStatus));
