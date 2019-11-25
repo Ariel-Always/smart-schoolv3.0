@@ -32,18 +32,24 @@ import AddWebsiteCustom from "../../components/Teacher/Custom/AddWebsiteCustom";
 
 import ToolCustom from "../../components/Teacher/Custom/ToolCustom";
 
+import TPActions from '../../actions/Teacher/TeacherPageActions';
+
 class Index extends Component {
+
   constructor(props) {
+
     super(props);
 
     const { dispatch } = props;
 
     dispatch(TeacherPageActions.PageInit());
+
   }
 
   //点击header的menu按钮
 
   HeaderMenuToggle(e) {
+
     e.stopPropagation();
 
     const { dispatch } = this.props;
@@ -51,10 +57,12 @@ class Index extends Component {
     dispatch({ type: HeaderActions.TEACHER_HEADER_MENU_TOGGLE });
 
     $(".content-wrapper").css("zIndex", "5");
+
   }
 
   //点击学科按钮
   SubjectMenuToggle(e) {
+
     e.stopPropagation();
 
     const { dispatch } = this.props;
@@ -62,30 +70,38 @@ class Index extends Component {
     dispatch({ type: HeaderActions.TEACHER_SUBJECT_MENU_TOGGLE });
 
     $(".content-wrapper").css("zIndex", "5");
+
   }
 
   SubjectClick(info) {
+
     const { dispatch } = this.props;
 
     dispatch(HeaderActions.SubjectClick(info));
+
   }
 
   //图片加载成功调用
   ModuleImgLoad({ GroupID, PNO, CNO }) {
+
     const { dispatch } = this.props;
 
     dispatch(ModuleActions.ImgLoad({ GroupID, PNO, CNO }));
+
   }
 
   //图片加载失败调用
   ModuleImgErrorLoad({ GroupID, PNO, CNO }) {
+
     const { dispatch } = this.props;
 
     dispatch(ModuleActions.ImgErrorLoad({ GroupID, PNO, CNO }));
+
   }
 
   //点击了组合
   GroupToggle({ GroupID, OrderNo, Event }) {
+
     const { dispatch } = this.props;
 
     //Event.stopPropagation();
@@ -98,64 +114,134 @@ class Index extends Component {
 
     //判断是否需要向下展开
     if (itemGroup.offset().top + 40 - detailWrapper.height() < 0) {
+
       detailWrapper.css({ bottom: "auto", top: "40px" });
+
     }
 
     detailWrapper.slideToggle();
 
     //将下层的zindex覆盖住上层的zindex
     $(".content-wrapper").css("zIndex", "101");
+
   }
 
   //点击了模块
 
-  ClickModule({ ModuleStatus, AccessType, AccessParam, SysID, Event }) {
-    const { dispatch } = this.props;
+  ClickModule({ ModuleStatus, AccessType, AccessParam, SysID, Event,ModuleType }) {
+
+    const { dispatch,BsToCs,Teacher } = this.props;
+
+    const {CanVisit} = BsToCs;
 
     Event.stopPropagation();
 
     switch (ModuleStatus) {
+
+      //判断模块状态
       case 1:
+
         if (AccessType === "href") {
+
           if (SysID !== "") {
+
             let lg_tk =
+
               getQueryVariable("lg_tk") || sessionStorage.getItem("token");
 
             window.open(`${AccessParam}?lg_tk=${lg_tk}`);
+
           } else {
+
             window.open(AccessParam);
+
           }
-        } else {
-        }
+
+        } else if (AccessType==='exe') {
+
+          //判断是否有基础插件包
+          if (CanVisit){
+
+              let  AccessParam = 'lgsoft://LgExplorer::LgExplorer::LgExplorer.exe::{Web_Basic}|{lg_tk}|{SubjectID}|localDisk|';
+
+              const PoroTolType = AccessParam.split('://')[0];
+
+              const BasicWebUrl = `${window.location.protocol}//${window.location.host}`;
+
+              const token = sessionStorage.getItem('token');
+
+              const SubjectID = Teacher.HeaderSetting.SubjectSelect.id;
+
+              //判断调用插件启动方式
+              if (PoroTolType==='lgsoft'){
+
+                  //判断是否是网站或者资源库
+                  if (ModuleType==='website'||ModuleType==='reslib') {
+
+                      const PoroTol = `${BasicWebUrl}|${token}|${SubjectID}|${AccessParam}`;
+
+                      window.BsToCs.start('lgsoft://LgExplorer','LgExplorer',BasicWebUrl,'LgExplorer.exe',PoroTol);
+
+                  }else{
+
+                      const LgSoftSplitArr = AccessParam.split('::')[3];
+
+                      const proName = AccessParam.split('::')[0];
+
+                      const moduleName = AccessParam.split('::')[1];
+
+                      const exeName = AccessParam.split('::')[2];
+
+                      const porotol = AccessParam.split('::')[3].replace(/{Web_Basic}/g,BasicWebUrl).replace(/{lg_tk}/g,token).replace(/{SubjectID}/g,SubjectID);
+
+                      window.BsToCs.start(proName,moduleName,BasicWebUrl,exeName,porotol);
+
+
+                  }
+
+              }
+
+            }else{
+
+
+
+            }
+
+          }else{//没有安装基础插件包的情况下
+
+              dispatch(AppAlertActions.alertWarn({ title: "您还未安装基础插件包，请先下载和安装插件包！" }));
+
+          }
 
         break;
 
       case 2:
-        dispatch(
-          AppAlertActions.alertWarn({ title: "该模块未购买，请先购买该模块" })
-        );
+
+        dispatch(AppAlertActions.alertWarn({ title: "该模块未购买，请先购买该模块" }));
 
         break;
 
       case 3:
-        dispatch(
-          AppAlertActions.alertWarn({ title: "该模块未安装，请安装该模块" })
-        );
+        dispatch(AppAlertActions.alertWarn({ title: "该模块未安装，请安装该模块" }));
 
         break;
 
       case 4:
+
         dispatch(AppAlertActions.alertWarn({ title: "该模块维护中" }));
 
         break;
 
       case 5:
+
         dispatch(AppAlertActions.alertWarn({ title: "该模块已过期" }));
 
         break;
 
       default:
+
         return;
+
     }
 
     //将其他的module-detail-wrapper隐藏
@@ -205,7 +291,7 @@ class Index extends Component {
     const { dispatch } = this.props;
 
     dispatch(
-      AppAlertActions.alertError({
+      AppAlertActions.alertQuery({
         title: "您确定要退出登录么?",
         ok: () => {
           return this.GoOut;
@@ -243,7 +329,7 @@ class Index extends Component {
 
     dispatch({ type: HeaderActions.TEACHER_CUSTOM_MODAL_CLOSE });
 
-
+      dispatch(TPActions.PageUpdate());
 
   };
 
@@ -746,14 +832,17 @@ class Index extends Component {
 }
 
 const mapStateToProps = state => {
-  const { LoginUser, Teacher, AppLoading } = state;
+  const { LoginUser, Teacher, AppLoading,BsToCs } = state;
 
   return {
     LoginUser,
 
     Teacher,
 
-    AppLoading
+    AppLoading,
+
+    BsToCs
+
   };
 };
 

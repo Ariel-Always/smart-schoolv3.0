@@ -25,7 +25,7 @@ class Header extends Component{
 
                 <div className="subject-wrapper">
 
-                    <button id="subject-pick-btn" className={`subject-pick-btn ${HeaderSetting.SubjectsInfo.length>1?(HeaderSetting.SubjectMenuShow?'up':'down'):''}`} title={HeaderSetting.SubjectSelect.name} onClick={e=>{SubjectMenuToggle(e)}}>{HeaderSetting.SubjectSelect.name}</button>
+                    <button id="subject-pick-btn" className={`subject-pick-btn ${HeaderSetting.SubjectsInfo.length>1?(HeaderSetting.SubjectMenuShow?'up':'down'):'no-mutiple'}`} title={HeaderSetting.SubjectSelect.name} onClick={e=>{SubjectMenuToggle(e)}}>{HeaderSetting.SubjectSelect.name}</button>
 
 
                         {
