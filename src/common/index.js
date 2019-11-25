@@ -1944,34 +1944,11 @@ class Frame extends React.Component {
 
     componentDidUpdate(){
 
-      /*  let defalutHeight = window.innerHeight;
+        if(window.AppRightContentChange){
 
-        let contentHeight  = $('.frame-content-rightside').height();
-
-        let maxHeight = 0;
-
-        let leftHeight = $('.frame_left_menu_container').height();
-
-        if (contentHeight!==0&&(contentHeight<defalutHeight)){
-
-            maxHeight = contentHeight - 80;
-
-
-        }else{
-
-            maxHeight = defalutHeight - 80;
+            window.AppRightContentChange(this.RightContent.clientHeight);
 
         }
-
-      $('.frame_left_menu_container').css({
-
-          'overflow-y':'scroll',
-
-          'max-height':maxHeight+'px'
-
-      });*/
-
-      window.AppRightContentChange(this.RightContent.clientHeight);
 
     }
 
