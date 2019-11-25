@@ -78,7 +78,8 @@
     }
     .Main-content {
         width: 1136px;
-        height: auto;
+        // height: auto;
+        min-height: 492px;
         margin: 0 auto;
         .content-card {
             position: relative;

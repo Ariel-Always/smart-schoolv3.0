@@ -18,7 +18,7 @@ const GET_PERIOD_DATA = "GET_PERIOD_DATA";
 // 设置网站初始数据
 const SET_INIT_WEBSITE_DATA = "SET_INIT_WEBSITE_DATA";
 // 设置网站数据
-const SET_WEBSITE_DATA = "SET_INIT_WEBSITE_DATA";
+const SET_WEBSITE_DATA = "SET_WEBSITE_DATA";
 //操作的执行
 //获取登录用户信息
 const getLoginUser = data => {
@@ -93,8 +93,10 @@ const getPeriodData = url => {
 };
 //设置初始数据
 const setInitWebsiteData = data => {
-  return dispatch => {
-    dispatch({ type: GET_PERIOD_DATA, data: data });
+  return (dispatch,getState) => {
+    let State = getState();
+    const {DataState} = State;
+    dispatch({ type: SET_INIT_WEBSITE_DATA, data: data,DataState:DataState });
   };
 };
 //设置数据

@@ -21,7 +21,7 @@ import {
   TokenCheck,
   getUserInfo
 } from "../../../common/js/disconnect";
-import WebsiteCustom from '../component/WebsiteCustom'
+// import WebsiteCustom from '../component/WebsiteCustom'
 import "../../scss/index.scss";
 import actions from "../actions";
 //import { urlAll, proxy } from './config'
@@ -91,9 +91,9 @@ class App extends Component {
     if (handleRoute !== "") {
       history.push("/");
     }
-    dispatch(actions.UpDataState.getSubjectData('/SubjectResMgr/WebSiteMgr/GetSubjectList?schoolId='+userMsg.SchoolID+'&periodId=0'));
-    dispatch(actions.UpDataState.getTypeData('/SubjectResMgr/WebSetting/GetTypeList?SubjectID=&Period=0'));
-    // dispatch(actions.UpDataState.getPeriodData('/SubjectResMgr/WebSiteMgr/GetSubjectList?schoolId='+userMsg.SchoolID));
+    dispatch(actions.UpDataState.getSubjectData('/SubjectResMgr/WebSiteMgr/GetSubjectList?schoolId='+userMsg.SchoolID+'&periodId='));
+    dispatch(actions.UpDataState.getTypeData('/SubjectResMgr/WebSiteMgr/GetTypeList?SubjectID=&Period=0'));
+    dispatch(actions.UpDataState.getPeriodData('/SubjectResMgr/WebSiteMgr/GetPeriodList?schoolId='+userMsg.SchoolID));
 
     let urlData =
       "/SubjectResMgr/WebSiteMgr/GetWebsiteInfoList?TypeID=1&pageSize=8&currentIndex=1";
@@ -119,54 +119,7 @@ class App extends Component {
     dispatch(actions.UpUIState.hideErrorAlert());
   };
 
-  // 添加弹窗成功-关闭
-  AddModalOk = () => {
-    const { dispatch, DataState } = this.props;
-    dispatch({ type: actions.UpUIState.ADD_MODAL_CLOSE });
-    dispatch( actions.UpUIState.AppTipsVisible({
-      WebNameTipsVisible: false,
-      WebAddressTipsVisible: false
-    }));
-
-    dispatch( actions.UpDataState.setInitWebsiteData([]));
-    
-  }
-
-  // 添加弹窗关闭
-  AddModalCancel = () => {
-    const { dispatch, DataState } = this.props;
-    dispatch({ type: actions.UpUIState.ADD_MODAL_CLOSE });
-    dispatch( actions.UpUIState.AppTipsVisible({
-      WebNameTipsVisible: false,
-      WebAddressTipsVisible: false
-    }));
-    dispatch( actions.UpDataState.setInitWebsiteData([]));
-
-  }
-
-  // 编辑弹窗成功-关闭
-  EditModalOk = () => {
-    const { dispatch, DataState } = this.props;
-    dispatch({ type: actions.UpUIState.EDIT_MODAL_CLOSE });
-    dispatch( actions.UpUIState.AppTipsVisible({
-      WebNameTipsVisible: false,
-      WebAddressTipsVisible: false
-    }));
-    dispatch( actions.UpDataState.setInitWebsiteData([]));
-
-  }
-
-  // 编辑弹窗关闭
-  EditModalCancel = () => {
-    const { dispatch, DataState } = this.props;
-    dispatch({ type: actions.UpUIState.EDIT_MODAL_CLOSE });
-    dispatch( actions.UpUIState.AppTipsVisible({
-      WebNameTipsVisible: false,
-      WebAddressTipsVisible: false
-    }));
-    dispatch( actions.UpDataState.setInitWebsiteData([]));
-
-  }
+  
 
   render() {
     const { UIState, DataState } = this.props;
@@ -223,37 +176,7 @@ class App extends Component {
           onCancel={UIState.AppAlert.onCancel}
           onClose={UIState.AppAlert.onClose}
         ></Alert>
-        {/* 模态框 */}
-        <Modal
-          ref="AddMadal"
-          bodyStyle={{ padding: 0, height: 245 + "px" }}
-          type="1"
-          title={"添加网站"}
-          width={585}
-          visible={UIState.AppModal.AddModal}
-          destroyOnClose={true}
-          onOk={this.AddModalOk}
-          onCancel={this.AddModalCancel}
-        >
-          <Loading spinning={UIState.AppLoading.modalLoading}>
-            {UIState.AppModal.AddModal?(<WebsiteCustom></WebsiteCustom>):''}
-          </Loading>
-        </Modal>
-        <Modal
-          ref="EditMadal"
-          bodyStyle={{ padding: 0, height: 245 + "px" }}
-          type="1"
-          title={"修改网站"}
-          width={585}
-          destroyOnClose={true}
-          visible={UIState.AppModal.EditModal}
-          onOk={this.EditModalOk}
-          onCancel={this.EditModalCancel}
-        >
-          <Loading spinning={UIState.AppLoading.modalLoading}>
-            {UIState.AppModal.EditModal?(<WebsiteCustom></WebsiteCustom>):''}
-          </Loading>
-        </Modal>
+       
       </React.Fragment>
     );
   }
