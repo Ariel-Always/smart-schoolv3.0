@@ -1,14 +1,12 @@
 import HeaderActions from './HeaderActions';
 
-import Method from "../Method";
-
 import AppLoadingActions from '../AppLoadingActions';
 
 import ModulesActions from './ModuleActions';
 
-import CONFIG from "../../../../common/js/config";
-
 import dynamicFile from "dynamic-file";
+
+import ApiActions from "../ApiActions";
 
 
 const MODULES_INFO_UPDATE = 'MODULES_INFO_UPDATE';
@@ -44,7 +42,7 @@ const PageInit = () => {
 
         dispatch({type:HeaderActions.TEACHER_HEADER_SUBJECTS_PICK_CHANGE,data:SubjectsInfo[0]});
 
-        getTeacherModules({UserID,SubjectID:SubjectsInfo[0].id,dispatch}).then(data=>{
+        ApiActions.GetTeacherDeskTop({UserID,SubjectID:SubjectsInfo[0].id,dispatch}).then(data=>{
 
             if (data){
 
@@ -138,9 +136,13 @@ const PageInit = () => {
 
                 dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
 
+
+
                 let token = sessionStorage.getItem('token');
 
-                let host = `http://${window.location.host}/`;
+                const protocol = window.location.protocol;
+
+                const host = `${protocol}//${window.location.host}/`;
 
                 sessionStorage.setItem('PsnMgrToken',token);
 
@@ -183,30 +185,123 @@ const PageInit = () => {
 };
 
 
+const PageUpdate = () =>{
 
+    return (dispatch,getState)=>{
 
+        const SubjectID = getState().Teacher.HeaderSetting.SubjectSelect.id;
 
+        const {UserID} = getState().LoginUser;
 
+        console.log()
 
-//获取教师该学科下的模块应用
+        dispatch({type:ModulesActions.TEACHER_MODULE_LOADING_SHOW});
 
-const getTeacherModules = async ({UserID,SubjectID,dispatch}) => {
+        ApiActions.GetTeacherDeskTop({UserID,SubjectID,dispatch}).then(data=>{
 
-    let res = await Method.getGetData(`/SubjectInfoMgr/DeskTop/Teacher/GetDeskTop?UserID=${UserID}&SubjectID=${SubjectID}`,2,CONFIG.DeskTopProxy);
+            if (data){
 
-    if (res.StatusCode === 200){
+                let ModuleGroups = data.map(item=>{
 
-        return res.Data;
+                    return {
 
-    }else{
+                        ...item,
 
-       //window.location.href='/error.aspx';
+                        "Modules":item.Modules.map(i=>{
 
-        alert(res.Msg);
+                            if (item.IsWebsiteGroup){
+
+                                if (i.IsGroup){
+
+                                    let SubGroupModules = i.SubGroupModules.map(it=>{
+
+                                        let RandomArr = ['green','orange','blue'];
+
+                                        let bg = RandomArr[Math.floor(Math.random()*RandomArr.length)];
+
+                                        return {
+
+                                            ...it,
+
+                                            "showDom":"img",
+
+                                            "BgColor":bg
+
+                                        }
+
+                                    });
+
+                                    return {
+
+                                        ...i,
+
+                                        SubGroupModules:SubGroupModules,
+
+                                        DetailShow:false
+
+                                    }
+
+                                }else{
+
+                                    let RandomArr = ['green','orange','blue'];
+
+                                    let bg = RandomArr[Math.floor(Math.random()*RandomArr.length)];
+
+                                    return {
+
+                                        ...i,
+
+                                        "showDom":"img",
+
+                                        "BgColor":bg
+
+                                    }
+
+                                }
+
+                            }else{
+
+                                if (i.IsGroup){
+
+                                    return {
+
+                                        ...i,
+
+                                        DetailShow:false
+
+                                    }
+
+                                }else{
+
+                                    return i;
+
+                                }
+
+                            }
+
+                        })
+
+                    }
+
+                });
+
+                dispatch({type:ModulesActions.TEACHER_MODULE_GROUPS_UPDATE,data:ModuleGroups});
+
+            }
+
+            dispatch({type:ModulesActions.TEACHER_MODULE_LOADING_HIDE});
+
+        });
 
     }
 
 };
+
+
+
+
+
+
 
 export default {
 
@@ -214,6 +309,6 @@ export default {
 
     PageInit,
 
-    getTeacherModules
+    PageUpdate
 
 }

@@ -10,6 +10,8 @@ import $ from 'jquery';
 
 import AppAlertActions from '../actions/AppAlertActions';
 
+import ImportPhoto from '../../../common/js/Import/ImportPhoto'
+
 
 
 class Import extends Component{
@@ -26,7 +28,7 @@ class Import extends Component{
 
         const  HashParam = Hash.split('/')[2];
 
-        if (HashParam.includes('Teacher')) {
+     /*   if (HashParam.includes('Teacher')) {
 
             $.get(`${CONFIG.AdmClassProxy}/UserMgr/ClassMgr/Import.aspx?Token=${token}&UserType=CourseTeacher`, (data, status) => {
 
@@ -72,7 +74,7 @@ class Import extends Component{
 
             });
 
-        }
+        }*/
 
 
 
@@ -85,7 +87,7 @@ class Import extends Component{
 
         return <div id="import-wrapper">
 
-
+            <ImportPhoto ImportTitle="导入任课教师" ImportTarget="Teacher"></ImportPhoto>
 
         </div>
 

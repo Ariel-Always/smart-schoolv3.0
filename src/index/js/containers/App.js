@@ -12,6 +12,10 @@ import TeacherDeskTop from './Teacher/Index';
 
 import ManagerDeskTop from './Manager/Index';
 
+import Bs2CsCommon from "../actions/Bs2CsCommon";
+
+import BTCActions from '../actions/BsToCsActions';
+
 class App extends Component {
 
     constructor(props){
@@ -26,7 +30,19 @@ class App extends Component {
 
             let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
 
-            dispatch({type:LoginUserActions.LOGIN_USER_INFO_UPDATE,data:UserInfo});
+            const {UserType} = UserInfo;
+
+            if (UserType==='0'&&UserType==='1'){
+
+                dispatch({type:LoginUserActions.LOGIN_USER_INFO_UPDATE,data:UserInfo});
+
+                window.BsToCs = new Bs2CsCommon((e)=>dispatch(this.BsToCsCallBack(e)));
+
+            }else{
+
+                window.location.href='';
+
+            }
 
         }else{
 
@@ -39,6 +55,8 @@ class App extends Component {
 
                     dispatch({type:LoginUserActions.LOGIN_USER_INFO_UPDATE,data:UserInfo});
 
+                    window.BsToCs = new Bs2CsCommon((e)=>dispatch(this.BsToCsCallBack(e)));
+
                     clearInterval(getUserInfo);
 
                 }
@@ -49,6 +67,24 @@ class App extends Component {
 
     }
 
+    //判断是否有基础平台的插件
+     BsToCsCallBack(data){
+
+        return dispatch=>{
+
+            if (data){
+
+                dispatch({type:BTCActions.BTC_TO_TRUE});
+
+            }else{
+
+                dispatch({type:BTCActions.BTC_TO_FALSE});
+
+            }
+
+        }
+
+    }
 
 
     render() {

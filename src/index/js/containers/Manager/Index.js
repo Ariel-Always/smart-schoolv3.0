@@ -135,7 +135,7 @@ class Index extends Component{
 
         const { dispatch } = this.props;
 
-        dispatch(AppAlertActions.alertError({title:"您确定要退出登录么?",ok:()=>{ return this.GoOut}}));
+        dispatch(AppAlertActions.alertQuery({title:"您确定要退出登录么?",ok:()=>{ return this.GoOut}}));
 
     }
 
