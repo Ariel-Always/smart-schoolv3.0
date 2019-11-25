@@ -406,7 +406,7 @@ class TeacherPersonalSchedule extends Component{
 
         const { Teacher,PeriodWeekTerm } = this.props;
 
-        const { PersonalSchedule,SubjectCourseGradeClassRoom } = Teacher;
+        const { PersonalSchedule,SubjectCourseGradeClassRoom,Power } = Teacher;
 
         const {ScheduleDetail,ChangeTime,AdjustClassRoom,ReplaceSchedule} = PersonalSchedule;
 
@@ -433,7 +433,9 @@ class TeacherPersonalSchedule extends Component{
 
                     Import={this.Import.bind(this)}
 
-                    AddTempScheduleShow={this.AddTempScheduleShow.bind(this)}>
+                    AddTempScheduleShow={this.AddTempScheduleShow.bind(this)}
+
+                    Power={Power}>
 
 
                 </TopButtons>

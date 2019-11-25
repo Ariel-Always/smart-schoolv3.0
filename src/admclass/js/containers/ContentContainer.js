@@ -19,7 +19,7 @@ class ContentContainer extends Component{
 
         const {ComponentChange} = this.props.UIState;
 
-        const {UserType} = this.props.LoginUser;
+        const {UserType,UserClass} = this.props.LoginUser;
 
         return (
 
@@ -28,7 +28,7 @@ class ContentContainer extends Component{
 
                     {
 
-                        parseInt(UserType)===0?
+                        (parseInt(UserType)===0||(parseInt(UserType)===7&&UserClass==='2'))?
 
                             <React.Fragment>
 

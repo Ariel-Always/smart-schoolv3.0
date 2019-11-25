@@ -32,7 +32,7 @@ class App extends Component {
 
             const {UserType} = UserInfo;
 
-            if (UserType==='0'&&UserType==='1'){
+            if (parseInt(UserType)===0||parseInt(UserType)===1){
 
                 dispatch({type:LoginUserActions.LOGIN_USER_INFO_UPDATE,data:UserInfo});
 
@@ -40,7 +40,7 @@ class App extends Component {
 
             }else{
 
-                window.location.href='';
+                window.location.href='/Error.aspx?errcode=E011';
 
             }
 
@@ -53,9 +53,19 @@ class App extends Component {
 
                     let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
 
-                    dispatch({type:LoginUserActions.LOGIN_USER_INFO_UPDATE,data:UserInfo});
+                    const {UserType} = UserInfo;
 
-                    window.BsToCs = new Bs2CsCommon((e)=>dispatch(this.BsToCsCallBack(e)));
+                    if (parseInt(UserType)===0||parseInt(UserType)===1){
+
+                        dispatch({type:LoginUserActions.LOGIN_USER_INFO_UPDATE,data:UserInfo});
+
+                        window.BsToCs = new Bs2CsCommon((e)=>dispatch(this.BsToCsCallBack(e)));
+
+                    }else{
+
+                        window.location.href='/Error.aspx?errcode=E011';
+
+                    }
 
                     clearInterval(getUserInfo);
 
