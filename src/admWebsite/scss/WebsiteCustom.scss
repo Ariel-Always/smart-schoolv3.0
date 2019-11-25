@@ -24,13 +24,15 @@
             width: 420px;
         }
         .Subject {
-            z-index: 3;
+            z-index: 3!important;
+            position: fixed;
             .dropdown_wrapper {
                 margin: 0;
             }
         }
         .WebType {
             z-index: 2;
+            position: fixed;
             .dropdown_wrapper {
                 margin: 0;
             }

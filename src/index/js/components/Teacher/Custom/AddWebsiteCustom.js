@@ -236,6 +236,7 @@ class AddWebsiteCustom extends React.Component {
                     className={"checkedBoxMap Period"}
                     key={index}
                     value={child.value}
+                    type='gray'
                   >
                     {child.title}
                   </CheckBox>

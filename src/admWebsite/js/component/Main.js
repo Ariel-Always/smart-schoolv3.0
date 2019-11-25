@@ -5,7 +5,8 @@ import {
   DropDown,
   CheckBox,
   CheckBoxGroup,
-  PagiNation
+  PagiNation,
+  Modal
 } from "../../../common";
 import { connect } from "react-redux";
 import {
@@ -19,7 +20,7 @@ import { postData, getData } from "../../../common/js/fetch";
 import CONFIG from "../../../common/js/config";
 import actions from "../actions";
 import "../../scss/Main.scss";
-
+import WebsiteCustom from "../component/WebsiteCustom";
 
 class Main extends Component {
   constructor(props) {
@@ -40,6 +41,7 @@ class Main extends Component {
       SubjectParam: "",
       TypeParam: "",
       SelfParam: "",
+      PeriodID: "",
       ImgType: [true, true, true, true, true, true, true, true]
     };
   }
@@ -47,13 +49,34 @@ class Main extends Component {
   // 学段选择
   PeriodDropMenu = e => {
     const { dispatch, DataState } = this.props;
+    let PeriodID = "";
     let PeriodParam = "&Period=" + e.value;
     let Url =
       "/SubjectResMgr/WebSiteMgr/GetWebsiteInfoList?TypeID=1&pageSize=8&currentIndex=1" +
       PeriodParam +
-      this.state.SubjectParam +
-      this.state.SelfParam +
-      this.state.TypeParam;
+      this.state.SelfParam;
+
+    if (e.value === 1) {
+      PeriodID = "P1";
+    } else if (e.value === 2) {
+      PeriodID = "P2";
+    } else if (e.value === 4) {
+      PeriodID = "P3";
+    }
+
+    dispatch(
+      actions.UpDataState.getSubjectData(
+        "/SubjectResMgr/WebSiteMgr/GetSubjectList?schoolId=" +
+          this.state.UserMsg.SchoolID +
+          "&periodId=" +
+          PeriodID
+      )
+    );
+    dispatch(
+      actions.UpDataState.getTypeData(
+        "/SubjectResMgr/WebSiteMgr/GetTypeList?SubjectID=&Period=" + e.value
+      )
+    );
 
     dispatch(actions.UpDataState.getWebsiteResourceData(Url));
 
@@ -62,8 +85,13 @@ class Main extends Component {
       checkAll: false,
       pagination: 1,
       PeriodSelect: e,
+      SubjectSelect: { value: 0, title: "全部" },
+      SubjectParam: "&SubjectID=",
       pageParam: "&pageSize=8&currentIndex=1",
       PeriodParam: PeriodParam,
+      TypeSelect: { value: 0, title: "全部" },
+      TypeParam: "&SubTypeID=0",
+      PeriodID: PeriodID,
       ImgType: [true, true, true, true, true, true, true, true]
     });
   };
@@ -76,8 +104,15 @@ class Main extends Component {
       "/SubjectResMgr/WebSiteMgr/GetWebsiteInfoList?TypeID=1&pageSize=8&currentIndex=1" +
       SubjectParam +
       this.state.PeriodParam +
-      this.state.SelfParam +
-      this.state.TypeParam;
+      this.state.SelfParam;
+    dispatch(
+      actions.UpDataState.getTypeData(
+        "/SubjectResMgr/WebSiteMgr/GetTypeList?SubjectID=" +
+          e.value +
+          "&Period=" +
+          this.state.PeriodID
+      )
+    );
 
     dispatch(actions.UpDataState.getWebsiteResourceData(Url));
     this.setState({
@@ -85,6 +120,8 @@ class Main extends Component {
       checkAll: false,
       pagination: 1,
       SubjectSelect: e,
+      TypeSelect: { value: 0, title: "全部" },
+      TypeParam: "&SubTypeID=0",
       pageParam: "&pageSize=8&currentIndex=1",
       SubjectParam: SubjectParam,
       ImgType: [true, true, true, true, true, true, true, true]
@@ -138,7 +175,16 @@ class Main extends Component {
   };
   // 添加网站
   onAddWebsiteClick = e => {
-    const { dispatch, DataState } = this.props;
+    const { dispatch, DataState, UIState } = this.props;
+
+    dispatch(
+      actions.UpDataState.setInitWebsiteData({
+        WebType: DataState.GetMenuData.TypeList[1],
+        Subject: DataState.GetMenuData.SubjectList[1],
+        Period: DataState.GetMenuData.PeriodList[1],
+        PeriodID: [DataState.GetMenuData.PeriodList[1].value]
+      })
+    );
     dispatch({ type: actions.UpUIState.ADD_MODAL_OPEN });
   };
   // 多选change
@@ -244,7 +290,58 @@ class Main extends Component {
   onEditClick = index => {
     console.log(index);
     const { dispatch, DataState } = this.props;
+    dispatch(
+      actions.UpDataState.setInitWebsiteData({
+        WebName: DataState.GetWebsiteResourceData.List[index].Name,
+        WebAddress: DataState.GetWebsiteResourceData.List[index].Url,
+        WebType: {
+          value: DataState.GetWebsiteResourceData.List[index].SubTypeId,
+          title: DataState.GetWebsiteResourceData.List[index].SubTypeNamefield
+        },
+        Subject: {
+          value: DataState.GetWebsiteResourceData.List[index].SubjectId,
+          title: DataState.GetWebsiteResourceData.List[index].SubjectName
+        },
+        // Period:{value:DataState.GetWebsiteResourceData.List[index].PeriodId,title:DataState.GetWebsiteResourceData.List[index].PeriodName},
+        PeriodID: this.EditPeriod(
+          DataState.GetWebsiteResourceData.List[index].Period
+        ),
+        WebsiteId: DataState.GetWebsiteResourceData.List[index].ID
+      })
+    );
     dispatch({ type: actions.UpUIState.EDIT_MODAL_OPEN });
+  };
+
+  // 处理学段
+  EditPeriod = Period => {
+    let PeriodID = [];
+    switch (Period) {
+      case 1:
+        PeriodID = [1];
+        break;
+      case 2:
+        PeriodID = [2];
+        break;
+      case 3:
+        PeriodID = [1, 2];
+        break;
+      case 4:
+        PeriodID = [4];
+        break;
+      case 5:
+        PeriodID = [1, 4];
+        break;
+      case 6:
+        PeriodID = [2, 4];
+        break;
+      case 7:
+        PeriodID = [1, 2, 4];
+        break;
+      default:
+        PeriodID = [];
+        break;
+    }
+    return PeriodID;
   };
   // 删除
   onDeleteClick = index => {
@@ -305,8 +402,213 @@ class Main extends Component {
         }
       });
   };
+  // 添加弹窗成功-关闭
+  AddModalOk = () => {
+    const { dispatch, DataState, UIState } = this.props;
+    const { WebName, WebAddress, Subject, WebType } = DataState.WebsiteData;
+    let Url =
+      "/SubjectResMgr/WebSiteMgr/GetWebsiteInfoList?TypeID=1&pageSize=8&currentIndex=1" +
+      this.state.SubjectParam +
+      this.state.PeriodParam +
+      this.state.SelfParam +
+      this.state.TypeParam;
+
+    let WebsiteData = DataState.WebsiteData;
+    let TeacherTipsVisible = UIState.AppTipsVisible;
+    let isHaveFalse = false;
+    let url = "/SubjectResMgr/WebSiteMgr/AddWebsiteInfo";
+    if (WebName === "") {
+      isHaveFalse = true;
+      dispatch(actions.UpUIState.AppTipsVisible({ WebNameTipsVisible: true }));
+    }
+
+    if (WebAddress === "") {
+      isHaveFalse = true;
+      dispatch(
+        actions.UpUIState.AppTipsVisible({
+          WebAddressTipsVisible: true
+        })
+      );
+    }
+
+    if (
+      TeacherTipsVisible.WebNameTipsVisible ||
+      TeacherTipsVisible.WebAddressTipsVisible
+    ) {
+      isHaveFalse = true;
+    }
+    if (isHaveFalse) {
+      return;
+    }
+
+    // post数据
+    let Period = 0;
+    WebsiteData.PeriodID.map((child, index) => {
+      Period += Number(child);
+    });
+    postData(
+      CONFIG.CustomProxy + url,
+      {
+        SchoolID:this.state.UserMsg.SchoolID,
+        CreatorID: this.state.UserMsg.UserID,
+        Name: WebsiteData.WebName,
+        Url: WebsiteData.WebAddress,
+        SubTypeID: WebsiteData.WebType.value ,
+        Type: 1,
+        SubjectIDs: WebsiteData.Subject.value,
+        Period: Period
+      },
+      2
+    )
+      .then(data => data.json())
+      .then(json => {
+        if (json.StatusCode === 200) {
+          dispatch(
+            actions.UpUIState.AppTipsVisible({
+              WebAddressTipsVisible: false,
+              WebNameTipsVisible: false
+            })
+          );
+          this.setState({
+            checkList: [],
+            checkAll: false,
+            pagination: 1,
+            pageParam: "&pageSize=8&currentIndex=1",
+            ImgType: [true, true, true, true, true, true, true, true]
+          });
+          dispatch(actions.UpDataState.setInitWebsiteData({}));
+          dispatch({ type: actions.UpUIState.ADD_MODAL_CLOSE });
+          dispatch(actions.UpDataState.getWebsiteResourceData(Url));
+        }
+      });
+    // dispatch({ type: actions.UpUIState.ADD_MODAL_CLOSE });
+    // dispatch(
+    //   actions.UpUIState.AppTipsVisible({
+    //     WebNameTipsVisible: false,
+    //     WebAddressTipsVisible: false
+    //   })
+    // );
+
+    // dispatch(actions.UpDataState.setInitWebsiteData({}));
+  };
+
+  // 添加弹窗关闭
+  AddModalCancel = () => {
+    const { dispatch, DataState } = this.props;
+    dispatch({ type: actions.UpUIState.ADD_MODAL_CLOSE });
+    dispatch(
+      actions.UpUIState.AppTipsVisible({
+        WebNameTipsVisible: false,
+        WebAddressTipsVisible: false
+      })
+    );
+    dispatch(actions.UpDataState.setInitWebsiteData({}));
+  };
+
+  // 编辑弹窗成功-关闭
+  EditModalOk = () => {
+    const { dispatch, DataState, UIState } = this.props;
+    const { WebName, WebAddress, Subject, WebType } = DataState.WebsiteData;
+    let Url =
+      "/SubjectResMgr/WebSiteMgr/GetWebsiteInfoList?TypeID=1&pageSize=8&currentIndex=1" +
+      this.state.SubjectParam +
+      this.state.PeriodParam +
+      this.state.SelfParam +
+      this.state.TypeParam;
+
+    let WebsiteData = DataState.WebsiteData;
+    let TeacherTipsVisible = UIState.AppTipsVisible;
+    let isHaveFalse = false;
+    let url = "/SubjectResMgr/WebSiteMgr/EditWebsiteInfo";
+    if (WebName === "") {
+      isHaveFalse = true;
+      dispatch(actions.UpUIState.AppTipsVisible({ WebNameTipsVisible: true }));
+    }
+
+    if (WebAddress === "") {
+      isHaveFalse = true;
+      dispatch(
+        actions.UpUIState.AppTipsVisible({
+          WebAddressTipsVisible: true
+        })
+      );
+    }
+
+    if (
+      TeacherTipsVisible.WebNameTipsVisible ||
+      TeacherTipsVisible.WebAddressTipsVisible
+    ) {
+      isHaveFalse = true;
+    }
+    if (isHaveFalse) {
+      return;
+    }
+
+    // post数据
+    let Period = 0;
+    WebsiteData.PeriodID.map((child, index) => {
+      Period += Number(child);
+    });
+    postData(
+      CONFIG.CustomProxy + url,
+      {
+        SchoolID:this.state.UserMsg.SchoolID,
+        WebsiteId: WebsiteData.WebsiteId,
+        Name: WebsiteData.WebName,
+        Url: WebsiteData.WebAddress,
+        SubTypeID: WebsiteData.WebType.value ,
+
+        SubjectIDs: Subject.value ? Subject.value : "",
+        Period: Period
+      },
+      2
+    )
+      .then(data => data.json())
+      .then(json => {
+        if (json.StatusCode === 200) {
+          dispatch(
+            actions.UpUIState.AppTipsVisible({
+              WebAddressTipsVisible: false,
+              WebNameTipsVisible: false
+            })
+          );
+          this.setState({
+            checkList: [],
+            checkAll: false,
+            pagination: 1,
+            pageParam: "&pageSize=8&currentIndex=1",
+            ImgType: [true, true, true, true, true, true, true, true]
+          });
+          dispatch(actions.UpDataState.setInitWebsiteData({}));
+          dispatch({ type: actions.UpUIState.EDIT_MODAL_CLOSE });
+
+          dispatch(actions.UpDataState.getWebsiteResourceData(Url));
+        }
+      });
+    // dispatch({ type: actions.UpUIState.EDIT_MODAL_CLOSE });
+    // dispatch(
+    //   actions.UpUIState.AppTipsVisible({
+    //     WebNameTipsVisible: false,
+    //     WebAddressTipsVisible: false
+    //   })
+    // );
+    // dispatch(actions.UpDataState.setInitWebsiteData({}));
+  };
+
+  // 编辑弹窗关闭
+  EditModalCancel = () => {
+    const { dispatch, DataState } = this.props;
+    dispatch({ type: actions.UpUIState.EDIT_MODAL_CLOSE });
+    dispatch(
+      actions.UpUIState.AppTipsVisible({
+        WebNameTipsVisible: false,
+        WebAddressTipsVisible: false
+      })
+    );
+    dispatch(actions.UpDataState.setInitWebsiteData({}));
+  };
   render() {
-    const { DataState } = this.props;
+    const { DataState, UIState } = this.props;
     let { List, Total, Current } = DataState.GetWebsiteResourceData;
     let TypeList = DataState.GetMenuData.TypeList;
     let PeriodList = DataState.GetMenuData.PeriodList;
@@ -331,7 +633,7 @@ class Main extends Component {
             <DropDown
               ref="subject-DropMenu"
               className="box-dropmenu subject-dropmenu"
-              onChange={this.PeriodDropMenu.bind(this)}
+              onChange={this.SubjectDropMenu.bind(this)}
               width={108}
               height={240}
               dropSelectd={this.state.SubjectSelect}
@@ -370,78 +672,83 @@ class Main extends Component {
         </div>
         <hr className="Main-hr"></hr>
         <div className="Main-content">
+          {List instanceof Array && List.length>0?
           <CheckBoxGroup
             value={this.state.checkList}
             onChange={this.onCheckBoxGroupChange.bind(this)}
           >
-            {List instanceof Array &&
-              List.map((child, index) => {
-                return (
-                  <div key={index} className="content-card">
-                    <div className="card-left">
-                      <CheckBox type="gray" value={index}></CheckBox>
-                      {this.state.ImgType[index] ? (
-                        <div
-                          className={`img-box ${"ImgError_" + child.TypeColor}`}
-                        >
-                          <img
-                            className={`left-img `}
-                            onError={this.onImgError.bind(this, index)}
-                            src={child.ImgUrl}
-                            alt={child.ImgUrl}
-                          ></img>
-                        </div>
-                      ) : (
-                        <span
-                          className={`ImgError ${"ImgError_" +
-                            child.TypeColor}`}
-                        >
-                          {child.Name.slice(0, 1)}
-                        </span>
-                      )}
-                    </div>
-                    <div className="card-rigth">
-                      <p
-                        title={child.Name}
-                        className="rigth-content webName-content "
+            {List.map((child, index) => {
+              return (
+                <div key={index} className="content-card">
+                  <div className="card-left">
+                    <CheckBox type="gray" value={index}></CheckBox>
+                    {this.state.ImgType[index] ? (
+                      <div
+                        className={`img-box ${"ImgError_" + child.TypeColor}`}
                       >
-                        <span className="webName">{child.Name}</span>
-                        <span
-                          title={child.SubTypeNamefield}
-                          className={`WebType ${"WebType_" + child.TypeColor}`}
-                        >
-                          {child.SubTypeNamefield}
-                        </span>
-                      </p>
-                      <p
-                        title={child.SubjectName}
-                        className="rigth-content webSubject"
-                      >
-                        {"学科：" + child.SubjectName}
-                      </p>
-                      <a
-                        target="_blank"
-                        href={child.Url}
-                        title={child.Url}
-                        className="rigth-content webUrl"
-                      >
-                        {child.Url}
-                      </a>
-                    </div>
-                    <div className="Edit-content">
+                        <img
+                          className={`left-img `}
+                          onError={this.onImgError.bind(this, index)}
+                          src={child.ImgUrl}
+                          alt={child.ImgUrl}
+                        ></img>
+                      </div>
+                    ) : (
                       <span
-                        onClick={this.onDeleteClick.bind(this, index)}
-                        className="card-btn btn-delete"
-                      ></span>
-                      <span
-                        onClick={this.onEditClick.bind(this, index)}
-                        className="card-btn btn-edit"
-                      ></span>
-                    </div>
+                        className={`ImgError ${"ImgError_" + child.TypeColor}`}
+                      >
+                        {child.Name.slice(0, 1)}
+                      </span>
+                    )}
                   </div>
-                );
-              })}
+                  <div className="card-rigth">
+                    <p
+                      title={child.Name}
+                      className="rigth-content webName-content "
+                    >
+                      <span className="webName">{child.Name}</span>
+                      <span
+                        title={child.SubTypeNamefield}
+                        className={`WebType ${"WebType_" + child.TypeColor}`}
+                      >
+                        {child.SubTypeNamefield}
+                      </span>
+                    </p>
+                    <p
+                      title={child.SubjectName}
+                      className="rigth-content webSubject"
+                    >
+                      {"学科：" + child.SubjectName}
+                    </p>
+                    <a
+                      target="_blank"
+                      href={child.Url}
+                      title={child.Url}
+                      className="rigth-content webUrl"
+                    >
+                      {child.Url}
+                    </a>
+                  </div>
+                  <div className="Edit-content">
+                    <span
+                      onClick={this.onDeleteClick.bind(this, index)}
+                      className="card-btn btn-delete"
+                    ></span>
+                    <span
+                      onClick={this.onEditClick.bind(this, index)}
+                      className="card-btn btn-edit"
+                    ></span>
+                  </div>
+                </div>
+              );
+            })}
           </CheckBoxGroup>
+          :
+          <Empty
+            type="4"
+            className="Empty"
+            // title="您还没有添加教学方案哦~"
+          ></Empty>}
         </div>
         <hr className="Main-hr-2"></hr>
         <div className="Main-event-box">
@@ -474,6 +781,37 @@ class Main extends Component {
             onChange={this.onPagiNationChange.bind(this)}
           ></PagiNation>
         </div>
+        {/* 模态框 */}
+        <Modal
+          ref="AddMadal"
+          bodyStyle={{ padding: 0, height: 245 + "px" }}
+          type="1"
+          title={"添加网站"}
+          width={585}
+          visible={UIState.AppModal.AddModal}
+          destroyOnClose={true}
+          onOk={this.AddModalOk}
+          onCancel={this.AddModalCancel}
+        >
+          <Loading spinning={UIState.AppLoading.modalLoading}>
+            {UIState.AppModal.AddModal ? <WebsiteCustom></WebsiteCustom> : ""}
+          </Loading>
+        </Modal>
+        <Modal
+          ref="EditMadal"
+          bodyStyle={{ padding: 0, height: 245 + "px" }}
+          type="1"
+          title={"修改网站"}
+          width={585}
+          destroyOnClose={true}
+          visible={UIState.AppModal.EditModal}
+          onOk={this.EditModalOk}
+          onCancel={this.EditModalCancel}
+        >
+          <Loading spinning={UIState.AppLoading.modalLoading}>
+            {UIState.AppModal.EditModal ? <WebsiteCustom></WebsiteCustom> : ""}
+          </Loading>
+        </Modal>
       </div>
     );
   }

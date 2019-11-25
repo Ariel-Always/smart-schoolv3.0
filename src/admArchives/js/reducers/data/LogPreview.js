@@ -42,6 +42,7 @@ function handleData(data, pageIndex, pageSize) {
         list.UserType_Txt = child.UserType_Txt;
         list.UserType = child.UserType;
         list.Logs = child.Logs;
+        list.Deleted = child.Deleted;
         list.key = index;
         keyList.push(list.key);
         list.OperationType_Txt = child.OperationType_Txt;

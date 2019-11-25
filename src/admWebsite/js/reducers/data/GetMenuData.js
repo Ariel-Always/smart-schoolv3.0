@@ -8,7 +8,7 @@ const GetMenuData = (state = {
     switch (actions.type) {
         case UpDataState.GET_PERIOD_DATA:
             Data = handlePeriod(actions.data)
-            return Object.assign({},state,{statePeriodList:Data});
+            return Object.assign({},state,{PeriodList:Data});
             case UpDataState.GET_TYPE_DATA:
             Data = handleType(actions.data)
             return Object.assign({},state,{TypeList:Data});
@@ -21,8 +21,22 @@ const GetMenuData = (state = {
 };
 
 function handlePeriod (data) {
-    let PeriodList=[{ value: 0, title: "全部" }]
-
+    let PeriodList=[]
+    // console.log(data)
+    data instanceof Array && data.map((child,index) => {
+        let PeriodID = 0;
+        if(child.PeriodId==='P1'){
+            PeriodID = 1;
+        }else if(child.PeriodId==='P2'){
+            PeriodID = 2;
+        }else if(child.PeriodId==='P3'){
+            PeriodID = 4;
+        }
+        PeriodList.push({
+            value:PeriodID,
+            title:child.PeriodName
+        })
+    })
     return PeriodList
 }
 function handleType (data) {
@@ -38,7 +52,12 @@ function handleType (data) {
 }
 function handleSubject (data) {
     let SubjectList=[{ value: 0, title: "全部" }]
-
+    data instanceof Array && data.map((child,index) => {
+        SubjectList.push({
+            value:child.SubjectID,
+            title:child.SubjectName
+        })
+    })
     return SubjectList
 }
 

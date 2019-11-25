@@ -18,7 +18,9 @@ class WebsiteCustom extends React.Component {
       Subject: {},
       WebType: {},
       Period: [],
-      WebTypeList: []
+      WebTypeList: [],
+      PeriodID:[],
+      SubjectList:{}
     };
   }
 
@@ -32,27 +34,28 @@ class WebsiteCustom extends React.Component {
     this.setState({
       WebName: WebData.WebName,
       WebAddress: WebData.WebAddress,
-      Subject: WebData.Subject.value?WebData.Subject:SubjectList.slice(1,2)[0],
-      WebType: WebData.WebType.value? WebData.WebType:TypeList.slice(1,2)[0],
+      Subject: WebData.Subject,
+      WebType: WebData.WebType,
       WebTypeList: TypeList.slice(1),
-      SubjectList:SubjectList.slice(1)
+      SubjectList:SubjectList.slice(1),
+      PeriodID:WebData.PeriodID
     });
 
     let newPeriodList = [];
     let Period = [];
     PeriodList instanceof Array &&
       PeriodList.map((child, index) => {
-        if (child.value !== "0") {
+        if (child.value !== 0) {
           newPeriodList.push(child);
-          Period.push(child.value);
+          // Period.push(child.value); 
         }
       });
-    if (WebData.PeriodID[0] !==  '0') {
-      Period = WebData.PeriodID;
-    }
-    console.log(Period)
+    // if (WebData.PeriodID[0] !==  0) {
+    //   Period = WebData.PeriodID;
+    // }
+    // console.log(Period)
     this.setState({
-      Period: Period,
+      // Period: Period,
       PeriodList: newPeriodList
     });
   }
@@ -143,7 +146,7 @@ class WebsiteCustom extends React.Component {
     });
     dispatch(
       actions.UpDataState.setWebsiteData({
-        WebAddress: e
+        WebType: e
       })
     );
   };
@@ -163,11 +166,12 @@ class WebsiteCustom extends React.Component {
   // 选择学段
   changeCheckBox = Period => {
     const { dispatch } = this.props;
+    // console.log(Period)
     if (Period.length === 0) {
       return;
     }
     this.setState({
-      Period: Period
+      PeriodID: Period
     });
     dispatch(
       actions.UpDataState.setWebsiteData({
@@ -244,7 +248,7 @@ class WebsiteCustom extends React.Component {
           <CheckBoxGroup
             onChange={this.changeCheckBox.bind(this)}
             className={"right checkedBoxGroupMap PeriodList"}
-            value={this.state.Period}
+            value={this.state.PeriodID}
           >
             {this.state.PeriodList instanceof Array &&
               this.state.PeriodList.map((child, index) => {
@@ -256,6 +260,7 @@ class WebsiteCustom extends React.Component {
                     className={"checkedBoxMap Period"}
                     key={index}
                     value={child.value}
+                    type='gray'
                   >
                     {child.title}
                   </CheckBox>

@@ -17,7 +17,8 @@ import { getData } from '../../../common/js/fetch'
 import { func } from 'prop-types';
 import { get } from 'http';
 
-
+import ImportExcel from '../../../common/js/Import/ImportExcel'
+import ImportPhoto from '../../../common/js/Import/ImportPhoto'
 
 
 class ImportFile extends React.Component {
@@ -37,10 +38,10 @@ class ImportFile extends React.Component {
         const { DataState, dispatch } = this.props;
     }
     componentDidMount() {
-        $.get('/UserMgr/TeachInfoMgr/Import.aspx?SchoolID='+this.state.userMsg.SchoolID+'&Type=courseclass&UserID='+this.state.userMsg.UserID+'&UserName='+this.state.userMsg.UserName+'&Token='+ sessionStorage.getItem('token'),function(data){
-          // console.log(data)
-            $('#content-box').html(data)
-        })
+        // $.get('/UserMgr/TeachInfoMgr/Import.aspx?SchoolID='+this.state.userMsg.SchoolID+'&Type=courseclass&UserID='+this.state.userMsg.UserID+'&UserName='+this.state.userMsg.UserName+'&Token='+ sessionStorage.getItem('token'),function(data){
+        //   // console.log(data)
+        //     $('#content-box').html(data)
+        // })
 
         // $.ajax({
         //     url:CONFIG.UserInfoProxy+'/Import.aspx?Token=0111&UserType=Student',
@@ -92,9 +93,7 @@ class ImportFile extends React.Component {
                     <span ref='file' onClick={this.onTabClick.bind(this, 'file')} className={`Tab-btn ${this.state.select === 'file' ? 'btn-select' : ''}`}>导入基本资料</span>
                     <span ref='picture' onClick={this.onTabClick.bind(this, 'picture')} className={`Tab-btn ${this.state.select === 'picture' ? 'btn-select' : ''}`}>导入照片</span>
                 </div> */}
-                <div id='content-box' className='content-box'>
-
-                </div>
+               <ImportExcel ImportTitle='导入教学班' ImportTarget={this.state.route}></ImportExcel>
             </React.Fragment>
         )
     }

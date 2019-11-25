@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import logo from '../../images/admAriHeadImg-1.png'
+import logo from '../../images/icon-logo.png'
 import { Frame, Menu, Loading, Alert } from "../../../common";
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
 import history from '../containers/history'
@@ -22,6 +22,8 @@ import { DetailsModal, DropDown, PagiNation, Search, Table, Button, CheckBox, Ch
 import { getData } from '../../../common/js/fetch'
 import { func } from 'prop-types';
 import { get } from 'http';
+import ImportExcel from '../../../common/js/Import/ImportExcel'
+import ImportPhoto from '../../../common/js/Import/ImportPhoto'
 
 
 
@@ -61,48 +63,61 @@ class ImportFile extends React.Component {
         //     $('#content-box').html(data)
         // })
         let route = history.location.pathname.split('/');
-        this.ImportHtml('file',route)
-
+        // this.ImportHtml('file',route)
+        this.setState({
+            select: 'file',
+            show:true,
+            route:route === 'Teacher' ? 'teacher' :route === 'Leader'?'leader' :'student'
+        })
     }
     ImportHtml = (type,route) => {
-        let url = '/Import.aspx'
-        if(type==='picture'){
-             url = '/ImportPhoto.aspx'
-        }
-        fetch(CONFIG.UserInfoProxy + url+'?Token=' + sessionStorage.getItem('token') + '&UserType=' + route[2], {
-            method: 'get',//*post、get、put、delete，此项为请求方法相关的配置 
-            mode: 'cors',//no-cors(跨域模式但服务器端不支持cors),*cors(跨域模式，需要服务器通过Access-control-Allow-Origin来
-            //允许指定的源进行跨域),same-origin(同源)
-            cache: 'no-cache',//*no-cache,default,reload,force-cache,only-ifcached,此项为缓存相关配置
-            credentials: 'omit',//*include(携带cookie)、same-origin(cookie同源携带)、omit(不携带)
+        
 
-            headers: {
-                'Accept': 'application/json, text/plain, text/html,*/*',//请求头，代表的、发送端（客户端）希望接收的数据类型
-                'Content-Type': 'application/x-www-form-urlencoded',//实体头，代表发送端（客户端|服务器）发送的实体数据的数据类型
-            },
-            redirect: 'follow',//manual、*follow(自动重定向)、error，此项为重定向的相关配置
-            // referrer: 'no-referrer',//该首部字段会告知服务器请求的原始资源的URI
 
-        }).then(data => {
-            return data.text();
 
-        }).then(text => {
-            //console.log(text)
-            $('#content-box').html(text)
-            this.setState({
-                show:false
-            })
-        })
+        // let url = '/Import.aspx'
+        // if(type==='picture'){
+        //      url = '/ImportPhoto.aspx'
+        // }
+        // fetch(CONFIG.UserInfoProxy + url+'?Token=' + sessionStorage.getItem('token') + '&UserType=' + route[2], {
+        //     method: 'get',//*post、get、put、delete，此项为请求方法相关的配置 
+        //     mode: 'cors',//no-cors(跨域模式但服务器端不支持cors),*cors(跨域模式，需要服务器通过Access-control-Allow-Origin来
+        //     //允许指定的源进行跨域),same-origin(同源)
+        //     cache: 'no-cache',//*no-cache,default,reload,force-cache,only-ifcached,此项为缓存相关配置
+        //     credentials: 'omit',//*include(携带cookie)、same-origin(cookie同源携带)、omit(不携带)
+
+        //     headers: {
+        //         'Accept': 'application/json, text/plain, text/html,*/*',//请求头，代表的、发送端（客户端）希望接收的数据类型
+        //         'Content-Type': 'application/x-www-form-urlencoded',//实体头，代表发送端（客户端|服务器）发送的实体数据的数据类型
+        //     },
+        //     redirect: 'follow',//manual、*follow(自动重定向)、error，此项为重定向的相关配置
+        //     // referrer: 'no-referrer',//该首部字段会告知服务器请求的原始资源的URI
+
+        // }).then(data => {
+        //     return data.text();
+
+        // }).then(text => {
+        //     //console.log(text)
+        //     $('#content-box').html(text)
+        //     this.setState({
+        //         show:false
+        //     })
+        // })
     }
     //点击tab
     onTabClick = (name) => {
-        this.setState({
-            select: name,
-            show:true
-        })
         let route = history.location.pathname.split('/');
 
-        this.ImportHtml(name,route)
+        this.setState({
+            select: name,
+            show:true,
+            route:name==='picture'?route:route === 'Teacher' ? 'teacher' :route === 'Leader'?'leader' :'student'
+        })
+        // this.setState({
+        //     type:type,
+        //     route:route
+        // })
+        // this.ImportHtml(name,route)
     }
     render() {
         const { UIState, DataState } = this.props;
@@ -143,11 +158,14 @@ class ImportFile extends React.Component {
                         {/* <iframe id='content-box' src={CONFIG.UserInfoProxy+'/Import.aspx?Token=0111&UserType=Student'}>
                             
                         </iframe> */}
-                        <Loading opacity={false} size='large' spinning={this.state.show}>
+                        {/* <Loading opacity={false} size='large' spinning={this.state.show}>
                             <div id='content-box' className='content-box'>
 
                             </div>
-                        </Loading>
+                        </Loading> */}
+                        {
+                            this.state.select==='file'?<ImportExcel  ImportTarget={this.state.route}></ImportExcel>:<ImportPhoto ImportTarget={this.state.route}></ImportPhoto>
+                        }
                     </div>
                 </Frame>
 
