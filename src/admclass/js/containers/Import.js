@@ -2,15 +2,9 @@ import React,{Component} from 'react';
 
 import { connect } from 'react-redux';
 
-import CONFIG from '../../../common/js/config';
+import ImportExcel from '../../../common/js/Import/ImportExcel';
 
-import UpUIState from '../actions/UpUIState';
-
-import $ from 'jquery';
-
-import AppAlertActions from '../actions/AppAlertActions';
-
-import ImportPhoto from '../../../common/js/Import/ImportPhoto'
+import AppLoadingActions from '../actions/AppLoadingActions';
 
 
 
@@ -22,61 +16,37 @@ class Import extends Component{
 
         const { dispatch } = props;
 
-        const token = sessionStorage.getItem('token');
-
         const Hash = location.hash;
 
         const  HashParam = Hash.split('/')[2];
 
-     /*   if (HashParam.includes('Teacher')) {
+        if (HashParam.includes('Teacher')) {
 
-            $.get(`${CONFIG.AdmClassProxy}/UserMgr/ClassMgr/Import.aspx?Token=${token}&UserType=CourseTeacher`, (data, status) => {
+            this.state={
 
-                if (status==='success'){
+                ImportTitle:'导入任课教师',
 
-                    $('#import-wrapper').append(data);
+                ImportTarget:'courseteacher'
 
-                    dispatch({type:UpUIState.APP_LOADING_CLOSE});
-                    
-                }else if (status === 'error'||status==='notmodified'||status==='parsererror'){
+            };
 
-                    dispatch(AppAlertActions.alertError({title:"请求出错！",ok:()=>{ return ()=> window.location.href='/html/admclass';}}));
-
-                }else if (status === 'timeout'){
-
-                    dispatch(AppAlertActions.alertError({title:"请求超时！",ok:()=>{ return ()=> window.location.href='/html/admclass';}}))
-
-                }
-
-
-            });
-
+            dispatch(AppLoadingActions.hide());
 
         }else if(HashParam.includes('Genger')){
 
-            $.get(`${CONFIG.AdmClassProxy}/UserMgr/ClassMgr/Import.aspx?Token=${token}&UserType=GangerMonitor`,(data,status)=>{
+            /*this.setState({ ImportTitle:'导入班主任班长',ImportTarget:'gangermonitor'});
+*/
+            this.state={
 
-                if (status==='success'){
+                ImportTitle:'导入班主任班长',
 
-                    $('#import-wrapper').append(data);
+                ImportTarget:'gangermonitor'
 
-                    dispatch({type:UpUIState.APP_LOADING_CLOSE});
+            };
 
-                }else if (status === 'error'||status==='notmodified'||status==='parsererror'){
+            dispatch(AppLoadingActions.hide());
 
-                    dispatch(AppAlertActions.alertError({title:"请求出错！",ok:()=>{ return ()=> window.location.href='/html/admclass';}}));
-
-                }else if (status === 'timeout'){
-
-                    dispatch(AppAlertActions.alertError({title:"请求超时！",ok:()=>{ return ()=> window.location.href='/html/admclass';}}))
-
-                }
-
-            });
-
-        }*/
-
-
+        }
 
     }
 
@@ -87,7 +57,7 @@ class Import extends Component{
 
         return <div id="import-wrapper">
 
-            <ImportPhoto ImportTitle="导入任课教师" ImportTarget="Teacher"></ImportPhoto>
+            <ImportExcel ImportTitle={this.state.ImportTitle} ImportTarget={this.state.ImportTarget}></ImportExcel>
 
         </div>
 

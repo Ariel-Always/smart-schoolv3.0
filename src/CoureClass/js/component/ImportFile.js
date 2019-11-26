@@ -93,7 +93,9 @@ class ImportFile extends React.Component {
                     <span ref='file' onClick={this.onTabClick.bind(this, 'file')} className={`Tab-btn ${this.state.select === 'file' ? 'btn-select' : ''}`}>导入基本资料</span>
                     <span ref='picture' onClick={this.onTabClick.bind(this, 'picture')} className={`Tab-btn ${this.state.select === 'picture' ? 'btn-select' : ''}`}>导入照片</span>
                 </div> */}
-               <ImportExcel ImportTitle='导入教学班' ImportTarget={this.state.route}></ImportExcel>
+
+
+               <ImportExcel ImportTitle='导入教学班' ImportTarget='courseclass'></ImportExcel>
             </React.Fragment>
         )
     }

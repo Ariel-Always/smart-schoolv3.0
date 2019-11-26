@@ -45,7 +45,7 @@ class ImportFile extends React.Component {
     componentWillMount() {
         const { DataState, dispatch } = this.props;
     }
-    componentDidMount() {
+    componentWillMount() {
         // $.get(CONFIG.UserInfoProxy+'/Import.aspx?Token=0111&UserType=Student',function(data){
         //     $('#content-box').html(data)
         // })
@@ -62,12 +62,12 @@ class ImportFile extends React.Component {
         //     //console.log(data)
         //     $('#content-box').html(data)
         // })
-        let route = history.location.pathname.split('/');
-        // this.ImportHtml('file',route)
+        let path = history.location.pathname.split('/');
+        let route = path[2]
         this.setState({
             select: 'file',
             show:true,
-            route:route === 'Teacher' ? 'teacher' :route === 'Leader'?'leader' :'student'
+            Route:route === 'Teacher' ? 'teacher' :route === 'Leader'?'leader' :'student'
         })
     }
     ImportHtml = (type,route) => {
@@ -106,12 +106,13 @@ class ImportFile extends React.Component {
     }
     //点击tab
     onTabClick = (name) => {
-        let route = history.location.pathname.split('/');
+        let path = history.location.pathname.split('/');
+        let route = path[2]
 
         this.setState({
             select: name,
             show:true,
-            route:name==='picture'?route:route === 'Teacher' ? 'teacher' :route === 'Leader'?'leader' :'student'
+            Route:name==='picture'?route:route === 'Teacher' ? 'teacher' :route === 'Leader'?'leader' :'student'
         })
         // this.setState({
         //     type:type,
@@ -121,6 +122,9 @@ class ImportFile extends React.Component {
     }
     render() {
         const { UIState, DataState } = this.props;
+
+
+
         // const data = {
         //     userName: '康欣',
         //     userImg: 'http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg',
@@ -163,9 +167,12 @@ class ImportFile extends React.Component {
 
                             </div>
                         </Loading> */}
-                        {
-                            this.state.select==='file'?<ImportExcel  ImportTarget={this.state.route}></ImportExcel>:<ImportPhoto ImportTarget={this.state.route}></ImportPhoto>
-                        }
+                        <div className={'content-box'}>
+                            {
+                                this.state.select==='file'?<ImportExcel  ImportTarget={this.state.Route}></ImportExcel>:<ImportPhoto ImportTarget={this.state.Route}></ImportPhoto>
+                            }
+                        </div>
+
                     </div>
                 </Frame>
 

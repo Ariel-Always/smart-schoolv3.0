@@ -162,31 +162,28 @@ class Index extends Component {
           //判断是否有基础插件包
           if (CanVisit){
 
-              let  AccessParam = 'lgsoft://LgExplorer::LgExplorer::LgExplorer.exe::{Web_Basic}|{lg_tk}|{SubjectID}|localDisk|';
+              // let  AccessParam = 'lgsoft://LgExplorer::LgExplorer::LgExplorer.exe::{Web_Basic}|{lg_tk}|{SubjectID}|localDisk|';
 
               const PoroTolType = AccessParam.split('://')[0];
 
-              const BasicWebUrl = `${window.location.protocol}//${window.location.host}`;
+              const BasicWebUrl = `${window.location.protocol}//${window.location.host}/`;
 
               const token = sessionStorage.getItem('token');
 
               const SubjectID = Teacher.HeaderSetting.SubjectSelect.id;
+              //判断是否是网站或者资源库
+              if (ModuleType==='website') {
 
-              //判断调用插件启动方式
-              if (PoroTolType==='lgsoft'){
+                  const PoroTol = `${BasicWebUrl}|${token}|${SubjectID}|website|${AccessParam}`;
 
-                  //判断是否是网站或者资源库
-                  if (ModuleType==='website'||ModuleType==='reslib') {
+                  window.BsToCs.start('LgExplorer','LgExplorer',BasicWebUrl,'LgExplorer.exe',PoroTol);
 
-                      const PoroTol = `${BasicWebUrl}|${token}|${SubjectID}|${AccessParam}`;
+              }else{
 
-                      window.BsToCs.start('lgsoft://LgExplorer','LgExplorer',BasicWebUrl,'LgExplorer.exe',PoroTol);
+                  //判断调用插件启动方式
+                  if (PoroTolType==='lgsoft'){
 
-                  }else{
-
-                      const LgSoftSplitArr = AccessParam.split('::')[3];
-
-                      const proName = AccessParam.split('::')[0];
+                      const proName = AccessParam.split('::')[0].split('://')[1];
 
                       const moduleName = AccessParam.split('::')[1];
 
@@ -196,20 +193,18 @@ class Index extends Component {
 
                       window.BsToCs.start(proName,moduleName,BasicWebUrl,exeName,porotol);
 
-
                   }
 
               }
 
-            }else{
+            }else{//没有安装基础插件包的情况下
 
-
+              dispatch(AppAlertActions.alertWarn({ title: "您还未安装基础插件包，请先下载和安装插件包！" }));
 
             }
 
-          }else{//没有安装基础插件包的情况下
+          }else{
 
-              dispatch(AppAlertActions.alertWarn({ title: "您还未安装基础插件包，请先下载和安装插件包！" }));
 
           }
 

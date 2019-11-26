@@ -141,11 +141,26 @@ class Import extends Component{
 
     }
 
+    componentWillReceiveProps(NextProps) {
+
+        const {ImportTarget, ImportTitle} = NextProps;
+
+        if (ImportTarget !== this.state.ImportTarget || this.state.ImportTitle !== ImportTitle) {
+
+            this.setState({ImportTarget, ImportTitle});
+
+            console.log(ImportTarget);
+
+        }
+
+    }
+
 
 
     render(){
 
         const { Step,ImportTitle,UpLoadFileName,AlertObj,UpLoadResult,UpLoadPercent } = this.state;
+
 
         return <div id="ImportComponent" className="component-import">
 

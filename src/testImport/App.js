@@ -18,7 +18,7 @@ class APP extends Component{
 
                 <div ref="frame-right-content">
 
-                    <Import></Import>
+                    <Import ImportTarget="teacher"></Import>
 
                 </div>
 
