@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 
 import { Loading,Alert } from "../../../common";
 
-import {TokenCheck_Connect} from "../../../common/js/disconnect";
+import {TokenCheck_Connect,LogOut} from "../../../common/js/disconnect";
 
 import LoginUserActions from '../actions/LoginUserActions';
 
@@ -40,7 +40,9 @@ class App extends Component {
 
             }else{
 
-                window.location.href='/Error.aspx?errcode=E011';
+                //window.location.href='/Error.aspx?errcode=E011';
+
+                LogOut();
 
             }
 
@@ -63,7 +65,9 @@ class App extends Component {
 
                     }else{
 
-                        window.location.href='/Error.aspx?errcode=E011';
+                       /* window.location.href='/Error.aspx?errcode=E011';*/
+
+                        LogOut();
 
                     }
 

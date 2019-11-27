@@ -15,7 +15,7 @@ class FrameContainer extends Component{
 
         this.state={
 
-            LoadingShow:false
+            AlertShow:false
 
         }
 
@@ -92,14 +92,14 @@ class FrameContainer extends Component{
 
     AlertClose(){
 
-        this.setState({LoadingShow:false});
+        this.setState({AlertShow:false});
 
     }
 
     //退出登录
     Logout(){
 
-        this.setState({LoadingShow:true});
+        this.setState({AlertShow:true});
 
     }
 
@@ -137,9 +137,9 @@ class FrameContainer extends Component{
             </Frame>
 
                 <Alert
-                    type="btn-warn"
+                    type="btn-query"
                     title="您确定要退出登录么?"
-                    show={this.state.LoadingShow}
+                    show={this.state.AlertShow}
                     onOk={this.AlertOk.bind(this)}
                     onCancel={this.AlertClose.bind(this)}
                     onClose={this.AlertClose.bind(this)}
