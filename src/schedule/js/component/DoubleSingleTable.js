@@ -25,7 +25,7 @@ class DoubleSingleTable extends Component{
 
                     let scrollHeight = $('#tb .ant-table-scroll>.ant-table-body').height();
 
-                    if ((wrapperHeight - scrollTop + 21)<= scrollHeight){
+                    if ((wrapperHeight - scrollTop + 17)<= scrollHeight){
 
                         scrollToBottom();
 
