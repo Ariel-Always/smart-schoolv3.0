@@ -1017,11 +1017,11 @@ const RevolveScheduleLog = async ({ SchoolID,LogID,UserID,UserName,dispatch}) =>
 
 //终止上课
 
-const OverScheduleAndGetTea = async ({ SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,dispatch}) => {
+const OverScheduleAndGetTea = async ({ SchoolID,UserID,TeacherID,ClassDate,ClassHourNO,ScheduleID,dispatch}) => {
 
     let res = await Method.getPostData(`/ScheduleTea/api/OverScheduleAndGetTea`,{
 
-            SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID
+            SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,UserID
 
         },2,
 
@@ -1043,11 +1043,11 @@ const OverScheduleAndGetTea = async ({ SchoolID,TeacherID,ClassDate,ClassHourNO,
 
 //撤销终止上课
 
-const CancelOverScheduleAndGetTea = async ({ SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,dispatch}) => {
+const CancelOverScheduleAndGetTea = async ({ UserID,SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,dispatch}) => {
 
     let res = await Method.getPostData(`/ScheduleTea/api/CancelOverScheduleAndGetTea`,{
 
-            SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID
+            SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,UserID
 
         },2,
 
@@ -1069,11 +1069,11 @@ const CancelOverScheduleAndGetTea = async ({ SchoolID,TeacherID,ClassDate,ClassH
 
 //调整时间
 
-const ChangeDateAndGetTea = async ({ SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,ScheduleClassDateAndClassHourNO,NowClassRoomID,NowClassRoomName,dispatch}) => {
+const ChangeDateAndGetTea = async ({ UserID,SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,ScheduleClassDateAndClassHourNO,NowClassRoomID,NowClassRoomName,dispatch}) => {
 
     let res = await Method.getPostData(`/ScheduleTea/api/ChangeDateAndGetTea`,{
 
-            SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,ScheduleClassDateAndClassHourNO,NowClassRoomID,NowClassRoomName,
+        UserID,SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,ScheduleClassDateAndClassHourNO,NowClassRoomID,NowClassRoomName,
 
         },2);
 
@@ -1096,11 +1096,11 @@ const ChangeDateAndGetTea = async ({ SchoolID,TeacherID,ClassDate,ClassHourNO,Sc
 
 //撤销调整时间
 
-const CancelChangeDateAndGetTea = async ({ SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,dispatch}) => {
+const CancelChangeDateAndGetTea = async ({ UserID,SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,dispatch}) => {
 
     let res = await Method.getPostData(`/ScheduleTea/api/CancelChangeDateAndGetTea`,{
 
-        SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID
+        SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,UserID
 
     },2);
 
@@ -1122,11 +1122,11 @@ const CancelChangeDateAndGetTea = async ({ SchoolID,TeacherID,ClassDate,ClassHou
 
 //调整教室
 
-const ChangeClassRoomAndGetTea = async ({ SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,ScheduleClassRoomID,dispatch}) => {
+const ChangeClassRoomAndGetTea = async ({ UserID,SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,ScheduleClassRoomID,dispatch}) => {
 
     let res = await Method.getPostData(`/ScheduleTea/api/ChangeClassRoomAndGetTea`,{
 
-        SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,ScheduleClassRoomID
+        SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,ScheduleClassRoomID,UserID
 
     },2);
 
@@ -1148,11 +1148,11 @@ const ChangeClassRoomAndGetTea = async ({ SchoolID,TeacherID,ClassDate,ClassHour
 
 //撤销教室调整
 
-const CancelChangeClassRoomAndGetTea = async ({ SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,dispatch}) => {
+const CancelChangeClassRoomAndGetTea = async ({ UserID,SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,dispatch}) => {
 
     let res = await Method.getPostData(`/ScheduleTea/api/CancelChangeClassRoomAndGetTea`,{
 
-        SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID
+        SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,UserID
 
     },2);
 
@@ -1174,11 +1174,11 @@ const CancelChangeClassRoomAndGetTea = async ({ SchoolID,TeacherID,ClassDate,Cla
 
 //找人代课
 
-const ChangeTeacher = async ({ SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,ScheduleTeacherID,dispatch}) => {
+const ChangeTeacher = async ({ UserID,SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,ScheduleTeacherID,dispatch}) => {
 
     let res = await Method.getPostData(`/ScheduleTea/api/ChangeTeacher`,{
 
-        SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,ScheduleTeacherID
+        SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,ScheduleTeacherID,UserID
 
     },2);
 
@@ -1201,11 +1201,11 @@ const ChangeTeacher = async ({ SchoolID,TeacherID,ClassDate,ClassHourNO,Schedule
 
 //撤销找人代课
 
-const CancelChangeTeacherAndGetTea = async ({ SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,dispatch}) => {
+const CancelChangeTeacherAndGetTea = async ({ UserID,SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,dispatch}) => {
 
     let res = await Method.getPostData(`/ScheduleTea/api/CancelChangeTeacherAndGetTea`,{
 
-        SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID
+        SchoolID,TeacherID,ClassDate,ClassHourNO,ScheduleID,UserID
 
     },2);
 

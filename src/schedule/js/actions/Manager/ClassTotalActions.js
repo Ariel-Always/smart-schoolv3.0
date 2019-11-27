@@ -275,11 +275,11 @@ const StopSchedule = (params) => {
 
     return (dispatch,getState) => {
 
-        const { SchoolID } = getState().LoginUser;
+        const { SchoolID,UserID } = getState().LoginUser;
 
         const { TeacherID,ClassDate,ClassHourNO,ScheduleID } = params;
 
-        ApiActions.OverScheduleAndGetTea({ScheduleID,SchoolID,TeacherID,ClassDate,ClassHourNO,dispatch}).then(data=>{
+        ApiActions.OverScheduleAndGetTea({UserID,ScheduleID,SchoolID,TeacherID,ClassDate,ClassHourNO,dispatch}).then(data=>{
 
             if (data===0){
 
@@ -300,11 +300,11 @@ const RebackStopSchedule = (params) => {
 
     return (dispatch,getState) => {
 
-        const { SchoolID } = getState().LoginUser;
+        const { SchoolID,UserID } = getState().LoginUser;
 
         const { TeacherID,ClassDate,ClassHourNO,ScheduleID } = params;
 
-        ApiActions.CancelOverScheduleAndGetTea({ScheduleID,SchoolID,TeacherID,ClassDate,ClassHourNO,dispatch}).then(data=>{
+        ApiActions.CancelOverScheduleAndGetTea({UserID,ScheduleID,SchoolID,TeacherID,ClassDate,ClassHourNO,dispatch}).then(data=>{
 
             if (data===0){
 
@@ -326,11 +326,11 @@ const RebackTime = (params) => {
 
     return (dispatch,getState) => {
 
-        const { SchoolID } = getState().LoginUser;
+        const { SchoolID,UserID } = getState().LoginUser;
 
         const { TeacherID,ClassDate,ClassHourNO,ScheduleID } = params;
 
-        ApiActions.CancelChangeDateAndGetTea({ScheduleID,SchoolID,TeacherID,ClassDate,ClassHourNO,dispatch}).then(data=>{
+        ApiActions.CancelChangeDateAndGetTea({UserID,ScheduleID,SchoolID,TeacherID,ClassDate,ClassHourNO,dispatch}).then(data=>{
 
             if (data===0){
 
@@ -419,13 +419,13 @@ const ChangeTimeCommit = () =>{
 
             dispatch({type:MANAGER_CT_CHANGE_TIME_MODAL_LOADING_SHOW});
 
-            const { SchoolID } = getState().LoginUser;
+            const { SchoolID,UserID } = getState().LoginUser;
 
             const ScheduleClassDateAndClassHourNO = `${SelectDate},${SelectClassHourNO}`;
 
             ApiActions.ChangeDateAndGetTea({
 
-                SchoolID,ScheduleID,ScheduleClassDateAndClassHourNO,ClassDate,ClassHourNO,
+                UserID,SchoolID,ScheduleID,ScheduleClassDateAndClassHourNO,ClassDate,ClassHourNO,
 
                 NowClassRoomID,NowClassRoomName,TeacherID,dispatch
 
@@ -589,7 +589,7 @@ const AdjustClassRoomCommit = () =>{
 
         const { CheckedValue,TeacherID,ClassDate,ClassHourNO,ScheduleID } = getState().Manager.ClassTotal.AdjustClassRoom;
 
-        const { SchoolID } = getState().LoginUser;
+        const { SchoolID,UserID } = getState().LoginUser;
 
         if (CheckedValue){
 
@@ -599,7 +599,7 @@ const AdjustClassRoomCommit = () =>{
 
                 SchoolID,ScheduleID,TeacherID,ClassHourNO,ClassDate,
 
-                ScheduleClassRoomID:CheckedValue,dispatch
+                ScheduleClassRoomID:CheckedValue,dispatch,UserID
 
             }).then(data=>{
 
@@ -635,11 +635,11 @@ const RebackClassRoom = (params) => {
 
         const { TeacherID,ClassDate,ClassHourNO,ScheduleID } = params;
 
-        const { SchoolID } = getState().LoginUser;
+        const { SchoolID,UserID } = getState().LoginUser;
 
         ApiActions.CancelChangeClassRoomAndGetTea({
 
-            TeacherID,ClassDate,ClassHourNO,ScheduleID,SchoolID,dispatch
+            TeacherID,ClassDate,ClassHourNO,ScheduleID,SchoolID,dispatch,UserID
 
         }).then(data=>{
 
@@ -768,7 +768,7 @@ const ReplaceScheduleCommit = () => {
 
         const { ActiveTeacherID,TeacherID,ClassDate,ClassHourNO,ScheduleID } = getState().Manager.ClassTotal.ReplaceSchedule;
 
-        const { SchoolID } = getState().LoginUser;
+        const { SchoolID,UserID } = getState().LoginUser;
 
         if (ActiveTeacherID){
 
@@ -778,7 +778,7 @@ const ReplaceScheduleCommit = () => {
 
                 SchoolID,ScheduleID,TeacherID,ClassHourNO,ClassDate,
 
-                ScheduleTeacherID:ActiveTeacherID,dispatch
+                ScheduleTeacherID:ActiveTeacherID,dispatch,UserID
 
             }).then(data=>{
 
@@ -815,11 +815,11 @@ const RebackReplaceSchedule = (params) => {
 
         const { TeacherID,ClassDate,ClassHourNO,ScheduleID } = params;
 
-        const { SchoolID } = getState().LoginUser;
+        const { SchoolID,UserID } = getState().LoginUser;
 
         ApiActions.CancelChangeTeacherAndGetTea({
 
-            TeacherID,ClassDate,ClassHourNO,ScheduleID,SchoolID,dispatch
+            TeacherID,ClassDate,ClassHourNO,ScheduleID,SchoolID,dispatch,UserID
 
         }).then(data=>{
 

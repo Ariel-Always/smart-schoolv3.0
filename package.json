@@ -112,7 +112,8 @@
       "no-extend-native": "off",
       "no-useless-escape": "off",
       "no-unreachable": "off",
-      "no-useless-concat": "off"
+      "no-useless-concat": "off",
+      "react/jsx-no-target-blank":"off"
     }
   },
   "browserslist": {

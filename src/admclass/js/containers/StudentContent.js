@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import TitleBar from '../component/TitleBar';
-import {Search, Button, Loading, Modal} from "../../../common";
+import {Search, Button, Loading, Modal, DetailsModal} from "../../../common";
 import connect from "react-redux/es/connect/connect";
 import UpDataState from '../actions/UpDataState';
 import UpUIState from '../actions/UpUIState';
@@ -12,6 +12,8 @@ import StudentTabWrapper from '../component/StudentTabWrapper';
 import AdjustClassModal from '../component/AdjustClassModal';
 import AddTeacherModal from '../component/AddTeacherModal';
 import PaginationActions from "../actions/PaginationActions";
+import DMActions from "../actions/DetailModalActions";
+
 
 
 
@@ -488,16 +490,37 @@ class StudentContent extends Component{
 
     }
 
+    //用户详情弹窗出现
+
+    DetailModalShow(Params){
+
+        const { dispatch } = this.props;
+
+        dispatch(DMActions.Init(Params))
+
+    }
+
+    //弹窗消失
+
+    DetailModalHide(e){
+
+        const { dispatch } = this.props;
+
+        dispatch(DMActions.Hide())
+
+    }
+
 
 
 
     render() {
 
-        const {UIState,DataState,info} = this.props;
+        const {UIState,DataState,info,DetailModal} = this.props;
 
         const {StudentLoading} = UIState;
 
         const {StudentPagination,TheTeachersList,TheStudentList,SchoolGradeClasses,StudentsCheckList,StudentsCheckAll} = DataState;
+
 
 
 
@@ -516,7 +539,7 @@ class StudentContent extends Component{
 
                     </div>
 
-                    <TeacherTabWrapper delSubjectTeacher={this.delSubjectTeacher.bind(this)} delGanger={this.delGanger.bind(this)} addTeacherModalShow={this.addTeacherModalShow.bind(this)} Teachers={TheTeachersList}></TeacherTabWrapper>
+                    <TeacherTabWrapper TeacherDetailShow={this.DetailModalShow.bind(this)} delSubjectTeacher={this.delSubjectTeacher.bind(this)} delGanger={this.delGanger.bind(this)} addTeacherModalShow={this.addTeacherModalShow.bind(this)} Teachers={TheTeachersList}></TeacherTabWrapper>
 
                 </ContentWrapper>
 
@@ -551,7 +574,11 @@ class StudentContent extends Component{
 
                         StudentPageChange={this.StudentPageChange.bind(this)}
 
-                        MonitorClick={this.MonitorClick.bind(this)}>
+                        MonitorClick={this.MonitorClick.bind(this)}
+
+                        StudentDetailShow={this.DetailModalShow.bind(this)}
+
+                    >
 
                     </StudentTabWrapper>
 
@@ -679,6 +706,21 @@ class StudentContent extends Component{
 
                </Modal>
 
+                <DetailsModal
+
+                    visible={DetailModal.Show}
+
+                    data={DetailModal[DetailModal.ActiveInfo]}
+
+                    type={DetailModal.ActiveInfo}
+
+                    onCancel={this.DetailModalHide.bind(this)}
+
+                >
+
+
+                </DetailsModal>
+
 
             </Loading>
         );
@@ -687,13 +729,15 @@ class StudentContent extends Component{
 
 const  mapStateToProps = (state) => {
 
-    let {UIState,DataState} = state;
+    let {UIState,DataState,DetailModal} = state;
 
     return {
 
         UIState,
 
-        DataState
+        DataState,
+
+        DetailModal
 
     }
 };

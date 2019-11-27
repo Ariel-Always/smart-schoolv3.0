@@ -125,7 +125,7 @@ class ClassRoomSingle extends Component{
 
 
     //左侧菜单输入框改变
-    SearchValueChange(e) {
+    LeftMenuSearchValueChange(e) {
 
         const {dispatch} = this.props;
 
@@ -441,7 +441,7 @@ class ClassRoomSingle extends Component{
                         PickID={ClassRoomSingle.PickClassRoomID}
                         CancelBtnShow={ClassRoomSingle.CancelBtnShow}
                         SearchValue={ClassRoomSingle.SearchValue}
-                        SearchValueChange={this.SearchValueChange.bind(this)}>
+                        SearchValueChange={this.LeftMenuSearchValueChange.bind(this)}>
 
                     </LeftMenu>
 

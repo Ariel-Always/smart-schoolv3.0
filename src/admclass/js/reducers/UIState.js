@@ -7,8 +7,12 @@ import StudentLoading from './ui/StudentLoading';
 import AddClassModal from  './ui/AddClassModal';
 import AdjustClassModal from './ui/AdjustClassModal';
 import AddTeacherModal from "./ui/AddTeacherModal";
+
 import ComponentChange from "./ui/ComponentChange";
+
 import ResetNameModal from './ui/ResetNameModal';
+
+
 
 
 const  UIState = combineReducers({
@@ -22,6 +26,7 @@ const  UIState = combineReducers({
     AddTeacherModal,
     ComponentChange,
     ResetNameModal
+
 });
 
 export default UIState;

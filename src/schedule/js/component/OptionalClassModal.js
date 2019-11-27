@@ -17,7 +17,15 @@ class OptionalClassModal extends Component{
 
                 dataIndex:"CourseClassName",
 
-                key:"CourseClassName"
+                key:"CourseClassName",
+
+                width:240,
+
+                render:(data)=>{
+
+                    return <div className="course-name" title={data}>{data}</div>
+
+                }
 
             },
             {
@@ -28,7 +36,15 @@ class OptionalClassModal extends Component{
 
                 dataIndex:"TeacherName",
 
-                key:"TeacherName"
+                key:"TeacherName",
+
+                width:240,
+
+                render:(data)=>{
+
+                    return <div className="teacher-name" title={data}>{data}</div>
+
+                }
                 
             },
 
@@ -40,7 +56,15 @@ class OptionalClassModal extends Component{
 
                 dataIndex:"ClassRoomName",
 
-                key:"ClassRoomName"
+                key:"ClassRoomName",
+
+                width:240,
+
+                render:(data)=>{
+
+                    return <div className="class-room-name" title={data}>{data}</div>
+
+                }
 
             }
 

@@ -519,6 +519,8 @@ class ClassTotal extends Component{
 
                 RebackReplaceSchedule={this.RebackReplaceSchedule.bind(this)}
 
+                CanOperate={false}
+
             >
 
             </ScheduleDetailModal>

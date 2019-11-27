@@ -38,7 +38,7 @@ class TeacherTabWrapper extends Component{
 
     render() {
 
-        const { Teachers,addTeacherModalShow,delGanger,delSubjectTeacher } = this.props;
+        const { Teachers,addTeacherModalShow,delGanger,delSubjectTeacher,TeacherDetailShow } = this.props;
 
         return (
 
@@ -48,13 +48,13 @@ class TeacherTabWrapper extends Component{
 
                     <div className="admclass-teacher-ganger clearfix">
 
-                        <div className="admclass-teacher-photo" style={{backgroundImage:`url(${Teachers.Ganger&&Teachers.Ganger.PhotoPath?Teachers.Ganger.PhotoPath:headerImg})`}}></div>
+                        <div className="admclass-teacher-photo" onClick={Teachers.Ganger&&Teachers.Ganger.PhotoPath?e=>TeacherDetailShow({UserID:Teachers.Ganger.UserID,UserType:1}):()=>{}} style={{backgroundImage:`url(${Teachers.Ganger&&Teachers.Ganger.PhotoPath?Teachers.Ganger.PhotoPath:headerImg})`}}></div>
 
                         <div className="admclass-teacher-info">
 
                             <div className="admclass-teacher-tab">
 
-                                <div className="admclass-teacher-name" title={Teachers.Ganger&&Teachers.Ganger.UserName?Teachers.Ganger.UserName:'未设置'}>{Teachers.Ganger&&Teachers.Ganger.UserName?Teachers.Ganger.UserName:'未设置'}</div>
+                                <div className="admclass-teacher-name" onClick={(Teachers.Ganger&&Teachers.Ganger.UserName!=='未设置'&&Teachers.Ganger.UserName!=='')?e=> TeacherDetailShow({UserID:Teachers.Ganger.UserID,UserType:1}):()=>{}} title={Teachers.Ganger&&Teachers.Ganger.UserName?Teachers.Ganger.UserName:'未设置'}>{Teachers.Ganger&&Teachers.Ganger.UserName?Teachers.Ganger.UserName:'未设置'}</div>
 
                             </div>
 
@@ -122,13 +122,13 @@ class TeacherTabWrapper extends Component{
 
                                return <div key={key} className="admclass-teacher-item clearfix">
 
-                                           <div className="admclass-teacher-photo" style={{backgroundImage:`url(${item.PhotoPath})`}}></div>
+                                           <div className="admclass-teacher-photo" onClick={e=>TeacherDetailShow({UserID:item.UserID,UserType:1})} style={{backgroundImage:`url(${item.PhotoPath})`}}></div>
 
                                            <div className="admclass-teacher-info">
 
                                                <div className="admclass-teacher-tab">
 
-                                                   <div className="admclass-teacher-name" title={item.UserName}>{item.UserName}</div>
+                                                   <div className="admclass-teacher-name" onClick={e=>TeacherDetailShow({UserID:item.UserID,UserType:1})} title={item.UserName}>{item.UserName}</div>
 
                                                </div>
 

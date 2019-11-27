@@ -17,7 +17,23 @@
   .ant-table-tbody{
 
     color: #333333;
+
+    tr td{
+
+      padding:0;
+
+    }
     
+  }
+
+  .course-name,.class-room-name,.teacher-name{
+
+    width: 240px;
+
+    @include textOverFlow;
+
+    padding:9px 8px;
+
   }
 
 }

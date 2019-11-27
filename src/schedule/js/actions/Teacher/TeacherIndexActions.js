@@ -579,7 +579,7 @@ const ClassTotalInit = () => {
 
                                 ClassID:item.ClassID,
 
-                                WeekDay:item.WeekDay,
+                                WeekDay:item.WeekDayNO,
 
                                 ClassHourNO:item.ClassHourNO,
 

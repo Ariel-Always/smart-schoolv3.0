@@ -27,7 +27,9 @@ class StudentTabWrapper extends Component{
 
             adjustBtnClick,
 
-            MonitorClick
+            MonitorClick,
+
+            StudentDetailShow
 
         } = this.props;
 
@@ -67,13 +69,13 @@ class StudentTabWrapper extends Component{
 
                                                     <div className="person-item-content clearfix">
 
-                                                        <div className="person-item-photo" style={{backgroundImage:`url(${item.PhotoPath})`}}></div>
+                                                        <div className="person-item-photo" onClick={e=>StudentDetailShow({UserID:item.UserID,UserType:2})} style={{backgroundImage:`url(${item.PhotoPath})`}}></div>
 
                                                         <div className="person-item-info-wrapper">
 
                                                             <div className="person-item-info">
 
-                                                                <div className="person-item-name" title={item.UserName}>{item.UserName}</div>
+                                                                <div className="person-item-name" onClick={e=>StudentDetailShow({UserID:item.UserID,UserType:2})} title={item.UserName}>{item.UserName}</div>
 
                                                                 <div className={`person-sex-icon ${sex}`}></div>
 

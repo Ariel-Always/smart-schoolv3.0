@@ -278,6 +278,16 @@ class SingleDoubleTable extends Component{
 
                                                             <div className="third-title" title={it.thirdTitle} data-id={it.thirdTitleID}>{it.thirdTitle}</div>
 
+                                                            {
+
+                                                                it.ScheduleType===2?
+
+                                                                    <div className="ongoing-flag"></div>
+
+                                                                    :''
+
+                                                            }
+
                                                         </React.Fragment>
 
                                                 }

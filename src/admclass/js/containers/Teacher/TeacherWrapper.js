@@ -4,13 +4,15 @@ import {connect} from 'react-redux';
 
 import TitleBar from '../../component/TitleBar';
 
-import {Empty, Loading, Modal} from "../../../../common";
+import {Empty, Loading, Modal,DetailsModal} from "../../../../common";
 
 import AddTeacherModal from "../../component/AddTeacherModal";
 
 import AppAlertActions from "../../actions/AppAlertActions";
 
 import TMActions from '../../actions/Teacher/TeacherModalActions';
+
+import DMActions from "../../actions/DetailModalActions";
 
 
 
@@ -181,10 +183,32 @@ class TeacherWrapper extends Component{
     }
 
 
+    //
+
+    //用户详情弹窗出现
+
+    TeacherDetailShow(Params){
+
+        const { dispatch } = this.props;
+
+        dispatch(DMActions.Init(Params))
+
+    }
+
+    //弹窗消失
+
+    DetailModalHide(e){
+
+        const { dispatch } = this.props;
+
+        dispatch(DMActions.Hide())
+
+    }
+
 
     render(){
 
-        const { ClassCharge,Teacher } = this.props;
+        const { ClassCharge,Teacher,DetailModal } = this.props;
 
         const { TeacherModal } = Teacher;
 
@@ -230,13 +254,13 @@ class TeacherWrapper extends Component{
 
                             return <div key={key} className="admclass-teacher-item clearfix">
 
-                                <div className="admclass-teacher-photo" style={{backgroundImage:`url(${item.PhotoPath})`}}></div>
+                                <div className="admclass-teacher-photo" onClick={this.TeacherDetailShow.bind(this,{UserID:item.UserID,UserType:1})} style={{backgroundImage:`url(${item.PhotoPath})`}}></div>
 
                                 <div className="admclass-teacher-info">
 
                                     <div className="admclass-teacher-tab">
 
-                                        <div className="admclass-teacher-name" title={item.UserName}>{item.UserName}</div>
+                                        <div className="admclass-teacher-name" onClick={this.TeacherDetailShow.bind(this,{UserID:item.UserID,UserType:1})} title={item.UserName}>{item.UserName}</div>
 
                                     </div>
 
@@ -342,6 +366,21 @@ class TeacherWrapper extends Component{
 
                 </Modal>
 
+                <DetailsModal
+
+                    visible={DetailModal.Show}
+
+                    data={DetailModal[DetailModal.ActiveInfo]}
+
+                    type={DetailModal.ActiveInfo}
+
+                    onCancel={this.DetailModalHide.bind(this)}
+
+                >
+
+
+                </DetailsModal>
+
             </Loading>
 
         </div>
@@ -352,13 +391,13 @@ class TeacherWrapper extends Component{
 
 const mapStateToProps = (state)=>{
 
-    const { Teacher } = state;
+    const { Teacher,DetailModal } = state;
 
     const{ ClassCharge } = state.Teacher;
 
     return {
 
-        ClassCharge,Teacher
+        ClassCharge,Teacher,DetailModal
 
     }
 

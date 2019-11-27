@@ -500,6 +500,8 @@ class TeacherPersonalSchedule extends Component{
 
                     RebackReplaceSchedule={this.RebackReplaceSchedule.bind(this)}
 
+                    CanOperate={Power.Adjust}
+
                 >
 
                 </ScheduleDetailModal>

@@ -125,6 +125,16 @@ class ClassSingle extends Component{
 
     }
 
+    //左侧菜单输入框改变
+
+    LeftSearchValueChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:CSActions.MANAGER_CSA_LEFT_MENU_SEARCH_INPUT_CHANGE,data:e.target.value});
+
+    }
+
     //走班详情弹窗打开
 
     OptionalClassShow({ClassHourNO,WeekDay}){
@@ -158,15 +168,7 @@ class ClassSingle extends Component{
 
     }
 
-    //左侧菜单输入框改变
 
-    SearchValueChange(e){
-
-        const { dispatch } = this.props;
-
-        dispatch({type:CSActions.MANAGER_CSA_LEFT_MENU_SEARCH_INPUT_CHANGE,data:e.target.value});
-
-    }
 
     //弹出课程详情弹窗
 
@@ -477,7 +479,7 @@ class ClassSingle extends Component{
                         PickID={ClassSingle.PickClassID}
                         CancelBtnShow={ClassSingle.CancelBtnShow}
                         SearchValue={ClassSingle.SearchValue}
-                        SearchValueChange={this.SearchValueChange.bind(this)}>
+                        SearchValueChange={this.LeftSearchValueChange.bind(this)}>
                         >
 
                     </LeftMenu>
