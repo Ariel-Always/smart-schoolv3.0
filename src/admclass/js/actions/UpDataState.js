@@ -9,6 +9,7 @@ import AppAlertActions from './AppAlertActions';
 import PaginationActions from './PaginationActions';
 
 import CONFIG from '../../../common/js/config'
+import SearchActions from "./SearchActions";
 
 
 
@@ -267,6 +268,9 @@ const addClass = ({GradeID,ClassName,TheGradePreviewID}) =>{
 
         let { SchoolID } = getState().DataState.LoginUser;
 
+        let SchoolSearchKey = getState().DataState.AllGradePreview.SearchKey;
+
+        let GradeSearchKey = getState().DataState.TheGradePreview.SearchKey;
 
         //关闭的弹窗的时候重置一些操作
         addClassPost({GradeID,ClassName,dispatch}).then(data=>{
@@ -277,15 +281,33 @@ const addClass = ({GradeID,ClassName,TheGradePreviewID}) =>{
 
                dispatch(AppAlertActions.alertSuccess({title:'添加班级成功！'}));
 
-               dispatch(UpGradeClassTree(SchoolID));
+               console.log(SchoolSearchKey,GradeSearchKey,TheGradePreviewID);
 
-               dispatch(getAllGradePreview());
+               if (SchoolSearchKey){
+
+                   dispatch(SearchActions.SchoolClassSearch(SchoolSearchKey));
+
+               }else{
+
+                   dispatch(getAllGradePreview());
+
+               }
 
                if (TheGradePreviewID){
 
-                   dispatch(getTheGradePreview(TheGradePreviewID));
+                   if (GradeSearchKey){
+
+                        dispatch(SearchActions.GradeClassSearch(TheGradePreviewID,GradeSearchKey));
+
+                   }else{
+
+                       dispatch(getTheGradePreview(TheGradePreviewID));
+
+                   }
 
                }
+
+               dispatch(UpGradeClassTree(SchoolID));
 
            }
 
@@ -322,7 +344,7 @@ const getAddTeacherData = (opts) =>{
 
                     if (data){
 
-                        dispatch({type:ADD_TEACHER_UPDATA_SUBJECTS,list:data});
+                        dispatch({type:ADD_TEACHER_UPDATA_SUBJECTS,list:data.List});
 
                     }
 
@@ -741,11 +763,15 @@ const delSubjectTeacher = ({ClassID,SubjectID}) => {
 
 //编辑班级
 
-const UpdateClassName = ({GradeID,ClassID,ClassName}) => {
+const UpdateClassName = ({IsAllPreview,GradeID,ClassID,ClassName}) => {
 
   return (dispatch,getState) => {
 
       let { SchoolID } = getState().DataState.LoginUser;
+
+      let SchoolSearchKey = getState().DataState.AllGradePreview.SearchKey;
+
+      let GradeSearchKey = getState().DataState.TheGradePreview.SearchKey;
 
       editClassPost({ClassName,ClassID,dispatch}).then(data=>{
 
@@ -757,7 +783,25 @@ const UpdateClassName = ({GradeID,ClassID,ClassName}) => {
 
               dispatch(AppAlertActions.alertSuccess({title:"修改成功！"}));
 
-              dispatch(getTheGradePreview(GradeID));
+              console.log(IsAllPreview);
+
+              if (IsAllPreview){
+
+                  dispatch(SearchActions.SchoolClassSearch(SchoolSearchKey));
+
+              }else{
+
+                  if (GradeSearchKey){
+
+                      dispatch(SearchActions.GradeClassSearch(GradeID,GradeSearchKey));
+
+                  }else{
+
+                      dispatch(getTheGradePreview(GradeID));
+
+                  }
+
+              }
 
               dispatch(UpGradeClassTree(SchoolID));
 
@@ -772,7 +816,9 @@ const UpdateClassName = ({GradeID,ClassID,ClassName}) => {
 
 const SetMonitorAction = ({UserID='',ClassID}) =>{
 
-    return dispatch => {
+    return (dispatch,getState) => {
+
+        const { SearchKey } = getState().DataState.TheStudentList;
 
         SetMonitor({UserID,ClassID,dispatch}).then(data=>{
 
@@ -788,7 +834,7 @@ const SetMonitorAction = ({UserID='',ClassID}) =>{
 
                 }
 
-                getStudents({ClassID,PageIndex:0,PageSize:12,dispatch}).then(data=>{
+                getStudents({ClassID,Keyword:SearchKey,PageIndex:0,PageSize:12,dispatch}).then(data=>{
 
                     if (data){
 

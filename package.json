@@ -113,7 +113,7 @@
       "no-useless-escape": "off",
       "no-unreachable": "off",
       "no-useless-concat": "off",
-      "react/jsx-no-target-blank":"off"
+      "react/jsx-no-target-blank": "off"
     }
   },
   "browserslist": {

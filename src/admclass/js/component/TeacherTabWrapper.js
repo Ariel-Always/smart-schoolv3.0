@@ -40,6 +40,8 @@ class TeacherTabWrapper extends Component{
 
         const { Teachers,addTeacherModalShow,delGanger,delSubjectTeacher,TeacherDetailShow } = this.props;
 
+
+
         return (
 
             <CheckBoxGroup>
@@ -72,11 +74,11 @@ class TeacherTabWrapper extends Component{
 
                         <div className="cooperate ganger">
 
-                            <div className={`reset ${Teachers.Ganger&&Teachers.Ganger.UserID?'':'no-set'}`} onClick={this.setGanger.bind(this)}>{Teachers.Ganger&&Teachers.Ganger.UserID!=='未设置'?'更改':'设置'}</div>
+                            <div className={`reset ${Teachers.Ganger&&Teachers.Ganger.UserID!=='未设置'?'':'no-set'}`} onClick={this.setGanger.bind(this)}>{Teachers.Ganger&&Teachers.Ganger.UserID!=='未设置'?'更改':'设置'}</div>
 
                             {
 
-                                Teachers.Ganger&&Teachers.Ganger.UserID?
+                                Teachers.Ganger&&Teachers.Ganger.UserID!=='未设置'?
 
                                 <React.Fragment>
 

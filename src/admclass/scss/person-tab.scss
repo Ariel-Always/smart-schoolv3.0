@@ -10,9 +10,11 @@
     width: 180px;
     height: 78px;
     margin-bottom: 20px;
+
     &:not(:nth-child(4n+1)){
       margin-left:26px;
     }
+
     &.monitor{
       &:after{
         position: absolute;
@@ -29,6 +31,19 @@
         z-index:10;
       }
     }
+
+    .ant-checkbox-wrapper{
+
+      position: absolute;
+
+      right: 8px;
+
+      top:8px;
+
+      z-index: 10;
+
+    }
+
   }
   .person-item-content{
     position: relative;
@@ -121,11 +136,6 @@
     background-position: left center;
     max-width: 100px;
     @include textOverFlow;
-  }
-  .ant-checkbox-wrapper{
-    position: absolute;
-    right: 8px;
-    top:8px;
   }
 
   .ant-pagination{

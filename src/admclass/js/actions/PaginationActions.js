@@ -98,7 +98,7 @@ const StudentPageChange = (PageIndex,ClassID) => {
 
                 if (data.List.length>0){
 
-                    let list = data.List.map(item =>{return JSON.stringify({id:item.UserID,name:item.UserName})})
+                    let list = data.List.map(item =>item.UserID);
 
                     dispatch({type:UpDataState.INIT_STUDEUNT_PLAIN_OPTIONS,data:list});
 
@@ -107,6 +107,8 @@ const StudentPageChange = (PageIndex,ClassID) => {
                     dispatch({type:UpDataState.INIT_STUDEUNT_PLAIN_OPTIONS,data:[]});
 
                 }
+
+                dispatch({type:UpDataState.STUDENTS_CHECK_LIST_CHANGE,list:[]});
 
                 dispatch({type:UpDataState.STUDENTS_CHECKED_NONE});
 

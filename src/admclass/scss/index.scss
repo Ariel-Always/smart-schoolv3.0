@@ -180,19 +180,27 @@ $image-url:'../images';
 
       &.ganger{
 
-        .no-set{
+        .no-set.reset{
 
-          .reset{
-            margin-left: 40px;
-          }
+            margin-left:60px;
 
         }
 
       }
+
     }
+
     &:hover{
       .cooperate{
+
         display: block;
+
+        &.ganger{
+
+          @include flex;
+
+        }
+
       }
     }
   }

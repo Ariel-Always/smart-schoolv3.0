@@ -36,6 +36,8 @@ const StudentSearch = (ClassID,key) => {
 
                 }
 
+                dispatch({type:UpDataState.STUDENTS_CHECK_LIST_CHANGE,list:[]});
+
                 dispatch({type:UpDataState.STUDENTS_CHECKED_NONE});
 
             }

@@ -94,7 +94,7 @@ class AddTeacherModal extends Component{
 
                             <span className="props">关键词:</span>
 
-                            <Input type="text" className="search-input" placeholder="请输入教师姓名或工号搜索" onChange={(e) => inputContentChange(e)} value={inputContent}/>
+                            <Input type="text" className="search-input" placeholder="请输入教师姓名或工号搜索" onChange={(e) => inputContentChange(e)} onPressEnter={e=>searchBtnClick(e)} value={inputContent}/>
 
                             <input type="button" className="search-close" onClick={() => searchClose()} style={{display:`${closeShow?'block':'none'}`}}/>
 

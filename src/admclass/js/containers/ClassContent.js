@@ -221,6 +221,8 @@ class ClassContent extends Component{
 
         let { SchoolID } = DataState.LoginUser;
 
+        const {SearchKey} = DataState.TheGradePreview;
+
         dispatch({type:UpUIState.CLOSE_ERROR_ALERT});
 
         UpDataState.delClassPost({ClassIDs:ClassID,GradeID:GradeID,dispatch}).then(data=>{
@@ -229,7 +231,15 @@ class ClassContent extends Component{
 
                 dispatch(AppAlertActions.alertSuccess({title:"删除班级成功！"}));
 
-                dispatch(UpDataState.getTheGradePreview(GradeID));
+                if (SearchKey){
+
+                    dispatch(SearchActions.GradeClassSearch(GradeID,SearchKey));
+
+                }else{
+
+                    dispatch(UpDataState.getTheGradePreview(GradeID));
+
+                }
 
                 dispatch(UpDataState.UpGradeClassTree(SchoolID));
 

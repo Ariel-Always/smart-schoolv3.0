@@ -106,7 +106,8 @@
             height: 21px;
             background-image: url("#{$image-url}/line.png");
         }
-    }
+
+}
 
 
 &.class{
@@ -130,7 +131,9 @@
         }
     &:hover{
         .cooperate{
+
                 display: block;
+
             }
         }
     }

@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import TitleBar from '../component/TitleBar';
-import {Loading, Search,DropDown,PagiNation} from "../../../common";
+import {Loading, Search, PagiNation, Modal} from "../../../common";
 import ContentWrapper from '../component/ContentWrapper';
 import Statistics from '../component/Statistics'
 import PartData from '../component/PartData';
@@ -15,6 +15,8 @@ import SearchActions from '../actions/SearchActions';
 import AppAlertActions from '../actions/AppAlertActions';
 
 import PaginationActions from "../actions/PaginationActions";
+
+import {Input} from "antd";
 
 class GradeContent extends Component{
 
@@ -98,8 +100,6 @@ class GradeContent extends Component{
 
         const { dispatch} = this.props;
 
-
-
         $('.frame_leftmenu_mainitem').removeClass('active');
 
         $('.frame_leftmenu_mainitem').removeClass('selected');
@@ -128,15 +128,203 @@ class GradeContent extends Component{
 
     }
 
+    //重命名班级名称
+
+    ResetClassName({ClassID,Event,ClassName}){
+
+        Event.stopPropagation();
+
+        const { dispatch } = this.props;
+
+        dispatch({type:UpUIState.RESET_CLASS_NAME_SHOW,data:{ClassID,ClassName}});
+
+    }
+
+    //重命名输入框变化
+
+    ReNameInputChange(e){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:UpUIState.RESET_CLASS_NAME_INPUT_CHANG,data:e.target.value});
+
+    }
+
+
+    //重命名点击确定
+    ResetNameOk(){
+
+        const { dispatch,DataState,UIState } = this.props;
+
+        //判断是否输入合法和是否重命名
+
+        let { InputText,ClassID,ClassName } = UIState.ResetNameModal;
+
+        //如果名称未做变化
+        if (ClassName === InputText){
+
+            dispatch({type:UpUIState.RESET_CLASS_NAME_TIPS_SHOW,data:{title:"班级名称没有发生变化"}});
+
+        }else{
+
+            if (this.UserComm_CheckGroupName(InputText)){
+
+                dispatch({type:UpUIState.RESET_CLASS_NAME_TIPS_HIDE});
+
+                let { SchoolGradeClasses } = DataState;
+
+                //获取班级所在的grade列表
+
+
+                 let TheGrade = SchoolGradeClasses.Grades.find(item=>{
+
+                     let HasClass = false;
+
+                     item.Classes.map(i=>{
+
+                         if (i.ClassID===ClassID){
+
+                             HasClass = true;
+
+                         }
+
+                     });
+
+                     return HasClass;
+
+                });
+
+
+                //查看是否有重名的班级
+
+                let IsNameRepeat = false;
+
+                TheGrade.Classes.map(item=>{
+
+                    if (item.ClassName === InputText){
+
+                        IsNameRepeat = true;
+
+                        return
+
+                    }
+
+                });
+
+
+                if (IsNameRepeat){
+
+                    dispatch({type:UpUIState.RESET_CLASS_NAME_TIPS_SHOW,data:{title:"班级名称和其他班级名称重复"}});
+
+                }else{
+
+
+                    //做异步操作
+
+                    dispatch(UpDataState.UpdateClassName({IsAllPreview:true,GradeID:TheGrade.GradeID,ClassID:ClassID,ClassName:InputText}));
+
+
+                }
+
+            }else{
+
+                //检测不通过
+
+                dispatch({type:UpUIState.RESET_CLASS_NAME_TIPS_SHOW,data:{title:"班级名称格式错误"}});
+
+            }
+
+        }
+
+    }
+
+
+    //重命名点击取消
+    ResetNameCancel(){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:UpUIState.RESET_CLASS_NAME_HIDE});
+
+    }
+
+    //删除班级
+
+    delClass({ClassID,Event}){
+
+        Event.stopPropagation();
+
+        const { dispatch,DataState } = this.props;
+
+        const { SchoolGradeClasses } = DataState;
+
+        let TheGrade = SchoolGradeClasses.Grades.find(item=>{
+
+            let HasClass = false;
+
+            item.Classes.map(i=>{
+
+                if (i.ClassID===ClassID){
+
+                    HasClass = true;
+
+                }
+
+            });
+
+            return HasClass;
+
+        });
+
+        dispatch(AppAlertActions.alertQuery({title:"您要删除该班级么？",ok:()=>{ return this.delClassActions.bind(this,{GradeID:TheGrade.GradeID,ClassID})}}));
+
+    }
+
+    delClassActions({ClassID,GradeID}){
+
+        const { dispatch,DataState } = this.props;
+
+        let { SchoolID } = DataState.LoginUser;
+
+        const { AllGradePreview } = DataState;
+
+        dispatch({type:UpUIState.CLOSE_ERROR_ALERT});
+
+        UpDataState.delClassPost({ClassIDs:ClassID,GradeID:GradeID,dispatch}).then(data=>{
+
+            if (data==='success'){
+
+                dispatch(AppAlertActions.alertSuccess({title:"删除班级成功！"}));
+
+                dispatch(SearchActions.SchoolClassSearch(AllGradePreview.SearchKey));
+
+                dispatch(UpDataState.UpGradeClassTree(SchoolID));
+
+            }
+
+        })
+
+    }
+
+
+    //班级名称检测函数
+
+    UserComm_CheckGroupName(strInput) {
+
+        return /^[0-9a-zA-Z()（）\u4E00-\u9FA5\uF900-\uFA2D-]{1,20}$/.test(strInput);
+
+    }
 
 
     render() {
 
         const {UIState,DataState} = this.props;
 
-        const {GradeLoading} = UIState;
+        const {GradeLoading,ResetNameModal} = UIState;
 
         const { AllGradePreview,GradePagination } = DataState;
+
+        const { show,InputText,ErrorTips,ErrorTipsShow } = ResetNameModal;
 
         return (
             <Loading tip="加载中..." spinning={GradeLoading.show}  size="large">
@@ -178,7 +366,10 @@ class GradeContent extends Component{
 
                                 <PartData type="class"
                                           PartDataList={AllGradePreview.ClassInfo.List}
-                                          ClassClick={this.ClassClick.bind(this)}>
+                                          ClassClick={this.ClassClick.bind(this)}
+                                          ResetClassName={this.ResetClassName.bind(this)}
+                                          delClass={this.delClass.bind(this)}
+                                >
 
                                 </PartData>
 
@@ -193,6 +384,32 @@ class GradeContent extends Component{
                     }
 
                 </ContentWrapper>
+
+                <Modal type={1}
+                       title="班级重命名"
+                       mask={true}
+                       visible={show}
+                       maskClosable={true}
+                       width={540}
+                       bodyStyle={{height:92}}
+                       className="addClassModal" onOk={this.ResetNameOk.bind(this)}
+                       onCancel={this.ResetNameCancel.bind(this)}>
+
+                    <div className="ModalContent">
+
+                        <div className="reset-classname-wrapper">
+
+                            <span className="props">班级名称:</span>
+
+                            <Input type="text" maxLength={20} onChange={this.ReNameInputChange.bind(this)} value={InputText} placeholder="请输入班级名称"/>
+
+                            <div className="error-tips" style={{display:`${ErrorTipsShow?'block':'none'}`}}>{ErrorTips}</div>
+
+                        </div>
+
+                    </div>
+
+                </Modal>
 
             </Loading>
         );
