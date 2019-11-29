@@ -131,16 +131,47 @@ $img_url:"#{$image_url}/search";
     .search_right_td{
       width: 37px;
       .search_btn_input{
+        position:relative;
         float: right;
-        width: 27px;
-        height: 26px;
-        margin-right: 10px;
-        border: none;
-        outline: none;
+        width: 12px;
+        height: 12px;
+        margin-right:14px;
+        margin-top:0;
+        border:1px solid #95afd4;
+        @include border-radius(50%);
         cursor: pointer;
-        background: url(#{$img_url}/search-icon.png) no-repeat center transparent;
+
+        &:after{
+
+          position: absolute;
+
+          width:2px;
+
+          height:4px;
+
+          content:'';
+
+          right: -2px;
+
+          bottom: -2px;
+
+          background-color: #95afd4;
+
+          @include transform(rotate(-45deg));
+
+        }
+
+        //background: url(#{$img_url}/search-icon.png) no-repeat center transparent;
         &:hover{
-          background-image: url("#{$img_url}/search-icon-hover.png");
+          //background-image: url("#{$img_url}/search-icon-hover.png");
+          border-color:#3ab0ff ;
+
+          &:after{
+
+            background-color:#3ab0ff ;
+
+          }
+
         }
       }//搜索按钮
     }//搜索按钮区域

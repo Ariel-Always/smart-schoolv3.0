@@ -498,7 +498,9 @@ class Modal extends React.Component {
     }
 
     componentWillMount() {
+
         this.selectType(this.props.type)
+
     }
 
     componentWillReceiveProps(nextProps) {
@@ -511,10 +513,97 @@ class Modal extends React.Component {
 
     }
 
+
+    componentDidMount(){
+
+       /* $('.ant-modal').each((index,that)=>{
+
+            console.log($(that).width());
+
+            $(that).css({
+
+                left:($(window).width()-$(that).width()/2)+'px',
+
+                top:($(window).height()-$(that).height()/2)+'px',
+
+            });
+
+        });
+
+        let xTemp, yTemp;
+
+        let can_move = false;
+
+        $(document).on('dragstart', '.ant-modal-header', function(e) { return false; });
+
+        $(document).on('mousedown', '.ant-modal-header', function(event) {
+
+            let $win = $(event.target).closest('.ant-modal');
+
+            can_move = true;
+
+            $(event.target).css('cursor', 'move');
+
+            let mx = event.pageX;
+
+            let my = event.pageY;
+
+            xTemp = mx - parseInt($win.offset().left);
+
+            yTemp = my - parseInt($win.offset().top);
+
+            console.log(xTemp,yTemp);
+
+        });
+        //var win;
+        ///MSIE 8.0/.test(window.navigator.userAgent) ? win = document : win = window;
+
+        $(window).mousemove(function(event) {
+
+            if (can_move) {
+
+                let $win = $(event.target).closest('.ant-modal');
+
+                let $window = $(window);
+
+                let mx = event.pageX;
+
+                let my = event.pageY;
+
+                if (mx - xTemp > 0 && mx - xTemp < $window.width() - $win.width()) {
+
+                    console.log(mx - xTemp);
+
+                    $win.css('left', mx - xTemp+'px');
+
+                }
+
+                if (my - yTemp > 0 && my - yTemp < $window.height() - $win.height()) {
+
+                    console.log(my - yTemp);
+
+                    $win.css('top', my - yTemp+'px');
+
+                }
+
+
+
+            }
+
+        }).mouseup(function(event) {
+
+            can_move = false;
+
+            $('.ant-modal-header').css('cursor', 'default');
+
+        });*/
+
+    }
+
     render() {
 
         return (
-            <AntdModal onOk={this.state.onOk}
+            <AntdModal ref={ref=>this.Modal=ref} onOk={this.state.onOk}
                 onCancel={this.state.onCancel}
                 title={this.state.title}
                 className={`initModel ${this.state.ModalStyle} ${this.state.className}`}
@@ -868,7 +957,7 @@ class Search extends React.Component {
                                     style={{ display:CancelBtnDisplay}} />
                             </td>
                             <td className="search_right_td">
-                                <input className="search_btn_input" type="button"
+                                <div className="search_btn_input"
                                     onClick={
                                         () => {
                                             if (this.refs.search_text_input.value) {
@@ -895,7 +984,10 @@ class Search extends React.Component {
                                                 }
                                             }
                                         }
-                                    } />
+                                    }>
+
+                                </div>
+
                             </td>
                         </tr>
                     </tbody>
@@ -1336,6 +1428,7 @@ class Alert extends React.Component {
         }
     }
 
+
     componentDidUpdate() {
 
         const { show, type, onHide } = this.props;
@@ -1350,13 +1443,108 @@ class Alert extends React.Component {
 
                 }
             }
+
         }
+
+
+       if(this.AlertBody){
+
+            this.AlertBody.style.top = ($(window).height() - this.AlertBody.clientHeight)/ 2 + 'px';
+
+            this.AlertBody.style.left = ($(window).width() - this.AlertBody.clientWidth) / 2 + 'px';
+
+       }
+
+
+    }
+
+    componentDidMount(){
+
+        if(this.AlertBody){
+
+            this.AlertBody.style.top = ($(window).height() - this.AlertBody.clientHeight)/ 2 + 'px';
+
+            this.AlertBody.style.left = ($(window).width() - this.AlertBody.clientWidth) / 2 + 'px';
+
+        }
+
+        let xTemp, yTemp;
+
+        let can_move = false;
+
+        $(document).on('dragstart', '.alert_dialog_wrapper', function(e) { return false; });
+
+        $(document).on('mousedown', '.alert_dialog_wrapper', function(event) {
+
+            let $win = $(event.target).closest('.alert_dialog_wrapper');
+
+            can_move = true;
+
+            $win.css('cursor', 'move');
+
+            let mx = event.pageX;
+
+            let my = event.pageY;
+
+            xTemp = mx - parseInt($win.offset().left);
+
+            yTemp = my - parseInt($win.offset().top);
+
+            console.log(mx,my);
+
+        });
+        //var win;
+        ///MSIE 8.0/.test(window.navigator.userAgent) ? win = document : win = window;
+
+        $(window).mousemove(function(event) {
+
+            if (can_move) {
+
+                let $win = $(event.target).closest('.alert_dialog_wrapper');
+
+                let $window = $(window);
+
+                let mx = event.pageX;
+
+                let my = event.pageY;
+
+                if (mx - xTemp > 0 && mx - xTemp < $window.width() - $win.width()) {
+
+                    $win.css('left', mx - xTemp+'px');
+
+                    console.log($win);
+
+                }
+
+                if (my - yTemp > 0 && my - yTemp < $window.height() - $win.height()) {
+
+                    $win.css('top', my - yTemp+'px');
+
+                    console.log($win.width(),$win.height());
+
+                }
+
+
+
+            }
+
+        }).mouseup(function(event) {
+
+            can_move = false;
+
+            $('.alert_dialog_wrapper').css('cursor', 'default');
+
+        });
+
 
     }
 
     render() {
+
         const { type, title, abstract, okTitle, cancelTitle, show } = this.props;
+
         let maskShow, cancelShow, okShow = false;
+
         let okContent, cancelContent = '';
 
         switch (type) {
@@ -1397,7 +1585,7 @@ class Alert extends React.Component {
                         <React.Fragment>
                             <div className="alert_dialog_mask" style={{ display: `${show ? 'block' : 'none'}` }}></div>
                             <div className="alert_dialog_tab" style={{ display: `${show ? 'block' : 'none'}` }}>
-                                <div className="border alert_dialog_wrapper">
+                                <div ref={ref=>this.AlertBody=ref} className="border alert_dialog_wrapper" id="alert_dialog_wrapper">
                                     <div className="alert_close_btn" onClick={this.closeAlert.bind(this)}></div>
                                     <div className="alert_dialog_content">
                                         {
@@ -1440,6 +1628,8 @@ class Alert extends React.Component {
             </React.Fragment>
 
         );
+
+
     }
 }
 /*

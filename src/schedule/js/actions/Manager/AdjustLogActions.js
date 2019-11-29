@@ -4,6 +4,10 @@ import ApiActions from "../ApiActions";
 
 import AppLoadingActions from "../AppLoadingActions";
 
+import MSActions from "../ModuleSettingActions";
+
+import logo from "../../../images/adjust-log-logo.png";
+
 const MANAGER_ADJUST_LOG_INIT = 'MANAGER_ADJUST_LOG_INIT';
 
 const MANAGER_ADJUST_LOG_END_DATE_UPDATE = 'MANAGER_ADJUST_LOG_END_DATE_UPDATE';
@@ -81,6 +85,18 @@ const PageInit = ({SchoolID}) => {
              //window.location.href = '/error.aspx';
 
          }
+
+          dispatch({type:MSActions.MODULE_SETTINGS_UPDATE,data:{
+
+                  moduleCnName:"调课日志",
+
+                  moduleEnName:"Transfer Log",
+
+                  logo:logo,
+
+                  timeBar:false
+
+              }});
 
          dispatch({type:MANAGER_ADJUST_LOG_TABLE_LOADING_HIDE});
 
