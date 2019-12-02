@@ -105,7 +105,7 @@ $img_url:"#{$image_url}/alert";
   @include flex;
   @include justify-content(center);
   @include align-items(center);
-  @include flex-direction(column);
+  //@include flex-direction(column);
   padding:0 30px;
   padding-top:50px;
   //大图标
@@ -130,22 +130,61 @@ $img_url:"#{$image_url}/alert";
       background-image: url("#{$img_url}/tips-big.png");
     }
   }
+
+  .left-icon{
+
+    background-repeat: no-repeat;
+
+    background-position:0 center;
+
+    width:46px;
+
+    height:42px;
+
+    margin-left: -10px;
+
+    margin-right:6px;
+
+    &.btn-success{
+      background-image: url("#{$img_url}/success-middle.png");
+    }
+    &.btn-error{
+      background-image: url("#{$img_url}/error-middle.png");
+    }
+    &.btn-warn{
+      background-image: url("#{$img_url}/warn-middle.png");
+    }
+    &.btn-query{
+      background-image: url("#{$img_url}/query-middle.png");
+    }
+    &.btn-tips{
+      background-image: url("#{$img_url}/tips-middle.png");
+    }
+
+  }
+
+  &.has-abstract{
+
+    @include flex-direction(column);
+
+  }
+
 }
 
 
 //信息内容
 .alert_dialog_msg{
-  line-height: 44px;
-  background-repeat: no-repeat;
-  background-position:0 center;
+  //line-height: 44px;
+ /* background-repeat: no-repeat;
+  background-position:0 center;*/
   max-width: 440px;
   vertical-align: middle;
   font-size: 18px;
-  padding-left: 52px;
+  /*padding-left: 52px;*/
   color: #333;
   word-break: break-all;
   //icon图标
-  &.btn-success{
+ /* &.btn-success{
     background-image: url("#{$img_url}/success-middle.png");
   }
   &.btn-error{
@@ -159,11 +198,15 @@ $img_url:"#{$image_url}/alert";
   }
   &.btn-tips{
     background-image: url("#{$img_url}/tips-middle.png");
-  }
+  }*/
   &.big{
-    padding: 24px 0px 2px 0px;
+
+    padding: 8px 0 2px 0;
+
     line-height: 20px;
+
   }
+
 }
 //解释
 .alert_dialog_abstract{

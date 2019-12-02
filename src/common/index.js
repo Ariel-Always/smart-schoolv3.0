@@ -748,6 +748,9 @@ class Table extends React.Component {
  * 分页组件 start
  * */
 class PagiNation extends React.Component {
+
+    //展示全部
+
     render() {
         const {
             children,
@@ -755,21 +758,60 @@ class PagiNation extends React.Component {
             size,
             showQuickJumper,
             className,
+            total,
+            pageSize,
+            showTotal,
             ...reset
         } = this.props;
 
 
         return (
             <ConfigProvider locale={zhCN}>
-                <AntPagination
-                    {...reset} hideOnSinglePage={hideOnSinglePage ? hideOnSinglePage : true}
-                    showQuickJumper={size === 'micro' ? true : {
-                        goButton: <span className="pagination_go_button">Go</span>
-                    }}
-                    className={`${className?className:''} ${size && size === 'micro' ? 'micro' : ''}`}
 
-                    size={size}
-                >{children}</AntPagination>
+                <AntPagination
+
+                        total={total}
+
+                        pageSize={pageSize}
+
+                        {...reset}
+
+                        hideOnSinglePage={hideOnSinglePage ? hideOnSinglePage : true}
+
+                        showQuickJumper={size === 'micro'?true:{
+
+                            goButton:
+
+                                <React.Fragment>
+
+                                    {
+
+                                        showTotal===false?
+
+                                            ''
+
+                                            :(showTotal!==true&&showTotal!==1&&showTotal!==undefined&&showTotal!==''&&showTotal!==0&&showTotal!==null)?
+
+                                            <span className="pagination-total-self-dom">{showTotal}</span>
+
+                                            :
+
+                                            <span className="pagination-total-self-dom">共<span className="number">{Math.ceil(total/pageSize)}</span>页</span>
+
+                                    }
+
+                                    <span className="pagination_go_button">Go</span>
+
+                                </React.Fragment>
+
+                        }}
+
+                        className={`${className?className:''} ${size && size === 'micro' ? 'micro' : ''} ${showTotal===false?'':'total'}`}
+
+                        size={size}
+
+                    >{children}</AntPagination>
+
             </ConfigProvider>
         );
     }
@@ -1009,7 +1051,8 @@ class DropDown extends React.Component {
             dropSelectd: props.dropSelectd ? props.dropSelectd : '',
             dropListShow: false,
             range2ListShow: '',
-            range2ListActive: ''
+            range2ListActive: '',
+            activeValue:''
         }
     }
 
@@ -1032,13 +1075,27 @@ class DropDown extends React.Component {
     }//展示或者隐藏下拉列表
 
     onSimpleDropChange(e) {
+
+        const {activeValue} = this.props;
+
         const { onChange, value, title } = e;
-        this.setState({ dropListShow: false, dropSelectd: { value, title } }, () => {
+
+        let thatActiveValue = '';
+
+        if (!activeValue){
+
+            thatActiveValue = value;
+
+        }
+
+        this.setState({ dropListShow: false,activeValue:thatActiveValue,dropSelectd: { value, title } }, () => {
             $(this.refs.dropdown_select_ul).hide();
             if (onChange) {
                 onChange({ value, title });
             }
         });
+
+
     }
 
     //改变下拉选项的时候调用
@@ -1119,7 +1176,7 @@ class DropDown extends React.Component {
     render() {
         const {
 
-            title, width, height, disabled, dropSelectd, dropList, onChange, type, className,
+            title, width, height,activeValue,disabled, dropSelectd, dropList, onChange, type, className,
 
             mutipleOptions, dropLoadingShow, ...reset
 
@@ -1218,8 +1275,6 @@ class DropDown extends React.Component {
             }
 
 
-
-
         } else if (mutipleOptions && mutipleOptions.range === 3) {
             //等待后期扩展使用
         }
@@ -1244,7 +1299,7 @@ class DropDown extends React.Component {
 
                         </div>
 
-                        <Scrollbars  autoHeight autoHeightMax={scrollWrapperHeight} style={{ width: scrollWrapperWidth }} >
+                        <Scrollbars  autoHeight autoHeightMin={160} autoHeightMax={scrollWrapperHeight} style={{ width: scrollWrapperWidth }} >
 
                             <Loading spinning={mutipleOptions && mutipleOptions.dropLoadingShow ? mutipleOptions.dropLoadingShow : false}>
 
@@ -1262,41 +1317,52 @@ class DropDown extends React.Component {
 
 
         } else {
+
             let ClientHeight;
+
             if (dropList && (dropList.length < (height / 24))) {
+
                 ClientHeight = dropList.length * 24;
+
             } else {
+
                 ClientHeight = height;
+
             }
 
             dropContainer =
+
                 <ul className="dropdown_select_ul" ref="dropdown_select_ul" style={{ width: width ? width : 120, overflow: "initial" }}>
 
                     <Loading spinning={dropLoadingShow ? dropLoadingShow : false}>
 
-                        <Scrollbars  style={{ width: width ? width : 120, height: ClientHeight}}>
-                            {//dropList是否存在？dropList:''
-                                dropList ?
-                                    dropList.map((item, key) => {
-                                        return <li key={key} className="dropdown_select_li"
-                                            title={item.title}
-                                            data-vaule={item.value}
-                                            onClick={
-                                                this.onSimpleDropChange.bind(this, {
-                                                    onChange: onChange,
-                                                    value: item.value,
-                                                    title: item.title
-                                                })
-                                            }
-                                        >{item.title}</li>
-                                    })
-                                    : ''
-                            }
+                        <Scrollbars  style={{ width: width ? (width-2) : 118, height: ClientHeight?ClientHeight:48}}>
+
+
+                        {//dropList是否存在？dropList:''
+                            dropList ?
+                                dropList.map((item, key) => {
+                                    return <li key={key} className={`dropdown_select_li ${activeValue&&activeValue===item.value?'active':(this.state.activeValue===item.value?'active':'')}`}
+                                        title={item.title}
+                                        data-vaule={item.value}
+                                        onClick={
+                                            this.onSimpleDropChange.bind(this, {
+                                                onChange: onChange,
+                                                value: item.value,
+                                                title: item.title
+                                            })
+                                        }
+                                    >{item.title}</li>
+                                })
+                                : ''
+                        }
+
                         </Scrollbars>
 
                     </Loading>
 
                 </ul>;
+
         }
         return (
             <div className={`dropdown_container ${className ? className : ''}`} {...reset}>
@@ -1321,9 +1387,13 @@ class DropDown extends React.Component {
                                 )
                         }
                     </span>
+
                     {
+
                         dropContainer
+
                     }
+
                 </span>
             </div>
         );
@@ -1587,11 +1657,11 @@ class Alert extends React.Component {
                             <div className="alert_dialog_tab" style={{ display: `${show ? 'block' : 'none'}` }}>
                                 <div ref={ref=>this.AlertBody=ref} className="border alert_dialog_wrapper" id="alert_dialog_wrapper">
                                     <div className="alert_close_btn" onClick={this.closeAlert.bind(this)}></div>
-                                    <div className="alert_dialog_content">
+                                    <div className={`alert_dialog_content ${abstract?'has-abstract':''}`}>
                                         {
                                             abstract ?
                                                 <div className={`big_icon ${type}`}></div>
-                                                : ''
+                                                :<div className={`left-icon ${type}`}></div>
                                         }
                                         <div className={`alert_dialog_msg ${abstract ? 'big' : type}`}>
                                             {title}
