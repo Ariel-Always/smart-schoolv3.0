@@ -758,8 +758,8 @@ class PagiNation extends React.Component {
             size,
             showQuickJumper,
             className,
-            total,
-            pageSize,
+            total=0,
+            pageSize=10,
             showTotal,
             ...reset
         } = this.props;

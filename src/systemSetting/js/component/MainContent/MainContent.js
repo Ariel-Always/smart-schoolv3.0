@@ -8,7 +8,7 @@ import setting from '../../../images/setting_logo.png';
 import { Menu } from '../../../../common'
 import config from '../../../../common/js/config'
 import history from '../../containers/history'
-import {QueryPower} from '../../../../common/js/power'
+import { QueryPower } from '../../../../common/js/power'
 
 
 
@@ -66,7 +66,7 @@ class MainContent extends Component {
         const Hash = location.hash;
 
         if (sessionStorage.getItem('UserInfo')) {
-            const { SchoolID,UserType } = JSON.parse(sessionStorage.getItem('UserInfo'))
+            const { SchoolID, UserType } = JSON.parse(sessionStorage.getItem('UserInfo'))
             const UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'))
 
 
@@ -74,11 +74,11 @@ class MainContent extends Component {
             // dispatch(DataChange.getCurrentSbusystemInfo());////模拟测试使用
 
             //判断该用户是否是管理员,如果该用户不是管理员跳转到错误页,
-            if(UserType!=="0"){
+            if (UserType !== "0") {
                 window.location.href = config.ErrorProxy + "/Error.aspx?errcode=E011";
 
             }
-            else{
+            else {
                 //如果该用户是管理员则检查用户信息和模块ID是否符合
                 QueryPower({UserInfo,ModuleID:"000-2-0-13"}).then(restlu=>{
                    if (restlu){
@@ -91,20 +91,16 @@ class MainContent extends Component {
                 })
             }
 
-                
-
-            
-            
-
-
-
         } else {
 
             //如果为登录成功则开启定时器,直到登录后获取到token
             let getUserInfo = setInterval(() => {
 
                 if (sessionStorage.getItem('UserInfo')) {
-                    const { SchoolID,UserType } = JSON.parse(sessionStorage.getItem('UserInfo'));
+
+                    const UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'))
+
+                    const { SchoolID,UserType } = UserInfo;
 
                     if(UserType!=="0"){
 
@@ -172,7 +168,15 @@ class MainContent extends Component {
 
 
     render() {
-            const {UserName,PhotoPath}=JSON.parse(sessionStorage.getItem('UserInfo'))
+        let UserName="";
+        let PhotoPath=""
+        
+        if(sessionStorage.getItem('UserInfo')){
+            const UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'))
+            UserName=UserInfo.UserName
+            PhotoPath=UserInfo.PhotoPath
+        }
+       
         return (
 
 
@@ -181,10 +185,10 @@ class MainContent extends Component {
                 showBarner={false}
                 type={"triangle"}
                 module={{ image: setting, cnname: "系统设置", enname: "System Settings", type: "circle" }}
-                userInfo={{ name: UserName ,image:PhotoPath}}
+                userInfo={{ name: UserName, image: PhotoPath }}
             >
                 <div ref="frame-left-menu">
-                 
+
                     <Menu params={this.state.MenuParams} ></Menu>
 
                 </div>
