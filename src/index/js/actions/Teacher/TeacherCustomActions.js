@@ -25,19 +25,22 @@ const TEACHER_EDIT_WEBSITE_CUSTOM_MODAL_OPEN =
 const TEACHER_EDIT_WEBSITE_CUSTOM_MODAL_CLOSE =
   "TEACHER_EDIT_WEBSITE_CUSTOM_MODAL_CLOSE";
 
-  const TEACHER_ADD_TOOL_CUSTOM_MODAL_OPEN =
-  "TEACHER_ADD_TOOL_CUSTOM_MODAL_OPEN";
+const TEACHER_ADD_TOOL_CUSTOM_MODAL_OPEN = "TEACHER_ADD_TOOL_CUSTOM_MODAL_OPEN";
 
 const TEACHER_ADD_TOOL_CUSTOM_MODAL_CLOSE =
   "TEACHER_ADD_TOOL_CUSTOM_MODAL_CLOSE";
 
-  
-  const TEACHER_EDIT_TOOL_CUSTOM_MODAL_OPEN =
+const TEACHER_EDIT_TOOL_CUSTOM_MODAL_OPEN =
   "TEACHER_EDIT_TOOL_CUSTOM_MODAL_OPEN";
 
 const TEACHER_EDIT_TOOL_CUSTOM_MODAL_CLOSE =
   "TEACHER_EDIT_TOOL_CUSTOM_MODAL_CLOSE";
 
+const TEACHER_EDIT_COMBINE_CUSTOM_MODAL_OPEN =
+  "TEACHER_EDIT_COMBINE_CUSTOM_MODAL_OPEN";
+
+const TEACHER_EDIT_COMBINE_CUSTOM_MODAL_CLOSE =
+  "TEACHER_EDIT_COMBINE_CUSTOM_MODAL_CLOSE";
 
 const SET_CUSTOM_TIPS_VISIBLE = "SET_CUSTOM_TIPS_VISIBLE";
 
@@ -53,7 +56,15 @@ const SET_HANDLE_TOOL_INIT_DATA = "SET_HANDLE_TOOL_INIT_DATA";
 
 const SET_HANDLE_TOOL_DATA = "SET_HANDLE_TOOL_DATA";
 
+const SET_COMBINE_CUSTOM_DATA = "SET_COMBINE_CUSTOM_DATA";
 
+const SET_MY_COMBINE_CUSTOM_DATA = "SET_MY_COMBINE_CUSTOM_DATA";
+
+const SET_COMBINE_CUSTOM_MODAL_DATA = "SET_COMBINE_CUSTOM_MODAL_DATA";
+
+const SET_ALL_CUSTOM_DATA = "SET_ALL_CUSTOM_DATA";
+
+const SET_COMBINE_NAME_DATA = "SET_COMBINE_NAME_DATA";
 const getCustomData = (
   key,
   techerID,
@@ -103,7 +114,7 @@ const getCustomData = (
     console.log("key值有误");
     return;
   }
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch({ type: AppLoadingActions.CUSTOM_OPACITY_LOADING_OPEN });
     dispatch(getAlterTips(urlTips, key));
 
@@ -128,6 +139,38 @@ const getCustomData = (
                   data2: json.Data,
                   key: key
                 });
+                let state = getState();
+                let Row = state.Teacher.TeacherCustomData.CombineModalData.Row;
+                let Key = state.Teacher.TeacherCustomData.CombineModalData.key;
+                let Data = {};
+                if (key === "tool") {
+                  Data = state.Teacher.TeacherCustomData.ToolData;
+                } else if (key === "App") {
+                  Data = state.Teacher.TeacherCustomData.AppData;
+                } else if (key === "Website") {
+                  Data = state.Teacher.TeacherCustomData.WebsiteData;
+                } else if (key === "database") {
+                  Data = state.Teacher.TeacherCustomData.DataBaseData;
+                } else {
+                  console.log("key值有误");
+                  return;
+                }
+                console.log(Data, key);
+                if (
+                  Data[Row] &&
+                  Data[Row].List[Key] &&
+                  Data[Row].List[Key].List
+                ) {
+                  dispatch(setCombineCustomModalData(Data[Row].List[Key]));
+                } else {
+                  dispatch(
+                    setCombineCustomModalData({
+                      Row: -1,
+                      type: "",
+                      List: []
+                    })
+                  );
+                }
                 dispatch({
                   type: AppLoadingActions.CUSTOM_OPACITY_LOADING_CLOSE
                 });
@@ -163,24 +206,31 @@ const fetchCustomData = (url, dataType = "Website") => {
     let NewData = {};
     let List = [];
     let Groups = [];
-    MainData.map((child, index) => {
-      let group = {};
-      if (child.IsGroup) {
-        group.GroupName = child.Name;
-        group.OrderNo = child.key;
-        group.List = child.List.map((child1, index1) => {
-          return {
-            ID: child1.ID,
-            OrderNo: child1.key
-          };
-        });
-        Groups.push(group);
-      } else {
-        List.push({
-          ID: child.ID,
-          OrderNo: child.key
-        });
-      }
+    let OrderNo = 1;
+    MainData.map((Child, Index) => {
+      Child.List.map((child, index) => {
+        let group = {};
+        if (child.IsGroup) {
+          group.GroupName = child.Name;
+          group.List = [];
+          let No = 0;
+          child.List.map((child1, index1) => {
+            child1.List.map(child2 => {
+              group.List.push({
+                ID: child2.ID,
+                OrderNo: No++
+              });
+            });
+          });
+          group.OrderNo = OrderNo++;
+          Groups.push(group);
+        } else {
+          List.push({
+            ID: child.ID,
+            OrderNo: OrderNo++
+          });
+        }
+      });
     });
 
     NewData = { TeacherID: State.LoginUser.UserID, List: List, Groups: Groups };
@@ -342,15 +392,15 @@ const setHandleWebsiteInitData = data => {
 };
 
 const setHandleToolData = data => {
-    return dispatch => {
-      dispatch({ type: SET_HANDLE_TOOL_DATA, data: data });
-    };
+  return dispatch => {
+    dispatch({ type: SET_HANDLE_TOOL_DATA, data: data });
   };
-  const setHandleToolInitData = data => {
-    return dispatch => {
-      dispatch({ type: SET_HANDLE_TOOL_INIT_DATA, data: data });
-    };
+};
+const setHandleToolInitData = data => {
+  return dispatch => {
+    dispatch({ type: SET_HANDLE_TOOL_INIT_DATA, data: data });
   };
+};
 
 // 获取网站类型列表
 const getTypeList = (url, type = "add") => {
@@ -366,7 +416,7 @@ const getTypeList = (url, type = "add") => {
             let { Teacher } = getState();
             if (Teacher.TeacherCustomData.WebTypeList[0])
               dispatch(
-                setHandleWebsiteInitData({
+                setHandleWebsiteData({
                   WebType: Teacher.TeacherCustomData.WebTypeList[0]
                 })
               );
@@ -381,6 +431,64 @@ const getPeriodList = data => {
     dispatch({ type: GET_PERIOD_LIST, data: data });
   };
 };
+const setCombineCustomData = data => {
+  return dispatch => {
+    dispatch({ type: SET_COMBINE_CUSTOM_DATA, data: data });
+  };
+};
+const setMyCombineCustomData = (data, type) => {
+  return (dispatch, getState) => {
+    dispatch({ type: SET_MY_COMBINE_CUSTOM_DATA, data: data });
+    let state = getState();
+    let { Row, key } = state.Teacher.TeacherCustomData.CombineModalData;
+    let Data = {};
+    if (type === "tool") {
+      Data = state.Teacher.TeacherCustomData.ToolData;
+    } else if (type === "App") {
+      Data = state.Teacher.TeacherCustomData.AppData;
+    } else if (type === "Website") {
+      Data = state.Teacher.TeacherCustomData.WebsiteData;
+    } else if (type === "database") {
+      Data = state.Teacher.TeacherCustomData.DataBaseData;
+    } else {
+      console.log("type值有误");
+      return;
+    }
+    if (Data[Row] && Data[Row].List[key] && Data[Row].List[key].List) {
+      dispatch(setCombineCustomModalData(Data[Row].List[key]));
+    } else {
+      dispatch(
+        setCombineCustomModalData({
+          Row: -1,
+          type: "",
+          List: []
+        })
+      );
+    }
+  };
+};
+const setCombineCustomModalData = (data, Row = "", key = "") => {
+  return dispatch => {
+    let Data = {};
+    if (Row === "" && key === "") {
+      Data = { data: data };
+    } else {
+      Data = { data: data, Row: Row, key: key };
+    }
+    dispatch({ type: SET_COMBINE_CUSTOM_MODAL_DATA, data: Data });
+  };
+};
+const setAllCustomData = data => {
+  return dispatch => {
+    dispatch({ type: SET_ALL_CUSTOM_DATA, data: data });
+  };
+};
+const setCombineNameData = data => {
+  return dispatch => {
+    dispatch({ type: SET_COMBINE_NAME_DATA, data: data });
+  };
+};
+
 export default {
   GET_CUSTOM_DATA,
 
@@ -430,5 +538,18 @@ export default {
   SET_HANDLE_TOOL_INIT_DATA,
   SET_HANDLE_TOOL_DATA,
   setHandleToolData,
-  setHandleToolInitData
+  setHandleToolInitData,
+  SET_COMBINE_CUSTOM_DATA,
+  SET_MY_COMBINE_CUSTOM_DATA,
+  setCombineCustomData,
+  setMyCombineCustomData,
+  TEACHER_EDIT_COMBINE_CUSTOM_MODAL_CLOSE,
+  TEACHER_EDIT_COMBINE_CUSTOM_MODAL_OPEN,
+  SET_COMBINE_CUSTOM_MODAL_DATA,
+  setCombineCustomModalData,
+  SET_ALL_CUSTOM_DATA,
+  setAllCustomData,
+  SET_COMBINE_NAME_DATA,
+  setCombineNameData,
+
 };

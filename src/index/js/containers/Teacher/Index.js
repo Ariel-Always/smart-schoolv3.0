@@ -402,7 +402,7 @@ class Index extends Component {
               'Website',
               LoginUser.UserID,
               "",
-              "S2-Chinese" || Teacher.HeaderSetting.SubjectSelect.id,
+              Teacher.HeaderSetting.SubjectSelect.id,
               this.handlePeriod(LoginUser.StudyLevel).value
             )
           );
@@ -508,7 +508,7 @@ class Index extends Component {
               'Website',
               LoginUser.UserID,
               "",
-              "S2-Chinese" || Teacher.HeaderSetting.SubjectSelect.id,
+              Teacher.HeaderSetting.SubjectSelect.id,
               this.handlePeriod(LoginUser.StudyLevel).value
             )
           );
@@ -597,7 +597,7 @@ class Index extends Component {
               'tool',
               LoginUser.UserID,
               "",
-              "S2-Chinese" || Teacher.HeaderSetting.SubjectSelect.id
+              Teacher.HeaderSetting.SubjectSelect.id
             )
           );
         }
@@ -682,7 +682,7 @@ class Index extends Component {
               'tool',
               LoginUser.UserID,
               "",
-              "S2-Chinese" || Teacher.HeaderSetting.SubjectSelect.id
+              Teacher.HeaderSetting.SubjectSelect.id
             )
           );
         }

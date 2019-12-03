@@ -19,6 +19,7 @@ const POWER_MODULEID = "000-2-0-09"; //权限管理
 const ACCOUNT_MODULEID = "000-2-0-10"; //用户账号管理
 const ADMINISTRATOR_MODULEID = "000-2-0-06"; //行政班管理
 const PROFILE_MODULEID = "000-2-0-05"; //用户档案管理
+const SYSTEM_MODULEID = "000-2-0-13"; //系统设置管理
 
 // 查询权限:只适合查询管理员端是否有权限且该模块有id
 async function QueryPower({ UserInfo, ModuleID }) {
@@ -45,7 +46,8 @@ async function QueryPower({ UserInfo, ModuleID }) {
       POWER_MODULEID !== ModuleID &&
       ACCOUNT_MODULEID !== ModuleID &&
       ADMINISTRATOR_MODULEID !== ModuleID &&
-      PROFILE_MODULEID !== ModuleID
+      PROFILE_MODULEID !== ModuleID&&
+      SYSTEM_MODULEID !== ModuleID
     )
       window.location.href = config.ErrorProxy + "/Error.aspx?errcode=E011";
 

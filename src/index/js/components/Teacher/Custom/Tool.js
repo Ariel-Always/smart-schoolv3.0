@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import TeacherCustomActions from "../../../actions/Teacher/TeacherCustomActions";
 import AppAlertActions from "../../../actions/AppAlertActions";
+import CombineCard from "./CombineCard";
 
 import { postData, getData } from "../../../../../common/js/fetch";
 import CONFIG from "../../../../../common/js/config";
@@ -49,7 +50,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   width: "126px",
   height: "156px",
   // padding: grid * 2,
-  margin: `0 12px 12px 12px`,
+  margin: `0 12px x`,
   border: isDragging ? `solid 1px #02e362` : "none",
   // change background colour if dragging
   //background: isDragging ? 'lightgreen' : 'grey',
@@ -94,7 +95,7 @@ class Tool extends React.Component {
   };
   getList = id => this.state[this.id2List[id]];
   onDragEnd = result => {
-    const { source, destination } = result;
+    const { source, destination , combine} = result;
     const { Teacher, dispatch } = this.props;
     let MainData = Teacher.TeacherCustomData.ToolData;
     let AlterData = Teacher.TeacherCustomData.ToolAlterData;
@@ -108,13 +109,64 @@ class Tool extends React.Component {
     // source: {index: 6, droppableId: "droppable"}
     // type: "DEFAULT"}
     // dropped outside the list
-    if (!destination) {
-      return;
-    }
+    // if (!destination) {
+    //   return;
+    // }
+    let Source = {};
+    let SourceRow = "";
+    let SourceIndex = "";
+    let Data = {};
+    if (!destination && combine) {
+      console.log(combine);
+      const { draggableId, droppableId } = combine;
+      let DestinationRow = droppableId.split("-")[1];
+      let DestinationIndex = draggableId.split("-").reverse()[0];
+      if (source.droppableId.indexOf("alter") !== -1) {
+        SourceRow = source.droppableId.split("-")[1];
+        SourceIndex = source.index;
+        Source = AlterData[SourceRow].List[SourceIndex];
+        Data = { ToolData: MainData, ToolAlterData: AlterData };
+      } else {
+        SourceRow = source.droppableId.split("-")[1];
+        SourceIndex = source.index;
+        Source = MainData[SourceRow].List[SourceIndex];
+        Data = { ToolData: MainData };
+      }
 
+      let Destination = MainData[DestinationRow].List[DestinationIndex];
+
+      if (Source.IsGroup) {
+        // dispatch(
+        //   AppAlertActions.alertSuccess({ title: "不能合并小组到小组" })
+        // );
+        return;
+      }
+      // if (Destination.IsGroup && Destination.List.length >= 4) {
+      //   dispatch(AppAlertActions.alertSuccess({ title: "该小组网站已满" }));
+      //   return;
+      // }
+      dispatch(
+        TeacherCustomActions.setCombineCustomData({
+          Data,
+          Source,
+          SourceRow,
+          SourceIndex,
+          Destination,
+          DestinationRow,
+          DestinationIndex
+        })
+      );
+      dispatch(
+        TeacherCustomActions.fetchCustomData(
+          "/SubjectResMgr/ToolMgr/Teacher/EditDeskTop",
+          "tool"
+        )
+      );
+      // console.log(DestinationRow,DestinationIndex,SourceRow,SourceIndex,Destination,Source)
+    } else if (destination) {
     if (
       source.droppableId === destination.droppableId &&
-      source.droppableId === "main"
+      source.droppableId.split("-")[0] === "main"
     ) {
       //同一个区域
       dataObj["ToolData"] = MainData;
@@ -129,11 +181,17 @@ class Tool extends React.Component {
       );
     } else if (
       source.droppableId !== destination.droppableId &&
-      (source.droppableId === "main" ||
-        (source.droppableId !== "main" && destination.droppableId === "main"))
+        source.droppableId.split("-")[0] === "alter" &&source.droppableId.split("-")[0] !== "combine" &&
+        destination.droppableId.split("-")[0] === "main"
     ) {
       dataObj["ToolData"] = MainData;
       dataObj["ToolAlterData"] = AlterData;
+      if (MainData.length === 2 && MainData[1].List.length === 7) {
+        dispatch(
+          AppAlertActions.alertSuccess({ title: "桌面最多添加14个工具" })
+        );
+        return;
+      }
       dispatch(
         TeacherCustomActions.setCustomData(
           "alter",
@@ -148,7 +206,77 @@ class Tool extends React.Component {
           "tool"
         )
       );
-    }
+    }else if (
+      source.droppableId !== destination.droppableId &&
+      source.droppableId.split("-")[0] === "main" &&
+      destination.droppableId.split("-")[0] === "main"
+    ) {
+      dataObj["ToolData"] = MainData;
+      // dataObj["WebsiteAlterData"] = AlterData;
+      dispatch(
+        TeacherCustomActions.setCustomData(
+          "alter",
+          dataObj,
+          source,
+          destination
+        )
+      );
+      dispatch(
+        TeacherCustomActions.fetchCustomData(
+          "/SubjectResMgr/ToolMgr/Teacher/EditDeskTop",
+          "tool"
+        )
+      );
+    } else if (
+      source.droppableId !== destination.droppableId &&
+      source.droppableId.split("-")[0] === "main" &&
+      destination.droppableId.split("-")[0] === "alter"
+    ) {
+      dataObj["ToolData"] = MainData;
+      dataObj["ToolAlterData"] = AlterData;
+
+      console.log(dataObj);
+      dispatch(
+        TeacherCustomActions.setCustomData(
+          "alter",
+          dataObj,
+          source,
+          destination
+        )
+      );
+      dispatch(
+        TeacherCustomActions.fetchCustomData(
+          "/SubjectResMgr/ToolMgr/Teacher/EditDeskTop",
+          "tool"
+        )
+      );
+    }else if(source.droppableId === destination.droppableId &&
+      source.droppableId.split("-")[0] === "combine" &&
+      destination.droppableId.split("-")[0] === "combine"){
+        let CombineModalData = Teacher.TeacherCustomData.CombineModalData;
+        let DestinationRow = destination.droppableId.split("-")[1];
+        let DestinationIndex = destination.index;
+       
+          SourceRow = source.droppableId.split("-")[1];
+          SourceIndex = source.index;
+        Source = CombineModalData.List[SourceRow].List[SourceIndex];
+          Data = { ToolData: MainData };
+        console.log(SourceRow,SourceIndex,CombineModalData,DestinationRow,destination)
+  
+        let Destination = CombineModalData.List[DestinationRow].List[DestinationIndex];
+        // dispatch(
+        //   TeacherCustomActions.setMyCombineCustomData({
+        //     Data,
+        //     Source,
+        //     SourceRow,
+        //     SourceIndex,
+        //     Destination,
+        //     DestinationRow,
+        //     DestinationIndex
+        //   })
+        // );
+      }
+  }
     // if (source.droppableId === destination.droppableId) {//同一个区域
     //     const main = reorder(
     //         this.getList(source.droppableId),
@@ -191,21 +319,48 @@ class Tool extends React.Component {
     );
     dispatch(
       TeacherCustomActions.fetchCustomData(
-        "/SubjectResMgr/ToolsMgr/Teacher/EditDeskTop",
+        "/SubjectResMgr/ToolMgr/Teacher/EditDeskTop",
         "tool"
       )
     );
   };
-
+// main内card移除
+onEditCombineClick = (e,source) => {
+  console.log(e)
+  e.stopPropagation();
+  e.nativeEvent.stopImmediatePropagation();
+  const { Teacher, dispatch } = this.props;
+  let MainData = Teacher.TeacherCustomData.ToolData;
+  let AlterData = Teacher.TeacherCustomData.ToolAlterData;
+  let dataObj = {};
+  dataObj["ToolData"] = MainData;
+  dataObj["ToolAlterData"] = AlterData;
+  let destination = { droppableId: "alter", index: 0 };
+  console.log(dataObj, source);
+  dispatch(
+    TeacherCustomActions.setCustomData("alter", dataObj, source, destination)
+  );
+  dispatch(
+    TeacherCustomActions.fetchCustomData(
+      "/SubjectResMgr/ToolMgr/Teacher/EditDeskTop",
+        "tool"
+    )
+  );
+};
   // alter 内card增加
   onAddClick = source => {
     const { Teacher, dispatch } = this.props;
     let MainData = Teacher.TeacherCustomData.ToolData;
     let AlterData = Teacher.TeacherCustomData.ToolAlterData;
     let dataObj = {};
+    if (MainData.length === 2 && MainData[1].List.length === 7) {
+      dispatch(AppAlertActions.alertWarn({ title: "桌面最多添加14个工具" }));
+      return;
+    }
     dataObj["ToolData"] = MainData;
     dataObj["ToolAlterData"] = AlterData;
-    let destination = { droppableId: "main", index: -1 };
+    let Row = MainData[MainData.length - 1].Row;
+    let destination = { droppableId: "main-" + Row, index: -1 };
     dispatch(
       TeacherCustomActions.setCustomData("alter", dataObj, source, destination)
     );
@@ -239,12 +394,11 @@ class Tool extends React.Component {
     const { Teacher, dispatch } = this.props;
     dispatch(
       TeacherCustomActions.setHandleToolInitData({
-        ToolName:source.Name,
-        ToolUrl:source.Url,
-        ToolType:source.Name,
-        ToolImgUrl:source.ImgUrl,
-        ToolID: source.ID,
-
+        ToolName: source.Name,
+        ToolUrl: source.Url,
+        ToolType: source.Name,
+        ToolImgUrl: source.ImgUrl,
+        ToolID: source.ID
       })
     );
     dispatch({
@@ -262,7 +416,7 @@ class Tool extends React.Component {
         "tool",
         this.state.userMsg.UserID,
         "",
-        "S2-Chinese" || Teacher.HeaderSetting.SubjectSelect.id,
+        Teacher.HeaderSetting.SubjectSelect.id,
         value.value
       )
     );
@@ -291,7 +445,7 @@ class Tool extends React.Component {
         "tool",
         this.state.userMsg.UserID,
         e.value,
-        "S2-Chinese" || Teacher.HeaderSetting.SubjectSelect.id,
+        Teacher.HeaderSetting.SubjectSelect.id,
         this.state.firstSelect.value
       )
     );
@@ -316,7 +470,7 @@ class Tool extends React.Component {
         "tool",
         this.state.userMsg.UserID,
         "",
-        "S2-Chinese" || Teacher.HeaderSetting.SubjectSelect.id,
+        Teacher.HeaderSetting.SubjectSelect.id,
         this.state.firstSelect.value
       )
     );
@@ -352,7 +506,6 @@ class Tool extends React.Component {
   onOnlyCancelTipsClick = () => {
     const { dispatch, LoginUser } = this.props;
     dispatch({ type: TeacherCustomActions.GET_TOOL_ALTER_TIPS, data: false });
-    
   };
   // 添加工具
   onAddCustomClick = () => {
@@ -360,13 +513,20 @@ class Tool extends React.Component {
     let SubjectID = Teacher.HeaderSetting.SubjectSelect.id;
     let SubjectName = Teacher.HeaderSetting.SubjectSelect.name;
 
-    
-    dispatch(
-      TeacherCustomActions.setHandleToolInitData({
-      })
-    );
+    dispatch(TeacherCustomActions.setHandleToolInitData({}));
     dispatch({
       type: TeacherCustomActions.TEACHER_ADD_TOOL_CUSTOM_MODAL_OPEN
+    });
+  };
+  // 小组点击
+  onCardClick = data => {
+    const { dispatch, Teacher } = this.props;
+    let Row = data.Row;
+    let key = data.key;
+    console.log(Row, key);
+    dispatch(TeacherCustomActions.setCombineCustomModalData(data, Row, key));
+    dispatch({
+      type: TeacherCustomActions.TEACHER_EDIT_COMBINE_CUSTOM_MODAL_OPEN
     });
   };
   render() {
@@ -379,107 +539,188 @@ class Tool extends React.Component {
     return (
       <Loading opacity={false} spinning={AppLoading.customOpacityLoading}>
         <Loading spinning={AppLoading.customLoading}>
-         
-            <div id="Tool">
+          <div id="Tool">
             <div
-                style={{
-                  display: Teacher.TeacherCustomData.TipsShow.ToolTipsShow
-                    ? "block"
-                    : "none"
-                }}
-                className="my-Tips"
-              >
-                <div className="tips-left">
-                  <i className="tips-icon"></i>
-                  <span className="tips-text">
-                    操作提示: 拖放图标可调整工具的摆放顺序或进行分组。
-                  </span>
-                </div>
-                <div className="tips-handle">
-                  <span className="handle-text" 
-                    onClick={this.onCancelTipsClick.bind(this)}
-                    >不再提示</span>
-                  <span
-                    className="handle-cancel"
-                    onClick={this.onOnlyCancelTipsClick.bind(this)}
-                  ></span>
-                </div>
+              style={{
+                display: Teacher.TeacherCustomData.TipsShow.ToolTipsShow
+                  ? "block"
+                  : "none"
+              }}
+              className="my-Tips"
+            >
+              <div className="tips-left">
+                <i className="tips-icon"></i>
+                <span className="tips-text">
+                  操作提示: 拖放图标可调整工具的摆放顺序或进行分组。
+                </span>
               </div>
+              <div className="tips-handle">
+                <span
+                  className="handle-text"
+                  onClick={this.onCancelTipsClick.bind(this)}
+                >
+                  不再提示
+                </span>
+                <span
+                  className="handle-cancel"
+                  onClick={this.onOnlyCancelTipsClick.bind(this)}
+                ></span>
+              </div>
+            </div>
             <Scrollbars
-            style={{
-              width: 1150 + "px",
-              height: 682 + "px",
-            }}
-          >
-              
-              <div className="add-box" style={{marginTop:Teacher.TeacherCustomData.TipsShow.ToolTipsShow?'46px':'16px'}}>
-                <span onClick={this.onAddCustomClick.bind(this)} className="btn-add">
+              style={{
+                width: 1150 + "px",
+                height: 682 + "px"
+              }}
+            >
+              <div
+                className="add-box"
+                style={{
+                  marginTop: Teacher.TeacherCustomData.TipsShow.ToolTipsShow
+                    ? "46px"
+                    : "16px"
+                }}
+              >
+                <span
+                  onClick={this.onAddCustomClick.bind(this)}
+                  className="btn-add"
+                >
                   <i className="add-icon"></i>
                   <span className="add-text">添加</span>{" "}
                 </span>
               </div>
               <DragDropContext onDragEnd={this.onDragEnd}>
-                <Droppable droppableId="main" direction="horizontal">
-                  {(provided, snapshot) => {
-                    //provided生成的数据，snapshot监听拖拽时的数据变化，snapshot:{draggingFromThisWith: null,draggingOverWith: null,isDraggingOver: false},draggingFromThisWith为拖拽对象的id，draggingOverWith为拖拽对象在该区域的id，isDraggingOver为是否有拖拽事件
-                    // console.log(provided, snapshot)
-                    return (
-                      <div className="main-box">
-                        <p className="main-header">已添加至桌面的工具:</p>
-                        <div
-                          ref={provided.innerRef}
-                          className="main-drop"
-                          style={getListStyle(snapshot.isDraggingOver)}
-                          {...provided.droppableProps}
-                        >
-                          {MainData instanceof Array &&
-                            MainData.length !== 0 &&
-                            MainData.map((item, index) => (
-                              <div
-                                className="Card-protect"
-                                key={"main-" + item.ID+index}
-                              >
-                                <Draggable
-                                  draggableId={"main-" + item.ID}
-                                  index={index}
-                                >
-                                  {(provided, snapshot) => (
-                                    <Card
-                                      type="main"
-                                      custom="Tool"
-                                      data={item}
-                                      ID={"main-" + item.ID}
-                                      provided={provided}
-                                      snapshot={snapshot}
-                                      onDeleteClick={this.onDeleteClick.bind(
-                                        this,
-                                        { ToolData: MainData },
-                                        {
-                                          droppableId: "main-" + item.ID,
-                                          index: index
-                                        },
-                                        item.ID
+                <div className="main-box">
+                  <p className="main-header">已添加至桌面的工具:</p>
+
+                  {MainData instanceof Array &&
+                    MainData.length !== 0 &&
+                    MainData.map((Child, Index) => (
+                      <Droppable droppableId={"main-" + Child.Row} direction="horizontal" 
+                      key={Index}
+                      isCombineEnabled>
+                        {(provided, snapshot) => {
+                          //provided生成的数据，snapshot监听拖拽时的数据变化，snapshot:{draggingFromThisWith: null,draggingOverWith: null,isDraggingOver: false},draggingFromThisWith为拖拽对象的id，draggingOverWith为拖拽对象在该区域的id，isDraggingOver为是否有拖拽事件
+                          // console.log(provided, snapshot)
+                          return (
+                            <div
+                              ref={provided.innerRef}
+                              className="main-drop"
+                              style={getListStyle(snapshot.isDraggingOver)}
+                              {...provided.droppableProps}
+                            >
+                              {Child.List instanceof Array &&
+                                Child.List.length !== 0 &&
+                                Child.List.map((item, index) => (
+                                  <div
+                                    className="Card-protect"
+                                    key={"main-" + item.ID + index}
+                                  >
+                                    <Draggable
+                                      draggableId={
+                                        "main-" +
+                                        Child.Row +
+                                        "-" +
+                                        item.ID +
+                                        "-" +
+                                        index
+                                      }
+                                      index={index}
+                                    >
+                                      {(provided, snapshot) => (
+                                       item.IsGroup ? (
+                                        <CombineCard
+                                          type="main"
+                                          custom="tool"
+                                          data={item}
+                                          ID={
+                                            "main-" +
+                                            Child.Row +
+                                            "-" +
+                                            item.ID +
+                                            "-" +
+                                            index
+                                          }
+                                          provided={provided}
+                                          snapshot={snapshot}
+                                          onCardClick={this.onCardClick}
+                                          onEditClick={(e)=>{this.onEditCombineClick(
+                                            e,
+                                            {
+                                              droppableId:
+                                                "main-" +
+                                                Child.Row +
+                                                "-" +
+                                                item.ID +
+                                                "-" +
+                                                index,
+                                              index: index
+                                            }
+                                          )}}
+                                          style={getItemStyle(
+                                            snapshot.isDragging,
+                                            provided.draggableProps.style
+                                          )}
+                                        ></CombineCard>
+                                      ) : ( <Card
+                                          type="main"
+                                          custom="tool"
+                                          data={item}
+                                          ID={ "main-" +
+                                          Child.Row +
+                                          "-" +
+                                          item.ID +
+                                          "-" +
+                                          index}
+                                          provided={provided}
+                                          snapshot={snapshot}
+                                          onDeleteClick={this.onDeleteClick.bind(
+                                            this,
+                                            { ToolData: MainData },
+                                            {
+                                              droppableId:
+                                                  "main-" +
+                                                  Child.Row +
+                                                  "-" +
+                                                  item.ID +
+                                                  "-" +
+                                                  index,
+                                                index: index
+                                            },
+                                            item.ID
+                                          )}
+                                          onResetClick={this.onResetClick}
+                                          onEditClick={this.onEditClick.bind(
+                                            this,
+                                            {
+                                              droppableId:
+                                              "main-" +
+                                              Child.Row +
+                                              "-" +
+                                              item.ID +
+                                              "-" +
+                                              index,
+                                            index: index
+                                            }
+                                          )}
+                                          style={getItemStyle(
+                                            snapshot.isDragging,
+                                            provided.draggableProps.style
+                                          )}
+                                        ></Card>)
                                       )}
-                                      onResetClick={this.onResetClick}
-                                      onEditClick={this.onEditClick.bind(this, {
-                                        droppableId: "main-" + item.ID,
-                                        index: index
-                                      })}
-                                      style={getItemStyle(
-                                        snapshot.isDragging,
-                                        provided.draggableProps.style
-                                      )}
-                                    ></Card>
-                                  )}
-                                </Draggable>
-                              </div>
-                            ))}
-                          {provided.placeholder}
-                        </div>
-                      </div>
-                    );
-                  }}
-                </Droppable>
+                                    </Draggable>
+                                  </div>
+                                ))}
+
+                              {provided.placeholder}
+                            </div>
+                          );
+                        }}
+                      </Droppable>
+                    ))}
+                </div>
+
                 {/* <div className='changeBox'>
                             <span className='box-tips'>备选网站<span className='tips-1'>（共<span className='tips-2'>{this.getNumber(AlterData)}</span>）</span></span>
                             <DropDown
@@ -527,8 +768,8 @@ class Tool extends React.Component {
                       (child.List.length > 0 ||
                         (alterIsNULL && index === AlterData.length - 1)) && (
                         <Droppable
-                          key={"alter" + index}
-                          droppableId={"alter" + index}
+                          key={"alter-" + index}
+                          droppableId={"alter-" + index}
                           direction="horizontal"
                         >
                           {(provided, snapshot) => {
@@ -543,9 +784,9 @@ class Tool extends React.Component {
                                 >
                                   {child.List.map((item, index1) => (
                                     <Draggable
-                                      key={"alter" + index + "-" + item.ID}
+                                      key={"alter-" + index + "-" + item.ID}
                                       draggableId={
-                                        "alter" + index + "-" + item.ID
+                                        "alter-" + index + "-" + item.ID
                                       }
                                       index={index1}
                                     >
@@ -557,7 +798,7 @@ class Tool extends React.Component {
                                           onAddClick={this.onAddClick.bind(
                                             this,
                                             {
-                                              droppableId: "alter" + index,
+                                              droppableId: "alter-" + index,
                                               index: index1
                                             }
                                           )}
@@ -565,7 +806,7 @@ class Tool extends React.Component {
                                             this,
                                             { ToolAlterData: AlterData },
                                             {
-                                              droppableId: "alter" + index,
+                                              droppableId: "alter-" + index,
                                               index: index1
                                             },
                                             item.ID
@@ -573,7 +814,7 @@ class Tool extends React.Component {
                                           onResetClick={this.onResetClick.bind(
                                             this,
                                             {
-                                              droppableId: "alter" + index,
+                                              droppableId: "alter-" + index,
                                               index: index1
                                             }
                                           )}
@@ -597,9 +838,8 @@ class Tool extends React.Component {
                     );
                   })}
               </DragDropContext>
-              </Scrollbars>
-
-            </div>
+            </Scrollbars>
+          </div>
         </Loading>
       </Loading>
     );

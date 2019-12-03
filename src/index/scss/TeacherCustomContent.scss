@@ -148,12 +148,19 @@
         }
         .main-drop {
             width: 1090px;
-            min-height: 212px;
-            padding: 12px 20px;
+            height: 185px;
+            padding: 0 20px;
+            overflow: hidden;
             // display: flex;
             // flex-flow: row wrap;
             // justify-content: flex-start;
             // align-items: center;
+            &:last-of-type {
+                padding: 0 20px 12px;
+            }
+            &:first-of-type {
+                padding: 12px 20px 0;
+            }
         }
     }
     .alter-box {
@@ -201,6 +208,7 @@
             min-height: 176px;
             // min-height: 212px;
             padding: 4px 20px;
+            overflow: hidden;
         }
     }
     .alter-box-2 {
@@ -315,6 +323,69 @@
                 line-height: 30px;
                 color: #ffffff;
             }
+        }
+    }
+}
+
+.EditCombineCustomModal {
+    .ant-modal-content {
+        border-radius: 12px;
+        padding: 12px 0;
+        height: 555px;
+        -webkit-border-radius: 12px;
+        -moz-border-radius: 12px;
+        -ms-border-radius: 12px;
+        -o-border-radius: 12px;
+        .ant-modal-header {
+            border: none;
+            padding: 0;
+            height: 64px;
+            background: #fff;
+            .ant-modal-title {
+                .title {
+                    height: 64px;
+                    width: auto;
+                    .titleSpan {
+                        position: relative;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        -webkit-transform: translateX(-50%);
+                        -moz-transform: translateX(-50%);
+                        -ms-transform: translateX(-50%);
+                        -o-transform: translateX(-50%);
+                        line-height: 64px;
+                        display: inline-block;
+                        text-align: center;
+                        font-size: 16px;
+                        height: 64px;
+                        color: #252525;
+                        cursor: pointer;
+                        max-width: 200px;
+                        overflow: hidden; //超出一行文字自动隐藏
+                        text-overflow: ellipsis; //文字隐藏后添加省略号
+                        white-space: nowrap; //强制不换行
+                    }
+                    .ant-input {
+                        // border: none!important;
+                        width: auto;
+                        position: relative;
+                        left: 50%;
+                        top: 50%;
+                        transform: translate3D(-50%, -50%, 0);
+                        -webkit-transform: translate3D(-50%, -50%, 0);
+                        -moz-transform: translate3D(-50%, -50%, 0);
+                        -ms-transform: translate3D(-50%, -50%, 0);
+                        -o-transform: translate3D(-50%, -50%, 0);
+                        text-align: center;
+                        display: inline-block;
+                        font-size: 16px;
+                    }
+                }
+            }
+        }
+        .ant-modal-body {
+            padding: 0;
+            height: 468px;
         }
     }
 }

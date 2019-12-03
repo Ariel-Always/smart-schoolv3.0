@@ -131,6 +131,15 @@
                     font-size: 14px;
                     line-height: 23px;
                     margin-left: 26px;
+                    width: 124px;
+                    span {
+                        max-width: 108px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        display: inline-block;
+                        vertical-align: bottom;
+                    }
                 }
                 .editModal-hr {
                     position: relative;
@@ -154,5 +163,5 @@
 
 .tips-userName {
     //left:-300px!important;
-    top: 33px!important;
+    top: 33px !important;
 }

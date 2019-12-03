@@ -7,7 +7,8 @@ const TeacherCustomModalShow = (
     key: "tool",
     AddWebsiteCustomModalShow: false,
     AddToolCustomModalShow: false,
-    EditToolCustomModalShow: false
+    EditToolCustomModalShow: false,
+    EditCombineCustomModalShow: false
   },
   actions
 ) => {
@@ -32,6 +33,10 @@ const TeacherCustomModalShow = (
       return Object.assign({}, state, { EditToolCustomModalShow: true });
     case TeacherCustomActions.TEACHER_EDIT_TOOL_CUSTOM_MODAL_CLOSE:
       return Object.assign({}, state, { EditToolCustomModalShow: false });
+      case TeacherCustomActions.TEACHER_EDIT_COMBINE_CUSTOM_MODAL_OPEN:
+      return Object.assign({}, state, { EditCombineCustomModalShow: true });
+    case TeacherCustomActions.TEACHER_EDIT_COMBINE_CUSTOM_MODAL_CLOSE:
+      return Object.assign({}, state, { EditCombineCustomModalShow: false });
     default:
       return state;
   }

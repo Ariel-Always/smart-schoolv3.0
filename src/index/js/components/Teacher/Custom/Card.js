@@ -32,7 +32,11 @@ class Card extends React.Component {
 
 
     }
-
+    // 点击跳转
+    onLinkClick = (data)=> {
+        let Url = data.Url;
+        window.open(Url)
+    }
     render() {
         //console.log(this.props.data)
         let data = this.props.data;
@@ -46,7 +50,7 @@ class Card extends React.Component {
                 className='Card'
                 style={this.props.style}
             >
-                <div className={`img-box ${data.myColor}`}>
+                <div onClick={this.onLinkClick.bind(this,data)} className={`img-box ${data.myColor}`}>
                     {this.state.isTrue ? (<img
                         className='card-img'
                         alt={''}
@@ -55,7 +59,7 @@ class Card extends React.Component {
                         onError={this.ImgErrorLoad.bind(this, data)}
                     ></img>) : <span className='inErrorText'>{data.Name ? data.Name.split('')[0] : ''}</span>}
                 </div>
-                <p className='card-name' title={this.props.data.Name}><i style={{display:this.props.data.IsCreatedByMe?'inline-block':'none'}} className='isSelf'></i><span style={{paddingLeft:this.props.data.IsCreatedByMe?'12px':'0'}}>{this.props.data.Name}</span></p>
+                <p onClick={this.onLinkClick.bind(this,data)} className='card-name' title={this.props.data.Name}><i style={{display:this.props.data.IsCreatedByMe?'inline-block':'none'}} className='isSelf'></i><span style={{paddingLeft:this.props.data.IsCreatedByMe?'12px':'0'}}>{this.props.data.Name}</span></p>
                 {this.props.type === 'main' ?
                     <span onClick={() => {this.props.onEditClick()}} className='main-btn' >移除</span> :
                     <span onClick={() => {this.props.onAddClick()}} className='alter-btn' >添加至桌面</span>

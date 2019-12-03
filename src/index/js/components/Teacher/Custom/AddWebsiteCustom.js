@@ -15,13 +15,27 @@ class AddWebsiteCustom extends React.Component {
       WebNameTipsTitle: "网站名称不能为空",
       WebAddress: "",
       WebAddressTipsTitle: "网站地址不能为空",
-      Subject: {},
-      WebType: {},
-      Period: {},
-      WebTypeList: []
+      // Subject: {},
+      // WebType: {},
+      // Period: {},
+      // WebTypeList: []
     };
   }
+componentWillReceiveProps(nextProps){
+  const { dispatch, Teacher } = nextProps;
+    let WebData = Teacher.WebsiteData;
+    let TeacherCustomData = Teacher.TeacherCustomData;
+    this.setState({
+      
+      Subject: {
+        SubjectName: WebData.SubjectName,
+        SubjectID: WebData.SubjectID
+      },
+      WebType: WebData.WebType,
+      WebTypeList: TeacherCustomData.WebTypeList
+    });
 
+}
   componentWillMount() {
     const { dispatch, Teacher } = this.props;
     let WebData = Teacher.WebsiteData;
@@ -142,7 +156,7 @@ class AddWebsiteCustom extends React.Component {
     });
     dispatch(
       TeacherCustomActions.setHandleWebsiteData({
-        WebAddress: e
+        WebType: e
       })
     );
   };
