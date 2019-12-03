@@ -288,7 +288,7 @@ class AuthorSetting extends Component{
 
                 >
 
-                <iframe src={Url} frameBorder="0" id="bind-iframe"></iframe>
+                <iframe src={Url} title="author" frameBorder="0" id="bind-iframe"></iframe>
 
             </Modal>
 

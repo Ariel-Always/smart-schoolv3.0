@@ -129,7 +129,7 @@ class Teacher extends Component{
 
     //左侧菜单输入框改变
 
-    SearchValueChange(e){
+    LeftMenuSearchValueChange(e){
 
         const { dispatch } = this.props;
 
@@ -454,7 +454,7 @@ class Teacher extends Component{
                         PickID={SubjectTeacherTeacherSchedule.pickTeacherID}
                         CancelBtnShow={SubjectTeacherTeacherSchedule.CancelBtnShow}
                         SearchValue={SubjectTeacherTeacherSchedule.SearchValue}
-                        SearchValueChange={this.SearchValueChange.bind(this)}>
+                        SearchValueChange={this.LeftMenuSearchValueChange.bind(this)}>
 
                     </LeftMenu>
 

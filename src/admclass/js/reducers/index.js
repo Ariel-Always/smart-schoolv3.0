@@ -10,6 +10,8 @@ import ModuleSetting from './ModuleSettings';
 
 import Teacher from './Teacher';
 
+import DetailModal from './DetailModal';
+
 export let initialState = {};
 
 let rootReducers = combineReducers({
@@ -22,7 +24,9 @@ let rootReducers = combineReducers({
 
     ModuleSetting,
 
-    Teacher
+    Teacher,
+
+    DetailModal
 
 });
 

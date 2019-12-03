@@ -17,6 +17,18 @@ class Import extends Component{
 
         this.state = InitState({props,type:'excel'});
 
+        /*const { ImportTarget,ImportMouldes } = this.state;
+
+        //如果有值的话。没有的话等更新
+        if (ImportTarget){
+
+
+
+            this.setState({ModulesLink,UpLoadLoading:false})
+
+        }*/
+
+
     }
 
 
@@ -135,7 +147,7 @@ class Import extends Component{
 
                     if (needComfirm){//需要做前端处理
 
-                        console.log(JSON.parse(msg));
+
 
                         const ColAttr = JSON.parse(msg);
 
@@ -311,7 +323,7 @@ class Import extends Component{
 
         BackEndData.splice(Index, 1);
 
-        console.log(BackEndData);
+
 
         this.setState({BackEndData});
 
@@ -486,299 +498,360 @@ class Import extends Component{
 
     }
 
+    /*componentWillReceiveProps(nextProps){
 
+        const { ImportTarget,ImportTitle } = nextProps;
+
+        if (ImportTarget!==this.state.ImportTarget||this.state.ImportTitle!==ImportTitle){
+
+            const { ImportMouldes } = this.state;
+
+            const arr = ImportTarget.split(',');
+
+            const ModulesLink = arr.map(item=>{
+
+                const Path = ImportMouldes.find(i=>i.ID===item).Url;
+
+                return Path;
+
+            });
+
+            this.setState({ModulesLink,UpLoadLoading:false,ImportTarget,ImportTitle});
+
+            console.log(ImportTarget,ImportTitle);
+
+        }
+
+    }*/
 
 
     render(){
 
-        const { Step,ImportTitle,UpLoadFileName,AlertObj,StepLoading,UpLoadResult,BackEndData } = this.state;
+        const {
 
-        return <div id="ImportComponent" className="component-import">
+            UpLoadLoading,Step,ImportTarget,ImportTitle,
 
-            {
+            UpLoadFileName,AlertObj,StepLoading,UpLoadResult,BackEndData,
 
-                ImportTitle?
+            ImportMouldes
 
-                    <div className="import-title">{ImportTitle}</div>
+        } = this.state;
 
-                    :''
+        const arr = ImportTarget.split(',');
+
+        const ModulesLink = arr.map(item=>{
+
+            const Index = ImportMouldes.findIndex(i=>i.ID===item);
+
+            let Path = '';
+
+            if (Index>=0){
+
+                Path = ImportMouldes.find(i=>i.ID===item).Url;
 
             }
 
-            <div id="step_counter" className={`usermgr_step_bar step${Step}`}>
+            return Path;
 
-                <div className="usermgr_step_item">1.上传文件</div>
+        });
 
-                <div className="usermgr_step_item">2.数据筛选匹配</div>
+        console.log(ModulesLink);
 
-                <div className="usermgr_step_item">3.导入处理</div>
-
-                <div className="usermgr_step_item">4.处理结果</div>
-
-            </div>
+        return <div id="ImportComponent" className="component-import">
 
 
+                    {
 
-                <div id="step1" className={`usermgr_step1_wrapper ${Step===1?'':'hide'}`}>
+                        ImportTitle?
 
-                    <div className="usermgr_upload">
+                            <div className="import-title">{ImportTitle}</div>
 
-                        <p className="usermgr_step_tips_title">操作提示:</p>
+                            :''
 
-                        <ul className="usermgr_step_tips_list">
+                    }
 
-                            <li>1.导入文件只能为EXCEL文件，支持标准模板文件导入，也支持非标准模板的文件;</li>
+                    <div id="step_counter" className={`usermgr_step_bar step${Step}`}>
 
-                            <li>2.建议用系统提供的模板，请点击下载
+                        <div className="usermgr_step_item">1.提交数据文件</div>
 
-                                <a href="" id="bi_btnDownloadExcel"  className="dodown">"导入模版"</a>。
+                        <div className="usermgr_step_item">2.导入预处理</div>
 
-                            </li>
+                        <div className="usermgr_step_item">3.执行导入</div>
 
-                        </ul>
-
-                        <div className="usermgr_upload_pic_container" onClick={this.InputFileClick.bind(this)}>
-
-                            <span id="url" className="usermgr_upload_pic_url url" title={UpLoadFileName}>{UpLoadFileName}</span>
-
-                            <div id="btn_select" className="usermgr_view_pic_btn">浏览</div>
-
-                            <input type="file" accept=".xls,.xlsx" onChange={this.UploadFileChange.bind(this)} ref={(ref)=>{this.Input = ref}} name="file" id="file" className=""/>
-
-                        </div>
-
-                        <div className="step1-commit-wrapper">
-
-                            <input id="btnUpload"  type="button" value="提交上传" onClick={this.UploadCommit.bind(this)} className="frame_big_green_btn"/>
-
-                        </div>
+                        <div className="usermgr_step_item">4.导入结果</div>
 
                     </div>
 
-                    {/* <div className="usermgr_emptyrow">
+                        <div id="step1" className={`usermgr_step1_wrapper ${Step===1?'':'hide'}`}>
 
-                    <p className="usermgr_step_tips_title">空行处理操作提示:</p>
+                            <div className="usermgr_upload">
 
-                    <div >
+                                <p className="usermgr_step_tips_title">操作提示:</p>
 
-                        <div className="btn_p reload">
+                                <ul className="usermgr_step_tips_list">
 
-                            <input id="showUpload" className="frame_big_green_btn btn_c" type="button" value="重新上传"/>
+                                    <li>1.导入文件只能为EXCEL文件，支持标准模板文件导入，也支持非标准模板的文件;</li>
 
-                            <div className="btn_s"></div>
-
-                        </div>
-
-                    </div>
-
-                </div>*/}
-
-                </div>
-
-                <div id="step2" className={`usermgr_step2_wrapper ${Step===2?'':'hide'}`} >
-
-                    <Loading spinning={StepLoading} tip="加载中请稍后...">
-
-                        <div id="relation">
-
-                        <table className="usermgr_upload_table">
-
-                            <tbody>
-
-                            <tr>
-
-                                <th className="col">属性</th>
-
-                                <th className="co2">Excel表列名</th>
-
-                                <th className="co3">操作</th>
-
-                            </tr>
-
-                            {
-
-                                BackEndData.map((item,key)=>{
-
-                                    return <tr key={key}>
-
-                                        <td className="col1 head_td" title={item.ColName}>{item.ColName}</td>
-
-                                        <td className="col2">
-
-                                            <DropDown dropSelectd={item.DropSelectd}
-
-                                                       dropList={item.DropList}
-
-                                                       width={200}
-
-                                                      style={{zIndex:(BackEndData.length-key)}}
-
-                                                      height={200}
-
-                                                      onChange={data=>this.DropChange(data,item.ColID)}
-                                            >
-
-                                            </DropDown>
-
-                                        </td>
-
-                                        <td className="col3">
-
-                                            {
-
-                                                item.isNecessary==='True'?
-
-                                                    ''
-
-                                                    : <span className="new_alink btnDelCol" onClick={this.DelTr.bind(this,item.ColID)} title="删除">删除</span>
-
-                                            }
-
-                                        </td>
-
-                                    </tr>
-
-                                })
-
-                            }
-
-                            </tbody>
-
-                        </table>
-
-                        <div className="step2-btn-wrapper">
-
-                            <span id="btnPreImport" className="new_alink" onClick={this.BackStep.bind(this)}>返回上一级</span>
-
-                            <input id="btnResetRelation" className="frame_big_red_btn" type="button" value="重置" onClick={this.ResetFileData.bind(this)}/>
-
-                            <input id="btnImport" onClick={this.Step2UpLoadCommit.bind(this)} className="frame_big_green_btn" type="button" value="确认导入"/>
-
-                        </div>
-
-                    </div>
-
-                    </Loading>
-
-                </div>
-
-                <div id="step3" className={`usermgr_step3_wrapper ${Step===3?'':'hide'}`}>
-
-                    <div className="usermgr_progress_container">
-
-                        <div className="usermgr_progress_animate_container active">
-
-                            <span className="load1 load"></span>
-
-                            <span className="load2 load"></span>
-
-                            <span className="load3 load"></span>
-
-                            <span className="load4 load"></span>
-
-                        </div>
-
-                        <p className="usermgr_progress_check_text">数据处理中，请稍后...</p>
-
-                    </div>
-
-                </div>
-
-                <div id="step4" className={`usermgr_step4_wrapper ${Step===4?'':'hide'}`}>
-
-                    <div className="usermgr_step4_container">
-
-                        <div className={`usermgr_step4_tick ${UpLoadResult.Success===0?'false':''}`}></div>
-
-                        <p className="usermgr_step4_tips_p">
-
-                            {
-
-                                UpLoadResult.Success>0?
-
-                                    <span id="count_text_success">
-
-                                        <span className="common-text">
-
-                                            成功导入 <span className="color_green">{UpLoadResult.Success}</span>条
-
-                                        </span>
+                                    <li>2.建议用系统提供的模板，请点击下载
 
                                         {
 
-                                            (UpLoadResult.Unique+UpLoadResult.Error>0)?
+                                            ModulesLink&&ModulesLink.map((item,key)=>{
 
+                                                return <a key={key} href={item} target="_blank" className="dodown">"导入模版{ModulesLink.length>1?key+1:''}"</a>
 
-                                                <span className="component-text">
-
-                                                    ,失败 <span id="failed_count" className="color_red">{UpLoadResult.Error}</span>条
-
-                                                    (其中有 <span id="unique_count" className="color_red">{UpLoadResult.Unique}</span> 条重复)
-
-                                                </span>
-
-                                                :''
+                                            })
 
                                         }
 
-                                    </span>
+                                        。
 
-                                    :<span className="count_text_fail">
+                                    </li>
 
-                                <span className="component-text">
+                                </ul>
 
-                                    导入失败,失败 <span id="failed_count" className="color_red">{UpLoadResult.Error}</span>条
+                                <div className="usermgr_upload_pic_container" onClick={this.InputFileClick.bind(this)}>
 
-                                    (其中有 <span id="unique_count" className="color_red">{UpLoadResult.Unique}</span> 条重复)
+                                    <span id="url" className="usermgr_upload_pic_url url" title={UpLoadFileName}>{UpLoadFileName}</span>
 
-                                </span>
+                                    <div id="btn_select" className="usermgr_view_pic_btn">浏览</div>
 
-                            </span>
+                                    <input type="file" accept=".xls,.xlsx" onChange={this.UploadFileChange.bind(this)} ref={(ref)=>{this.Input = ref}} name="file" id="file" className=""/>
 
-                            }
+                                </div>
 
-                            {
+                                <div className="step1-commit-wrapper">
 
-                                (UpLoadResult.Error+UpLoadResult.Unique)>0?
+                                    <input id="btnUpload"  type="button" value="提交上传" onClick={this.UploadCommit.bind(this)} className="frame_big_green_btn"/>
 
-                                    <a id="btnDownload" target="_self" className="new_alink" href={UpLoadResult.DownLoadPath}>点击下载失败列表</a>
+                                </div>
 
-                                    :''
+                            </div>
 
-                            }
+                            {/* <div className="usermgr_emptyrow">
 
-                        </p>
+                            <p className="usermgr_step_tips_title">空行处理操作提示:</p>
 
-                        <div className="step4-btn-wrapper">
+                            <div >
 
-                            <input id="btn_reset" type="button" onClick={this.NextUpload.bind(this)} className="frame_big_green_btn" value="继续导入"/>
+                                <div className="btn_p reload">
+
+                                    <input id="showUpload" className="frame_big_green_btn btn_c" type="button" value="重新上传"/>
+
+                                    <div className="btn_s"></div>
+
+                                </div>
+
+                            </div>
+
+                        </div>*/}
 
                         </div>
 
-                    </div>
+                        <div id="step2" className={`usermgr_step2_wrapper ${Step===2?'':'hide'}`} >
+
+                            <Loading spinning={StepLoading} tip="加载中请稍后...">
+
+                                <div id="relation">
+
+                                <table className="usermgr_upload_table">
+
+                                    <tbody>
+
+                                    <tr>
+
+                                        <th className="col">属性</th>
+
+                                        <th className="co2">Excel表列名</th>
+
+                                        <th className="co3">操作</th>
+
+                                    </tr>
+
+                                    {
+
+                                        BackEndData.map((item,key)=>{
+
+                                            return <tr key={key}>
+
+                                                <td className="col1 head_td" title={item.ColName}>{item.ColName}</td>
+
+                                                <td className="col2">
+
+                                                    <DropDown dropSelectd={item.DropSelectd}
+
+                                                               dropList={item.DropList}
+
+                                                               width={200}
+
+                                                              style={{zIndex:(BackEndData.length-key)}}
+
+                                                              height={200}
+
+                                                              onChange={data=>this.DropChange(data,item.ColID)}
+                                                    >
+
+                                                    </DropDown>
+
+                                                </td>
+
+                                                <td className="col3">
+
+                                                    {
+
+                                                        item.isNecessary==='True'?
+
+                                                            ''
+
+                                                            : <span className="new_alink btnDelCol" onClick={this.DelTr.bind(this,item.ColID)} title="删除">删除</span>
+
+                                                    }
+
+                                                </td>
+
+                                            </tr>
+
+                                        })
+
+                                    }
+
+                                    </tbody>
+
+                                </table>
+
+                                <div className="step2-btn-wrapper">
+
+                                    <span id="btnPreImport" className="new_alink" onClick={this.BackStep.bind(this)}>返回上一级</span>
+
+                                    <input id="btnResetRelation" className="frame_big_red_btn" type="button" value="重置" onClick={this.ResetFileData.bind(this)}/>
+
+                                    <input id="btnImport" onClick={this.Step2UpLoadCommit.bind(this)} className="frame_big_green_btn" type="button" value="确认导入"/>
+
+                                </div>
+
+                            </div>
+
+                            </Loading>
+
+                        </div>
+
+                        <div id="step3" className={`usermgr_step3_wrapper ${Step===3?'':'hide'}`}>
+
+                            <div className="usermgr_progress_container">
+
+                                <div className="usermgr_progress_animate_container active">
+
+                                    <span className="load1 load"></span>
+
+                                    <span className="load2 load"></span>
+
+                                    <span className="load3 load"></span>
+
+                                    <span className="load4 load"></span>
+
+                                </div>
+
+                                <p className="usermgr_progress_check_text">数据处理中，请稍后...</p>
+
+                            </div>
+
+                        </div>
+
+                        <div id="step4" className={`usermgr_step4_wrapper ${Step===4?'':'hide'}`}>
+
+                            <div className="usermgr_step4_container">
+
+                                <div className={`usermgr_step4_tick ${UpLoadResult.Success===0?'false':''}`}></div>
+
+                                <p className="usermgr_step4_tips_p">
+
+                                    {
+
+                                        UpLoadResult.Success>0?
+
+                                            <span id="count_text_success">
+
+                                                <span className="common-text">
+
+                                                    成功导入 <span className="color_green">{UpLoadResult.Success}</span>条
+
+                                                </span>
+
+                                                {
+
+                                                    (UpLoadResult.Unique+UpLoadResult.Error>0)?
+
+
+                                                        <span className="component-text">
+
+                                                            ,失败 <span id="failed_count" className="color_red">{UpLoadResult.Error}</span>条
+
+                                                            (其中有 <span id="unique_count" className="color_red">{UpLoadResult.Unique}</span> 条重复)
+
+                                                        </span>
+
+                                                        :''
+
+                                                }
+
+                                            </span>
+
+                                            :<span className="count_text_fail">
+
+                                        <span className="component-text">
+
+                                            导入失败,失败 <span id="failed_count" className="color_red">{UpLoadResult.Error}</span>条
+
+                                            (其中有 <span id="unique_count" className="color_red">{UpLoadResult.Unique}</span> 条重复)
+
+                                        </span>
+
+                                    </span>
+
+                                    }
+
+                                    {
+
+                                        (UpLoadResult.Error+UpLoadResult.Unique)>0?
+
+                                            <a id="btnDownload" target="_self" className="new_alink" href={UpLoadResult.DownLoadPath}>点击下载失败列表</a>
+
+                                            :''
+
+                                    }
+
+                                </p>
+
+                                <div className="step4-btn-wrapper">
+
+                                    <input id="btn_reset" type="button" onClick={this.NextUpload.bind(this)} className="frame_big_green_btn" value="继续导入"/>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                    <Alert  type={AlertObj.Type}
+
+                            title={AlertObj.Title}
+
+                            show={AlertObj.Show}
+
+                            onOk={AlertObj.Ok}
+
+                            onCancel={AlertObj.Cancel}
+
+                            onClose={AlertObj.Close}
+
+                            onHide={AlertObj.Hide}
+
+                    >
+
+                    </Alert>
 
                 </div>
-
-
-            <Alert  type={AlertObj.Type}
-
-                    title={AlertObj.Title}
-
-                    show={AlertObj.Show}
-
-                    onOk={AlertObj.Ok}
-
-                    onCancel={AlertObj.Cancel}
-
-                    onClose={AlertObj.Close}
-
-                    onHide={AlertObj.Hide}
-
-            >
-
-            </Alert>
-
-        </div>
 
     }
 

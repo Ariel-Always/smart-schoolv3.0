@@ -16,6 +16,8 @@ import ClassStudent from './ClassStudent';
 
 import AddTempScheduleModal from './AddTempScheduleModal';
 
+import Power from './Power';
+
 const Teacher = combineReducers({
 
     SubjectTeacherSubjectSchedule,
@@ -32,7 +34,9 @@ const Teacher = combineReducers({
 
     ClassStudent,
 
-    AddTempScheduleModal
+    AddTempScheduleModal,
+
+    Power
 
 });
 

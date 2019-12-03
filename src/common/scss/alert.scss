@@ -54,13 +54,15 @@ $img_url:"#{$image_url}/alert";
 /*带按钮的弹出层*/
 .alert_dialog_tab{
   position:fixed;
-  left: 50%;
-  top: 50%;
+  left:0;
+  top:0;
+  right:0;
+  bottom:0;
   z-index: 10101;
-  @include transform(translate(-50%,-50%));
-  min-width: 400px;
+  //@include transform(translate(-50%,-50%));
+  /*min-width: 400px;
   max-width: 500px;
-  background-color: #ffffff;
+  background-color: #ffffff;*/
   padding:0;
   .border{
     box-shadow: 0 0 16px 0
@@ -79,12 +81,31 @@ $img_url:"#{$image_url}/alert";
       background-image:url("#{$img_url}/close-btn-hover.png")
     }
   }
+
+  #alert_dialog_wrapper{
+
+    position: absolute;
+
+    min-width: 400px;
+
+    max-width: 500px;
+
+    background-color: #ffffff;
+
+    /*top:50%;
+
+    left:50%;
+
+    @include transform(translate(-50%,-50%));*/
+
+  }
+
 }
 .alert_dialog_content{
   @include flex;
   @include justify-content(center);
   @include align-items(center);
-  @include flex-direction(column);
+  //@include flex-direction(column);
   padding:0 30px;
   padding-top:50px;
   //大图标
@@ -109,20 +130,61 @@ $img_url:"#{$image_url}/alert";
       background-image: url("#{$img_url}/tips-big.png");
     }
   }
+
+  .left-icon{
+
+    background-repeat: no-repeat;
+
+    background-position:0 center;
+
+    width:46px;
+
+    height:42px;
+
+    margin-left: -10px;
+
+    margin-right:6px;
+
+    &.btn-success{
+      background-image: url("#{$img_url}/success-middle.png");
+    }
+    &.btn-error{
+      background-image: url("#{$img_url}/error-middle.png");
+    }
+    &.btn-warn{
+      background-image: url("#{$img_url}/warn-middle.png");
+    }
+    &.btn-query{
+      background-image: url("#{$img_url}/query-middle.png");
+    }
+    &.btn-tips{
+      background-image: url("#{$img_url}/tips-middle.png");
+    }
+
+  }
+
+  &.has-abstract{
+
+    @include flex-direction(column);
+
+  }
+
 }
+
+
 //信息内容
 .alert_dialog_msg{
-  line-height: 44px;
-  background-repeat: no-repeat;
-  background-position:0 center;
+  //line-height: 44px;
+ /* background-repeat: no-repeat;
+  background-position:0 center;*/
   max-width: 440px;
   vertical-align: middle;
   font-size: 18px;
-  padding-left: 52px;
+  /*padding-left: 52px;*/
   color: #333;
   word-break: break-all;
   //icon图标
-  &.btn-success{
+ /* &.btn-success{
     background-image: url("#{$img_url}/success-middle.png");
   }
   &.btn-error{
@@ -136,11 +198,15 @@ $img_url:"#{$image_url}/alert";
   }
   &.btn-tips{
     background-image: url("#{$img_url}/tips-middle.png");
-  }
+  }*/
   &.big{
-    padding: 24px 0px 2px 0px;
+
+    padding: 8px 0 2px 0;
+
     line-height: 20px;
+
   }
+
 }
 //解释
 .alert_dialog_abstract{

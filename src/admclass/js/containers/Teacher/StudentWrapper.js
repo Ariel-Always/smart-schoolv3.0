@@ -4,13 +4,25 @@ import {connect} from 'react-redux';
 
 import TitleBar from '../../component/TitleBar';
 
-import {Empty,Modal,CheckBox, CheckBoxGroup, Button, PagiNation, Loading,Search} from "../../../../common";
+import {
+    Empty,
+    Modal,
+    CheckBox,
+    CheckBoxGroup,
+    Button,
+    PagiNation,
+    Loading,
+    Search,
+    DetailsModal
+} from "../../../../common";
 
 import CCActions from '../../actions/Teacher/ClassChargeActions'
 
 import StudentInfo from './StudentInfoModal';
 
 import SIMActions from '../../actions/Teacher/StudentInfoModalActions';
+
+import DMActions from "../../actions/DetailModalActions";
 
 
 
@@ -137,12 +149,30 @@ class StudentWrapper extends Component{
 
     }
 
+    //用户详情弹窗出现
 
+    DetailModalShow(Params){
+
+        const { dispatch } = this.props;
+
+        dispatch(DMActions.Init(Params))
+
+    }
+
+    //弹窗消失
+
+    DetailModalHide(e){
+
+        const { dispatch } = this.props;
+
+        dispatch(DMActions.Hide())
+
+    }
 
 
     render(){
 
-        const { ClassCharge,StudentInfoModal } = this.props;
+        const { ClassCharge,StudentInfoModal,DetailModal } = this.props;
 
 
 
@@ -198,13 +228,13 @@ class StudentWrapper extends Component{
 
                                             <div className="person-item-content clearfix">
 
-                                                <div className="person-item-photo" style={{backgroundImage:`url(${item.PhotoPath})`}}></div>
+                                                <div className="person-item-photo" onClick={this.DetailModalShow.bind(this,{UserID:item.UserID,UserType:2})} style={{backgroundImage:`url(${item.PhotoPath})`}}></div>
 
                                                 <div className="person-item-info-wrapper">
 
                                                     <div className="person-item-info">
 
-                                                        <div className="person-item-name" title={item.UserName}>{item.UserName}</div>
+                                                        <div className="person-item-name" onClick={this.DetailModalShow.bind(this,{UserID:item.UserID,UserType:2})} title={item.UserName}>{item.UserName}</div>
 
                                                         <div className={`person-sex-icon ${sex}`}></div>
 
@@ -325,6 +355,21 @@ class StudentWrapper extends Component{
 
             </Modal>
 
+            <DetailsModal
+
+                visible={DetailModal.Show}
+
+                data={DetailModal[DetailModal.ActiveInfo]}
+
+                type={DetailModal.ActiveInfo}
+
+                onCancel={this.DetailModalHide.bind(this)}
+
+            >
+
+
+            </DetailsModal>
+
         </div>
 
     }
@@ -335,11 +380,15 @@ const mapStateToProps = (state)=>{
 
     const{ ClassCharge,StudentInfoModal } = state.Teacher;
 
+    const { DetailModal } = state;
+
     return {
 
         ClassCharge,
 
-        StudentInfoModal
+        StudentInfoModal,
+
+        DetailModal
 
     }
 

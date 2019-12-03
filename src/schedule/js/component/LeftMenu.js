@@ -8,11 +8,11 @@ import ScrollBars from 'react-custom-scrollbars';
 
 class LeftMenu extends Component{
 
-    constructor(props) {
+   /* constructor(props) {
 
         super(props);
 
-       /* this.state={
+       /!* this.state={
 
             catActive:'',
 
@@ -20,9 +20,9 @@ class LeftMenu extends Component{
 
             searchActive:''
 
-        };*/
+        };*!/
 
-    }
+    }*/
 
     //点击分类的名称
     catNameClick(id,e){

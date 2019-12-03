@@ -4,18 +4,18 @@ import { connect } from 'react-redux';
 
 import $ from "jquery";
 
-import CONFIG from "../../../common/js/config";
-
-import AppAlertActions from "../actions/AppAlertActions";
-
 import AppLoadingActions from '../actions/AppLoadingActions';
+
+import ImportExcel from '../../../common/js/Import/ImportExcel';
 
 
 class Import extends Component{
 
-    componentDidMount(){
+    constructor(props) {
 
-        const { dispatch } = this.props;
+        super(props);
+
+        const { dispatch } = props;
 
         if (sessionStorage.getItem('UserInfo')){
 
@@ -25,28 +25,7 @@ class Import extends Component{
 
             let { SchoolID,UserName,UserID } = UserInfo;
 
-            $.get(`${CONFIG.AdmClassProxy}/UserMgr/TeachInfoMgr/Import.aspx?SchoolID=${SchoolID}&Token=${token}&Type=scheduleMiddle&UserName=${UserName}&UserID=${UserID}`, (data, status) => {
-
-
-                if (status==='success'){
-
-                    $('#import-wrapper').append(data);
-
-                    dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
-
-                }else if (status === 'error'||status==='notmodified'||status==='parsererror'){
-
-                    dispatch(AppAlertActions.alertError({title:"请求出错！",ok:()=>{ return ()=> window.location.href='/html/admclass';}}));
-
-                }else if (status === 'timeout'){
-
-                    dispatch(AppAlertActions.alertError({title:"请求超时！",ok:()=>{ return ()=> window.location.href='/html/admclass';}}))
-
-                }
-
-            });
-
-
+            dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
 
         }else{
 
@@ -61,26 +40,7 @@ class Import extends Component{
 
                     let { SchoolID,UserName,UserID } = UserInfo;
 
-                    $.get(`${CONFIG.AdmClassProxy}/UserMgr/TeachInfoMgr/Import.aspx?SchoolID=${SchoolID}&Token=${token}&Type=scheduleMiddle&UserName=${UserName}&UserID=${UserID}`, (data, status) => {
-
-
-                        if (status==='success'){
-
-                            $('#import-wrapper').append(data);
-
-                            dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
-
-                        }else if (status === 'error'||status==='notmodified'||status==='parsererror'){
-
-                            dispatch(AppAlertActions.alertError({title:"请求出错！",ok:()=>{ return ()=> window.location.href='/html/admclass';}}));
-
-                        }else if (status === 'timeout'){
-
-                            dispatch(AppAlertActions.alertError({title:"请求超时！",ok:()=>{ return ()=> window.location.href='/html/admclass';}}))
-
-                        }
-
-                    });
+                    dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
 
                     clearInterval(getUserInfo);
 
@@ -89,6 +49,14 @@ class Import extends Component{
             },20)
 
         }
+
+
+    }
+
+
+    componentDidMount(){
+
+        const { dispatch } = this.props;
 
         $('.frame-content-rightside').css({
 
@@ -109,6 +77,7 @@ class Import extends Component{
 
         return <div id="import-wrapper">
 
+            <ImportExcel ImportTitle="导入课表" ImportTarget="scheduleMiddle"></ImportExcel>
 
         </div>
 

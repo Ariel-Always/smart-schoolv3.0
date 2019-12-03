@@ -14,7 +14,7 @@ class ScheduleDetailModal extends Component{
 
             AdjustClassRoomShow,RebackClassRoom,ChooseReplaceTeacherShow,
 
-            RebackReplaceSchedule
+            RebackReplaceSchedule,CanOperate=true
 
         } = this.props;
 
@@ -162,6 +162,8 @@ class ScheduleDetailModal extends Component{
 
                                 {
 
+                                    CanOperate?
+
                                     ScheduleType!==1?
 
                                         IsOver===1?
@@ -171,6 +173,8 @@ class ScheduleDetailModal extends Component{
                                             :<button className='stop-btn' onClick={()=>StopSchedule({TeacherID:NowTeacherID,ClassDate:NowClassDate,ClassHourNO:NowClassHourNO,ScheduleID})}>停课</button>
 
                                         :''
+
+                                    :''
 
                                 }
 
@@ -182,7 +186,7 @@ class ScheduleDetailModal extends Component{
 
                             <div className="props">上课时间:</div>
 
-                            <div className={`content-wrapper ${ScheduleType!==1&&IsOver!==1&&ReplaceClassDate?'red':''}`}>
+                            <div className={`content-wrapper ${CanOperate?(ScheduleType!==1&&IsOver!==1&&ReplaceClassDate?'red':''):''}`}>
 
                                 <span className="week-day">
 
@@ -196,11 +200,13 @@ class ScheduleDetailModal extends Component{
 
                                     <span className="class-hour">{ClassHourName}</span>
 
-                                    <span className={`start-end-time ${ScheduleType!==1&&IsOver!==1&&ReplaceClassDate?'red':''}`}>({StartEndTime})</span>
+                                    <span className={`start-end-time ${CanOperate?(ScheduleType!==1&&IsOver!==1&&ReplaceClassDate?'red':''):''}`}>({StartEndTime})</span>
 
                                 </span>
 
                                 {
+
+                                    CanOperate?
 
                                     IsOver===0&&ScheduleType!==1?
 
@@ -213,6 +219,8 @@ class ScheduleDetailModal extends Component{
                                             <button className="adjust-btn adjust-time" onClick={()=>ChangeTimeShow({StartEndTime,WeekDay,ClassHourName,ClassDate:NowClassDate,ClassHourNO:NowClassHourNO,WeekNO,TeacherID:NowTeacherID,NowClassRoomID,NowClassRoomName,ScheduleID})}>调整时间</button>
 
                                         :''
+
+                                    :''
 
                                 }
 
@@ -236,11 +244,13 @@ class ScheduleDetailModal extends Component{
 
                             <div className="props">上课教师:</div>
 
-                            <div className={`content-wrapper ${ScheduleType!==1&&IsOver!==1&&ReplaceTeacherID?'red':''}`}>
+                            <div className={`content-wrapper ${CanOperate?(ScheduleType!==1&&IsOver!==1&&ReplaceTeacherID?'red':''):''}`}>
 
                                 <span className="teacher-name">{NowTeacherName}</span>
 
                                 {
+
+                                    CanOperate?
 
                                     IsOver === 0&&ScheduleType!==1?
 
@@ -254,6 +264,8 @@ class ScheduleDetailModal extends Component{
 
                                         :''
 
+                                    :''
+
                                 }
 
                             </div>
@@ -264,11 +276,13 @@ class ScheduleDetailModal extends Component{
 
                             <div className="props">上课地点:</div>
 
-                            <div className={`content-wrapper ${ScheduleType!==1&&IsOver!==1&&ReplaceClassRoomID?'red':''}`}>
+                            <div className={`content-wrapper ${CanOperate?(ScheduleType!==1&&IsOver!==1&&ReplaceClassRoomID?'red':''):''}`}>
 
                                 <span className="class-room-name">{NowClassRoomName}</span>
 
                                 {
+
+                                    CanOperate?
 
                                     IsOver===0&&ScheduleType!==1?
 
@@ -281,6 +295,8 @@ class ScheduleDetailModal extends Component{
                                             <button className="adjust-btn" onClick={e=>AdjustClassRoomShow({ClassDate:NowClassDate,ClassHourNO:NowClassHourNO,TeacherID:NowTeacherID,ScheduleID,NowClassRoomID,NowClassRoomName})}>调整教室</button>
 
                                         :''
+
+                                    :''
 
                                 }
 

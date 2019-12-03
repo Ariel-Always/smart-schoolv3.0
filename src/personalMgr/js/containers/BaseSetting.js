@@ -1,10 +1,8 @@
 import React,{Component} from 'react';
 
-import { findDOMNode } from 'react-dom';
-
 import BaseActions from '../actions/BaseActions';
 
-import { Loading,Modal } from "../../../common";
+import { Loading } from "../../../common";
 
 import { Input,Tooltip } from "antd";
 

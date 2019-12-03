@@ -498,7 +498,9 @@ class Modal extends React.Component {
     }
 
     componentWillMount() {
+
         this.selectType(this.props.type)
+
     }
 
     componentWillReceiveProps(nextProps) {
@@ -511,10 +513,97 @@ class Modal extends React.Component {
 
     }
 
+
+    componentDidMount(){
+
+       /* $('.ant-modal').each((index,that)=>{
+
+            console.log($(that).width());
+
+            $(that).css({
+
+                left:($(window).width()-$(that).width()/2)+'px',
+
+                top:($(window).height()-$(that).height()/2)+'px',
+
+            });
+
+        });
+
+        let xTemp, yTemp;
+
+        let can_move = false;
+
+        $(document).on('dragstart', '.ant-modal-header', function(e) { return false; });
+
+        $(document).on('mousedown', '.ant-modal-header', function(event) {
+
+            let $win = $(event.target).closest('.ant-modal');
+
+            can_move = true;
+
+            $(event.target).css('cursor', 'move');
+
+            let mx = event.pageX;
+
+            let my = event.pageY;
+
+            xTemp = mx - parseInt($win.offset().left);
+
+            yTemp = my - parseInt($win.offset().top);
+
+            console.log(xTemp,yTemp);
+
+        });
+        //var win;
+        ///MSIE 8.0/.test(window.navigator.userAgent) ? win = document : win = window;
+
+        $(window).mousemove(function(event) {
+
+            if (can_move) {
+
+                let $win = $(event.target).closest('.ant-modal');
+
+                let $window = $(window);
+
+                let mx = event.pageX;
+
+                let my = event.pageY;
+
+                if (mx - xTemp > 0 && mx - xTemp < $window.width() - $win.width()) {
+
+                    console.log(mx - xTemp);
+
+                    $win.css('left', mx - xTemp+'px');
+
+                }
+
+                if (my - yTemp > 0 && my - yTemp < $window.height() - $win.height()) {
+
+                    console.log(my - yTemp);
+
+                    $win.css('top', my - yTemp+'px');
+
+                }
+
+
+
+            }
+
+        }).mouseup(function(event) {
+
+            can_move = false;
+
+            $('.ant-modal-header').css('cursor', 'default');
+
+        });*/
+
+    }
+
     render() {
 
         return (
-            <AntdModal onOk={this.state.onOk}
+            <AntdModal ref={ref=>this.Modal=ref} onOk={this.state.onOk}
                 onCancel={this.state.onCancel}
                 title={this.state.title}
                 className={`initModel ${this.state.ModalStyle} ${this.state.className}`}
@@ -659,6 +748,9 @@ class Table extends React.Component {
  * 分页组件 start
  * */
 class PagiNation extends React.Component {
+
+    //展示全部
+
     render() {
         const {
             children,
@@ -666,21 +758,60 @@ class PagiNation extends React.Component {
             size,
             showQuickJumper,
             className,
+            total,
+            pageSize,
+            showTotal,
             ...reset
         } = this.props;
 
 
         return (
             <ConfigProvider locale={zhCN}>
-                <AntPagination
-                    {...reset} hideOnSinglePage={hideOnSinglePage ? hideOnSinglePage : true}
-                    showQuickJumper={size === 'micro' ? true : {
-                        goButton: <span className="pagination_go_button">Go</span>
-                    }}
-                    className={`${className?className:''} ${size && size === 'micro' ? 'micro' : ''}`}
 
-                    size={size}
-                >{children}</AntPagination>
+                <AntPagination
+
+                        total={total}
+
+                        pageSize={pageSize}
+
+                        {...reset}
+
+                        hideOnSinglePage={hideOnSinglePage ? hideOnSinglePage : true}
+
+                        showQuickJumper={size === 'micro'?true:{
+
+                            goButton:
+
+                                <React.Fragment>
+
+                                    {
+
+                                        showTotal===false?
+
+                                            ''
+
+                                            :(showTotal!==true&&showTotal!==1&&showTotal!==undefined&&showTotal!==''&&showTotal!==0&&showTotal!==null)?
+
+                                            <span className="pagination-total-self-dom">{showTotal}</span>
+
+                                            :
+
+                                            <span className="pagination-total-self-dom">共<span className="number">{Math.ceil(total/pageSize)}</span>页</span>
+
+                                    }
+
+                                    <span className="pagination_go_button">Go</span>
+
+                                </React.Fragment>
+
+                        }}
+
+                        className={`${className?className:''} ${size && size === 'micro' ? 'micro' : ''} ${showTotal===false?'':'total'}`}
+
+                        size={size}
+
+                    >{children}</AntPagination>
+
             </ConfigProvider>
         );
     }
@@ -868,7 +999,7 @@ class Search extends React.Component {
                                     style={{ display:CancelBtnDisplay}} />
                             </td>
                             <td className="search_right_td">
-                                <input className="search_btn_input" type="button"
+                                <div className="search_btn_input"
                                     onClick={
                                         () => {
                                             if (this.refs.search_text_input.value) {
@@ -895,7 +1026,10 @@ class Search extends React.Component {
                                                 }
                                             }
                                         }
-                                    } />
+                                    }>
+
+                                </div>
+
                             </td>
                         </tr>
                     </tbody>
@@ -917,7 +1051,8 @@ class DropDown extends React.Component {
             dropSelectd: props.dropSelectd ? props.dropSelectd : '',
             dropListShow: false,
             range2ListShow: '',
-            range2ListActive: ''
+            range2ListActive: '',
+            activeValue:''
         }
     }
 
@@ -940,13 +1075,27 @@ class DropDown extends React.Component {
     }//展示或者隐藏下拉列表
 
     onSimpleDropChange(e) {
+
+        const {activeValue} = this.props;
+
         const { onChange, value, title } = e;
-        this.setState({ dropListShow: false, dropSelectd: { value, title } }, () => {
+
+        let thatActiveValue = '';
+
+        if (!activeValue){
+
+            thatActiveValue = value;
+
+        }
+
+        this.setState({ dropListShow: false,activeValue:thatActiveValue,dropSelectd: { value, title } }, () => {
             $(this.refs.dropdown_select_ul).hide();
             if (onChange) {
                 onChange({ value, title });
             }
         });
+
+
     }
 
     //改变下拉选项的时候调用
@@ -1027,7 +1176,7 @@ class DropDown extends React.Component {
     render() {
         const {
 
-            title, width, height, disabled, dropSelectd, dropList, onChange, type, className,
+            title, width, height,activeValue,disabled, dropSelectd, dropList, onChange, type, className,
 
             mutipleOptions, dropLoadingShow, ...reset
 
@@ -1126,8 +1275,6 @@ class DropDown extends React.Component {
             }
 
 
-
-
         } else if (mutipleOptions && mutipleOptions.range === 3) {
             //等待后期扩展使用
         }
@@ -1152,7 +1299,7 @@ class DropDown extends React.Component {
 
                         </div>
 
-                        <Scrollbars  autoHeight autoHeightMax={scrollWrapperHeight} style={{ width: scrollWrapperWidth }} >
+                        <Scrollbars  autoHeight autoHeightMin={160} autoHeightMax={scrollWrapperHeight} style={{ width: scrollWrapperWidth }} >
 
                             <Loading spinning={mutipleOptions && mutipleOptions.dropLoadingShow ? mutipleOptions.dropLoadingShow : false}>
 
@@ -1170,41 +1317,52 @@ class DropDown extends React.Component {
 
 
         } else {
+
             let ClientHeight;
+
             if (dropList && (dropList.length < (height / 24))) {
+
                 ClientHeight = dropList.length * 24;
+
             } else {
+
                 ClientHeight = height;
+
             }
 
             dropContainer =
+
                 <ul className="dropdown_select_ul" ref="dropdown_select_ul" style={{ width: width ? width : 120, overflow: "initial" }}>
 
                     <Loading spinning={dropLoadingShow ? dropLoadingShow : false}>
 
-                        <Scrollbars  style={{ width: width ? width : 120, height: ClientHeight}}>
-                            {//dropList是否存在？dropList:''
-                                dropList ?
-                                    dropList.map((item, key) => {
-                                        return <li key={key} className="dropdown_select_li"
-                                            title={item.title}
-                                            data-vaule={item.value}
-                                            onClick={
-                                                this.onSimpleDropChange.bind(this, {
-                                                    onChange: onChange,
-                                                    value: item.value,
-                                                    title: item.title
-                                                })
-                                            }
-                                        >{item.title}</li>
-                                    })
-                                    : ''
-                            }
+                        <Scrollbars  style={{ width: width ? (width-2) : 118, height: ClientHeight?ClientHeight:48}}>
+
+
+                        {//dropList是否存在？dropList:''
+                            dropList ?
+                                dropList.map((item, key) => {
+                                    return <li key={key} className={`dropdown_select_li ${activeValue&&activeValue===item.value?'active':(this.state.activeValue===item.value?'active':'')}`}
+                                        title={item.title}
+                                        data-vaule={item.value}
+                                        onClick={
+                                            this.onSimpleDropChange.bind(this, {
+                                                onChange: onChange,
+                                                value: item.value,
+                                                title: item.title
+                                            })
+                                        }
+                                    >{item.title}</li>
+                                })
+                                : ''
+                        }
+
                         </Scrollbars>
 
                     </Loading>
 
                 </ul>;
+
         }
         return (
             <div className={`dropdown_container ${className ? className : ''}`} {...reset}>
@@ -1229,9 +1387,13 @@ class DropDown extends React.Component {
                                 )
                         }
                     </span>
+
                     {
+
                         dropContainer
+
                     }
+
                 </span>
             </div>
         );
@@ -1336,6 +1498,7 @@ class Alert extends React.Component {
         }
     }
 
+
     componentDidUpdate() {
 
         const { show, type, onHide } = this.props;
@@ -1350,13 +1513,108 @@ class Alert extends React.Component {
 
                 }
             }
+
         }
+
+
+       if(this.AlertBody){
+
+            this.AlertBody.style.top = ($(window).height() - this.AlertBody.clientHeight)/ 2 + 'px';
+
+            this.AlertBody.style.left = ($(window).width() - this.AlertBody.clientWidth) / 2 + 'px';
+
+       }
+
+
+    }
+
+    componentDidMount(){
+
+        if(this.AlertBody){
+
+            this.AlertBody.style.top = ($(window).height() - this.AlertBody.clientHeight)/ 2 + 'px';
+
+            this.AlertBody.style.left = ($(window).width() - this.AlertBody.clientWidth) / 2 + 'px';
+
+        }
+
+        let xTemp, yTemp;
+
+        let can_move = false;
+
+        $(document).on('dragstart', '.alert_dialog_wrapper', function(e) { return false; });
+
+        $(document).on('mousedown', '.alert_dialog_wrapper', function(event) {
+
+            let $win = $(event.target).closest('.alert_dialog_wrapper');
+
+            can_move = true;
+
+            $win.css('cursor', 'move');
+
+            let mx = event.pageX;
+
+            let my = event.pageY;
+
+            xTemp = mx - parseInt($win.offset().left);
+
+            yTemp = my - parseInt($win.offset().top);
+
+            console.log(mx,my);
+
+        });
+        //var win;
+        ///MSIE 8.0/.test(window.navigator.userAgent) ? win = document : win = window;
+
+        $(window).mousemove(function(event) {
+
+            if (can_move) {
+
+                let $win = $(event.target).closest('.alert_dialog_wrapper');
+
+                let $window = $(window);
+
+                let mx = event.pageX;
+
+                let my = event.pageY;
+
+                if (mx - xTemp > 0 && mx - xTemp < $window.width() - $win.width()) {
+
+                    $win.css('left', mx - xTemp+'px');
+
+                    console.log($win);
+
+                }
+
+                if (my - yTemp > 0 && my - yTemp < $window.height() - $win.height()) {
+
+                    $win.css('top', my - yTemp+'px');
+
+                    console.log($win.width(),$win.height());
+
+                }
+
+
+
+            }
+
+        }).mouseup(function(event) {
+
+            can_move = false;
+
+            $('.alert_dialog_wrapper').css('cursor', 'default');
+
+        });
+
 
     }
 
     render() {
+
         const { type, title, abstract, okTitle, cancelTitle, show } = this.props;
+
         let maskShow, cancelShow, okShow = false;
+
         let okContent, cancelContent = '';
 
         switch (type) {
@@ -1397,13 +1655,13 @@ class Alert extends React.Component {
                         <React.Fragment>
                             <div className="alert_dialog_mask" style={{ display: `${show ? 'block' : 'none'}` }}></div>
                             <div className="alert_dialog_tab" style={{ display: `${show ? 'block' : 'none'}` }}>
-                                <div className="border alert_dialog_wrapper">
+                                <div ref={ref=>this.AlertBody=ref} className="border alert_dialog_wrapper" id="alert_dialog_wrapper">
                                     <div className="alert_close_btn" onClick={this.closeAlert.bind(this)}></div>
-                                    <div className="alert_dialog_content">
+                                    <div className={`alert_dialog_content ${abstract?'has-abstract':''}`}>
                                         {
                                             abstract ?
                                                 <div className={`big_icon ${type}`}></div>
-                                                : ''
+                                                :<div className={`left-icon ${type}`}></div>
                                         }
                                         <div className={`alert_dialog_msg ${abstract ? 'big' : type}`}>
                                             {title}
@@ -1440,6 +1698,8 @@ class Alert extends React.Component {
             </React.Fragment>
 
         );
+
+
     }
 }
 /*

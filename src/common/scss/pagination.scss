@@ -1,5 +1,6 @@
 /*组件：分页 start*/
 .ant-pagination{
+
   &>li{
     min-width:32px;
     height:28px;
@@ -189,6 +190,42 @@
       height: 14px;
       line-height: 14px;
     }
+
+    &.total{
+
+      .ant-pagination-options{
+
+        margin-left:0;
+
+      }
+
+    }
+
   } //微型分页
+  //有总页数的分页
+  &.total{
+
+    .ant-pagination-options{
+
+      margin-left:0;
+
+      .pagination-total-self-dom{
+
+        float: left;
+
+        margin-right: 10px;
+
+        .number{
+
+          color: #ff6600;
+          
+        }
+
+      }
+
+    }
+
+  }
+
 }
 /*组件：分页 */

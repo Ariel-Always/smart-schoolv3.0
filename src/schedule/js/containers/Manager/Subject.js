@@ -109,6 +109,8 @@ class Subject extends Component{
 
         const { pageIndex,TeacherCount } = Manager.SubjectTeacherSchedule;
 
+        console.log(123);
+
         if (pageIndex < Math.ceil(TeacherCount/10) ){
 
             dispatch(STSAction.STSPageUpdate({nextPage:true}));

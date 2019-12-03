@@ -27,7 +27,9 @@ class StudentTabWrapper extends Component{
 
             adjustBtnClick,
 
-            MonitorClick
+            MonitorClick,
+
+            StudentDetailShow
 
         } = this.props;
 
@@ -43,7 +45,7 @@ class StudentTabWrapper extends Component{
 
                                 <React.Fragment>
 
-                                    <CheckBoxGroup className="clearfix" value={CheckList} onChange={(e)=>{onCheckChange(e)}}>
+                                    <CheckBoxGroup className="clearfix" value={CheckList} onChange={(e)=>{console.log(e); onCheckChange(e)}}>
 
                                         {
                                             StudentList.List&&StudentList.List.map((item,key) => {
@@ -65,37 +67,38 @@ class StudentTabWrapper extends Component{
 
                                                 return <div key={key} className={`person-item-wrapper ${isMonitor?'monitor':''}`} >
 
-                                                    <div className="person-item-content clearfix">
+                                                            <CheckBox type="circle" value={JSON.stringify({id:item.UserID,name:item.UserName})}></CheckBox>
 
-                                                        <div className="person-item-photo" style={{backgroundImage:`url(${item.PhotoPath})`}}></div>
+                                                            <div className="person-item-content clearfix">
 
-                                                        <div className="person-item-info-wrapper">
+                                                                    <div className="person-item-photo" onClick={e=>StudentDetailShow({UserID:item.UserID,UserType:2})} style={{backgroundImage:`url(${item.PhotoPath})`}}></div>
 
-                                                            <div className="person-item-info">
+                                                                    <div className="person-item-info-wrapper">
 
-                                                                <div className="person-item-name" title={item.UserName}>{item.UserName}</div>
+                                                                        <div className="person-item-info">
 
-                                                                <div className={`person-sex-icon ${sex}`}></div>
+                                                                            <div className="person-item-name" onClick={e=>StudentDetailShow({UserID:item.UserID,UserType:2})} title={item.UserName}>{item.UserName}</div>
 
-                                                            </div>
+                                                                            <div className={`person-sex-icon ${sex}`}></div>
 
-                                                            <div className="person-item-id" title={item.UserID}>{item.UserID}</div>
+                                                                        </div>
+
+                                                                        <div className="person-item-id" title={item.UserID}>{item.UserID}</div>
+
+                                                                    </div>
+
+
+                                                                    <div className="cooperate">
+
+                                                                        <div className="set-monitor" onClick={()=>{MonitorClick({UserID:item.UserID,isMonitor})}}>{isMonitor?'取消班长':'设为班长'}</div>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                            <div className="person-item-border"></div>
 
                                                         </div>
-
-                                                        <CheckBox  value={JSON.stringify({id:item.UserID,name:item.UserName})}></CheckBox>
-
-                                                        <div className="cooperate">
-
-                                                            <div className="set-monitor" onClick={()=>{MonitorClick({UserID:item.UserID,isMonitor})}}>{isMonitor?'取消班长':'设为班长'}</div>
-
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div className="person-item-border"></div>
-
-                                                </div>
 
                                             })
                                         }

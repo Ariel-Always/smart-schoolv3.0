@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import TitleBar from '../component/TitleBar';
-import {Search, Button, Loading, Modal} from "../../../common";
+import {Search, Button, Loading, Modal, DetailsModal} from "../../../common";
 import connect from "react-redux/es/connect/connect";
 import UpDataState from '../actions/UpDataState';
 import UpUIState from '../actions/UpUIState';
@@ -12,6 +12,9 @@ import StudentTabWrapper from '../component/StudentTabWrapper';
 import AdjustClassModal from '../component/AdjustClassModal';
 import AddTeacherModal from '../component/AddTeacherModal';
 import PaginationActions from "../actions/PaginationActions";
+import DMActions from "../actions/DetailModalActions";
+import ApiActions from "../actions/ApiActions";
+
 
 
 
@@ -39,6 +42,8 @@ class StudentContent extends Component{
     onCheckChange(checkList){
 
         const {dispatch,DataState} = this.props;
+
+        console.log(checkList);
 
         dispatch(UpDataState.changeStudentCheckList(checkList));
 
@@ -114,8 +119,6 @@ class StudentContent extends Component{
 
             let stuIDList = StudentsCheckList.map((item) => { return JSON.parse(item).id});
 
-
-
             UpDataState.adjustClass({ClassID:AdjustClassModal.classChecked.value,UserIDs:stuIDList.join(','),dispatch}).then(data=>{
 
                 if (data ===0 ){
@@ -126,19 +129,28 @@ class StudentContent extends Component{
 
                     dispatch(AppAlertActions.alertSuccess({title:"调班成功"}));
 
-                    UpDataState.getStudents({ClassID:info.id,PageIndex:0,PageSize:8,dispatch}).then(data=>{
+                    dispatch({type:UpDataState.STUDENTS_CHECK_LIST_CHANGE,list:[]});
+
+                    dispatch({type:UpDataState.STUDENTS_CHECKED_NONE});
+
+                    UpDataState.getStudents({ClassID:info.id,PageIndex:0,PageSize:12,dispatch}).then(data=>{
 
                         if (data){
 
+                            const PlainList = data.List.map(item =>{return JSON.stringify({id:item.UserID,name:item.UserName})})
+
                             dispatch({type:UpDataState.GET_THE_CLASS_STUDENTS,data:data});
 
-                            dispatch({type:UpDataState.STUDENT_WRAPPER_LOADING_HIDE});
+                            dispatch({type:UpDataState.INIT_STUDEUNT_PLAIN_OPTIONS,data:PlainList});
 
-                        }else{
+                            dispatch({type:PaginationActions.STUDENT_PAGINATION_CURRENT_UPDATE,data:1});
 
-                            dispatch({type:UpDataState.STUDENT_WRAPPER_LOADING_HIDE});
+                            dispatch({type:PaginationActions.STUDENT_PAGINATION_TOTAL_UPDATE,data:data.Total});
 
                         }
+
+                        dispatch({type:UpDataState.STUDENT_WRAPPER_LOADING_HIDE});
+
 
                     })
 
@@ -215,10 +227,41 @@ class StudentContent extends Component{
 
         const {dispatch,info} = this.props;
 
+
+
         switch (opt.type) {
 
             case 1:
-                dispatch({type:UpUIState.ADD_TEACHER_MODAL_SHOW});
+
+                ApiActions.GetSubject({ClassID:info.id,dispatch}).then(data=>{
+
+                   if (data){
+
+                       const { Total,List } = data;
+
+                       if (Total>0){
+
+                           if (List.length===0){
+
+                               dispatch(AppAlertActions.alertWarn({title:`本班共开设${Total}门学科，现已无法继续添加任课教师。`}));
+
+                           }else{
+
+                               dispatch({type:UpUIState.ADD_TEACHER_MODAL_SHOW});
+
+                               dispatch(UpDataState.getAddTeacherData({ClassID:info.id,...opt}));
+
+                           }
+
+                       }else{
+
+                           dispatch(AppAlertActions.alertWarn({title:'本班未开设学科，无法添加任课教师。'}));
+
+                       }
+
+                   }
+
+                });
 
                 break;
 
@@ -242,6 +285,9 @@ class StudentContent extends Component{
 
                     }});
 
+                dispatch(UpDataState.getAddTeacherData({ClassID:info.id,...opt}));
+
+
                 break;
 
             case 3:
@@ -257,6 +303,9 @@ class StudentContent extends Component{
                         type:3
 
                     }});
+
+                dispatch(UpDataState.getAddTeacherData({ClassID:info.id,...opt}));
+
 
                 break;
 
@@ -278,6 +327,8 @@ class StudentContent extends Component{
 
                     }});
 
+                dispatch(UpDataState.getAddTeacherData({ClassID:info.id,...opt}));
+
                 break;
 
             default:
@@ -285,8 +336,8 @@ class StudentContent extends Component{
                 dispatch({type:UpUIState.ADD_TEACHER_MODAL_SHOW});
 
         }
+
         //初始化所有的教师和学科的数据
-        dispatch(UpDataState.getAddTeacherData({ClassID:info.id,...opt}));
 
     }
 
@@ -444,8 +495,6 @@ class StudentContent extends Component{
 
         const { dispatch } = this.props;
 
-        console.log(info);
-
         dispatch(UpDataState.delGanger({ClassID:info.id}));
 
     }
@@ -488,20 +537,40 @@ class StudentContent extends Component{
 
     }
 
+    //用户详情弹窗出现
+
+    DetailModalShow(Params){
+
+        const { dispatch } = this.props;
+
+        dispatch(DMActions.Init(Params))
+
+    }
+
+    //弹窗消失
+
+    DetailModalHide(e){
+
+        const { dispatch } = this.props;
+
+        dispatch(DMActions.Hide())
+
+    }
+
 
 
 
     render() {
 
-        const {UIState,DataState,info} = this.props;
+        const {UIState,DataState,info,DetailModal} = this.props;
 
         const {StudentLoading} = UIState;
 
         const {StudentPagination,TheTeachersList,TheStudentList,SchoolGradeClasses,StudentsCheckList,StudentsCheckAll} = DataState;
 
 
-
         return (
+
             <Loading tip="加载中..."  spinning={StudentLoading.show}  size="large">
                 {/*第一个标题*/}
                 <TitleBar type="icon2" title={`${info.preName} > ${info.name}`}></TitleBar>
@@ -516,7 +585,7 @@ class StudentContent extends Component{
 
                     </div>
 
-                    <TeacherTabWrapper delSubjectTeacher={this.delSubjectTeacher.bind(this)} delGanger={this.delGanger.bind(this)} addTeacherModalShow={this.addTeacherModalShow.bind(this)} Teachers={TheTeachersList}></TeacherTabWrapper>
+                    <TeacherTabWrapper TeacherDetailShow={this.DetailModalShow.bind(this)} delSubjectTeacher={this.delSubjectTeacher.bind(this)} delGanger={this.delGanger.bind(this)} addTeacherModalShow={this.addTeacherModalShow.bind(this)} Teachers={TheTeachersList}></TeacherTabWrapper>
 
                 </ContentWrapper>
 
@@ -551,7 +620,11 @@ class StudentContent extends Component{
 
                         StudentPageChange={this.StudentPageChange.bind(this)}
 
-                        MonitorClick={this.MonitorClick.bind(this)}>
+                        MonitorClick={this.MonitorClick.bind(this)}
+
+                        StudentDetailShow={this.DetailModalShow.bind(this)}
+
+                    >
 
                     </StudentTabWrapper>
 
@@ -679,21 +752,39 @@ class StudentContent extends Component{
 
                </Modal>
 
+                <DetailsModal
+
+                    visible={DetailModal.Show}
+
+                    data={DetailModal[DetailModal.ActiveInfo]}
+
+                    type={DetailModal.ActiveInfo}
+
+                    onCancel={this.DetailModalHide.bind(this)}
+
+                >
+
+
+                </DetailsModal>
+
 
             </Loading>
+
         );
     }
 }
 
 const  mapStateToProps = (state) => {
 
-    let {UIState,DataState} = state;
+    let {UIState,DataState,DetailModal} = state;
 
     return {
 
         UIState,
 
-        DataState
+        DataState,
+
+        DetailModal
 
     }
 };

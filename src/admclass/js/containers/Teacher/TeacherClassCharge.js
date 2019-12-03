@@ -15,6 +15,8 @@ import {Loading} from "../../../../common";
 import UpUIState from "../../actions/UpUIState";
 
 import UpDataState from "../../actions/UpDataState";
+import ApiActions from "../../actions/ApiActions";
+import AppAlertActions from "../../actions/AppAlertActions";
 
 
 
@@ -70,7 +72,36 @@ class TeacherClassCharge extends Component{
         switch (opt.type) {
 
             case 1:
-                dispatch({type:UpUIState.ADD_TEACHER_MODAL_SHOW});
+
+                ApiActions.GetSubject({ClassID:info.id,dispatch}).then(data=>{
+
+                    if (data){
+
+                        const { Total,List } = data;
+
+                        if (Total>0){
+
+                            if (List.length===0){
+
+                                dispatch(AppAlertActions.alertWarn({title:`本班共开设${Total}门学科，现已无法继续添加任课教师。`}));
+
+                            }else{
+
+                                dispatch({type:UpUIState.ADD_TEACHER_MODAL_SHOW});
+
+                                dispatch(UpDataState.getAddTeacherData({ClassID:ClassCharge.ActiveClassID,...opt}));
+
+                            }
+
+                        }else{
+
+                            dispatch(AppAlertActions.alertWarn({title:'本班未开设学科，无法添加任课教师。'}));
+
+                        }
+
+                    }
+
+                });
 
                 break;
 
@@ -94,6 +125,9 @@ class TeacherClassCharge extends Component{
 
                     }});
 
+                dispatch(UpDataState.getAddTeacherData({ClassID:ClassCharge.ActiveClassID,...opt}));
+
+
                 break;
 
             default:
@@ -102,7 +136,6 @@ class TeacherClassCharge extends Component{
 
         }
         //初始化所有的教师和学科的数据
-        dispatch(UpDataState.getAddTeacherData({ClassID:ClassCharge.ActiveClassID,...opt}));
 
     }
 

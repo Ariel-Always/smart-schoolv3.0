@@ -1,7 +1,5 @@
 import React,{Component} from 'react';
 
-import MSActions from '../../actions/ModuleSettingActions';
-
 import ALActions from '../../actions/Manager/AdjustLogActions';
 
 import { DropDown,Table,PagiNation } from "../../../../common";
@@ -10,8 +8,6 @@ import {DatePicker,ConfigProvider} from 'antd';
 
 import { connect } from 'react-redux';
 
-import logo from '../../../images/adjust-log-logo.png';
-
 import $ from "jquery";
 
 import zhCN from 'antd/es/locale/zh_CN';
@@ -19,6 +15,7 @@ import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
 
 import 'moment/locale/zh-cn';
+
 import AppAlertActions from "../../actions/AppAlertActions";
 
 moment.locale('zh-cn');
@@ -30,19 +27,7 @@ class App extends Component{
 
         super(props);
 
-        const { dispatch } = props;
-
-        dispatch({type:MSActions.MODULE_SETTINGS_UPDATE,data:{
-
-                moduleCnName:"调课日志",
-
-                moduleEnName:"Transfer Log",
-
-                logo:logo,
-
-                timeBar:false
-
-            }});
+        const { dispatch,ModuleSetting } = props;
 
         if (sessionStorage.getItem('UserInfo')){
 
@@ -51,6 +36,7 @@ class App extends Component{
             const { SchoolID } = UserInfo;
 
             dispatch(ALActions.PageInit({SchoolID}));
+
 
         }else{
 
@@ -61,6 +47,7 @@ class App extends Component{
                 const { SchoolID } = UserInfo;
 
                 dispatch(ALActions.PageInit({SchoolID}));
+
 
                 clearInterval(WaiteUserInfo);
 
@@ -328,13 +315,13 @@ class App extends Component{
 
 const  mapStateToProps = (state) => {
 
-    let { Manager } = state;
+    let { Manager,ModuleSetting } = state;
 
     let { AdjustLog } = Manager;
 
     return {
 
-        AdjustLog
+        AdjustLog,ModuleSetting
 
     }
 

@@ -124,7 +124,7 @@ class ClassStudent extends Component{
 
     //左侧菜单输入框改变
 
-    SearchValueChange(e){
+    LeftMenuSearchValueChange(e){
 
         const { dispatch } = this.props;
 
@@ -451,7 +451,7 @@ class ClassStudent extends Component{
                         PickID={ClassStudent.PickStudentID}
                         CancelBtnShow={ClassStudent.CancelBtnShow}
                         SearchValue={ClassStudent.SearchValue}
-                        SearchValueChange={this.SearchValueChange.bind(this)}>
+                        SearchValueChange={this.LeftMenuSearchValueChange.bind(this)}>
 
                     </LeftMenu>
 
@@ -531,6 +531,8 @@ class ClassStudent extends Component{
                     ChooseReplaceTeacherShow={this.ChooseReplaceTeacherShow.bind(this)}
 
                     RebackReplaceSchedule={this.RebackReplaceSchedule.bind(this)}
+
+                    CanOperate={false}
 
                 >
 

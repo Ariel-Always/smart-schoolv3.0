@@ -93,6 +93,15 @@
         padding: 0 10px;
 
         @include textOverFlow;
+
+        &.active{
+
+          color:#ff6600;
+
+          background-color: $dropHoverBg;
+
+        }
+
         &:hover{
           background-color: $dropHoverBg;
         }
@@ -100,8 +109,7 @@
       .dropdown_multiple_container{
         padding: 0 10px;
 
-        padding-bottom:20px;
-
+        //padding-bottom:20px;
         text-align: center;
         .dropdown_search_wrapper{
           padding:10px 0;
@@ -182,11 +190,54 @@
       }//高级多选列表
     }//待选列表
 
+
+    //scrollbars
+    .dropdown_select_ul{
+
+      &>.ant-spin-nested-loading{
+
+        &>.ant-spin-container{
+
+          &>div{
+
+            &>div:last-child{
+
+              right:0!important;
+
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+
   }//下拉部分
 
   .emptyBox{
 
     padding-bottom: 20px;
+
+    .empty.tips-error-5{
+
+      width: 320px;
+
+      height: 132px;
+
+      margin-top:10px;
+
+      @include background-size(220px 200px);
+
+      .initTitle{
+
+        margin-top: 0;
+
+      }
+
+    }
 
   }
 
