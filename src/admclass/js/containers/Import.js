@@ -30,7 +30,7 @@ class Import extends Component{
 
             };
 
-            dispatch(AppLoadingActions.hide());
+
 
         }else if(HashParam.includes('Genger')){
 
@@ -44,9 +44,9 @@ class Import extends Component{
 
             };
 
-            dispatch(AppLoadingActions.hide());
-
         }
+
+        dispatch(AppLoadingActions.hide());
 
     }
 
