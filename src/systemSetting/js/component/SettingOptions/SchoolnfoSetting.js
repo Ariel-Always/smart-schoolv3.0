@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import '../../../sass/SchoolInfoSet.scss'
 import { connect } from 'react-redux'
 import { Modal, Loading } from '../../../../common';
+import { Input,Tooltip } from "antd";
 import DataChange from '../../action/data/DataChange';
 import  ApiActions from '../../action/data/Api'
-import CONFIG from '../../../../common/js/config'
+import AppAlertAction from '../../action/UI/AppAlertAction';
+
 
 class SchoolnfoSetting extends Component {
     constructor(props) {
@@ -14,6 +16,8 @@ class SchoolnfoSetting extends Component {
             edit_visible: false,
             active:1,
             SchInfoUpdate:{},
+            emptyNameTipsShow:false,
+            emptyCodeTipsShow:false
             
         }
     }
@@ -36,12 +40,15 @@ class SchoolnfoSetting extends Component {
         })
 
     }
+
 //确认保存编辑好的信息
     editComfirm = () => {
 
-        const {primaryNum ,middleNum ,highNum ,SchoolCode, SchoolName,SchoolLogoUrl}=this.props.schoolInfo
+        let {primaryNum ,middleNum ,highNum ,SchoolCode, SchoolName,SchoolLogoUrl}=this.props.schoolInfo
+        highNum=highNum?highNum:"0"
         console.log(primaryNum ,middleNum ,highNum ,SchoolCode, SchoolName,SchoolLogoUrl);
-        let total= primaryNum + middleNum+highNum;
+        let total= parseInt(primaryNum)  + parseInt(middleNum)+parseInt(highNum);
+        const {dispatch} =this.props
         let SchoolType=""
         console.log(total);
         let SchoolSessionType=""
@@ -67,48 +74,62 @@ class SchoolnfoSetting extends Component {
                 break
             
         }
-           //当SchoolType 不是ERROR的时候才执行post数据
-        if(SchoolType!=="error"){
-                 //根据学制参照情况判断SchoolSessionType
-            if(SchoolType===7||SchoolType===3){
-                SchoolSessionType= `${primaryNum}/${middleNum}`
-            }
-            else{
-                SchoolSessionType= "6/3"
-            }
-            this.setState({
-                edit_visible: false
-            },()=>{
-                const {SchoolID,UserID} = JSON.parse(sessionStorage.getItem('UserInfo'))
+        //如果学校名称或者学校代码为空则显示错误信息
+    if(SchoolCode===""||SchoolName===""){
+                       dispatch(AppAlertAction.alertError({title:"学校代码或名称不能为空!"})) 
+         }
+         else{
+                    //当SchoolType 不是ERROR的时候才执行post数据
+            if(SchoolType!=="error"){
+                        //根据学制参照情况判断SchoolSessionType
+                if(SchoolType===7||SchoolType===3){
+                     SchoolSessionType= `${primaryNum}/${middleNum}`
+                 }
+                  else{
+                        SchoolSessionType= "6/3"
+                 }
+                     this.setState({
+                    edit_visible: false,
+                    emptyNameTipsShow:false,
+                    emptyCodeTipsShow:false
+                 },()=>{
+                      const {SchoolID,UserID} = JSON.parse(sessionStorage.getItem('UserInfo'))
 
-                ApiActions.postMethod('/SysMgr/Setting/EditSchoolInfo', {
-                    "UserID":UserID,
-                    "SchoolID": SchoolID,
-                    "SchoolName": SchoolName,
-                    "SchoolCode": SchoolCode,
-                    "SchoolType": SchoolType,
-                    "SchoolSessionType":SchoolSessionType,
-                    "SchoolImgUrl":SchoolLogoUrl
-                }).then(data => {
-    
-                    if (data === 0) {
-                        const {dispatch} =this.props
-                        dispatch(DataChange.getCurrentSchoolInfo(SchoolID));
-                        console.log('success');
-                        alert("修改学校信息成功");
-                    }
-    
+                     ApiActions.postMethod('/SysMgr/Setting/EditSchoolInfo', {
+                            "UserID":UserID,
+                            "SchoolID": SchoolID,
+                            "SchoolName": SchoolName,
+                            "SchoolCode": SchoolCode,
+                            "SchoolType": SchoolType,
+                            "SchoolSessionType":SchoolSessionType,
+                            "SchoolImgUrl":SchoolLogoUrl
+                        }).then(data => {
+
+                            if (data === 0) {
+                                
+                                dispatch(DataChange.getCurrentSchoolInfo(SchoolID));
+                                console.log('success');
+                                dispatch(AppAlertAction.alertSuccess({title:"修改成功"}))
+                               
+                            }
+
+                        })
                 })
-            })
-        }
-        else{
-            this.setState({
-                edit_visible: false
-            },()=>{
-                alert( "小学与初中学制搭配错误!")
-            })
-        }
-        
+            }
+   else{
+       this.setState({
+           // edit_visible: false,
+           emptyNameTipsShow:false,
+           emptyCodeTipsShow:false
+       },()=>{
+
+           dispatch(AppAlertAction.alertError({title:"小学与初中学制搭配错误"}))
+           // alert( "小学与初中学制搭配错误!")
+       })
+   }
+   
+
+                }
 
 
     }
@@ -116,9 +137,14 @@ class SchoolnfoSetting extends Component {
 //取消（关闭）编辑框
     editCancel = () => {
         this.setState({
-            edit_visible: false
+            edit_visible: false,
+            emptyNameTipsShow:false,
+            emptyCodeTipsShow:false
+
+
         })
     }
+
 
 //监听小学的学制的选择情况
 handelSchoolSystem = (e) => {
@@ -130,18 +156,16 @@ handelSchoolSystem = (e) => {
                 //判断小学的学制选择情况
                     if(e.target.value==="6"||e.target.value==="5"){
                         // 如果后台的也是六年制,视为取消当前选中的六年制
-                        //这里因为e.target.value 是String 但schoolInfo.primaryNum中存储的是number
-                        //所以一以下下判断时 使用"==" 而不是"==="
-                        if(schoolInfo.primaryNum==e.target.value){
+                        if(schoolInfo.primaryNum===e.target.value){
                                 schoolInfo={
                                     ...schoolInfo,
-                                    primaryNum:0
+                                    primaryNum:"0"
                                 }
                                 
                         }else{
                             schoolInfo={
                                 ...schoolInfo,
-                                primaryNum:parseInt(e.target.value)
+                                primaryNum:e.target.value
                             }
                         }
 
@@ -151,32 +175,32 @@ handelSchoolSystem = (e) => {
                     else if(e.target.value==="3"||e.target.value==="4"){
                         // 如果点击值符合,判断当前选择中状态
                         //点击一次选中,再次选中则默认取消选中
-                        if(schoolInfo.middleNum==e.target.value){
+                        if(schoolInfo.middleNum===e.target.value){
                                 schoolInfo={
                                     ...schoolInfo,
-                                    middleNum:0
+                                    middleNum:"0"
                                 }
                                 
                         }else{
                             schoolInfo={
                                 ...schoolInfo,
-                                middleNum:parseInt(e.target.value)
+                                middleNum:e.target.value
                             }
                         }
 
                     }
                     //判断高中状态,在默认状态,如果选中点击第一次取消,再次点击选中
                     else {
-                        if(schoolInfo.highNum==e.target.value){
+                        if(schoolInfo.highNum===e.target.value){
                             schoolInfo={
                                 ...schoolInfo,
-                                highNum:0
+                                highNum:"0"
                             }
                             
                     }else{
                         schoolInfo={
                             ...schoolInfo,
-                            highNum:parseInt(e.target.value)
+                            highNum:e.target.value
                         }
                     }
 
@@ -194,6 +218,12 @@ handelSchoolSystem = (e) => {
 
 //监听学校代码的获取事件
       getSchoolCode=(e)=>{
+        if(e.target.value!==""){
+            this.setState({
+                emptyCodeTipsShow:false
+            })
+          }
+
         let {schoolInfo,dispatch}=this.props
             schoolInfo={
                 ...schoolInfo,
@@ -206,8 +236,15 @@ handelSchoolSystem = (e) => {
                     data:schoolInfo
                 })
       }  
+
+
 //监听学校名字改变的事件
       getSchoolName=(e)=>{
+          if(e.target.value!==""){
+            this.setState({
+                emptyNameTipsShow:false
+            })
+          }
             let {schoolInfo,dispatch}=this.props
             schoolInfo={
                 ...schoolInfo,
@@ -226,42 +263,75 @@ handelSchoolSystem = (e) => {
     tempFunction=()=>{
         
     }
+//控制antd提示框提示语句的显示或者消失
+    visibleName=(e)=>{
+        if(e.target.value===""){
+            this.setState({
+                emptyNameTipsShow:true
+            })
+        }
+        else{
+            this.setState({
+                emptyNameTipsShow:false
+            })
+        }
+        
+    }
+    visibleCode=(e)=>{
+        if(e.target.value===""){
+            this.setState({
+                emptyCodeTipsShow:true
+            })
+        }
+        else{
+            this.setState({
+                emptyCodeTipsShow:false
+            })
+        }
+        
+    }
 
 
 
     render() {
         const {  schoolInfo,semesterloading } = this.props;
         let schoolSys = '';
+        let schoolLength
 //根据学校类型选择渲染内容
             switch(schoolInfo.SchoolType){
 
                     case 7:
                     
                     schoolSys =  `${schoolInfo.primaryType}+${schoolInfo.middleType}+${schoolInfo.highType}`;
+                    schoolLength="十二年一贯制"
 
                     break;  
 
                     case 1:
                     
                     schoolSys = schoolInfo.primaryType;
+                    schoolLength=`${schoolInfo.primaryNum==="6"?"六年一贯制":"五年一贯制"}`
 
                     break;  
 
                     case 2:
                     
                     schoolSys = schoolInfo.middleType;
+                    schoolLength=`${schoolInfo.middleNum==="3"?"三年一贯制":"四年一贯制"}`
 
                     break;
                     
                     case 3:
                     
                     schoolSys = `${schoolInfo.primaryType}+${schoolInfo.middleType}`;
+                    schoolLength="九年一贯制"
 
                     break;
 
                     case 4:
                     
                     schoolSys = "三年制初中";
+                    schoolLength="三年一贯制"
 
                     break;
                 
@@ -274,7 +344,8 @@ handelSchoolSystem = (e) => {
 
 
         return (
-            <Loading spinning={semesterloading} tip="请稍后...">
+
+            <Loading spinning={semesterloading}  opacity={false} tip="请稍后...">
 
             <div className="school-InfoSetting" >
         
@@ -288,7 +359,7 @@ handelSchoolSystem = (e) => {
         <div className="school-code">学校代码:<span>{schoolInfo.SchoolCode}</span></div>
                     <div className="school-type">学校类型:
                     
-        <span>十二年一贯制</span>({schoolSys})</div>
+        <span>{schoolLength}</span>({schoolSys})</div>
                 </div>
                 <Modal
                     type="1"
@@ -312,12 +383,23 @@ handelSchoolSystem = (e) => {
 
                         <div className="content-right">
                             <div className="win-shcool-name">学校名称:
-
-                                <input type="text"  defaultValue={schoolInfo.SchoolName} onChange={this.getSchoolName}/>
+                            <Tooltip  visible={this.state.emptyNameTipsShow} placement="right" title="学校名称不能为空">
+                            <input type="text"  defaultValue={schoolInfo.SchoolName} onChange={this.getSchoolName}
+                            
+                            onBlur={this.visibleName}
+                            />
+                            
+                           
+                            </Tooltip>
+                           
+                                
                             </div>
                             <div className="win-school-code">学校代码: 
-                            
-                            <input type="text"  defaultValue={schoolInfo.SchoolCode} onChange={this.getSchoolCode}/>
+                            <Tooltip  visible={this.state.emptyCodeTipsShow} placement="right" title="学校名称不能为空">
+                            <input type="text"  defaultValue={schoolInfo.SchoolCode} onChange={this.getSchoolCode}
+                                onBlur={this.visibleCode}
+                            />
+                            </Tooltip>
                             </div>
 
                             <div className="win-school-type">学校类型: 
@@ -325,10 +407,10 @@ handelSchoolSystem = (e) => {
                             <div className="primary-school"> 
                                 <span className={`${this.state.active===1?"click":""}`} 
                                 onClick={()=>this.changeActive(1)}>小学</span><i></i>
-                                <input type="radio" value="5" checked={schoolInfo.primaryNum===5} 
+                                <input type="radio" value="5" checked={schoolInfo.primaryNum==="5"} 
                                 onChange={this.tempFunction}
                                 onClick={this.handelSchoolSystem}/>五年制
-                                <input  type="radio" value="6" checked={schoolInfo.primaryNum===6} 
+                                <input  type="radio" value="6" checked={schoolInfo.primaryNum==="6"} 
                                 onChange={this.tempFunction}
                                 onClick={this.handelSchoolSystem}/>六年制
                                      
@@ -336,11 +418,11 @@ handelSchoolSystem = (e) => {
                             <div className="middle-school"> 
                                 <span className={`${this.state.active===2?"click":""}`}
                                 onClick={()=>this.changeActive(2)}>初中</span><i></i>
-                                 <input type="radio" value="3" checked={schoolInfo.middleNum===3} 
+                                 <input type="radio" value="3" checked={schoolInfo.middleNum==="3"} 
                                  onClick={this.handelSchoolSystem}
                                  onChange={this.tempFunction}/>三年制
                                  
-                                <input type="radio" value="4" checked={schoolInfo.middleNum===4} 
+                                <input type="radio" value="4" checked={schoolInfo.middleNum==="4"} 
                                 onChange={this.tempFunction}
                                 onClick={this.handelSchoolSystem}/>四年制
                                
@@ -348,7 +430,7 @@ handelSchoolSystem = (e) => {
                             <div className="high-school"> 
                                 <span className={`${this.state.active===3?"click":""}`}
                                 onClick={()=>this.changeActive(3)}>高中</span><i></i>
-                                <input type="radio" value="12" checked={schoolInfo.highNum===12} 
+                                <input type="radio" value="12" checked={schoolInfo.highNum==="12"} 
                                 onChange={this.tempFunction}
                                 onClick={this.handelSchoolSystem}/>三年制
                                 

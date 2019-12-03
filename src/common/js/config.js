@@ -33,7 +33,10 @@ if (process.env.NODE_ENV === 'development'){
         PersonalProxy:"http://192.168.129.1:30103",
         ErrorProxy:"http://192.168.129.1:30103",
         XTestProxy:'http://192.168.129.1:30103/UserMgr/UserInfoMgr',
-        Import:'http://192.168.129.1:30103'
+        Import:'http://192.168.129.1:30103',
+        SysSettingProxy:'http://192.168.129.1:30103',
+        // SysSettingProxy:'http://192.168.2.114:8090',
+        tempSubsystemProxy:'http://192.168.2.202:7300/mock/5db974a3a1aded10689632eb/example'
 
     }
 
@@ -67,7 +70,10 @@ if (process.env.NODE_ENV === 'production'){
         ErrorProxy:'',
         MyCourseClassProxy:'',
         XTestProxy:'/UserMgr/UserInfoMgr',
-        Import:''
+        Import:'',
+        SysSettingProxy:"",
+        tempSubsystemProxy:""
+
     }
 
 }

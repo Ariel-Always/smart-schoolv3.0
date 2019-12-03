@@ -9,6 +9,7 @@ import CONFIG from '../../../../common/js/config'
 import DataChange from '../../action/data/DataChange'
 
 import { DatePicker } from 'antd'
+import AppAlertAction from '../../action/UI/AppAlertAction';
 let startDate = new Date();
 let endDate = new Date();
 let termNum = ""
@@ -25,7 +26,8 @@ class YearSemesterSetting extends Component {
             createInfo: {
 
             },
-            available: false
+            available: false,
+
 
         }
 
@@ -53,57 +55,58 @@ class YearSemesterSetting extends Component {
         })
     }
     //确认提交前检查,是否正确,如果是undefined 就后台返回的默认事件 和默认学期名
-    checkData=(StartDate,EndDate,TermName)=>{
-        const { semesterInfo}=this.props;
-        const defaultStartDate= semesterInfo.TermStartDate.substring(0,10)
-        const defaultEndDate=semesterInfo.TermEndDate.substring(0,10)
-        const defaultTermName=semesterInfo.Term
-      
-       // defaultStartDate ,defaultEndDate,defaultTermName
-       if(typeof(StartDate) ==="undefined"){
-           StartDate=defaultStartDate
-          
-       }
-       if(typeof(EndDate) === "undefined"){
-           EndDate=defaultEndDate
-       }
-       if(typeof TermName==="undefined"){
-           TermName=defaultTermName
-           this.setState({
-               createInfo:{
-                   ...this.state.createInfo,
-                   "TermName":defaultTermName
-                   
-               },
-               modifyInfo:{
-                   ...this.state.modifyInfo,
-                   "TermName":defaultTermName
+    checkData = (StartDate, EndDate, TermName) => {
+        const { semesterInfo } = this.props;
+        const defaultStartDate = semesterInfo.TermStartDate.substring(0, 10)
+        const defaultEndDate = semesterInfo.TermEndDate.substring(0, 10)
+        const defaultTermName = semesterInfo.Term
 
-               }
-           })
-          
-       }
+        // defaultStartDate ,defaultEndDate,defaultTermName
+        if (typeof (StartDate) === "undefined") {
+            StartDate = defaultStartDate
+
+        }
+        if (typeof (EndDate) === "undefined") {
+            EndDate = defaultEndDate
+        }
+        if (typeof TermName === "undefined") {
+            TermName = defaultTermName
+            this.setState({
+                createInfo: {
+                    ...this.state.createInfo,
+                    "TermName": defaultTermName
+
+                },
+                modifyInfo: {
+                    ...this.state.modifyInfo,
+                    "TermName": defaultTermName
+
+                }
+            })
+
+        }
         //    console.log( defaultStartDate ,defaultEndDate,defaultTermName)
         //    console.log( StartDate ,EndDate,TermName)
-       return{StartDate,EndDate,TermName }
+        return { StartDate, EndDate, TermName }
 
     }
 
 
     //确认启用新学年按钮
     handUpComfirm = () => {
+        const { dispatch } = this.props
         this.setState({
             visible_create: false,
         }, () => {
 
-            const { SchoolID,UserID } = JSON.parse(sessionStorage.getItem('UserInfo'));
+            const { SchoolID, UserID } = JSON.parse(sessionStorage.getItem('UserInfo'));
 
-            let  { StartDate, EndDate, TermName } = this.state.createInfo;
-            let checkedData=this.checkData(StartDate, EndDate, TermName);
+            let { StartDate, EndDate, TermName } = this.state.createInfo;
+            let checkedData = this.checkData(StartDate, EndDate, TermName);
 
-            console.log( checkedData.StartDate ,checkedData.EndDate,checkedData.TermName)
+            console.log(checkedData.StartDate, checkedData.EndDate, checkedData.TermName)
             ApiActions.postMethod('/SysMgr/Setting/SetNewTermInfo', {
-                "UserID":UserID,
+                "UserID": UserID,
                 "StartDate": checkedData.StartDate,
                 "EndDate": checkedData.EndDate,
                 "TermName": checkedData.TermName,
@@ -111,11 +114,14 @@ class YearSemesterSetting extends Component {
             }).then(data => {
 
                 if (data === 0) {
-                    const {dispatch} =this.props
+                    dispatch(AppAlertAction.alertSuccess({ title: "成功启用新学年!" }))
                     dispatch(DataChange.getCurrentSemester(SchoolID));
                     console.log('success');
-                
 
+
+                }
+                else {
+                    dispatch(AppAlertAction.alertError({ title: "启用新学期失败!" }))
                 }
 
             })
@@ -133,37 +139,41 @@ class YearSemesterSetting extends Component {
 
     //监听确认修改按钮
     modifyComfirm = () => {
-        alert("确认提交");
+        const { dispatch } = this.props
         this.setState({
             visible_modify: false
         }, () => {
-            const { SchoolID ,UserID} = JSON.parse(sessionStorage.getItem('UserInfo'));
+            const { SchoolID, UserID } = JSON.parse(sessionStorage.getItem('UserInfo'));
             const token = sessionStorage.getItem('token');
-             let { StartDate, EndDate, TermName } = this.state.modifyInfo;
-             let checkedData=this.checkData(StartDate, EndDate, TermName);
-            // console.log("这个是什么"+checkedData.TermName)
-            ApiActions.postMethod( '/SysMgr/Setting/SetTermInfo', { 
-                "UserID":UserID,
-                "StartDate":checkedData.StartDate, 
-                "EndDate":checkedData.EndDate, 
-                "TermName":checkedData.TermName, 
-                "SchoolID":SchoolID, 
-                "token":token
-             }).then(data => {
-              
+            let { StartDate, EndDate, TermName } = this.state.modifyInfo;
+            let checkedData = this.checkData(StartDate, EndDate, TermName);
+ 
+            ApiActions.postMethod('/SysMgr/Setting/SetTermInfo', {
+                "UserID": UserID,
+                "StartDate": checkedData.StartDate,
+                "EndDate": checkedData.EndDate,
+                "TermName": checkedData.TermName,
+                "SchoolID": SchoolID,
+                "token": token
+            }).then(data => {
+
 
                 if (data === 0) {
-                    const {dispatch} =this.props
+
+                    dispatch(AppAlertAction.alertSuccess({ title: "成功调整学期期限!" }))
                     dispatch(DataChange.getCurrentSemester(SchoolID));
                     console.log('success');
-                    
 
+
+                }
+                else {
+                    dispatch(AppAlertAction.alertError({ title: "调整学期期限失败!" }))
                 }
 
             })
 
         })
-   
+
 
 
 
@@ -179,6 +189,22 @@ class YearSemesterSetting extends Component {
         //         Term:checked.title
         //     }
         // })
+        let {semesterInfo,dispatch}=this.props
+        let  newName =checked.value.substring(0,9)
+        let  chineseName=checked.title.substring(10,14)
+        console.log(newName)
+        console.log(chineseName)
+
+        semesterInfo={
+            ...semesterInfo,
+            SemesterName:newName,
+            ChineseName:chineseName
+        }
+        dispatch({
+            type:DataChange.REFRESH_SEMESTER_INFO,
+            data:semesterInfo
+        })
+        
         this.setState({
             createInfo: {
                 ...this.state.createInfo,
@@ -186,9 +212,10 @@ class YearSemesterSetting extends Component {
             },
             modifyInfo: {
                 ...this.state.modifyInfo,
-    
+
                 TermName: checked.value
-            }
+            },
+            // TermNameValue: checked.value
         })
 
 
@@ -223,7 +250,7 @@ class YearSemesterSetting extends Component {
     //监听调整学期期限中开始时间输入框中值的变化
     getPainDate = (value, datastring) => {
         // console.log("开学时间" + datastring)
-        
+
         this.setState({
             modifyInfo: {
                 ...this.state.modifyInfo,
@@ -248,18 +275,18 @@ class YearSemesterSetting extends Component {
         })
     }
     //无效点击事件
-    nothing=()=>{
+    nothing = () => {
         // alert(this.refs)
     }
     // 不可选日期
-    disabledDate = current =>{
+    disabledDate = current => {
 
-        const {semesterInfo} =this.props
+        const { semesterInfo } = this.props
         const str = semesterInfo.TermEndDate;
 
         console.log(moment().endOf('day'));
 
-        return   moment(str) > current||current>moment(str).add(2,'months');
+        return moment(str) > current || current > moment(str).add(2, 'months');
 
 
     }
@@ -271,9 +298,10 @@ class YearSemesterSetting extends Component {
 
         const { semesterInfo, semesterloading } = this.props;
 
+
         return (
 
-            <Loading spinning={semesterloading} tip="请稍后...">
+            <Loading spinning={semesterloading} opacity={false} tip="请稍后...">
 
                 <div className="year-semester" >
                     <div className="guide">
@@ -282,21 +310,20 @@ class YearSemesterSetting extends Component {
                     </div>
                     <i></i>
                     <div className="semester-info">
-                        
-                <p>本学期共<span>25</span>周 , 当前<span>{semesterInfo.TermStatus===2?"学期已经结束":
-                                                        semesterInfo.TermStatus===0?"学期未开始":
-                                                        semesterInfo.TermStatus===1?"第周":"学期状态有误"} </span>  </p>
-                        
-                       
+
+                        <p>本学期共<span>{semesterInfo.TotalWeeks}</span>周 , 当前<span>{semesterInfo.TermStatus === 2 ? "学期已经结束" :
+                            semesterInfo.TermStatus === 0 ? "学期未开始" :
+                                semesterInfo.TermStatus === 1 ? `第${semesterInfo.CurrentWeek}周` : "学期状态有误"} </span>  </p>
+
+
                     </div>
-                            <div className="current-semester">
+                    <div className="current-semester">
                                 <p className="term">当前学年学期</p>
                                 <div className="term-year">
                                     <div className="year-num">
                                         {
-                                            // `${startDate.getFullYear()} - ${endDate.getFullYear()}`
+                                            
                                             `${semesterInfo.StartYear} - ${semesterInfo.EndYear}`
-
                                         }
                                     </div>
                                     <span>学年</span>
@@ -309,15 +336,9 @@ class YearSemesterSetting extends Component {
                                     </div>
                                     <span>学期</span>
                                 </div>
-
-                                               
-
  
-                                <button className={`btn create-newTerm ${semesterInfo.TermStatus === 2 ? '':'disabled bander'}`}
-                        onClick={semesterInfo.TermStatus===2?() => this.createNewTerm():()=>this.nothing()}
-                            
-                        
-                        > 启用新学期</button>
+                             <button className={`btn create-newTerm ${semesterInfo.TermStatus === 2 ? '':'disabled bander'}`}
+                        onClick={semesterInfo.TermStatus!==2?() => this.createNewTerm():()=>this.nothing()}> 启用新学期</button>
                                 <Modal
                                     type="1"
                                     title="启用新学年"
@@ -331,28 +352,28 @@ class YearSemesterSetting extends Component {
                                         <div className="new-term">新的学期:
         
                                     <DropDown
-                                                width={231}
+                                        width={231}
 
-                                                dropSelectd={{ value: `${semesterInfo.StartYear}-${semesterInfo.EndYear}01`, 
-                                                title:`${semesterInfo.StartYear}-${semesterInfo.EndYear} 第一学期` }}
+                                        dropSelectd={{ value: `${semesterInfo.Term}`, 
+                                        title:`${semesterInfo.SemesterName} ${semesterInfo.ChineseName}` }}
 
-                                                dropList={[
-                                                    {
-                                                   
-                                                        value: `${semesterInfo.StartYear}-${semesterInfo.EndYear}01`,
-                                                        title: `${semesterInfo.StartYear}-${semesterInfo.EndYear} 第一学期`
-                                                        
-                                                    },
-                                                    {
-                                                        value: `${semesterInfo.StartYear}-${semesterInfo.EndYear}02`,
-                                                        title: `${semesterInfo.StartYear}-${semesterInfo.EndYear} 第二学期`
-                                                    }
-                                                ]}
+                                        dropList={[
+                                            {
+                                            
+                                                value: `${semesterInfo.SemesterName}01`,
+                                                title: `${semesterInfo.SemesterName} 第一学期`
+                                                
+                                            },
+                                            {
+                                                value: `${semesterInfo.SemesterName}02`,
+                                                title: `${semesterInfo.SemesterName} 第二学期`
+                                            }
+                                        ]}
 
-                                                height={120}
+                                        height={120}
 
-                                                style={{ zIndex: 1100 }}
-                                                onChange={this.dropChange}
+                                        style={{ zIndex: 1100 }}
+                                        onChange={this.dropChange}
 
                                             ></DropDown>
                                         </div>
@@ -448,30 +469,30 @@ class YearSemesterSetting extends Component {
 
                             </div>
                             <div className="tips-info">
-                                <div className="light"></div>
-                                <span>为避免系统的正常运行,请勿随意修改学年学期信息</span>
-                            </div>
+                    <div className="light"></div>
+                    <span>为避免系统的正常运行,请勿随意修改学年学期信息</span>
+                </div>
 
                 </div>
 
-            </Loading>
+            </Loading >
 
 
                     );
-                }
-            }
+    }
+}
 const mapStateToProps = (state) => {
-    const { DataUpdate} = state;
-                
-    const {semesterInfo, semesterloading} = DataUpdate;
-                
+    const { DataUpdate } = state;
+
+    const { semesterInfo, semesterloading } = DataUpdate;
+
     return {
 
-                        semesterInfo,
+        semesterInfo,
 
-                        semesterloading
+        semesterloading
 
-                    }
-                    }
-                    
+    }
+}
+
 export default connect(mapStateToProps)(YearSemesterSetting);

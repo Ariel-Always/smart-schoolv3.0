@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import LeftNav from '../Navigator/LeftNav';
 import Frame from '../../../../common/Frame';
 import { TokenCheck_Connect } from '../../../../common/js/disconnect';
 import Semester from '../SettingOptions/YearSemesterSetting'
@@ -7,7 +6,9 @@ import School from '../SettingOptions/SchoolnfoSetting'
 import Subsystem from '../SettingOptions/SubsystemAccessSetting'
 import setting from '../../../images/setting_logo.png';
 import { Menu } from '../../../../common'
+import config from '../../../../common/js/config'
 import history from '../../containers/history'
+import {QueryPower} from '../../../../common/js/power'
 
 
 
@@ -65,9 +66,33 @@ class MainContent extends Component {
         const Hash = location.hash;
 
         if (sessionStorage.getItem('UserInfo')) {
-            const { SchoolID } = JSON.parse(sessionStorage.getItem('UserInfo'))
-            dispatch(DataChange.getCurrentSemester(SchoolID));
-            dispatch(DataChange.getCurrentSchoolInfo(SchoolID));
+            const { SchoolID,UserType } = JSON.parse(sessionStorage.getItem('UserInfo'))
+            const UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'))
+
+
+            console.log(UserType==="0")
+            // dispatch(DataChange.getCurrentSbusystemInfo());////模拟测试使用
+
+            //判断该用户是否是管理员,如果该用户不是管理员跳转到错误页,
+            if(UserType!=="0"){
+                window.location.href = config.ErrorProxy + "/Error.aspx?errcode=E011";
+
+            }
+            else{
+                //如果该用户是管理员则检查用户信息和模块ID是否符合
+                QueryPower({UserInfo,ModuleID:"000-2-0-13"}).then(restlu=>{
+                   if (restlu){
+
+                       dispatch(DataChange.getCurrentSemester(SchoolID));
+                       dispatch(DataChange.getCurrentSchoolInfo(SchoolID));
+                       dispatch(DataChange.getCurrentSbusystemInfo({}));
+
+                   }
+                })
+            }
+
+                
+
             
             
 
@@ -79,9 +104,27 @@ class MainContent extends Component {
             let getUserInfo = setInterval(() => {
 
                 if (sessionStorage.getItem('UserInfo')) {
-                    const { SchoolID } = JSON.parse(sessionStorage.getItem('UserInfo'))
-                    dispatch(DataChange.getCurrentSemester(SchoolID));
-                    dispatch(DataChange.getCurrentSchoolInfo(SchoolID));
+                    const { SchoolID,UserType } = JSON.parse(sessionStorage.getItem('UserInfo'));
+
+                    if(UserType!=="0"){
+
+                        window.location.href = config.ErrorProxy + "/Error.aspx?errcode=E011";
+
+                    }
+                    else{
+                        //如果该用户是管理员则检查用户信息和模块ID是否符合
+                        QueryPower({UserInfo,ModuleID:"000-2-0-13"}).then(restlu=>{
+                            if (restlu){
+
+                                dispatch(DataChange.getCurrentSemester(SchoolID));
+                                dispatch(DataChange.getCurrentSchoolInfo(SchoolID));
+                                dispatch(DataChange.getCurrentSbusystemInfo({}));
+
+                            }
+                        })
+                    }
+                    // dispatch(DataChange.getCurrentSbusystemInfo());//模拟测试使用
+
                     clearInterval(getUserInfo);
                 }
 
@@ -129,6 +172,7 @@ class MainContent extends Component {
 
 
     render() {
+            const {UserName,PhotoPath}=JSON.parse(sessionStorage.getItem('UserInfo'))
         return (
 
 
@@ -137,10 +181,10 @@ class MainContent extends Component {
                 showBarner={false}
                 type={"triangle"}
                 module={{ image: setting, cnname: "系统设置", enname: "System Settings", type: "circle" }}
-                userInfo={{ name: "张三" }}
+                userInfo={{ name: UserName ,image:PhotoPath}}
             >
                 <div ref="frame-left-menu">
-                    {/* <LeftNav></LeftNav> */}
+                 
                     <Menu params={this.state.MenuParams} ></Menu>
 
                 </div>
