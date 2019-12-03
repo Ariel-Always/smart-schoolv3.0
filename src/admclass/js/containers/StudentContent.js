@@ -592,11 +592,11 @@ class StudentContent extends Component{
                 {/*学生内容区域*/}
                 <ContentWrapper>
 
-                    <span className="number-wrapper">学生名单 <span className="num">({TheStudentList.Total}人)</span></span>
+                    <span className="number-wrapper stu">学生名单 <span className="num">({TheStudentList.Total}人)</span></span>
 
                     <div className="search-wrapper clearfix">
 
-                        <Search className="admclass-search-student" width={280} placeHolder="请输入学生姓名搜索..." onCancelSearch={this.StudentCancelSearch.bind(this)} onClickSearch={this.onStudentSearch.bind(this)}></Search>
+                        <Search className="admclass-search-student" width={280} placeHolder="请输入学号或姓名进行搜索..." onCancelSearch={this.StudentCancelSearch.bind(this)} onClickSearch={this.onStudentSearch.bind(this)}></Search>
 
                     </div>
 

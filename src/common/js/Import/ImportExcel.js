@@ -271,7 +271,7 @@ class Import extends Component{
 
         }else{
 
-            utils.AlertWarn({title:"请先上传文件！",that:this});
+            utils.AlertWarn({title:"请先选择文件！",that:this});
 
         }
 

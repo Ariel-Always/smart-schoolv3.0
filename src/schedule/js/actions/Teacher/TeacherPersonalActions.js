@@ -155,7 +155,7 @@ const TPSUpdate = () => {
 
                 });
 
-                dispatch({type:TP_SCHEDULE_CHANGE,data:schedule});
+                dispatch({type:TP_SCHEDULE_CHANGE,data:{schedule}});
 
                 dispatch({type:TP_SCHEDULE_LOADING_HIDE});
 
