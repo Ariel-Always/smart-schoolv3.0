@@ -10,6 +10,8 @@ const AuthorSetting  = (state={
 
         Show:false,
 
+        IframeLoading:true,
+
         Name:'',
 
         Url:''
@@ -37,6 +39,14 @@ const AuthorSetting  = (state={
         case ASActions.AUTHOR_SETTING_LOADING_HIDE:
 
             return { ...state,LoadingShow:false };
+
+        case ASActions.AUTHOR_SETTING_IFRAME_LOADING_SHOW:
+
+            return { ...state,BindModal:{...state.BindModal,IframeLoading:true}};
+
+        case ASActions.AUTHOR_SETTING_IFRAME_LOADING_HIDE:
+
+            return { ...state,BindModal:{...state.BindModal,IframeLoading:false}};
 
         case ASActions.AUTHOR_SETTING_BIND_MODAL_SHOW:
 

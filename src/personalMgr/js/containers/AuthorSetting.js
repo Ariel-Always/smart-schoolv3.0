@@ -22,6 +22,8 @@ class AuthorSetting extends Component{
 
         window.FailBind = this.FailBind.bind(this);
 
+        window.CloseBind = this.CloseBind.bind(this);
+
     }
 
 
@@ -31,6 +33,8 @@ class AuthorSetting extends Component{
 
         const { dispatch } = this.props;
 
+        dispatch({type:ASActions.AUTHOR_SETTING_IFRAME_LOADING_SHOW});
+
         dispatch({type:ASActions.AUTHOR_SETTING_BIND_MODAL_SHOW,data:{Url,Name}});
 
     }
@@ -38,6 +42,18 @@ class AuthorSetting extends Component{
     //关闭弹窗
 
     BindCancel(){
+
+        const { dispatch } = this.props;
+
+        dispatch({type:ASActions.AUTHOR_SETTING_BIND_MODAL_HIDE});
+
+        dispatch(ASActions.PageInit());
+
+    }
+
+    //直接关闭弹窗
+
+    CloseBind(){
 
         const { dispatch } = this.props;
 
@@ -89,6 +105,15 @@ class AuthorSetting extends Component{
 
     }
 
+    //
+    IframeLoad(){
+
+        const { dispatch }= this.props;
+
+        dispatch({type:ASActions.AUTHOR_SETTING_IFRAME_LOADING_HIDE});
+
+    }
+
 
 
 
@@ -102,7 +127,7 @@ class AuthorSetting extends Component{
 
         const { LoadingShow,AuthorList,BindModal } = AuthorSetting;
 
-        const { Name,Url,Show } = BindModal;
+        const { Name,Url,Show,IframeLoading } = BindModal;
 
         const QQAccount = AuthorList.find(item=>item.OpenType===1);
 
@@ -272,6 +297,8 @@ class AuthorSetting extends Component{
 
                 type={1}
 
+                className="author-bind-modal"
+
                 title={`绑定${Name}账号`}
 
                 mask={true}
@@ -288,7 +315,19 @@ class AuthorSetting extends Component{
 
                 >
 
-                <iframe src={Url} title="author" frameBorder="0" id="bind-iframe"></iframe>
+                <Loading spinning={IframeLoading} opacity={false} tip="加载中,请稍后...">
+
+                {
+
+                    Show?
+
+                        <iframe src={Url} onLoad={this.IframeLoad.bind(this)} title="author" frameBorder="0" id="bind-iframe"></iframe>
+
+                    :''
+
+                }
+
+                </Loading>
 
             </Modal>
 
