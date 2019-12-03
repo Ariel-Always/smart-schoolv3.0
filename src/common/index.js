@@ -2321,7 +2321,7 @@ class Frame extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <div className="frame-block-wrapper" style={{ backgroundImage: `url(${module && module.image ? module.image : ''})` }}>
+                    <div className={`frame-block-wrapper ${module&&module.className?module.className:''}`} style={{ backgroundImage: `url(${module && module.image ? module.image : ''})` }}>
                         <div className="frame-block-zh-name">{(module && module.cnname) ? module.cnname : ''}</div>
                         <div className="frame-block-en-name">{(module && module.enname) ? module.enname : ''}</div>
                     </div>
