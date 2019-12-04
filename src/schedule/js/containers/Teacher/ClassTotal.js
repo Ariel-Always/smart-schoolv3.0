@@ -33,7 +33,7 @@ class ClassTotal extends Component{
 
         const {dispatch} = this.props;
 
-        ComPageRefresh.ComPageInit(dispatch,TeacherIndexActions.ClassTotalInit());
+        dispatch(ComPageRefresh.ComPageInit(TeacherIndexActions.ClassTotalInit()));
 
     }
 

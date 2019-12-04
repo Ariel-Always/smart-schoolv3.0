@@ -37,7 +37,7 @@ class Teacher extends Component{
 
         const {dispatch} = props;
 
-        ComPageRefresh.ComPageInit(dispatch,ManagerIndexActions.STTPageInit());
+        dispatch(ComPageRefresh.ComPageInit(ManagerIndexActions.STTPageInit()));
 
     }
 

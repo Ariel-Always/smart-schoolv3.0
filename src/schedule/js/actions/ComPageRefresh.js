@@ -1,18 +1,43 @@
-import ApiActions from "./ApiActions";
-
-import PeriodWeekTermActions from "./PeriodWeekTermActions";
-
-import LoginUserActions from "./LoginUserActions";
-
 import TeacherIndexActions from "./Teacher/TeacherIndexActions";
 
 import ManagerIndexActions from "./Manager/ManagerIndexActions";
 
 
 
+const ComPageInit  = (PageInit) => {
+
+    return (dispatch,getState)=>{
+
+        let LoginUser = getState().LoginUser;
+
+        if (Object.keys(LoginUser).length>1){
+
+            dispatch(PageInit);
+
+        }else{
+
+            let WaitUserInfo = setInterval(()=>{
+
+                let LoginUser = getState().LoginUser;
+
+                if (Object.keys(LoginUser).length>1){
+
+                    dispatch(PageInit);
+
+                    clearInterval(WaitUserInfo);
+
+                }
+
+            },10);
+
+        }
+
+    }
+
+};
 
 
-const ComPageInit  = (dispatch, PageInit) => {
+/*const ComPageInit  = (dispatch, PageInit) => {
 
     if (sessionStorage.getItem('UserInfo')){
 
@@ -67,7 +92,7 @@ const ComPageInit  = (dispatch, PageInit) => {
 
     }
 
-};
+};*/
 
 
 const ComPageUpdate = (dispatch) =>{

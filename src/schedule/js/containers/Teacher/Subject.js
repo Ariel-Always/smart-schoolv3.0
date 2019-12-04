@@ -34,7 +34,11 @@ class Subject extends Component{
 
         const {PeriodWeekTerm,dispatch} = this.props;
 
-        ComPageRefresh.ComPageInit(dispatch,TeacherIndexActions.STSPageInit());
+        /*ComPageRefresh.ComPageInit(dispatch,TeacherIndexActions.STSPageInit());*/
+
+        /*dispatch(TeacherIndexActions.STSPageInit());*/
+
+        dispatch(ComPageRefresh.ComPageInit(TeacherIndexActions.STSPageInit()));
 
     }
 

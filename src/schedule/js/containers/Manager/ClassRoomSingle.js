@@ -35,7 +35,7 @@ class ClassRoomSingle extends Component{
 
         const {dispatch} = props;
 
-        ComPageRefresh.ComPageInit(dispatch,ManagerIndexActions.ClassRoomSingleInit());
+        dispatch(ComPageRefresh.ComPageInit(ManagerIndexActions.ClassRoomSingleInit()));
 
     }
 

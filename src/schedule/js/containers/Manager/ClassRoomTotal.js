@@ -36,7 +36,7 @@ class ClassRoomTotal extends Component{
 
         const {dispatch} = this.props;
 
-        ComPageRefresh.ComPageInit(dispatch,ManagerIndexActions.ClassRoomTotalInit());
+        dispatch(ComPageRefresh.ComPageInit(ManagerIndexActions.ClassRoomTotalInit()));
 
 
     }
