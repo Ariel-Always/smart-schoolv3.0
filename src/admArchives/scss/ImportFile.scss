@@ -1,11 +1,10 @@
-.Tab{
+.Tab {
     position: relative;
     height: 48px;
-
-    .Tab-btn{
+    box-shadow: 0 3px 10px 0 #f5f5f5;
+    .Tab-btn {
         float: left;
-        
-        margin-top:8px;
+        margin-top: 8px;
         width: 160px;
         height: 40px;
         background: #c9dcec;
@@ -14,40 +13,44 @@
         font-size: 16px;
         color: #285478;
         text-align: center;
-        margin-right: 3px; 
-        cursor:  pointer;
+        margin-right: 3px;
+        cursor: pointer;
     }
-    .btn-select{
-        margin-top:0;
+    .btn-select {
+        margin-top: 0;
         height: 48px;
         line-height: 48px;
         font-size: 18px;
         background: #fff;
         color: #333;
         text-align: center;
-
     }
 }
-.frame-fluid{
+
+.frame-fluid {
     position: relative;
     padding: 0;
     background: #f5f5f5;
 }
 
-.box{
-    position: absolute;
-    width: 100%;
+.box {
+    position: relative;
+    width: 1200px;
     height: 100%;
-    top: 0;
-    left: 0;
+    margin-top: -25px;
+    margin-left: -42px;
     background: #f5f5f5;
-    .content-box{
-        position: absolute;
-        // height: calc( 100% - 48px );
+    .content-box {
+        position: relative;
+        //height: calc( 100% - 48px );
         width: 1200px;
-        height: 578px;;
+        min-height: 578px;
+        overflow: hidden;
         background: #fff;
-        border-radius: 0 0 12px 12px;
+        border-radius: 0 12px 12px 12px;
+        -webkit-border-radius: 0 12px 12px 12px;
+        -moz-border-radius: 0 12px 12px 12px;
+        -ms-border-radius: 0 12px 12px 12px;
+        -o-border-radius: 0 12px 12px 12px;
     }
-
 }

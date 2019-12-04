@@ -146,7 +146,10 @@ const getGradeStudentPreview = (
 };
 
 //获取教师档案信息/改
-const getSubjectTeacherPreview = (url, SubjectID) => {
+const getSubjectTeacherPreview = (url, SubjectID={
+  value: "all",
+  title: "全部学科"
+} ) => {
   let pageIndex = Public.getUrlQueryVariable(url, "PageIndex");
   let pageSize = Public.getUrlQueryVariable(url, "PageSize");
   return dispatch => {
@@ -236,6 +239,11 @@ const getSubjectTeacherMsg = (url, SubjectID = "all") => {
               }
             });
             dispatch({ type: SET_SUBJECTID, SubjectID: subject });
+          }else{
+            dispatch({ type: SET_SUBJECTID, SubjectID: {
+              value: "all",
+              title: "全部学科"
+            } });
           }
         }
       });

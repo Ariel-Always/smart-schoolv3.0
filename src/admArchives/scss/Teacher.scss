@@ -12,7 +12,8 @@ $image-url: "../images";
         width: 870px;
         .Teacher-top {
             position: relative;
-            margin: 0;
+            // margin: 0;
+            margin-left: 15px;
             height: 37px;
             .top-tips {
                 float: left;
@@ -33,6 +34,9 @@ $image-url: "../images";
                     font-size: 14px;
                     line-height: 37px;
                     text-decoration: underline;
+                    &:hover {
+                        color: #ff6600;
+                    }
                 }
                 .divide {
                     position: relative;
@@ -46,8 +50,9 @@ $image-url: "../images";
         .Teacher-hr {
             position: relative;
             border: 0.5px dashed #ccc;
-            width: 870px;
-            margin: 0 auto;
+            width: 855px;
+            margin-left: 15px;
+            // margin: 0 auto;
         }
         .Teacher-content {
             margin: 18px auto 0;
@@ -55,6 +60,7 @@ $image-url: "../images";
             width: 870px;
             .content-top {
                 position: relative;
+                margin-left: 15px;
                 height: 28px;
                 .dropdown_select_ul {
                     z-index: 2;
@@ -66,8 +72,23 @@ $image-url: "../images";
                 .dropdown_container {
                     float: left;
                 }
-                .search_container {
+                .Search {
                     float: right;
+                    .search-tips {
+                        color: #000;
+                        font-size: 14px;
+                        text-align: right;
+                        float: left;
+                        line-height: 28px;
+                        margin-right: 10px;
+                        .Total {
+                            color: red;
+                            // font-weight: bold;
+                        }
+                    }
+                    .search_container {
+                        float: left;
+                    }
                 }
             }
             .content-render {
@@ -76,12 +97,15 @@ $image-url: "../images";
                 .table {
                     .ant-table-thead {
                         th:nth-child(1),
-                        th:nth-child(2),
                         th:nth-child(3) {
                             padding: 0;
                         }
+                        th:nth-child(2) {
+                            // text-align: left;
+                            padding-left: 60px;
+                        }
                         th {
-                            padding: 0 16px;
+                            padding: 0;
                         }
                     }
                     .ant-table-row {
@@ -111,6 +135,7 @@ $image-url: "../images";
                         cursor: pointer;
                         border-radius: 3px;
                         border: 1px solid #999;
+                        object-fit: cover;
                     }
                     .name-UserName {
                         text-decoration: underline;
@@ -182,6 +207,10 @@ $image-url: "../images";
                 .checkAll-box {
                     margin-top: 10px;
                     margin-left: 20px;
+                    .checkAll-title {
+                        vertical-align: baseline;
+                        height: 28px;
+                    }
                     .deleteAll {
                         color: #fff;
                         width: 56px;
@@ -191,6 +220,9 @@ $image-url: "../images";
                         text-align: center;
                         margin-left: 8px;
                         border: none;
+                        span {
+                            vertical-align: baseline;
+                        }
                         // box-sizing: content-box;
                     }
                 }

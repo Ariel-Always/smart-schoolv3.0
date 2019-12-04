@@ -217,6 +217,7 @@ class App extends Component {
                       "/GetTeacherToPage?SchoolID=" +
                         userMsg.SchoolID +
                         "&SubjectIDs=all&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC"
+
                     )
                   );
                 } else {

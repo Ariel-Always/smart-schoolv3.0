@@ -73,8 +73,10 @@
             }
             .CheckBox-content {
                 .key-content {
+                    vertical-align: bottom;
                     margin-left: 10px;
                 }
+                .ant-checkbox-inner {}
             }
             .courseClass-name {
                 font-size: 14px;
@@ -93,6 +95,7 @@
                 border-radius: 50%;
                 vertical-align: text-bottom;
                 margin-right: 7px;
+                object-fit: cover;
             }
             .Class-name {
                 font-size: 14px;
@@ -148,6 +151,9 @@
             .checkAll-box {
                 margin-top: 10px;
                 margin-left: 30px;
+                .ant-checkbox {
+                    vertical-align: sub;
+                }
                 .deleteAll {
                     color: #fff;
                     width: 56px;
@@ -157,6 +163,12 @@
                     text-align: center;
                     margin-left: 8px;
                     box-sizing: content-box;
+                    span {
+                        vertical-align: baseline;
+                    }
+                }
+                .checkAll-title {
+                    vertical-align: baseline;
                 }
             }
             .pagination-box {

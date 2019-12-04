@@ -44,7 +44,9 @@ class Admin extends React.Component {
           render: handle => {
             return (
               <div className="registerTime-content">
-                <CheckBox
+               <label>
+               <CheckBox
+                type='gray'
                   value={handle.key}
                   onChange={this.onCheckChange}
                 ></CheckBox>
@@ -53,6 +55,7 @@ class Admin extends React.Component {
                     ? handle.OrderNo + 1
                     : "0" + (handle.OrderNo + 1)}
                 </span>
+               </label>
               </div>
             );
           }
@@ -991,7 +994,7 @@ checkedList: [],
           <div className="Admin-content">
             <div className="content-top">
               <Search
-                placeHolder="请输入工号或姓名进行搜索"
+                placeHolder="请输入工号或姓名进行搜索..."
                 onClickSearch={this.AdminSearch}
                 height={30}
                 width={250}
@@ -1020,10 +1023,11 @@ checkedList: [],
                 {DataState.AdminPreview.Total ? (
                   <CheckBox
                     className="checkAll-box"
+                    type='gray'
                     onChange={this.OnCheckAllChange}
                     checked={this.state.checkAll}
                   >
-                    全选
+                   <span className='checkAll-title'>全选</span>
                     <Button
                       onClick={this.onDeleteAllClick}
                       className="deleteAll"

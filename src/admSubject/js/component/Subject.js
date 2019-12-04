@@ -148,7 +148,8 @@ class Subject extends React.Component {
         const { dispatch } = this.props;
         let periodID = '';
         this.setState({
-            SubjectSelect: value
+            SubjectSelect: value,
+            pagination:1
         })
         if (value.value !== 0) {
             periodID =  value.value
@@ -194,7 +195,7 @@ class Subject extends React.Component {
                 this.setState({
                     pagination:1
                 })
-                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID=' + this.state.SubjectSelect.value + '&pageSize=8&pageIndex=1'));
+                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID=' +(this.state.SubjectSelect.value?this.state.SubjectSelect.value:'')+ '&pageSize=8&pageIndex=1'));
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
                     title: "成功",
@@ -247,7 +248,7 @@ class Subject extends React.Component {
             // } else 
             if (json.StatusCode === 200) {
                 dispatch(actions.UpUIState.changeSubjectModalClose())
-                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID=' + this.state.SubjectSelect.value + '&pageSize=8&pageIndex='+this.state.pagination));
+                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID=' +(this.state.SubjectSelect.value?this.state.SubjectSelect.value:'')+ '&pageSize=8&pageIndex='+this.state.pagination));
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',
                     title: "成功",
@@ -311,7 +312,7 @@ class Subject extends React.Component {
                     pagination:1
                 })
                 dispatch(actions.UpUIState.addSubjectModalClose())
-                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID=' + this.state.SubjectSelect.value + '&pageSize=8&pageIndex=1'));
+                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID=' +(this.state.SubjectSelect.value?this.state.SubjectSelect.value:'')+ '&pageSize=8&pageIndex=1'));
 
 
                 dispatch(actions.UpUIState.showErrorAlert({
@@ -392,7 +393,7 @@ class Subject extends React.Component {
             // } else 
             if (json.StatusCode === 200) {
                 
-                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID=' + this.state.SubjectSelect.value + '&pageSize=8&pageIndex='+this.state.pagination));
+                dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + this.state.UserMsg.SchoolID + '&periodID=' +(this.state.SubjectSelect.value?this.state.SubjectSelect.value:'')+ '&pageSize=8&pageIndex='+this.state.pagination));
                 dispatch(actions.UpUIState.setSubjectTeacherModalClose())
                 dispatch(actions.UpUIState.showErrorAlert({
                     type: 'success',

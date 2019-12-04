@@ -486,7 +486,7 @@ class Website extends React.Component {
   };
   // 学段下拉
   onDropMenuChange = value => {
-    const { dispatch, LoginUser } = this.props;
+    const { dispatch, LoginUser,Teacher } = this.props;
     let url = this.setState({
       firstSelect: value
     });

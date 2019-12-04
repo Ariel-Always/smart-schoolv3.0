@@ -40,7 +40,7 @@ function handlePeriod (data) {
     return PeriodList
 }
 function handleType (data) {
-    let TypeList=[{ value: 0, title: "全部" }]
+    let TypeList=[]
     data instanceof Array && data.map((child,index) => {
         TypeList.push({
             value:child.SubTypeID,

@@ -83,6 +83,7 @@
                     line-height: 28px;
                     height: 28px;
                     padding: 0;
+                    vertical-align: top;
                     font-size: 14px;
                     text-align: center;
                     box-sizing: border-box;
@@ -111,6 +112,9 @@
                     padding: 0;
                 }
             }
+            .ant-checkbox-inner {
+                vertical-align: bottom;
+            }
         }
         .ant-table-column-title {
             white-space: nowrap;
@@ -119,6 +123,9 @@
             margin-top: -50px;
             margin-left: 33px;
             float: left;
+            .ant-checkbox {
+                vertical-align: middle;
+            }
             .selectAll {
                 color: #fff;
                 width: 85px;
@@ -129,6 +136,14 @@
                 text-align: center;
                 margin-left: 8px;
                 box-sizing: border-box;
+                span {
+                    vertical-align: baseline;
+                }
+            }
+            .checkAll-title {
+                vertical-align: baseline;
+                display: inline-block;
+                line-height: 28px;
             }
         }
         .go-btn {
@@ -145,6 +160,7 @@
         }
         .key-content {
             margin-left: 5px;
+            vertical-align: text-top;
         }
         .OperateTypeName {
             font-size: 14px;

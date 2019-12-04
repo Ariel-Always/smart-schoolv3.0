@@ -43,15 +43,16 @@ class Student extends React.Component {
           render: key => {
             return (
               <div className="registerTime-content">
-                <CheckBox
+                <label><CheckBox
                   value={key.key}
+                  type='gray'
                   onChange={this.onCheckChange}
                 ></CheckBox>
                 <span className="key-content">
                   {key.OrderNo + 1 >= 10
                     ? key.OrderNo + 1
                     : "0" + (key.OrderNo + 1)}
-                </span>
+                </span></label>
               </div>
             );
           }
@@ -61,6 +62,7 @@ class Student extends React.Component {
           align: "right",
           key: "UserImg",
           width: 50,
+          colSpan:0,
           dataIndex: "UserName",
           render: arr => {
             return (
@@ -80,7 +82,8 @@ class Student extends React.Component {
         {
           title: "姓名",
           align: "left",
-          width: 70,
+          colSpan:2,
+          width: 90,
           key: "UserName",
           dataIndex: "UserName",
           sorter: true,
@@ -224,6 +227,7 @@ class Student extends React.Component {
       searchValue: "",
       sortType: "",
       sortFiled: "",
+      searchWord:'',
       studentChangeUserLog: {}
     };
   }
@@ -270,7 +274,8 @@ class Student extends React.Component {
     this.setState({
       GradeArr: GradeArr,
       firstSelect: Select.GradeID || initFirstSelect,
-      secondSelect: Select.ClassID
+      secondSelect: Select.ClassID,
+      pagination:Number(Select.pageIndex)+1
     });
   }
   componentWillMount() {}
@@ -406,6 +411,7 @@ class Student extends React.Component {
       checkedList: [],
       checkAll: false,
       keyword: "&keyword=" + e.value,
+      searchWord: e.value,
       CancelBtnShow: "y",
       pagination: 1
     });
@@ -1235,8 +1241,15 @@ class Student extends React.Component {
                 dropList={this.state.secondDropList}
                 onChange={this.StudentDropMenuSecond}
               ></DropDown>
-              <Search
-                placeHolder="请输入学号或姓名进行搜索"
+             <div className='Search'>
+               <span className='search-tips' 
+               style={{display:this.state.CancelBtnShow==='y'?'block':'none'}}>
+                 
+                   <span>{'搜索关键词“'+this.state.searchWord+'”共找到'}</span><span className='Total'>{' '+DataState.GradeStudentPreview.Total+' '}</span>人
+                 
+                 </span> 
+                 <Search
+                placeHolder="请输入学号或姓名进行搜索..."
                 onClickSearch={this.StudentSearch.bind(this)}
                 height={30}
                 width={250}
@@ -1244,7 +1257,7 @@ class Student extends React.Component {
                 onCancelSearch={this.onCancelSearch}
                 onChange={this.onChangeSearch.bind(this)}
                 CancelBtnShow={this.state.CancelBtnShow}
-              ></Search>
+              ></Search></div>
             </div>
             <div className="content-render">
               <div>
@@ -1265,10 +1278,11 @@ class Student extends React.Component {
                 {DataState.GradeStudentPreview.Total > 0 ? (
                   <CheckBox
                     className="checkAll-box"
+                    type='gray'
                     onChange={this.OnCheckAllChange}
                     checked={this.state.checkAll}
                   >
-                    全选
+                    <span className='checkAll-title'>全选</span>
                     <Button
                       onClick={this.onDeleteAllClick}
                       className="deleteAll"

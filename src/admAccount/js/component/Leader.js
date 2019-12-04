@@ -43,10 +43,13 @@ class Leader extends React.Component {
           render: key => {
             return (
               <div className="registerTime-content">
-                <CheckBox value={key}></CheckBox>
-                <span className="key-content">
-                  {key + 1 >= 10 ? key + 1 : "0" + (key + 1)}
-                </span>
+                <label>
+                  {" "}
+                  <CheckBox type="gray" value={key}></CheckBox>
+                  <span className="key-content">
+                    {key + 1 >= 10 ? key + 1 : "0" + (key + 1)}
+                  </span>
+                </label>
               </div>
             );
           }
@@ -599,10 +602,11 @@ class Leader extends React.Component {
                 {DataState.SchoolLeaderPreview.Total ? (
                   <CheckBox
                     className="checkAll-box"
+                    type="gray"
                     onChange={this.OnCheckAllChange}
                     checked={this.state.checkAll}
                   >
-                    全选
+                    <span className="checkAll-title">全选</span>
                     <Button
                       onClick={this.onChangePwdAllClick}
                       className="changePwdAll"
@@ -709,15 +713,25 @@ class Leader extends React.Component {
             this.state.ChangePwdMadalVisible ? (
               <p className="alert-Title">
                 确定重置
-                <span title={DataState.SchoolLeaderPreview.newList[this.state.onClickKey]
-                      .UserName.Name} className="alert-Title-name">
+                <span
+                  title={
+                    DataState.SchoolLeaderPreview.newList[this.state.onClickKey]
+                      .UserName.Name
+                  }
+                  className="alert-Title-name"
+                >
                   {
                     DataState.SchoolLeaderPreview.newList[this.state.onClickKey]
                       .UserName.Name
                   }
                 </span>
-                <span title={DataState.SchoolLeaderPreview.newList[this.state.onClickKey]
-                      .UserName.UserID} className="alert-Title-id">
+                <span
+                  title={
+                    DataState.SchoolLeaderPreview.newList[this.state.onClickKey]
+                      .UserName.UserID
+                  }
+                  className="alert-Title-id"
+                >
                   (
                   {
                     DataState.SchoolLeaderPreview.newList[this.state.onClickKey]

@@ -95,7 +95,7 @@ class RegisterExamine extends React.Component {
           cnname: "用户档案管理",
           enname: "User profile management"
         });
-       document.title('用户档案管理')
+       document.title='用户档案管理'
       } else if (
         userMsg.UserType === "1" &&
         userMsg.UserClass[2] === "1"
@@ -105,7 +105,7 @@ class RegisterExamine extends React.Component {
           cnname: "行政班管理",
           enname: "Administration class management"
         });
-       document.title('行政班管理')
+       document.title='行政班管理'
         
       }
     if (pathname.split("/")[2] === "RegisterDidExamine") {

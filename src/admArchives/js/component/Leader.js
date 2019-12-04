@@ -38,15 +38,16 @@ class Leader extends React.Component {
           render: key => {
             return (
               <div className="registerTime-content">
-                <CheckBox
+               <label> <CheckBox
                   value={key.key}
+                  type='gray'
                   onChange={this.onCheckChange}
                 ></CheckBox>
                 <span className="key-content">
                   {key.OrderNo + 1 >= 10
                     ? key.OrderNo + 1
                     : "0" + (key.OrderNo + 1)}
-                </span>
+                </span></label>
               </div>
             );
           }
@@ -55,6 +56,7 @@ class Leader extends React.Component {
           title: "",
           align: "right",
           key: "UserImg",
+          colSpan:0,
           width: 50,
           dataIndex: "UserName",
           render: arr => {
@@ -75,6 +77,7 @@ class Leader extends React.Component {
         {
           title: "姓名",
           align: "left",
+          colSpan:2,
           width: 90,
           key: "UserName",
           dataIndex: "UserName",
@@ -698,10 +701,11 @@ class Leader extends React.Component {
               {DataState.SchoolLeaderPreview.Total > 0 ? (
                 <CheckBox
                   className="checkAll-box"
+                  type='gray'
                   onChange={this.OnCheckAllChange}
                   checked={this.state.checkAll}
                 >
-                  全选
+                  <span className='checkAll-title'>全选</span>
                   <Button
                     onClick={this.onDeleteAllClick}
                     className="deleteAll"

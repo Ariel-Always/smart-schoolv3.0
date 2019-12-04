@@ -58,6 +58,7 @@ class LogRecord extends React.Component {
           title: "",
           align: "right",
           key: "UserImg",
+          colSpan:0,
           width: 50,
           dataIndex: "UserName",
           render: arr => {
@@ -78,6 +79,7 @@ class LogRecord extends React.Component {
         {
           title: "用户档案",
           align: "left",
+          colSpan:2,
           width: 90,
           key: "UserName",
           dataIndex: "UserName",

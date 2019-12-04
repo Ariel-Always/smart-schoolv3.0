@@ -43,15 +43,16 @@ class LogDynamic extends React.Component {
           render: key => {
             return (
               <div className="registerTime-content">
-                <CheckBox
+                <label><CheckBox
                   value={key.key}
+                  type='gray'
                   onChange={this.onCheckChange}
                 ></CheckBox>
                 <span className="key-content">
                   {key.OrderNo + 1 >= 10
                     ? key.OrderNo + 1
                     : "0" + (key.OrderNo + 1)}
-                </span>
+                </span></label>
               </div>
             );
           }
@@ -60,6 +61,7 @@ class LogDynamic extends React.Component {
           title: "",
           align: "right",
           key: "UserImg",
+          colSpan:0,
           width: 50,
           dataIndex: "UserName",
           render: arr => {
@@ -80,6 +82,7 @@ class LogDynamic extends React.Component {
         {
           title: "用户档案",
           align: "left",
+          colSpan:2,
           width: 92,
           key: "UserName",
           dataIndex: "UserName",
@@ -371,7 +374,7 @@ class LogDynamic extends React.Component {
                 "&UserType=" +
                 this.state.FileTypeSelect.value +
                 "&PageIndex=" +
-                this.state.pagination +
+                (this.state.pagination-1) +
                 "&PageSize=10&OnlineUserID=" +
                 this.state.userMsg.UserID
             )
@@ -720,10 +723,12 @@ class LogDynamic extends React.Component {
               {data.Total > 0 ? (
                 <CheckBox
                   className="checkAll-box"
+                  type='gray'
+
                   onChange={this.OnCheckAllChange}
                   checked={this.state.checkAll}
                 >
-                  全选
+                  <span className='checkAll-title'>全选</span>
                   <Button
                     onClick={this.onReadAllClick}
                     className="deleteAll"

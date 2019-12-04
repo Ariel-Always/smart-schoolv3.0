@@ -43,15 +43,17 @@ class Student extends React.Component {
           render: handle => {
             return (
               <div className="registerTime-content">
-                <CheckBox
+               <label> <CheckBox
                   value={handle.key}
+                  type='gray'
+
                   onChange={this.onCheckChange}
                 ></CheckBox>
                 <span className="key-content">
                   {handle.OrderNo + 1 >= 10
                     ? handle.OrderNo + 1
                     : "0" + (handle.OrderNo + 1)}
-                </span>
+                </span></label>
               </div>
             );
           }
@@ -869,7 +871,7 @@ pagination:1,
                 onChange={this.StudentDropMenuSecond}
               ></DropDown>
               <Search
-                placeHolder="请输入学号或姓名进行搜索"
+                placeHolder="请输入学号或姓名进行搜索..."
                 onClickSearch={this.StudentSearch}
                 Value={this.state.searchValue}
                 onChange={this.onChangeSearch.bind(this)}
@@ -903,10 +905,11 @@ pagination:1,
                         : "inline-block"
                   }}
                   className="checkAll-box"
+                  type='gray'
                   onChange={this.OnCheckAllChange}
                   checked={this.state.checkAll}
                 >
-                  全选
+                   <span className='checkAll-title'>全选</span>
                   <Button
                     onClick={this.onChangePwdAllClick}
                     className="changePwdAll"
