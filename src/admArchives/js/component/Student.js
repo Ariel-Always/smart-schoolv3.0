@@ -249,8 +249,8 @@ class Student extends React.Component {
 
     if (
       nextProps.DataState.GradeClassMsg.returnData.AllClasses &&
-      Select.GradeID &&
-      Select.GradeID.value !== 0
+      (Select.GradeID &&
+      Select.GradeID.value !== 0)
     ) {
       let ClassArr =
         nextProps.DataState.GradeClassMsg.returnData.AllClasses[
@@ -268,13 +268,15 @@ class Student extends React.Component {
       });
     } else {
       this.setState({
-        DropMenuShow: false
+        DropMenuShow: false,
+        secondDropList: Classes,
+
       });
     }
     this.setState({
       GradeArr: GradeArr,
       firstSelect: Select.GradeID || initFirstSelect,
-      secondSelect: Select.ClassID,
+      secondSelect: Select.ClassID?Select.ClassID:{ value: 0, title: "全部年级" },
       pagination:Number(Select.pageIndex)+1
     });
   }

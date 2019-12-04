@@ -234,8 +234,8 @@ class LogDynamic extends React.Component {
           this.state.HandleTypeSelect.value +
           "&UserType=" +
           e.value +
-          "&PageIndex=" +
-          (this.state.pagination - 1) +
+          "&PageIndex=0" +
+          // (this.state.pagination - 1) +
           "&PageSize=10&OnlineUserID=" +
           this.state.userMsg.UserID +
           this.state.SortType
@@ -257,8 +257,8 @@ class LogDynamic extends React.Component {
           e.value +
           "&UserType=" +
           this.state.FileTypeSelect.value +
-          "&PageIndex=" +
-          (this.state.pagination - 1) +
+          "&PageIndex=0" +
+          // (this.state.pagination - 1) +
           "&PageSize=10&OnlineUserID=" +
           this.state.userMsg.UserID +
           this.state.SortType
