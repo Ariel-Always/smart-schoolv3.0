@@ -1051,8 +1051,7 @@ class DropDown extends React.Component {
             dropSelectd: props.dropSelectd ? props.dropSelectd : '',
             dropListShow: false,
             range2ListShow: '',
-            range2ListActive: '',
-            activeValue:''
+            range2ListActive: ''
         }
     }
 
@@ -1080,15 +1079,7 @@ class DropDown extends React.Component {
 
         const { onChange, value, title } = e;
 
-        let thatActiveValue = '';
-
-        if (!activeValue){
-
-            thatActiveValue = value;
-
-        }
-
-        this.setState({ dropListShow: false,activeValue:thatActiveValue,dropSelectd: { value, title } }, () => {
+        this.setState({ dropListShow: false,dropSelectd: { value, title } }, () => {
             $(this.refs.dropdown_select_ul).hide();
             if (onChange) {
                 onChange({ value, title });
@@ -1342,7 +1333,7 @@ class DropDown extends React.Component {
                         {//dropList是否存在？dropList:''
                             dropList ?
                                 dropList.map((item, key) => {
-                                    return <li key={key} className={`dropdown_select_li ${activeValue&&activeValue===item.value?'active':(this.state.activeValue===item.value?'active':'')}`}
+                                    return <li key={key} className={`dropdown_select_li ${activeValue&&activeValue===item.value?'active':(dropSelectd.value===item.value?'active':'')}`}
                                         title={item.title}
                                         data-vaule={item.value}
                                         onClick={
@@ -1935,7 +1926,7 @@ class Menu extends React.Component {
 
                     <div id="frame_left_menu_container" ref={ref=>this.LeftMenu=ref} className="frame_left_menu_container" >
 
-                        <Scrollbars autoHeight autoHide autoHeightMax={this.state.Height} style={{ width: 240}}>
+                        <Scrollbars autoHeight autoHeightMax={this.state.Height} style={{ width: 240}}>
 
                         {this.state.menuDom}
 
@@ -1967,7 +1958,7 @@ class MenuLeft extends React.Component {
 
                     <div id="frame_left_menu_container" className="frame_left_menu_container">
 
-                        <Scrollbars autoHeight autoHide autoHeightMax={window.innerHeight-80} style={{ width: 240}}>
+                        <Scrollbars autoHeight autoHeightMax={window.innerHeight-80} style={{ width: 240}}>
 
                         {
                                 Menu && Menu.map((item, key) => {
@@ -2100,7 +2091,7 @@ class MenuLeftNoLink extends React.Component {
 
                 <div id="frame_left_menu_container" ref={ref=>this.LeftMenu=ref} className="frame_left_menu_container">
 
-                    <Scrollbars autoHeight autoHide autoHeightMax={this.state.Height} style={{ width: 240}}>
+                    <Scrollbars autoHeight autoHeightMax={this.state.Height} style={{ width: 240}}>
 
                     {
                         Menu && Menu.map((item, key) => {
