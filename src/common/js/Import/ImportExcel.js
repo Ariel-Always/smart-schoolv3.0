@@ -271,7 +271,7 @@ class Import extends Component{
 
         }else{
 
-            utils.AlertWarn({title:"请先上传文件！",that:this});
+            utils.AlertWarn({title:"请先选择文件！",that:this});
 
         }
 
@@ -555,8 +555,6 @@ class Import extends Component{
 
         });
 
-        console.log(ModulesLink);
-
         return <div id="ImportComponent" className="component-import">
 
 
@@ -598,7 +596,7 @@ class Import extends Component{
 
                                             ModulesLink&&ModulesLink.map((item,key)=>{
 
-                                                return <a key={key} href={item} target="_blank" className="dodown">"导入模版{ModulesLink.length>1?key+1:''}"</a>
+                                                return <a key={key} href={item} target="_blank" className="dodown">"模版{ModulesLink.length>1?key+1:''}"</a>
 
                                             })
 
@@ -607,6 +605,16 @@ class Import extends Component{
                                         。
 
                                     </li>
+
+                                    {
+
+                                        ImportTarget==='student'?
+
+                                            <li>3.导入学生档案时，系统会自动生成班级。</li>
+
+                                            :''
+
+                                    }
 
                                 </ul>
 

@@ -366,7 +366,8 @@ class App extends Component{
                         module={{
                             cnname:ModuleSetting.moduleCnName,
                             enname:ModuleSetting.moduleEnName,
-                            image:ModuleSetting.logo}}
+                            image:ModuleSetting.logo
+                        }}
                         userInfo={{
                             name:LoginUser.UserName,
                             image:LoginUser.PhotoPath
@@ -378,7 +379,6 @@ class App extends Component{
                     >
 
                         <div ref="frame-time-barner">
-
 
                             <div className="schedule-period-tab clearfix">
 

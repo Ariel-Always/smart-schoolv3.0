@@ -6,7 +6,7 @@ import Frame from '../../../common/Frame';
 
 import { HashRouter as Router,Route,Switch} from 'react-router-dom';
 
-import {TokenCheck_Connect,LogOut} from "../../../common/js/disconnect";
+import {TokenCheck_Connect} from "../../../common/js/disconnect";
 
 import {connect} from 'react-redux';
 
@@ -719,11 +719,62 @@ class App extends Component{
     }
 
 
-    addClass(e){
+    addClass(e) {
 
-        const {dispatch} = this.props;
+        const {dispatch, UIState,DataState} = this.props;
 
-        dispatch({type:UpUIState.ADD_CLASS_MODAL_SHOW});
+        const { SchoolGradeClasses } = DataState;
+
+        const {ComponentChange} = UIState;
+
+        const {stu,grade,gradeInfo,classInfo} = ComponentChange;
+
+        dispatch({type: UpUIState.ADD_CLASS_MODAL_SHOW});
+
+        //如果不是在全部学生界面
+        if (!stu) {
+
+            let dropSelectd = {};
+
+            if (grade){
+
+              let selectd = SchoolGradeClasses.Grades.find((item) => {return item.GradeID === gradeInfo.id});
+
+              dropSelectd = {value:selectd.GradeID,title:selectd.GradeName};
+
+            }else{
+
+                let selectd = SchoolGradeClasses.Grades.find((item) =>{
+
+                    let ClassMatch = false;
+
+                    item.Classes.map(i=>{
+
+                        if (i.ClassID===classInfo.id){
+
+                            ClassMatch = true;
+
+                        }else{
+
+                            return
+
+                        }
+
+                    });
+
+                    return ClassMatch;
+
+                });
+
+                dropSelectd = {value:selectd.GradeID,title:selectd.GradeName};
+
+            }
+
+            dispatch({type:UpUIState.ADD_CLASS_SELECT_CHANGE,selectValue:dropSelectd});
+
+            dispatch({type:UpUIState.ADD_CLASS_INPUT_ABLED});
+
+        }
 
     }
 
@@ -1122,7 +1173,9 @@ class App extends Component{
                                                 selectTips = {UIState.AddClassModal.selectTips}
                                                 inputTips = {UIState.AddClassModal.inputTips}
                                                 inputTipsShow = {UIState.AddClassModal.inputTipsShow}
-                                                selectedValue={UIState.AddClassModal.selectValue}>
+                                                selectedValue={UIState.AddClassModal.selectValue}
+                                               dropDisabled={UIState.AddClassModal.dropDisabled}
+                                >
                                 </AddClassModal>
 
                             </div>

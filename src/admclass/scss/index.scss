@@ -113,6 +113,14 @@ $image-url:'../images';
 
   background-position: left center;
 
+  &.stu{
+
+    background-image: url("#{$image-url}/class-stu-bar.png");
+
+    padding-left:22px;
+
+  }
+
   .num{
 
     color: #999999;

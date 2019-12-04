@@ -30,7 +30,7 @@ class Import extends Component{
 
             };
 
-            dispatch(AppLoadingActions.hide());
+
 
         }else if(HashParam.includes('Genger')){
 
@@ -44,11 +44,27 @@ class Import extends Component{
 
             };
 
+        }
+
+
+
+    }
+
+    componentWillReceiveProps(props) {
+
+        const {ModuleSetting, UIState,dispatch} = props;
+
+        const {AppLoading} = UIState;
+
+        if (AppLoading.show&&(!ModuleSetting.ShowLeftMenu)&&(!ModuleSetting.ShowBarner)) {
+
             dispatch(AppLoadingActions.hide());
 
         }
 
     }
+
+
 
 
     render(){
@@ -67,11 +83,11 @@ class Import extends Component{
 
 const  mapStateToProps = (state) => {
 
-    let { LoginUser } = state;
+    let { LoginUser,ModuleSetting,UIState } = state;
 
     return {
 
-        LoginUser
+        LoginUser,ModuleSetting,UIState
 
     }
 

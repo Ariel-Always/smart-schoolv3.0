@@ -768,6 +768,8 @@ class BaseSetting extends Component{
                                                         title = '任课班级'
                                                 }
 
+                                                const RoleInnerHTML = RoleDetail[key]===''?emptyContent:RoleDetail[key];
+
                                                 return  <React.Fragment key={key}>
 
                                                             {
@@ -790,21 +792,7 @@ class BaseSetting extends Component{
 
                                                                             <div className="detail-item-title">{title}</div>
 
-                                                                             <div className="detail-content-wrapper" style={{width:RoleDetail[key]?(RoleDetail[key].split(',').length*80+172):172}}>
-
-                                                                                {
-
-                                                                                    RoleDetail[key]===''?
-
-                                                                                        emptyContent
-
-                                                                                        :
-
-                                                                                        RoleDetail[key]
-
-                                                                                }
-
-                                                                            </div>
+                                                                             <div className="detail-content-wrapper" style={{width:RoleDetail[key]?(RoleDetail[key].split(',').length*80+172):172}} dangerouslySetInnerHTML={{__html:RoleInnerHTML}}></div>
 
                                                                             <span className="close-btn" onClick={e=>this.TeacherRoalDetailsClose(e,key)}>×</span>
 

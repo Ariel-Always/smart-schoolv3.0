@@ -102,45 +102,47 @@ class AddTeacherModal extends Component{
 
                         </div>
 
+
+
                         <div className="teacher-list-wrapper">
 
                             <Loading tip="加载中..." spinning={teacherLoadingShow}>
 
-                                <ScrollBar style={{width:712,height:360,marginLeft:12}} autoHide autoHideTimeout={2000}>
+                                <ScrollBar style={{width:724,height:360,marginLeft:12}}>
 
-                            {
+                                    {
 
-                                teacherList.List&&teacherList.List.map((item,key) => {
+                                        teacherList.List&&teacherList.List.map((item,key) => {
 
-                                    return <div key={key} className={`teacher-list-item ${newPickTeacher.id===item.UserID?'active':''}`} onClick={()=>{itemClick({id:item.UserID,photo:item.PhotoPath,name:item.UserName})}}>
+                                            return <div key={key} className={`teacher-list-item ${newPickTeacher.id===item.UserID?'active':''}`} onClick={()=>{itemClick({id:item.UserID,photo:item.PhotoPath,name:item.UserName})}}>
 
-                                                <div className="teacher-photo" style={{backgroundImage:`url(${item.PhotoPath})`}}></div>
+                                                        <div className="teacher-photo" style={{backgroundImage:`url(${item.PhotoPath})`}}></div>
 
-                                                <div className="teacher-name" title={item.UserName}>{item.UserName}</div>
+                                                        <div className="teacher-name" title={item.UserName}>{item.UserName}</div>
 
-                                                <div className="teacher-id" title={`[${item.UserID}]`}>[<span className="id-body">{item.UserID}</span>]</div>
+                                                        <div className="teacher-id" title={`[${item.UserID}]`}>[<span className="id-body">{item.UserID}</span>]</div>
+
+                                                    </div>
+
+                                        })
+
+                                    }
+
+                                    {
+
+                                        !teacherList.List||teacherList.List.length===0?
+
+                                            <div className="empty-wrapper">
+
+                                                <Empty type="4"  title="没有相对应的教师"></Empty>
 
                                             </div>
 
-                                })
+                                            :''
 
-                            }
+                                    }
 
-                            {
-
-                                !teacherList.List||teacherList.List.length===0?
-
-                                    <div className="empty-wrapper">
-
-                                        <Empty type="4"  title="没有相对应的教师"></Empty>
-
-                                    </div>
-
-                                    :''
-
-                            }
-
-                            </ScrollBar>
+                                </ScrollBar>
 
                             </Loading>
 

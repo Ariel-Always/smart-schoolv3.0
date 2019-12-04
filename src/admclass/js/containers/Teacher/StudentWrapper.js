@@ -192,7 +192,7 @@ class StudentWrapper extends Component{
 
             <TitleBar type="icon3" title="班级学生" abstract={`(共${Total}人)`}></TitleBar>
 
-            <Search onCancelSearch={this.StuCancelSearch.bind(this)} placeHolder="请输入学生名称或学号搜索" Value={StudentSearchValue} CancelBtnShow={StuCancelSearchBtn} onChange={this.StuSearchInputChange.bind(this)} width={240} onClickSearch={this.StuSearchClick.bind(this)}></Search>
+            <Search onCancelSearch={this.StuCancelSearch.bind(this)} placeHolder="请输入学号或姓名进行搜索..." Value={StudentSearchValue} CancelBtnShow={StuCancelSearchBtn} onChange={this.StuSearchInputChange.bind(this)} width={240} onClickSearch={this.StuSearchClick.bind(this)}></Search>
 
             <Loading spinning={StudentLoading}>
 

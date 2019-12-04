@@ -4,9 +4,6 @@ import {postData} from "../fetch/index";
 
 import CONFIG from '../config';
 
-import $ from 'jquery';
-import {getData} from "../fetch";
-
 
 const Api = CONFIG.Import;
 
@@ -88,7 +85,7 @@ const AlertError = ({that,title='',ok,cancel,close}) =>{
 
             Cancel:cancel?()=>{ return cancel }:()=>{ AlertHide(that) },
 
-            Colse:close?()=>{ return close }:()=>{ AlertHide(that) }
+            Close:close?()=>{ return close }:()=>{ AlertHide(that) }
 
         }
 
@@ -115,7 +112,7 @@ const AlertWarn = ({that,title='',ok,cancel,close}) =>{
 
             Cancel:cancel?()=>{ return cancel }:()=>{ AlertHide(that) },
 
-            Colse:close?()=>{ return close }:()=>{ AlertHide(that) }
+            Close:close?()=>{ return close }:()=>{ AlertHide(that) }
 
         }
 
@@ -142,7 +139,7 @@ const AlertQuery = ({that,title='',ok,cancel,close}) =>{
 
             Cancel:cancel?()=>{ return cancel }:()=>{ AlertHide(that) },
 
-            Colse:close?()=>{ return close }:()=>{ AlertHide(that) }
+            Close:close?()=>{ return close }:()=>{ AlertHide(that) }
 
         }
 

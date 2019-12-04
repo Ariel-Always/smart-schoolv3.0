@@ -116,7 +116,7 @@ class Import extends Component{
 
         }else{
 
-            utils.AlertWarn({title:"请先上传文件！",that:this});
+            utils.AlertWarn({title:"请先选择文件！",that:this});
 
         }
 
@@ -176,11 +176,11 @@ class Import extends Component{
 
             <div id="step_counter" className={`usermgr_step_bar step${Step}`}>
 
-                <div className="usermgr_step_item">1.上传文件</div>
+                <div className="usermgr_step_item">1.选择文件</div>
 
-                <div className="usermgr_step_item">2.数据筛选匹配</div>
+                <div className="usermgr_step_item">2.上传文件</div>
 
-                <div className="usermgr_step_item">3.导入处理</div>
+                <div className="usermgr_step_item">3.核对处理</div>
 
                 <div className="usermgr_step_item">4.处理结果</div>
 

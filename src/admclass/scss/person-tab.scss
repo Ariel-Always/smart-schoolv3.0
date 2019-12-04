@@ -51,7 +51,7 @@
     height: 76px;
     border-radius: 5px;
     border: solid 1px #abbfd1;
-    cursor: pointer;
+   /* cursor: pointer;*/
     z-index: 5;
     background-color: #ffffff;
     &:before{
@@ -91,6 +91,7 @@
     float: left;
     width: 42px;
     height: 52px;
+    cursor: pointer;
     margin: 12px 5px 0 10px;
     background-size: cover;
     background-position: center;
@@ -105,6 +106,7 @@
   }
   .person-item-name{
     display: inline-block;
+    cursor: pointer;
     max-width: 92px;
     line-height: 1;
     @include textOverFlow;
@@ -183,6 +185,8 @@
   &>div:not(.line){
 
     text-decoration: underline;
+
+    cursor: pointer;
 
     &:hover{
 
