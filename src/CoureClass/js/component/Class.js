@@ -28,13 +28,14 @@ class Class extends React.Component {
           render: OrderNO => {
             return (
               <div className="CheckBox-content">
-                <CheckBox
+                <label><CheckBox
                   value={OrderNO - 1}
+                  type='gray'
                   onChange={this.onTableCheckBoxChange.bind(this)}
                 ></CheckBox>
                 <span className="key-content">
                   {OrderNO >= 10 ? OrderNO : "0" + OrderNO}
-                </span>
+                </span></label>
               </div>
             );
           }
@@ -494,10 +495,11 @@ class Class extends React.Component {
             {Total ? (
               <CheckBox
                 className="checkAll-box"
+                type='gray'
                 onChange={this.OnCheckAllChange}
                 checked={this.state.checkAll}
               >
-                全选
+               <span className='checkAll-title'>全选</span>
                 <Button
                   onClick={this.onDeleteAllClick}
                   className="deleteAll"

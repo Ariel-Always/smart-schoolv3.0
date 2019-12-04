@@ -48,7 +48,7 @@ function handleData(data,pageIndex,pageSize){
 
     })
     
-    return {newList,keyList,pensonalList};
+    return {newList,keyList,pensonalList,pageIndex,pageSize};
 }
 
 export default  GradeStudentPreview;

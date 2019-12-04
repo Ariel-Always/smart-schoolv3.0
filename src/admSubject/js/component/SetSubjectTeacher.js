@@ -149,6 +149,35 @@ class SetSubjectTeacher extends React.Component {
             searchOpen: true
         })
     }
+    // 取消搜索
+    ondropCancelSearch = (grades, index, value)=>{
+        const { dispatch, DataState } = this.props;
+        // // console.log(this.state.UserMsg.SchoolID)
+         //请求链接和参数
+         let AllGrades = [];
+
+         DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.Teachers.split(',').map((teacher, index) => {
+             let teacherArr = teacher.split('/');
+             let Grades = teacherArr[0];
+             let TeacherID = teacherArr[1];
+             let TeacherName = teacherArr[2];
+             AllGrades.push(Grades)
+             //初始下拉选择
+ 
+            
+ 
+ 
+         })
+         let url = '/GetTeacherInfoBySubjectAndKey?schoolID='+DataState.LoginUser.SchoolID+'&subjectID=' + DataState.SetSubjectTeacherMsg.SubjectTeacherMsg.SubjectID + '&key=';
+         //获取初始全部学科信息
+         // console.log(url)
+        dispatch({ type: actions.UpUIState.SEARCH_LOADING_OPEN });
+        dispatch(actions.UpDataState.getSubjectTeacherMsg(url, 'All', AllGrades));
+        
+        this.setState({
+            searchOpen: true
+        })
+    }
     onMultipleChange = (grades, index, value) => {
         const { dispatch, DataState } = this.props;
 
@@ -234,6 +263,7 @@ class SetSubjectTeacher extends React.Component {
                                                 height: 250,
                                                 range: 1,
                                                 searchOpen: true,
+                                                dropCancelSearch:this.ondropCancelSearch.bind(this, Grades, index),
                                                 searchLoadingShow: UIState.AppLoading.searchLoading,
                                                 searchPlaceholder: '请输入任课教师工号或名称进行搜索',
                                                 searchList: DataState.SetSubjectTeacherMsg.SubjectTeacherList[Grades] ? DataState.SetSubjectTeacherMsg.SubjectTeacherList[Grades] : [],

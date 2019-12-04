@@ -103,8 +103,7 @@ class All extends React.Component {
             label: {
               normal: {
                 show: false,
-                position: "left",
-                
+                position: "left"
               },
               emphasis: {
                 show: false,
@@ -125,12 +124,12 @@ class All extends React.Component {
                 name: "学生人数",
                 itemStyle: {
                   normal: {
-                    borderColor:'#fff',
-                    borderWidth:1,
+                    borderColor: "#fff",
+                    borderWidth: 1,
                     // color: new echarts.graphic.RadialGradient(
                     //     0.5, 0.5, 0.5,
                     //     [
-                          
+
                     //       {
                     //         // 0% 处的颜色
                     //         offset: 0,
@@ -149,124 +148,129 @@ class All extends React.Component {
                     //     false
                     //   ),
                     color: new echarts.graphic.LinearGradient(
-                        1,
-                        0,
-                        0,
-                        1,
-                        [
-                          
-                          {
-                            // 0% 处的颜色
-                            offset: 0,
-                            color: "#7c7cfc"
-                          },
-                          {
-                            // 100% 处的颜色
-                            offset: 1,
-                            color: '#42cfff'
-                          }
-                        ],
-                        false
-                      ),
-                      
-        //               // 阴影的大小
-        // shadowBlur: 10,
-        // // 阴影水平方向上的偏移
-        // shadowOffsetX: -10 -10,
-        // // 阴影垂直方向上的偏移
-        // shadowOffsetY: -10 -10,
-        // // 阴影颜色
-        // shadowColor: 'rgba(0, 0, 0, 0.5)'
+                      1,
+                      0,
+                      0,
+                      1,
+                      [
+                        {
+                          // 0% 处的颜色
+                          offset: 0,
+                          color: "#7c7cfc"
+                        },
+                        {
+                          // 100% 处的颜色
+                          offset: 1,
+                          color: "#42cfff"
+                        }
+                      ],
+                      false
+                    )
+
+                    //               // 阴影的大小
+                    // shadowBlur: 10,
+                    // // 阴影水平方向上的偏移
+                    // shadowOffsetX: -10 -10,
+                    // // 阴影垂直方向上的偏移
+                    // shadowOffsetY: -10 -10,
+                    // // 阴影颜色
+                    // shadowColor: 'rgba(0, 0, 0, 0.5)'
                   }
                 }
               },
-              { value: userData.Teacher, name: "教师人数",
-              itemStyle: {
-
-
-                normal: {
-                    borderColor:'#fff',
-                    borderWidth:1,
-                     color: new echarts.graphic.LinearGradient(
-                1,
-                0,
-                0,
-                1,
-                [
-                  
-                  {
-                    // 0% 处的颜色
-                    offset: 0,
-                    color: "#ffa800"
-                  },
-                  {
-                    // 100% 处的颜色
-                    offset: 1,
-                    color: '#fb3737'
-                  }
-                ],
-                false
-              )}}},
-              { value: userData.SchoolLeader, name: "领导人数", 
-              itemStyle: {
-               
-
-                normal: {
-                    borderColor:'#fff',
-                    borderWidth:1,
+              {
+                value: userData.Teacher,
+                name: "教师人数",
+                itemStyle: {
+                  normal: {
+                    borderColor: "#fff",
+                    borderWidth: 1,
                     color: new echarts.graphic.LinearGradient(
-                1,
-                0,
-                0,
-                1,
-                [
-                  
-                  {
-                    // 0% 处的颜色
-                    offset: 0,
-                    color: "#90b915"
-                  },
-                  {
-                    // 100% 处的颜色
-                    offset: 1,
-                    color: '#d9ff81'
+                      1,
+                      0,
+                      0,
+                      1,
+                      [
+                        {
+                          // 0% 处的颜色
+                          offset: 0,
+                          color: "#ffa800"
+                        },
+                        {
+                          // 100% 处的颜色
+                          offset: 1,
+                          color: "#fb3737"
+                        }
+                      ],
+                      false
+                    )
                   }
-                ],
-                false
-              )}} }
+                }
+              },
+              {
+                value: userData.SchoolLeader,
+                name: "领导人数",
+                itemStyle: {
+                  normal: {
+                    borderColor: "#fff",
+                    borderWidth: 1,
+                    color: new echarts.graphic.LinearGradient(
+                      1,
+                      0,
+                      0,
+                      1,
+                      [
+                        {
+                          // 0% 处的颜色
+                          offset: 0,
+                          color: "#90b915"
+                        },
+                        {
+                          // 100% 处的颜色
+                          offset: 1,
+                          color: "#d9ff81"
+                        }
+                      ],
+                      false
+                    )
+                  }
+                }
+              }
             ]
           },
           // 边框的设置
           {
-              radius: ['23.5%', '33.3%'],
-              center: ['276', '50%'],
-              type: 'pie',
-              label: {
-                  normal: {
-                      show: false
-                  },
-                  emphasis: {
-                      show: false
-                  }
+            radius: ["23.5%", "33.3%"],
+            center: ["276", "50%"],
+            type: "pie",
+            label: {
+              normal: {
+                show: false
               },
-              labelLine: {
-                  normal: {
-                      show: false
-                  },
-                  emphasis: {
-                      show: false
-                  }
+              emphasis: {
+                show: false
+              }
+            },
+            labelLine: {
+              normal: {
+                show: false
               },
-              animation: false,
-              tooltip: {
-                  show: false
-              },
-              data: [{
-                  value: 1,
-                  itemStyle: {
-                      color: "rgba(250,250,250,0.3)",
-                  },
-              }],
+              emphasis: {
+                show: false
+              }
+            },
+            animation: false,
+            tooltip: {
+              show: false
+            },
+            data: [
+              {
+                value: 1,
+                itemStyle: {
+                  color: "rgba(250,250,250,0.3)"
+                }
+              }
+            ]
           }
         ]
       });
@@ -278,83 +282,81 @@ class All extends React.Component {
       // 绘制图表
       Chart_student.setOption({
         color: new echarts.graphic.LinearGradient(
-            0,
-            0,
-            0,
-            1,
-            [
-              
-                {
-                    // 0% 处的颜色
-                    offset: 0,
-                    color: "#42cfff"
-                  },
-                  {
-                    // 100% 处的颜色
-                    offset: 1,
-                    color: '#7c7cfc'
-                  }
-            ],
-            false
-          ),
+          0,
+          0,
+          0,
+          1,
+          [
+            {
+              // 0% 处的颜色
+              offset: 0,
+              color: "#42cfff"
+            },
+            {
+              // 100% 处的颜色
+              offset: 1,
+              color: "#7c7cfc"
+            }
+          ],
+          false
+        ),
         title: {},
         xAxis: {
           type: "category",
           data: userData.GradeNames,
-        //   data: ['一年级','二年级','一年级','二年级','一年级','二年级'],
+          //   data: ['一年级','二年级','一年级','二年级','一年级','二年级'],
           name: "年级",
-          nameTextStyle:{
-            color:'#999',
-            fontSize:'14'
+          nameTextStyle: {
+            color: "#999",
+            fontSize: "12"
           },
-          axisLabel:{
+          axisLabel: {
             // interval: 0,
-            rotate:this.Xrotate(userData.GradeNames),
+            rotate: this.Xrotate(userData.GradeNames),
             textStyle: {
-                color:'#333',
-                fontSize:'14'
-
+              color: "#999",
+              fontSize: "12"
             }
-        },
-        axisTick:{
-            inside:true
           },
+          axisTick: {
+            inside: true
+          }
         },
         yAxis: {
-            axisLine:{
-                show:false//隐藏y轴
-            },
-            axisTick:{
-                show:false//隐藏y轴刻度
-            },
-            // max: function(value) {
-            //     for(let i = 0;)
-            //     return value.max + 20;
-            // },
-            boundaryGap: ['0', '10%'],//y轴上留白
+          axisLine: {
+            show: false //隐藏y轴
+          },
+          axisTick: {
+            show: false //隐藏y轴刻度
+          },
+          // max: function(value) {
+          //     for(let i = 0;)
+          //     return value.max + 20;
+          // },
+          boundaryGap: ["0", "10%"], //y轴上留白
           type: "value",
           name: "学生人数(单位:人数)",
-          nameTextStyle:{
-            color:'#999',
-            fontSize:'14',
-            padding:[0,0,0,120]
+          nameTextStyle: {
+            color: "#999",
+            fontSize: "12",
+            padding: [0, 0, 0, 120]
           },
-          splitLine: {//分隔线样式
+          splitLine: {
+            //分隔线样式
             lineStyle: {
-                type:'dotted',
-                // 使用深浅的间隔色
-                color: ['#ccc']
+              type: "dotted",
+              // 使用深浅的间隔色
+              color: ["#ccc"]
             }
-        },
-        axisLabel:{
+          },
+          axisLabel: {
             // interval: 0,
-          
-            textStyle: {
-                color:'#333',
-                fontSize:'14'
 
+            textStyle: {
+              color: "#999",
+              fontSize: "12"
             }
-        },
+          }
         },
         series: [
           {
@@ -364,18 +366,17 @@ class All extends React.Component {
               normal: {
                 show: true,
                 position: "top",
-                textStyle: { color: "#333333" ,
-                fontSize:'14'
-
-            }
-              },
-            //   emphasis: {
-            //     show: true,
-            //     textStyle: {
-            //       fontSize: "16",
-            //     //   fontWeight: "bold"
-            //     }
-            //   }
+                textStyle: { color: "#333", fontSize: "12" },
+                // backgroundColor:'rgba(250,250,250,0.3)',
+                // borderRadius:'4'
+              }
+              //   emphasis: {
+              //     show: true,
+              //     textStyle: {
+              //       fontSize: "16",
+              //     //   fontWeight: "bold"
+              //     }
+              //   }
             },
             // encode: {
             //   x: [1, 2],
@@ -394,35 +395,36 @@ class All extends React.Component {
         // barMaxWidth: '',
         // barWidth: null,        // 默认自适应
         barGap: "30%", // 柱间距离，默认为柱形宽度的30%，可设固定值
-        barCategoryGap:  this.BarWidth(userData.GradeStudent), // 类目间柱形距离，默认为类目间距的20%，可设固定值
+        barCategoryGap: this.BarWidth(userData.GradeStudent), // 类目间柱形距离，默认为类目间距的20%，可设固定值
         itemStyle: {
-            barBorderRadius: [5,5,0,0], // 柱条边线圆角，单位px，默认为0
-        //   normal: {
-        //     // color: '各异',
+          barBorderRadius: [5, 5, 0, 0] // 柱条边线圆角，单位px，默认为0
+          //   normal: {
+          //     // color: '各异',
 
-        //     barBorderColor: "#7c7cfc", // 柱条边线
-        //     barBorderRadius: 5, // 柱条边线圆角，单位px，默认为0
-        //     barBorderWidth: 1, // 柱条边线线宽，单位px，默认为1
-        //     label: {
-        //       show: false
-        //       // position: 默认自适应，水平布局为'top'，垂直布局为'right'，可选为
-        //       //           'inside'|'left'|'right'|'top'|'bottom'
-        //       // textStyle: null      // 默认使用全局文本样式，详见TEXTSTYLE
-        //     }
-        //   },
-        //   emphasis: {
-        //     // color: '各异',
-        //     barBorderColor: "rgba(0,0,0,0)", // 柱条边线
-        //     barBorderRadius: 5, // 柱条边线圆角，单位px，默认为0
-        //     barBorderWidth: 1, // 柱条边线线宽，单位px，默认为1
-        //     label: {
-        //       show: false
-        //       // position: 默认自适应，水平布局为'top'，垂直布局为'right'，可选为
-        //       //           'inside'|'left'|'right'|'top'|'bottom'
-        //       // textStyle: null      // 默认使用全局文本样式，详见TEXTSTYLE
-        //     }
-        //   }
-        }
+          //     barBorderColor: "#7c7cfc", // 柱条边线
+          //     barBorderRadius: 5, // 柱条边线圆角，单位px，默认为0
+          //     barBorderWidth: 1, // 柱条边线线宽，单位px，默认为1
+          //     label: {
+          //       show: false
+          //       // position: 默认自适应，水平布局为'top'，垂直布局为'right'，可选为
+          //       //           'inside'|'left'|'right'|'top'|'bottom'
+          //       // textStyle: null      // 默认使用全局文本样式，详见TEXTSTYLE
+          //     }
+          //   },
+          //   emphasis: {
+          //     // color: '各异',
+          //     barBorderColor: "rgba(0,0,0,0)", // 柱条边线
+          //     barBorderRadius: 5, // 柱条边线圆角，单位px，默认为0
+          //     barBorderWidth: 1, // 柱条边线线宽，单位px，默认为1
+          //     label: {
+          //       show: false
+          //       // position: 默认自适应，水平布局为'top'，垂直布局为'right'，可选为
+          //       //           'inside'|'left'|'right'|'top'|'bottom'
+          //       // textStyle: null      // 默认使用全局文本样式，详见TEXTSTYLE
+          //     }
+          //   }
+        },
+        
       });
 
       Chart_student.on("click", function(params) {
@@ -448,84 +450,81 @@ class All extends React.Component {
       // 绘制图表
       Chart_teacher.setOption({
         color: new echarts.graphic.LinearGradient(
-            0,
-            0,
-            0,
-            1,
-            [
-              
-                {
-                    // 0% 处的颜色
-                    offset: 0,
-                    color: "#fb3737"
-                  },
-                  {
-                    // 100% 处的颜色
-                    offset: 1,
-                    color: '#ffa800'
-                  }
-            ],
-            false
-          ),
+          0,
+          0,
+          0,
+          1,
+          [
+            {
+              // 0% 处的颜色
+              offset: 0,
+              color: "#fb3737"
+            },
+            {
+              // 100% 处的颜色
+              offset: 1,
+              color: "#ffa800"
+            }
+          ],
+          false
+        ),
         title: {},
         xAxis: {
           type: "category",
           data: userData.SubjectNames,
           name: "学科",
-          nameTextStyle:{
-            color:'#999',
-            fontSize:'14'
+          nameTextStyle: {
+            color: "#999",
+            fontSize: "12"
           },
-          axisTick:{
-            inside:true
+          axisTick: {
+            inside: true
           },
-          axisLabel:{
+          axisLabel: {
             // interval: 0,
-            rotate:this.Xrotate(userData.SubjectNames),
+            rotate: this.Xrotate(userData.SubjectNames),
             textStyle: {
-                color:'#333',
-                // bold:false
-                fontSize:'14'
+              color: "#999",
+              // bold:false
+              fontSize: "12"
             }
-        },
+          }
         },
         yAxis: {
-            axisLine:{
-                show:false
-            },
-            axisTick:{
-                show:false
-            },
-            boundaryGap: ['0', '10%'],
+          axisLine: {
+            show: false
+          },
+          axisTick: {
+            show: false
+          },
+          boundaryGap: ["0", "10%"],
           type: "value",
           name: "教师人数(单位:人数)",
-          nameTextStyle:{
-            color:'#999',
-            fontSize:'14',
-            padding:[0,0,0,120]
-
+          nameTextStyle: {
+            color: "#999",
+            fontSize: "12",
+            padding: [0, 0, 0, 120]
           },
-          axisLabel:{
+          axisLabel: {
             // interval: 0,
-          
-            textStyle: {
-                color:'#333',
-                fontSize:'14'
 
+            textStyle: {
+              color: "#999",
+              fontSize: "12"
             }
-        },
-          color:'#999',
-          fontSize:'14',
+          },
+          color: "#999",
+          fontSize: "12",
           splitLine: {
             lineStyle: {
-                type:'dotted',
-                // 使用深浅的间隔色
-                color: ['#ccc']
+              type: "dotted",
+              // 使用深浅的间隔色
+              color: ["#ccc"]
             }
-        },
-        //   axisTick:{
-        //     lineStyle:{type:'dotted'}
-        //   } ,
+          }
+          //   axisTick:{
+          //     lineStyle:{type:'dotted'}
+          //   } ,
         },
         series: [
           {
@@ -536,9 +535,7 @@ class All extends React.Component {
               normal: {
                 show: true,
                 position: "top",
-                textStyle: { color: "#333333",    
-                fontSize:'14'
-            }
+                textStyle: { color: "#333", fontSize: "12" }
               }
             }
           }
@@ -548,33 +545,33 @@ class All extends React.Component {
         barGap: "30%", // 柱间距离，默认为柱形宽度的30%，可设固定值
         barCategoryGap: this.BarWidth(userData.SubjectTeacher), // 类目间柱形距离，默认为类目间距的20%，可设固定值
         itemStyle: {
-            barBorderRadius: [5,5,0,0], // 柱条边线圆角，单位px，默认为0
+          barBorderRadius: [5, 5, 0, 0] // 柱条边线圆角，单位px，默认为0
 
-        //   normal: {
-        //     // color: '各异',
+          //   normal: {
+          //     // color: '各异',
 
-        //     barBorderColor: "#ffa800", // 柱条边线
-        //     barBorderRadius: 5, // 柱条边线圆角，单位px，默认为0
-        //     barBorderWidth: 1, // 柱条边线线宽，单位px，默认为1
-        //     label: {
-        //       show: false
-        //       // position: 默认自适应，水平布局为'top'，垂直布局为'right'，可选为
-        //       //           'inside'|'left'|'right'|'top'|'bottom'
-        //       // textStyle: null      // 默认使用全局文本样式，详见TEXTSTYLE
-        //     }
-        //   },
-        //   emphasis: {
-        //     // color: '各异',
-        //     barBorderColor: "rgba(0,0,0,0)", // 柱条边线
-        //     barBorderRadius: 5, // 柱条边线圆角，单位px，默认为0
-        //     barBorderWidth: 1, // 柱条边线线宽，单位px，默认为1
-        //     label: {
-        //       show: false
-        //       // position: 默认自适应，水平布局为'top'，垂直布局为'right'，可选为
-        //       //           'inside'|'left'|'right'|'top'|'bottom'
-        //       // textStyle: null      // 默认使用全局文本样式，详见TEXTSTYLE
-        //     }
-        //   }
+          //     barBorderColor: "#ffa800", // 柱条边线
+          //     barBorderRadius: 5, // 柱条边线圆角，单位px，默认为0
+          //     barBorderWidth: 1, // 柱条边线线宽，单位px，默认为1
+          //     label: {
+          //       show: false
+          //       // position: 默认自适应，水平布局为'top'，垂直布局为'right'，可选为
+          //       //           'inside'|'left'|'right'|'top'|'bottom'
+          //       // textStyle: null      // 默认使用全局文本样式，详见TEXTSTYLE
+          //     }
+          //   },
+          //   emphasis: {
+          //     // color: '各异',
+          //     barBorderColor: "rgba(0,0,0,0)", // 柱条边线
+          //     barBorderRadius: 5, // 柱条边线圆角，单位px，默认为0
+          //     barBorderWidth: 1, // 柱条边线线宽，单位px，默认为1
+          //     label: {
+          //       show: false
+          //       // position: 默认自适应，水平布局为'top'，垂直布局为'right'，可选为
+          //       //           'inside'|'left'|'right'|'top'|'bottom'
+          //       // textStyle: null      // 默认使用全局文本样式，详见TEXTSTYLE
+          //     }
+          //   }
         }
       });
 
@@ -594,32 +591,31 @@ class All extends React.Component {
       });
     }
   }
-// x坐标倾斜
-Xrotate = (data) => {
+  // x坐标倾斜
+  Xrotate = data => {
     // console.log(data)
-    if(!(data instanceof Array)){
-        return 25
+    if (!(data instanceof Array)) {
+      return 25;
     }
-    let len =  data.length;
-    if(len <= 6){
-        return 0;
-    }else{
-        return 25;
+    let len = data.length;
+    if (len <= 6) {
+      return 0;
+    } else {
+      return 25;
     }
-}
-// 柱状图 柱宽
-BarWidth = (data) => {
-    if(!(data instanceof Array)){
-        return '50%'
+  };
+  // 柱状图 柱宽
+  BarWidth = data => {
+    if (!(data instanceof Array)) {
+      return "50%";
     }
-    let len =  data.length;
-    if(len <= 3){
-        return '80%';
-    }else if(len <= 6){
-        return '65%';
-    }else 
-    return '50%'
-}
+    let len = data.length;
+    if (len <= 3) {
+      return "80%";
+    } else if (len <= 6) {
+      return "65%";
+    } else return "50%";
+  };
   render() {
     const { UIState, DataState } = this.props;
     // console.log(DataState)

@@ -128,10 +128,9 @@ $image-url: "../images";
                 position: relative;
                 .table {
                     .ant-table-thead {
-                        th:nth-child(1),
-                        th:nth-child(2),
-                        th:nth-child(3) {
-                            padding: 0;
+                        th:nth-child(2) {
+                            // text-align: left;
+                            padding-left: 60px;
                         }
                         th {
                             padding: 0;
@@ -167,6 +166,7 @@ $image-url: "../images";
                         cursor: pointer;
                         border-radius: 3px;
                         border: 1px solid #999;
+                        object-fit: cover;
                     }
                     .name-UserName {
                         display: block;
@@ -278,6 +278,10 @@ $image-url: "../images";
                 .checkAll-box {
                     margin-top: 10px;
                     margin-left: 24px;
+                    .checkAll-title {
+                        vertical-align: baseline;
+                        height: 28px;
+                    }
                     .deleteAll {
                         color: #fff;
                         // width: 56px;
@@ -286,7 +290,10 @@ $image-url: "../images";
                         padding: 0 16px;
                         text-align: center;
                         margin-left: 8px;
-                        border: none // box-sizing: content-box;
+                        border: none; // box-sizing: content-box;
+                        span {
+                            vertical-align: baseline;
+                        }
                     }
                 }
                 .pagination-box {

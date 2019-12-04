@@ -540,6 +540,9 @@ textarea.ant-input {
             margin-left: -40px;
             overflow: hidden;
             left: 50%;
+            img {
+                object-fit: cover;
+            }
         }
         .top-userName {
             position: relative;

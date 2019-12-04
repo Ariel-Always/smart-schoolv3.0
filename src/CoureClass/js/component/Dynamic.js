@@ -42,8 +42,8 @@ class Dynamic extends React.Component {
                     render: OrderNO => {
                         return (
                             <div className='CheckBox-content'>
-                                <CheckBox value={OrderNO - 1} ></CheckBox>
-                                <span className='key-content'>{OrderNO >= 10 ? OrderNO : '0' + OrderNO}</span>
+                                <label><CheckBox type='gray' value={OrderNO - 1} ></CheckBox>
+                                <span className='key-content'>{OrderNO >= 10 ? OrderNO : '0' + OrderNO}</span></label>
                             </div>
                         )
                     }
@@ -254,26 +254,26 @@ class Dynamic extends React.Component {
     onCheckClick = () => {
         const { dispatch, DataState } = this.props;
 
-        if (!this.state.startTime) {
-            dispatch(actions.UpUIState.showErrorAlert({
-                type: 'btn-error',
-                title: "您还没有选择开始时间哦~",
-                ok: this.onAppAlertOK.bind(this),
-                cancel: this.onAppAlertCancel.bind(this),
-                close: this.onAppAlertClose.bind(this)
-            }));
-            return;
-        }
-        if (!this.state.endTime) {
-            dispatch(actions.UpUIState.showErrorAlert({
-                type: 'btn-error',
-                title: "您还没有选择结束时间哦~",
-                ok: this.onAppAlertOK.bind(this),
-                cancel: this.onAppAlertCancel.bind(this),
-                close: this.onAppAlertClose.bind(this)
-            }));
-            return;
-        }
+        // if (!this.state.startTime) {
+        //     dispatch(actions.UpUIState.showErrorAlert({
+        //         type: 'btn-error',
+        //         title: "您还没有选择开始时间哦~",
+        //         ok: this.onAppAlertOK.bind(this),
+        //         cancel: this.onAppAlertCancel.bind(this),
+        //         close: this.onAppAlertClose.bind(this)
+        //     }));
+        //     return;
+        // }
+        // if (!this.state.endTime) {
+        //     dispatch(actions.UpUIState.showErrorAlert({
+        //         type: 'btn-error',
+        //         title: "您还没有选择结束时间哦~",
+        //         ok: this.onAppAlertOK.bind(this),
+        //         cancel: this.onAppAlertCancel.bind(this),
+        //         close: this.onAppAlertClose.bind(this)
+        //     }));
+        //     return;
+        // }
         let userMsg = DataState.LoginUser;
         let handleTypeSelected = this.state.handleTypeSelected;
         dispatch(actions.UpDataState.getCourseClassDynamicMsg('/GetGourseClassLogNew?userID=' + userMsg.UserID + '&userType=' + userMsg.UserType + '&schoolID=' + userMsg.SchoolID + '&startDate=' + this.state.startTime + '&endDate=' + this.state.endTime + '&operateType=' + handleTypeSelected.value))
@@ -495,9 +495,10 @@ class Dynamic extends React.Component {
                             {DataState.GetCourseClassDynamicMsg.tableSource ? (
                                 <CheckBox
                                     className='checkAll-box'
+                                    type='gray'
                                     onChange={this.OnCheckAllChange}
                                     checked={this.state.checkAll}>
-                                    全选
+                                   <span className="checkAll-title">全选</span>
                                     <Button
                                         onClick={this.onSelectAllClick}
                                         className='selectAll'

@@ -27,7 +27,7 @@ class TimeBanner extends React.Component {
                 <span className='tips_num'>
                         {DataState.LogPreview.unreadLogCount}
                     </span>
-                    份档案发生了变更,
+                    份档案发生了变更，
                 <Link to='/UserArchives/LogDynamic' target='_blank' className='tips_handle'>
                         查看详情>></Link>
                 </span>):''}

@@ -27,13 +27,16 @@ class Search extends React.Component {
           render: OrderNO => {
             return (
               <div className="CheckBox-content">
+                ><label>
                 <CheckBox
                   value={OrderNO - 1}
+                  type="gray"
                   onChange={this.onTableCheckBoxChange.bind(this)}
                 ></CheckBox>
                 <span className="key-content">
                   {OrderNO >= 10 ? OrderNO : "0" + OrderNO}
                 </span>
+                </label>
               </div>
             );
           }
@@ -463,12 +466,21 @@ class Search extends React.Component {
         <div className="Search-box">
           <div className="Search-top">
             <span className="top-tips">
-              <span className="tips ">
-                {"搜索结果: 共找到" +
-                  (DataState.GetClassAllMsg.allClass
+              <span
+                className="tips "
+                style={{
+                  display: DataState.GetClassAllMsg.allClass.CourseClassCount
+                    ? "inline-block"
+                    : "none"
+                }}
+              >
+                搜索结果: 共找到
+                <span style={{color:'#666'}}>
+                  {DataState.GetClassAllMsg.allClass.CourseClassCount
                     ? DataState.GetClassAllMsg.allClass.CourseClassCount
-                    : 0) +
-                  "个教学班"}
+                    : 0}
+                </span>
+                个教学班
               </span>
             </span>
           </div>
@@ -494,10 +506,11 @@ class Search extends React.Component {
             {Total ? (
               <CheckBox
                 className="checkAll-box"
+                type="gray"
                 onChange={this.OnCheckAllChange}
                 checked={this.state.checkAll}
               >
-                全选
+                <span className='checkAll-title'>全选</span>
                 <Button
                   onClick={this.onDeleteAllClick}
                   className="deleteAll"

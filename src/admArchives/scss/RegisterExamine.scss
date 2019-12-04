@@ -90,8 +90,23 @@
             .dropdown_container {
                 float: left;
             }
-            .search_container {
+            .Search {
                 float: right;
+                .search-tips {
+                    color: #000;
+                    font-size: 14px;
+                    text-align: right;
+                    float: left;
+                    line-height: 28px;
+                    margin-right: 10px;
+                    .Total {
+                        color: red;
+                        // font-weight: bold;
+                    }
+                }
+                .search_container {
+                    float: left;
+                }
             }
         }
         .content-render {
@@ -99,14 +114,12 @@
             position: relative;
             .table {
                 .ant-table-thead {
-                    th:nth-child(1),
-                    th:nth-child(2),
-                    th:nth-child(3),
-                    th:nth-child(4) {
-                        padding: 0;
-                    }
+                    // th:nth-child(3) {
+                    //     // text-align: left;
+                    //     padding-left: 60px;
+                    // }
                     th {
-                        padding: 0 16px;
+                        padding: 0;
                     }
                 }
                 .ant-table-row {
@@ -136,6 +149,7 @@
                 .name-img {
                     margin: 0 6px;
                     cursor: pointer;
+                    object-fit: cover;
                 }
                 .name-UserName {
                     text-decoration: underline;
@@ -216,6 +230,26 @@
             .pagination-box {
                 margin-top: 10px;
                 float: right;
+            }
+        }
+        .will {
+            .table {
+                .ant-table-thead {
+                    th:nth-child(3) {
+                        // text-align: left;
+                        padding-left: 60px;
+                    }
+                }
+            }
+        }
+        .did {
+            .table {
+                .ant-table-thead {
+                    th:nth-child(2) {
+                        // text-align: left;
+                        padding-left: 60px;
+                    }
+                }
             }
         }
     }

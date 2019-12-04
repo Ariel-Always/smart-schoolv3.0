@@ -68,14 +68,15 @@ class EditModal extends React.Component {
         let userType = 'Student'
         let userID = DataState.LoginUser.UserID;
         let curImgPath = ''
+        let handleUserID = ''
 
         if (this.state.type === 'student') {
             let Grades = DataState.GradeClassMsg.returnData.NewGrade ? DataState.GradeClassMsg.returnData.NewGrade : [];
             let len = Grades.lenght;
             let Classes = [];
             let Select = DataState.GradeStudentPreview.newList[UserKey];
+            let GradeStudentPreview = DataState.GradeStudentPreview;
             let GradeArr = [];
-
             // for (let i = 0; i < len; i++) {
             //     let Grade = { value: Grades[i].GradeID, title: Grades[i].GradeName }
             //     GradeArr.push(Grade)
@@ -102,15 +103,18 @@ class EditModal extends React.Component {
                     telephone: Select.child.Telephone,
                     homeAddress: Select.child.HomeAddress
                 }
+                handleUserID = Select.child.UserID
                 curImgPath = Select.child.PhotoPath || Select.child.PhotoPath_Nocache
             } else {
-
+                ClassArr = GradeStudentPreview.GradeID.value?DataState.GradeClassMsg.returnData.AllClasses[GradeStudentPreview.GradeID.value].length>0?DataState.GradeClassMsg.returnData.AllClasses[GradeStudentPreview.GradeID.value]:[{value: 0,
+                    title: '请选择班级'}]:[{value: 0,
+                    title: '请选择班级'}];
                 StudentChangeMsg = {
                     userID: '',
                     userName: '',
                     gender: '',
-                    classID: '',
-                    gradeID: '',
+                    classID: GradeStudentPreview.ClassID.value?GradeStudentPreview.ClassID.value:'',
+                    gradeID: GradeStudentPreview.GradeID.value?GradeStudentPreview.GradeID.value:'',
                     photoPath: '',
                     // photoPath: '',
                     IDCardNo: '',
@@ -134,14 +138,14 @@ class EditModal extends React.Component {
                         value: Select.child.Gender === '男' ? 1 : 0,
                         title: Select.child.Gender
                     },
-                GradeChange: this.state.UserKey === 'add' ? {
+                GradeChange: this.state.UserKey === 'add' ?GradeStudentPreview.GradeID.value ?GradeStudentPreview.GradeID:{
                     value: 0,
                     title: '请选择年级'
                 } : {
                         value: Select.child.GradeID,
                         title: Select.child.GradeName
                     },
-                ClassChange: this.state.UserKey === 'add' ? {
+                ClassChange: this.state.UserKey === 'add' ?GradeStudentPreview.ClassID.value?GradeStudentPreview.ClassID: {
                     value: 0,
                     title: '请选择班级'
                 } : {
@@ -182,6 +186,7 @@ class EditModal extends React.Component {
                     telephone: Select.child.Telephone,
                     homeAddress: Select.child.HomeAddress
                 }
+                handleUserID = Select.child.UserID
                 curImgPath = Select.child.PhotoPath || Select.child.PhotoPath_Nocache
 
             } else {
@@ -271,6 +276,7 @@ class EditModal extends React.Component {
                     telephone: Select.child.Telephone,
                     homeAddress: Select.child.HomeAddress
                 }
+                handleUserID = Select.child.UserID
                 curImgPath = Select.child.PhotoPath || Select.child.PhotoPath_Nocache
 
             } else {
@@ -340,7 +346,7 @@ class EditModal extends React.Component {
             token: token,
             resWebUrl: DataState.GetPicUrl.picUrl, //资源站点地址
             userType: userType,   //用户类型，可选值Admin、Student、Teacher、SchoolLeader
-            userID: userID, //新增时传空字符串、编辑时传相应UserID
+            userID: handleUserID, //新增时传空字符串、编辑时传相应UserID
             curImgPath: curImgPath //用户当前头像，新增时可不传
 
         };
@@ -401,7 +407,7 @@ class EditModal extends React.Component {
     }
 
     // idBlur 
-    onEditBlur = (e) => {
+    onEditIDBlur = (e) => {
         const { dispatch } = this.props
         // this.setState({
         //     UserIDChange: e.target.value
@@ -409,7 +415,7 @@ class EditModal extends React.Component {
         //用户ID（工号/学号）检测  
         //长度是1~30位，只能由字母与数字组成。
         //console.log(e.target.value)
-        let Test = e.target.value === '' || /^([a-zA-Z0-9]{1,24})$/.test(e.target.value)
+        let Test = e.target.value !== '' || /^([a-zA-Z0-9]{1,24})$/.test(e.target.value)
         if (!Test) {
             dispatch(actions.UpUIState.editModalTipsVisible({
                 UserIDTipsVisible: true
@@ -432,14 +438,21 @@ class EditModal extends React.Component {
     }
     onEditNameChange = (e) => {
         const { dispatch } = this.props
-        //用户姓名检测
-        //用户姓名由1-20位的汉字、字母、数字、下划线组成。
-        let value = e.target.value;
-        let Test = /^[a-zA-Z0-9_\u4e00-\u9fa5][a-zA-Z0-9_\u4e00-\u9fa5 ]{0,48}[a-zA-Z0-9_\u4e00-\u9fa5]$|^[a-zA-Z0-9_\u4e00-\u9fa5]{1,50}$/.test(value)
+       
 
         this.setState({
             defaultUserName: e.target.value
         })
+
+    }
+    onEditNameBlur = (e) => {
+        const { dispatch } = this.props
+        //用户姓名检测
+        //用户姓名由1-20位的汉字、字母、数字、下划线组成。
+        let value = e.target.value;
+        let Test =e.target.value !== '' ||  /^[a-zA-Z0-9_\u4e00-\u9fa5][a-zA-Z0-9_\u4e00-\u9fa5 ]{0,48}[a-zA-Z0-9_\u4e00-\u9fa5]$|^[a-zA-Z0-9_\u4e00-\u9fa5]{1,50}$/.test(value)
+
+       
 
         if (!Test) {
             dispatch(actions.UpUIState.editModalTipsVisible({
@@ -499,7 +512,11 @@ class EditModal extends React.Component {
         // }
         //console.log(ClassArr)
         this.setState({
-            Classes: ClassArr
+            Classes: ClassArr,
+            ClassChange:{
+                value: 0,
+                title: '请选择班级'
+            } 
         })
         dispatch(actions.UpUIState.editModalTipsVisible({
             GradeTipsVisible: false
@@ -631,10 +648,16 @@ class EditModal extends React.Component {
         let value = e.target.value;
         let Test = false
         if (!/^(\S)+@(\S)+\.[a-zA-Z]{2,3}$/.test(value)) {
-            Test = false;
+            if(value===''){
+                Test = true;
+
+            }else{
+                Test = false;
+
+            }
         }
         else {
-            Test = value === '' || /^([a-zA-Z0-9]+[_|\-|\.]*)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\-|\.]*)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/gi.test(value);
+            Test =  /^([a-zA-Z0-9]+[_|\-|\.]*)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\-|\.]*)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/gi.test(value);
         }
 
 
@@ -756,7 +779,7 @@ class EditModal extends React.Component {
                                     name='EditID'
                                     value={this.state.UserIDChange}
                                     onChange={this.onEditIDChange}
-                                    onBlur={this.onEditBlur} />
+                                    onBlur={this.onEditIDBlur} />
                             </Tips>
                         </div>
                     </div>
@@ -771,7 +794,9 @@ class EditModal extends React.Component {
                                     type='text'
                                     name='EditName'
                                     value={this.state.defaultUserName}
-                                    onChange={this.onEditNameChange} />
+                                    onChange={this.onEditNameChange} 
+                                    onBlur={this.onEditNameBlur} 
+                                    />
                             </Tips>
                         </div>
                     </div>

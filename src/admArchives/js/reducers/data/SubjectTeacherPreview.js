@@ -53,7 +53,7 @@ function handleData(data,pageIndex,pageSize) {
         return { ...list, child }
 
     })
-    return { newList, keyList, pensonalList };
+    return { newList, keyList, pensonalList,pageIndex,pageSize };
 }
 function handleSubject(name = '', id = '') {
     let nameArr = name.split(',');

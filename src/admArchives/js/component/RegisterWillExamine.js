@@ -50,10 +50,10 @@ class RegisterWillExamine extends React.Component {
           render: key => {
             return (
               <div className="registerTime-content">
-                <CheckBox value={key} onChange={this.onCheckChange}></CheckBox>
+                <label><CheckBox value={key} onChange={this.onCheckChange}></CheckBox>
                 <span className="key-content">
                   {key >= 10 ? key : "0" + key}
-                </span>
+                </span></label>
               </div>
             );
           }
@@ -79,6 +79,7 @@ class RegisterWillExamine extends React.Component {
           title: "",
           align: "right",
           dataIndex: "UserName",
+          colSpan:0,
           key: "UserImg",
           width: 60,
           render: arr => {
@@ -100,6 +101,7 @@ class RegisterWillExamine extends React.Component {
           title: "姓名",
           align: "left",
           dataIndex: "UserName",
+          colSpan:1,
           width: 70,
           key: "UserName",
           sorter: true,
@@ -221,7 +223,8 @@ class RegisterWillExamine extends React.Component {
       keyword: "",
       CancelBtnShow: "n",
       searchValue: "",
-      isWho: "1"
+      isWho: "1",
+      searchWord:''
     };
   }
 
@@ -775,7 +778,8 @@ class RegisterWillExamine extends React.Component {
       this.setState({
         keyword: e.value,
         CancelBtnShow: "y",
-        pagination: 1
+        pagination: 1,
+        searchWord:e.value
       });
       dispatch(
         actions.UpDataState.getWillSignUpLog(
@@ -943,6 +947,19 @@ class RegisterWillExamine extends React.Component {
             ></DropDown>
           ):
           <span className='single'>{this.state.TeacherClassSelect.title}</span>}
+          <div className="Search">
+            <span
+              className="search-tips"
+              style={{
+                display: this.state.CancelBtnShow === "y" ? "block" : "none"
+              }}
+            >
+              <span>{"搜索关键词“" + this.state.searchWord + "”共找到"}</span>
+              <span className="Total">
+                {" " +DataState.GetSignUpLog.WillData.Total+ " "}
+              </span>
+              人
+            </span>
           <Search
             placeHolder="请输入学号或姓名进行搜索"
             onClickSearch={this.LogSearch.bind(this)}
@@ -953,8 +970,9 @@ class RegisterWillExamine extends React.Component {
             onChange={this.onChangeSearch.bind(this)}
             CancelBtnShow={this.state.CancelBtnShow}
           ></Search>
+          </div>
         </div>
-        <div className="content-render">
+        <div className="content-render will">
           <Loading tip="loading..." spinning={this.state.loading}>
             <CheckBoxGroup
               style={{ width: "100%" }}

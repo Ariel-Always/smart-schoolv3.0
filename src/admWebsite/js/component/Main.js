@@ -99,7 +99,12 @@ class Main extends Component {
   SubjectDropMenu = e => {
     const { dispatch, DataState } = this.props;
 
-    let SubjectParam = "&SubjectID=" + e.value;
+    let SubjectParam = '';
+    if(e.value){
+      SubjectParam = "&SubjectID=" + e.value;
+    }else{
+      SubjectParam = "&SubjectID=" ;
+    }
     let Url =
       "/SubjectResMgr/WebSiteMgr/GetWebsiteInfoList?TypeID=1&pageSize=8&currentIndex=1" +
       SubjectParam +
@@ -108,7 +113,7 @@ class Main extends Component {
     dispatch(
       actions.UpDataState.getTypeData(
         "/SubjectResMgr/WebSiteMgr/GetTypeList?SubjectID=" +
-          e.value +
+          (e.value?e.value:'') +
           "&Period=" +
           this.state.PeriodID
       )

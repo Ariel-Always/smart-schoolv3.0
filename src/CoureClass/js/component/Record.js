@@ -248,26 +248,26 @@ class Record extends React.Component {
     onCheckClick = () => {
         const { dispatch, DataState } = this.props;
 
-        if (!this.state.startTime) {
-            dispatch(actions.UpUIState.showErrorAlert({
-                type: 'btn-error',
-                title: "您还没有选择开始时间哦~",
-                ok: this.onAppAlertOK.bind(this),
-                cancel: this.onAppAlertCancel.bind(this),
-                close: this.onAppAlertClose.bind(this)
-            }));
-            return;
-        }
-        if (!this.state.endTime) {
-            dispatch(actions.UpUIState.showErrorAlert({
-                type: 'btn-error',
-                title: "您还没有选择结束时间哦~",
-                ok: this.onAppAlertOK.bind(this),
-                cancel: this.onAppAlertCancel.bind(this),
-                close: this.onAppAlertClose.bind(this)
-            }));
-            return;
-        }
+        // if (!this.state.startTime) {
+        //     dispatch(actions.UpUIState.showErrorAlert({
+        //         type: 'btn-error',
+        //         title: "您还没有选择开始时间哦~",
+        //         ok: this.onAppAlertOK.bind(this),
+        //         cancel: this.onAppAlertCancel.bind(this),
+        //         close: this.onAppAlertClose.bind(this)
+        //     }));
+        //     return;
+        // }
+        // if (!this.state.endTime) {
+        //     dispatch(actions.UpUIState.showErrorAlert({
+        //         type: 'btn-error',
+        //         title: "您还没有选择结束时间哦~",
+        //         ok: this.onAppAlertOK.bind(this),
+        //         cancel: this.onAppAlertCancel.bind(this),
+        //         close: this.onAppAlertClose.bind(this)
+        //     }));
+        //     return;
+        // }
         let userMsg = DataState.LoginUser;
         let handleTypeSelected = this.state.handleTypeSelected;
         dispatch(actions.UpDataState.getCourseClassRecordMsg('/GetGourseClassLogForPage?userID=' + userMsg.UserID + '&userType=' + userMsg.UserType + '&schoolID=' + userMsg.SchoolID + '&startDate=' + this.state.startTime + '&endDate=' + this.state.endTime + '&operateType=' + handleTypeSelected.value))

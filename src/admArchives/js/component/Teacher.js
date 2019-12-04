@@ -43,15 +43,16 @@ class Teacher extends React.Component {
           render: key => {
             return (
               <div className="registerTime-content">
-                <CheckBox
+                <label><CheckBox
                   value={key.key}
+                  type="gray"
                   onChange={this.onCheckChange}
                 ></CheckBox>
                 <span className="key-content">
                   {key.OrderNo + 1 >= 10
                     ? key.OrderNo + 1
                     : "0" + (key.OrderNo + 1)}
-                </span>
+                </span></label>
               </div>
             );
           }
@@ -60,6 +61,7 @@ class Teacher extends React.Component {
           title: "",
           align: "right",
           key: "UserImg",
+          colSpan:0,
           width: 50,
           dataIndex: "UserImgs",
           render: arr => {
@@ -80,6 +82,7 @@ class Teacher extends React.Component {
         {
           title: "姓名",
           align: "left",
+          colSpan:2,
           width: 90,
           key: "UserName",
           dataIndex: "UserName",
@@ -128,7 +131,7 @@ class Teacher extends React.Component {
           }
         },
         {
-          title: "所在学科",
+          title: "所教学科",
           width: 110,
           align: "center",
           key: "SubjectNames",
@@ -216,25 +219,40 @@ class Teacher extends React.Component {
       alertQueryTitle: "查询提示~",
       TeacherDetailsMsgModalVisible: false,
       addTeacherModalVisible: false,
-      selectSubject: { value: "all", title: "全部" },
+      selectSubject: { value: "all", title: "全部学科" },
       userMsg: props.DataState.LoginUser,
       keyword: "",
       CancelBtnShow: "n",
       searchValue: "",
       sortType: "",
       sortFiled: "",
+      searchWord:'',
       teacherChangeUserLog: {}
     };
   }
   componentWillReceiveProps(nextProps) {
-    const { DataState, UIState } = nextProps;
+    const { DataState, UIState,dispatch } = nextProps;
     let SubjectTeacherPreview = DataState.SubjectTeacherPreview;
+    let selectSubject = SubjectTeacherPreview.SubjectID || {
+      value: "all",
+      title: "全部学科"
+    }
     this.setState({
-      selectSubject: SubjectTeacherPreview.SubjectID || {
-        value: "all",
-        title: "全部"
-      }
+      selectSubject: selectSubject,
+      pagination:Number(SubjectTeacherPreview.pageIndex)+1
     });
+    // dispatch(
+    //   actions.UpDataState.getSubjectTeacherPreview(
+    //     "/GetTeacherToPage?SchoolID=" +
+    //       this.state.userMsg.SchoolID +
+    //       "&SubjectIDs=" +
+    //       selectSubject.value +
+    //       "&PageIndex=0&PageSize=10" +
+    //       this.state.sortType +
+    //       this.state.sortFiled,
+    //       selectSubject
+    //   )
+    // );
   }
   componentWillMount() {}
 
@@ -284,6 +302,7 @@ class Teacher extends React.Component {
         checkAll: false,
         keyword: "&keyword=" + e.value,
         CancelBtnShow: "y",
+        searchWord:e.value,
         pagination: 1
       });
       dispatch(
@@ -1069,20 +1088,35 @@ class Teacher extends React.Component {
                 dropList={
                   DataState.SubjectTeacherMsg.returnData
                     ? DataState.SubjectTeacherMsg.returnData.SubjectList
-                    : [{ value: "all", title: "全部教师" }]
+                    : [{ value: "all", title: "全部学科" }]
                 }
               ></DropDown>
-
-              <Search
-                placeHolder="请输入工号或姓名进行搜索"
-                onClickSearch={this.TeacherSearch.bind(this)}
-                width={250}
-                height={30}
-                Value={this.state.searchValue}
-                onCancelSearch={this.onCancelSearch}
-                onChange={this.onChangeSearch.bind(this)}
-                CancelBtnShow={this.state.CancelBtnShow}
-              ></Search>
+              <div className="Search">
+                <span
+                  className="search-tips"
+                  style={{
+                    display: this.state.CancelBtnShow === "y" ? "block" : "none"
+                  }}
+                >
+                  <span>
+                    {"搜索关键词“" + this.state.searchWord + "”共找到"}
+                  </span>
+                  <span className="Total">
+                    {" " + DataState.SubjectTeacherPreview.Total + " "}
+                  </span>
+                  人
+                </span>
+                <Search
+                  placeHolder="请输入工号或姓名进行搜索..."
+                  onClickSearch={this.TeacherSearch.bind(this)}
+                  width={250}
+                  height={30}
+                  Value={this.state.searchValue}
+                  onCancelSearch={this.onCancelSearch}
+                  onChange={this.onChangeSearch.bind(this)}
+                  CancelBtnShow={this.state.CancelBtnShow}
+                ></Search>
+              </div>
             </div>
             <div className="content-render">
               <div>
@@ -1103,10 +1137,11 @@ class Teacher extends React.Component {
                 {DataState.SubjectTeacherPreview.Total ? (
                   <CheckBox
                     className="checkAll-box"
+                    type="gray"
                     onChange={this.OnCheckAllChange}
                     checked={this.state.checkAll}
                   >
-                    全选
+                    <span className="checkAll-title">全选</span>
                     <Button
                       onClick={this.onDeleteAllClick}
                       className="deleteAll"
@@ -1211,15 +1246,14 @@ class Teacher extends React.Component {
                 </span>
               </div>
               <div className="content">
-              <Scrollbars style={{ width: 100 + "%", height: 280 + "px" }}>
-
-                {UIState.AppModal.TeacherChangeMadalVisible ? (
-                  <StudentChangeRecord
-                    data={DataState.GetUserLog.UserLog}
-                  ></StudentChangeRecord>
-                ) : (
-                  ""
-                )}
+                <Scrollbars style={{ width: 100 + "%", height: 280 + "px" }}>
+                  {UIState.AppModal.TeacherChangeMadalVisible ? (
+                    <StudentChangeRecord
+                      data={DataState.GetUserLog.UserLog}
+                    ></StudentChangeRecord>
+                  ) : (
+                    ""
+                  )}
                 </Scrollbars>
               </div>
             </div>

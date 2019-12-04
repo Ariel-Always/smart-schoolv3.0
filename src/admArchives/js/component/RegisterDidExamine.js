@@ -61,6 +61,7 @@ class RegisterDidExamine extends React.Component {
           align: "right",
           dataIndex: "UserName",
           key: "UserImg",
+          colSpan:0,
           width: 60,
           render: arr => {
             return (
@@ -81,6 +82,7 @@ class RegisterDidExamine extends React.Component {
           title: "姓名",
           align: "left",
           dataIndex: "UserName",
+          colSpan:1,
           width: 70,
           key: "UserName",
           sorter: true,
@@ -207,9 +209,10 @@ class RegisterDidExamine extends React.Component {
       keyword: "",
       CancelBtnShow: "n",
       searchValue: "",
-      secondParam:'',
+      secondParam: "",
       TeacherClassSelect: {},
-      firstParam: ""
+      firstParam: "",
+      searchWord:''
     };
   }
 
@@ -561,7 +564,8 @@ class RegisterDidExamine extends React.Component {
             (this.state.pagination - 1) +
             "&PageSize=10&status=1&sortFiled=" +
             sorter.columnKey +
-            "&" +sortType +
+            "&" +
+            sortType +
             (this.state.keyword ? "&Keyword=" + this.state.keyword : "") +
             this.state.firstParam +
             this.state.secondParam
@@ -604,7 +608,8 @@ class RegisterDidExamine extends React.Component {
       this.setState({
         keyword: e.value,
         CancelBtnShow: "y",
-        pagination: 1
+        pagination: 1,
+        searchWord:e.value
       });
       dispatch(
         actions.UpDataState.getDidSignUpLog(
@@ -709,8 +714,7 @@ class RegisterDidExamine extends React.Component {
                 onChange={this.StudentDropMenuSecond}
               ></DropDown>
             </div>
-          ) :
-          TeacherClass.length>1? (
+          ) : TeacherClass.length > 1 ? (
             <DropDown
               width={120}
               height={240}
@@ -718,20 +722,37 @@ class RegisterDidExamine extends React.Component {
               dropList={TeacherClass}
               onChange={this.TeacherDropMenuSecond}
             ></DropDown>
-          ):
-          <span className='single'>{this.state.TeacherClassSelect.title}</span>}
-          <Search
-            placeHolder="请输入学号或姓名进行搜索"
-            onClickSearch={this.LogSearch}
-            height={30}
-            width={250}
-            onCancelSearch={this.onCancelSearch}
-            Value={this.state.searchValue}
-            onChange={this.onChangeSearch.bind(this)}
-            CancelBtnShow={this.state.CancelBtnShow}
-          ></Search>
+          ) : (
+            <span className="single">
+              {this.state.TeacherClassSelect.title}
+            </span>
+          )}
+          <div className="Search">
+            <span
+              className="search-tips"
+              style={{
+                display: this.state.CancelBtnShow === "y" ? "block" : "none"
+              }}
+            >
+              <span>{"搜索关键词“" + this.state.searchWord + "”共找到"}</span>
+              <span className="Total">
+                {" " + DataState.GetSignUpLog.DidData.Total + " "}
+              </span>
+              人
+            </span>
+            <Search
+              placeHolder="请输入学号或姓名进行搜索"
+              onClickSearch={this.LogSearch}
+              height={30}
+              width={250}
+              onCancelSearch={this.onCancelSearch}
+              Value={this.state.searchValue}
+              onChange={this.onChangeSearch.bind(this)}
+              CancelBtnShow={this.state.CancelBtnShow}
+            ></Search>
+          </div>
         </div>
-        <div className="content-render">
+        <div className="content-render did">
           <Loading tip="loading..." spinning={this.state.loading}>
             <CheckBoxGroup
               style={{ width: "100%" }}

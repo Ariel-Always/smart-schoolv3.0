@@ -116,6 +116,7 @@ $image-url: "../images";
                     .name-img {
                         margin: 0 6px;
                         cursor: pointer;
+                        object-fit: cover;
                     }
                     .name-UserName {
                         text-decoration: underline;
@@ -198,6 +199,9 @@ $image-url: "../images";
                 .checkAll-box {
                     margin-top: 10px;
                     margin-left: 24px;
+                    .ant-checkbox {
+                        vertical-align: middle;
+                    }
                     .deleteAll {
                         color: #fff;
                         width: 56px;
@@ -218,7 +222,16 @@ $image-url: "../images";
                         text-align: center;
                         border: none;
                         margin-left: 8px;
+                        font-size: 14px;
+                        span {
+                            vertical-align: baseline;
+                        }
                         // box-sizing: content-box;
+                    }
+                    .checkAll-title {
+                        vertical-align: baseline;
+                        display: inline-block;
+                        line-height: 28px;
                     }
                 }
                 .pagination-box {
