@@ -555,8 +555,6 @@ class Import extends Component{
 
         });
 
-        console.log(ModulesLink);
-
         return <div id="ImportComponent" className="component-import">
 
 

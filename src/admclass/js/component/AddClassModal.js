@@ -28,7 +28,7 @@ class AddClassModal extends Component{
 
                    <span className="props">选择年级:</span>
 
-                    <DropDown style={{zIndex:10}} width={150} dropSelectd={selectedValue} onChange={(e)=>addClassDropChange(e)} dropList={gradeList} height={120} ></DropDown>
+                    <DropDown  style={{zIndex:10}} width={150} dropSelectd={selectedValue} onChange={(e)=>addClassDropChange(e)} dropList={gradeList} height={120} ></DropDown>
 
                     <span className="error-tips" style={{display:`${selectTipsShow?'inline-block':'none'}`}}>{selectTips}</span>
 

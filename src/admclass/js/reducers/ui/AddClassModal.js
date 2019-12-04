@@ -1,7 +1,23 @@
 import UpUIState from '../../actions/UpUIState';
-const  AddClassModal = (state={show:false,inputDisabled:true,
-    inputValue:'',inputTipsShow:false,inputTips:'',selectTips:'请选择对应的年级！',selectTipsShow:false,
-    selectValue:{value:0,title:"请选择年级"}}
+const  AddClassModal = (state={
+
+    show:false,
+
+    inputDisabled:true,
+
+    inputValue:'',
+
+    inputTipsShow:false,
+
+    inputTips:'',
+
+    selectTips:'请选择对应的年级！',
+
+    selectTipsShow:false,
+
+    selectValue:{value:0,title:"请选择年级"}
+
+    }
     ,actions) => {
     switch (actions.type) {
         case UpUIState.ADD_CLASS_MODAL_SHOW:

@@ -302,7 +302,7 @@ $(document).on('click', '.frame_leftmenu_mainitem_name,.frame_leftmenu_onegrade_
         return false;
     }
     if (!$this.hasClass('active')) {
-        console.log($this)
+
         $this.closest('.frame_leftpart_container,.frame_left_menu_container').find('.active').removeClass('active');
         $this.addClass('active').prev('.frame_leftmenu_point').addClass('active');
         // li 也加上 active

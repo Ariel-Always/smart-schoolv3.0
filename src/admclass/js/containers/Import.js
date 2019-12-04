@@ -46,9 +46,25 @@ class Import extends Component{
 
         }
 
-        dispatch(AppLoadingActions.hide());
+
 
     }
+
+    componentWillReceiveProps(props) {
+
+        const {ModuleSetting, UIState,dispatch} = props;
+
+        const {AppLoading} = UIState;
+
+        if (AppLoading.show&&(!ModuleSetting.ShowLeftMenu)&&(!ModuleSetting.ShowBarner)) {
+
+            dispatch(AppLoadingActions.hide());
+
+        }
+
+    }
+
+
 
 
     render(){
@@ -67,11 +83,11 @@ class Import extends Component{
 
 const  mapStateToProps = (state) => {
 
-    let { LoginUser } = state;
+    let { LoginUser,ModuleSetting,UIState } = state;
 
     return {
 
-        LoginUser
+        LoginUser,ModuleSetting,UIState
 
     }
 
