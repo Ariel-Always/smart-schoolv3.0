@@ -21,7 +21,7 @@ import CONFIG from "../../../common/js/config";
 import actions from "../actions";
 import "../../scss/Main.scss";
 import WebsiteCustom from "../component/WebsiteCustom";
-
+import ImgDefault from '../../images/icon-common.png'
 class Main extends Component {
   constructor(props) {
     super(props);
@@ -42,7 +42,8 @@ class Main extends Component {
       TypeParam: "",
       SelfParam: "",
       PeriodID: "",
-      ImgType: [true, true, true, true, true, true, true, true]
+      ImgType: [true, true, true, true, true, true, true, true],
+      ImgDefault: [true, true, true, true, true, true, true, true]
     };
   }
   componentWillMount() {}
@@ -92,7 +93,9 @@ class Main extends Component {
       TypeSelect: { value: 0, title: "全部" },
       TypeParam: "&SubTypeID=0",
       PeriodID: PeriodID,
-      ImgType: [true, true, true, true, true, true, true, true]
+      ImgType: [true, true, true, true, true, true, true, true],
+      ImgDefault: [true, true, true, true, true, true, true, true]
+
     });
   };
   // 学科选择
@@ -129,7 +132,9 @@ class Main extends Component {
       TypeParam: "&SubTypeID=0",
       pageParam: "&pageSize=8&currentIndex=1",
       SubjectParam: SubjectParam,
-      ImgType: [true, true, true, true, true, true, true, true]
+      ImgType: [true, true, true, true, true, true, true, true],
+      ImgDefault: [true, true, true, true, true, true, true, true]
+
     });
   };
   // 分类选择
@@ -152,7 +157,9 @@ class Main extends Component {
       TypeSelect: e,
       pageParam: "&pageSize=8&currentIndex=1",
       TypeParam: TypeParam,
-      ImgType: [true, true, true, true, true, true, true, true]
+      ImgType: [true, true, true, true, true, true, true, true],
+      ImgDefault: [true, true, true, true, true, true, true, true]
+
     });
   };
   // 只显示本学校
@@ -175,7 +182,9 @@ class Main extends Component {
       selfSelect: e.target.checked,
       pageParam: "&pageSize=8&currentIndex=1",
       SelfParam: SelfParam,
-      ImgType: [true, true, true, true, true, true, true, true]
+      ImgType: [true, true, true, true, true, true, true, true],
+      ImgDefault: [true, true, true, true, true, true, true, true]
+
     });
   };
   // 添加网站
@@ -226,15 +235,33 @@ class Main extends Component {
       checkAll: false,
       pagination: page,
       pageParam: pageParam,
-      ImgType: [true, true, true, true, true, true, true, true]
+      ImgType: [true, true, true, true, true, true, true, true],
+      ImgDefault: [true, true, true, true, true, true, true, true]
+
     });
   };
   // 图片加载失败
   onImgError = key => {
     let ImgType = this.state.ImgType;
+    let ImgDefault = this.state.ImgDefault;
     ImgType[key] = false;
+    ImgDefault[key] = false;
+    // console.log('error-'+ImgType[key],ImgType,key)
     this.setState({
-      ImgType: ImgType
+      ImgType: ImgType,
+      ImgDefault:ImgDefault
+    });
+  };
+  // 图片加载成功
+  onImgSuccess = key => {
+    let ImgType = this.state.ImgType;
+    let ImgDefault = this.state.ImgDefault;
+    ImgType[key] = true;
+    // console.log('success-'+ImgType[key],ImgType,key)
+    ImgDefault[key] = false;
+    this.setState({
+      ImgType: ImgType,
+      ImgDefault:ImgDefault
     });
   };
 
@@ -292,7 +319,9 @@ class Main extends Component {
     dispatch(actions.UpUIState.hideErrorAlert());
   }
   // 编辑
-  onEditClick = index => {
+  onEditClick = (e,index) => {
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
     console.log(index);
     const { dispatch, DataState } = this.props;
     dispatch(
@@ -349,8 +378,10 @@ class Main extends Component {
     return PeriodID;
   };
   // 删除
-  onDeleteClick = index => {
+  onDeleteClick = (e,index) => {
     console.log(index);
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
     const { dispatch, DataState } = this.props;
     let List = DataState.GetWebsiteResourceData.List;
 
@@ -402,7 +433,9 @@ class Main extends Component {
             checkAll: false,
             pagination: 1,
             pageParam: "&pageSize=8&currentIndex=1",
-            ImgType: [true, true, true, true, true, true, true, true]
+            ImgType: [true, true, true, true, true, true, true, true],
+            ImgDefault: [true, true, true, true, true, true, true, true]
+
           });
         }
       });
@@ -479,7 +512,8 @@ class Main extends Component {
             checkAll: false,
             pagination: 1,
             pageParam: "&pageSize=8&currentIndex=1",
-            ImgType: [true, true, true, true, true, true, true, true]
+            ImgType: [true, true, true, true, true, true, true, true],
+            ImgDefault: [true, true, true, true, true, true, true, true]
           });
           dispatch(actions.UpDataState.setInitWebsiteData({}));
           dispatch({ type: actions.UpUIState.ADD_MODAL_CLOSE });
@@ -582,7 +616,8 @@ class Main extends Component {
             checkAll: false,
             pagination: 1,
             pageParam: "&pageSize=8&currentIndex=1",
-            ImgType: [true, true, true, true, true, true, true, true]
+            ImgType: [true, true, true, true, true, true, true, true],
+            ImgDefault: [true, true, true, true, true, true, true, true]
           });
           dispatch(actions.UpDataState.setInitWebsiteData({}));
           dispatch({ type: actions.UpUIState.EDIT_MODAL_CLOSE });
@@ -612,6 +647,15 @@ class Main extends Component {
     );
     dispatch(actions.UpDataState.setInitWebsiteData({}));
   };
+  // 卡点击
+  onContentCardClick = (url)=> {
+    window.open(url)
+  }
+  // 复选
+  onCheckBoxClick = (e)=>{
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+  }
   render() {
     const { DataState, UIState } = this.props;
     let { List, Total, Current } = DataState.GetWebsiteResourceData;
@@ -684,18 +728,29 @@ class Main extends Component {
           >
             {List.map((child, index) => {
               return (
-                <div key={index} className="content-card">
+                <div key={index} className="content-card" onClick={this.onContentCardClick.bind(this,child.Url)}>
                   <div className="card-left">
-                    <CheckBox type="gray" value={index}></CheckBox>
+                    <CheckBox onClick={e=>this.onCheckBoxClick(e)} type="gray" value={index}></CheckBox>
                     {this.state.ImgType[index] ? (
                       <div
-                        className={`img-box ${"ImgError_" + child.TypeColor}`}
+                        className={`img-box ${!this.state.ImgDefault[index]? "ImgError_" + child.TypeColor:''}`}
                       >
+                        
                         <img
+                          style={{display:!this.state.ImgDefault[index]?'inline-block':'none'}}
                           className={`left-img `}
                           onError={this.onImgError.bind(this, index)}
+                          onLoad ={this.onImgSuccess.bind(this,index)}
                           src={child.ImgUrl}
                           alt={child.ImgUrl}
+                        ></img>
+                        <img
+                          // className={`left-img `}
+                          style={{display:this.state.ImgDefault[index]?'inline-block':'none'}}
+                          width={42}
+                          height={42}
+                          src={ImgDefault}
+                          alt={'默认'}
                         ></img>
                       </div>
                     ) : (
@@ -736,11 +791,11 @@ class Main extends Component {
                   </div>
                   <div className="Edit-content">
                     <span
-                      onClick={this.onDeleteClick.bind(this, index)}
+                      onClick={e=>this.onDeleteClick(e, index)}
                       className="card-btn btn-delete"
                     ></span>
                     <span
-                      onClick={this.onEditClick.bind(this, index)}
+                      onClick={e=>this.onEditClick(e, index)}
                       className="card-btn btn-edit"
                     ></span>
                   </div>
