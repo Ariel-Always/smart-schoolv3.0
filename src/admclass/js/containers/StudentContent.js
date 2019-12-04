@@ -228,7 +228,6 @@ class StudentContent extends Component{
         const {dispatch,info} = this.props;
 
 
-
         switch (opt.type) {
 
             case 1:
