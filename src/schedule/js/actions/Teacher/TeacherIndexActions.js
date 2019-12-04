@@ -424,22 +424,39 @@ const TeacherPersonalInit = () => {
 
         let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;//所需的参数
 
+        const WeekNO = getQueryVariable('WeekNO');
+
+        let GetScheduleByUserID = '';
+
         let GetAllOptionByPeriodID = ApiActions.GetAllOptionByPeriodID({
 
             SchoolID,PeriodID,UserID,UserType,dispatch
 
         });
 
-        let GetScheduleByUserID = ApiActions.GetScheduleByUserID({
+        if (WeekNO){
 
-            SchoolID,PeriodID,UserID,UserType,dispatch
+            GetScheduleByUserID = ApiActions.GetScheduleByUserID({
 
-        });
+                SchoolID,PeriodID,UserID,WeekNO,UserType,dispatch
+
+            });
+
+        }else{
+
+            GetScheduleByUserID = ApiActions.GetScheduleByUserID({
+
+                SchoolID,PeriodID,UserID,UserType,dispatch
+
+            });
+
+        }
+
+
 
         Promise.all([GetAllOptionByPeriodID,GetScheduleByUserID]).then(res => {
 
-
-            let NowWeekNo = PeriodWeekTerm.WeekNO;
+            let NowWeekNo = WeekNO?parseInt(WeekNO):PeriodWeekTerm.WeekNO;
 
             //将课程、学期、等等放到redux中
 
@@ -813,6 +830,24 @@ const ClassStudentPageInit = () =>{
       });
 
   }
+
+};
+
+const getQueryVariable = (variable) => {
+
+    let query = window.location.href;
+
+    let vars = query.split("?")[1].split('&');
+
+    for (let i=0;i<vars.length;i++) {
+
+        let pair = vars[i].split("=");
+
+        if(pair[0] == variable){return pair[1];}
+
+    }
+
+    return(false);
 
 };
 

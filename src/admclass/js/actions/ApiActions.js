@@ -84,7 +84,7 @@ const GetSubject = async ({ClassID,dispatch}) => {
     }
 };
 
-//获取所有的任课教师
+//获取所有的任课教师(用于设置班主任)
 
 const GetTeacherToPage = async ({SchoolID,SubjectIDs='',Keyword,PageIndex=0,PageSize=0,UserID,dispatch}) => {
 
@@ -102,6 +102,28 @@ const GetTeacherToPage = async ({SchoolID,SubjectIDs='',Keyword,PageIndex=0,Page
 
 
 };
+
+
+//获取所有的任课教师（用于设置任课教师）
+
+const GetTeacherForSetCourseTeacher = async ({SchoolID,ClassID,SubjectID='',Keyword='',UserID,dispatch}) => {
+
+    let res = await Method.getGetData(`/UserMgr/ClassMgr/GetTeacherForSetCourseTeacher?SchoolID=${SchoolID}&ClassID=${ClassID}&SubjectID=${SubjectID}&Keyword=${Keyword}&UserID=${UserID}`,2);
+
+    if (res.StatusCode === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+
+};
+
+
 
 //获取资源服务器地址
 
@@ -290,6 +312,8 @@ export default {
 
     GetUserDetail,
 
-    EditStudent
+    EditStudent,
+
+    GetTeacherForSetCourseTeacher
 
 }

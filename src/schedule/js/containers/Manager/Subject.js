@@ -35,7 +35,7 @@ class Subject extends Component{
 
         const {PeriodWeekTerm,dispatch} = this.props;
 
-        ComPageRefresh.ComPageInit(dispatch,ManagerIndexActions.STSPageInit());
+        dispatch(ComPageRefresh.ComPageInit(ManagerIndexActions.STSPageInit()));
 
     }
     //选择不同的学科

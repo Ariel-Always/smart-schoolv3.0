@@ -27,7 +27,7 @@ import ChangeTimeModal from "../../component/ChangeTimeModal";
 import AdjustClassRoomModal from "../../component/AdjustClassRoomModal";
 
 import ReplaceScheduleModal from "../../component/ReplaceScheduleModal";
-import DoubleSingleTable from "../../component/DoubleSingleTable";
+
 
 
 class ClassSingle extends Component{
@@ -38,7 +38,7 @@ class ClassSingle extends Component{
 
         const {dispatch} = props;
 
-        ComPageRefresh.ComPageInit(dispatch,ManagerIndexActions.ClassSingleInit());
+        dispatch(ComPageRefresh.ComPageInit(ManagerIndexActions.ClassSingleInit()));
 
     }
 

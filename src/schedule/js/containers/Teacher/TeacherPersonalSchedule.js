@@ -43,7 +43,7 @@ class TeacherPersonalSchedule extends Component{
 
         const {dispatch} = props;
 
-        ComPageRefresh.ComPageInit(dispatch,TeacherIndexActions.TeacherPersonalInit());
+        dispatch(ComPageRefresh.ComPageInit(TeacherIndexActions.TeacherPersonalInit()));
 
     }
 

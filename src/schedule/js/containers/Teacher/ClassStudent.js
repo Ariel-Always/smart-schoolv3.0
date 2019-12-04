@@ -36,7 +36,7 @@ class ClassStudent extends Component{
 
         const {dispatch} = props;
 
-        ComPageRefresh.ComPageInit(dispatch,TeacherIndexActions.ClassStudentPageInit());
+        dispatch(ComPageRefresh.ComPageInit(TeacherIndexActions.ClassStudentPageInit()));
 
     }
 

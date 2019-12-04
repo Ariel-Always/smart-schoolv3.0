@@ -1,4 +1,3 @@
-import {postData,getData} from "../../../common/js/fetch";
 
 import UpUIState from './UpUIState';
 
@@ -8,7 +7,10 @@ import AppAlertActions from './AppAlertActions';
 
 import PaginationActions from './PaginationActions';
 
+import ApiActions from './ApiActions';
+
 import CONFIG from '../../../common/js/config'
+
 import SearchActions from "./SearchActions";
 
 
@@ -362,7 +364,7 @@ const getAddTeacherData = (opts) =>{
 
                 TeacherID = getState().UIState.AddTeacherModal.originTeacherInfo.id;
 
-                getAllTeacher({SchoolID,UserID:TeacherID,PageSize:0,SubjectIDs:SubjectID}).then(data=>{
+                ApiActions.GetTeacherForSetCourseTeacher({SchoolID,UserID:TeacherID,SubjectID,ClassID,dispatch}).then(data=>{
 
                     if (data){
 
@@ -435,6 +437,8 @@ const teacherModalSelectChange = (selectData) => {
 
         let { SchoolID } = getState().DataState.LoginUser;
 
+        const ClassID = getState().UIState.ComponentChange.classInfo.id;
+
         dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_SHOW});
 
         let TeacherID = '';
@@ -447,18 +451,37 @@ const teacherModalSelectChange = (selectData) => {
 
         let SubjectID = selectData.value;
 
+        if (type===1||type===2){
 
-        getAllTeacher({SchoolID,UserID:TeacherID,SubjectIDs:SubjectID,Keyword:inputContent}).then(data=>{
+            ApiActions.GetTeacherForSetCourseTeacher({SchoolID,UserID:TeacherID,SubjectID,ClassID,dispatch}).then(data=>{
 
-           if (data){
+                if (data){
 
-               dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:data});
+                    dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:data});
 
-           }
+                }
 
-            dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
+                dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
 
-        });
+            });
+
+        }else{
+
+            getAllTeacher({SchoolID,UserID:TeacherID,SubjectIDs:SubjectID,Keyword:inputContent}).then(data=>{
+
+                if (data){
+
+                    dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:data});
+
+                }
+
+                dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
+
+            });
+
+        }
+
+
 
     }
 
@@ -477,6 +500,8 @@ const  teacherSearchBtnClick = () => {
 
       let { SchoolID } = getState().DataState.LoginUser;
 
+      const ClassID = getState().UIState.ComponentChange.classInfo.id;
+
       let UserID = '';
 
       let SubjectID = '';
@@ -491,27 +516,54 @@ const  teacherSearchBtnClick = () => {
 
         dispatch(AppAlertActions.alertWarn({title:"请先选择学科！"}));
 
+        dispatch({type:ADD_TEACHER_CLOSE_HIDE});
+
+          dispatch({type:UpUIState.ADD_TEACHER_INPUT_CHANGE,data:''});
+
         dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
 
       }else{
 
           SubjectID = subjectsSelect.value;
 
-          getAllTeacher({SchoolID,SubjectIDs:SubjectID,UserID,Keyword:inputContent,dispatch}).then(data=>{
+          if (type===1||type===2){
 
-              if (data){
+              ApiActions.GetTeacherForSetCourseTeacher({SchoolID,UserID,Keyword:inputContent,SubjectID,ClassID,dispatch}).then(data=>{
 
-                  dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:data});
+                  if (data){
 
-                  dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
+                      dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:data});
 
-              }else{
+                      dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
 
-                  dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_SHOW});
+                  }else{
 
-              }
+                      dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_SHOW});
 
-          });
+                  }
+
+              });
+
+          }else{
+
+              getAllTeacher({SchoolID,SubjectIDs:SubjectID,UserID,Keyword:inputContent,dispatch}).then(data=>{
+
+                  if (data){
+
+                      dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:data});
+
+                      dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
+
+                  }else{
+
+                      dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_SHOW});
+
+                  }
+
+              });
+
+          }
+
 
       }
 
@@ -531,6 +583,8 @@ const teacherSearchClose = () => {
         let { SchoolID } = getState().DataState.LoginUser;
 
         let {subjectsSelect,type} = getState().UIState.AddTeacherModal;
+
+        const ClassID = getState().UIState.ComponentChange.classInfo.id;
 
         let UserID = '';
 
@@ -554,17 +608,36 @@ const teacherSearchClose = () => {
 
         }
 
-        getAllTeacher({SchoolID,SubjectIDs:SubjectID,UserID}).then(data=>{
+        if (type===1||type===2){
 
-            if (data){
+            ApiActions.GetTeacherForSetCourseTeacher({SchoolID,UserID,SubjectID,ClassID,dispatch}).then(data=>{
 
-                dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:data});
+                if (data){
 
-            }
+                    dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:data});
 
-            dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
+                }
 
-        });
+                dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
+
+            });
+
+        }else{
+
+            getAllTeacher({SchoolID,SubjectIDs:SubjectID,UserID}).then(data=>{
+
+                if (data){
+
+                    dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:data});
+
+                }
+
+                dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
+
+            });
+
+        }
+
 
     }
 
@@ -1009,7 +1082,7 @@ const getGangerSubjects = async ({SchoolID,dispatch}) => {
 
 
 
-//获取所有的任课教师
+//获取所有的任课教师(用于设置班主任)
 
 const getAllTeacher = async ({SchoolID,SubjectIDs='',Keyword,PageIndex=0,PageSize=0,UserID,dispatch}) => {
 

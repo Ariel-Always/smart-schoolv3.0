@@ -55,6 +55,8 @@ const TeacherModal = (state={
 
                 teacherList:[],
 
+                subjects:[],
+
                 subjectDropDisabled:false,
 
                 subjectsSelect:{value:'none',title:"全部教师"},

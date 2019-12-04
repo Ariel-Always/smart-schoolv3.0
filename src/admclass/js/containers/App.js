@@ -39,6 +39,8 @@ import TMActions from '../actions/Teacher/TeacherModalActions';
 import SIMActions from '../actions/Teacher/StudentInfoModalActions';
 
 import { QueryPower,QueryOtherPower } from '../../../common/js/power/index';
+import ApiActions from "../actions/ApiActions";
+import AppAlertActions from "../actions/AppAlertActions";
 
 
 class App extends Component{
@@ -181,10 +183,11 @@ class App extends Component{
 
                             }});
 
+                        console.log(1);
 
                     }
 
-                    dispatch({type:ModuleActions.MODULE_SETTING_INFO_UPDATE,data:{
+                    /*dispatch({type:ModuleActions.MODULE_SETTING_INFO_UPDATE,data:{
 
                             ShowLeftMenu:false,
 
@@ -202,17 +205,13 @@ class App extends Component{
 
                         }});
 
-                    dispatch(UpDataState.getPageInit());
+                    dispatch(UpDataState.getPageInit());*/
 
                 }else if (parseInt(UserType)===7&&UserClass==='2'){//判断是否是教务主任
-
-                    console.log(123);
 
                     QueryOtherPower({SchoolID:UserInfo.SchoolID,ModuleID:'000-2-0-06',Power:'Dean_Class_CURD',UserType:UserType}).then(data=>{
 
                         if (data){//有权限的教务主任
-
-                            console.log(456);
 
                             if (hash.includes('Import')){//导入界面
 
@@ -277,9 +276,7 @@ class App extends Component{
                     
                 }else {//既不是教务主任，也不是班主任也不是管理员的情况下
 
-                    console.log(UserType,UserClass);
-
-                    //window.location.href='/Error.aspx?errcode=E011';
+                    window.location.href='/Error.aspx?errcode=E011';
 
                 }
 
@@ -613,7 +610,7 @@ class App extends Component{
 
                             }
 
-                            dispatch({type:ModuleActions.MODULE_SETTING_INFO_UPDATE,data:{
+                           /* dispatch({type:ModuleActions.MODULE_SETTING_INFO_UPDATE,data:{
 
                                     ShowLeftMenu:false,
 
@@ -631,7 +628,7 @@ class App extends Component{
 
                                 }});
 
-                            dispatch(UpDataState.getPageInit());
+                            dispatch(UpDataState.getPageInit());*/
 
                         }else if (parseInt(UserType)===7&&UserClass==='2'){//判断是否是教务主任
 
@@ -964,7 +961,32 @@ class App extends Component{
         switch (opt.type) {
 
             case 1:
-                dispatch({type:TMActions.TEACHER_TEACHER_MODAL_SHOW});
+
+                ApiActions.GetSubject({ClassID:ClassCharge.ActiveClassID,dispatch}).then(data=>{
+
+                    const { Total,List } = data;
+
+                    if (Total>0){
+
+                        if (List.length===0){
+
+                            dispatch(AppAlertActions.alertWarn({title:`本班共开设${Total}门学科，现已无法继续添加任课教师。`}));
+
+                        }else{
+
+                            dispatch({type:TMActions.TEACHER_TEACHER_MODAL_SHOW});
+
+                            dispatch(TMActions.getTeacherData({ClassID:ClassCharge.ActiveClassID,...opt}));
+
+                        }
+
+                    }else{
+
+                        dispatch(AppAlertActions.alertWarn({title:'本班未开设学科，无法添加任课教师。'}));
+
+                    }
+
+                });
 
                 break;
 
@@ -988,6 +1010,9 @@ class App extends Component{
 
                     }});
 
+                dispatch(TMActions.getTeacherData({ClassID:ClassCharge.ActiveClassID,...opt}));
+
+
                 break;
 
             default:
@@ -997,7 +1022,6 @@ class App extends Component{
         }
         //初始化所有的教师和学科的数据
 
-        dispatch(TMActions.getTeacherData({ClassID:ClassCharge.ActiveClassID,...opt}));
 
     }
 

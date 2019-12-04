@@ -52,6 +52,8 @@ const getTeacherData = (opts) =>{
 
         let { SchoolID } = getState().DataState.LoginUser;
 
+
+
         switch (type) {
 
             case 1:
@@ -62,7 +64,7 @@ const getTeacherData = (opts) =>{
 
                     if (data){
 
-                        dispatch({type:TEACHER_TEACHER_MODAL_UPDATA_SUBJECTS,list:data});
+                        dispatch({type:TEACHER_TEACHER_MODAL_UPDATA_SUBJECTS,list:data.List});
 
                     }
 
@@ -80,7 +82,7 @@ const getTeacherData = (opts) =>{
 
                 TeacherID = getState().Teacher.TeacherModal.originTeacherInfo.id;
 
-                ApiActions.GetTeacherToPage({SchoolID,UserID:TeacherID,PageSize:0,SubjectIDs:SubjectID}).then(data=>{
+                ApiActions.GetTeacherForSetCourseTeacher({SchoolID,UserID:TeacherID,SubjectID,ClassID,dispatch}).then(data=>{
 
                     if (data){
 
@@ -114,6 +116,8 @@ const teacherModalSelectChange = (selectData) => {
 
         let { SchoolID } = getState().DataState.LoginUser;
 
+        const { ActiveClassID } = getState().Teacher.ClassCharge;
+
         dispatch({type:TEACHER_TEACHER_MODAL_LIST_LOADING_SHOW});
 
         let TeacherID = '';
@@ -127,7 +131,7 @@ const teacherModalSelectChange = (selectData) => {
         let SubjectID = selectData.value;
 
 
-        ApiActions.GetTeacherToPage({SchoolID,UserID:TeacherID,SubjectIDs:SubjectID,Keyword:inputContent}).then(data=>{
+        ApiActions.GetTeacherForSetCourseTeacher({SchoolID,UserID:TeacherID,SubjectID,Keyword:inputContent,ClassID:ActiveClassID,dispatch}).then(data=>{
 
             if (data){
 
@@ -154,6 +158,8 @@ const  teacherSearchBtnClick = () => {
 
         let { SchoolID } = getState().DataState.LoginUser;
 
+        const { ActiveClassID } = getState().Teacher.ClassCharge;
+
         let UserID = '';
 
         let SubjectID = '';
@@ -170,13 +176,18 @@ const  teacherSearchBtnClick = () => {
 
             dispatch({type:TEACHER_TEACHER_MODAL_LIST_LOADING_HIDE});
 
+            dispatch({type:TEACHER_TEACHER_MODAL_CLOSE_HIDE});
+
+            dispatch({type:TEACHER_TEACHER_MODAL_INPUT_CHANGE,data:''});
+
+
         }else{
 
             dispatch({type:TEACHER_TEACHER_MODAL_CLOSE_SHOW});
 
             SubjectID = subjectsSelect.value;
 
-            ApiActions.GetTeacherToPage({SchoolID,SubjectIDs:SubjectID,UserID,Keyword:inputContent,dispatch}).then(data=>{
+            ApiActions.GetTeacherForSetCourseTeacher({SchoolID,UserID,SubjectID,Keyword:inputContent,ClassID:ActiveClassID,dispatch}).then(data=>{
 
                 if (data){
 
@@ -211,6 +222,8 @@ const teacherSearchClose = () => {
 
         let {subjectsSelect,type} = getState().Teacher.TeacherModal;
 
+        const { ActiveClassID } = getState().Teacher.ClassCharge;
+
         let UserID = '';
 
         let SubjectID = '';
@@ -233,7 +246,7 @@ const teacherSearchClose = () => {
 
         }
 
-        ApiActions.GetTeacherToPage({SchoolID,SubjectIDs:SubjectID,UserID}).then(data=>{
+        ApiActions.GetTeacherForSetCourseTeacher({SchoolID,UserID,SubjectID,ClassID:ActiveClassID,dispatch}).then(data=>{
 
             if (data){
 

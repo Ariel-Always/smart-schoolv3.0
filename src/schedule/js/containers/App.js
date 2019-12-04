@@ -223,7 +223,7 @@ class App extends Component{
 
                 }
 
-            },20);
+            },10);
 
         }
 

@@ -62,6 +62,16 @@ const getCommonInfo = () => {
 
                     }
 
+                    const {ItemPeriod,DefaultPeriod} = data;
+
+                    if (DefaultPeriod){
+
+                        let key = ItemPeriod.findIndex(item=>item.PeriodID===DefaultPeriod);
+
+                        dispatch({type:PeriodWeekTermActions.PERIOD_VALUE_CHANGE,key:key});
+
+                    }
+
                     dispatch({type:PeriodWeekTermActions.UPDATE_PERIOD_TERM_WEEK,data:data});
 
                     dispatch({type:LoginUserActions.UPDATE_LOGIN_USER,data:UserInfo});
@@ -69,7 +79,6 @@ const getCommonInfo = () => {
                 }
 
             });
-
     }
 
 };
