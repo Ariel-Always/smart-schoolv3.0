@@ -383,7 +383,7 @@ onEditCombineClick = (e,source) => {
     dispatch(TeacherCustomActions.setOneCustomData(dataObj, source));
     dispatch(
       TeacherCustomActions.fetchDeleteCustomData(
-        "/SubjectResMgr/ToolMgr/Teacher/DeleteTool",
+        "/SubjectResMgr/ToolMgr/Teacher/DelteToolInfo",
         ID,
         "tool"
       )

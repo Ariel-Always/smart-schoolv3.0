@@ -37,6 +37,30 @@
                 color: #e3733b;
             }
         }
+        &.Website {
+            background-image: url(../images/Website.png);
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 80px 80px;
+        }
+        &.App {
+            background-image: url(../images/App.png);
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 80px 80px;
+        }
+        &.tool {
+            background-image: url(../images/tool.png);
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 80px 80px;
+        }
+        &.database {
+            background-image: url(../images/database.png);
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 80px 80px;
+        }
     }
     .CombineCard-box {
         background: rgba($color: #f5f5f5, $alpha: 1.0);
@@ -103,6 +127,15 @@
         transform: translate(-50%, -50%);
         max-width: 48px;
         max-height: 48px;
+    }
+    .card-default {
+        position: relative;
+        display: block;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80px;
+        height: 80px;
     }
     .card-name {
         position: relative;
@@ -193,7 +226,7 @@
     }
     &:hover {
         border: solid 1px #02e362;
-        cursor: pointer;
+        // cursor: pointer;
         .main-btn {
             display: inline-block;
             width: 58px;
@@ -215,4 +248,12 @@
             display: block;
         }
     }
+}
+
+.Card-alter {
+    border: solid 1px #f2f2f2;
+}
+
+.Card-other {
+    border: solid 1px #fff;
 }
