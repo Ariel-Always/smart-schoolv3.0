@@ -668,7 +668,8 @@ class Leader extends React.Component {
                 style={{ cursor: "pointer" }}
                 onClick={this.onAddLeader}
               >
-                添加领导
+                <span className="add">添加领导</span>
+                
               </span>
               <span className="divide">|</span>
               <Link
@@ -677,7 +678,8 @@ class Leader extends React.Component {
                 to="/ImportFile/Leader"
                 replace
               >
-                导入领导
+                <span className="ImportFile">导入领导</span>
+                
               </Link>
             </div>
           </div>

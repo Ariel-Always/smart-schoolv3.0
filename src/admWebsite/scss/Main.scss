@@ -1,6 +1,6 @@
 .Main {
     width: 1200px;
-    height: 664px;
+    height: 680px;
     background-color: #ffffff;
     border-radius: 12px;
     position: relative;
@@ -139,28 +139,28 @@
                     color: #fff;
                 }
                 .ImgError_0 {
-                    background-color: rgba($color: #009900, $alpha: 0.3);
+                    background-color: rgba($color: #009900, $alpha: 0.2);
                 }
                 .ImgError_1 {
-                    background-color: rgba($color: #480099, $alpha: 0.3);
+                    background-color: rgba($color: #480099, $alpha: 0.2);
                 }
                 .ImgError_2 {
-                    background-color: rgba($color: #007399, $alpha: 0.3);
+                    background-color: rgba($color: #007399, $alpha: 0.2);
                 }
                 .ImgError_3 {
-                    background-color: rgba($color: #990000, $alpha: 0.3);
+                    background-color: rgba($color: #990000, $alpha: 0.2);
                 }
                 .ImgError_4 {
-                    background-color: rgba($color: #993a00, $alpha: 0.3);
+                    background-color: rgba($color: #993a00, $alpha: 0.2);
                 }
                 .ImgError_5 {
-                    background-color: rgba($color: #646f09, $alpha: 0.3);
+                    background-color: rgba($color: #646f09, $alpha: 0.2);
                 }
                 .ImgError_6 {
-                    background-color: rgba($color: #001299, $alpha: 0.3);
+                    background-color: rgba($color: #001299, $alpha: 0.2);
                 }
                 .ImgError_7 {
-                    background-color: rgba($color: #995e00, $alpha: 0.3);
+                    background-color: rgba($color: #995e00, $alpha: 0.2);
                 }
             }
             .card-rigth {
@@ -193,7 +193,7 @@
                         text-align: center;
                         padding: 0 7px;
                         margin-left: 5px;
-                        background-color: rgba($color: #009900, $alpha: 0.3);
+                        background-color: rgba($color: #009900, $alpha: 0.2);
                         color: #009900;
                         border-radius: 3px;
                         font-size: 14px;
@@ -202,35 +202,35 @@
                         white-space: nowrap; //强制不换行
                     }
                     .WebType_0 {
-                        background-color: rgba($color: #009900, $alpha: 0.3);
+                        background-color: rgba($color: #009900, $alpha: 0.2);
                         color: #009900;
                     }
                     .WebType_1 {
-                        background-color: rgba($color: #480099, $alpha: 0.3);
+                        background-color: rgba($color: #480099, $alpha: 0.2);
                         color: #480099;
                     }
                     .WebType_2 {
-                        background-color: rgba($color: #007399, $alpha: 0.3);
+                        background-color: rgba($color: #007399, $alpha: 0.2);
                         color: #007399;
                     }
                     .WebType_3 {
-                        background-color: rgba($color: #990000, $alpha: 0.3);
+                        background-color: rgba($color: #990000, $alpha: 0.2);
                         color: #990000;
                     }
                     .WebType_4 {
-                        background-color: rgba($color: #993a00, $alpha: 0.3);
+                        background-color: rgba($color: #993a00, $alpha: 0.2);
                         color: #993a00;
                     }
                     .WebType_5 {
-                        background-color: rgba($color: #646f09, $alpha: 0.3);
+                        background-color: rgba($color: #646f09, $alpha: 0.2);
                         color: #646f09;
                     }
                     .WebType_6 {
-                        background-color: rgba($color: #001299, $alpha: 0.3);
+                        background-color: rgba($color: #001299, $alpha: 0.2);
                         color: #001299;
                     }
                     .WebType_7 {
-                        background-color: rgba($color: #995e00, $alpha: 0.3);
+                        background-color: rgba($color: #995e00, $alpha: 0.2);
                         color: #995e00;
                     }
                 }
@@ -306,4 +306,8 @@
 
 p {
     margin: 0;
+}
+
+.frame-content-wrapper.barnerHide {
+    margin-top: 16px;
 }

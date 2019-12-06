@@ -27,7 +27,7 @@ class Search extends React.Component {
           render: OrderNO => {
             return (
               <div className="CheckBox-content">
-                ><label>
+                <label>
                 <CheckBox
                   value={OrderNO - 1}
                   type="gray"

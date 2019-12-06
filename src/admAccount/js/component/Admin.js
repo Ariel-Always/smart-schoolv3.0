@@ -384,6 +384,11 @@ class Admin extends React.Component {
   };
   onAddAdmin = e => {
     //  console.log(e)
+    const { dispatch ,UIState} = this.props;
+
+    if(UIState.AppLoading.TableLoading){
+      return
+    }
     this.setState({
       addAdminModalVisible: true,
       userKey: "add"
@@ -984,9 +989,10 @@ checkedList: [],
               <span
                 className="link"
                 style={{ cursor: "pointer" }}
-                onClick={this.onAddAdmin}
+                onClick={this.onAddAdmin.bind(this)}
               >
-                添加管理员
+                
+                <span className="add">添加管理员</span>
               </span>
             </div>
           </div>

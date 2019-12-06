@@ -724,6 +724,7 @@ class App extends Component {
         <Modal
           ref="CourseClassDetailsMadal"
           bodyStyle={{ padding: 0 }}
+          width={720}
           type="1"
           title={"教学班详情"}
           visible={

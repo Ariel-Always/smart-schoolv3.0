@@ -4,6 +4,7 @@ import actions from "../actions";
 import "../../scss/CourseClassDetails.scss";
 import history from "../containers/history";
 import { Table, Button, DetailsModal, Empty } from "../../../common";
+import { Scrollbars } from "react-custom-scrollbars";
 
 class CourseClassDetails extends React.Component {
   constructor(props) {
@@ -14,7 +15,7 @@ class CourseClassDetails extends React.Component {
           title: "序号",
           align: "center",
           key: "OrderNO",
-          width: 100,
+          width: 93,
           dataIndex: "OrderNO",
           render: OrderNO => {
             return (
@@ -27,7 +28,7 @@ class CourseClassDetails extends React.Component {
         {
           title: "姓名",
           align: "center",
-          width: 122,
+          width: 103,
           dataIndex: "StudentName",
           key: "StudentName",
           render: StudentName => {
@@ -43,7 +44,7 @@ class CourseClassDetails extends React.Component {
         },
         {
           title: "学号",
-          width: 122,
+          width: 225,
           align: "center",
           dataIndex: "StudentID",
           key: "StudentID",
@@ -57,7 +58,7 @@ class CourseClassDetails extends React.Component {
         },
         {
           title: "性别",
-          width: 122,
+          width: 70,
           align: "center",
           dataIndex: "Gender",
           key: "Gender",
@@ -77,7 +78,10 @@ class CourseClassDetails extends React.Component {
           dataIndex: "Class",
           render: Class => {
             return (
-              <span title={Class.Grade + ">" + Class.Class} className="Class">
+              <span
+                title={Class.Grade + ">" + Class.Class}
+                className="Grade-Class"
+              >
                 {Class.Grade + ">" + Class.Class}
               </span>
             );
@@ -110,9 +114,14 @@ class CourseClassDetails extends React.Component {
       <React.Fragment>
         <div className="CourseClassDetails">
           <div className="details-tips">
-            <span title={GetCourseClassDetailsMsg
-                ? GetCourseClassDetailsMsg.CourseClassName
-                : ""} className="tips-content className">
+            <span
+              title={
+                GetCourseClassDetailsMsg
+                  ? GetCourseClassDetailsMsg.CourseClassName
+                  : ""
+              }
+              className="tips-content className"
+            >
               {GetCourseClassDetailsMsg
                 ? GetCourseClassDetailsMsg.CourseClassName
                 : ""}
@@ -126,10 +135,12 @@ class CourseClassDetails extends React.Component {
                       this,
                       GetCourseClassDetailsMsg.TeacherID
                     )}
-                    title={GetCourseClassDetailsMsg.TeacherName +
-                        "[" +
-                        GetCourseClassDetailsMsg.TeacherID +
-                        "]"}
+                    title={
+                      GetCourseClassDetailsMsg.TeacherName +
+                      "[" +
+                      GetCourseClassDetailsMsg.TeacherID +
+                      "]"
+                    }
                   >
                     {GetCourseClassDetailsMsg.TeacherName +
                       "[" +
@@ -143,39 +154,109 @@ class CourseClassDetails extends React.Component {
                 "--"
               )}
             </span>
-            <span TITLE={GetCourseClassDetailsMsg
-                ? GetCourseClassDetailsMsg.SubjectName
-                : ""} className="tips-content subject">
+            <span
+              TITLE={
+                GetCourseClassDetailsMsg
+                  ? GetCourseClassDetailsMsg.SubjectName
+                  : ""
+              }
+              className="tips-content subject"
+            >
               <span className="tips">学科：</span>
               {GetCourseClassDetailsMsg
                 ? GetCourseClassDetailsMsg.SubjectName
                 : ""}
             </span>
-            <span TITLE={GetCourseClassDetailsMsg
-                ? GetCourseClassDetailsMsg.GradeName
-                : ""} className="tips-content grade">
+            <span
+              TITLE={
+                GetCourseClassDetailsMsg
+                  ? GetCourseClassDetailsMsg.GradeName
+                  : ""
+              }
+              className="tips-content grade"
+            >
               <span className="tips">年级：</span>
               {GetCourseClassDetailsMsg
                 ? GetCourseClassDetailsMsg.GradeName
                 : ""}
             </span>
-            <span TITLE={GetCourseClassDetailsMsg
-                ? GetCourseClassDetailsMsg.StudentCount
-                : ""} className="tips-content studentCount">
+            <span
+              TITLE={
+                GetCourseClassDetailsMsg
+                  ? GetCourseClassDetailsMsg.StudentCount
+                  : ""
+              }
+              className="tips-content studentCount"
+            >
               <span className="tips">学生人数：</span>
               {GetCourseClassDetailsMsg
                 ? GetCourseClassDetailsMsg.StudentCount
                 : ""}
             </span>
           </div>
+          <div className='table-head'>
+                
+                  <span
+                    class="table-head-th"
+                  >
+                    <span class="ant-table-header-column">
+                      <div>
+                        <span class="ant-table-column-title">序号</span>
+                      </div>
+                    </span>
+                  </span>
+                  <span
+                    class="table-head-th"
+                  >
+                    <span class="ant-table-header-column">
+                      <div>
+                        <span class="ant-table-column-title">姓名</span>
+                      </div>
+                    </span>
+                  </span>
+                  <span
+                    class="table-head-th"
+                  >
+                    <span class="ant-table-header-column">
+                      <div>
+                        <span class="ant-table-column-title">学号</span>
+                      </div>
+                    </span>
+                  </span>
+                  <span
+                    class="table-head-th"
+                  >
+                    <span class="ant-table-header-column">
+                      <div>
+                        <span class="ant-table-column-title">性别</span>
+                      </div>
+                    </span>
+                  </span>
+                  <span
+                    class="table-head-th"
+                  >
+                    <span class="ant-table-header-column">
+                      <div>
+                        <span class="ant-table-column-title">所属行政班</span>
+                      </div>
+                    </span>
+                  </span>
+                
+              </div>
+              <div style={{height:'28px'}}></div>
           {dataSource instanceof Array && dataSource.length > 0 ? (
-            <Table
-              scroll={{ y: 390 }}
-              className="table"
-              columns={this.state.columns}
-              pagination={false}
-              dataSource={dataSource}
-            ></Table>
+              
+            <Scrollbars style={{ width: 100 + "%", height: 390 + "px" }}>
+
+              <Table
+                // scroll={{y:true}}
+                className="table"
+                columns={this.state.columns}
+                pagination={false}
+                showHeader={false}
+                dataSource={dataSource}
+              ></Table>
+            </Scrollbars>
           ) : (
             <Empty
               type="4"

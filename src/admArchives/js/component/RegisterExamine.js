@@ -45,7 +45,8 @@ class RegisterExamine extends React.Component {
       TeacherClass: [],
       logo: logo,
       cnname: "用户档案管理",
-      enname: "User profile management"
+      enname: "User profile management",
+      Admin:true
     };
     const { dispatch, DataState } = this.props;
 
@@ -93,7 +94,9 @@ class RegisterExamine extends React.Component {
         this.setState({
           logo: logo,
           cnname: "用户档案管理",
-          enname: "User profile management"
+          enname: "User profile management",
+          Admin:true
+
         });
        document.title='用户档案管理'
       } else if (
@@ -103,7 +106,8 @@ class RegisterExamine extends React.Component {
         this.setState({
           logo: TeacherLogo,
           cnname: "行政班管理",
-          enname: "Administration class management"
+          enname: "Administration class management",
+          Admin:false
         });
        document.title='行政班管理'
         
@@ -346,6 +350,7 @@ class RegisterExamine extends React.Component {
           type="circle"
           showLeftMenu={false}
           showBarner={false}
+          className={this.state.Admin?'adminFrame':'teacherFrame'}
         >
           <div ref="frame-right-content" key={this.props.location.pathname}>
             <div className="content-top">
