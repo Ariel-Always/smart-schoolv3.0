@@ -457,11 +457,12 @@ ul{
 
 .frame_leftmenu_onegrade_name {
   float: left;
-  max-width: 126px;
+  max-width: 140px;
   cursor: pointer;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  margin-left:8px;
   &.active {
     color: #fff;
   }

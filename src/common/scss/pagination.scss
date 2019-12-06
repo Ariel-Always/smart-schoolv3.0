@@ -218,8 +218,59 @@
         .number{
 
           color: #ff6600;
-          
+
         }
+
+      }
+
+    }
+
+  }
+
+  &.size24{
+
+    &>li{
+
+      min-width:24px;
+
+      height: 24px;
+
+      line-height:22px;
+
+      &.ant-pagination-prev,
+      &.ant-pagination-next{
+
+        width:24px;
+
+        height: 24px;
+
+        line-height: 24px;
+
+      }
+
+    }
+
+    .ant-pagination-options-quick-jumper{
+
+      line-height: 24px;
+
+      input{
+
+        width:28px;
+
+        height: 24px;
+
+        line-height: 24px;
+
+      }
+
+      .pagination_go_button{
+
+        width:24px;
+
+        height: 24px;
+
+        line-height: 24px;
 
       }
 

@@ -140,7 +140,7 @@ class App extends Component{
 
             {
 
-                title: "序号",
+                title: <span className="slash"></span>,
 
                 dataIndex: 'RowNum',
 

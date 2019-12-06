@@ -297,7 +297,7 @@ const STTTeacherSearch = (val) => {
 
         ApiActions.GetTeacherBySubjectIDAndKey({
 
-            SchoolID,PeriodID,SubjectID,Key,dispatch
+            SchoolID,PeriodID,SubjectID,Key,Flag:0,dispatch
 
         }).then(data => {
 
@@ -347,7 +347,7 @@ const cancelSearch = () => {
 
             ApiActions.GetTeacherBySubjectIDAndKey({
 
-                SchoolID,PeriodID
+                SchoolID,PeriodID,Flag:0
 
             }).then(data => {
 

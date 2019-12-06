@@ -231,6 +231,13 @@
 
         border-bottom: 1px solid #aaddea;
 
+        background-image: linear-gradient(
+                        #e5f0f3,
+                        #e5f0f3),
+        linear-gradient(
+                        #ffffff,
+                        #ffffff);
+
       }
 
     }
@@ -387,9 +394,13 @@
 
       padding-left: 12px;
 
-      padding-top:12px;
+      margin-top:12px;
 
       margin-right: 4px;
+
+      height: 22px;
+
+      line-height: 22px;
 
       @include textOverFlow;
 

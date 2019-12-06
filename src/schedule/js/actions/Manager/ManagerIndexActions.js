@@ -149,7 +149,7 @@ const STTPageInit = () => {
 
       let GetTeacherBySubjectIDAndKey = ApiActions.GetTeacherBySubjectIDAndKey({
 
-          SchoolID,SubjectID:'',PeriodID,Key:'',dispatch
+          SchoolID,SubjectID:'',PeriodID,Key:'',dispatch,Flag:0
 
       });
 
