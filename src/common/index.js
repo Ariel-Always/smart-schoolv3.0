@@ -1467,6 +1467,29 @@ class Loading extends React.Component {
 
 class Alert extends React.Component {
 
+    constructor(props) {
+
+        super(props);
+
+        this.state={
+
+            left:0,
+
+            top:0,
+
+            xTemp:0,
+
+            yTemp:0,
+
+            can_move:false,
+
+            readyShow:false
+
+        }
+
+    }
+
+
     //关闭按钮
     closeAlert(e) {
         const { onClose } = this.props;
@@ -1507,31 +1530,39 @@ class Alert extends React.Component {
 
         }
 
+        if(this.AlertBody&&show&&!this.state.readyShow){
 
-       if(this.AlertBody){
-
-            this.AlertBody.style.top = ($(window).height() - this.AlertBody.clientHeight)/ 2 + 'px';
+           /* this.AlertBody.style.top = ($(window).height() - this.AlertBody.clientHeight)/ 2 + 'px';
 
             this.AlertBody.style.left = ($(window).width() - this.AlertBody.clientWidth) / 2 + 'px';
+*/
 
-       }
+            this.setState({readyShow:true,left:($(window).width() - this.AlertBody.clientWidth) /2,top:($(window).height() - this.AlertBody.clientHeight)/ 2});
 
+        }
+
+        if(!show&&this.state.readyShow){
+
+            this.setState({can_move:false,readyShow:false});
+
+        }
 
     }
 
     componentDidMount(){
 
-        if(this.AlertBody){
+        /*if(this.AlertBody){
 
-            this.AlertBody.style.top = ($(window).height() - this.AlertBody.clientHeight)/ 2 + 'px';
+           /!* this.AlertBody.style.top = ($(window).height() - this.AlertBody.clientHeight)/ 2 + 'px';
 
             this.AlertBody.style.left = ($(window).width() - this.AlertBody.clientWidth) / 2 + 'px';
+*!/
+           this.setState({left:($(window).width() - this.AlertBody.clientWidth) /2,top:($(window).height() - this.AlertBody.clientHeight)/ 2});
 
-        }
+        }*/
 
-        let xTemp, yTemp;
 
-        let can_move = false;
+        const that = this;
 
         $(document).on('dragstart', '.alert_dialog_wrapper', function(e) { return false; });
 
@@ -1539,19 +1570,23 @@ class Alert extends React.Component {
 
             let $win = $(event.target).closest('.alert_dialog_wrapper');
 
-            can_move = true;
-
             $win.css('cursor', 'move');
 
-            let mx = event.pageX;
+            let mx = event.clientX;
 
-            let my = event.pageY;
+            let my = event.clientY;
 
-            xTemp = mx - parseInt($win.offset().left);
+            let can_move = true;
 
-            yTemp = my - parseInt($win.offset().top);
+            let xTemp = mx - parseInt($win.offset().left-$(window).scrollLeft());
 
-            console.log(mx,my);
+            let yTemp = my - parseInt($win.offset().top-$(window).scrollTop());
+
+            that.setState({
+
+                can_move,xTemp,yTemp
+
+            })
 
         });
         //var win;
@@ -1559,41 +1594,55 @@ class Alert extends React.Component {
 
         $(window).mousemove(function(event) {
 
-            if (can_move) {
+            if (that.AlertBody) {
 
-                let $win = $(event.target).closest('.alert_dialog_wrapper');
+                if (that.state.can_move){
 
-                let $window = $(window);
+                    let $win = $(event.target).closest('.alert_dialog_wrapper');
 
-                let mx = event.pageX;
+                    let $window = $(window);
 
-                let my = event.pageY;
+                    let mx = event.clientX;
 
-                if (mx - xTemp > 0 && mx - xTemp < $window.width() - $win.width()) {
+                    let my = event.clientY;
 
-                    $win.css('left', mx - xTemp+'px');
+                    console.log(my,that.state.yTemp);
 
-                    console.log($win);
+                    if (mx - that.state.xTemp > 0 && mx - that.state.xTemp < $window.width() - $win.width()) {
+
+                        /*$win.css('left', mx - xTemp+'px');*/
+
+                        that.setState({left:mx - that.state.xTemp});
+
+
+
+                    }
+
+                    if (my - that.state.yTemp > 0 && my - that.state.yTemp < $window.height() - $win.height()) {
+
+                        /*$win.css('top', my - yTemp+'px');*/
+
+                        that.setState({top:my - that.state.yTemp});
+
+                        console.log(that,my - that.state.yTemp);
+
+                    }
 
                 }
-
-                if (my - yTemp > 0 && my - yTemp < $window.height() - $win.height()) {
-
-                    $win.css('top', my - yTemp+'px');
-
-                    console.log($win.width(),$win.height());
-
-                }
-
-
 
             }
 
         }).mouseup(function(event) {
 
-            can_move = false;
+            if (that.AlertBody){
 
-            $('.alert_dialog_wrapper').css('cursor', 'default');
+                that.setState({can_move:false});
+
+                console.log('up');
+
+                $('.alert_dialog_wrapper').css('cursor', 'default');
+
+            }
 
         });
 
@@ -1646,7 +1695,7 @@ class Alert extends React.Component {
                         <React.Fragment>
                             <div className="alert_dialog_mask" style={{ display: `${show ? 'block' : 'none'}` }}></div>
                             <div className="alert_dialog_tab" style={{ display: `${show ? 'block' : 'none'}` }}>
-                                <div ref={ref=>this.AlertBody=ref} className="border alert_dialog_wrapper" id="alert_dialog_wrapper">
+                                <div ref={ref=>this.AlertBody=ref} className="border alert_dialog_wrapper" id="alert_dialog_wrapper" style={{left:this.state.left,top:this.state.top}}>
                                     <div className="alert_close_btn" onClick={this.closeAlert.bind(this)}></div>
                                     <div className={`alert_dialog_content ${abstract?'has-abstract':''}`}>
                                         {

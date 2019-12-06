@@ -143,7 +143,7 @@ class AuthorSetting extends Component{
 
                 <div className="title-bar">
 
-                    <div className="title-bar-name">账号安全</div>
+                    <div className="title-bar-name">第三方登录账号</div>
 
                 </div>
 
