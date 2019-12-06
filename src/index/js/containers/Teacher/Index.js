@@ -88,6 +88,8 @@ class Index extends Component {
 
     dispatch(ModuleActions.ImgLoad({ GroupID, PNO, CNO }));
 
+
+
   }
 
   //图片加载失败调用
@@ -100,7 +102,7 @@ class Index extends Component {
   }
 
   //点击了组合
-  GroupToggle({ GroupID, OrderNo, Event }) {
+  GroupToggle({ GroupID, PNO, Event }) {
 
     const { dispatch } = this.props;
 

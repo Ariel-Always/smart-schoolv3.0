@@ -8,6 +8,14 @@ import dynamicFile from "dynamic-file";
 
 import ApiActions from "../ApiActions";
 
+import AppIcon from '../../../images/App.png';
+
+import SourceIcon from '../../../images/database.png';
+
+import ToolIcon from '../../../images/tool.png';
+
+import WebIcon from '../../../images/Website.png';
+
 
 const MODULES_INFO_UPDATE = 'MODULES_INFO_UPDATE';
 
@@ -42,7 +50,7 @@ const PageInit = () => {
 
         dispatch({type:HeaderActions.TEACHER_HEADER_SUBJECTS_PICK_CHANGE,data:SubjectsInfo[0]});
 
-        ApiActions.GetTeacherDeskTop({UserID,SubjectID:SubjectsInfo[0].id,dispatch}).then(data=>{
+       /* ApiActions.GetTeacherDeskTop({UserID,SubjectID:SubjectsInfo[0].id,dispatch}).then(data=>{
 
             if (data){
 
@@ -54,7 +62,7 @@ const PageInit = () => {
 
                         "Modules":item.Modules.map(i=>{
 
-                            if (item.IsWebsiteGroup){
+                            /!*if (item.IsWebsiteGroup){*!/
 
                                 if (i.IsGroup){
 
@@ -104,7 +112,7 @@ const PageInit = () => {
 
                                 }
 
-                            }else{
+                           /!* }else{
 
                                 if (i.IsGroup){
 
@@ -122,7 +130,7 @@ const PageInit = () => {
 
                                 }
 
-                            }
+                            }*!/
 
                         })
 
@@ -136,7 +144,7 @@ const PageInit = () => {
 
                 dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
 
-
+                const LgAssistantAddr = data.find(item=>item.GroupName==='').Modules.find(i=>i.ModuleID==='200-0-1-01').AccessParam;
 
                 let token = sessionStorage.getItem('token');
 
@@ -148,25 +156,25 @@ const PageInit = () => {
 
                 sessionStorage.setItem("PsnMgrMainServerAddr",host);
 
-                sessionStorage.setItem("PsnMgrLgAssistantAddr",'http://192.168.129.1:10103/');
+                sessionStorage.setItem("PsnMgrLgAssistantAddr",LgAssistantAddr);
 
                 dynamicFile([
 
-                    'http://192.168.129.1:10103/PsnMgr/LgAssistant/css/lancoo.cp.assistant.css',
+                    `${LgAssistantAddr}PsnMgr/LgAssistant/css/lancoo.cp.assistant.css`,
 
-                    'http://192.168.129.1:10103/PsnMgr/LgAssistant/assets/layui-v2.5.5/layui/css/layui.css',
+                    `${LgAssistantAddr}PsnMgr/LgAssistant/assets/layui-v2.5.5/layui/css/layui.css`,
 
-                    'http://192.168.129.1:10103/PsnMgr/LgAssistant/js/jquery-1.7.2.min.js'
+                    `${LgAssistantAddr}PsnMgr/LgAssistant/js/jquery-1.7.2.min.js`
 
                 ]).then(()=>{
 
                     dynamicFile([
 
-                        'http://192.168.129.1:10103/PsnMgr/LgAssistant/assets/jquery.pagination.js',
+                        `${LgAssistantAddr}PsnMgr/LgAssistant/assets/jquery.pagination.js`,
 
-                        'http://192.168.129.1:10103/PsnMgr/LgAssistant/assets/layui-v2.5.5/layui/layui.js',
+                        `${LgAssistantAddr}PsnMgr/LgAssistant/assets/layui-v2.5.5/layui/layui.js`,
 
-                        'http://192.168.129.1:10103/PsnMgr/LgAssistant/js/lancoo.cp.assistant.js'
+                        `${LgAssistantAddr}PsnMgr/LgAssistant/js/lancoo.cp.assistant.js`
 
                     ]).then(()=>{
 
@@ -178,7 +186,9 @@ const PageInit = () => {
 
             }
 
-        });
+        });*/
+
+      dispatch(UpdateModules({UserID,SubjectID:SubjectsInfo[0].id}));
 
   }
 
@@ -193,7 +203,20 @@ const PageUpdate = () =>{
 
         const {UserID} = getState().LoginUser;
 
-        console.log()
+        dispatch({type:ModulesActions.TEACHER_MODULE_LOADING_SHOW});
+
+        dispatch(UpdateModules({UserID,SubjectID}));
+
+
+    }
+
+};
+
+
+
+const UpdateModules = ({UserID,SubjectID}) =>{
+
+    return dispatch=>{
 
         dispatch({type:ModulesActions.TEACHER_MODULE_LOADING_SHOW});
 
@@ -209,15 +232,87 @@ const PageUpdate = () =>{
 
                         "Modules":item.Modules.map(i=>{
 
-                            if (item.IsWebsiteGroup){
+                            let StartImg = '';
 
-                                if (i.IsGroup){
+                            switch (i.ModuleType) {
 
-                                    let SubGroupModules = i.SubGroupModules.map(it=>{
+                                case 'tool':
 
-                                        let RandomArr = ['green','orange','blue'];
+                                    StartImg = ToolIcon;
 
-                                        let bg = RandomArr[Math.floor(Math.random()*RandomArr.length)];
+                                    break;
+
+                                case 'application':
+
+                                    StartImg = AppIcon;
+
+                                    break;
+
+                                case 'website':
+
+                                    StartImg = WebIcon;
+
+                                    break;
+
+                                case 'reslib':
+
+                                    StartImg = SourceIcon;
+
+                                    break;
+
+                                default:
+
+                                    StartImg = '';
+
+                            }
+
+                            if (i.IsGroup){
+
+                                let SubGroupModules = i.SubGroupModules.map(it=>{
+
+                                    let RandomArr = ['green','orange','blue'];
+
+                                    let bg = RandomArr[Math.floor(Math.random()*RandomArr.length)];
+
+                                    let StartImg = '';
+
+                                    switch (it.ModuleType) {
+
+                                        case 'tool':
+
+                                            StartImg = ToolIcon;
+
+                                            break;
+
+                                        case 'application':
+
+                                            StartImg = AppIcon;
+
+                                            break;
+
+                                        case 'website':
+
+                                            StartImg = WebIcon;
+
+                                            break;
+
+                                        case 'reslib':
+
+                                            StartImg = SourceIcon;
+
+                                            break;
+
+                                        default:
+
+                                            StartImg = '';
+
+                                    }
+
+                                    let WebURL = '';
+
+                                    if (it.ModuleType==='website'){
+
+                                        WebURL = UrlGetIcon(it.AccessParam);
 
                                         return {
 
@@ -225,27 +320,56 @@ const PageUpdate = () =>{
 
                                             "showDom":"img",
 
+                                            "baseImgUrl":StartImg,
+
+                                            "BgColor":bg,
+
+                                            WebURL
+
+                                        }
+
+                                    }else{
+
+                                        return {
+
+                                            ...it,
+
+                                            "showDom":"img",
+
+                                            "baseImgUrl":StartImg,
+
                                             "BgColor":bg
 
                                         }
 
-                                    });
-
-                                    return {
-
-                                        ...i,
-
-                                        SubGroupModules:SubGroupModules,
-
-                                        DetailShow:false
-
                                     }
 
-                                }else{
 
-                                    let RandomArr = ['green','orange','blue'];
 
-                                    let bg = RandomArr[Math.floor(Math.random()*RandomArr.length)];
+                                });
+
+
+                                return {
+
+                                    ...i,
+
+                                    SubGroupModules:SubGroupModules,
+
+                                    DetailShow:false
+
+                                }
+
+                            }else{
+
+                                let RandomArr = ['green','orange','blue'];
+
+                                let bg = RandomArr[Math.floor(Math.random()*RandomArr.length)];
+
+                                let WebURL = '';
+
+                                if (i.ModuleType==='website'){
+
+                                    WebURL = UrlGetIcon(i.AccessParam);
 
                                     return {
 
@@ -253,27 +377,27 @@ const PageUpdate = () =>{
 
                                         "showDom":"img",
 
-                                        "BgColor":bg
+                                        "baseImgUrl":StartImg,
 
-                                    }
+                                        "BgColor":bg,
 
-                                }
-
-                            }else{
-
-                                if (i.IsGroup){
-
-                                    return {
-
-                                        ...i,
-
-                                        DetailShow:false
+                                        WebURL
 
                                     }
 
                                 }else{
 
-                                    return i;
+                                    return {
+
+                                        ...i,
+
+                                        "showDom":"img",
+
+                                        "baseImgUrl":StartImg,
+
+                                        "BgColor":bg
+
+                                    }
 
                                 }
 
@@ -291,6 +415,8 @@ const PageUpdate = () =>{
 
             dispatch({type:ModulesActions.TEACHER_MODULE_LOADING_HIDE});
 
+            dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
+
         });
 
     }
@@ -298,9 +424,26 @@ const PageUpdate = () =>{
 };
 
 
+const UrlGetIcon = url => {
+    let urlArr = "";
+    // console.log(url,url instanceof String,typeof url)
+    if (typeof url !== "string") {
+        return;
+    }
+    if (url.indexOf("://") !== "-1") {
+        urlArr = url
+            .split("/")
+            .slice(0, 3)
+            .join("/");
+        // console.log(urlArr)
+        return urlArr;
+    } else {
+        urlArr = url.split("/")[0];
+        // console.log(urlArr)
 
-
-
+        return urlArr;
+    }
+};
 
 
 export default {
