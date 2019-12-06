@@ -155,7 +155,7 @@ class CourseClassDetails extends React.Component {
               )}
             </span>
             <span
-              TITLE={
+              title={
                 GetCourseClassDetailsMsg
                   ? GetCourseClassDetailsMsg.SubjectName
                   : ""
@@ -168,7 +168,7 @@ class CourseClassDetails extends React.Component {
                 : ""}
             </span>
             <span
-              TITLE={
+              title={
                 GetCourseClassDetailsMsg
                   ? GetCourseClassDetailsMsg.GradeName
                   : ""
@@ -181,7 +181,7 @@ class CourseClassDetails extends React.Component {
                 : ""}
             </span>
             <span
-              TITLE={
+              title={
                 GetCourseClassDetailsMsg
                   ? GetCourseClassDetailsMsg.StudentCount
                   : ""
@@ -197,47 +197,47 @@ class CourseClassDetails extends React.Component {
           <div className='table-head'>
                 
                   <span
-                    class="table-head-th"
+                    className="table-head-th"
                   >
-                    <span class="ant-table-header-column">
+                    <span className="ant-table-header-column">
                       <div>
-                        <span class="ant-table-column-title">序号</span>
+                        <span className="ant-table-column-title">序号</span>
                       </div>
                     </span>
                   </span>
                   <span
-                    class="table-head-th"
+                    className="table-head-th"
                   >
-                    <span class="ant-table-header-column">
+                    <span className="ant-table-header-column">
                       <div>
-                        <span class="ant-table-column-title">姓名</span>
+                        <span className="ant-table-column-title">姓名</span>
                       </div>
                     </span>
                   </span>
                   <span
-                    class="table-head-th"
+                    className="table-head-th"
                   >
-                    <span class="ant-table-header-column">
+                    <span className="ant-table-header-column">
                       <div>
-                        <span class="ant-table-column-title">学号</span>
+                        <span className="ant-table-column-title">学号</span>
                       </div>
                     </span>
                   </span>
                   <span
-                    class="table-head-th"
+                    className="table-head-th"
                   >
-                    <span class="ant-table-header-column">
+                    <span className="ant-table-header-column">
                       <div>
-                        <span class="ant-table-column-title">性别</span>
+                        <span className="ant-table-column-title">性别</span>
                       </div>
                     </span>
                   </span>
                   <span
-                    class="table-head-th"
+                    className="table-head-th"
                   >
-                    <span class="ant-table-header-column">
+                    <span className="ant-table-header-column">
                       <div>
-                        <span class="ant-table-column-title">所属行政班</span>
+                        <span className="ant-table-column-title">所属行政班</span>
                       </div>
                     </span>
                   </span>
