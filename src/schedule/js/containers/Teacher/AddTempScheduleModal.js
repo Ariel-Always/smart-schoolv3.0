@@ -96,6 +96,8 @@ class AddTempScheduleModal extends Component{
 
         let SubjectOK,ClassOk,WeekOk,DateOk,ClassHourOk,ClassRoomOk = false;
 
+        console.log(AddTempScheduleModal,AddTempScheduleModal.SubjectDropShow);
+
         if (AddTempScheduleModal.SubjectDropShow){
 
             if (Object.keys(AddTempScheduleModal.checkedSubject).length <= 0){
@@ -110,7 +112,7 @@ class AddTempScheduleModal extends Component{
 
         }else {
 
-            if(AddTempScheduleModal.SubjectTitleID){
+            if(AddTempScheduleModal.SubjectID){
 
                 SubjectOK = true;
 

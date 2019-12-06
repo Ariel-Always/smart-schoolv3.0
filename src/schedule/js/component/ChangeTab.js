@@ -8,6 +8,8 @@ class ChangeTab extends Component{
 
         const {TabLinkList} = this.props;
 
+        const hash = this.props.location.pathname;
+
         return (
             <div className="schedule-change-tab">
 
@@ -15,7 +17,40 @@ class ChangeTab extends Component{
 
                     TabLinkList&&TabLinkList.map((item,key) => {
 
-                        return  <NavLink key={key} className="schedule-change-tab-item" activeClassName="active"  to={item.link} title={item.name}>{item.name}</NavLink>
+                        return  <div className="change-tab-wrapper" key={key}>
+
+                            {
+
+                                hash===item.link?
+
+                                    <React.Fragment>
+
+                                        <NavLink className="schedule-change-tab-item" activeClassName="active"  to={item.link} title={item.name}>
+
+                                            {item.name}
+
+                                            <div className="line"></div>
+
+                                            <div className="circle"></div>
+
+                                        </NavLink>
+
+                                        <div className="change-tab-shadow"></div>
+
+                                    </React.Fragment>
+
+                                    :
+
+                                    <NavLink className="schedule-change-tab-item"  to={item.link} title={item.name}>
+
+                                        <div className="blank-title">{item.name}</div>
+
+                                    </NavLink>
+
+                            }
+
+
+                        </div>
 
                     })
 

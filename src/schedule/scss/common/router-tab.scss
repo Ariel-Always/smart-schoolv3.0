@@ -21,8 +21,6 @@
 
   text-align: center;
 
-  color: #666666;
-
   background-image: linear-gradient(0deg,
           rgba(214, 255, 237, 0.89) 0%,
           rgba(108, 250, 255, 0.89) 100%),
@@ -43,9 +41,24 @@
 
   .router-title{
 
-    padding-left: 24px;
+    margin-left:4px;
 
     font-size: 16px;
+
+    background-image: -webkit-gradient(linear,0 bottom,0 top,from(#0e6982),to(#41cfdb));
+
+    -webkit-background-clip: text; /*必需加前缀 -webkit- 才支持这个text值 */
+
+    -webkit-text-fill-color: transparent; /*text-fill-color会覆盖color所定义的字体颜色： */
+
+
+  }
+
+  .router-logo{
+
+    padding-left:20px;
+
+    line-height: 20px;
 
     background-position:left center;
 
@@ -77,7 +90,7 @@
 
   }
 
-  
+
   &:hover{
 
     color: #666666;
@@ -95,9 +108,18 @@
 
     background-image: none;
 
-    color: #0173ff;
-
     .router-title{
+
+      background-image: -webkit-gradient(linear, 0 0,0 bottom, from(#0173ff), to(#65dcfd));
+
+      -webkit-background-clip: text; /*必需加前缀 -webkit- 才支持这个text值 */
+
+      -webkit-text-fill-color: transparent; /*text-fill-color会覆盖color所定义的字体颜色： */
+
+
+    }
+
+    .router-logo{
 
       &.subject{
 

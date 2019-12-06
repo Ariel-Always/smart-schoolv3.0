@@ -294,7 +294,7 @@ const STTPageInit = () => {
 
         let GetTeacherBySubjectIDAndKey = ApiActions.GetTeacherBySubjectIDAndKey({
 
-            SchoolID,PeriodID
+            SchoolID,PeriodID,Flag:0
 
         });
 
@@ -837,17 +837,27 @@ const getQueryVariable = (variable) => {
 
     let query = window.location.href;
 
-    let vars = query.split("?")[1].split('&');
+    if (query.split("?")[1]){
 
-    for (let i=0;i<vars.length;i++) {
+        let vars = query.split("?")[1].split('&');
 
-        let pair = vars[i].split("=");
+        for (let i=0;i<vars.length;i++) {
 
-        if(pair[0] == variable){return pair[1];}
+            let pair = vars[i].split("=");
+
+            if(pair[0] == variable){return pair[1];}
+
+        }
+
+        return(false);
+
+    }else{
+
+        return false;
 
     }
 
-    return(false);
+
 
 };
 

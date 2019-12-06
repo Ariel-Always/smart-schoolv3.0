@@ -46,6 +46,7 @@
     vertical-align: bottom;
     margin-left: 10px;
     border:0;
+    font-size:14px;
     &>span{
       line-height: 26px;
     }
@@ -99,7 +100,7 @@
 
     &.active{
 
-      background-color: #dddddd;
+      background-color: #f5f5f5;
 
     }
 

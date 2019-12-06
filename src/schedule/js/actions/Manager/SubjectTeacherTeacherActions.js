@@ -292,7 +292,7 @@ const STTTeacherSearch = (val) => {
 
         ApiActions.GetTeacherBySubjectIDAndKey({
 
-            SchoolID,PeriodID,SubjectID:'',Key,dispatch
+            SchoolID,PeriodID,SubjectID:'',Key,dispatch,Flag:0
 
         }).then(data => {
 

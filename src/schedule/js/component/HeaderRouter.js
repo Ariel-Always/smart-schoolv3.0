@@ -20,6 +20,8 @@ class HeaderRouter extends Component{
 
                         return  <NavLink key={key} className="schedule-router-tab-item" activeClassName="active" to={item.link} >
 
+                                    <span className={`router-logo ${item.logo}`}></span>
+
                                     <span className={`router-title ${item.logo}`} title={item.link}>{item.name}</span>
 
                                 </NavLink>

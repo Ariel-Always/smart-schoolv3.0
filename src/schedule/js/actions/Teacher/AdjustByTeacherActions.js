@@ -6,6 +6,8 @@ import AppAlertActions from '../AppAlertActions';
 
 import ApiActions from "../ApiActions";
 
+import ComPageRefresh from '../ComPageRefresh';
+
 //关于弹窗公共部分
 const ADJUST_BY_TEACHER_SHOW = 'ADJUST_BY_TEACHER_SHOW';
 
@@ -2667,7 +2669,7 @@ const ModalCommit = () => {
 
                   Type,Item,TeacherID1,TeacherID2,dispatch,
 
-                  SchoolID,UserID,UserType,SubjectID,ClassID
+                  SchoolID,UserID,UserType:parseInt(UserType),SubjectID,ClassID
 
               }).then((data) => {
 
@@ -2675,7 +2677,11 @@ const ModalCommit = () => {
 
                       dispatch(AppAlertActions.alertWarn({title:"找人代课成功！"}));
 
+                      ComPageRefresh.ComPageUpdate(dispatch);
+
                   }
+
+                  dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
 
               })
 
@@ -2772,7 +2778,11 @@ const ModalCommit = () => {
 
                      dispatch(AppAlertActions.alertSuccess({title:"与人换课成功！"}));
 
+                     ComPageRefresh.ComPageUpdate(dispatch);
+
                  }
+
+                  dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
 
               });
 
@@ -2876,7 +2886,11 @@ const ModalCommit = () => {
 
                      dispatch(AppAlertActions.alertSuccess({title:"调整时间成功！"}));
 
+                     ComPageRefresh.ComPageUpdate(dispatch);
+
                  }
+
+                  dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
 
               });
 
@@ -2956,7 +2970,11 @@ const ModalCommit = () => {
 
                       dispatch(AppAlertActions.alertSuccess({title:"调整教室成功！"}));
 
+                      ComPageRefresh.ComPageUpdate(dispatch);
+
                   }
+
+                  dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
 
               });
 
@@ -3014,7 +3032,7 @@ const ModalCommit = () => {
 
               let { UserID,UserType } = getState().LoginUser;
 
-              ApiActions.CloseTeacherSchedule({UserID,UserType,ScheduleIDs,dispatch}).then(data=>{
+              ApiActions.CloseTeacherSchedule({UserID,UserType:parseInt(UserType),ScheduleIDs,dispatch}).then(data=>{
 
                   if (data){
 
@@ -3022,7 +3040,11 @@ const ModalCommit = () => {
 
                       dispatch(AppAlertActions.alertSuccess({title:"停课成功！"}));
 
+                      ComPageRefresh.ComPageUpdate(dispatch);
+
                   }
+
+                  dispatch({type:ADJUST_BY_TEACHER_LOADING_HIDE});
 
               })
 

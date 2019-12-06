@@ -67,11 +67,11 @@ class StudentTabWrapper extends Component{
 
                                                 return <div key={key} className={`person-item-wrapper ${isMonitor?'monitor':''}`} >
 
-                                                            <CheckBox type="circle" value={JSON.stringify({id:item.UserID,name:item.UserName})}></CheckBox>
-
                                                             <div className="person-item-content clearfix">
 
-                                                                    <div className="person-item-photo" onClick={e=>StudentDetailShow({UserID:item.UserID,UserType:2})} style={{backgroundImage:`url(${item.PhotoPath})`}}></div>
+                                                                <CheckBox type="circle" value={JSON.stringify({id:item.UserID,name:item.UserName})}></CheckBox>
+
+                                                                <div className="person-item-photo" onClick={e=>StudentDetailShow({UserID:item.UserID,UserType:2})} style={{backgroundImage:`url(${item.PhotoPath})`}}></div>
 
                                                                     <div className="person-item-info-wrapper">
 
@@ -113,7 +113,7 @@ class StudentTabWrapper extends Component{
 
                                     </div>
 
-                                    <PagiNation pageSize={12} onChange={e=>StudentPageChange(e)} total={StudentPagination.Total} current={StudentPagination.CurrentPage}></PagiNation>
+                                    <PagiNation className={'size24'} pageSize={12} onChange={e=>StudentPageChange(e)} total={StudentPagination.Total} current={StudentPagination.CurrentPage}></PagiNation>
 
                                 </React.Fragment>
 

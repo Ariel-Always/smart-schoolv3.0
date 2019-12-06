@@ -223,9 +223,9 @@ $image-url:'../images';
     left:1px;
     top:5px;
     text-align: center;
-    line-height: 20px;
+    line-height: 18px;
     color: #ffffff;
-    font-size: 14px;
+    font-size:12px;
     background: url("#{$image-url}/ganger-tab.png") no-repeat center;
     @include background-size(100%);
   }

@@ -191,9 +191,9 @@ const GetScheduleOfClassRoomOne = async ({PeriodID,ClassRoomID,WeekNO=0,dispatch
 
 //获取课表教师信息（含搜索）
 
-const GetTeacherBySubjectIDAndKey = async ({SchoolID,PeriodID='',SubjectID='',Key='',dispatch}) => {
+const GetTeacherBySubjectIDAndKey = async ({SchoolID,PeriodID='',Flag=1,SubjectID='',Key='',dispatch}) => {
 
-    let res = await Method.getGetData(`/Schedule/api/GetTeacherBySubjectIDAndKey?SchoolID=${SchoolID}&PeriodID=${PeriodID}&SubjectID=${SubjectID}&Key=${Key}`,
+    let res = await Method.getGetData(`/Schedule/api/GetTeacherBySubjectIDAndKey?SchoolID=${SchoolID}&PeriodID=${PeriodID}&SubjectID=${SubjectID}&Key=${Key}&Flag=${Flag}`,
 
         2,
 

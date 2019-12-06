@@ -16,6 +16,8 @@
 
       height: 28px;
 
+      border: 1px solid #bac7d9;
+
     }
 
     .date-time-wrapper{
@@ -23,6 +25,12 @@
       float: left;
 
       margin-left: 20px;
+
+      &>*{
+
+        float: left;
+
+      }
 
     }
 
@@ -39,6 +47,8 @@
     .title{
 
       padding: 0 10px;
+
+      line-height: 28px;
 
     }
 
@@ -71,6 +81,17 @@
   .log-table-wrapper{
 
     margin:16px 32px 0 32px;
+
+    .ant-table-thead>tr>th{
+
+      background-image: linear-gradient(
+                      #e5f0f3,
+                      #e5f0f3),
+      linear-gradient(
+                      #ffffff,
+                      #ffffff);
+
+    }
 
     .ant-table-tbody>tr>td,
     .ant-table-thead>tr>th{
@@ -189,6 +210,28 @@
         color: #aaaaaa;
 
       }
+
+    }
+
+    //表头斜杠
+
+    .slash{
+
+      position:absolute;
+
+      width:78px;
+
+      height: 1px;
+
+      background-color:#96d4e3;
+
+      left: 0;
+
+      top:0;
+
+      @include transform(rotate(22deg));
+
+      @include transform-origin(left,top);
 
     }
 

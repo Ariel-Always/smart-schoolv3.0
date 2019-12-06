@@ -274,9 +274,6 @@ const StudentModalOk = () =>{
 
         let IDOk,NameOk,IDCardOk,TelOk,MailOk,AddressOk = false;
 
-
-
-
         if (EditorStudentID){
 
             IDOk = true;
@@ -381,7 +378,7 @@ const StudentModalOk = () =>{
 
                     ApiActions.EditStudent({
 
-                        UserID:UserIDValue,UserName:UserNameValue,
+                        UserID:EditorStudentID,UserName:UserNameValue,
 
                         Gender:SexDrop.title,classID,PhotoPath,
 

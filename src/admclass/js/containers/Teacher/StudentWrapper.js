@@ -305,7 +305,7 @@ class StudentWrapper extends Component{
                             }
 
 
-                            <PagiNation  className={`${StudentPower?'right':'center'}`} pageSize={20} onChange={e=>this.StudentPageChange(e)} total={Total} current={StudentPage}></PagiNation>
+                            <PagiNation  className={`size24 ${StudentPower?'right':'center'}`} pageSize={20} onChange={e=>this.StudentPageChange(e)} total={Total} current={StudentPage}></PagiNation>
 
                         </React.Fragment>
 
