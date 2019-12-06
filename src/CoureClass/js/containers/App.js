@@ -384,6 +384,33 @@ class App extends Component {
       );
       return;
     }
+    let value = data.selectData.CourseClass.CourseClassName
+    if (value==='') {
+      dispatch(
+        actions.UpUIState.showErrorAlert({
+          type: "btn-error",
+          title: "您还没填写教学班名称哦~",
+          ok: this.onAppAlertOK.bind(this),
+          cancel: this.onAppAlertCancel.bind(this),
+          close: this.onAppAlertClose.bind(this)
+        })
+      );
+      return;
+    }
+    //console.log(this.state.courseClassName, e.target.value)
+    let Test = /^([a-zA-Z0-9]{1,24})$/.test(value)
+    if(!Test){
+      dispatch(
+        actions.UpUIState.showErrorAlert({
+          type: "btn-error",
+          title: "教学班名称格式不符合要求",
+          ok: this.onAppAlertOK.bind(this),
+          cancel: this.onAppAlertCancel.bind(this),
+          close: this.onAppAlertClose.bind(this)
+        })
+      );
+      return;
+    }
     // console.log(data.selectData.Student,data.TableSource,deepCompare.deepCompare(data.selectData.Student, data.TableSource))
     let courseClassStus = data.selectData.Student.map((child, index) => {
       return child.StudentID;
@@ -509,11 +536,26 @@ class App extends Component {
     //     }));
     //     return;
     // }
-    if (!data.selectData.CourseClass.CourseClassName) {
+    if (data.selectData.CourseClass.CourseClassName==='') {
       dispatch(
         actions.UpUIState.showErrorAlert({
           type: "btn-error",
           title: "您还没填写教学班名称哦~",
+          ok: this.onAppAlertOK.bind(this),
+          cancel: this.onAppAlertCancel.bind(this),
+          close: this.onAppAlertClose.bind(this)
+        })
+      );
+      return;
+    }
+    let value = data.selectData.CourseClass.CourseClassName
+    //console.log(this.state.courseClassName, e.target.value)
+    let Test = /^([a-zA-Z0-9]{1,24})$/.test(value)
+    if(!Test){
+      dispatch(
+        actions.UpUIState.showErrorAlert({
+          type: "btn-error",
+          title: "教学班名称格式不符合要求",
           ok: this.onAppAlertOK.bind(this),
           cancel: this.onAppAlertCancel.bind(this),
           close: this.onAppAlertClose.bind(this)
