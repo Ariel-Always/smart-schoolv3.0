@@ -9,7 +9,8 @@ import {
   DropDown,
   CheckBox,
   CheckBoxGroup,
-  Tips
+  Tips,
+  Loading
 } from "../../../common/index";
 import actions from "../actions";
 import "../../../common/js/PicUpload/Cropper/cropper.css";
@@ -515,15 +516,15 @@ class EditModal extends React.Component {
           <div className="row clearfix" style={{ marginTop: 18 + "px" }}>
             <span className="culonm-1">{"工号："}</span>
             <div className="culonm-2">
-              <div className="EditName-tips">
+              
                 <Tips
-                  placement="bottomRight"
-                  getPopupContainer={trigger => trigger.parentNode}
+                  // placement="bottomRight"
+                  // getPopupContainer={trigger => trigger.parentNode}
                   overlayClassName={"tips-edit tips-userName"}
                   visible={UIState.TipsVisible.UserIDTipsVisible}
                   title={"工号" + this.state.UserIDTipsTitle}
-                ></Tips>
-              </div>
+                >
+              
               {this.state.UserKey === "change" ? (
                 <span title={this.state.UserIDChange} className="UserID-text">{this.state.UserIDChange}</span>
               ) : (
@@ -539,20 +540,22 @@ class EditModal extends React.Component {
                   onBlur={this.onEditIDBlur}
                 />
               )}
+                </Tips>
+
             </div>
           </div>
           <div className="row clearfix">
             <span className="culonm-1">账号名称：</span>
             <div className="culonm-2 ">
-              <div className="EditName-tips">
+              {/* <div className="EditName-tips"> */}
                 <Tips
-                  placement="bottomRight"
-                  getPopupContainer={trigger => trigger.parentNode}
+                  // placement="bottomRight"
+                  // getPopupContainer={trigger => trigger.parentNode}
                   overlayClassName={"tips-edit tips-userName"}
                   visible={UIState.TipsVisible.UserNameTipsVisible}
                   title={this.state.UserNameTipsTitle}
-                ></Tips>
-              </div>
+                >
+              {/* </div> */}
               <Input
                 className="UserName-input"
                 maxLength={20}
@@ -562,11 +565,13 @@ class EditModal extends React.Component {
                 onChange={this.onEditNameChange}
                 onBlur={this.onEditNameBlur}
               />
+              </Tips>
             </div>
           </div>
           <div className="row clearfix">
             <span className="culonm-1">权限分配：</span>
             <div className="culonm-2 culonm-3">
+              <Scrollbars style={{height:'350px', width: "100%" }}>
               {this.state.PowerList.map((power, index) => {
                 // let checkAll = this.state.checkAll;
                 // let indeterminate = this.state.indeterminate;
@@ -600,6 +605,7 @@ class EditModal extends React.Component {
                   <div key={this.state.PowerList[index].value}>
                     <CheckBox
                       className="checkBoxTips"
+                      type='gray'
                       indeterminate={this.state.indeterminate[index]}
                       onChange={this.onCheckAllChange.bind(this, index)}
                       checked={this.state.checkAll[index]}
@@ -607,7 +613,7 @@ class EditModal extends React.Component {
                       {power.PowerName}
                       <span className="checkTips">
                         [已选择
-                        <span style={{ color: "red" }}>
+                        <span style={{ color: "red",    verticalAlign: 'baseline' }}>
                           {this.state.PowerChildLen[index]
                             ? this.state.PowerChildLen[index]
                             : 0}
@@ -626,6 +632,7 @@ class EditModal extends React.Component {
                             <CheckBox
                               className="checkChild"
                               value={child.value}
+                              type='gray'
                               key={child.value + index}
                               title={child.PowerChildName}
                             >
@@ -647,6 +654,7 @@ class EditModal extends React.Component {
                   </div>
                 );
               })}
+              </Scrollbars>
             </div>
 
           </div>

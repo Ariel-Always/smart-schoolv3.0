@@ -145,6 +145,7 @@ class App extends Component {
                             enname: "Subject Management",
                             image: logo
                         }}
+                        className='myFrame'
                         type="triangle" showBarner={false} showLeftMenu={false}>
                         {/* <div ref="frame-time-barner"><TimeBanner /></div> */}
 

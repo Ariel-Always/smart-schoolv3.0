@@ -1063,7 +1063,8 @@ class Teacher extends React.Component {
                 style={{ cursor: "pointer" }}
                 onClick={this.onAddTeacher}
               >
-                添加教师
+                <span className="add">添加教师</span>
+                
               </span>
               <span className="divide">|</span>
               <Link
@@ -1072,7 +1073,8 @@ class Teacher extends React.Component {
                 to="/ImportFile/Teacher"
                 replace
               >
-                导入教师
+                
+                <span className="ImportFile">导入教师</span>
               </Link>
             </div>
           </div>

@@ -142,6 +142,8 @@ class App extends Component {
               enname: "Web resources management",
               image: logo
             }}
+            className='myFrame'
+
             type="circle"
             showBarner={false}
             showLeftMenu={false}

@@ -33,6 +33,45 @@ $image-url: "../images";
                     font-size: 14px;
                     line-height: 37px;
                     text-decoration: underline;
+                    &:hover {
+                        color: #ff6600;
+                        .Graduate {
+                            background: url(../images/icon-checkFile-active.png)no-repeat left center;
+                            background-size: 14px 16px;
+                        }
+                        .RegisterExamine {
+                            background: url(../images/icon-register-active.png)no-repeat left center;
+                            background-size: 14px 16px;
+                        }
+                        .add {
+                            background: url(../images/icon-add-active.png)no-repeat left center;
+                            background-size: 12px 12px;
+                        }
+                        .ImportFile {
+                            background: url(../images/icon-import-active.png)no-repeat left center;
+                            background-size: 16px 16px;
+                        }
+                    }
+                    .Graduate {
+                        padding-left: 18px;
+                        background: url(../images/icon-checkFile.png)no-repeat left center;
+                        background-size: 14px 16px;
+                    }
+                    .RegisterExamine {
+                        padding-left: 18px;
+                        background: url(../images/icon-register.png)no-repeat left center;
+                        background-size: 14px 16px;
+                    }
+                    .add {
+                        padding-left: 16px;
+                        background: url(../images/icon-add.png)no-repeat left center;
+                        background-size: 12px 12px;
+                    }
+                    .ImportFile {
+                        padding-left: 20px;
+                        background: url(../images/icon-import.png)no-repeat left center;
+                        background-size: 16px 16px;
+                    }
                 }
                 .divide {
                     position: relative;
@@ -199,7 +238,7 @@ $image-url: "../images";
                         line-height: 24px;
                         font-size: 14px;
                         padding: 0 14px;
-                        margin-right: 2px;
+                        margin-right: 3px;
                     }
                 }
                 .checkAll-box {
@@ -218,6 +257,7 @@ $image-url: "../images";
                         margin-left: 8px;
                         // box-sizing: content-box;
                         border: none;
+                        font-size: 14px;
                         span {
                             vertical-align: baseline;
                         }

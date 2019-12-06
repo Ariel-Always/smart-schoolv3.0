@@ -43,16 +43,18 @@ class Student extends React.Component {
           render: key => {
             return (
               <div className="registerTime-content">
-                <label><CheckBox
-                  value={key.key}
-                  type='gray'
-                  onChange={this.onCheckChange}
-                ></CheckBox>
-                <span className="key-content">
-                  {key.OrderNo + 1 >= 10
-                    ? key.OrderNo + 1
-                    : "0" + (key.OrderNo + 1)}
-                </span></label>
+                <label>
+                  <CheckBox
+                    value={key.key}
+                    type="gray"
+                    onChange={this.onCheckChange}
+                  ></CheckBox>
+                  <span className="key-content">
+                    {key.OrderNo + 1 >= 10
+                      ? key.OrderNo + 1
+                      : "0" + (key.OrderNo + 1)}
+                  </span>
+                </label>
               </div>
             );
           }
@@ -62,7 +64,7 @@ class Student extends React.Component {
           align: "right",
           key: "UserImg",
           width: 50,
-          colSpan:0,
+          colSpan: 0,
           dataIndex: "UserName",
           render: arr => {
             return (
@@ -82,7 +84,7 @@ class Student extends React.Component {
         {
           title: "姓名",
           align: "left",
-          colSpan:2,
+          colSpan: 2,
           width: 90,
           key: "UserName",
           dataIndex: "UserName",
@@ -227,7 +229,7 @@ class Student extends React.Component {
       searchValue: "",
       sortType: "",
       sortFiled: "",
-      searchWord:'',
+      searchWord: "",
       studentChangeUserLog: {}
     };
   }
@@ -249,8 +251,7 @@ class Student extends React.Component {
 
     if (
       nextProps.DataState.GradeClassMsg.returnData.AllClasses &&
-      (Select.GradeID &&
-      Select.GradeID.value !== 0)
+      Select.GradeID && Select.GradeID.value !== 0
     ) {
       let ClassArr =
         nextProps.DataState.GradeClassMsg.returnData.AllClasses[
@@ -269,15 +270,16 @@ class Student extends React.Component {
     } else {
       this.setState({
         DropMenuShow: false,
-        secondDropList: Classes,
-
+        secondDropList: Classes
       });
     }
     this.setState({
       GradeArr: GradeArr,
       firstSelect: Select.GradeID || initFirstSelect,
-      secondSelect: Select.ClassID?Select.ClassID:{ value: 0, title: "全部年级" },
-      pagination:Number(Select.pageIndex)+1
+      secondSelect: Select.ClassID
+        ? Select.ClassID
+        : { value: 0, title: "全部年级" },
+      pagination: Number(Select.pageIndex) + 1
     });
   }
   componentWillMount() {}
@@ -1189,7 +1191,7 @@ class Student extends React.Component {
                 target="_blank"
                 replace
               >
-                查看毕业生档案
+                <span className="Graduate">查看毕业生档案</span>
               </Link>
               <span className="divide">|</span>
               <Link
@@ -1198,7 +1200,7 @@ class Student extends React.Component {
                 to="/RegisterExamine"
                 replace
               >
-                学生注册审核
+                <span className="RegisterExamine">学生注册审核</span>
               </Link>
               <span className="divide">|</span>
               <span
@@ -1206,7 +1208,7 @@ class Student extends React.Component {
                 style={{ cursor: "pointer" }}
                 onClick={this.onAddStudent}
               >
-                添加学生
+                <span className="add">添加学生</span>
               </span>
               <span className="divide">|</span>
               <Link
@@ -1215,7 +1217,7 @@ class Student extends React.Component {
                 to="/ImportFile/Student"
                 replace
               >
-                导入学生
+                <span className="ImportFile">导入学生</span>
               </Link>
             </div>
           </div>
@@ -1243,23 +1245,32 @@ class Student extends React.Component {
                 dropList={this.state.secondDropList}
                 onChange={this.StudentDropMenuSecond}
               ></DropDown>
-             <div className='Search'>
-               <span className='search-tips' 
-               style={{display:this.state.CancelBtnShow==='y'?'block':'none'}}>
-                 
-                   <span>{'搜索关键词“'+this.state.searchWord+'”共找到'}</span><span className='Total'>{' '+DataState.GradeStudentPreview.Total+' '}</span>人
-                 
-                 </span> 
-                 <Search
-                placeHolder="请输入学号或姓名进行搜索..."
-                onClickSearch={this.StudentSearch.bind(this)}
-                height={30}
-                width={250}
-                Value={this.state.searchValue}
-                onCancelSearch={this.onCancelSearch}
-                onChange={this.onChangeSearch.bind(this)}
-                CancelBtnShow={this.state.CancelBtnShow}
-              ></Search></div>
+              <div className="Search">
+                <span
+                  className="search-tips"
+                  style={{
+                    display: this.state.CancelBtnShow === "y" ? "block" : "none"
+                  }}
+                >
+                  <span>
+                    {"搜索关键词“" + this.state.searchWord + "”共找到"}
+                  </span>
+                  <span className="Total">
+                    {" " + DataState.GradeStudentPreview.Total + " "}
+                  </span>
+                  人
+                </span>
+                <Search
+                  placeHolder="请输入学号或姓名进行搜索..."
+                  onClickSearch={this.StudentSearch.bind(this)}
+                  height={30}
+                  width={250}
+                  Value={this.state.searchValue}
+                  onCancelSearch={this.onCancelSearch}
+                  onChange={this.onChangeSearch.bind(this)}
+                  CancelBtnShow={this.state.CancelBtnShow}
+                ></Search>
+              </div>
             </div>
             <div className="content-render">
               <div>
@@ -1280,11 +1291,11 @@ class Student extends React.Component {
                 {DataState.GradeStudentPreview.Total > 0 ? (
                   <CheckBox
                     className="checkAll-box"
-                    type='gray'
+                    type="gray"
                     onChange={this.OnCheckAllChange}
                     checked={this.state.checkAll}
                   >
-                    <span className='checkAll-title'>全选</span>
+                    <span className="checkAll-title">全选</span>
                     <Button
                       onClick={this.onDeleteAllClick}
                       className="deleteAll"
@@ -1349,9 +1360,8 @@ class Student extends React.Component {
                   {this.state.studentChangeUserLog.UserName}的档案变更记录
                 </span>
               </div>
-                <div className="content">
+              <div className="content">
                 <Scrollbars style={{ width: 100 + "%", height: 280 + "px" }}>
-
                   {UIState.AppModal.StudentChangeMadalVisible ? (
                     <StudentChangeRecord
                       data={DataState.GetUserLog.UserLog}
@@ -1359,9 +1369,8 @@ class Student extends React.Component {
                   ) : (
                     ""
                   )}
-              </Scrollbars>
-
-                </div>
+                </Scrollbars>
+              </div>
             </div>
           ) : (
             <Empty
