@@ -54,7 +54,7 @@ class CombineCard extends React.Component {
         ref={this.props.provided.innerRef}
         {...this.props.provided.draggableProps}
         {...this.props.provided.dragHandleProps}
-        className="Card"
+        className="Card "
         onClick={this.onCardClick.bind(this, data)}
         style={this.props.style}
       >

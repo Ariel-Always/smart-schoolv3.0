@@ -54,12 +54,13 @@ class Card extends React.Component {
     } else if (data.type === "database") {
       ImgDefault = database;
     }
+    // console.log((this.props.type === "alter"&&data.type === "Website") ?'Card-alter':'Card-other')
     return (
       <div
         ref={this.props.provided.innerRef}
         {...this.props.provided.draggableProps}
         {...this.props.provided.dragHandleProps}
-        className={`Card ${(this.props.type === "alter"&&data.type === "Website") ?'Card-alter':'Card-other'}`}
+        className={`Card `}
         style={this.props.style}
       >
         <div

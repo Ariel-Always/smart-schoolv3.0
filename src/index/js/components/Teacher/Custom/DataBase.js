@@ -51,7 +51,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   height: "156px",
   // padding: grid * 2,
   margin: `0 12px `,
-  border: isDragging ? `solid 1px #02e362` : "none",
+  border: isDragging ? `solid 1px #02e362` : `solid 1px #fff`,
   // change background colour if dragging
   //background: isDragging ? 'lightgreen' : 'grey',
 
@@ -667,7 +667,8 @@ class DataBase extends React.Component {
                                             }}
                                             style={getItemStyle(
                                               snapshot.isDragging,
-                                              provided.draggableProps.style
+                                              provided.draggableProps.style,
+                                              item,
                                             )}
                                           ></CombineCard>
                                         ) : (
@@ -722,7 +723,8 @@ class DataBase extends React.Component {
                                             )}
                                             style={getItemStyle(
                                               snapshot.isDragging,
-                                              provided.draggableProps.style
+                                              provided.draggableProps.style,
+                                              item,
                                             )}
                                           ></Card>
                                         )
@@ -838,7 +840,8 @@ class DataBase extends React.Component {
                                           snapshot={snapshot}
                                           style={getItemStyle(
                                             snapshot.isDragging,
-                                            provided.draggableProps.style
+                                            provided.draggableProps.style,
+                                            item
                                           )}
                                         ></Card>
                                       )}
