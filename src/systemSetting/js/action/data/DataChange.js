@@ -1,14 +1,15 @@
 // import CONFIG from '../../../../common/js/config';
 import ApiActions from '../data/Api';
 import AppAlertAction from '../UI/AppAlertAction'
+import { init } from 'echarts';
 const GET_CURRENT_SEMESTER_INFO = "GET_CURRENT_SEMESTER_INFO";//获取当前学年学期的信息
 const SEMESTER_LOADING_HIDE = "SEMESTER_LOADING_HIDE";//loading界面的展示或消失
-const REFRESH_SEMESTER_INFO="REFRESH_SEMESTER_INFO"//刷新学期信息
+const REFRESH_SEMESTER_INFO = "REFRESH_SEMESTER_INFO"//刷新学期信息
 const GET_CURRENT_SCHOOL_INFO = "GET_CURRENT_SCHOOL_INFO"//获取当前学校信息
 const REFRESH_SCHOOL_INFO = "REFRESH_SCHOOL_INFO"//刷新当前学校信息
 const CET_CURRENT_SUBSYSTEM_INFO = "CET_CURRENT_SUBSYSTEM_INFO"//获取子系统详情
 const REFRESH_SUBSYSTEM_INFO = "REFRESH_SUBSYSTEM_INFO"//刷新当前子系统信息
-
+const INIT_PERIOD_LIST="INIT_PERIOD_LIST"//初始化学制选择表
 
 
 
@@ -27,13 +28,13 @@ const getCurrentSemester = (SchoolID) => {
                 if (item === "Term") {
                     let termNum = semesterInfo[item][semesterInfo[item].length - 1]
                     // console.log(semesterInfo[item]);
-                    let ChineseName=termNum==="1"?"第一学期":"第二学期"
-                        
-                    
+                    let ChineseName = termNum === "1" ? "第一学期" : "第二学期"
+
+
                     semesterInfo = {
                         ...semesterInfo,
                         "termNum": termNum,
-                        "ChineseName":ChineseName
+                        "ChineseName": ChineseName
                     }
                 }
                 else if (item === "TermStartDate") {
@@ -98,46 +99,86 @@ const getCurrentSchoolInfo = (SchoolID) => {
         const url = `/SysMgr/Setting/GetSchoolInfo?SchoolID=${SchoolID}`;
         ApiActions.getMethod(url).then(json => {
             let schoolInfo = json.Data;
+            let periodInfo = [
+                { ID: "P1", Name: "小学", Period: "", checked: false },
+                { ID: "P2", Name: "初中", Period: "", checked: false },
+                { ID: "P3", Name: "高中", Period: "", checked: false }
+            ]
             // console.log(schoolInfo)
-            for (let item in schoolInfo) {
-                if (item === "SchoolSessionType") {
-                    let sessionType = parseInt(schoolInfo[item])
-                    if (sessionType === 5) {
-                        schoolInfo = {
-                            ...schoolInfo,
-                            primaryType: "五年制小学",
-                            middleType: "四年制初中",
-                            primaryNum: "5",
-                            middleNum: "4"
-                        }
-                    }
-                    else {
-                        schoolInfo = {
-                            ...schoolInfo,
-                            primaryType: "六年制小学",
-                            middleType: "三年制初中",
-                            primaryNum: "6",
-                            middleNum: "3"
-                        }
-                    }
-
-                }
-                else if (item === "SchoolType") {
-                    if (schoolInfo[item] === 7) {
-                        schoolInfo = {
-                            ...schoolInfo,
-                            highType: "三年制高中",
-                            highNum: "12"
-                        }
-
-                    }
-                }
-            }
-
             if (json.StatusCode === 200) {
+                for (let item in schoolInfo) {
+                    if (item === "SchoolSessionType") {
+                        let sessionType = parseInt(schoolInfo[item])
+                        if (sessionType === 5) {
+                            schoolInfo = {
+                                ...schoolInfo,
+                                primaryType: "五年制小学",
+                                middleType: "四年制初中",
+                                primaryNum: "5",
+                                middleNum: "4"
+                            }
+                        }
+                        else {
+                            schoolInfo = {
+                                ...schoolInfo,
+                                primaryType: "六年制小学",
+                                middleType: "三年制初中",
+                                primaryNum: "6",
+                                middleNum: "3"
+                            }
+                        }
+
+                    }
+                    else if (item === "SchoolType") {
+                        if (schoolInfo[item] === 7) {
+                            schoolInfo = {
+                                ...schoolInfo,
+                                highType: "三年制高中",
+                                highNum: "12"
+                            }
+                            for (let i of periodInfo) {
+                                i.checked = true
+                            }
+                        }
+                        else if (schoolInfo[item] === 1) {
+                            periodInfo[0].checked = true
+                        }
+                        else if (schoolInfo[item] === 2) {
+                            periodInfo[1].checked = true
+                        }
+                        else if (schoolInfo[item] === 3) {
+                            periodInfo[0].checked = true
+                            periodInfo[1].checked = true
+                        }
+                        else if (schoolInfo[item] === 4) {
+                            periodInfo[2].checked = true
+                        }else if(schoolInfo[item] === 5){
+                            periodInfo[0].checked = true
+                            periodInfo[2].checked = true
+                        }else if(schoolInfo[item] === 6){
+                                
+                            periodInfo[1].checked = true
+                            periodInfo[2].checked = true
+                        }
+                        else {
+                            for (let i of periodInfo) {
+                                i.checked = false
+                            }
+                        }
+                    }
+                }
+
+
+
+
                 dispatch({
                     type: GET_CURRENT_SCHOOL_INFO,
-                    data: schoolInfo
+                    data: schoolInfo,
+                  
+                })
+                dispatch({
+                    type:INIT_PERIOD_LIST,
+                    data:periodInfo
                 })
                 // console.log(schoolInfo)
                 dispatch({
@@ -296,6 +337,7 @@ export default {
     getCurrentSbusystemInfo,
     getCurrentSbusystemInfo1,
     CET_CURRENT_SUBSYSTEM_INFO,
-    REFRESH_SUBSYSTEM_INFO
+    REFRESH_SUBSYSTEM_INFO,
+    INIT_PERIOD_LIST
 
 }

@@ -43,13 +43,18 @@
     @include Hcenter();
     top: 256px;
     width: 260px;
-    height: 20px;
+    height: 30px;
     font-family: MicrosoftYaHei-Bold;
     font-size: 20px;
     font-weight: bold;
     font-stretch: normal;
     letter-spacing: 0px;
     color: #006499;
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
   }
   .school-info {
     position: absolute;

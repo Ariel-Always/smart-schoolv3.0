@@ -338,7 +338,7 @@ class YearSemesterSetting extends Component {
                                 </div>
  
                              <button className={`btn create-newTerm ${semesterInfo.TermStatus === 2 ? '':'disabled bander'}`}
-                        onClick={semesterInfo.TermStatus!==2?() => this.createNewTerm():()=>this.nothing()}> 启用新学期</button>
+                        onClick={semesterInfo.TermStatus===2?() => this.createNewTerm():()=>this.nothing()}> 启用新学期</button>
                                 <Modal
                                     type="1"
                                     title="启用新学年"

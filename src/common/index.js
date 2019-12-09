@@ -1802,19 +1802,15 @@ class Menu extends React.Component {
     }
 
 
-
-
     AppRightContentChange(ContentHeight){
 
-        if (ContentHeight>0){
+        if (ContentHeight>0&&this.LeftMenu){
 
             let DefalutHeight = window.innerHeight;
 
             let maxHeight = 0;
 
             let LeftHeight = this.LeftMenu.clientHeight;
-
-
 
             if (ContentHeight+60<DefalutHeight){
 
@@ -2113,7 +2109,7 @@ class MenuLeftNoLink extends React.Component {
 
     AppRightContentChange(ContentHeight){
 
-        if (ContentHeight>0){
+        if (ContentHeight>0&&this.LeftMenu){
 
             let DefalutHeight = window.innerHeight;
 

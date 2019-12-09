@@ -6,7 +6,11 @@ export default (state = {
 
     semesterloading: true,
     schoolInfo: {},
-    subsystemInfo: {}
+    subsystemInfo: {},
+    periodInfo: [
+        { ID: "P1", Name: "小学", Period: "", checked: false },
+        { ID: "P2", Name: "初中", Period: "", checked: false },
+        { ID: "P3", Name: "高中", Period: "", checked: false }]
 
 
 }, action) => {
@@ -29,21 +33,28 @@ export default (state = {
 
 
             }
-        case DataChange.REFRESH_SEMESTER_INFO: 
-        return{
-            ...state,
-            semesterInfo: action.data
-        }    
-        case DataChange.GET_CURRENT_SCHOOL_INFO:
-            //    console.log( action.data);
+        case DataChange.REFRESH_SEMESTER_INFO:
             return {
                 ...state,
-                schoolInfo: action.data
+                semesterInfo: action.data
+            }
+        case DataChange.GET_CURRENT_SCHOOL_INFO:
+            //    console.log( action.periodData);
+            return {
+                ...state,
+                schoolInfo: action.data,
+
             }
         case DataChange.REFRESH_SCHOOL_INFO:
             return {
                 ...state,
-                schoolInfo: action.data
+                schoolInfo: action.data,
+
+            }
+        case DataChange.INIT_PERIOD_LIST:
+            return {
+                ...state,
+                periodInfo: action.data
             }
         case DataChange.CET_CURRENT_SUBSYSTEM_INFO:
             return {

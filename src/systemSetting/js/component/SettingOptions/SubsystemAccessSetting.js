@@ -47,18 +47,33 @@ class SubsystemAccessSetting extends Component {
         }
         //如果不是空的,按照关键字,和默认选中的下拉框中的值(全部)(全部)来查找
         else {
+            // this.setState({
+            //     simpleSearch: ""
+            // }, () => {
+                
+
+            // })
             dispatch(DataChange.getCurrentSbusystemInfo({ "IsOpened": this.state.AccessDropValue, "UserType": this.state.UserDropValue, "keyword": e.value }));
 
         }
 
     }
     //监听搜索框中值的变化情况
-    SearchValueChange=(e)=>{
+    SearchValueChange = (e) => {
         this.setState({
-            simpleSearch:e.target.value
+            simpleSearch: e.target.value
         })
     }
+    onCancelSearch=(e)=>{
+        let { dispatch } = this.props;
+           this.setState({
+                simpleSearch: ""
+            }, () => {
+                dispatch(DataChange.getCurrentSbusystemInfo({ "IsOpened": this.state.AccessDropValue, "UserType": this.state.UserDropValue, "keyword": e.value }));
 
+
+            })
+    }
 
     /*   监听访问状态状态下拉框的的选择事件 
       @parma checked 被选中的内容 包括value和title   
@@ -73,7 +88,7 @@ class SubsystemAccessSetting extends Component {
         this.setState({
             AccessDropTitle: checked.title,
             AccessDropValue: checked.value,
-            simpleSearch:""
+            simpleSearch: ""
         }, () => {
             dispatch(DataChange.getCurrentSbusystemInfo({ "IsOpened": checked.value, "UserType": this.state.UserDropValue }))
 
@@ -100,7 +115,7 @@ class SubsystemAccessSetting extends Component {
         this.setState({
             UserDropTitle: checked.title,
             UserDropValue: checked.value,
-            simpleSearch:""
+            simpleSearch: ""
         }, () => {
 
             dispatch(DataChange.getCurrentSbusystemInfo({ "UserType": checked.value, "IsOpened": this.state.AccessDropValue }))
@@ -127,10 +142,13 @@ class SubsystemAccessSetting extends Component {
     @parma4 子系统当前状态
     
     */
-    toggleAccessState = (e, SubSystemID, SubSystemName, status) => {
+    toggleAccessState = (e, SubSystemID, SubSystemName, status,CanBeClose) => {
         let { subsystemInfo, dispatch } = this.props
         // const { SchoolID } = JSON.parse(sessionStorage.getItem('UserInfo'));
-
+        if (!CanBeClose){
+            dispatch(AppAlertAction.alertTips({title:"该子系统不能关闭"}))
+            return
+        }
 
         console.log(status);
 
@@ -234,7 +252,7 @@ class SubsystemAccessSetting extends Component {
                             <div className="split-line"></div>
                             <div className="access-state"> 当前状态:
                                 <button className={`btn-state ${item.SubSystemStatus === 1 ? 'open' : ''}`}
-                                    onClick={(e) => this.toggleAccessState(e, item.SubSystemID, item.SubSystemName, item.SubSystemStatus)}
+                                    onClick={(e) => this.toggleAccessState(e, item.SubSystemID, item.SubSystemName, item.SubSystemStatus,item.CanBeClose)}
                                 ></button>
                             </div>
                         </div>
@@ -263,6 +281,10 @@ class SubsystemAccessSetting extends Component {
 
                             dropList={[
                                 {
+                                    value: "2",
+                                    title: "全部"
+                                },
+                                {
 
                                     value: "1",
                                     title: "已开启"
@@ -272,10 +294,7 @@ class SubsystemAccessSetting extends Component {
                                     value: "0",
                                     title: `已关闭`
                                 },
-                                {
-                                    value: "2",
-                                    title: "全部"
-                                }
+
                             ]}
 
                             height={120}
@@ -295,14 +314,18 @@ class SubsystemAccessSetting extends Component {
 
                             dropList={[
                                 {
-
-                                    value: `1`,
-                                    title: "教师"
-
+                                    value: ``,
+                                    title: `全部`
                                 },
                                 {
                                     value: `0`,
                                     title: `管理员`
+                                },
+                                {
+
+                                    value: `1`,
+                                    title: "教师"
+
                                 },
                                 {
                                     value: `2`,
@@ -312,10 +335,7 @@ class SubsystemAccessSetting extends Component {
                                     value: `7`,
                                     title: `校领导`
                                 },
-                                {
-                                    value: ``,
-                                    title: `全部`
-                                }
+
 
                             ]}
 
@@ -331,8 +351,9 @@ class SubsystemAccessSetting extends Component {
                     <div className="subsystem-search">
                         <Search placeHolder="输入关键词快速搜索"
 
-                            onClickSearch={this.simpleClickSearch} Value={this.state.simpleSearch}
-
+                            onClickSearch={this.simpleClickSearch} 
+                            Value={this.state.simpleSearch}
+                            onCancelSearch={this.onCancelSearch}
                             onChange={this.SearchValueChange}></Search>
 
                     </div>
