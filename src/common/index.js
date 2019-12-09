@@ -1561,6 +1561,21 @@ class Alert extends React.Component {
 
         }*/
 
+        const { show } = this.props;
+
+
+        if(this.AlertBody&&show&&!this.state.readyShow){
+
+            this.setState({readyShow:true,left:($(window).width() - this.AlertBody.clientWidth) /2,top:($(window).height() - this.AlertBody.clientHeight)/ 2});
+
+        }
+
+        if(!show&&this.state.readyShow){
+
+            this.setState({can_move:false,readyShow:false});
+
+        }
+
 
         const that = this;
 
