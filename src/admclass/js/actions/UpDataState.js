@@ -13,6 +13,8 @@ import CONFIG from '../../../common/js/config'
 
 import SearchActions from "./SearchActions";
 
+import $ from 'jquery';
+
 
 
 
@@ -113,13 +115,42 @@ const  getPageInit = () => {
 
 const UpGradeClassTree = (SchoolID)=>{
 
-  return dispatch => {
+  return (dispatch,getState) => {
 
       GetGradeClassTree(SchoolID,dispatch).then(data=>{
 
           if (data){
 
               dispatch({type:GET_SHCOOL_GRADE_CLASSES,data:data});
+
+              const ClassIsActive = getState().UIState.ComponentChange.class;
+
+
+              if (ClassIsActive){
+
+                  const ClassID = getState().UIState.ComponentChange.classInfo.id;
+
+                  //将活动状态的班级继续设置为活动状态
+
+                  $('.frame_leftmenu_onegrade_ul').children().each((index,dom)=>{
+
+                      if ($(dom).attr('data-id')===ClassID){
+
+                          $(dom).addClass('active');
+
+                          $(dom).children().addClass('active');
+
+                      }else{
+
+                          $(dom).removeClass('active');
+
+                          $(dom).children().removeClass('active');
+
+                      }
+
+                  });
+
+              }
 
           }
 
@@ -283,8 +314,6 @@ const addClass = ({GradeID,ClassName,TheGradePreviewID}) =>{
 
                dispatch(AppAlertActions.alertSuccess({title:'添加班级成功！'}));
 
-               console.log(SchoolSearchKey,GradeSearchKey,TheGradePreviewID);
-
                if (SchoolSearchKey){
 
                    dispatch(SearchActions.SchoolClassSearch(SchoolSearchKey));
@@ -310,6 +339,11 @@ const addClass = ({GradeID,ClassName,TheGradePreviewID}) =>{
                }
 
                dispatch(UpGradeClassTree(SchoolID));
+
+               //查看活动班级状态
+
+
+
 
            }
 

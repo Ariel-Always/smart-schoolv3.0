@@ -30,8 +30,6 @@ class Import extends Component{
 
             };
 
-
-
         }else if(HashParam.includes('Genger')){
 
             /*this.setState({ ImportTitle:'导入班主任班长',ImportTarget:'gangermonitor'});
@@ -41,6 +39,16 @@ class Import extends Component{
                 ImportTitle:'导入班主任班长',
 
                 ImportTarget:'gangermonitor'
+
+            };
+
+        }else if(HashParam.includes('Student')){
+
+            this.state={
+
+                ImportTitle:'导入学生',
+
+                ImportTarget:'student'
 
             };
 

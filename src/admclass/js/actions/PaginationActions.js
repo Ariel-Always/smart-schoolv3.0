@@ -98,7 +98,7 @@ const StudentPageChange = (PageIndex,ClassID) => {
 
                 if (data.List.length>0){
 
-                    let list = data.List.map(item =>item.UserID);
+                    let list = data.List.map(item =>{return JSON.stringify({id:item.UserID,name:item.UserName})});
 
                     dispatch({type:UpDataState.INIT_STUDEUNT_PLAIN_OPTIONS,data:list});
 

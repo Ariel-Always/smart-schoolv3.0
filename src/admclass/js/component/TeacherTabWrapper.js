@@ -50,7 +50,7 @@ class TeacherTabWrapper extends Component{
 
                     <div className="admclass-teacher-ganger clearfix">
 
-                        <div className="admclass-teacher-photo" onClick={Teachers.Ganger&&Teachers.Ganger.PhotoPath?e=>TeacherDetailShow({UserID:Teachers.Ganger.UserID,UserType:1}):()=>{}} style={{backgroundImage:`url(${Teachers.Ganger&&Teachers.Ganger.PhotoPath?Teachers.Ganger.PhotoPath:headerImg})`}}></div>
+                        <div className="admclass-teacher-photo" onClick={Teachers.Ganger&&Teachers.Ganger.UserID!=='未设置'?e=>TeacherDetailShow({UserID:Teachers.Ganger.UserID,UserType:1}):()=>{}} style={{backgroundImage:`url(${Teachers.Ganger&&Teachers.Ganger.PhotoPath?Teachers.Ganger.PhotoPath:headerImg})`}}></div>
 
                         <div className="admclass-teacher-info">
 
