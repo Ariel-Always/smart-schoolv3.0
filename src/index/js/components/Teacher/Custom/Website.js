@@ -46,14 +46,14 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 };
 const grid = 8;
 
-const getItemStyle = (isDragging, draggableStyle) => ({
+const getItemStyle = (isDragging, draggableStyle,custom,type) => ({
   // some basic styles to make the items look a bit nicer
   userSelect: "none",
   width: "126px",
   height: "156px",
   // padding: grid * 2,
   margin: `0 12px `,
-  // border: isDragging ? `solid 1px #02e362` : "none",
+  border: isDragging ? `solid 1px #02e362` :(custom.type=== "Website"&&type=== "alter") ?`solid 1px #f2f2f2`:`solid 1px #fff`,
   // change background colour if dragging
   //background: isDragging ? 'lightgreen' : 'grey',
 
@@ -758,7 +758,9 @@ console.log(Row,key)
                                             )}}
                                             style={getItemStyle(
                                               snapshot.isDragging,
-                                              provided.draggableProps.style
+                                              provided.draggableProps.style,
+                                              item,
+                                              "main"
                                             )}
                                           ></CombineCard>
                                         ) : (
@@ -807,7 +809,10 @@ console.log(Row,key)
                                             )}
                                             style={getItemStyle(
                                               snapshot.isDragging,
-                                              provided.draggableProps.style
+                                              provided.draggableProps.style,
+                                              
+                                              item,
+                                              "main"
                                             )}
                                           ></Card>
                                         )
@@ -927,7 +932,9 @@ console.log(Row,key)
                                           snapshot={snapshot}
                                           style={getItemStyle(
                                             snapshot.isDragging,
-                                            provided.draggableProps.style
+                                            provided.draggableProps.style,
+                                            item,
+                                              "alter"
                                           )}
                                         ></Card>
                                       )}
