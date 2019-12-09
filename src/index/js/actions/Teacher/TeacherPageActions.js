@@ -188,7 +188,7 @@ const PageInit = () => {
 
         });*/
 
-      ApiActions.GetTeacherDeskTop({UserID,SubjectID,dispatch}).then(data=>{
+      ApiActions.GetTeacherDeskTop({UserID,SubjectID:SubjectsInfo[0].id,dispatch}).then(data=>{
 
           if (data){
 
