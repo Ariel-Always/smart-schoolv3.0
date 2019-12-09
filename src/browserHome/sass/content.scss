@@ -171,6 +171,18 @@
                 background: url("../images/bg_blue.png") no-repeat -20px 0;
                 color: #3f9cd7;
               }
+              &.pink {
+                background: url("../images/bg_pink.png") no-repeat -20px 0;
+                color: #f570a3;
+              }
+              &.purple {
+                background: url("../images/bg_purple.png") no-repeat -20px 0;
+                color: #8f85ea;
+              }
+              &.qing {
+                background: url("../images/bg_qing.png") no-repeat -20px 0;
+                color: #3feee2;
+              }
 
          
 
@@ -266,6 +278,22 @@
             background: url("../images/bg_blue.png") no-repeat;
             color: #3f9cd7;
           }
+          &.pink {
+            background: url("../images/bg_pink.png") no-repeat;
+            border-radius: 12px;
+            color: #f570a3;
+          }
+          &.purple {
+            background: url("../images/bg_purple.png") no-repeat ;
+            color: #8f85ea;
+            border-radius: 12px;
+          }
+          &.qing {
+            background: url("../images/bg_qing.png") no-repeat ;
+            color: #3feee2;
+            border-radius: 12px;
+          }
+
         }
         a {
           display: inline-block;

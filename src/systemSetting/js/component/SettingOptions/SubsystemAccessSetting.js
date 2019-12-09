@@ -251,8 +251,12 @@ class SubsystemAccessSetting extends Component {
                             <div className="user-type"> <span title="可访问的用户类别"></span>{item.UserTypeString}</div>
                             <div className="split-line"></div>
                             <div className="access-state"> 当前状态:
-                                <button className={`btn-state ${item.SubSystemStatus === 1 ? 'open' : ''}`}
-                                    onClick={(e) => this.toggleAccessState(e, item.SubSystemID, item.SubSystemName, item.SubSystemStatus,item.CanBeClose)}
+                                <button className={`btn-state ${item.SubSystemStatus === 1&&item.CanBeClose===true ? 'open':
+                                  item.SubSystemStatus === 1&&item.CanBeClose===false?"ban":""}`}
+                                  onClick={(e) => this.toggleAccessState(e, item.SubSystemID, item.SubSystemName, item.SubSystemStatus,item.CanBeClose)}
+                                disabled={!item.CanBeClose===true}
+                                title={!item.CanBeClose===true?"该子系统不能被关闭":''}
+                                    
                                 ></button>
                             </div>
                         </div>

@@ -6,6 +6,8 @@ import { Input,Tooltip } from "antd";
 import DataChange from '../../action/data/DataChange';
 import  ApiActions from '../../action/data/Api'
 import AppAlertAction from '../../action/UI/AppAlertAction';
+import default_school_logo from '../../../images/default_school_logo.png'
+import boom_school_logo from '../../../images/boom_school_logo.png'
 
 
 class SchoolnfoSetting extends Component {
@@ -19,7 +21,8 @@ class SchoolnfoSetting extends Component {
             emptyNameTipsShow:false,
             emptyCodeTipsShow:false,
             tipsTitle:"",
-            codeTipsTitle:""
+            codeTipsTitle:"",
+         
             
         }
     }
@@ -54,6 +57,7 @@ class SchoolnfoSetting extends Component {
             edit_visible: true
         })
 
+
     }
 
 //确认保存编辑好的信息
@@ -61,7 +65,6 @@ class SchoolnfoSetting extends Component {
 
         let {primaryNum ,middleNum ,SchoolCode, SchoolName,SchoolLogoUrl}=this.props.schoolInfo
         const {dispatch,periodInfo} =this.props
-        // highNum=highNum?highNum:"0"
         let SchoolType=""
         let SchoolSessionType=""
         console.log(primaryNum ,middleNum ,SchoolCode, SchoolName,SchoolLogoUrl);
@@ -96,9 +99,7 @@ class SchoolnfoSetting extends Component {
             SchoolType = 4
         } else if (periodInfo[0].checked === true && periodInfo[1].checked === true && periodInfo[2].checked === true) {
             SchoolType = 7
-        } else if (periodInfo[0].checked === true && periodInfo[1].checked === false && periodInfo[2].checked === true) {
-            SchoolType = 5
-        } else if (periodInfo[0].checked === false && periodInfo[1].checked === true && periodInfo[2].checked === true) {
+        }  else if (periodInfo[0].checked === false && periodInfo[1].checked === true && periodInfo[2].checked === true) {
             SchoolType = 6
         }
         else {
@@ -150,7 +151,7 @@ class SchoolnfoSetting extends Component {
          }
          else{
             
-             if(SchoolName.length>20){
+             if(SchoolName.length>=21){
                 dispatch(AppAlertAction.alertError({title:"学校名称过长!"})) 
                 this.setState({
                     emptyNameTipsShow:true
@@ -164,10 +165,17 @@ class SchoolnfoSetting extends Component {
                 })
                 return;
              }
+             if(SchoolCode.length>=21){
+                dispatch(AppAlertAction.alertError({title:"学校代码过长!"})) 
+                this.setState({
+                    emptyCodeTipsShow :true
+                })
+                return;
+             }
                     //当SchoolType 不是ERROR的时候才执行post数据
             if(SchoolType!=="error"){
                         //根据学制参照情况判断SchoolSessionType
-                if(SchoolType===7||SchoolType===3||SchoolType===5||SchoolType===6){
+                if(SchoolType===7||SchoolType===3||SchoolType===6){
                      SchoolSessionType= `${primaryNum}/${middleNum}`
                  }
                   else{
@@ -228,6 +236,10 @@ class SchoolnfoSetting extends Component {
 
 
         })
+        const { SchoolID}=JSON.parse(sessionStorage.getItem('UserInfo'));
+        const {dispatch}=this.props
+        dispatch(DataChange.getCurrentSchoolInfo(SchoolID));
+        
     }
 
 
@@ -333,6 +345,14 @@ handelSchoolSystem = (e) => {
                 codeTipsTitle:"学校代码必须是数字"
             })
         }  
+        if(e.target.value.length>=21){
+            this.setState({
+                codeTipsTitle:"学校代码不能超过20位数字",
+                emptyCodeTipsShow:true,
+              
+
+            })
+        }
 
         let {schoolInfo,dispatch}=this.props
             schoolInfo={
@@ -359,12 +379,15 @@ handelSchoolSystem = (e) => {
 
           }
 
-          if(e.target.value.length>20){
+          if(e.target.value.length>=21){
               this.setState({
                   tipsTitle:"学校名称不能超过20个字符",
-                  emptyNameTipsShow:true
+                  emptyNameTipsShow:true,
+                  
+
               })
           }
+         
 
           console.log(e.target.value)
           let {schoolInfo,dispatch}=this.props
@@ -455,11 +478,6 @@ handelSchoolSystem = (e) => {
                     selected="4"
                     break;
 
-                    case 5:
-                        schoolSys=`${schoolInfo.primaryType}+三年制高中`
-                        schoolLength=`${schoolInfo.primaryNum==="6"?"九年一贯制":"八年一贯制"}`
-                        break
-
                     case 6:
                         schoolSys=`${schoolInfo.middleType}+三年制高中`
                         schoolLength=`${schoolInfo.middleNum==="3"?"六年一贯制":"七年一贯制"}`
@@ -483,7 +501,7 @@ handelSchoolSystem = (e) => {
 
                 <div className="edite-info" onClick={this.openEdite}><span></span>编辑</div>
                 <div className="school-logo">
-                    <img src={schoolInfo.SchoolLogoUrl} alt="图片丢失"/>
+                    <img src={default_school_logo}/* src={schoolInfo.SchoolLogoUrl} */ alt="图片丢失"/>
                 </div>
         <div className="school-name" title={schoolInfo.SchoolName}>{schoolInfo.SchoolName}</div>
                 <div className="school-info">
@@ -505,7 +523,7 @@ handelSchoolSystem = (e) => {
                 >
                     <div className="editContent">
                         <div className="content-left">
-                            <div className="school-logo"> <img src={schoolInfo.SchoolLogoUrl} alt=""/></div>
+                            <div className="school-logo"> <img  src={boom_school_logo}/* src={schoolInfo.SchoolLogoUrl} */ alt=""/></div>
                             <button className="btn choose-pic">选择图片</button>
                             <button className="btn upload-pic">上传图片</button>
                             <p className="upload-tips">上传要求：请上传png/jpg格式的图片，图片大小不能超过2MB</p>
@@ -515,8 +533,9 @@ handelSchoolSystem = (e) => {
                         <div className="content-right">
                             <div className="win-shcool-name">学校名称:
                             <Tooltip  visible={this.state.emptyNameTipsShow} placement="right" title={this.state.tipsTitle}>
-                            <input type="text"  defaultValue={schoolInfo.SchoolName} onChange={this.getSchoolName}
-                            
+                            <input type="text"  value={schoolInfo.SchoolName} onChange={this.getSchoolName}
+                                //   disabled={this.state.inputBan}   
+                                maxLength="21"
                             onBlur={this.visibleName}
                             />
                             
@@ -527,7 +546,8 @@ handelSchoolSystem = (e) => {
                             </div>
                             <div className="win-school-code">学校代码: 
                             <Tooltip  visible={this.state.emptyCodeTipsShow} placement="right" title={this.state.codeTipsTitle}>
-                            <input type="text"  defaultValue={schoolInfo.SchoolCode} onChange={this.getSchoolCode}
+                            <input type="text"  value={schoolInfo.SchoolCode} onChange={this.getSchoolCode}
+                                 maxLength="21"
                                 onBlur={this.visibleCode}
                             />
                             </Tooltip>

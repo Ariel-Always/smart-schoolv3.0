@@ -224,7 +224,11 @@
               border-radius: 12px;
               vertical-align: top;
               &.open {
-                background: url("../images//system_open.png") no-repeat;
+                background: url("../images/system_open.png") no-repeat;
+              }
+              &.ban{
+                  background: url("../images/cannot_close.png") no-repeat;
+                  cursor: not-allowed;
               }
             }
           }

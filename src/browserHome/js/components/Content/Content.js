@@ -9,7 +9,9 @@ import bg_img3 from '../../../images/bg_blue.png'
 import HomeData from '../../action/HomeData'
 import { TokenCheck_Connect } from '../../../../common/js/disconnect';
 import AppAlertAction from '../../action/AppAlertAction'
+import pic from '../../../images/default_web.png'
 const url2 = " http://192.168.2.202:7300/mock/5db974a3a1aded10689632eb/example/interface4";
+
 const bgList = [bg_img1, bg_img2, bg_img3];
 
 class Content extends Component {
@@ -17,7 +19,8 @@ class Content extends Component {
         super(props);
         this.state = {
             active: "P1",
-            searchValue: ""
+            searchValue: "",
+            imgShow:false
 
         }
 
@@ -191,7 +194,9 @@ class Content extends Component {
         })
 
         // console.log(newWebResbLink)
-
+        this.setState({
+                imgShow:true
+        })
 
     }
 
@@ -206,7 +211,7 @@ class Content extends Component {
     }
     //搜索框按钮的点击事件
     handelSearch = () => {
-        window.location.href = ` http://www.baidu.com/s?wd=' + ${this.state.searchValue}`
+        window.location.href = ` http://www.baidu.com/s?wd=${this.state.searchValue}`
 
     }
     //处理资源库中数据的图标的加载事件
@@ -223,6 +228,12 @@ class Content extends Component {
             }
         });
         dispatch({ type: HomeData.REFRESH_RESOURCELINK_INFO, data: newResLinkList });
+    }
+    enterSearch=(e)=>{
+        if(e.keyCode===13||e.keyCode===108){
+            window.location.href = ` http://www.baidu.com/s?wd=${this.state.searchValue}`
+
+        }
     }
 
 
@@ -281,13 +292,15 @@ class Content extends Component {
                     <div className="group-contain clearfix">
                         {
                             item.List.map((i, index) => {
-                                let ranIndex = Math.floor(Math.random() * (colorIndex + 1));
                                 return (
                                     <div className="link">
-                                        <div className={`img-box ${colorList[ranIndex]}`}>
+                                        <div className={`img-box ${i.backgroundColor}`}>
+                                            <img src={pic} alt=""  style={{display:`${this.state.imgShow===false?'block':'none'}`}}/>
                                             {
                                                 i.word === "" ?
-                                                    <img src={`${i.Url}/favicon.ico`} alt="图片加载失败" onError={(e) => this.webPicLoadError(e, { GroupID: item.GroupID, ID: i.Id, Name: i.Name })} />
+                                                    <img  src={`${i.Url}/favicon.ico`} /* alt="图片加载失败"  */
+                                                    onError={(e) => this.webPicLoadError(e, { GroupID: item.GroupID, ID: i.Id, Name: i.Name })} 
+                                                    style={{display:`${!this.state.imgShow===false?'block':'none'}`}}/>
                                                     : ""
                                             }
 
@@ -387,13 +400,13 @@ class Content extends Component {
 
         //渲染资源库中的内容
         let ResResust = ResLinkList.map(item => {
-            let ranIndex = Math.floor(Math.random() * (colorIndex + 1));
+            // let ranIndex = Math.floor(Math.random() * (colorIndex + 1));
             return (
                 <div className="base">
-                    <div className={`img-box ${colorList[ranIndex]}`}>
+                    <div className={`img-box ${item.backgroundColor}`}>
                         {
                             item.word === '' ?
-                                <img src={`${item.LogoPath}favicon.ico`} alt="图片丢失" title={item.name}
+                                <img src={`${item.LogoPath}favicon.ico`} /* alt="图片丢失" */ title={item.name}
                                     onError={(e) => this.resPicLoadError({ Name: item.Name })} /> : ""
                         }
                         <span>{item.word}</span>
@@ -424,8 +437,11 @@ class Content extends Component {
                             placeholder="搜你想搜的..."
                             onChange={this.inputChange}
                             className="input-search" type="text"
-                            value={this.state.searchValue} />
-                        {/* <a href="https://www.baidu.com" target="_blank" title="搜索">搜索</a> */}
+                            value={this.state.searchValue}
+                            onKeyDown={this.enterSearch}
+                             />
+                           
+                        
                         <button onClick={this.handelSearch}>搜索</button>
                     </div>
                     <ul className="grade">
