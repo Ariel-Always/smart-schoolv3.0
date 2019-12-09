@@ -40,6 +40,58 @@
 
   margin-bottom:24px;
 
+  &.website{
+
+    .module-logo{
+
+      &>img{
+
+        max-width:48px;
+
+        width: auto;
+
+        height:auto;
+
+        &.website-base-img{
+
+          width: 64px;
+
+          max-width:none;
+
+        }
+
+      }
+
+    }
+
+    .group-item-icon{
+
+      &>img{
+
+        width:auto;
+
+        height: auto;
+
+        max-width:16px;
+
+        max-height:16px;
+
+        &.website-base-img{
+
+          width:20px;
+
+          max-width:none;
+
+          max-height:none;
+
+        }
+
+      }
+
+    }
+
+  }
+
 }
 
 .module-group-name{
@@ -133,7 +185,9 @@
 
       position: absolute;
 
-      max-width: 48px;
+      width: 64px;
+
+      height:64px;
 
       left: 50%;
 
@@ -210,8 +264,6 @@
 
     @include textOverFlow;
 
-
-
     &:hover{
 
       opacity: 0.8;
@@ -274,9 +326,9 @@
 
       position: absolute;
 
-      max-width:16px;
+      width:20px;
 
-      max-height: 16px;
+      height:20px;
 
       left: 50%;
 

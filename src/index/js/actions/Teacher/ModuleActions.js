@@ -16,25 +16,27 @@ const ImgLoad = ({GroupID,PNO,CNO})=>{
 
           if (item.GroupID===GroupID){
 
-            if (CNO){
+            if (CNO!==undefined){
 
-                let Modules = item.Modules.map(i=>{
+                let Modules = item.Modules.map((i,k)=>{
 
-                   if (i.OrderNo === PNO){
+                   if (k === PNO){
 
                         return {
 
                             ...i,
 
-                            SubGroupModules:i.SubGroupModules.map(it=>{
+                            SubGroupModules:i.SubGroupModules.map((it,kt)=>{
 
-                                if (it.OrderNo === CNO){
+                                if (kt === CNO){
 
                                     return {
 
                                         ...it,
 
-                                        showDom:"img"
+                                        showDom:"img",
+
+                                        baseImgUrl:''
 
                                     }
 
@@ -66,15 +68,17 @@ const ImgLoad = ({GroupID,PNO,CNO})=>{
 
             }else{
 
-               let Modules = item.Modules.map(i=>{
+               let Modules = item.Modules.map((i,k)=>{
 
-                    if (i.OrderNo === PNO){
+                    if (k === PNO){
 
                         return {
 
                             ...i,
 
-                            showDom:"img"
+                            showDom:"img",
+
+                            baseImgUrl:''
 
                         }
 
@@ -104,6 +108,8 @@ const ImgLoad = ({GroupID,PNO,CNO})=>{
 
       });
 
+
+
       dispatch({type:TEACHER_MODULE_GROUPS_UPDATE,data:NewModuleGroups});
 
   }
@@ -122,25 +128,25 @@ const ImgErrorLoad = ({GroupID,PNO,CNO})=>{
 
             if (item.GroupID===GroupID){
 
-                if (CNO){
+                if (CNO!==undefined){
 
-                    let Modules = item.Modules.map(i=>{
+                    let Modules = item.Modules.map((i,k)=>{
 
-                        if (i.OrderNo === PNO){
+                        if (k === PNO){
 
                             return {
 
                                 ...i,
 
-                                SubGroupModules:i.SubGroupModules.map(it=>{
+                                SubGroupModules:i.SubGroupModules.map((it,kt)=>{
 
-                                    if (it.OrderNo === CNO){
+                                    if (kt === CNO){
 
                                         return {
 
                                             ...it,
 
-                                            showDom:"div",
+                                            showDom:"div"
 
                                         }
 
@@ -172,9 +178,9 @@ const ImgErrorLoad = ({GroupID,PNO,CNO})=>{
 
                 }else{
 
-                    let Modules = item.Modules.map(i=>{
+                    let Modules = item.Modules.map((i,k)=>{
 
-                        if (i.OrderNo === PNO){
+                        if (k === PNO){
 
                             return {
 
