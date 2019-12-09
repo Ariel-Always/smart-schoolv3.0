@@ -434,7 +434,7 @@ const ChangeTimeCommit = () =>{
 
                     dispatch({type:MANAGER_CRT_CHANGE_TIME_MODAL_HIDE});
 
-                    dispatch(ScheduleModalInfoUpdate(SchoolID,TeacherID,ScheduleID,ClassDate,ClassHourNO));
+                    dispatch(ScheduleModalInfoUpdate({SchoolID,TeacherID,ScheduleID,ClassDate,ClassHourNO}));
 
                 }
 

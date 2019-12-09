@@ -70,6 +70,22 @@ const InitState = ({props,type}) => {
 
                 },
 
+                {
+
+                    ID:'scheduleMiddle',
+
+                    Url:`${CONFIG.Import}/UserMgr/Comm/Controls/Import/DownloadFile.ashx?fileUrl=~%2FUserMgr%2FTeachInfoMgr%2FTemplate%2F%E3%80%90%E6%A8%A1%E6%9D%BF%E3%80%91%E8%AF%BE%E7%A8%8B%E8%A1%A8%E4%BF%A1%E6%81%AF%EF%BC%88%E4%B8%AD%E5%B0%8F%E5%AD%A6%E7%89%88%EF%BC%89.xls`
+
+                },
+
+                {
+
+                    ID:'courseclass',
+
+                    Url:`${CONFIG.Import}/UserMgr/Comm/Controls/Import/DownloadFile.ashx?fileUrl=~%2FUserMgr%2FTeachInfoMgr%2FTemplate%2F%E3%80%90%E6%A8%A1%E6%9D%BF%E3%80%91%E7%8F%AD%E7%BA%A7%E4%BF%A1%E6%81%AF.xls`
+
+                }
+
 
             ],
 
