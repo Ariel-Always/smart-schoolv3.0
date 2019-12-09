@@ -520,7 +520,7 @@ const ChangeTimeCommit = () =>{
 
                     dispatch({type:MANAGER_STT_CHANGE_TIME_MODAL_HIDE});
 
-                    dispatch(ScheduleModalInfoUpdate(SchoolID,TeacherID,ScheduleID,ClassDate,ClassHourNO));
+                    dispatch(ScheduleModalInfoUpdate({SchoolID,TeacherID,ScheduleID,ClassDate,ClassHourNO}));
 
                 }
 

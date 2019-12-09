@@ -195,6 +195,8 @@ class ClassRoomTotal extends Component{
 
         dispatch({type:CRTActions.MANAGER_CRT_SCHEDULE_DETAIL_MODAL_HIDE});
 
+        ComPageRefresh.ComPageUpdate(dispatch);
+
     }
 
     //调整时间弹窗

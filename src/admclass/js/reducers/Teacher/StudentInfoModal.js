@@ -103,7 +103,73 @@ const StudentInfoModal = (state={
 
                 EditorStudentID:'',
 
-                Title:"添加学生"
+                Title:"添加学生",
+
+                PhotoPath:'',
+
+                PhotoPath_NOcache:'',
+
+                //提示
+                UserIDTipsVisible: false,
+
+                UserIDTipsTitle: '由1-24位字母与数字组成',
+
+                UserNameTipsVisible: false,
+
+                UserNameTipsTitle: '姓名由1-20位的汉字、字母、数字、下划线、空格组成（首尾不允许空格）',
+
+                TelephoneTipsVisible: false,
+
+                TelephoneTipsTitle: '电话由数字及-/组成',
+
+                EmailTipsVisible: false,
+
+                EmailTipsTitle: '邮箱格式错误',
+
+                IDCardNoTipsVisible: false,
+
+                IDCardNoTipsTitle: '身份证格式错误',
+
+                HomeAdressTipsVisible: false,
+
+                HomeAdressTipsTitle: '家庭住址格式错误',
+
+                GenderTipsVisible: false,
+
+                GenderTipsTitle: '请选择性别',
+
+                ClassTipsVisible: false,
+
+                ClassTipsTitle: '请选择班级',
+
+                //ID
+
+                UserIDValue:'',
+
+                UserNameValue:'',
+
+                IDCardValue:'',
+
+                PhoneValue:'',
+
+                MailValue:'',
+
+                AddressValue:'',
+
+                //班级
+                ClassDropShow:false,
+
+                Classes:[],
+
+                ClasName:'',
+
+                ClassID:'',
+
+                ClassDrop:{value:'none',title:"请选择班级"},
+
+                //性别
+
+                SexDrop:{value:3,title:"保密"}
 
             };
 

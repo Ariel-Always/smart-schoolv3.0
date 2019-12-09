@@ -2904,7 +2904,7 @@ const stopScheduleTeacherClickSearch = (key) => {
 
         if (key !== ''){
 
-            let SchoolID = getState().LoginUser;
+            let {SchoolID} = getState().LoginUser;
 
             dispatch({type:STOP_SCHEDULE_TEACHER_CHANGE,data:{type:"search"}});
 

@@ -9,7 +9,7 @@ const GET_CURRENT_SCHOOL_INFO = "GET_CURRENT_SCHOOL_INFO"//获取当前学校信
 const REFRESH_SCHOOL_INFO = "REFRESH_SCHOOL_INFO"//刷新当前学校信息
 const CET_CURRENT_SUBSYSTEM_INFO = "CET_CURRENT_SUBSYSTEM_INFO"//获取子系统详情
 const REFRESH_SUBSYSTEM_INFO = "REFRESH_SUBSYSTEM_INFO"//刷新当前子系统信息
-const INIT_PERIOD_LIST="INIT_PERIOD_LIST"//初始化学制选择表
+const INIT_PERIOD_LIST = "INIT_PERIOD_LIST"//初始化学制选择表
 
 
 
@@ -152,11 +152,8 @@ const getCurrentSchoolInfo = (SchoolID) => {
                         }
                         else if (schoolInfo[item] === 4) {
                             periodInfo[2].checked = true
-                        }else if(schoolInfo[item] === 5){
-                            periodInfo[0].checked = true
-                            periodInfo[2].checked = true
-                        }else if(schoolInfo[item] === 6){
-                                
+                        } else if (schoolInfo[item] === 6) {
+
                             periodInfo[1].checked = true
                             periodInfo[2].checked = true
                         }
@@ -174,11 +171,11 @@ const getCurrentSchoolInfo = (SchoolID) => {
                 dispatch({
                     type: GET_CURRENT_SCHOOL_INFO,
                     data: schoolInfo,
-                  
+
                 })
                 dispatch({
-                    type:INIT_PERIOD_LIST,
-                    data:periodInfo
+                    type: INIT_PERIOD_LIST,
+                    data: periodInfo
                 })
                 // console.log(schoolInfo)
                 dispatch({

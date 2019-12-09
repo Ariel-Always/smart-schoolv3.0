@@ -109,7 +109,7 @@ class StudentWrapper extends Component{
 
     DelStudent(){
 
-        const { dispatch } = this.props;
+        const { dispatch,ClassCharge } = this.props;
 
         dispatch(CCActions.DelStudent());
 

@@ -14,6 +14,9 @@ const REFRESH_RESOURCELINK_INFO = "REFRESH_RESOURCELINK_INFO"//更新资源库�
 const GET_MYRESOURCE_INFO = "GET_MYRESOURCE_INFO"//获取我的资源库链接信息
 
 
+const colorList = ["red", "green", "blue","pink","purple","qing"];
+const colorIndex = colorList.length - 1;
+
 
 
 
@@ -61,10 +64,11 @@ const getLinkData = (Period = "P1") => {
                 return {
                     ...item,
                     List: item.List.map(i => {
+                        let ranIndex = Math.floor(Math.random() * (colorIndex + 1));
                         return {
                             ...i,
-                            word: ""
-
+                            word: "",
+                            backgroundColor:colorList[ranIndex]
                         }
                     })
                 }
@@ -126,9 +130,11 @@ const getResLinkList = () => {
 
             if (json.StatusCode === 200) {
                 let resLinkList = json.Data.map(item => {
+                    let ranIndex = Math.floor(Math.random() * (colorIndex + 1));
                     return {
                         ...item,
-                        word: ""
+                        word: "",
+                        backgroundColor:colorList[ranIndex]
                     }
 
                 })

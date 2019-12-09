@@ -226,9 +226,11 @@ const TeacherUpdate = () =>{
 
 //学生更新
 
-const StudentUpdate = (PageIndex) =>{
+const StudentUpdate = (PageIndex,IsResetPageIndex=false) =>{
 
     return (dispatch,getState)=>{
+
+        //const FrontEndPageIndex = getState().Teacher.ClassCharge.Student.PageIndex;
 
         dispatch({type:TEACHER_CLASS_CHARGE_STUDENT_LOADING_SHOW});
 
@@ -242,11 +244,23 @@ const StudentUpdate = (PageIndex) =>{
 
                 const { List } = data;
 
+                const BackEndPageIndex = data.PageIndex;
+
                 const StudentPlainOptions = List.map(item=>{
 
                     return item.UserID
 
                 });
+
+                if (IsResetPageIndex){
+
+                    dispatch({type:TEACHER_CLASS_CHARGE_STUDENT_PAGE_INDEX_UPDATE,data:BackEndPageIndex+1});
+
+                }else{
+
+                    dispatch({type:TEACHER_CLASS_CHARGE_STUDENT_PAGE_INDEX_UPDATE,data:PageIndex+1});
+
+                }
 
                 dispatch({type:TEACHER_CLASS_CHARGE_STUDENT_LIST_UPDATE,data:{Student:data,StudentPlainOptions}});
 
@@ -453,7 +467,9 @@ const DelStudent = ()=>{
 
     return (dispatch,getState)=>{
 
-        const { StudentCheckList } = getState().Teacher.ClassCharge;
+        const { StudentCheckList,StudentPage } = getState().Teacher.ClassCharge;
+
+
 
         const { SchoolID } = getState().DataState.LoginUser;
 
@@ -463,7 +479,7 @@ const DelStudent = ()=>{
 
             dispatch(AppAlertActions.alertQuery({title:"您确定要删除这些学生吗？",ok:()=>{
 
-                   return ()=>DelStudentOk({UserIDs,SchoolID,dispatch});
+                   return ()=>DelStudentOk({PageIndex:StudentPage-1,UserIDs,SchoolID,dispatch});
 
                 }}));
 
@@ -478,7 +494,9 @@ const DelStudent = ()=>{
 
 };
 
-const DelStudentOk = ({SchoolID,UserIDs,dispatch})=>{
+//确定删除学生
+
+const DelStudentOk = ({PageIndex,SchoolID,UserIDs,dispatch})=>{
 
     return ApiActions.DeleteStudent({SchoolID,UserIDs,dispatch}).then(data=>{
 
@@ -486,9 +504,9 @@ const DelStudentOk = ({SchoolID,UserIDs,dispatch})=>{
 
             dispatch({type:AppAlertActions.CLOSE_ERROR_ALERT});
 
-            dispatch({type:AppAlertActions.alertSuccess({title:"删除成功！"})});
+            dispatch(AppAlertActions.alertSuccess({title:"删除成功！"}));
 
-            dispatch(StudentUpdate(0));
+            dispatch(StudentUpdate(PageIndex,true));
 
         }
 

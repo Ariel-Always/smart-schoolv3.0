@@ -1006,7 +1006,6 @@ const targetTeacherDropChange = (info) => {
 
             let ClassDate = targetDate;
 
-            let getChangeSchedulePromise = Method.getGetData(`/scheduleChangeTeacherSchedule?TeacherID${TeacherID}&ClassDate=${ClassDate}`);
 
             ApiActions.GetScheduleByTeacherIDAndDate({ClassDate,TeacherID,dispatch}).then(data => {
 
@@ -2371,8 +2370,6 @@ const ModalCommit = () => {
 
       if (activeKey==='1'){
 
-
-
         let {
 
             activeRadio,
@@ -2663,19 +2660,27 @@ const ModalCommit = () => {
 
               let ClassID = classCheckedList.join(',');
 
+              let ClassNameList = classCheckedList.map(item=>{
+
+                  return classList.find(i=>i.id===item).name
+
+              }).join(',');
+
               dispatch({type:ADJUST_BY_TEACHER_LOADING_SHOW});
 
               ApiActions.SetSubstituteTeacher({
 
                   Type,Item,TeacherID1,TeacherID2,dispatch,
 
-                  SchoolID,UserID,UserType:parseInt(UserType),SubjectID,ClassID
+                  SchoolID,UserID,UserType:parseInt(UserType),SubjectID,ClassID,
+
+                  ClassName:ClassNameList
 
               }).then((data) => {
 
-                  if (data){
+                  if (data===0){
 
-                      dispatch(AppAlertActions.alertWarn({title:"找人代课成功！"}));
+                      dispatch(AppAlertActions.alertSuccess({title:"找人代课成功！"}));
 
                       ComPageRefresh.ComPageUpdate(dispatch);
 
@@ -2770,9 +2775,11 @@ const ModalCommit = () => {
 
               dispatch({type:ADJUST_BY_TEACHER_LOADING_SHOW});
 
-              ApiActions.ExchangeTeacherSchedule({ScheduleID1,ScheduleID2,dispatch}).then(data=>{
+              const { UserType,UserID } = getState().LoginUser;
 
-                 if (data){
+              ApiActions.ExchangeTeacherSchedule({UserType,UserID,ScheduleID1,ScheduleID2,dispatch}).then(data=>{
+
+                 if (data===0){
 
                      dispatch({type:ADJUST_BY_TEACHER_HIDE});
 
@@ -2874,13 +2881,15 @@ const ModalCommit = () => {
 
               dispatch({type:ADJUST_BY_TEACHER_LOADING_SHOW});
 
+              const { UserType,UserID } = getState().LoginUser;
+
               ApiActions.EditClassDateOne({
 
-                  ScheduleID,ClassDate1,ClassHourNO1,ClassDate2,ClassHourNO2,ClassRoomID,dispatch
+                  UserType,UserID,ScheduleID,ClassDate1,ClassHourNO1,ClassDate2,ClassHourNO2,ClassRoomID,dispatch
 
               }).then(data=>{
 
-                 if (data){
+                 if (data===0){
 
                      dispatch({type:ADJUST_BY_TEACHER_HIDE});
 
@@ -2953,6 +2962,8 @@ const ModalCommit = () => {
 
               let Item = `${date};${ClassHourNo}`;
 
+              const { UserType,UserID } = getState().LoginUser;
+
               let ClassRoomID1 = teacherClassRoom.id;
 
               let ClassRoomID2 = classRoomDrop.value;
@@ -2960,11 +2971,11 @@ const ModalCommit = () => {
               ApiActions.AdjustClassRooomOfSchedule({
 
 
-                  SchoolID,Type,Item,ClassRoomID1,ClassRoomID2,dispatch
+                  UserType,UserID,SchoolID,Type,Item,ClassRoomID1,ClassRoomID2,dispatch
 
               }).then(data=>{
 
-                  if (data){
+                  if (data===0){
 
                       dispatch({type:ADJUST_BY_TEACHER_HIDE});
 
@@ -3034,7 +3045,7 @@ const ModalCommit = () => {
 
               ApiActions.CloseTeacherSchedule({UserID,UserType:parseInt(UserType),ScheduleIDs,dispatch}).then(data=>{
 
-                  if (data){
+                  if (data===0){
 
                       dispatch({type:ADJUST_BY_TEACHER_HIDE});
 

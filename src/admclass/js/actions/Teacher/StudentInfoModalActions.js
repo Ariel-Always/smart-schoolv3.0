@@ -242,12 +242,6 @@ const ModalInit = () =>{
         }
 
 
-
-
-
-
-
-
     }
 
 };
@@ -396,7 +390,9 @@ const StudentModalOk = () =>{
 
                             dispatch({type:TEACHER_STUDENT_INFO_MODAL_HIDE});
 
-                            dispatch(CCActions.StudentUpdate(0));
+                            const {StudentPage} = getState().Teacher.ClassCharge;
+
+                            dispatch(CCActions.StudentUpdate(StudentPage-1,true));
 
                         }
 
@@ -426,7 +422,9 @@ const StudentModalOk = () =>{
 
                             dispatch({type:TEACHER_STUDENT_INFO_MODAL_HIDE});
 
-                            dispatch(CCActions.StudentUpdate(0));
+                            const {StudentPage} = getState().Teacher.ClassCharge;
+
+                            dispatch(CCActions.StudentUpdate(StudentPage-1,true));
 
                         }
 

@@ -190,6 +190,8 @@ class Subject extends Component{
 
         dispatch({type:STSAction.MANAGER_STS_SCHEDULE_DETAIL_MODAL_HIDE});
 
+        ComPageRefresh.ComPageUpdate(dispatch);
+
     }
 
     //调整时间弹窗
