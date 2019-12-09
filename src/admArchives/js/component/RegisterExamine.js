@@ -218,7 +218,7 @@ class RegisterExamine extends React.Component {
           if (!(TeacherClass instanceof Array) || !TeacherClass[0]) {
             return;
           }
-          console.log("11");
+          // console.log("11");
           if (pathname.split("/")[2] === "RegisterDidExamine") {
             this.setState({
               handleClick: false

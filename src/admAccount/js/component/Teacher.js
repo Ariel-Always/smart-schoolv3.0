@@ -8,6 +8,7 @@ import {
   Search,
   Table,
   Button,
+  Tips,
   CheckBox,
   CheckBoxGroup,
   Modal
@@ -227,7 +228,9 @@ class Teacher extends React.Component {
       searchValue: "",
       userMsg: props.DataState.LoginUser,
       sortType: "",
-      sortFiled: ""
+      sortFiled: "",
+      PwdTipsTitle:'密码由6-20个字符，只能由字母、数字、下划线及部分特殊字符组成'
+
     };
   }
   componentWillMount() {
@@ -461,23 +464,32 @@ class Teacher extends React.Component {
       onClickKey: key
     });
   };
+  onPwdBlur = e => {
+    const { dispatch } = this.props;
+     console.log(e.target.value)
+    let value = e.target.value
+    let Test = /^([0-9a-zA-Z`~\!@#$%\^&*\(\)_\+-={}|\[\]:\";\'<>\?,.\/\\]){6,20}$/.test(value)
+    if(!Test||value===''){
+      dispatch({type:actions.UpUIState.PWD_TIPS_OPEN})
+      return;
+    }else{
+      dispatch({type:actions.UpUIState.PWD_TIPS_CLOSE})
+      return;
+    }
+    
+  };
   onPwdchangeOk = pwd => {
-    const { dispatch, DataState } = this.props;
+    const { dispatch, DataState,UIState } = this.props;
     let url = "/ResetPwd";
     let UserMsg = DataState.LoginUser;
     // console.log(this.state.defaultPwd, md5(this.state.defaultPwd))
     if (this.state.defaultPwd === "") {
-      dispatch(
-        actions.UpUIState.showErrorAlert({
-          type: "btn-query",
-          title: "密码不能为空",
-          ok: this.onAlertQueryClose.bind(this),
-          cancel: this.onAlertQueryClose.bind(this),
-          close: this.onAlertQueryClose.bind(this)
-        })
-      );
+      dispatch({type:actions.UpUIState.PWD_TIPS_OPEN})
       return;
-    } else {
+    } else if (UIState.TipsVisible.PwdTipsShow) {
+      // dispatch({type:actions.UpUIState.PWD_TIPS_OPEN})
+      return;
+    }  else {
       postData(
         CONFIG.UserAccountProxy + url,
         {
@@ -541,6 +553,9 @@ class Teacher extends React.Component {
   // 重置密码close
 
   onPwdchangeClose = () => {
+    const { dispatch } = this.props;
+
+    dispatch({type:actions.UpUIState.PWD_TIPS_CLOSE})
     this.setState({
       ChangePwdMadalVisible: false,
       defaultPwd: "888888"
@@ -753,6 +768,20 @@ class Teacher extends React.Component {
       );
     }
   };
+  onPwdBlur = e => {
+    const { dispatch } = this.props;
+     console.log(e.target.value)
+    let value = e.target.value
+    let Test = /^([0-9a-zA-Z`~\!@#$%\^&*\(\)_\+-={}|\[\]:\";\'<>\?,.\/\\]){6,20}$/.test(value)
+    if(!Test||value===''){
+      dispatch({type:actions.UpUIState.PWD_TIPS_OPEN})
+      return;
+    }else{
+      dispatch({type:actions.UpUIState.PWD_TIPS_CLOSE})
+      return;
+    }
+    
+  };
   render() {
     const { UIState, DataState } = this.props;
     const data = {
@@ -935,12 +964,20 @@ class Teacher extends React.Component {
           abstract={
             <div className="alert-pwd">
               <span className="alert-pwd-tips">新密码：</span>
+              <Tips
+                overlayClassName="tips"
+                visible={UIState.TipsVisible.PwdTipsShow}
+                title={this.state.PwdTipsTitle}
+                getPopupContainer={e=>e.parentNode}
+              >
               <Input
                 size="small"
-                onChange={this.onPwdchange.bind(this)}
+                  onBlur={this.onPwdBlur.bind(this)}
+                  onChange={this.onPwdchange.bind(this)}
                 style={{ width: 120 + "px" }}
                 value={this.state.defaultPwd}
               ></Input>
+              </Tips>
             </div>
           }
           title={

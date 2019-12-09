@@ -1,296 +1,393 @@
-import React from 'react'
-import { connect } from 'react-redux';
-import actions from '../actions';
-import '../../scss/HandleCourseClass.scss'
-import { postData, getData } from '../../../common/js/fetch'
-import { Scrollbars } from 'react-custom-scrollbars'
+import React from "react";
+import { connect } from "react-redux";
+import actions from "../actions";
+import "../../scss/HandleCourseClass.scss";
+import { postData, getData } from "../../../common/js/fetch";
+import { Scrollbars } from "react-custom-scrollbars";
 
-import history from '../containers/history'
-import { Input, } from 'antd'
-import CONFIG from '../../../common/js/config';
-import { Modal, Loading, DropDown, Table, Button, PagiNation, CheckBox, CheckBoxGroup } from "../../../common";
-import SelectTeacher from './SelectTeacher';
-import SelectStudent from './SelectStudent';
-
+import history from "../containers/history";
+import { Input } from "antd";
+import CONFIG from "../../../common/js/config";
+import {
+  Modal,
+  Loading,
+  DropDown,
+  Table,
+  Button,
+  PagiNation,
+  CheckBox,
+  CheckBoxGroup
+} from "../../../common";
+import SelectTeacher from "./SelectTeacher";
+import SelectStudent from "./SelectStudent";
 
 class HandleCourseClass extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            tableSource: [],
-            UserMsg: props.DataState.LoginUser
+  constructor(props) {
+    super(props);
+    this.state = {
+      tableSource: [],
+      UserMsg: props.DataState.LoginUser
+    };
+  }
 
-        }
-    }
+  componentWillReceiveProps(nextProps) {
+    const { DataState, UIState } = nextProps;
+    let data = nextProps.DataState.GetCourseClassDetailsHandleClassMsg;
+    this.setState({
+      courseClassName: data.selectData
+        ? data.selectData.CourseClass.CourseClassName
+        : "",
+      TeacherName: data.selectData ? data.selectData.Teacher.TeacherName : "",
+      tableSource: data.selectData ? data.selectData.Student : []
+    });
+  }
+  componentWillMount() {
+    const { DataState, dispatch } = this.props;
+    // //获取路由
+    // let route = history.location.pathname;
+    // let pathArr = route.split('/');
+    // let handleRoute = pathArr[1];
+    // let routeID = pathArr[2];
+    // let subjectID = pathArr[3];
+    // let classID = pathArr[4];
+    // //*************** */
+    // if (handleRoute === 'Teacher') {
+    //     let UserMsg = DataState.LoginUser;
+    //     DataState.GetCourseClassDetailsHandleClassMsg.selectData.Teacher = { value: UserMsg.UserID, title: UserMsg.UserName };
+    //     //dispatch(actions.UpDataState.setSubjectTeacherTransferMsg({value:UserMsg.UserID,title:UserMsg.UserName}))
+    // }
+    if (this.props.type === "Teacher") {
+      let Subjects = DataState.GetTeacherSubjectAndGradeMsg.Subjects;
 
-    componentWillReceiveProps(nextProps) {
-        const { DataState, UIState } = nextProps;
-        let data = nextProps.DataState.GetCourseClassDetailsHandleClassMsg
+      if (Subjects.length === 1) {
         this.setState({
-            courseClassName: data.selectData ? data.selectData.CourseClass.CourseClassName : '',
-            TeacherName: data.selectData ? data.selectData.Teacher.TeacherName : '',
-            tableSource: data.selectData ? data.selectData.Student : []
-        })
+          SubjectSelect: Subjects[0],
+          Subject: Subjects[0]
+        });
+      }
+      dispatch(
+        actions.UpDataState.setCourseClassDataMsg({ Subject: Subjects[0] })
+      );
     }
-    componentWillMount() {
-        const { DataState, dispatch } = this.props;
-        // //获取路由
-        // let route = history.location.pathname;
-        // let pathArr = route.split('/');
-        // let handleRoute = pathArr[1];
-        // let routeID = pathArr[2];
-        // let subjectID = pathArr[3];
-        // let classID = pathArr[4];
-        // //*************** */
-        // if (handleRoute === 'Teacher') {
-        //     let UserMsg = DataState.LoginUser;
-        //     DataState.GetCourseClassDetailsHandleClassMsg.selectData.Teacher = { value: UserMsg.UserID, title: UserMsg.UserName };
-        //     //dispatch(actions.UpDataState.setSubjectTeacherTransferMsg({value:UserMsg.UserID,title:UserMsg.UserName}))
-        // }
-        if(this.props.type==='Teacher'){
-            let Subjects = DataState.GetTeacherSubjectAndGradeMsg.Subjects;
-            
-            if(Subjects.length===1){
-                this.setState({
-                    SubjectSelect:Subjects[0],
-                    Subject: Subjects[0],
-                })
-            }
-            dispatch(actions.UpDataState.setCourseClassDataMsg({ Subject: Subjects[0] }))
+  }
+  //数据绑定
+  onCourseClassNameChange = e => {
+    const { DataState, UIState, dispatch } = this.props;
+    let {
+      CourseClassName,
+      ...data
+    } = DataState.GetCourseClassDetailsHandleClassMsg.selectData.CourseClass;
+    //console.log(this.state.courseClassName, e.target.value)
+    dispatch(
+      actions.UpDataState.setCourseClassName({
+        CourseClassName: e.target.value,
+        ...data
+      })
+    );
+    // this.setState({
+    //     courseClassName: e.target.value,
+    // })
+  };
 
-        }
+  //学科选择
+  onSelectSubjectChange = value => {
+    //console.log(value)
+  };
+  //年级选择
+  onSelectGradeChange = value => {
+    //console.log(value)
+  };
+  //选择教师
+  onTeacherSelectClick = () => {
+    const { DataState, UIState, dispatch } = this.props;
+    let data = DataState.GetCourseClassDetailsHandleClassMsg;
+    dispatch(actions.UpUIState.AddTeacherModalOpen());
+    dispatch(
+      actions.UpDataState.getSubjectTeacherMsg(
+        "/GetTeacherInfoBySubjectAndKey?key=&schoolID=" +
+          this.state.UserMsg.SchoolID +
+          "&subjectID=" +
+          data.SubjectID
+      )
+    );
+  };
+  //选择教师模态框
+  AddTeacherModalOk = () => {
+    const { DataState, UIState, dispatch } = this.props;
+    let teacher =
+      Object.keys(
+        DataState.GetCourseClassDetailsHandleClassMsg.transfer.Teacher
+      ).length !== 0
+        ? DataState.GetCourseClassDetailsHandleClassMsg.transfer.Teacher
+        : DataState.GetCourseClassDetailsHandleClassMsg.selectData.Teacher;
+    dispatch(actions.UpDataState.setSubjectTeacherMsg(teacher));
+    dispatch(actions.UpUIState.AddTeacherModalClose());
+  };
+  AddTeacherModalCancel = () => {
+    const { DataState, UIState, dispatch } = this.props;
+    let teacher =
+      DataState.GetCourseClassDetailsHandleClassMsg.selectData.Teacher;
 
-    }
-    //数据绑定
-    onCourseClassNameChange = (e) => {
-        const { DataState, UIState, dispatch } = this.props;
-        let { CourseClassName, ...data } = DataState.GetCourseClassDetailsHandleClassMsg.selectData.CourseClass
-        //console.log(this.state.courseClassName, e.target.value)
-        dispatch(actions.UpDataState.setCourseClassName({ CourseClassName: e.target.value, ...data }))
-        // this.setState({
-        //     courseClassName: e.target.value,
-        // })
-    }
+    //dispatch(actions.UpDataState.setSubjectTeacherMsg({}))
 
-    //学科选择
-    onSelectSubjectChange = (value) => {
-        //console.log(value)
-    }
-    //年级选择
-    onSelectGradeChange = (value) => {
-        //console.log(value)
-    }
-    //选择教师
-    onTeacherSelectClick = () => {
-        const { DataState, UIState, dispatch } = this.props;
-        let data = DataState.GetCourseClassDetailsHandleClassMsg;
-        dispatch(actions.UpUIState.AddTeacherModalOpen())
-        dispatch(actions.UpDataState.getSubjectTeacherMsg('/GetTeacherInfoBySubjectAndKey?key=&schoolID=' + this.state.UserMsg.SchoolID + '&subjectID=' + data.SubjectID))
-    }
-    //选择教师模态框
-    AddTeacherModalOk = () => {
-        const { DataState, UIState, dispatch } = this.props;
-        let teacher = Object.keys(DataState.GetCourseClassDetailsHandleClassMsg.transfer.Teacher).length!==0?DataState.GetCourseClassDetailsHandleClassMsg.transfer.Teacher:DataState.GetCourseClassDetailsHandleClassMsg.selectData.Teacher;
-        dispatch(actions.UpDataState.setSubjectTeacherMsg(teacher))
-        dispatch(actions.UpUIState.AddTeacherModalClose())
-    }
-    AddTeacherModalCancel = () => {
-        const { DataState, UIState, dispatch } = this.props;
-        let teacher = DataState.GetCourseClassDetailsHandleClassMsg.selectData.Teacher;
+    dispatch(actions.UpUIState.AddTeacherModalClose());
+  };
+  //选择学生
+  //选择教师模态框
+  AddStudentModalOk = () => {
+    const { DataState, UIState, dispatch } = this.props;
+    let Student =
+      DataState.GetCourseClassDetailsHandleClassMsg.transfer.Student;
+    dispatch(actions.UpDataState.setCourseClassStudentMsg(Student));
 
-        //dispatch(actions.UpDataState.setSubjectTeacherMsg({}))
+    dispatch(actions.UpUIState.AddStudentModalClose());
+  };
+  AddStudentModalCancel = () => {
+    const { DataState, UIState, dispatch } = this.props;
 
-        dispatch(actions.UpUIState.AddTeacherModalClose())
-    }
-    //选择学生
-    //选择教师模态框
-    AddStudentModalOk = () => {
-        const { DataState, UIState, dispatch } = this.props;
-        let Student = DataState.GetCourseClassDetailsHandleClassMsg.transfer.Student;
-        dispatch(actions.UpDataState.setCourseClassStudentMsg(Student))
+    let oldStudent =
+      DataState.GetCourseClassDetailsHandleClassMsg.selectData.Student;
+    dispatch(actions.UpDataState.setClassStudentTransferMsg(oldStudent));
+    //dispatch(actions.UpDataState.setSubjectTeacherMsg({}))
 
-        dispatch(actions.UpUIState.AddStudentModalClose())
-    }
-    AddStudentModalCancel = () => {
-        const { DataState, UIState, dispatch } = this.props;
+    dispatch(actions.UpUIState.AddStudentModalClose());
+  };
+  //删除学生
+  onDeleteStudentClick = id => {
+    const { DataState, UIState, dispatch } = this.props;
 
-        let oldStudent = DataState.GetCourseClassDetailsHandleClassMsg.selectData.Student;
-        dispatch(actions.UpDataState.setClassStudentTransferMsg(oldStudent))
-        //dispatch(actions.UpDataState.setSubjectTeacherMsg({}))
+    let data = DataState.GetCourseClassDetailsHandleClassMsg.selectData.Student;
+    let newData = data.splice(id, 1);
+    this.setState({
+      tableSource: data
+    });
+    //console.log(id, newData);
+    dispatch(actions.UpDataState.setCourseClassStudentMsg(data));
+  };
+  //清空
+  onDeleteAllClick = () => {
+    const { DataState, UIState, dispatch } = this.props;
+    this.setState({
+      tableSource: []
+    });
+    dispatch(actions.UpDataState.setCourseClassStudentMsg([]));
+  };
+  //选择弹窗
+  onSelectStudentAllClick = () => {
+    const { DataState, UIState, dispatch } = this.props;
+    let data = DataState.GetCourseClassDetailsHandleClassMsg;
+    dispatch(
+      actions.UpDataState.getGradeClassMsg(
+        "/GetStudentForAddOrEditCourseClassByInit?schoolID=" +
+          this.state.UserMsg.SchoolID +
+          "&gradeID=" +
+          data.GradeID
+      )
+    );
 
-        dispatch(actions.UpUIState.AddStudentModalClose())
-    }
-    //删除学生
-    onDeleteStudentClick = (id) => {
-        const { DataState, UIState, dispatch } = this.props;
-
-        let data = DataState.GetCourseClassDetailsHandleClassMsg.selectData.Student;
-        let newData = data.splice(id, 1);
-        this.setState({
-            tableSource: data
-        })
-        //console.log(id, newData);
-        dispatch(actions.UpDataState.setCourseClassStudentMsg(data))
-
-    }
-    //清空
-    onDeleteAllClick = () => {
-        const { DataState, UIState, dispatch } = this.props;
-        this.setState({
-            tableSource: []
-        })
-        dispatch(actions.UpDataState.setCourseClassStudentMsg([]))
-    }
-    //选择弹窗
-    onSelectStudentAllClick = () => {
-        const { DataState, UIState, dispatch } = this.props;
-        let data = DataState.GetCourseClassDetailsHandleClassMsg;
-        dispatch(actions.UpDataState.getGradeClassMsg('/GetStudentForAddOrEditCourseClassByInit?schoolID=' + this.state.UserMsg.SchoolID + '&gradeID=' + data.GradeID))
-        
-        dispatch(actions.UpUIState.AddStudentModalOpen())
-    }
-    render() {
-        const { DataState, UIState } = this.props;
-        let data = DataState.GetCourseClassDetailsHandleClassMsg;
-        let tableSource = data.TableSource ? data.TableSource : [];
-        let teacher = data.selectData ? data.selectData.Teacher.length !== 0 ? data.selectData.Teacher : {} : {};
-        //获取路由
-        let route = history.location.pathname;
-        let pathArr = route.split('/');
-        let handleRoute = pathArr[1];
-        let routeID = pathArr[2];
-        let subjectID = pathArr[3];
-        let classID = pathArr[4];
-        //*************** */
-        return (
-            <React.Fragment>
-                <div id='HandleCourseClass' className='HandleCourseClass'>
-                    <div className='row clearfix'>
-                        <div className='row-column'>
-                            <span className='left'>教学班名称：</span>
-                            <span className='right '>
-                                <Input placeholder='请输入教学班名称...' style={{ width: 180 + 'px' }} type='text' onChange={this.onCourseClassNameChange.bind(this)} value={this.state.courseClassName} />
-
-                            </span>
-                            {/* <span className='right text-style'>{data.CourseClassName}</span> */}
-                        </div>
-                        <div className='row-column'>
-                            <span className='left'>学科：</span>
-                            <span className='right '>
-                                {/* <DropDown
+    dispatch(actions.UpUIState.AddStudentModalOpen());
+  };
+  render() {
+    const { DataState, UIState } = this.props;
+    let data = DataState.GetCourseClassDetailsHandleClassMsg;
+    let tableSource = data.TableSource ? data.TableSource : [];
+    let teacher = data.selectData
+      ? data.selectData.Teacher.length !== 0
+        ? data.selectData.Teacher
+        : {}
+      : {};
+    //获取路由
+    let route = history.location.pathname;
+    let pathArr = route.split("/");
+    let handleRoute = pathArr[1];
+    let routeID = pathArr[2];
+    let subjectID = pathArr[3];
+    let classID = pathArr[4];
+    //*************** */
+    return (
+      <React.Fragment>
+        <div id="HandleCourseClass" className="HandleCourseClass">
+          <div className="row clearfix">
+            <div className="row-column">
+              <span className="left">教学班名称：</span>
+              <span className="right ">
+                <Input
+                  placeholder="请输入教学班名称..."
+                  style={{ width: 180 + "px" }}
+                  type="text"
+                  onChange={this.onCourseClassNameChange.bind(this)}
+                  value={this.state.courseClassName}
+                />
+              </span>
+              {/* <span className='right text-style'>{data.CourseClassName}</span> */}
+            </div>
+            <div className="row-column">
+              <span className="left">学科：</span>
+              <span className="right ">
+                {/* <DropDown
                                 width={180}
                                 type='simple'
                                 dropSelectd={{ value:data?data.SubjectID:'', title: data?data.SubjectName:'' }}
                                 onChange={this.onSelectSubjectChange.bind(this)}
                             ></DropDown> */}
-                                <span title={data.SubjectName} className='noChange SubjectName'>{data ? data.SubjectName : ''}</span>
-                            </span>
-
-                        </div>
-                    </div>
-                    <div className='row clearfix'>
-                        <div className='row-column'>
-                            <span className='left'>所属年级：</span>
-                            <span className='right '>
-                                {/* <DropDown 
+                <span title={data.SubjectName} className="noChange SubjectName">
+                  {data ? data.SubjectName : ""}
+                </span>
+              </span>
+            </div>
+          </div>
+          <div className="row clearfix">
+            <div className="row-column">
+              <span className="left">所属年级：</span>
+              <span className="right ">
+                {/* <DropDown 
                                 width={180}
                                 type='simple'
                                 dropSelectd={{ value: data?data.GradeID:'', title: data?data.GradeName:'' }}
                                 onChange={this.onSelectGradeChange.bind(this)}
                             ></DropDown> */}
-                                <span title={data.GradeName} className='noChange GradeName'>{data ? data.GradeName : ''}</span>
+                <span title={data.GradeName} className="noChange GradeName">
+                  {data ? data.GradeName : ""}
+                </span>
+              </span>
+            </div>
+            <div className="row-column">
+              <span className="left">任课老师：</span>
 
-                            </span>
-                        </div>
-                        <div className='row-column'>
-                            <span className='left'>任课老师：</span>
-                            
-                                {/* <Input readOnly unselectable="on" onClick={this.onTeacherSelectClick.bind(this)} className='teacherName selectTeacher' type='text' value={data.selectData ? data.selectData.Teacher.title : ''} style={{ width: 150 + 'px' }} onChange={this.onCourseClassNameChange.bind(this)} />
+              {/* <Input readOnly unselectable="on" onClick={this.onTeacherSelectClick.bind(this)} className='teacherName selectTeacher' type='text' value={data.selectData ? data.selectData.Teacher.title : ''} style={{ width: 150 + 'px' }} onChange={this.onCourseClassNameChange.bind(this)} />
                                 <span onClick={this.onTeacherSelectClick.bind(this)} className='teacher-select'>选择</span> */}
-                                {handleRoute !== 'Teacher' ? (<span className='right'>
-                                    <Input readOnly unselectable="on" onClick={this.onTeacherSelectClick.bind(this)} className=' selectTeacher' type='text' value={data.selectData ? data.selectData.Teacher.title : ''} style={{ width: 150 + 'px' }} onChange={this.onCourseClassNameChange.bind(this)} />
-                                    <span onClick={this.onTeacherSelectClick.bind(this)} className='teacher-select'>选择</span>
-                                </span>) : (
-                                        <span className='right'>
-                                            <span title={data.selectData ? data.selectData.Teacher.title : ''} className='noChange teacherName'>{data.selectData ? data.selectData.Teacher.title : ''}</span>
-                                        </span>
-                                    )}
-                        </div>
-                    </div>
-                    <div className='row clearfix'>
-                        <div className=' row-column row-column-2'>
-                            <span className='left'>学生名单：</span>
-                            <span className='right right-2'>
-                                <div className='Student-box'>
-                                    <div className='box-top'>
-                                        <span className='top-left'>
-                                            已选
-                                        <span className='count'>{this.state.tableSource.length}</span>
-                                            名学生
-                                    </span>
-                                        <span className='top-right'>
-                                            <span onClick={this.onSelectStudentAllClick.bind(this)} className='handle select'>选择</span>
-                                            <span onClick={this.onDeleteAllClick.bind(this)} className='handle deleteAll'>清空</span>
-                                        </span>
-                                    </div>
+              {handleRoute !== "Teacher" ? (
+                <span className="right">
+                  <Input
+                    readOnly
+                    unselectable="on"
+                    onClick={this.onTeacherSelectClick.bind(this)}
+                    className=" selectTeacher"
+                    type="text"
+                    value={data.selectData ? data.selectData.Teacher.title : ""}
+                    style={{ width: 150 + "px" }}
+                    onChange={this.onCourseClassNameChange.bind(this)}
+                  />
+                  <span
+                    onClick={this.onTeacherSelectClick.bind(this)}
+                    className="teacher-select"
+                  >
+                    选择
+                  </span>
+                </span>
+              ) : (
+                <span className="right">
+                  <span
+                    title={data.selectData ? data.selectData.Teacher.title : ""}
+                    className="noChange teacherName"
+                  >
+                    {data.selectData ? data.selectData.Teacher.title : ""}
+                  </span>
+                </span>
+              )}
+            </div>
+          </div>
+          <div className="row clearfix">
+            <div className=" row-column row-column-2">
+              <span className="left">学生名单：</span>
+              <span className="right right-2">
+                <div className="Student-box">
+                  <div className="box-top">
+                    <span className="top-left">
+                      已选
+                      <span className="count">
+                        {this.state.tableSource.length}
+                      </span>
+                      名学生
+                    </span>
+                    <span className="top-right">
+                      <span
+                        onClick={this.onSelectStudentAllClick.bind(this)}
+                        className="handle select"
+                      >
+                        选择
+                      </span>
+                      <span
+                        onClick={this.onDeleteAllClick.bind(this)}
+                        className="handle deleteAll"
+                      >
+                        清空
+                      </span>
+                    </span>
+                  </div>
 
-                                    <Scrollbars
-                                        style={{ width: 100 + '%', height: 118 + 'px' }}
-                                    >
-                                        <div className='box-content'>
-                                            {
-                                                this.state.tableSource.map((child, index) => {
-                                                    return (
-                                                        <span className='content-card' key={child.StudentID+index}>
-                                                            <span title={child.StudentName} className='card-name'>{child.StudentName}</span>
-                                                            <span title={child.StudentID} className='card-id'>{child.StudentID}</span>
-                                                            <span onClick={this.onDeleteStudentClick.bind(this, index)} className='icon-x'></span>
-                                                        </span>
-                                                    )
-                                                })
-                                            }
-                                        </div></Scrollbars>
-                                </div>
-
-
+                  <Scrollbars style={{ width: 100 + "%", height: 118 + "px" }}>
+                    <div className="box-content">
+                      {this.state.tableSource.map((child, index) => {
+                        return (
+                          <span
+                            className="content-card"
+                            key={child.StudentID + index}
+                          >
+                            <span
+                              title={child.StudentName}
+                              className="card-name"
+                            >
+                              {child.StudentName}
                             </span>
-                        </div>
+                            <span title={child.StudentID} className="card-id">
+                              {child.StudentID}
+                            </span>
+                            <span
+                              onClick={this.onDeleteStudentClick.bind(
+                                this,
+                                index
+                              )}
+                              className="icon-x"
+                            ></span>
+                          </span>
+                        );
+                      })}
                     </div>
-                </div >
-                <Modal
-                    ref='SelectTeacherMadal'
-                    type='1'
-                    width={680}
-                    title={'选择教师'}
-                    bodyStyle={{ height: 525 + 'px', padding: 0 }}
-                    visible={UIState.AddTeacherModalShow.Show}
-                    onOk={this.AddTeacherModalOk}
-                    onCancel={this.AddTeacherModalCancel}
-                >
-                    <SelectTeacher subject={data ? data.SubjectID : ''}></SelectTeacher>
-                </Modal>
-                <Modal
-                    ref='SelectStudentMadal'
-                    type='1'
-                    width={680}
-                    title={'选择学生'}
-                    bodyStyle={{ height: 477 + 'px', padding: 0 }}
-                    visible={UIState.AddStudentModalShow.Show}
-                    onOk={this.AddStudentModalOk}
-                    onCancel={this.AddStudentModalCancel}
-                >
-                    {UIState.AddStudentModalShow.Show ? (<SelectStudent></SelectStudent>) : ''}
-                </Modal>
-            </React.Fragment>
-        )
-    }
+                  </Scrollbars>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+        <Modal
+          ref="SelectTeacherMadal"
+          type="1"
+          width={680}
+          title={"选择教师"}
+          bodyStyle={{ height: 525 + "px", padding: 0 }}
+          visible={UIState.AddTeacherModalShow.Show}
+          onOk={this.AddTeacherModalOk}
+          onCancel={this.AddTeacherModalCancel}
+        >
+          <SelectTeacher subject={data ? data.SubjectID : ""}></SelectTeacher>
+        </Modal>
+        <Modal
+          ref="SelectStudentMadal"
+          type="1"
+          width={680}
+          title={"选择学生"}
+          bodyStyle={{ height: 477 + "px", padding: 0 }}
+          visible={UIState.AddStudentModalShow.Show}
+          onOk={this.AddStudentModalOk}
+          onCancel={this.AddStudentModalCancel}
+        >
+          {UIState.AddStudentModalShow.Show ? (
+            <SelectStudent></SelectStudent>
+          ) : (
+            ""
+          )}
+        </Modal>
+      </React.Fragment>
+    );
+  }
 }
 
-const mapStateToProps = (state) => {
-    let { UIState, DataState } = state;
-    return {
-        UIState,
-        DataState
-    }
+const mapStateToProps = state => {
+  let { UIState, DataState } = state;
+  return {
+    UIState,
+    DataState
+  };
 };
 export default connect(mapStateToProps)(HandleCourseClass);

@@ -42,9 +42,9 @@ class ImportFile extends React.Component {
 
     }
 
-    componentWillMount() {
-        const { DataState, dispatch } = this.props;
-    }
+    // componentWillMount() {
+    //     const { DataState, dispatch } = this.props;
+    // }
     componentWillMount() {
         // $.get(CONFIG.UserInfoProxy+'/Import.aspx?Token=0111&UserType=Student',function(data){
         //     $('#content-box').html(data)
@@ -112,7 +112,7 @@ class ImportFile extends React.Component {
         this.setState({
             select: name,
             show:true,
-            Route:name==='picture'?route:route === 'Teacher' ? 'teacher' :route === 'Leader'?'leader' :'student'
+            Route:name==='picture'?route:route === 'Teacher' ? 'teacher' :route === 'Leader'?'leader' :route === 'Student'?'student':'graduate'
         })
         // this.setState({
         //     type:type,

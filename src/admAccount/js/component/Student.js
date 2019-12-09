@@ -8,6 +8,7 @@ import {
   PagiNation,
   Search,
   Table,
+  Tips,
   Button,
   CheckBox,
   CheckBoxGroup,
@@ -217,7 +218,9 @@ class Student extends React.Component {
       ],
       userMsg: props.DataState.LoginUser,
       sortType: "",
-      sortFiled: ""
+      sortFiled: "",
+      PwdTipsTitle:'密码由6-20个字符，只能由字母、数字、下划线及部分特殊字符组成'
+
     };
   }
   componentWillMount() {
@@ -432,7 +435,20 @@ pagination:1,
   //         StudentChangeKey: key
   //     })
   // }
-
+  onPwdBlur = e => {
+    const { dispatch } = this.props;
+     console.log(e.target.value)
+    let value = e.target.value
+    let Test = /^([0-9a-zA-Z`~\!@#$%\^&*\(\)_\+-={}|\[\]:\";\'<>\?,.\/\\]){6,20}$/.test(value)
+    if(!Test||value===''){
+      dispatch({type:actions.UpUIState.PWD_TIPS_OPEN})
+      return;
+    }else{
+      dispatch({type:actions.UpUIState.PWD_TIPS_CLOSE})
+      return;
+    }
+    
+  };
   onMouseEnterName = () => {};
   OnCheckAllChange = e => {
     const { DataState, dispatch } = this.props;
@@ -517,21 +533,16 @@ pagination:1,
   };
   // 重置密码ok
   onPwdchangeOk = pwd => {
-    const { dispatch, DataState } = this.props;
+    const { dispatch, DataState,UIState } = this.props;
     let url = "/ResetPwd";
     let UserMsg = DataState.LoginUser;
     if (this.state.defaultPwd === "") {
-      dispatch(
-        actions.UpUIState.showErrorAlert({
-          type: "btn-query",
-          title: "密码不能为空",
-          ok: this.onAlertQueryClose.bind(this),
-          cancel: this.onAlertQueryClose.bind(this),
-          close: this.onAlertQueryClose.bind(this)
-        })
-      );
+      dispatch({type:actions.UpUIState.PWD_TIPS_OPEN})
       return;
-    } else {
+    } else if (UIState.TipsVisible.PwdTipsShow) {
+      // dispatch({type:actions.UpUIState.PWD_TIPS_OPEN})
+      return;
+    }  else {
       postData(
         CONFIG.UserAccountProxy + url,
         {
@@ -591,6 +602,10 @@ pagination:1,
   };
   // 重置密码close
   onPwdchangeClose = () => {
+    const { dispatch } = this.props;
+
+    dispatch({type:actions.UpUIState.PWD_TIPS_CLOSE})
+
     this.setState({
       ChangePwdMadalVisible: false,
       defaultPwd: "888888"
@@ -1004,12 +1019,20 @@ pagination:1,
           abstract={
             <div className="alert-pwd">
               <span className="alert-pwd-tips">新密码：</span>
+              <Tips
+                overlayClassName="tips"
+                visible={UIState.TipsVisible.PwdTipsShow}
+                title={this.state.PwdTipsTitle}
+                getPopupContainer={e=>e.parentNode}
+              >
               <Input
-                size="small"
+                  onBlur={this.onPwdBlur.bind(this)}
+                  size="small"
                 onChange={this.onPwdchange.bind(this)}
                 style={{ width: 120 + "px" }}
                 value={this.state.defaultPwd}
               ></Input>
+              </Tips>
             </div>
           }
           title={

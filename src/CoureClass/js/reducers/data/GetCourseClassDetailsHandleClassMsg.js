@@ -1,7 +1,12 @@
 import UpDataState from "../../actions/UpDataState";
 import history from "../../containers/history";
 
-const GetCourseClassDetailsHandleClassMsg = (state = {}, actions) => {
+const GetCourseClassDetailsHandleClassMsg = (
+  state = {
+    selectData: { CourseClass: { CourseClassName: "" }, Subject: {}, Grade: {},Teacher:[],Student:[] }
+  },
+  actions
+) => {
   switch (actions.type) {
     case UpDataState.GET_COURSE_CLASS_DETAILS_HANDEL_CLASS_MSG:
       let data = handleData(actions.data);

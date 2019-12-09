@@ -7,7 +7,7 @@ import {
   PagiNation,
   Search,
   Table,
-  Button,
+  Button,Tips,
   CheckBox,
   CheckBoxGroup,
   Modal
@@ -183,7 +183,8 @@ class Admin extends React.Component {
           Others: {}
         }
       ],
-
+      PwdTipsTitle:'密码由6-20个字符，只能由字母、数字、下划线及部分特殊字符组成'
+,
       pagination: 1,
       loading: false,
       selectedAll: false,
@@ -792,20 +793,15 @@ class Admin extends React.Component {
   };
   //修改密码
   onPwdchangeOk = () => {
-    const { dispatch, DataState } = this.props;
+    const { dispatch, DataState,UIState } = this.props;
     let pwd = this.state.defaultPwd;
-    if (pwd === "") {
-      dispatch(
-        actions.UpUIState.showErrorAlert({
-          type: "btn-warn",
-          title: "密码不能为空",
-          ok: this.onAlertWarnOk.bind(this),
-          cancel: this.onAlertWarnClose.bind(this),
-          close: this.onAlertWarnClose.bind(this)
-        })
-      );
+    if (this.state.defaultPwd === "") {
+      dispatch({type:actions.UpUIState.PWD_TIPS_OPEN})
       return;
-    }
+    } else if (UIState.TipsVisible.PwdTipsShow) {
+      // dispatch({type:actions.UpUIState.PWD_TIPS_OPEN})
+      return;
+    } 
     //  console.log(this.state.onClickKey)
     let url = "/ResetPwd";
     postData(
@@ -865,6 +861,9 @@ class Admin extends React.Component {
       });
   };
   onPwdchangeClose = () => {
+    const { dispatch } = this.props;
+
+    dispatch({type:actions.UpUIState.PWD_TIPS_CLOSE})
     this.setState({
       ChangePwdMadalVisible: false,
       defaultPwd: "888888"
@@ -961,6 +960,20 @@ checkedList: [],
           this.state.sortType
       )
     );
+  };
+  onPwdBlur = e => {
+    const { dispatch } = this.props;
+     console.log(e.target.value)
+    let value = e.target.value
+    let Test = /^([0-9a-zA-Z`~\!@#$%\^&*\(\)_\+-={}|\[\]:\";\'<>\?,.\/\\]){6,20}$/.test(value)
+    if(!Test||value===''){
+      dispatch({type:actions.UpUIState.PWD_TIPS_OPEN})
+      return;
+    }else{
+      dispatch({type:actions.UpUIState.PWD_TIPS_CLOSE})
+      return;
+    }
+    
   };
   render() {
     const { UIState, DataState } = this.props;
@@ -1159,12 +1172,20 @@ checkedList: [],
           abstract={
             <div className="alert-pwd">
               <span className="alert-pwd-tips">新密码：</span>
+              <Tips
+                overlayClassName="tips"
+                visible={UIState.TipsVisible.PwdTipsShow}
+                title={this.state.PwdTipsTitle}
+                getPopupContainer={e=>e.parentNode}
+              >
               <Input
                 size="small"
                 onChange={this.onPwdchange.bind(this)}
-                style={{ width: 120 + "px" }}
+                  onBlur={this.onPwdBlur.bind(this)}
+                  style={{ width: 120 + "px" }}
                 value={this.state.defaultPwd}
               ></Input>
+              </Tips>
             </div>
           }
           title={

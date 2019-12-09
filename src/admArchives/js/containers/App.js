@@ -313,6 +313,7 @@ class App extends Component {
             if (
               route.split("/")[2] !== "Student" &&
               route.split("/")[2] !== "Teacher" &&
+              route.split("/")[2] !== "Graduate" &&
               route.split("/")[2] !== "Leader"
             ) {
               history.push("/UserArchives/All");
