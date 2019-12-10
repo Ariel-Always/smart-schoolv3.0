@@ -398,7 +398,7 @@ class App extends Component {
       return;
     }
     //console.log(this.state.courseClassName, e.target.value)
-    let Test = /^([a-zA-Z0-9]{1,24})$/.test(value)
+    let Test = /^[_\->/()（）A-Za-z0-9\u4e00-\u9fa5]{0,50}$/.test(value)
     if(!Test){
       dispatch(
         actions.UpUIState.showErrorAlert({
@@ -501,12 +501,12 @@ class App extends Component {
     const { dispatch, DataState } = this.props;
     // let Student = DataState.GetCourseClassDetailsHandleClassMsg.TableSource;
     // let Teacher = {value:DataState.GetCourseClassDetailsHandleClassMsg.TeacherID,title:DataState.GetCourseClassDetailsHandleClassMsg.TeacherName}
-    dispatch(actions.UpDataState.setCourseClassName([]));
-    dispatch(actions.UpDataState.setCourseClassStudentMsg([]));
+    dispatch(actions.UpDataState.setCourseClassName({}));
+    dispatch(actions.UpDataState.setCourseClassStudentMsg({}));
     dispatch(actions.UpDataState.setSubjectTeacherMsg([]));
-    dispatch(actions.UpDataState.setClassStudentTransferMsg([]));
-    dispatch(actions.UpDataState.setClassStudentTransferTransferMsg([]));
-    dispatch(actions.UpDataState.setSubjectTeacherTransferMsg([]));
+    dispatch(actions.UpDataState.setClassStudentTransferMsg({}));
+    dispatch(actions.UpDataState.setClassStudentTransferTransferMsg({}));
+    dispatch(actions.UpDataState.setSubjectTeacherTransferMsg({}));
     dispatch(actions.UpUIState.ChangeCourseClassModalClose());
     dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
   };
@@ -550,8 +550,8 @@ class App extends Component {
     }
     let value = data.selectData.CourseClass.CourseClassName
     //console.log(this.state.courseClassName, e.target.value)
-    let Test = /^([a-zA-Z0-9]{1,24})$/.test(value)
-    if(!Test){
+    let Test = /^[_\->/()（）A-Za-z0-9\u4e00-\u9fa5]{0,50}$/.test(value)
+    if(value===''||value===undefined||!Test){
       dispatch(
         actions.UpUIState.showErrorAlert({
           type: "btn-error",
@@ -563,7 +563,7 @@ class App extends Component {
       );
       return;
     }
-    if (!data.selectData.Subject.value) {
+    if (data.selectData.Subject&&data.selectData.Subject instanceof Object&&!data.selectData.Subject.value) {
       dispatch(
         actions.UpUIState.showErrorAlert({
           type: "btn-error",
@@ -575,7 +575,7 @@ class App extends Component {
       );
       return;
     }
-    if (!data.selectData.Grade.value) {
+    if (data.selectData.Grade&&data.selectData.Grade instanceof Object&&!data.selectData.Grade.value) {
       dispatch(
         actions.UpUIState.showErrorAlert({
           type: "btn-error",

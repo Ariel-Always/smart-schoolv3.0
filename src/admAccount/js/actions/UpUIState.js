@@ -25,6 +25,11 @@ const TABLE_LOADING_CLOSE = 'TABLE_LOADING_CLOSE';
 // 弹窗loading
 const MODAL_LOADING_OPEN = 'MODAL_LOADING_OPEN'
 const MODAL_LOADING_CLOSE = 'MODAL_LOADING_CLOSE'
+
+// 密码提示
+const PWD_TIPS_OPEN = 'PWD_TIPS_OPEN'
+const PWD_TIPS_CLOSE = 'PWD_TIPS_CLOSE'
+
 //操作
 const showErrorAlert = (alertMsg)=> {
     return {type:SHOW_ERROR_ALERT,msg:alertMsg};
@@ -127,4 +132,6 @@ export default {
     ModalLoadingClose,
     MODAL_LOADING_OPEN,
     MODAL_LOADING_CLOSE,
+    PWD_TIPS_OPEN,
+    PWD_TIPS_CLOSE
 }
