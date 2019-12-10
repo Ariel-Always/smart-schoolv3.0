@@ -415,7 +415,7 @@ class LogRecord extends React.Component {
     this.setState({
       UserType: userInfo.UserType
     });
-    if (userInfo.Deleted) {
+    if (!userInfo.Deleted) {
       dispatch(
         actions.UpDataState.getUserMsg(
           "/GetUserDetail?userid=" + userInfo.UserName.UserID

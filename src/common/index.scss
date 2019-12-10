@@ -210,10 +210,10 @@ body {
             background-image: linear-gradient(90deg, #ffcf5b 0%, #ffb42e 45%, #ff9900 100%);
             color: #fff;
         }
-        &:focus {
-            background-image: linear-gradient(90deg, #ffba15 0%, #ff9f0b 45%, #ff8400 100%);
-            color: #fff;
-        }
+        // &:focus {
+        //     background-image: linear-gradient(90deg, #ffba15 0%, #ff9f0b 45%, #ff8400 100%);
+        //     color: #fff;
+        // }
     }
     &.btn-green-default {
         box-sizing: content-box;
@@ -223,10 +223,10 @@ body {
             background-image: linear-gradient(90deg, #00f36d 0%, #14e037 45%, #27cd00 100%);
             color: #fff;
         }
-        &:focus {
-            background-image: linear-gradient(90deg, #00e566 0%, #12d033 45%, #23ba00 100%);
-            color: #fff;
-        }
+        // &:focus {
+        //     background-image: linear-gradient(90deg, #00e566 0%, #12d033 45%, #23ba00 100%);
+        //     color: #fff;
+        // }
     }
     &.btn-blue-default {
         box-sizing: content-box;
@@ -236,10 +236,10 @@ body {
             background-image: linear-gradient(90deg, #22c8ff 0%, #11a6ef 55%, #0085de 100%);
             color: #fff;
         }
-        &:focus {
-            background-image: linear-gradient(90deg, #22c8ff 0%, #11a6ef 55%, #0085de 100%);
-            color: #fff;
-        }
+        // &:focus {
+        //     background-image: linear-gradient(90deg, #22c8ff 0%, #11a6ef 55%, #0085de 100%);
+        //     color: #fff;
+        // }
     }
     &.btn-red-default {
         box-sizing: content-box;
@@ -249,10 +249,10 @@ body {
             background-image: linear-gradient(90deg, #ff6b53 0%, #ff352b 100%);
             color: #fff;
         }
-        &:focus {
-            background-image: linear-gradient(90deg, #ff593e 0%, #ff1b10 100%);
-            color: #fff;
-        }
+        // &:focus {
+        //     background-image: linear-gradient(90deg, #ff593e 0%, #ff1b10 100%);
+        //     color: #fff;
+        // }
     }
     &.btn-mazarine-default {
         box-sizing: content-box;
@@ -262,10 +262,10 @@ body {
             background-image: linear-gradient(90deg, #369ae0 0%, #1f82dd 62%, #0769da 100%);
             color: #fff;
         }
-        &:focus {
-            background-image: linear-gradient(90deg, #4585ce 0%, #236bbe 62%, #0051ae 100%);
-            color: #fff;
-        }
+        // &:focus {
+        //     background-image: linear-gradient(90deg, #4585ce 0%, #236bbe 62%, #0051ae 100%);
+        //     color: #fff;
+        // }
     }
     &.btn-disabled-default {
         box-sizing: content-box;
@@ -274,9 +274,9 @@ body {
         &:hover {
             background-image: linear-gradient(90deg, #d1d1d1 0%, #949494 100%);
         }
-        &:focus {
-            background-image: linear-gradient(90deg, #d1d1d1 0%, #949494 100%);
-        }
+        // &:focus {
+        //     background-image: linear-gradient(90deg, #d1d1d1 0%, #949494 100%);
+        // }
     }
 }
 

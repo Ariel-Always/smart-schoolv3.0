@@ -15,7 +15,7 @@ function handleData(data,pageIndex,pageSize) {
         list.ShortName = child.ShortName;
         list.Sign = child.Sign;
         list.Gender = child.Gender;
-        list.UserImg = child.PhotoPath;
+        list.UserImg = child.PhotoPath_NoCache||child.PhotoPath;
         list.UserContact = {
             QQ: child.QQ,
             WeiXin: child.Weixin,

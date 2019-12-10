@@ -394,7 +394,7 @@ class LogDynamic extends React.Component {
     this.setState({
       UserType: userInfo.UserType
     });
-    if (userInfo.Deleted) {
+    if (!userInfo.Deleted) {
       dispatch(
         actions.UpDataState.getUserMsg(
           "/GetUserDetail?userid=" + userInfo.UserName.UserID
@@ -410,15 +410,19 @@ class LogDynamic extends React.Component {
       // }));
       dispatch(
         actions.UpUIState.showErrorAlert({
-          type: "btn-warn",
+          type: "error",
           title: "该用户已删除",
-          ok: this.onAlertWarnOk.bind(this),
-          cancel: this.onAlertWarnClose.bind(this),
-          close: this.onAlertWarnClose.bind(this)
+          onHide: this.onAlertWarnHide.bind(this)
         })
       );
     }
   };
+     //关闭
+     onAlertWarnHide = () => {
+      const { dispatch } = this.props;
+      //console.log('ddd')
+      dispatch(actions.UpUIState.hideErrorAlert());
+    };
   // 用户详情关闭
   UserDetailsMsgModalCancel = () => {
     const { DataState, dispatch } = this.props;

@@ -22,7 +22,7 @@ function handleData(data,pageIndex,pageSize) {
         let list = {}
         list.UserName = { key: index, UserName: child.UserName };
         list.UserID = child.UserID;
-        list.UserImgs = { key: index, UserName: child.UserName, UserImg: child.PhotoPath, UserImg_Nocache: child.PhotoPath_Nocache };
+        list.UserImgs = { key: index, UserName: child.UserName, UserImg: child.PhotoPath_NoCache||child.PhotoPath, UserImg_Nocache: child.PhotoPath_NoCache };
         list.Gender = child.Gender;
         list.OrderNo = { key: index, OrderNo: index + pageIndex * pageSize };
         list.key = index;
@@ -37,7 +37,7 @@ function handleData(data,pageIndex,pageSize) {
         list.Others = child
         let person = {
             userName: child.UserName,
-            userImg: child.PhotoPath,
+            userImg:child.PhotoPath_NoCache|| child.PhotoPath,
             Gende: child.Gender,
             userText: '',
             subjectName: child.SubjectNames,

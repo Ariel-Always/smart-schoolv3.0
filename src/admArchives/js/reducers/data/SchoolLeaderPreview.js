@@ -16,7 +16,7 @@ function handleData(data,pageIndex=0,pageSize=0){
     let newList = []
     List instanceof Array &&List.map((child,index) => {
         let list = {}
-        list.UserName = {key:index,PhotoPath:child.PhotoPath||child.PhotoPath_Nocache,UserName:child.UserName};
+        list.UserName = {key:index,PhotoPath:child.PhotoPath_NoCache||child.PhotoPath,UserName:child.UserName};
         list.UserID = child.UserID;
         list.Gender = child.Gender;
         list.key = index;
@@ -27,7 +27,7 @@ function handleData(data,pageIndex=0,pageSize=0){
         list.Others = others;
         let person = {
             userName:child.UserName,
-            userImg:child.PhotoPath||child.PhotoPath_Nocache,
+            userImg:child.PhotoPath_NoCache||child.PhotoPath,
             Gende:child.Gender,
             userText:'',
             userID:child.UserID,

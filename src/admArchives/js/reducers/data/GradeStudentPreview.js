@@ -20,7 +20,7 @@ function handleData(data,pageIndex,pageSize){
     let pensonalList = [];
     let newList = data.List.map((child,index) => {
         let list = {}
-        list.UserName = {key:index,PhotoPath:child.PhotoPath,UserName:child.UserName};
+        list.UserName = {key:index,PhotoPath:child.PhotoPath_NoCache||child.PhotoPath,UserName:child.UserName};
         list.UserID = child.UserID;
         list.Gender = child.Gender;
         list.key = index;
@@ -32,7 +32,7 @@ function handleData(data,pageIndex,pageSize){
         list.Others = child;
         let person = {
             userName:child.UserName,
-            userImg:child.PhotoPath,
+            userImg:child.PhotoPath_NoCache||child.PhotoPath,
             Gende:child.Gender,
             userText:'',
             userID:child.UserID,

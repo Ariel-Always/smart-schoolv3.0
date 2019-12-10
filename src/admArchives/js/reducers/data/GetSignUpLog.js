@@ -27,7 +27,7 @@ function handleData(data) {
             SignUpTime: child.SignUpTime,
             UserName: {
                 key: index,
-                PhotoPath: child.PhotoPath,
+                PhotoPath: child.PhotoPath_NoCache||child.PhotoPath,
                 UserName: child.UserName,
                 UserID:child.UserID
             },
@@ -42,7 +42,7 @@ function handleData(data) {
             UserMsg: {
                 logID:child.LogID,
                 userName: child.UserName,
-                userImg: child.PhotoPath,
+                userImg: child.PhotoPath_NoCache||child.PhotoPath,
                 Gende:  child.Gender,
                 userID: child.UserID,
                 userGrade: child.GradeName,
