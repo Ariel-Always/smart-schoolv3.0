@@ -120,7 +120,7 @@ module.exports = function(webpackEnv) {
 
   paths.jsArray.map(function (v) {
      let arr = v.split('/');
-     entrys[arr[arr.length-2]] = [require.resolve('es6-shim'),isEnvDevelopment &&
+     entrys[arr[arr.length-2]] = [require.resolve('es6-shim'),require.resolve('@babel/polyfill'),isEnvDevelopment &&
      require.resolve('react-dev-utils/webpackHotDevClient'),
          v].filter(Boolean);
   }); //根据所有的入口index.js（除了common目录下）来设置入口entry
@@ -218,8 +218,8 @@ module.exports = function(webpackEnv) {
           },*/
       output: {
           path:paths.appBuild,
-          filename: "JS/[name]/[name].js",  //打包模块js放置到 JS/xxx/xxx.js
-          chunkFilename: "JS/common/[name].js" //打包公共的js放置到 JS/common下
+          filename: "JS/[name]/[name].[hash].js",  //打包模块js放置到 JS/xxx/xxx.js
+          chunkFilename: "JS/common/[name].[hash].js" //打包公共的js放置到 JS/common下
       },
       optimization: {
       minimize: isEnvProduction,
@@ -622,8 +622,8 @@ module.exports = function(webpackEnv) {
         new MiniCssExtractPlugin({
           // Options similar to the same options in webpackOptions.output
           // both options are optional
-          filename: 'App_Themes/Skin/css/[name]/index.css', //打包模块的css文件放置到这里
-          chunkFilename: 'App_Themes/Skin/css/common/[name].css', //打包公共的css放置到这里
+          filename: 'App_Themes/Skin/css/[name]/index.[hash].css', //打包模块的css文件放置到这里
+          chunkFilename: 'App_Themes/Skin/css/common/[name].[hash].css', //打包公共的css放置到这里
         }),
       // Generate a manifest file which contains a mapping of all asset filenames
       // to their corresponding output file so that tools can pick it up without

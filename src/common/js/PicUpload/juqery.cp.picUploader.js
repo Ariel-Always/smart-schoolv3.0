@@ -456,6 +456,8 @@
 
         _up_obj = $.extend({}, _up_obj, options); //使用jQuery.extend 覆盖插件默认参数
 
+        _up_obj.isUsingDefault = _up_obj.curImgPath.indexOf("Photo/Default") > -1;
+
         if (_up_obj.resWebUrl.substr(_up_obj.resWebUrl.length - 1, 1) !== "/") {
             _up_obj.resWebUrl += "/";
         }
@@ -579,11 +581,21 @@
     }
 
     function _userPhoto_getCurImgPath() {
-        if (_up_obj.perviewImgUrl === '') {
-            return _userPhoto_isUsingDefault() ? "" : _up_obj.curImgPath.substr(_up_obj.curImgPath.lastIndexOf("/UserInfo/") + 1);
+        if (_up_obj.perviewImgUrl == '') {
+            if (_userPhoto_isUsingDefault()) {
+                return "";
+            }
+            var tempResult = _up_obj.curImgPath.substr(_up_obj.curImgPath.lastIndexOf("/UserInfo/") + 1);
+            var index = tempResult.indexOf("?");
+            return index > -1 ? tempResult.substring(0, tempResult.indexOf("?")) : tempResult;
         }
         else {
-            return _userPhoto_isUsingDefault() ? "" : _up_obj.perviewImgUrl.substr(_up_obj.perviewImgUrl.lastIndexOf("/UserInfo/") + 1);
+            if (_userPhoto_isUsingDefault()) {
+                return "";
+            }
+            var tempResult = _up_obj.perviewImgUrl.substr(_up_obj.perviewImgUrl.lastIndexOf("/UserInfo/") + 1);
+            var index = tempResult.indexOf("?");
+            return index > -1 ? tempResult.substring(0, tempResult.indexOf("?")) : tempResult;
         }
     }
 

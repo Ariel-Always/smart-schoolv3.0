@@ -5,7 +5,7 @@ let config = {};
 if (process.env.NODE_ENV === 'development'){
 
     config = {
-        name:"中小学学科一体化教育云",
+        name:"中小学一体化学科教育云",
         logo:logo,
         footer:"蓝鸽科技 版权所有",
         TokenProxy:'http://192.168.129.1:30103',
@@ -46,7 +46,7 @@ if (process.env.NODE_ENV === 'development'){
 if (process.env.NODE_ENV === 'production'){
 
     config = {
-        name:"中小学学科一体化教育云",
+        name:"中小学一体化学科教育云",
         logo:logo,
         footer:"蓝鸽科技 版权所有",
         TokenProxy:'',
