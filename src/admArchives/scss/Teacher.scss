@@ -226,24 +226,25 @@ $image-url: "../images";
                     margin-top: 10px;
                     margin-left: 20px;
                     .checkAll-title {
-                        vertical-align: text-top;
+                        vertical-align: text-bottom;
                         height: 28px;
-                    }
-                    .deleteAll {
-                        color: #fff;
-                        width: 56px;
                         line-height: 28px;
-                        height: 28px;
-                        padding: 0;
-                        text-align: center;
-                        margin-left: 8px;
-                        border: none;
-                        font-size: 14px;
-                        span {
-                            vertical-align: baseline;
-                        }
-                        // box-sizing: content-box;
                     }
+                }
+                .deleteAll {
+                    color: #fff;
+                    width: 56px;
+                    line-height: 28px;
+                    height: 28px;
+                    padding: 0;
+                    text-align: center;
+                    margin-left: 8px;
+                    border: none;
+                    font-size: 14px;
+                    span {
+                        vertical-align: baseline;
+                    }
+                    // box-sizing: content-box;
                 }
                 .pagination-box {
                     margin-top: 10px;

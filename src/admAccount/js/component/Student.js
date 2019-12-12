@@ -44,17 +44,19 @@ class Student extends React.Component {
           render: handle => {
             return (
               <div className="registerTime-content">
-               <label> <CheckBox
-                  value={handle.key}
-                  type='gray'
-
-                  onChange={this.onCheckChange}
-                ></CheckBox>
-                <span className="key-content">
-                  {handle.OrderNo + 1 >= 10
-                    ? handle.OrderNo + 1
-                    : "0" + (handle.OrderNo + 1)}
-                </span></label>
+                <label>
+                  {" "}
+                  <CheckBox
+                    value={handle.key}
+                    type="gray"
+                    onChange={this.onCheckChange}
+                  ></CheckBox>
+                  <span className="key-content">
+                    {handle.OrderNo + 1 >= 10
+                      ? handle.OrderNo + 1
+                      : "0" + (handle.OrderNo + 1)}
+                  </span>
+                </label>
               </div>
             );
           }
@@ -78,7 +80,11 @@ class Student extends React.Component {
                 </span>
                 <br />
                 <span className="name-UserID">
-                  (<span className="UserID-content" title={arr.UserID}>{arr.UserID}</span>)
+                  (
+                  <span className="UserID-content" title={arr.UserID}>
+                    {arr.UserID}
+                  </span>
+                  )
                 </span>
               </div>
             );
@@ -93,7 +99,9 @@ class Student extends React.Component {
           sorter: true,
           render: ShortName => {
             return (
-              <span className="UserName" title={ShortName}>{ShortName ? ShortName : "--"}</span>
+              <span className="UserName" title={ShortName}>
+                {ShortName ? ShortName : "--"}
+              </span>
             );
           }
         },
@@ -219,8 +227,8 @@ class Student extends React.Component {
       userMsg: props.DataState.LoginUser,
       sortType: "",
       sortFiled: "",
-      PwdTipsTitle:'密码由6-20个字符，只能由字母、数字、下划线及部分特殊字符组成'
-
+      PwdTipsTitle:
+        "密码由6-20个字符，只能由字母、数字、下划线及部分特殊字符组成"
     };
   }
   componentWillMount() {
@@ -397,7 +405,7 @@ class Student extends React.Component {
       keyword: "",
       checkedList: [],
       checkAll: false,
-pagination:1,
+      pagination: 1,
       searchValue: e.value
     });
     dispatch(
@@ -405,7 +413,7 @@ pagination:1,
         "/GetStudentToPage?SchoolID=" +
           this.state.userMsg.SchoolID +
           "&PageIndex=" +
-          (0) +
+          0 +
           "&PageSize=10" +
           (this.state.firstSelect.value
             ? "&gradeID=" + this.state.firstSelect.value
@@ -437,17 +445,18 @@ pagination:1,
   // }
   onPwdBlur = e => {
     const { dispatch } = this.props;
-     console.log(e.target.value)
-    let value = e.target.value
-    let Test = /^([0-9a-zA-Z`~\!@#$%\^&*\(\)_\+-={}|\[\]:\";\'<>\?,.\/\\]){6,20}$/.test(value)
-    if(!Test||value===''){
-      dispatch({type:actions.UpUIState.PWD_TIPS_OPEN})
+    console.log(e.target.value);
+    let value = e.target.value;
+    let Test = /^([0-9a-zA-Z`~\!@#$%\^&*\(\)_\+-={}|\[\]:\";\'<>\?,.\/\\]){6,20}$/.test(
+      value
+    );
+    if (!Test || value === "") {
+      dispatch({ type: actions.UpUIState.PWD_TIPS_OPEN });
       return;
-    }else{
-      dispatch({type:actions.UpUIState.PWD_TIPS_CLOSE})
+    } else {
+      dispatch({ type: actions.UpUIState.PWD_TIPS_CLOSE });
       return;
     }
-    
   };
   onMouseEnterName = () => {};
   OnCheckAllChange = e => {
@@ -533,16 +542,16 @@ pagination:1,
   };
   // 重置密码ok
   onPwdchangeOk = pwd => {
-    const { dispatch, DataState,UIState } = this.props;
+    const { dispatch, DataState, UIState } = this.props;
     let url = "/ResetPwd";
     let UserMsg = DataState.LoginUser;
     if (this.state.defaultPwd === "") {
-      dispatch({type:actions.UpUIState.PWD_TIPS_OPEN})
+      dispatch({ type: actions.UpUIState.PWD_TIPS_OPEN });
       return;
     } else if (UIState.TipsVisible.PwdTipsShow) {
       // dispatch({type:actions.UpUIState.PWD_TIPS_OPEN})
       return;
-    }  else {
+    } else {
       postData(
         CONFIG.UserAccountProxy + url,
         {
@@ -604,7 +613,7 @@ pagination:1,
   onPwdchangeClose = () => {
     const { dispatch } = this.props;
 
-    dispatch({type:actions.UpUIState.PWD_TIPS_CLOSE})
+    dispatch({ type: actions.UpUIState.PWD_TIPS_CLOSE });
 
     this.setState({
       ChangePwdMadalVisible: false,
@@ -912,27 +921,34 @@ pagination:1,
                     dataSource={DataState.GradeStudentPreview.newList}
                   ></Table>
                 </CheckBoxGroup>
-                <CheckBox
-                  style={{
-                    display:
-                      DataState.GradeStudentPreview.Total === 0
-                        ? "none"
-                        : "inline-block"
-                  }}
-                  className="checkAll-box"
-                  type='gray'
-                  onChange={this.OnCheckAllChange}
-                  checked={this.state.checkAll}
-                >
-                   <span className='checkAll-title'>全选</span>
-                  <Button
-                    onClick={this.onChangePwdAllClick}
-                    className="changePwdAll"
-                    color="blue"
-                  >
-                    批量重置密码
-                  </Button>
-                </CheckBox>
+                {DataState.GradeStudentPreview.Total ? (
+                  <div style={{    display: 'inline-block'}}>
+                    <CheckBox
+                      style={{
+                        display:
+                          DataState.GradeStudentPreview.Total === 0
+                            ? "none"
+                            : "inline-block"
+                      }}
+                      className="checkAll-box"
+                      type="gray"
+                      onChange={this.OnCheckAllChange}
+                      checked={this.state.checkAll}
+                    >
+                      <span className="checkAll-title">全选</span>
+                    </CheckBox>
+                    <Button
+                      onClick={this.onChangePwdAllClick}
+                      className="changePwdAll"
+                      color="blue"
+                    >
+                      批量重置密码
+                    </Button>
+                  </div>
+                ) : (
+                  ""
+                )}
+
                 <div className="pagination-box">
                   <PagiNation
                     showQuickJumper
@@ -1023,15 +1039,15 @@ pagination:1,
                 overlayClassName="tips"
                 visible={UIState.TipsVisible.PwdTipsShow}
                 title={this.state.PwdTipsTitle}
-                getPopupContainer={e=>e.parentNode}
+                getPopupContainer={e => e.parentNode}
               >
-              <Input
+                <Input
                   onBlur={this.onPwdBlur.bind(this)}
                   size="small"
-                onChange={this.onPwdchange.bind(this)}
-                style={{ width: 120 + "px" }}
-                value={this.state.defaultPwd}
-              ></Input>
+                  onChange={this.onPwdchange.bind(this)}
+                  style={{ width: 120 + "px" }}
+                  value={this.state.defaultPwd}
+                ></Input>
               </Tips>
             </div>
           }
@@ -1039,15 +1055,25 @@ pagination:1,
             this.state.ChangePwdMadalVisible ? (
               <p className="alert-Title">
                 确定重置
-                <span title={DataState.GradeStudentPreview.newList[this.state.onClickKey]
-                      .UserName.Name} className="alert-Title-name">
+                <span
+                  title={
+                    DataState.GradeStudentPreview.newList[this.state.onClickKey]
+                      .UserName.Name
+                  }
+                  className="alert-Title-name"
+                >
                   {
                     DataState.GradeStudentPreview.newList[this.state.onClickKey]
                       .UserName.Name
                   }
                 </span>
-                <span title={DataState.GradeStudentPreview.newList[this.state.onClickKey]
-                      .UserName.UserID} className="alert-Title-id">
+                <span
+                  title={
+                    DataState.GradeStudentPreview.newList[this.state.onClickKey]
+                      .UserName.UserID
+                  }
+                  className="alert-Title-id"
+                >
                   (
                   {
                     DataState.GradeStudentPreview.newList[this.state.onClickKey]

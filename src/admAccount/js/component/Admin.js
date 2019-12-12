@@ -1040,6 +1040,7 @@ checkedList: [],
                   ></Table>
                 </CheckBoxGroup>
                 {DataState.AdminPreview.Total ? (
+                  <div style={{    display: 'inline-block'}}>
                   <CheckBox
                     className="checkAll-box"
                     type='gray'
@@ -1047,14 +1048,16 @@ checkedList: [],
                     checked={this.state.checkAll}
                   >
                    <span className='checkAll-title'>全选</span>
-                    <Button
-                      onClick={this.onDeleteAllClick}
-                      className="deleteAll"
-                      color="red"
-                    >
-                      删除
-                    </Button>
+                    
                   </CheckBox>
+                  <Button
+                  onClick={this.onDeleteAllClick}
+                  className="deleteAll"
+                  color="red"
+                >
+                  删除
+                </Button>
+                </div>
                 ) : (
                   ""
                 )}

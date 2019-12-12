@@ -247,38 +247,38 @@ $image-url: "../images";
                     .ant-checkbox {
                         vertical-align: middle;
                     }
-                    .deleteAll {
-                        color: #fff;
-                        width: 56px;
-                        line-height: 28px;
-                        height: 28px;
-                        padding: 0;
-                        text-align: center;
-                        margin-left: 8px;
-                        // box-sizing: content-box;
-                        border: none;
-                        font-size: 14px;
-                        span {
-                            vertical-align: baseline;
-                        }
-                    }
-                    .changePwdAll {
-                        color: #fff;
-                        width: 108px;
-                        line-height: 28px;
-                        height: 28px;
-                        padding: 0;
-                        text-align: center;
-                        border: none;
-                        margin-left: 8px;
-                        font-size: 14px;
-                        // box-sizing: content-box;
-                    }
                     .checkAll-title {
                         vertical-align: baseline;
                         display: inline-block;
                         line-height: 28px;
                     }
+                }
+                .deleteAll {
+                    color: #fff;
+                    width: 56px;
+                    line-height: 28px;
+                    height: 28px;
+                    padding: 0;
+                    text-align: center;
+                    margin-left: 8px;
+                    // box-sizing: content-box;
+                    border: none;
+                    font-size: 14px;
+                    span {
+                        vertical-align: baseline;
+                    }
+                }
+                .changePwdAll {
+                    color: #fff;
+                    width: 108px;
+                    line-height: 28px;
+                    height: 28px;
+                    padding: 0;
+                    text-align: center;
+                    border: none;
+                    margin-left: 8px;
+                    font-size: 14px;
+                    // box-sizing: content-box;
                 }
                 .pagination-box {
                     margin-top: 10px;

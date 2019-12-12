@@ -1289,6 +1289,7 @@ class Student extends React.Component {
                   ></Table>
                 </CheckBoxGroup>
                 {DataState.GradeStudentPreview.Total > 0 ? (
+                  <div style={{    display: 'inline-block'}}>
                   <CheckBox
                     className="checkAll-box"
                     type="gray"
@@ -1296,6 +1297,7 @@ class Student extends React.Component {
                     checked={this.state.checkAll}
                   >
                     <span className="checkAll-title">全选</span>
+                    </CheckBox>
                     <Button
                       onClick={this.onDeleteAllClick}
                       className="deleteAll"
@@ -1303,7 +1305,7 @@ class Student extends React.Component {
                     >
                       删除
                     </Button>
-                  </CheckBox>
+                  </div>
                 ) : (
                   ""
                 )}

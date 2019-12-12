@@ -858,7 +858,8 @@ class Teacher extends React.Component {
                     dataSource={DataState.SubjectTeacherPreview.newList}
                   ></Table>
                 </CheckBoxGroup>
-                <CheckBox
+                {DataState.SubjectTeacherPreview.Total?<div style={{    display: 'inline-block'}}>
+                  <CheckBox
                   type="gray"
                   style={{
                     display:
@@ -871,14 +872,17 @@ class Teacher extends React.Component {
                   checked={this.state.checkAll}
                 >
                   <span className='checkAll-title'>全选</span>
-                  <Button
+                 
+                </CheckBox>
+                <Button
                     onClick={this.onChangePwdAllClick}
                     className="changePwdAll"
                     color="blue"
                   >
                     批量重置密码
                   </Button>
-                </CheckBox>
+                </div>:''}
+                
                 <div className="pagination-box">
                   <PagiNation
                     showQuickJumper

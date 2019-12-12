@@ -703,6 +703,7 @@ class Leader extends React.Component {
                 ></Table>
               </CheckBoxGroup>
               {DataState.SchoolLeaderPreview.Total > 0 ? (
+                <div style={{    display: 'inline-block'}}>
                 <CheckBox
                   className="checkAll-box"
                   type='gray'
@@ -710,14 +711,16 @@ class Leader extends React.Component {
                   checked={this.state.checkAll}
                 >
                   <span className='checkAll-title'>全选</span>
-                  <Button
-                    onClick={this.onDeleteAllClick}
-                    className="deleteAll"
-                    color="blue"
-                  >
-                    删除
-                  </Button>
+                  
                 </CheckBox>
+                <Button
+                onClick={this.onDeleteAllClick}
+                className="deleteAll"
+                color="blue"
+              >
+                删除
+              </Button>
+              </div>
               ) : (
                 ""
               )}

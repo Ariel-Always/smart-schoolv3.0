@@ -615,6 +615,7 @@ class Leader extends React.Component {
                   ></Table>
                 </CheckBoxGroup>
                 {DataState.SchoolLeaderPreview.Total ? (
+                  <div style={{    display: 'inline-block'}}>
                   <CheckBox
                     className="checkAll-box"
                     type="gray"
@@ -622,14 +623,16 @@ class Leader extends React.Component {
                     checked={this.state.checkAll}
                   >
                     <span className="checkAll-title">全选</span>
-                    <Button
-                      onClick={this.onChangePwdAllClick}
-                      className="changePwdAll"
-                      color="blue"
-                    >
-                      批量重置密码
-                    </Button>
+                    
                   </CheckBox>
+                  <Button
+                  onClick={this.onChangePwdAllClick}
+                  className="changePwdAll"
+                  color="blue"
+                >
+                  批量重置密码
+                </Button>
+                </div>
                 ) : (
                   ""
                 )}

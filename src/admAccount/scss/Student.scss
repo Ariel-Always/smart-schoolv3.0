@@ -213,26 +213,26 @@ $image-url: "../images";
                         margin-left: 8px;
                         // box-sizing: content-box;
                     }
-                    .changePwdAll {
-                        color: #fff;
-                        width: 108px;
-                        line-height: 28px;
-                        height: 28px;
-                        padding: 0;
-                        text-align: center;
-                        border: none;
-                        margin-left: 8px;
-                        font-size: 14px;
-                        span {
-                            vertical-align: baseline;
-                        }
-                        // box-sizing: content-box;
-                    }
                     .checkAll-title {
                         vertical-align: baseline;
                         display: inline-block;
                         line-height: 28px;
                     }
+                }
+                .changePwdAll {
+                    color: #fff;
+                    width: 108px;
+                    line-height: 28px;
+                    height: 28px;
+                    padding: 0;
+                    text-align: center;
+                    border: none;
+                    margin-left: 8px;
+                    font-size: 14px;
+                    span {
+                        vertical-align: baseline;
+                    }
+                    // box-sizing: content-box;
                 }
                 .pagination-box {
                     margin-top: 10px;

@@ -68,7 +68,8 @@ class EditModal extends React.Component {
         let userType = 'Student'
         let userID = DataState.LoginUser.UserID;
         let curImgPath = ''
-        let handleUserID = ''
+        let handleUserID = '';
+        let gender = '-1'
 
         if (this.state.type === 'student') {
             let Grades = DataState.GradeClassMsg.returnData.NewGrade ? DataState.GradeClassMsg.returnData.NewGrade : [];
@@ -105,6 +106,7 @@ class EditModal extends React.Component {
                 }
                 handleUserID = Select.child.UserID
                 curImgPath =Select.child.PhotoPath_NoCache|| Select.child.PhotoPath 
+                gender = Select.child.Gender==='男'?'0':Select.child.Gender==='女'?'1':'-1';
             } else {
                 ClassArr = GradeStudentPreview.GradeID.value?DataState.GradeClassMsg.returnData.AllClasses[GradeStudentPreview.GradeID.value].length>0?DataState.GradeClassMsg.returnData.AllClasses[GradeStudentPreview.GradeID.value]:[{value: 0,
                     title: '请选择班级'}]:[{value: 0,
@@ -124,6 +126,7 @@ class EditModal extends React.Component {
                 }
 
                 curImgPath = ''
+                gender = '-1';
             }
             //改变reduce学生中转数据
             dispatch(actions.UpDataState.setInitStudentMsg(StudentChangeMsg))
@@ -188,7 +191,7 @@ class EditModal extends React.Component {
                 }
                 handleUserID = Select.child.UserID
                 curImgPath =  Select.child.PhotoPath_NoCache||Select.child.PhotoPath
-
+                gender = Select.child.Gender==='男'?'0':Select.child.Gender==='女'?'1':'-1';
             } else {
 
                 TeacherChangeMsg = {
@@ -205,7 +208,7 @@ class EditModal extends React.Component {
                     homeAddress: ''
                 }
                 curImgPath = ''
-
+                gender = '-1';
             }
             //改变reduce教师中转数据
             dispatch(actions.UpDataState.setInitTeacherMsg(TeacherChangeMsg))
@@ -278,7 +281,7 @@ class EditModal extends React.Component {
                 }
                 handleUserID = Select.child.UserID
                 curImgPath = Select.child.PhotoPath_NoCache||Select.child.PhotoPath 
-
+                gender = Select.child.Gender==='男'?'0':Select.child.Gender==='女'?'1':'-1';
             } else {
 
                 LeaderChangeMsg = {
@@ -294,7 +297,7 @@ class EditModal extends React.Component {
                     homeAddress: ''
                 }
                 curImgPath = ''
-
+                gender = '-1';
             }
             // //console.log(position,Select.child.Position)
             //改变reduce教师中转数据
@@ -347,8 +350,8 @@ class EditModal extends React.Component {
             resWebUrl: DataState.GetPicUrl.picUrl, //资源站点地址
             userType: userType,   //用户类型，可选值Admin、Student、Teacher、SchoolLeader
             userID: handleUserID, //新增时传空字符串、编辑时传相应UserID
-            curImgPath: curImgPath //用户当前头像，新增时可不传
-
+            curImgPath: curImgPath, //用户当前头像，新增时可不传
+            gender:gender
         };
         this.setState({
             option: option
