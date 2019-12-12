@@ -442,17 +442,18 @@ class Leader extends React.Component {
             return res.json();
           })
           .then(json => {
-            if (json.StatusCode !== 200) {
-              dispatch(
-                actions.UpUIState.showErrorAlert({
-                  type: "btn-error",
-                  title: json.Msg,
-                  ok: this.onAppAlertOK.bind(this),
-                  cancel: this.onAppAlertCancel.bind(this),
-                  close: this.onAppAlertClose.bind(this)
-                })
-              );
-            } else if (json.StatusCode === 200) {
+            // if (json.StatusCode !== 200) {
+            //   dispatch(
+            //     actions.UpUIState.showErrorAlert({
+            //       type: "btn-error",
+            //       title: json.Msg,
+            //       ok: this.onAppAlertOK.bind(this),
+            //       cancel: this.onAppAlertCancel.bind(this),
+            //       close: this.onAppAlertClose.bind(this)
+            //     })
+            //   );
+            // } else 
+            if (json.StatusCode === 200) {
               // console.log(json.Data)
               dispatch(
                 actions.UpUIState.showErrorAlert({
@@ -581,17 +582,18 @@ class Leader extends React.Component {
             return res.json();
           })
           .then(json => {
-            if (json.StatusCode !== 200) {
-              dispatch(
-                actions.UpUIState.showErrorAlert({
-                  type: "btn-error",
-                  title: json.Msg,
-                  ok: this.onAppAlertOK.bind(this),
-                  cancel: this.onAppAlertCancel.bind(this),
-                  close: this.onAppAlertClose.bind(this)
-                })
-              );
-            } else if (json.StatusCode === 200) {
+            // if (json.StatusCode !== 200) {
+            //   dispatch(
+            //     actions.UpUIState.showErrorAlert({
+            //       type: "btn-error",
+            //       title: json.Msg,
+            //       ok: this.onAppAlertOK.bind(this),
+            //       cancel: this.onAppAlertCancel.bind(this),
+            //       close: this.onAppAlertClose.bind(this)
+            //     })
+            //   );
+            // } else 
+            if (json.StatusCode === 200) {
               // console.log(json.Data)
               dispatch(
                 actions.UpUIState.showErrorAlert({

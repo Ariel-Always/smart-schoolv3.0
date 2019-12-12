@@ -410,7 +410,7 @@ class Subject extends React.Component {
     }
     render() {
         const { DataState, UIState } = this.props;
-        // console.log(UIState.SetSubjectTeacher.setSubjectTeacherModalShow)
+        console.log(DataState.SubjectMsg ? DataState.SubjectMsg.Total : 0)
 
         return (
             <React.Fragment>
@@ -445,10 +445,11 @@ class Subject extends React.Component {
                                 ></Table>
                                 <PagiNation
                                     showQuickJumper
-                                    defaultCurrent={DataState.SubjectMsg ? DataState.SubjectMsg.PageIndex : 1}
-                                    defaultPageSize={8}
+                                    // defaultCurrent={DataState.SubjectMsg ? DataState.SubjectMsg.PageIndex : 1}
+                                    pageSize={8}
                                     current={this.state.pagination}
-                                    total={DataState.SubjectMsg ? DataState.SubjectMsg.Total : 0}
+                                    hideOnSinglepage={true}
+                                    total={ DataState.SubjectMsg.Total }
                                     onChange={this.onPagiNationChange.bind(this)}
 
                                 ></PagiNation>

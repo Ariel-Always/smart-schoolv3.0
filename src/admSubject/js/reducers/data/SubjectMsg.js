@@ -15,7 +15,7 @@ import PE from '../../../images/PE.png';
 import Art from '../../../images/Art.png';
 
 
-const SubjectMsg = (state = {}, actions) => {
+const SubjectMsg = (state = {Total:0}, actions) => {
     switch (actions.type) {
         case UpDataState.GET_SUBJECT_MSG:
             let { SubjectItem, ...data } = actions.data;

@@ -183,7 +183,7 @@ class Student extends React.Component {
                   onClick={this.StudentChange.bind(this, key)}
                   className="check-btn"
                 >
-                  查看变记录
+                  查看变更记录
                 </Button>
               </div>
             );

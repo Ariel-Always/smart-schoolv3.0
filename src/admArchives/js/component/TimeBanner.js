@@ -22,12 +22,16 @@ class TimeBanner extends React.Component {
 
             {this.props.route  ? 
             (<Link to='/ImportFile/Graduate' target='_blank'><Button className='btn-toGraduate' color='blue' shape='round'>导入毕业去向</Button></Link>)
-                :AdminPower? (<span className='timeBanner_tips'>
+                :AdminPower? (DataState.LogPreview.unreadLogCount!==0?<span className='timeBanner_tips'>
                     最近有
                 <span className='tips_num'>
                         {DataState.LogPreview.unreadLogCount}
                     </span>
                     份档案发生了变更，
+                <Link to='/UserArchives/LogDynamic' target='_blank' className='tips_handle'>
+                        查看详情>></Link>
+                </span>:<span className='timeBanner_tips'>
+                    最近没有档案发生了变更，
                 <Link to='/UserArchives/LogDynamic' target='_blank' className='tips_handle'>
                         查看详情>></Link>
                 </span>):''}

@@ -18,3 +18,11 @@ label {
         padding-left: 87px;
     }
 }
+
+.Modal-1 .ant-modal-body {
+    overflow: unset;
+}
+
+.ant-tooltip {
+    z-index: 1000!important;
+}

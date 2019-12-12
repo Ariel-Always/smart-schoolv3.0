@@ -181,7 +181,7 @@ class Teacher extends React.Component {
                   onClick={this.TeacherChange.bind(this, handleMsg)}
                   className="check-btn"
                 >
-                  查看变记录
+                  查看变更记录
                 </Button>
               </div>
             );
@@ -237,6 +237,7 @@ class Teacher extends React.Component {
       value: "all",
       title: "全部学科"
     }
+    console.log( SubjectTeacherPreview.SubjectID )
     this.setState({
       selectSubject: selectSubject,
       pagination:Number(SubjectTeacherPreview.pageIndex)+1

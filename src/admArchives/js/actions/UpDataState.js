@@ -150,9 +150,10 @@ const getSubjectTeacherPreview = (url, SubjectID={
   value: "all",
   title: "全部学科"
 } ) => {
+  console.log(url)
   let pageIndex = Public.getUrlQueryVariable(url, "PageIndex");
   let pageSize = Public.getUrlQueryVariable(url, "PageSize");
-  return dispatch => {
+  return (dispatch,getState) => {
     dispatch(actions.UpUIState.TableLoadingOpen());
     getData(CONFIG.UserInfoProxy + url, 2)
       .then(res => {
@@ -166,8 +167,22 @@ const getSubjectTeacherPreview = (url, SubjectID={
             pageIndex: pageIndex,
             pageSize: pageSize
           });
-          if (SubjectID)
+          if (SubjectID instanceof Object){
             dispatch({ type: SET_SUBJECTID, SubjectID: SubjectID });
+          }else{
+            let state = getState();
+            let SubjectList =
+              state.DataState.SubjectTeacherMsg.returnData.SubjectList;
+            let subject = { value: "all",
+            title: "全部学科"};
+            SubjectList.map((child, index) => {
+              if (child.value === SubjectID) {
+                subject = child;
+              }
+            });
+            dispatch({ type: SET_SUBJECTID, SubjectID: subject });
+          }
+            
         }
       })
       .then(() => {
@@ -239,12 +254,14 @@ const getSubjectTeacherMsg = (url, SubjectID = "all") => {
               }
             });
             dispatch({ type: SET_SUBJECTID, SubjectID: subject });
+            console.log(subject,SubjectID)
           }else{
             dispatch({ type: SET_SUBJECTID, SubjectID: {
               value: "all",
               title: "全部学科"
             } });
           }
+          
         }
       });
   };

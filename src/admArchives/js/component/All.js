@@ -578,16 +578,17 @@ class All extends React.Component {
       Chart_teacher.on("click", function(params) {
         let subject = DataState.AllUserPreview.NewSubjects[params.name];
         history.push("/UserArchives/Teacher/" + subject.SubjectID);
-        dispatch(
-          actions.UpDataState.getSubjectTeacherPreview(
-            "/GetTeacherToPage?SchoolID=" +
-              userMsg.SchoolID +
-              "&SubjectIDs=" +
-              subject.SubjectID +
-              "&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC",
-            { value: subject.SubjectID, title: subject.SubjectName }
-          )
-        );
+        // dispatch(
+        //   actions.UpDataState.getSubjectTeacherPreview(
+        //     "/GetTeacherToPage?SchoolID=" +
+        //       userMsg.SchoolID +
+        //       "&SubjectIDs=" +
+        //       subject.SubjectID +
+        //       "&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC",
+        //     { value: subject.SubjectID, title: subject.SubjectName }
+        //   )
+        // );
+        dispatch({ type: actions.UpDataState.SET_SUBJECTID, SubjectID:  { value: subject.SubjectID, title: subject.SubjectName } });
       });
     }
   }

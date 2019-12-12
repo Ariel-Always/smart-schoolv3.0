@@ -145,7 +145,7 @@ class Admin extends React.Component {
         {
           title: "操作",
           align: "center",
-          width: 262,
+          width: 260,
           key: "handle",
           dataIndex: "key",
           render: key => {

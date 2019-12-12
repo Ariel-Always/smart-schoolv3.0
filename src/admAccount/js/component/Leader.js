@@ -40,7 +40,7 @@ class Leader extends React.Component {
           dataIndex: "key",
           key: "key",
           align: "left",
-          width: 70,
+          width: 68,
           render: key => {
             return (
               <div className="registerTime-content">

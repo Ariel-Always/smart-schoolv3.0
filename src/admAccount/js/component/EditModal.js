@@ -511,8 +511,7 @@ class EditModal extends React.Component {
 
         <div className="Left" id="picUpload"></div>
         <div className="Right">
-        <Scrollbars  style={{height:'456px', width: "100%" }}>
-
+       
           <div className="row clearfix" style={{ marginTop: 18 + "px" }}>
             <span className="culonm-1">{"工号："}</span>
             <div className="culonm-2">
@@ -523,6 +522,7 @@ class EditModal extends React.Component {
                   overlayClassName={"tips-edit tips-userName"}
                   visible={UIState.TipsVisible.UserIDTipsVisible}
                   title={"工号" + this.state.UserIDTipsTitle}
+                  getPopupContainer= {e=>e.parentNode} autoAdjustOverflow={false} 
                 >
               
               {this.state.UserKey === "change" ? (
@@ -554,6 +554,7 @@ class EditModal extends React.Component {
                   overlayClassName={"tips-edit tips-userName"}
                   visible={UIState.TipsVisible.UserNameTipsVisible}
                   title={this.state.UserNameTipsTitle}
+                  getPopupContainer= {e=>e.parentNode} autoAdjustOverflow={false} 
                 >
               {/* </div> */}
               <Input
@@ -658,7 +659,6 @@ class EditModal extends React.Component {
             </div>
 
           </div>
-          </Scrollbars>
 
         </div>
       </div>

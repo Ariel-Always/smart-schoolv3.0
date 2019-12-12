@@ -559,6 +559,16 @@ textarea.ant-input {
             color: #fff;
             font-size: 14px;
             opacity: 0.8;
+            margin-left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            -webkit-transform: translateX(-50%);
+            -moz-transform: translateX(-50%);
+            -ms-transform: translateX(-50%);
+            -o-transform: translateX(-50%);
         }
     }
     .modal-content {
@@ -600,13 +610,13 @@ textarea.ant-input {
                     overflow: hidden;
                     text-overflow: ellipsis;
                     white-space: nowrap;
-                    .text {
-                        // display: inline-block;
-                        // max-width: 240px;
-                        // overflow: hidden;
-                        // text-overflow: ellipsis;
-                        // white-space: nowrap;
-                    }
+                    // .text {
+                    //     // display: inline-block;
+                    //     // max-width: 240px;
+                    //     // overflow: hidden;
+                    //     // text-overflow: ellipsis;
+                    //     // white-space: nowrap;
+                    // }
                     .content-null {
                         color: #999;
                         font-size: 14px;

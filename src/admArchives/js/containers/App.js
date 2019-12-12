@@ -157,6 +157,7 @@ class App extends Component {
           let pathArr = route.split("/");
           let handleRoute = pathArr[2];
           let ID = pathArr[3];
+          console.log(pathArr)
           // console.log('ddd')
           if ((userMsg.UserType === "0"||userMsg.UserType === "7") &&( route === "/" || route.split("/")[1] === "UserArchives")) {
             // dispatch(actions.UpDataState.getAllUserPreview('/GetSummary'));
@@ -195,14 +196,15 @@ class App extends Component {
                 }
               } else if (handleRoute === "Teacher") {
                 // console.log("Teacher：" + DataState.SubjectTeacherMsg.returnData);
-                if (!DataState.SubjectTeacherMsg.returnData || ID !== "all")
-                  //学科信息
-                  dispatch(
-                    actions.UpDataState.getSubjectTeacherMsg(
-                      "/GetSubject?schoolID=" + userMsg.SchoolID,
-                      ID
-                    )
-                  );
+              if (!DataState.SubjectTeacherMsg.returnData || ID !== "all"){
+                //学科信息
+                console.log(ID)
+                dispatch(
+                  actions.UpDataState.getSubjectTeacherMsg(
+                    "/GetSubject?schoolID=" + userMsg.SchoolID,
+                    ID
+                  )
+                );}
                 if (!DataState.TeacherTitleMsg.returnData) {
                   //职称
                   dispatch(
@@ -211,6 +213,7 @@ class App extends Component {
                     )
                   );
                 }
+                console.log(ID)
                 if (ID === "all") {
                   dispatch(
                     actions.UpDataState.getSubjectTeacherPreview(
@@ -221,13 +224,15 @@ class App extends Component {
                     )
                   );
                 } else {
+                  
                   dispatch(
                     actions.UpDataState.getSubjectTeacherPreview(
                       "/GetTeacherToPage?SchoolID=" +
                         userMsg.SchoolID +
                         "&SubjectIDs=" +
                         ID +
-                        "&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC"
+                        "&PageIndex=0&PageSize=10&SortFiled=UserID&SortType=ASC",
+                        ID
                     )
                   );
                 }

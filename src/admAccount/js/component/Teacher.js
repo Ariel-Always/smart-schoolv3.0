@@ -37,7 +37,7 @@ class Teacher extends React.Component {
         {
           title: "",
           dataIndex: "handle",
-          width: 70,
+          width: 68,
           key: "key",
           align: "left",
           render: handle => {

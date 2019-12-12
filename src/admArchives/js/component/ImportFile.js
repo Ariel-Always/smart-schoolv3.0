@@ -67,7 +67,7 @@ class ImportFile extends React.Component {
         this.setState({
             select: 'file',
             show:true,
-            Route:route === 'Teacher' ? 'teacher' :route === 'Leader'?'leader' :'student'
+            Route:route === 'Teacher' ? 'teacher' :route === 'Leader'?'leader'  :route === 'Student'?'student':'graduate'
         })
     }
     ImportHtml = (type,route) => {
@@ -123,7 +123,7 @@ class ImportFile extends React.Component {
     render() {
         const { UIState, DataState } = this.props;
 
-
+console.log(this.state.Route)
 
         // const data = {
         //     userName: '康欣',
@@ -152,10 +152,12 @@ class ImportFile extends React.Component {
                         enname: "User profile management",
                         image: logo
                     }}
+                    className='myFrame'
+
                     type="circle" showLeftMenu={false}
                     showBarner={false}>
                     <div className='box' ref="frame-right-content" key={this.props.location.pathname}>
-                        <div className='Tab'>
+                        <div className='Tab' style={{display:this.state.Route==='graduate'?'none':'block'}}>
                             <span ref='file' onClick={this.onTabClick.bind(this, 'file')} className={`Tab-btn ${this.state.select === 'file' ? 'btn-select' : ''}`}>导入基本资料</span>
                             <span ref='picture' onClick={this.onTabClick.bind(this, 'picture')} className={`Tab-btn ${this.state.select === 'picture' ? 'btn-select' : ''}`}>导入照片</span>
                         </div>
@@ -167,7 +169,7 @@ class ImportFile extends React.Component {
 
                             </div>
                         </Loading> */}
-                        <div className={'content-box'}>
+                        <div className={'content-box'} style={{borderRadius:this.state.Route==='graduate'?'12px 12px 12px 12px':'0 12px 12px 12px'}}>
                             {
                                 this.state.select==='file'?<ImportExcel  ImportTarget={this.state.Route}></ImportExcel>:<ImportPhoto ImportTarget={this.state.Route}></ImportPhoto>
                             }

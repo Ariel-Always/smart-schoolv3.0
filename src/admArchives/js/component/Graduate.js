@@ -778,7 +778,7 @@ class Graduate extends React.Component {
                   人
                 </span>
                 <Search
-                  placeHolder="请输入学号或姓名进行搜索"
+                  placeHolder="请输入学号或姓名进行搜索..."
                   onClickSearch={this.StudentSearch.bind(this)}
                   width={250}
                   height={30}
