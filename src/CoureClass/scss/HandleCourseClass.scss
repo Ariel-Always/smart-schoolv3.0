@@ -50,7 +50,7 @@
                     display: flex;
                 }
                 .noChange {
-                    font-size: 16px;
+                    font-size: 14px;
                     padding-left: 11px;
                     width: 100%;
                     overflow: hidden; //超出一行文字自动隐藏
@@ -131,6 +131,7 @@
                                 position: absolute;
                                 right: 9px;
                                 top: 0;
+                                cursor: pointer;
                             }
                             &:hover {
                                 background-color: #f4f9ff;

@@ -39,7 +39,7 @@ export function TokenCheck(IsDesk = false, SysID = "000") {
 
     //回调函数
     let jsoncallback = json => {
-    //  console.log(json + 1);
+      //  console.log(json + 1);
     };
     //jsonp验证token
     $.ajax({
@@ -65,15 +65,15 @@ export function TokenCheck(IsDesk = false, SysID = "000") {
           if (!sessionStorage.getItem("UserInfo")) {
             getUserInfo(token, "000");
           }
-        //   let i = 1
-        //   let checkTokenNull = setInterval(function() {
-        //   //  console.log(i++)
+          //   let i = 1
+          //   let checkTokenNull = setInterval(function() {
+          //   //  console.log(i++)
 
-        //     if (!sessionStorage.getItem("token")) {
-        //       clearInterval(checkTokenNull);
-        //       window.location.href = "/UserMgr/Login/Login.aspx";
-        //     }
-        //   }, 500);
+          //     if (!sessionStorage.getItem("token")) {
+          //       clearInterval(checkTokenNull);
+          //       window.location.href = "/UserMgr/Login/Login.aspx";
+          //     }
+          //   }, 500);
           setTimeout(function() {
             let lastTime = sessionStorage.getItem("lastTime");
             let date = new Date();
@@ -114,7 +114,7 @@ export function TokenCheck(IsDesk = false, SysID = "000") {
           //sessionStorage.setItem('token', '')
           //回调函数
           let jsoncallback = json => {
-          ////  console.log(json + 1);
+            ////  console.log(json + 1);
           };
           if (token !== url_token) {
             //如果第一个验证失败，判断是否用的是session的token，不是就进行url的token验证
@@ -145,7 +145,7 @@ export function TokenCheck(IsDesk = false, SysID = "000") {
                   if (!sessionStorage.getItem("UserInfo")) {
                     getUserInfo(token, "000");
                   }
-                 
+
                   setTimeout(function() {
                     let lastTime = sessionStorage.getItem("lastTime");
                     let date = new Date();
@@ -223,7 +223,7 @@ export function TokenCheck(IsDesk = false, SysID = "000") {
       },
       error: function(textStatus) {
         //请求失败后调用的函数
-      ////  console.log(JSON.stringify(textStatus));
+        ////  console.log(JSON.stringify(textStatus));
         // if (url.split('html/')[1]) {//有就说明不在登录页
         if (url.includes("html/admDisconnect")) {
           window.location.href =
@@ -261,7 +261,7 @@ export function getUserInfo(token, SysID) {
   let time = date.getTime();
   //回调函数
   let jsoncallback = json => {
-  ////  console.log(json + 1);
+    ////  console.log(json + 1);
   };
   $.ajax({
     url:
@@ -279,18 +279,24 @@ export function getUserInfo(token, SysID) {
       let UserInfo = {};
 
       for (let [key, value] of Object.entries(loginInfo)) {
+        if (key === "PhotoPath") {
+          let date = new Date();
+          let time = date.getTime();
+          value = value + "?T=" + time;
+        }
         UserInfo[key] = decodeURIComponent(value);
       }
       // console.log(JSON.stringify(UserInfo))
+
       sessionStorage.setItem("UserInfo", JSON.stringify(UserInfo));
-    //   sessionStorage.setItem("lastTime", time);
+      //   sessionStorage.setItem("lastTime", time);
     },
     error: function() {}
   });
 }
 
 export function TokenCheck_Disconnect() {
-    let lastTime = sessionStorage.getItem("lastTime");
+  let lastTime = sessionStorage.getItem("lastTime");
   let date = new Date();
   let time = date.getTime();
   /*   if (time - lastTime >= 60000) {*/
@@ -298,20 +304,20 @@ export function TokenCheck_Disconnect() {
   TokenCheck();
   // let i = 0
   // console.log(i++)
-//   setTimeout(function() {
-//     TokenCheck();
-//     // console.log(i++)
-//   }, 60000);
+  //   setTimeout(function() {
+  //     TokenCheck();
+  //     // console.log(i++)
+  //   }, 60000);
 }
 
 export function TokenCheck_Connect(IsDesk) {
   let lastTime = sessionStorage.getItem("lastTime");
   let date = new Date();
   let time = date.getTime();
-  let i = 1
+  let i = 1;
 
   let checkTokenNull = setInterval(function() {
-  ////  console.log(i++)
+    ////  console.log(i++)
 
     if (!sessionStorage.getItem("token")) {
       clearInterval(checkTokenNull);

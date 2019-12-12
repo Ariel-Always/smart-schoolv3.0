@@ -24,7 +24,7 @@ function handleData(data,pageIndex,pageSize) {
         list.Grade ={GradeName: child.GradeName,GradeID:child.GradeID,Year:child.Year};
         list.Class = {ClassID:child.ClassID,ClassName:child.ClassName};
         list.JobType = {JobType:child.JobType,HasTrack:child.HasTrack,Discription:child.Discription};
-        list.UserImgs = { key: index, UserName: child.UserName, UserImg: child.PhotoPath, UserImg_Nocache: child.PhotoPath_Nocache };
+        list.UserImgs = { key: index, UserName: child.UserName, UserImg: child.PhotoPath_NoCache||child.PhotoPath, UserImg_Nocache: child.PhotoPath_NoCache };
         list.Gender = child.Gender;
         list.Telephone = child.Telephone;
         list.OrderNo = { key: index, OrderNo: index + pageIndex * pageSize };
@@ -37,7 +37,7 @@ function handleData(data,pageIndex,pageSize) {
         list.handleMsg = { ...child, key: index };
         let person = {
             userName: child.UserName,
-            userImg: child.PhotoPath||child.PhotoPath_Nocache,
+            userImg: child.PhotoPath_NoCache||child.PhotoPath,
             Gende: child.Gender,
             userID: child.UserID,
             jobType:child.JobType,

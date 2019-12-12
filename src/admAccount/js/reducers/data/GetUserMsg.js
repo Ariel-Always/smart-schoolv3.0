@@ -20,7 +20,7 @@ function handleData(data) {
     }
     return {
         userName: data.UserName,
-        userImg: data.PhotoPath,
+        userImg: data.PhotoPath_NoCache||data.PhotoPath,
         Gende: data.Gender,
         userText: '',
         userID: data.UserID,

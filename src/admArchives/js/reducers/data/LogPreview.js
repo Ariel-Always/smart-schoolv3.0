@@ -34,7 +34,7 @@ function handleData(data, pageIndex, pageSize) {
         let list = {}
         list.UserName = {
             key: index,
-            PhotoPath: child.PhotoPath || child.PhotoPath_Nocache,
+            PhotoPath: child.PhotoPath_NoCache||child.PhotoPath ,
             UserName: child.UserName,
             UserID: child.UserID
         };
@@ -52,7 +52,7 @@ function handleData(data, pageIndex, pageSize) {
         list.Others = others;
         let person = {
             userName: child.UserName,
-            userImg: child.PhotoPath,
+            userImg: child.PhotoPath_NoCache||child.PhotoPath,
             Gende: child.Gender,
             userText: '',
             userID: child.UserID,

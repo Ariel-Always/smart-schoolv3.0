@@ -97,14 +97,14 @@ class EditModal extends React.Component {
                     gradeID: Select.child.GradeID,
                     classID: Select.child.ClassID,
                     // photoPath: Select.child.PhotoPath,
-                    photoPath: Select.child.PhotoPath || Select.child.PhotoPath_Nocache,
+                    photoPath:  Select.child.PhotoPath_NoCache||Select.child.PhotoPath ,
                     IDCardNo: Select.child.IDCardNo,
                     email: Select.child.Email,
                     telephone: Select.child.Telephone,
                     homeAddress: Select.child.HomeAddress
                 }
                 handleUserID = Select.child.UserID
-                curImgPath = Select.child.PhotoPath || Select.child.PhotoPath_Nocache
+                curImgPath =Select.child.PhotoPath_NoCache|| Select.child.PhotoPath 
             } else {
                 ClassArr = GradeStudentPreview.GradeID.value?DataState.GradeClassMsg.returnData.AllClasses[GradeStudentPreview.GradeID.value].length>0?DataState.GradeClassMsg.returnData.AllClasses[GradeStudentPreview.GradeID.value]:[{value: 0,
                     title: '请选择班级'}]:[{value: 0,
@@ -180,14 +180,14 @@ class EditModal extends React.Component {
                     titleID: Select.child.TitleID,
                     subjectIDs: Select.child.SubjectIDs,
                     // photoPath: Select.child.PhotoPath,
-                    photoPath: Select.child.PhotoPath || Select.child.PhotoPath_Nocache,
+                    photoPath:Select.child.PhotoPath_NoCache|| Select.child.PhotoPath ,
                     IDCardNo: Select.child.IDCardNo,
                     email: Select.child.Email,
                     telephone: Select.child.Telephone,
                     homeAddress: Select.child.HomeAddress
                 }
                 handleUserID = Select.child.UserID
-                curImgPath = Select.child.PhotoPath || Select.child.PhotoPath_Nocache
+                curImgPath =  Select.child.PhotoPath_NoCache||Select.child.PhotoPath
 
             } else {
 
@@ -270,14 +270,14 @@ class EditModal extends React.Component {
                     gender: Select.child.Gender,
                     position: position,
                     // photoPath: Select.child.PhotoPath,
-                    photoPath: Select.child.PhotoPath || Select.child.PhotoPath_Nocache,
+                    photoPath: Select.child.PhotoPath_NoCache||Select.child.PhotoPath ,
                     IDCardNo: Select.child.IDCardNo,
                     email: Select.child.Email,
                     telephone: Select.child.Telephone,
                     homeAddress: Select.child.HomeAddress
                 }
                 handleUserID = Select.child.UserID
-                curImgPath = Select.child.PhotoPath || Select.child.PhotoPath_Nocache
+                curImgPath = Select.child.PhotoPath_NoCache||Select.child.PhotoPath 
 
             } else {
 
@@ -753,7 +753,7 @@ class EditModal extends React.Component {
 
         let map = Options.map((opt, index) => {
             return (
-                <CheckBox className={'checkedBoxMap'} key={index} value={opt}>{TeacherChangeMsg[opt]}</CheckBox>
+                <CheckBox type='gray' className={'checkedBoxMap'} key={index} value={opt}>{TeacherChangeMsg[opt]}</CheckBox>
             )
         })
         return map
