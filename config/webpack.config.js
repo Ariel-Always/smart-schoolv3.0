@@ -120,7 +120,7 @@ module.exports = function(webpackEnv) {
 
   paths.jsArray.map(function (v) {
      let arr = v.split('/');
-     entrys[arr[arr.length-2]] = [require.resolve('es6-shim'),isEnvDevelopment &&
+     entrys[arr[arr.length-2]] = [require.resolve('es6-shim'),require.resolve('@babel/polyfill'),isEnvDevelopment &&
      require.resolve('react-dev-utils/webpackHotDevClient'),
          v].filter(Boolean);
   }); //根据所有的入口index.js（除了common目录下）来设置入口entry

@@ -456,6 +456,8 @@
 
         _up_obj = $.extend({}, _up_obj, options); //使用jQuery.extend 覆盖插件默认参数
 
+        _up_obj.isUsingDefault = _up_obj.curImgPath.indexOf("Photo/Default") > -1;
+
         if (_up_obj.resWebUrl.substr(_up_obj.resWebUrl.length - 1, 1) !== "/") {
             _up_obj.resWebUrl += "/";
         }
