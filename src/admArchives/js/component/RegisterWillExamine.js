@@ -45,12 +45,12 @@ class RegisterWillExamine extends React.Component {
           title: "",
           dataIndex: "OrderNo",
           key: "OrderNo",
-          width: 70,
+          width: 66,
           align: "left",
           render: key => {
             return (
               <div className="registerTime-content">
-                <label><CheckBox value={key} onChange={this.onCheckChange}></CheckBox>
+                <label><CheckBox type='gray' value={key} onChange={this.onCheckChange}></CheckBox>
                 <span className="key-content">
                   {key >= 10 ? key : "0" + key}
                 </span></label>
@@ -61,7 +61,7 @@ class RegisterWillExamine extends React.Component {
         {
           title: "注册时间",
           align: "center",
-          width: 130,
+          width: 225,
           dataIndex: "SignUpTime",
           key: "SignUpTime",
           sorter: true,
@@ -101,8 +101,8 @@ class RegisterWillExamine extends React.Component {
           title: "姓名",
           align: "left",
           dataIndex: "UserName",
-          colSpan:1,
-          width: 70,
+          colSpan:2,
+          width: 90,
           key: "UserName",
           sorter: true,
           render: arr => {
@@ -124,7 +124,7 @@ class RegisterWillExamine extends React.Component {
           align: "center",
           dataIndex: "UserID",
           key: "UserID",
-          width: 120,
+          width: 210,
           sorter: true,
           render: UserID => {
             return (
@@ -138,7 +138,7 @@ class RegisterWillExamine extends React.Component {
           title: "性别",
           align: "center",
           dataIndex: "Gender",
-          width: 70,
+          width: 45,
           key: "Gender",
           render: Gender => {
             return (
@@ -152,7 +152,7 @@ class RegisterWillExamine extends React.Component {
           title: "年级",
           align: "center",
           dataIndex: "Grade",
-          width: 70,
+          width: 95,
           key: "Grade",
           render: Grade => {
             return (
@@ -165,7 +165,7 @@ class RegisterWillExamine extends React.Component {
         {
           title: "班级",
           align: "center",
-          width: 70,
+          width: 155,
           dataIndex: "Class",
           key: "Class",
           render: Class => {
@@ -180,7 +180,7 @@ class RegisterWillExamine extends React.Component {
           title: "操作",
           align: "center",
           dataIndex: "key",
-          width: 150,
+          width: 170,
           key: "Others",
           render: key => {
             return (
@@ -527,9 +527,9 @@ class RegisterWillExamine extends React.Component {
 
   onPassQueryOk = () => {
     const { dispatch, DataState } = this.props;
-    let checkList = this.state.checkedList;
+    let checkedList = this.state.checkedList;
     let StatusCodeCount = DataState.GetSignUpLog.newStatus;
-    let logID = checkList.map((child, index) => {
+    let logID = checkedList.map((child, index) => {
       return DataState.GetSignUpLog.WillData.returnData[child - 1].UserMsg
         .logID;
     });
@@ -553,7 +553,7 @@ class RegisterWillExamine extends React.Component {
 
           this.setState({
             checkAll: false,
-            checkList: []
+            checkedList: []
           });
 
           // dispatch(actions.UpDataState.setSignUpLogCountMsg(++StatusCodeCount))
@@ -602,8 +602,8 @@ class RegisterWillExamine extends React.Component {
   //批量不通过
   onFailQueryOk = () => {
     const { dispatch, DataState } = this.props;
-    let checkList = this.state.checkedList;
-    let logID = checkList.map((child, index) => {
+    let checkedList = this.state.checkedList;
+    let logID = checkedList.map((child, index) => {
       return DataState.GetSignUpLog.WillData.returnData[child - 1].UserMsg
         .logID;
     });
@@ -628,7 +628,7 @@ class RegisterWillExamine extends React.Component {
 
           this.setState({
             checkAll: false,
-            checkList: []
+            checkedList: []
           });
           // dispatch(actions.UpDataState.setSignUpLogCountMsg(StatusCodeCount + logID.length));
           dispatch(
@@ -694,7 +694,7 @@ class RegisterWillExamine extends React.Component {
         if (json.StatusCode === 200) {
           this.setState({
             UserExamineModalVisible: false,
-            checkList: [],
+            checkedList: [],
             checkAll: false
           });
           dispatch(actions.UpDataState.setSignUpLogCountMsg(++newStatus));
@@ -779,7 +779,9 @@ class RegisterWillExamine extends React.Component {
         keyword: e.value,
         CancelBtnShow: "y",
         pagination: 1,
-        searchWord:e.value
+        searchWord:e.value,
+        checkedList: [],
+      checkAll: false
       });
       dispatch(
         actions.UpDataState.getWillSignUpLog(
@@ -879,7 +881,7 @@ class RegisterWillExamine extends React.Component {
       searchValue: "",
       pagination: 1,
       checkAll: false,
-      checkList: []
+      checkedList: []
     });
     dispatch(
       actions.UpDataState.getWillSignUpLog(
@@ -990,29 +992,33 @@ class RegisterWillExamine extends React.Component {
             </CheckBoxGroup>
           </Loading>
           {DataState.GetSignUpLog.WillData.Total ? (
+            <div style={{    display: 'inline-block'}}>
             <CheckBox
+            type='gray'
               className="checkAll-box"
               onChange={this.OnCheckAllChange}
               checked={this.state.checkAll}
             >
               全选
-              <Button
-                key="agree"
-                className="agreeAll"
-                color="blue"
-                onClick={this.onAgreeAll.bind(this)}
-              >
-                通过
-              </Button>
-              <Button
-                key="refuse"
-                className="refuseAll"
-                color="red"
-                onClick={this.RefuseAll.bind(this)}
-              >
-                不通过
-              </Button>
+              
             </CheckBox>
+            <Button
+            key="agree"
+            className="agreeAll"
+            color="blue"
+            onClick={this.onAgreeAll.bind(this)}
+          >
+            通过
+          </Button>
+          <Button
+            key="refuse"
+            className="refuseAll"
+            color="red"
+            onClick={this.RefuseAll.bind(this)}
+          >
+            不通过
+          </Button>
+          </div>
           ) : (
             ""
           )}

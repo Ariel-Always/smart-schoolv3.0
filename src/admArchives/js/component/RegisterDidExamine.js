@@ -43,7 +43,7 @@ class RegisterDidExamine extends React.Component {
           title: "注册时间",
           align: "center",
           dataIndex: "SignUpTime",
-          width: 130,
+          width: 255,
           key: "SignUpTime",
           sorter: true,
           render: time => {
@@ -82,8 +82,8 @@ class RegisterDidExamine extends React.Component {
           title: "姓名",
           align: "left",
           dataIndex: "UserName",
-          colSpan:1,
-          width: 70,
+          colSpan:2,
+          width: 90,
           key: "UserName",
           sorter: true,
           render: arr => {
@@ -104,7 +104,7 @@ class RegisterDidExamine extends React.Component {
           title: "学号",
           align: "center",
           dataIndex: "UserID",
-          width: 120,
+          width: 220,
           key: "UserID",
           sorter: true,
           render: UserID => {
@@ -118,7 +118,7 @@ class RegisterDidExamine extends React.Component {
         {
           title: "性别",
           align: "center",
-          width: 70,
+          width: 55,
           dataIndex: "Gender",
           key: "Gender",
           render: Gender => {
@@ -132,7 +132,7 @@ class RegisterDidExamine extends React.Component {
         {
           title: "年级",
           align: "center",
-          width: 70,
+          width: 105,
           dataIndex: "Grade",
           key: "Grade",
           render: Grade => {
@@ -146,7 +146,7 @@ class RegisterDidExamine extends React.Component {
         {
           title: "班级",
           align: "center",
-          width: 70,
+          width: 161,
           dataIndex: "Class",
           key: "Class",
           render: Class => {
@@ -160,7 +160,7 @@ class RegisterDidExamine extends React.Component {
         {
           title: "状态",
           align: "center",
-          width: 150,
+          width: 170,
           dataIndex: "Status",
           key: "Status",
           render: Status => {
@@ -760,7 +760,7 @@ class RegisterDidExamine extends React.Component {
               onChange={this.onCheckBoxGroupChange.bind(this)}
             >
               <Table
-                className="table"
+                className="table didTable"
                 columns={this.state.columns}
                 pagination={false}
                 loading={UIState.AppLoading.TableLoading}
