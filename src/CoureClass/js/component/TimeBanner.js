@@ -21,7 +21,23 @@ class TimeBanner extends React.Component {
       userMsg: props.DataState.LoginUser
     };
   }
+  componentWillMount(){
+    let route = history.location.pathname;
+    let pathArr = route.split("/");
+    let handleRoute = pathArr[1];
+    let routeID = pathArr[2];
+    let subjectID = pathArr[3];
+    let classID = pathArr[4];
+    let Key = ''
+    if(handleRoute==='Search'){
+      this.setState({
+        CancelBtnShow: "y",
+        keyword: routeID,
+        searchValue: routeID
 
+      });
+    }
+  }
   onAddCourseClassClick = () => {
     const { dispatch, DataState } = this.props;
 

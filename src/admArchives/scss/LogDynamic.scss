@@ -174,6 +174,8 @@ $image-url: "../images";
                         text-decoration: underline;
                         color: #333;
                         font-size: 14px;
+                        height: 15px;
+                        line-height: 1;
                         cursor: pointer;
                         display: inline-block;
                         width: 90px;
@@ -279,22 +281,23 @@ $image-url: "../images";
                     margin-top: 10px;
                     margin-left: 24px;
                     .checkAll-title {
-                        vertical-align: baseline;
+                        vertical-align: text-bottom;
                         height: 28px;
-                    }
-                    .deleteAll {
-                        color: #fff;
-                        // width: 56px;
                         line-height: 28px;
-                        height: 28px;
-                        padding: 0 16px;
-                        text-align: center;
-                        font-size: 14px;
-                        margin-left: 8px;
-                        border: none; // box-sizing: content-box;
-                        span {
-                            vertical-align: baseline;
-                        }
+                    }
+                }
+                .deleteAll {
+                    color: #fff;
+                    // width: 56px;
+                    line-height: 28px;
+                    height: 28px;
+                    padding: 0 16px;
+                    text-align: center;
+                    font-size: 14px;
+                    margin-left: 8px;
+                    border: none; // box-sizing: content-box;
+                    span {
+                        vertical-align: baseline;
                     }
                 }
                 .pagination-box {

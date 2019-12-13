@@ -295,6 +295,14 @@ textarea.ant-input {
     color: #333;
 }
 
+.MyAntdInput {
+    line-height: 1;
+}
+
+.ant-input {
+    line-height: 1;
+}
+
 
 /*
 空数据提示
@@ -394,7 +402,7 @@ textarea.ant-input {
     .ant-modal-body {
         position: relative;
         height: 456px;
-        overflow: auto;
+        // overflow: auto;
         box-sizing: border-box;
         padding: 24px 36px;
     }
@@ -443,7 +451,7 @@ textarea.ant-input {
         height: 411px;
         box-sizing: border-box;
         padding: 33px 48px;
-        overflow: auto;
+        // overflow: auto;
     }
     .ant-modal-footer {
         .ant-btn {
@@ -486,7 +494,7 @@ textarea.ant-input {
         height: 293px;
         box-sizing: border-box;
         padding: 20px 24px;
-        overflow: auto;
+        // overflow: auto;
     }
     .ant-modal-footer {
         height: 48px;
@@ -575,7 +583,7 @@ textarea.ant-input {
         width: 100%;
         position: relative;
         min-height: 300px;
-        overflow: auto;
+        // overflow: auto;
         .content-box {
             width: 100%;
             margin-top: 30px;
