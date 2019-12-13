@@ -129,13 +129,19 @@ class YearSemesterSetting extends Component {
         })
     }
 
-    //取消的点击事件
-    handUpCancel = () => {
+    //弹层取消的点击事件
+    modalCancel = () => {
         this.setState({
+            visible_modify: false,
             visible_create: false,
-            visible_modify: false
+        },()=>{
+            const { dispatch}=this.props
+            const {SchoolID}=JSON.parse(sessionStorage.getItem('UserInfo'))
+            dispatch(DataChange.getCurrentSemester(SchoolID));
         })
+
     }
+ 
 
     //监听确认修改按钮
     modifyComfirm = () => {
@@ -222,28 +228,29 @@ class YearSemesterSetting extends Component {
     }
 
     //监听启用新学期中开始学期的输入框中值的变化
-    getStartDate = (value, datastring) => {
-        // console.log(value);
-        console.log("学期开始" + datastring)
-        this.setState({
-            createInfo: {
-                ...this.state.createInfo,
-                StartDate: datastring
+    // getStartDate = (value, datastring) => {
+    //     // console.log(value);
+    //     console.log("学期开始" + datastring)
+    //     this.setState({
+    //         createInfo: {
+    //             ...this.state.createInfo,
+    //             StartDate: datastring
 
-            }
-        })
-    }
+    //         }
+    //     })
+
+    // }
     //监听启用新学期中结束学期的输入框中的值变化
-    getEndDate = (value, datastring) => {
-        // console.log("学期结束" + datastring)
-        this.setState({
-            createInfo: {
-                ...this.state.createInfo,
-                EndDate: datastring
+    // getEndDate = (value, datastring) => {
+    //     // console.log("学期结束" + datastring)
+    //     this.setState({
+    //         createInfo: {
+    //             ...this.state.createInfo,
+    //             EndDate: datastring
 
-            }
-        })
-    }
+    //         }
+    //     })
+    // }
 
 
 
@@ -256,8 +263,15 @@ class YearSemesterSetting extends Component {
                 ...this.state.modifyInfo,
                 StartDate: datastring
             }
-
-
+        })
+        let {dispatch,semesterInfo}=this.props    
+        semesterInfo={
+            ...semesterInfo,
+            TermStartDate:datastring
+        }
+        dispatch({
+            type:DataChange.REFRESH_SEMESTER_INFO,
+            data:semesterInfo
         })
     }
 
@@ -270,24 +284,26 @@ class YearSemesterSetting extends Component {
                 ...this.state.modifyInfo,
                 EndDate: datastring
             }
-
-
+        })
+        let {dispatch,semesterInfo}=this.props    
+        semesterInfo={
+            ...semesterInfo,
+            TermEndDate:datastring
+        }
+        dispatch({
+            type:DataChange.REFRESH_SEMESTER_INFO,
+            data:semesterInfo
         })
     }
-    //无效点击事件
-    nothing = () => {
-        // alert(this.refs)
-    }
     // 不可选日期
-    disabledDate = current => {
+    disabledDate = (current,targetTime) => {
 
-        const { semesterInfo } = this.props
-        const str = semesterInfo.TermEndDate;
+        
+        const str = targetTime
 
-        console.log(moment().endOf('day'));
-
-        return moment(str) > current || current > moment(str).add(2, 'months');
-
+        // console.log(moment().endOf('day'));
+       
+            return  current >  moment(str).add(2, 'months')||current < moment(str).subtract(2, 'months');
 
     }
 
@@ -338,13 +354,18 @@ class YearSemesterSetting extends Component {
                                 </div>
  
                              <button className={`btn create-newTerm ${semesterInfo.TermStatus === 2 ? '':'disabled bander'}`}
-                        onClick={semesterInfo.TermStatus===2?() => this.createNewTerm():()=>this.nothing()}> 启用新学期</button>
+                                // onClick={semesterInfo.TermStatus===2?() => this.createNewTerm():()=>this.nothing()}
+                                disabled={semesterInfo===2?false:true}    
+                                onClick={ this.createNewTerm}
+                                    
+                        > 启用新学期</button>
+                                
                                 <Modal
                                     type="1"
                                     title="启用新学年"
                                     visible={this.state.visible_create}
                                     onOk={this.handUpComfirm}
-                                    onCancel={this.handUpCancel}
+                                    onCancel={this.modalCancel}
                                     width={"600px"}
                                     bodyStyle={{ height: "216px" }}
                                 >
@@ -381,9 +402,11 @@ class YearSemesterSetting extends Component {
         
                                 <DatePicker
                                                 format="YYYY-MM-DD"
-                                                defaultValue={moment(semesterInfo.TermStartDate)}
-                                                onChange={this.getStartDate}
-                                               
+                                                value={moment(semesterInfo.TermStartDate)}
+                                                // onChange={this.getStartDate}
+                                                onChange={this.getPainDate}
+                                                disabledDate={(e)=>this.disabledDate(e,semesterInfo.TermStartDate)}
+                                               showToday={false}
 
                                             ></DatePicker>
 
@@ -392,10 +415,11 @@ class YearSemesterSetting extends Component {
                                         <div className="end-date" >结束时间:
         
                                 <DatePicker
-                                                onChange={this.getEndDate}
-                                                defaultValue={moment(semesterInfo.TermEndDate)}
+                                                onChange={this.getOffDate}
+                                                value={moment(semesterInfo.TermEndDate)}
                                                 format="YYYY-MM-DD"
-
+                                                disabledDate={(e)=>this.disabledDate(e,semesterInfo.TermEndDate)}
+                                                showToday={false}
                                                
 
                                             ></DatePicker>
@@ -441,7 +465,7 @@ class YearSemesterSetting extends Component {
                                     title="调整学年期限"
                                     visible={this.state.visible_modify}
                                     onOk={this.modifyComfirm}
-                                    onCancel={this.handUpCancel}
+                                    onCancel={this.modalCancel}
                                     width={"458px"}
                                     bodyStyle={{ height: "176px" }}
                                 >
@@ -449,19 +473,21 @@ class YearSemesterSetting extends Component {
                                         <div className="term-name">学期名称: <span className="word">{semesterInfo.StartYear}-{semesterInfo.EndYear}学年 第{semesterInfo.termNum}学期</span></div>
                                         <div className="start-date">开学时间:
                     <DatePicker
-                                                defaultValue={moment(semesterInfo.TermStartDate)}
+                                                value={moment(semesterInfo.TermStartDate)}
                                                 format="YYYY-MM-DD"
                                                 onChange={this.getPainDate}
-                                                
+                                                disabledDate={(e)=>this.disabledDate(e,semesterInfo.TermStartDate)}
+                                                showToday={false}
 
                                             ></DatePicker>
                                         </div>
                                         <div className="end-date">放假时间:
                     <DatePicker
-                                                defaultValue={moment(semesterInfo.TermEndDate)}
+                                                value={moment(semesterInfo.TermEndDate)}
                                                 format="YYYY-MM-DD"
                                                 onChange={this.getOffDate}
-                                                disabledDate={this.disabledDate}
+                                                disabledDate={(e)=>this.disabledDate(e,semesterInfo.TermEndDate)}
+                                                showToday={false}
                                             ></DatePicker>
                                         </div>
                                     </div>

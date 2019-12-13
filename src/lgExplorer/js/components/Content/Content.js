@@ -246,6 +246,11 @@ class Content extends Component {
 
     }
 
+    sendParam=(param)=>{
+
+        window.external.MyMessageBox(param)
+        // alert(param);
+    }
 
 
 
@@ -403,7 +408,8 @@ class Content extends Component {
             // let ranIndex = Math.floor(Math.random() * (colorIndex + 1));
             return (
                 <div className="base">
-                    <div className={`img-box ${item.backgroundColor}`}>
+                    <div className={`img-box ${item.backgroundColor}`}
+                        onClick={()=>this.sendParam(item.AccessParam)}>
                         {
                             item.word === '' ?
                                 <img src={`${item.LogoPath}favicon.ico`} /* alt="图片丢失" */ title={item.name}
