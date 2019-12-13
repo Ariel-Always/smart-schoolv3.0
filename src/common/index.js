@@ -319,7 +319,7 @@ class Input extends React.Component {
                     type={this.state.type}
                     value={this.state.value}
                     placeholder={this.state.placeholder}
-                    className={this.state.className}
+                    className={`MyAntdInput ${this.state.className}`}
                     disabled={this.state.disabled}
                     name={this.state.name}
                     suffix={this.state.suffix}
@@ -339,7 +339,7 @@ class Input extends React.Component {
                     value={this.state.value}
                     cols={this.state.cols}
                     placeholder={this.state.placeholder}
-                    className={this.state.className}
+                    className={`MyAntdInput ${this.state.className}`}
                     disabled={this.state.disabled}
                     name={this.state.name}
                     suffix={this.state.suffix}

@@ -29,12 +29,12 @@ class Search extends React.Component {
               <div className="CheckBox-content">
                 <label>
                 <CheckBox
-                  value={OrderNO - 1}
+                  value={OrderNO.key}
                   type="gray"
                   onChange={this.onTableCheckBoxChange.bind(this)}
                 ></CheckBox>
                 <span className="key-content">
-                  {OrderNO >= 10 ? OrderNO : "0" + OrderNO}
+                  {OrderNO.OrderNO >= 10 ? OrderNO.OrderNO : "0" + OrderNO.OrderNO}
                 </span>
                 </label>
               </div>
@@ -104,7 +104,7 @@ class Search extends React.Component {
           key: "ClassMsg",
           render: Class => {
             return (
-              <React.Fragment>
+              Class.TeacherName!==''?<React.Fragment>
                 <img
                   className="Class-img"
                   alt={Class.TeacherName}
@@ -116,7 +116,7 @@ class Search extends React.Component {
                 <span title={Class.TeacherID} className="Class-id">
                   (<span> {Class.TeacherID} </span>)
                 </span>
-              </React.Fragment>
+              </React.Fragment>:<span>--</span>
             );
           }
         },
@@ -166,7 +166,8 @@ class Search extends React.Component {
       ],
       checkedList: [],
       checkAll: false,
-      UserMsg: props.DataState.LoginUser
+      UserMsg: props.DataState.LoginUser,
+      pageIndex:1
     };
   }
   //钩子函数
@@ -221,7 +222,7 @@ class Search extends React.Component {
     let checkedList = this.state.checkedList;
     let len = checkedList.length;
     let source = DataState.GetClassAllMsg.allClass.TableData;
-    // //console.log(key)
+    console.log(key,source)
     let courseClassID = source[key].CourseClass.ClassID;
     dispatch(
       actions.UpUIState.showErrorAlert({
@@ -246,13 +247,20 @@ class Search extends React.Component {
     let classID = pathArr[4];
     let SubjectID = DataState.GetCoureClassAllMsg.Subject;
     let GradeID = DataState.GetCoureClassAllMsg.Grade;
+    let Key = ''
+    if(handleRoute==='Search'){
+      Key = routeID
+    }
+    this.setState({
+      pageIndex:value
+    })
     dispatch(
       actions.UpDataState.getClassAllMsg(
         "/GetGradeCouseclassDetailForPage?schoolID=" +
           this.state.UserMsg.SchoolID +
           "&pageIndex=" +
           value +
-          "&key=&pageSize=10&subjectID=" +
+          "&key="+Key+"&pageSize=10&subjectID=" +
           SubjectID +
           "&gradeID=" +
           GradeID
@@ -347,6 +355,10 @@ class Search extends React.Component {
     let url = "/DeleteCourseClass";
     let SubjectID = DataState.GetCoureClassAllMsg.Subject;
     let GradeID = DataState.GetCoureClassAllMsg.Grade;
+    let Key = ''
+    if(handleRoute==='Search'){
+      Key = routeID
+    }
     dispatch(actions.UpUIState.hideErrorAlert());
     postData(
       CONFIG.CourseClassProxy + url,
@@ -382,8 +394,8 @@ class Search extends React.Component {
               "/GetGradeCouseclassDetailForPage?schoolID=" +
                 this.state.UserMsg.SchoolID +
                 "&pageIndex=" +
-                1 +
-                "&key=&pageSize=10&subjectID=" +
+                this.state.pageIndex +
+                "&key="+Key+"&pageSize=10&subjectID=" +
                 SubjectID +
                 "&gradeID=" +
                 GradeID
@@ -403,6 +415,10 @@ class Search extends React.Component {
     let url = "/DeleteCourseClass";
     let SubjectID = DataState.GetCoureClassAllMsg.Subject;
     let GradeID = DataState.GetCoureClassAllMsg.Grade;
+    let Key = ''
+    if(handleRoute==='Search'){
+      Key = routeID
+    }
     dispatch(actions.UpUIState.hideErrorAlert());
     postData(
       CONFIG.CourseClassProxy + url,
@@ -438,8 +454,8 @@ class Search extends React.Component {
               "/GetGradeCouseclassDetailForPage?schoolID=" +
                 this.state.UserMsg.SchoolID +
                 "&pageIndex=" +
-                1 +
-                "&key=&pageSize=10&subjectID=" +
+                this.state.pageIndex +
+                "&key="+Key+"&pageSize=10&subjectID=" +
                 SubjectID +
                 "&gradeID=" +
                 GradeID

@@ -725,7 +725,8 @@ class LogDynamic extends React.Component {
                 ></Table>
               </CheckBoxGroup>
               {data.Total > 0 ? (
-                <CheckBox
+                <div style={{    display: 'inline-block'}}>
+                  <CheckBox
                   className="checkAll-box"
                   type='gray'
 
@@ -733,14 +734,16 @@ class LogDynamic extends React.Component {
                   checked={this.state.checkAll}
                 >
                   <span className='checkAll-title'>全选</span>
-                  <Button
-                    onClick={this.onReadAllClick}
-                    className="deleteAll"
-                    color="blue"
-                  >
-                    全部标记已读
-                  </Button>
+                  
                 </CheckBox>
+                <Button
+                onClick={this.onReadAllClick}
+                className="deleteAll"
+                color="blue"
+              >
+                全部标记已读
+              </Button>
+                </div>
               ) : (
                 ""
               )}

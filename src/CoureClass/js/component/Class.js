@@ -29,12 +29,12 @@ class Class extends React.Component {
             return (
               <div className="CheckBox-content">
                 <label><CheckBox
-                  value={OrderNO - 1}
+                  value={OrderNO.key}
                   type='gray'
                   onChange={this.onTableCheckBoxChange.bind(this)}
                 ></CheckBox>
                 <span className="key-content">
-                  {OrderNO >= 10 ? OrderNO : "0" + OrderNO}
+                  {OrderNO.OrderNO >= 10 ? OrderNO.OrderNO : "0" + OrderNO.OrderNO}
                 </span></label>
               </div>
             );
@@ -70,7 +70,7 @@ class Class extends React.Component {
           width:200,
           key: "ClassMsg",
           render: Class => {
-            return Class.TeacherID === 0 || Class.TeacherID ? (
+            return (Class.TeacherID === 0 || Class.TeacherID) ? (
               <React.Fragment>
                 <img
                   className="Class-img"
