@@ -112,6 +112,13 @@
         .content-render {
             margin-top: 16px;
             position: relative;
+            .didTable {
+                .ant-table-row {
+                    td:nth-child(1) {
+                        padding-left: 0;
+                    }
+                }
+            }
             .table {
                 .ant-table-thead {
                     // th:nth-child(3) {
@@ -145,6 +152,11 @@
                 .registerTime {
                     font-size: 14px;
                     color: #333;
+                    display: inline-block;
+                    width: 200px;
+                    overflow: hidden; //超出一行文字自动隐藏
+                    text-overflow: ellipsis; //文字隐藏后添加省略号
+                    white-space: nowrap; //强制不换行
                 }
                 .name-img {
                     margin: 0 6px;
@@ -155,11 +167,21 @@
                     text-decoration: underline;
                     color: #333;
                     font-size: 16px;
+                    display: inline-block;
                     cursor: pointer;
+                    width: 90px;
+                    overflow: hidden; //超出一行文字自动隐藏
+                    text-overflow: ellipsis; //文字隐藏后添加省略号
+                    white-space: nowrap; //强制不换行
                 }
                 .UserID {
                     font-size: 14px;
                     color: #999;
+                    display: inline-block;
+                    width: 200px;
+                    overflow: hidden; //超出一行文字自动隐藏
+                    text-overflow: ellipsis; //文字隐藏后添加省略号
+                    white-space: nowrap; //强制不换行
                 }
                 .Grader {
                     font-size: 14px;
@@ -168,10 +190,20 @@
                 .GradeName {
                     font-size: 14px;
                     color: #333;
+                    display: inline-block;
+                    width: 90px;
+                    overflow: hidden; //超出一行文字自动隐藏
+                    text-overflow: ellipsis; //文字隐藏后添加省略号
+                    white-space: nowrap; //强制不换行
                 }
                 .ClassName {
                     font-size: 14px;
                     color: #666;
+                    display: inline-block;
+                    width: 145px;
+                    overflow: hidden; //超出一行文字自动隐藏
+                    text-overflow: ellipsis; //文字隐藏后添加省略号
+                    white-space: nowrap; //强制不换行
                 }
                 .ant-checkbox-gray .ant-checkbox {
                     top: -3px;
@@ -201,31 +233,31 @@
             .checkAll-box {
                 margin-top: 10px;
                 margin-left: 24px;
-                .agreeAll {
-                    color: #fff;
-                    width: 64px;
-                    line-height: 28px;
-                    height: 28px;
-                    padding: 0;
-                    border: none;
-                    text-align: center;
-                    font-size: 14px;
-                    margin-left: 8px;
-                    // box-sizing: content-box;
-                    border: none
-                }
-                .refuseAll {
-                    color: #fff;
-                    width: 64px;
-                    line-height: 28px;
-                    font-size: 14px;
-                    height: 28px;
-                    border: none;
-                    padding: 0;
-                    text-align: center;
-                    margin-left: 8px;
-                    box-sizing: content-box;
-                }
+            }
+            .agreeAll {
+                color: #fff;
+                width: 64px;
+                line-height: 28px;
+                height: 28px;
+                padding: 0;
+                border: none;
+                text-align: center;
+                font-size: 14px;
+                margin-left: 8px;
+                // box-sizing: content-box;
+                border: none
+            }
+            .refuseAll {
+                color: #fff;
+                width: 64px;
+                line-height: 28px;
+                font-size: 14px;
+                height: 28px;
+                border: none;
+                padding: 0;
+                text-align: center;
+                margin-left: 8px;
+                box-sizing: content-box;
             }
             .pagination-box {
                 margin-top: 10px;

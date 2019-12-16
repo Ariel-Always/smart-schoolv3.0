@@ -110,6 +110,7 @@ class Admin extends React.Component {
                 placement="topLeft"
                 width={540}
                 trigger="click"
+                overlayClassName='PowerTip'
                 arrowPointAtCenter={true}
                 title={<TipsPower data={Power}></TipsPower>}
               >

@@ -307,3 +307,7 @@ $image-url: "../images";
         white-space: nowrap;
     }
 }
+
+.ant-tooltip {
+    z-index: 10000!important;
+}
