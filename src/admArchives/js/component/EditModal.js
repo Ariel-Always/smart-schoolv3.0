@@ -756,7 +756,7 @@ class EditModal extends React.Component {
 
         let map = Options.map((opt, index) => {
             return (
-                <CheckBox type='gray' className={'checkedBoxMap'} key={index} value={opt}>{TeacherChangeMsg[opt]}</CheckBox>
+                <CheckBox type='gray' className={'checkedBoxMap'} key={index} value={opt}><span className='checkedBoxMap-title' title={TeacherChangeMsg[opt]}>{TeacherChangeMsg[opt]}</span></CheckBox>
             )
         })
         return map
