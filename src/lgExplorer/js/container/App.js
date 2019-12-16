@@ -1,11 +1,46 @@
 import Tabheader from '../components/Tabheader/Tabheader'
 import Content from '../components/Content/Content'
 import { Alert } from '../../../common/index'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
+import { TokenCheck_Connect } from '../../../common/js/disconnect';
+import HomeData from '../action/HomeData'
 
 import React, { Component } from 'react';
 class APP extends Component {
 
+    constructor(props) {
+        super(props);
+        this.state={
+
+        }
+        const { dispatch } = this.props;
+        //获取接口一种的数据
+        // dispatch(LoadingData.getLinkData());
+        //获取接口二中的数据
+        // dispatch(LoadingData.getResBaseData());
+        TokenCheck_Connect()
+
+        if (sessionStorage.getItem('userInfo')) {
+            dispatch(HomeData.getLinkData("P1"))
+            dispatch(HomeData.getPeriodList())
+            // dispatch(HomeData.getResLinkList());
+            // dispatch(HomeData.getMyResLibList())
+
+
+
+        } else {
+            let timerID = setInterval(() => {
+                if (sessionStorage.getItem('UserInfo')) {
+                    dispatch(HomeData.getLinkData("P1"));
+                    dispatch(HomeData.getPeriodList());
+                    // dispatch(HomeData.getResLinkList());
+                    // dispatch(HomeData.getMyResLibList())
+                    clearInterval(timerID)
+                }
+            }, 20)
+        }
+
+    }
 
 
     render() {
@@ -30,7 +65,7 @@ class APP extends Component {
                 </Alert>
 
 
-        
+
 
             </div >
         );

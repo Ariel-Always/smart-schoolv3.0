@@ -13,6 +13,7 @@ import '../../../common/js/PicUpload/photoUpload.scss';
 import '../../../common/js/PicUpload/Cropper/cropper';
 
 import $ from 'jquery';
+import ApiActions from "./ApiActions";
 
 window.$ = $;
 
@@ -132,29 +133,41 @@ const Init = () => {
 
                 }
 
-                var option = {
+                ApiActions.GetResHttpServerAddr({dispatch}).then(data=>{
 
-                    token: sessionStorage.getItem('token'),
+                    if (data){
 
-                    resWebUrl: "http://192.168.129.1:30101/lgftp/", //资源站点地址
+                        var option = {
 
-                    userType:userType,   //用户类型，可选值Admin、Student、Teacher、SchoolLeader
+                            token: sessionStorage.getItem('token'),
 
-                    userID:UserID, //新增时传空字符串、编辑时传相应UserID
+                            resWebUrl: data, //资源站点地址
 
-                    curImgPath:PhotoPath_NoCache?PhotoPath_NoCache:BaseSetting.PhotoPath_NoCache, //用户当前头像，新增时可不传
+                            userType:userType,   //用户类型，可选值Admin、Student、Teacher、SchoolLeader
 
-                    size:"small"
+                            userID:UserID, //新增时传空字符串、编辑时传相应UserID
 
-                };
+                            curImgPath:PhotoPath_NoCache?PhotoPath_NoCache:BaseSetting.PhotoPath_NoCache, //用户当前头像，新增时可不传
 
-                dispatch({type:PICUPLOADER_OPTIONS_UPDATE,data:option});
+                            size:"small",
 
-                $('#PicUpload').picUploader(option);
+                            gender:'-1'
 
-                dispatch({type:BASE_SETTING_LOADING_HIDE});
+                        };
 
-                dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
+                        dispatch({type:PICUPLOADER_OPTIONS_UPDATE,data:option});
+
+                        $('#PicUpload').picUploader(option);
+
+                    }
+
+                    dispatch({type:BASE_SETTING_LOADING_HIDE});
+
+                    dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
+
+                });
+
+
 
             }
 

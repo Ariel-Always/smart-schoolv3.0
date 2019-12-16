@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import '../../../sass/content.scss';
 import { getData, postData } from '../../../../common/js/fetch'
 import { connect } from 'react-redux'
-import LoadingData from '../../action/HomeData';
+import { Loading } from '../../../../common'
 import bg_img1 from '../../../images/bg_tomato.png'
 import bg_img2 from '../../../images/bg_green.png'
 import bg_img3 from '../../../images/bg_blue.png'
 import HomeData from '../../action/HomeData'
-import { TokenCheck_Connect } from '../../../../common/js/disconnect';
+// import { TokenCheck_Connect } from '../../../../common/js/disconnect';
 import AppAlertAction from '../../action/AppAlertAction'
 import pic from '../../../images/default_web.png'
+import { ok } from 'assert';
 const url2 = " http://192.168.2.202:7300/mock/5db974a3a1aded10689632eb/example/interface4";
 
 const bgList = [bg_img1, bg_img2, bg_img3];
@@ -20,34 +21,35 @@ class Content extends Component {
         this.state = {
             active: "P1",
             searchValue: "",
-            imgShow:false
+            imgShow: false
 
         }
 
 
-        const { dispatch } = this.props;
-        //获取接口一种的数据
-        // dispatch(LoadingData.getLinkData());
-        //获取接口二中的数据
-        // dispatch(LoadingData.getResBaseData());
-        TokenCheck_Connect()
+        // const { dispatch } = this.props;
+        // //获取接口一种的数据
+        // // dispatch(LoadingData.getLinkData());
+        // //获取接口二中的数据
+        // // dispatch(LoadingData.getResBaseData());
+        // TokenCheck_Connect()
 
-        if (sessionStorage.getItem('userInfo')) {
-            dispatch(HomeData.getLinkData("P1"))
-            dispatch(HomeData.getPeriodList())
-            dispatch(HomeData.getResLinkList())
-            dispatch(HomeData.getMyResLibList())
-        } else {
-            let timerID = setInterval(() => {
-                if (sessionStorage.getItem('UserInfo')) {
-                    dispatch(HomeData.getLinkData("P1"));
-                    dispatch(HomeData.getPeriodList());
-                    dispatch(HomeData.getResLinkList());
-                    dispatch(HomeData.getMyResLibList())
-                    clearInterval(timerID)
-                }
-            }, 20)
-        }
+        // if (sessionStorage.getItem('userInfo')) {
+        //     dispatch(HomeData.getLinkData("P1"))
+        //     dispatch(HomeData.getPeriodList())
+
+
+
+        // } else {
+        //     let timerID = setInterval(() => {
+        //         if (sessionStorage.getItem('UserInfo')) {
+        //             dispatch(HomeData.getLinkData("P1"));
+        //             dispatch(HomeData.getPeriodList());
+        //             dispatch(HomeData.getResLinkList());
+        //             dispatch(HomeData.getMyResLibList())
+        //             clearInterval(timerID)
+        //         }
+        //     }, 20)
+        // }
 
 
     }
@@ -59,8 +61,6 @@ class Content extends Component {
         this.setState({
             searchValue: event.target.value
         })
-
-
         event.target.style.color = "black";
 
     }
@@ -195,7 +195,7 @@ class Content extends Component {
 
         // console.log(newWebResbLink)
         this.setState({
-                imgShow:true
+            imgShow: true
         })
 
     }
@@ -229,8 +229,8 @@ class Content extends Component {
         });
         dispatch({ type: HomeData.REFRESH_RESOURCELINK_INFO, data: newResLinkList });
     }
-    enterSearch=(e)=>{
-        if(e.keyCode===13||e.keyCode===108){
+    enterSearch = (e) => {
+        if (e.keyCode === 13 || e.keyCode === 108) {
             window.location.href = ` http://www.baidu.com/s?wd=${this.state.searchValue}`
 
         }
@@ -239,16 +239,28 @@ class Content extends Component {
 
 
     //监听资源的每个项的点击事件
-    myReslibary = (Name) => {
+    myReslibary = ({ Name, AccessParam, AccessType }) => {
         const { dispatch } = this.props
-        dispatch(AppAlertAction.alertQuery({ title: `是否要打开${Name}`, okTitle: "是", cancelTitle: "否" }))
-        // alert("哈哈哈哈")
+        dispatch(AppAlertAction.alertQuery({
+            title: `是否要打开${Name}`,
+            okTitle: "是",
+            cancelTitle: "否",
+            ok: () => { return this.myResClick.bind(this, AccessParam, AccessType) }
+        }))
+
 
     }
+    //
+    myResClick = (AccessParam, AccessType) => {
+        const { dispatch } = this.props
+        window.external.MyMessageBox(AccessType, AccessParam)
+        dispatch(AppAlertAction.closeAlert(dispatch))
+        // console.log(AccessParam, AccessType)
+    }
 
-    sendParam=(param)=>{
+    sendParam = (AccessType, AccessParam) => {
 
-        window.external.MyMessageBox(param)
+        window.external.MyMessageBox(AccessType, AccessParam)
         // alert(param);
     }
 
@@ -264,7 +276,16 @@ class Content extends Component {
         // ]
         const colorList = ["red", "green", "blue"];
         const colorIndex = colorList.length - 1;
-        const { tabActive, current, linkArr, baseArr, word, WebsiteResLink, PeriodList, ResLinkList, MyResLibList } = this.props;
+        const { tabActive,
+            current,
+            linkArr,
+            baseArr,
+            word,
+            WebsiteResLink,
+            PeriodList,
+            ResLinkList,
+            MyResLibList,
+            websiteLoading } = this.props;
 
         // console.log(WebsiteResLink)
         // /*
@@ -300,12 +321,12 @@ class Content extends Component {
                                 return (
                                     <div className="link">
                                         <div className={`img-box ${i.backgroundColor}`}>
-                                            <img src={pic} alt=""  style={{display:`${this.state.imgShow===false?'block':'none'}`}}/>
+                                            <img src={pic} alt="" style={{ display: `${this.state.imgShow === false ? 'block' : 'none'}` }} />
                                             {
                                                 i.word === "" ?
-                                                    <img  src={`${i.Url}/favicon.ico`} /* alt="图片加载失败"  */
-                                                    onError={(e) => this.webPicLoadError(e, { GroupID: item.GroupID, ID: i.Id, Name: i.Name })} 
-                                                    style={{display:`${!this.state.imgShow===false?'block':'none'}`}}/>
+                                                    <img src={`${i.Url}/favicon.ico`} /* alt="图片加载失败"  */
+                                                        onError={(e) => this.webPicLoadError(e, { GroupID: item.GroupID, ID: i.Id, Name: i.Name })}
+                                                        style={{ display: `${!this.state.imgShow === false ? 'block' : 'none'}` }} />
                                                     : ""
                                             }
 
@@ -407,9 +428,9 @@ class Content extends Component {
         let ResResust = ResLinkList.map(item => {
             // let ranIndex = Math.floor(Math.random() * (colorIndex + 1));
             return (
-                <div className="base">
+                <div className="base" onClick={() => this.sendParam(item.AccessType, item.AccessParam)}>
                     <div className={`img-box ${item.backgroundColor}`}
-                        onClick={()=>this.sendParam(item.AccessParam)}>
+                    >
                         {
                             item.word === '' ?
                                 <img src={`${item.LogoPath}favicon.ico`} /* alt="图片丢失" */ title={item.name}
@@ -425,7 +446,7 @@ class Content extends Component {
         //渲染我的资源库中的内容
         let myResLibResult = MyResLibList.map(item => {
             return (
-                <li onClick={()=>this.myReslibary(item.Name)}><p>{item.Name}</p> </li>
+                <li onClick={() => this.myReslibary({ Name: item.Name, AccessParam: item.AccessParam, AccessType: item.AccessType })}><p>{item.Name}</p> </li>
             );
         })
 
@@ -436,47 +457,52 @@ class Content extends Component {
         return (
 
             // <div></div>
-            <div className="content" >
-                <div className="page-one" style={{ display: `${tabActive === 'website' ? 'block' : 'none'}` }}>
-                    <div className="serach">
-                        <input
-                            placeholder="搜你想搜的..."
-                            onChange={this.inputChange}
-                            className="input-search" type="text"
-                            value={this.state.searchValue}
-                            onKeyDown={this.enterSearch}
-                             />
-                           
-                        
-                        <button onClick={this.handelSearch}>搜索</button>
-                    </div>
-                    <ul className="grade">
-                        {periodResult}
-                    </ul>
 
-                    <div className="main-content">
-                        {linkResultRender}
-                    </div>
-                </div>
+            <Loading spinning={websiteLoading} opacity={false} tip="请稍后...">
+
+                <div className="content" >
+                    <div className="page-one" style={{ display: `${tabActive === 'website' ? 'block' : 'none'}` }}>
+                        <div className="serach">
+                            <input
+                                placeholder="搜你想搜的..."
+                                onChange={this.inputChange}
+                                className="input-search" type="text"
+                                value={this.state.searchValue}
+                                onKeyDown={this.enterSearch}
+                            />
 
 
-                <div className="page-two" style={{ display: `${tabActive === 'resourceBase' ? 'block' : 'none'}` }}>
-                    <div className="base-resource clearfix">
-                        {ResResust}
-                    </div>
-                </div>
-
-                <div className="page-three" style={{ display: `${tabActive === 'myResourceBase' ? 'block' : 'none'}` }}>
-
-                    <div className="pic-box">
-                        <ul >
-                            {myResLibResult}
+                            <button onClick={this.handelSearch}>搜索</button>
+                        </div>
+                        <ul className="grade">
+                            {periodResult}
                         </ul>
+
+                        <div className="main-content">
+                            {linkResultRender}
+                        </div>
                     </div>
 
-                </div >
+              
+                <div className="page-two" style={{ display: `${tabActive === 'resourceBase' ? 'block' : 'none'}` }}>
+                        <div className="base-resource clearfix">
+                            {ResResust}
+                        </div>
+                    </div>
+                   
 
-            </div>
+                    <div className="page-three" style={{ display: `${tabActive === 'myResourceBase' ? 'block' : 'none'}` }}>
+
+                        <div className="pic-box">
+                            <ul >
+                                {myResLibResult}
+                            </ul>
+                        </div>
+
+                    </div >
+
+                </div>
+            </Loading>
 
         );
     }
@@ -484,7 +510,7 @@ class Content extends Component {
 const mapStateToProps = (state) => {
 
     const { Toggle, UIdata, HomeDataUpdate } = state;
-    console.log(HomeDataUpdate.ResLinkList)
+    // console.log(HomeDataUpdate.ResLinkList)
     return {
         tabActive: Toggle.tabActive,
         current: Toggle.current,
@@ -494,7 +520,8 @@ const mapStateToProps = (state) => {
         WebsiteResLink: HomeDataUpdate.WebsiteResLink,
         PeriodList: HomeDataUpdate.PeriodList,
         ResLinkList: HomeDataUpdate.ResLinkList,
-        MyResLibList: HomeDataUpdate.MyResLibList
+        MyResLibList: HomeDataUpdate.MyResLibList,
+        websiteLoading: HomeDataUpdate.websiteLoading
 
     }
 

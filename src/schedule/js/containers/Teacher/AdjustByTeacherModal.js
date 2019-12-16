@@ -72,7 +72,7 @@ class AdjustByTeacherModal extends Component{
         return (
 
             <Modal className="adjust-by-teacher-modal"
-                   title="按老师调整课程"
+                   title="调整课表"
                    type={1}
                    visible={show}
                    width={840}

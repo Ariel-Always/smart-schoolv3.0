@@ -294,7 +294,7 @@ const replaceScheduleInit = () => {
 
                                    id:item.ClassID,
 
-                                   name:item.ClasstName
+                                   name:item.ClassName
 
                                }
 
@@ -305,6 +305,8 @@ const replaceScheduleInit = () => {
                            }
 
                        }).filter(i => i!==undefined);
+
+
 
                        dispatch({type:REPLACE_SHCEDULE_CLASS_LIST_UPDATE,data:classList});
 
@@ -481,9 +483,11 @@ const radioChange = (id) => {
 
                 if (id === 'month') {
 
-                    const {ItemMoth} = data;
+                    const {ItemMonth} = data;
 
-                    let list = ItemMoth.map(item => {
+                    console.log(data);
+
+                    let list = ItemMonth.map(item => {
 
                         return {
 

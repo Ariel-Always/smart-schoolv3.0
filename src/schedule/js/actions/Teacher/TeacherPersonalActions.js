@@ -649,7 +649,7 @@ const ReplaceSearchClick = (SearchValue) => {
 
             const { SchoolID } = getState().LoginUser;
 
-            const { SubjectID } = getState().Teacher.PersonalSchedule.ScheduleDetailModal;
+            const { SubjectID } = getState().Teacher.PersonalSchedule.ScheduleDetail;
 
             let SearchList = [];
 

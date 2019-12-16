@@ -1,4 +1,4 @@
-import ApiActions from './ApiACtions';
+import ApiActions from './ApiActions';
 
 import AppAlertActions from './AppAlertActions';
 

@@ -1,7 +1,7 @@
 import '../../../sass/tabheader.scss'
 
 import React, { Component } from 'react'
-
+import HomeData from '../../action/HomeData'
 import { connect } from 'react-redux';
 
 class Tabheader extends Component {
@@ -14,6 +14,18 @@ class Tabheader extends Component {
         dispatch({
             type: id
         });
+        switch (id) {
+            // case "website":
+            //     // dispatch(HomeData.getResLinkList());
+            //     dispatch(HomeData.getLinkData("P1"))
+            //     dispatch(HomeData.getPeriodList())
+            // break;    
+            case "resourceBase":
+                    dispatch(HomeData.getResLinkList())
+            break;
+            case "myResourceBase"  :
+                    dispatch(HomeData.getMyResLibList())      
+        }
 
     }
 
@@ -57,7 +69,7 @@ const mapStateToProps = (state) => {
 
     return {
 
-        tabActive:Toggle.tabActive
+        tabActive: Toggle.tabActive
 
     }
 

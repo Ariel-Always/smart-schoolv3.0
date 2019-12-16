@@ -5,7 +5,8 @@ const HomeDataUpdate = (state = {
     WebsiteResLink: [],
     PeriodList: [],
     ResLinkList: [],
-    MyResLibList:[]
+    MyResLibList:[],
+    websiteLoading:true
 
 }, action) => {
     switch (action.type) {
@@ -40,7 +41,12 @@ const HomeDataUpdate = (state = {
             return{
                 ...state,
                 MyResLibList:action.data
-            }    
+            } 
+        case HomeData.WEBSITELINK_LOADING_HIDE:
+            return{
+                ...state,
+                websiteLoading:false
+            }       
 
         default:
             return state;

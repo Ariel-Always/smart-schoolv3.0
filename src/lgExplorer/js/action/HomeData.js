@@ -12,7 +12,7 @@ const GET_PEROIDLIST_INFO = "GET_PEROIDLIST_INFO" //获取学段信息
 const GET_RESOURCE_LINK_INFO = "GET_RESOURCE_LINK_INFO"//资源库链接信息
 const REFRESH_RESOURCELINK_INFO = "REFRESH_RESOURCELINK_INFO"//更新资源库链接
 const GET_MYRESOURCE_INFO = "GET_MYRESOURCE_INFO"//获取我的资源库链接信息
-
+const WEBSITELINK_LOADING_HIDE="WEBSITELINK_LOADING_HIDE"//加载中效果
 
 const colorList = ["red", "green", "blue","pink","purple","qing"];
 const colorIndex = colorList.length - 1;
@@ -80,6 +80,9 @@ const getLinkData = (Period = "P1") => {
                 type: GET_WEBSITELINK_FROM_DIFFERENT_PREIOD,
                 data: webLinkList
             })
+            dispatch({
+                type: WEBSITELINK_LOADING_HIDE
+            })
         })
     }
 }
@@ -95,6 +98,9 @@ const getPeriodList = () => {
                 dispatch({
                     type: GET_PEROIDLIST_INFO,
                     data: periodList
+                })
+                dispatch({
+                    type: WEBSITELINK_LOADING_HIDE
                 })
 
             }
@@ -142,7 +148,8 @@ const getResLinkList = () => {
                     type: GET_RESOURCE_LINK_INFO,
                     data: resLinkList
                 })
-                console.log(resLinkList)
+
+                // console.log(resLinkList)
             }
             else {
                 console.log(json.Msg)
@@ -186,7 +193,8 @@ export default {
     getResLinkList,
     REFRESH_RESOURCELINK_INFO,
     GET_MYRESOURCE_INFO,
-    getMyResLibList
+    getMyResLibList,
+    WEBSITELINK_LOADING_HIDE
 
 
 }
