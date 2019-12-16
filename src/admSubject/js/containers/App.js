@@ -113,8 +113,8 @@ class App extends Component {
                     if (!this.props.DataState.PeriodMsd)
                         dispatch(actions.UpDataState.getPeriodMsg('/GetPeriodBySchoolID?schoolID=' + UserMsg.SchoolID));
                     dispatch(actions.UpDataState.getSubjectMsg('/GetSchoolSubjectInfo?schoolID=' + UserMsg.SchoolID + '&periodID=&pageSize=8&pageIndex=1'));
-                    if (!this.props.DataState.SubjectMsg.addSubjectMsg)
-                        dispatch(actions.UpDataState.getSubjectModalMsg('/GetSubjectInfoForAddBySchool?schoolID=' + UserMsg.SchoolID));
+                    // if (!this.props.DataState.SubjectMsg.addSubjectMsg)
+                    //     dispatch(actions.UpDataState.getSubjectModalMsg('/GetSubjectInfoForAddBySchool?schoolID=' + UserMsg.SchoolID));
         
                 } else {
                     history.push('/')
