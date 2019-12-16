@@ -616,7 +616,7 @@ class EditModal extends React.Component {
     onEditPhoneBlur = (e) => {
         const { dispatch } = this.props
         let value = e.target.value;
-        let Test = value === '' || /^[0-9]{11}$/.test(value)
+        let Test = value === '' || /^([0-9\/-]){1,40}$/.test(value)
 
         if (!Test) {
             dispatch(actions.UpUIState.editModalTipsVisible({
@@ -958,7 +958,7 @@ class EditModal extends React.Component {
                             <Tips overlayClassName='tips' visible={EditModalTipsVisible.TelephoneTipsVisible} getPopupContainer= {e=>e.parentNode} title={this.state.TelephoneTipsTitle} >
                                 <Input
                                     className='input'
-                                    maxLength={11}
+                                    maxLength={40}
                                     value={this.state.PhoneChange}
                                     type='text'
                                     name='EditPhone'
