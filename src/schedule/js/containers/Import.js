@@ -15,42 +15,26 @@ class Import extends Component{
 
         super(props);
 
-        const { dispatch } = props;
+        this.state={
 
-        if (sessionStorage.getItem('UserInfo')){
-
-            const token = sessionStorage.getItem('token');
-
-            let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
-
-            let { SchoolID,UserName,UserID } = UserInfo;
-
-            dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
-
-        }else{
-
-
-            let getUserInfo = setInterval(()=>{
-
-                if (sessionStorage.getItem('UserInfo')){
-
-                    const token = sessionStorage.getItem('token');
-
-                    let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
-
-                    let { SchoolID,UserName,UserID } = UserInfo;
-
-                    dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
-
-                    clearInterval(getUserInfo);
-
-                }
-
-            },20)
+            FirstUpload:true
 
         }
 
+    }
 
+
+    componentWillUpdate(){
+
+        const { LoginUser,dispatch } = this.props;
+
+        if (Object.keys(LoginUser).length>0&&this.state.FirstUpload){
+
+            dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
+
+            this.setState({FirstUpload:false});
+
+        }
     }
 
 

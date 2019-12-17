@@ -24,31 +24,27 @@ class ScheduleSetting extends Component{
 
         super(props);
 
-        const { dispatch } = props;
+        this.state={
 
-         if (sessionStorage.getItem('UserInfo')){
+            FirstUpload:true
 
-             let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
+        }
 
-             const { SchoolID } = UserInfo;
+    }
 
-             dispatch(SSActions.PageInit({SchoolID}));
+    componentWillUpdate(){
 
-         }else{
+        const { dispatch,LoginUser } = this.props;
 
-             const WaiteUserInfo = setInterval(()=>{
+        if (Object.keys(LoginUser).length>0&&this.state.FirstUpload){
 
-                 let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
+            const { SchoolID } = LoginUser;
 
-                 const { SchoolID } = UserInfo;
+            dispatch(SSActions.PageInit({SchoolID}));
 
-                 dispatch(SSActions.PageInit({SchoolID}));
+            this.setState({FirstUpload:false});
 
-                 clearInterval(WaiteUserInfo);
-
-             },20)
-
-         }
+        }
 
     }
 

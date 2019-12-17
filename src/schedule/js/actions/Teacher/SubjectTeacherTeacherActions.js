@@ -293,35 +293,45 @@ const STTTeacherSearch = (val) => {
 
         let SubjectID ='';
 
-        let Key = val;
+        let Key = val.trim();
 
-        ApiActions.GetTeacherBySubjectIDAndKey({
+        if (Key){
 
-            SchoolID,PeriodID,SubjectID,Key,Flag:0,dispatch
+            ApiActions.GetTeacherBySubjectIDAndKey({
 
-        }).then(data => {
+                SchoolID,PeriodID,SubjectID,Key,Flag:0,dispatch
 
-           if (data){
+            }).then(data => {
 
-               const result = data.map((item) => {
+                if (data){
 
-                  return {
+                    const result = data.map((item) => {
 
-                      id:item.TeacherID,
+                        return {
 
-                      name:item.TeacherName
+                            id:item.TeacherID,
 
-                  }
+                            name:item.TeacherName
 
-               });
+                        }
 
-                dispatch({type:SEARCH_TEACHER_RESULT_UPDATE,data:result})
+                    });
 
-                dispatch({type:SEARCH_LOADING_HIDE});
+                    dispatch({type:SEARCH_TEACHER_RESULT_UPDATE,data:result})
 
-           }
+                    dispatch({type:SEARCH_LOADING_HIDE});
 
-        });
+                }
+
+            });
+
+        }else{
+
+            dispatch(AppAlertActions.alertWarn({title:"搜索不能为空！"}));
+
+        }
+
+
 
     };
 

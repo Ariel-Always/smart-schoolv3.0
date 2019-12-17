@@ -394,7 +394,7 @@ const classSearch = (key) => {
 
   return (dispatch,getState) => {
 
-      if (key !== ''){
+      if (key.trim() !== ''){
 
         let {SchoolID} = getState().LoginUser;
 
@@ -457,7 +457,7 @@ const teacherSearch = (key) => {
 
     return (dispatch,getState) => {
 
-        if (key !== ''){
+        if (key.trim() !== ''){
 
             let {SchoolID} = getState().LoginUser;
 
@@ -524,7 +524,7 @@ const classRoomSearch = (key) => {
 
     return (dispatch,getState) => {
 
-        if(key !== ''){
+        if(key.trim() !== ''){
 
             let {SchoolID} = getState().LoginUser;
 

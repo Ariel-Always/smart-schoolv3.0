@@ -381,6 +381,7 @@ const SettingTypeSitch = ({type}) => {
 
             if (data) {
 
+
                 //由统一切换到按学段
                 if (type === 1) {
 
@@ -434,6 +435,8 @@ const SettingTypeSitch = ({type}) => {
 
                 } else {//由按学段切换到统一
 
+                    data.sort((a,b)=>{  return a.OrderNO-b.OrderNO});
+
                     //先清空之前存留的课时
                     ClassHourList = {};
 
@@ -443,11 +446,11 @@ const SettingTypeSitch = ({type}) => {
 
                     data.map(item => {
 
-                        if (item.ClasssHourType === 1) {
+                        if (item.ClassHourType === 1) {
 
                             Morning.push(item);
 
-                        } else if (item.ClasssHourType === 2) {
+                        } else if (item.ClassHourType === 2) {
 
                             Afternoon.push(item);
 
@@ -751,7 +754,7 @@ const AddClassHourOk = () => {
 
         let { SchoolID } = getState().LoginUser;
 
-        let { SettingByPeriod,SettingByUnify,AMLimit } = getState().Manager.ScheduleSetting;
+        let { SettingByPeriod,SettingByUnify,AMLimit,SettingType } = getState().Manager.ScheduleSetting;
 
         let { PeriodSettingList } = SettingByPeriod;
 
@@ -777,11 +780,11 @@ const AddClassHourOk = () => {
 
                    ApiActions.InsertClassHourInfo({
 
-                       SchoolID,OrderNO:SortResult.ClassHourNO,StartTime:`${StartHour}:${StartMin}`,
+                       SchoolID,OrderNO:SortResult.ClassHourNO,StartTime:`${SupplyZero(StartHour)}:${SupplyZero(StartMin)}`,
 
-                       EndTime:`${EndHour}:${EndMin}`,ClasssHourType:SortResult.NoonType,
+                       EndTime:`${SupplyZero(EndHour)}:${SupplyZero(EndMin)}`,ClasssHourType:SortResult.NoonType,
 
-                       ClassHourName,CreateType:0,PeriodID:'',dispatch
+                       ClassHourName,CreateType:SettingType,PeriodID:'',dispatch
 
 
                    }).then(data=>{
@@ -816,11 +819,11 @@ const AddClassHourOk = () => {
 
                     ApiActions.InsertClassHourInfo({
 
-                        SchoolID,OrderNO:SortResult.ClassHourNO,StartTime:`${StartHour}:${StartMin}`,
+                        SchoolID,OrderNO:SortResult.ClassHourNO,StartTime:`${SupplyZero(StartHour)}:${SupplyZero(StartMin)}`,
 
-                        EndTime:`${EndHour}:${EndMin}`,ClasssHourType:SortResult.NoonType,
+                        EndTime:`${SupplyZero(EndHour)}:${SupplyZero(EndMin)}`,ClasssHourType:SortResult.NoonType,
 
-                        ClassHourName,CreateType:1,PeriodID:PeriodID,dispatch
+                        ClassHourName,CreateType:SettingType,PeriodID:PeriodID,dispatch
 
 
                     }).then(data=>{
@@ -864,7 +867,7 @@ const EditClassHourOk = () => {
 
       let { SchoolID } = getState().LoginUser;
 
-      let { SettingByPeriod,SettingByUnify,AMLimit } = getState().Manager.ScheduleSetting;
+      let { SettingByPeriod,SettingByUnify,AMLimit,SettingType } = getState().Manager.ScheduleSetting;
 
       let { PeriodSettingList } = SettingByPeriod;
 
@@ -904,12 +907,11 @@ const EditClassHourOk = () => {
 
                   ApiActions.UpdateClassHourInfo({
 
-                      SchoolID,ClassHourNO,NewClassHourNO:SortResult.ClassHourNO,StartTime:`${StartHour}:${StartMin}`,
+                      SchoolID,ClassHourNO,NewClassHourNO:SortResult.ClassHourNO,StartTime:`${SupplyZero(StartHour)}:${SupplyZero(StartMin)}`,
 
-                      EndTime:`${EndHour}:${EndMin}`,ClasssHourType:SortResult.NoonType,
+                      EndTime:`${SupplyZero(EndHour)}:${SupplyZero(EndMin)}`,ClasssHourType:SortResult.NoonType,
 
-                      ClassHourName,CreateType:1,PeriodID:PeriodID,dispatch
-
+                      ClassHourName,CreateType:SettingType,PeriodID:PeriodID,dispatch
 
                   }).then(data=>{
 
@@ -954,11 +956,11 @@ const EditClassHourOk = () => {
 
                   ApiActions.UpdateClassHourInfo({
 
-                      SchoolID,ClassHourNO,NewClassHourNO:SortResult.ClassHourNO,StartTime:`${StartHour}:${StartMin}`,
+                      SchoolID,ClassHourNO,NewClassHourNO:SortResult.ClassHourNO,StartTime:`${SupplyZero(StartHour)}:${SupplyZero(StartMin)}`,
 
-                      EndTime:`${EndHour}:${EndMin}`,ClasssHourType:SortResult.NoonType,
+                      EndTime:`${SupplyZero(EndHour)}:${SupplyZero(EndMin)}`,ClasssHourType:SortResult.NoonType,
 
-                      ClassHourName,CreateType:1,PeriodID:PeriodID,dispatch
+                      ClassHourName,CreateType:SettingType,PeriodID:PeriodID,dispatch
 
 
                   }).then(data=>{

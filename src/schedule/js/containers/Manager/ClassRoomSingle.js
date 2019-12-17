@@ -96,7 +96,7 @@ class ClassRoomSingle extends Component{
 
         const {dispatch} = this.props;
 
-        if (e.value===''){
+        if (e.value.trim()===''){
 
             dispatch(AppAlertActions.alertWarn({title:"搜索不能为空！"}));
 
@@ -171,7 +171,9 @@ class ClassRoomSingle extends Component{
 
         dispatch({type:CRSActions.MANAGER_CRS_SCHEDULE_DETAIL_MODAL_HIDE});
 
-        ComPageRefresh.ComPageUpdate(dispatch);
+        /*ComPageRefresh.ComPageUpdate(dispatch);*/
+
+        dispatch(CRSActions.WeekUpdate());
 
     }
 

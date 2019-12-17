@@ -2,6 +2,8 @@
 
   color: #333333;
 
+  padding-bottom:30px;
+
   .top-wrapper{
 
     padding-top:28px;
@@ -137,9 +139,9 @@
 
     .log-dec-wrapper{
 
-      height: 59px;
+      height:60px;
 
-      line-height: 59px;
+      line-height:60px;
 
       text-align: left;
 
@@ -147,13 +149,29 @@
 
     .dec-detail{
 
+      display:-webkit-box;
+
       padding:0 20px;
 
-      display: inline-block;
+      position: relative;
 
-      line-height: 20px;
+      top: 50%;
 
-      vertical-align: middle;
+      @include transform(translateY(-50%));
+
+      /*display: inline-block;*/
+
+      /*line-height: 20px;*/
+
+      line-height: 1.4;
+
+      max-height: 2.8em;
+
+      -webkit-line-clamp:2;
+
+      -webkit-box-orient:vertical;
+
+      overflow:hidden;
 
     }
 
@@ -244,6 +262,16 @@
     margin-bottom: 40px;
 
     text-align: center;
+
+  }
+
+
+
+  //空数据边框
+
+  .ant-table-bordered.ant-table-empty .ant-table-placeholder{
+
+    border:1px solid #96d4e3;
 
   }
 

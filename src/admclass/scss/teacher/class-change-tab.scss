@@ -4,6 +4,10 @@
 
   @include justify-content(center);
 
+  flex-wrap:wrap;
+
+  -ms-flex-wrap: wrap;
+
   margin-top: 28px;
 
   .tab-item{

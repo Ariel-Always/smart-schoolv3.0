@@ -152,7 +152,7 @@ const OriginClassRoomSearch = (key) => {
 
     return (dispatch,getState) => {
 
-        if (key !== ''){
+        if (key.trim() !== ''){
 
             let {SchoolID} = getState().LoginUser;
 
@@ -214,7 +214,7 @@ const TargetClassRoomSearch = (key) => {
 
     return (dispatch,getState) => {
 
-        if (key !== ''){
+        if (key.trim() !== ''){
 
             let {SchoolID} = getState().LoginUser;
 
@@ -972,7 +972,7 @@ const ModalCommit = () => {
 
                       dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_HIDE});
 
-                      dispatch(AppAlertActions.alertSuccess({title:"找人代课成功！"}));
+                      dispatch(AppAlertActions.alertSuccess({title:"调整教室成功！"}));
 
                       ComPageRefresh.ComPageUpdate(dispatch);
 

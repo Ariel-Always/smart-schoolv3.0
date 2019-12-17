@@ -53,6 +53,7 @@ class AdjustByClassRoom extends Component{
                    mask={true}
                    cancelText="取消"
                    destroyOnClose={true}
+                   onCancel={this.CloseModal.bind(this)}
                    footer={[
 
                        <span key="footer-tips" className="footer-tips">注:调整上课时间后，上课节次的数量与顺序须与调整前一致。</span>,

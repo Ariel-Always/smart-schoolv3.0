@@ -100,7 +100,7 @@ class Teacher extends Component{
 
         const {dispatch} = this.props;
 
-        if (e.value===''){
+        if (e.value.trim()===''){
 
             dispatch(AppAlertActions.alertWarn({title:"搜索不能为空！"}));
 
@@ -176,7 +176,9 @@ class Teacher extends Component{
 
         dispatch({type:STTActions.MANAGER_STT_SCHEDULE_DETAIL_MODAL_HIDE});
 
-        ComPageRefresh.ComPageUpdate(dispatch);
+        /*ComPageRefresh.ComPageUpdate(dispatch);*/
+
+        dispatch(STTActions.STTWeekUpdate());
 
     }
 

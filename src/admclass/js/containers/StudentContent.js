@@ -552,7 +552,7 @@ class StudentContent extends Component{
 
         const { dispatch } = this.props;
 
-        dispatch(DMActions.Hide())
+        dispatch(DMActions.Hide());
 
     }
 

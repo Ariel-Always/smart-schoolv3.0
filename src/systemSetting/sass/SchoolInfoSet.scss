@@ -54,7 +54,7 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    cursor: pointer;
+    cursor: default; 
   }
   .school-info {
     position: absolute;
@@ -71,6 +71,7 @@
     color: #999999;
     .school-code,
     .school-type {
+        cursor: default; 
       span {
         color: #000;
         margin-left: 5px;
@@ -114,6 +115,12 @@
       font-stretch: normal;
       letter-spacing: 0px;
       color: #ffffff;
+      text-align: center;
+      line-height: 28px;
+      cursor: pointer;
+      input{
+          margin: auto auto;
+      }
     }
     .upload-pic {
       top: 210px;

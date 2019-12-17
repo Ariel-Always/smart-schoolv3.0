@@ -190,7 +190,9 @@ class Subject extends Component{
 
         dispatch({type:STSAction.MANAGER_STS_SCHEDULE_DETAIL_MODAL_HIDE});
 
-        ComPageRefresh.ComPageUpdate(dispatch);
+        /*ComPageRefresh.ComPageUpdate(dispatch);*/
+
+        dispatch(STSAction.STSPageUpdate());
 
     }
 
@@ -382,6 +384,8 @@ class Subject extends Component{
     ReplaceSearchClick(SearchValue){
 
         const { dispatch } = this.props;
+
+        console.log(SearchValue);
 
         dispatch(STSAction.ReplaceSearchClick(SearchValue));
 

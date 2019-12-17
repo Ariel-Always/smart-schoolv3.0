@@ -373,7 +373,7 @@ const teacherClickSearch = (key) => {
 
     return (dispatch,getState) => {
 
-        if (key !== ''){
+        if (key.trim() !== ''){
 
             let {SchoolID} = getState().LoginUser;
 
@@ -445,7 +445,7 @@ const replaceTeacherClickSearch = (key) => {
 
     return (dispatch,getState) => {
 
-        if (key !== ''){
+        if (key.trim() !== ''){
 
             dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_OPEN});
 
@@ -584,8 +584,6 @@ const radioChange = (id) => {
 
                     const {ItemMonth} = data;
 
-
-
                     let list = ItemMonth.map(item => {
 
                         return {
@@ -598,8 +596,9 @@ const radioChange = (id) => {
 
                     });
 
-                    dispatch({type: REPLACE_SHCEDULE_MONTHS_LIST_UPDATE, data: list});
+                    list.sort((a,b)=>{ return parseInt(a.id) - parseInt(b.id) });
 
+                    dispatch({type: REPLACE_SHCEDULE_MONTHS_LIST_UPDATE, data: list});
 
 
                 }
@@ -609,6 +608,8 @@ const radioChange = (id) => {
                     const {ItemWeek} = data;
 
                     let list = ItemWeek.map(item => item.WeekNO);
+
+                    list.sort((a,b)=>parseInt(a) - parseInt(b));
 
                     dispatch({type: REPLACE_SHCEDULE_WEEK_LIST_UPDATE, data: list});
 
@@ -656,17 +657,23 @@ const radioChange = (id) => {
 
                     if (morning.list.length > 0) {
 
+                        morning.list.sort((a,b)=>parseInt(a)-parseInt(b));
+
                         classHourList.push(morning);
 
                     }
 
                     if (afternoon.list.length > 0) {
 
+                        afternoon.list.sort((a,b)=>parseInt(a)-parseInt(b));
+
                         classHourList.push(afternoon);
 
                     }
 
                     if (night.list.length > 0) {
+
+                        night.list.sort((a,b)=>parseInt(a)-parseInt(b));
 
                         classHourList.push(night);
 
@@ -1092,7 +1099,7 @@ const originTeacherClickSearch = (key) => {
 
     return (dispatch,getState) => {
 
-        if (key !== ''){
+        if (key.trim() !== ''){
 
             let {SchoolID} = getState().LoginUser;
 
@@ -1329,7 +1336,7 @@ const targetTeacherClickSearch = (key) => {
 
     return (dispatch,getState) => {
 
-        if (key !== ''){
+        if (key.trim() !== ''){
 
             let {SchoolID} = getState().LoginUser;
 
@@ -1585,7 +1592,7 @@ const changeTimeTeacherClickSearch = (key) => {
 
     return (dispatch,getState) => {
 
-        if (key !== ''){
+        if (key.trim() !== ''){
 
             let {SchoolID} = getState().LoginUser;
 
@@ -2711,7 +2718,7 @@ const changeClassRoomTeacherSearch = (key) => {
 
     return (dispatch,getState) => {
 
-        if (key !== ''){
+        if (key.trim() !== ''){
 
             let {SchoolID} = getState().LoginUser;
 
@@ -2902,7 +2909,7 @@ const stopScheduleTeacherClickSearch = (key) => {
 
     return (dispatch,getState) => {
 
-        if (key !== ''){
+        if (key.trim() !== ''){
 
             let {SchoolID} = getState().LoginUser;
 

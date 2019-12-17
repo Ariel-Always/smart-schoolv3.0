@@ -128,6 +128,7 @@ class App extends Component{
 
 
 
+
     render(){
 
         const { AdjustLog } = this.props;
@@ -148,7 +149,7 @@ class App extends Component{
 
                 align: "center",
 
-                width: 72,
+                width: 70,
             },
 
             {
@@ -161,7 +162,7 @@ class App extends Component{
 
                 align:"center",
 
-                width:160
+                width:150
 
             },
 
@@ -181,7 +182,7 @@ class App extends Component{
 
                     return <div className="log-dec-wrapper">
 
-                        <div className="dec-detail">
+                        <div className="dec-detail" title={item}>
 
                             {item}
 
@@ -203,7 +204,7 @@ class App extends Component{
 
                 align:"center",
 
-                width:160,
+                width:150,
 
                 render:(item)=>{
 
@@ -229,7 +230,7 @@ class App extends Component{
 
                 align:"center",
 
-                width:160
+                width:150
 
             },
 

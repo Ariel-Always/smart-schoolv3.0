@@ -99,7 +99,7 @@ class ClassSingle extends Component{
 
         const {dispatch} = this.props;
 
-        if (e.value===''){
+        if (e.value.trim()===''){
 
             dispatch(AppAlertActions.alertWarn({title:"搜索不能为空！"}));
 
@@ -208,7 +208,9 @@ class ClassSingle extends Component{
 
         dispatch({type:CSActions.MANAGER_CS_SCHEDULE_DETAIL_MODAL_HIDE});
 
-        ComPageRefresh.ComPageUpdate(dispatch);
+        /*ComPageRefresh.ComPageUpdate(dispatch);*/
+
+        dispatch(CSActions.WeekUpdate());
 
     }
 

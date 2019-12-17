@@ -7,8 +7,9 @@ import DataChange from '../../action/data/DataChange';
 import  ApiActions from '../../action/data/Api'
 import AppAlertAction from '../../action/UI/AppAlertAction';
 import default_school_logo from '../../../images/default_school_logo.png'
+// import ClassCropperModal from '../CorpModle/ClassCropperModal'
 import boom_school_logo from '../../../images/boom_school_logo.png'
-
+const MAX_FILE_SIZE = 2 * 1024 * 1024 // 文件最大限制为2M
 
 class SchoolnfoSetting extends Component {
     constructor(props) {
@@ -22,6 +23,10 @@ class SchoolnfoSetting extends Component {
             emptyCodeTipsShow:false,
             tipsTitle:"",
             codeTipsTitle:"",
+            selectedImageFile:null,
+            coreModalVisible:false,
+            coreResultImage:null,
+            imageUploadModal:false
          
             
         }
@@ -69,26 +74,6 @@ class SchoolnfoSetting extends Component {
         let SchoolSessionType=""
         console.log(primaryNum ,middleNum ,SchoolCode, SchoolName,SchoolLogoUrl);
 
-        // switch (periodInfo) {
-        //     case periodInfo[0].checked === true:
-        //         SchoolType = 1
-        //         break;
-        //     case periodInfo[0].checked === true && periodInfo[1].checked === true:
-        //         SchoolType = 3
-        //         break;
-        //     case periodInfo[1].checked === true:
-        //         SchoolType = 2
-        //         break;
-        //     case periodInfo[0].checked === true && periodInfo[1].checked === true && periodInfo[2].checked === true:
-        //         SchoolType = 7
-        //         break;
-        //     case periodInfo[2].checked === true:
-        //         SchoolType = 4
-        //         break;
-        //     default:
-        //         SchoolType = "error";
-        //         break
-        // }
         if (periodInfo[0].checked === true && periodInfo[1].checked === false && periodInfo[2].checked === false) {
             SchoolType = 1
         } else if (periodInfo[1].checked === true && periodInfo[0].checked === false && periodInfo[2].checked === false) {
@@ -105,10 +90,6 @@ class SchoolnfoSetting extends Component {
         else {
             SchoolType = "error";
         }
-
-            //    if(item.checked===true)
-        
-
 
         // let total= parseInt(primaryNum)  + parseInt(middleNum)+parseInt(highNum);
         
@@ -333,6 +314,10 @@ handelSchoolSystem = (e) => {
 
 //监听学校代码的获取事件
       getSchoolCode=(e)=>{
+
+        let valueableCode=e.target.value.substring(0,20)
+        let timerID=""
+        
         if(e.target.value!==""){
             this.setState({
                 emptyCodeTipsShow:false
@@ -345,72 +330,114 @@ handelSchoolSystem = (e) => {
                 codeTipsTitle:"学校代码必须是数字"
             })
         }  
-        if(e.target.value.length>=21){
+        if(e.target.value.length>20){
+            
             this.setState({
                 codeTipsTitle:"学校代码不能超过20位数字",
                 emptyCodeTipsShow:true,
               
 
             })
-        }
 
+            timerID=setTimeout(()=>{
+                 this.setState({
+                    emptyCodeTipsShow:false
+                 },()=>{
+                    clearTimeout(timerID) 
+                 })
+              
+            },1000)
+           
+
+
+        }
         let {schoolInfo,dispatch}=this.props
             schoolInfo={
                 ...schoolInfo,
-                SchoolCode:e.target.value
+                SchoolCode:e.target.value.length>20?valueableCode:e.target.value
             }
                 
-                // console.log(this.state.SchInfoUpdate.SchoolCode)
+                
                 dispatch({
                     type:DataChange.REFRESH_SCHOOL_INFO,
                     data:schoolInfo
                 })
+               
       }  
 
+//学校代码输入框失去焦点后的回调事件
+visibleCode=(e)=>{
+    if(e.target.value===""){
+        this.setState({
+            emptyCodeTipsShow:true,
+            codeTipsTitle:"学校代码不能为空"
+        })
+    }
+    else if(e.target.value.length>20){
+        this.setState({
+            emptyCodeTipsShow:true,
+            codeTipsTitle:"学校代码不能超过20位数字"
+        })
+    }
+    else{
+        this.setState({
+            emptyCodeTipsShow:false
+        })
+    }
+    
+} 
 
 //监听学校名字改变的事件
-      getSchoolName=(e)=>{
-        
-          if(e.target.value!==""){
-            this.setState({
-                emptyNameTipsShow:false
-            })
+getSchoolName = (e) => {
+    let { schoolInfo, dispatch } = this.props
+    let timerID=0
 
-
-          }
-
-          if(e.target.value.length>=21){
-              this.setState({
-                  tipsTitle:"学校名称不能超过20个字符",
-                  emptyNameTipsShow:true,
-                  
-
-              })
-          }
-         
-
-          console.log(e.target.value)
-          let {schoolInfo,dispatch}=this.props
-          schoolInfo={
-              ...schoolInfo,
-              SchoolName:e.target.value
-          }
-
-          dispatch({
-              type:DataChange.REFRESH_SCHOOL_INFO,
-              data:schoolInfo
-          })
+    //定义输入数据的有效长度
+    let valueableLength = ""
+    //当学校名称不为空，提示框信息不显示
     
+    if (e.target.value !== "") {
 
+        this.setState({
+            emptyNameTipsShow: false
+        })
 
-      }
+        //当输入数据长度超过20,提示学校名称长度不能超过20
+        // 截取前20个作为输入
+        if (e.target.value.length > 20) {
+            
+            valueableLength = e.target.value.substring(0, 20)
+            this.setState({
+                tipsTitle: "学校名称不能超过20个字符",
+                emptyNameTipsShow: true,
+
+            })
+            timerID= setTimeout(()=>{
+                this.setState({
+                    emptyNameTipsShow: false
+                        },()=>{
+                            clearInterval(timerID);
+                        })
+            },1000)
+
+        }
  
 
-//配合使用onClick 无用的onChange回调
-    tempFunction=()=>{
-        
     }
-//控制antd提示框提示语句的显示或者消失
+    schoolInfo = {
+        ...schoolInfo,
+        SchoolName: e.target.value.length > 20 ? valueableLength : e.target.value
+
+    }
+
+    dispatch({
+        type: DataChange.REFRESH_SCHOOL_INFO,
+        data: schoolInfo
+    })
+
+} 
+ 
+//学校名称输入框失去焦点后的回调事件
     visibleName=(e)=>{
         if(e.target.value===""){
             this.setState({
@@ -418,35 +445,83 @@ handelSchoolSystem = (e) => {
                 tipsTitle:"学校名称不能为空"
             })
         }
-        else{
+        else if(e.target.value.length>20){
             this.setState({
-                emptyNameTipsShow:false
+                emptyNameTipsShow:true,
+                tipsTitle:"学校名称不能超过20个字符"
+            })
+        }
+        else {
+            this.setState({
+                emptyNameTipsShow:false,
+               
             })
         }
         
     }
-    visibleCode=(e)=>{
-        if(e.target.value===""){
+
+//配合使用onClick 无用的onChange回调
+tempFunction=()=>{
+        
+}
+
+//上传图片的时候file输入框的监听事件
+handleFileChange=(e)=>{
+    const  {dispatch} =this.props
+    const file =e.target.files[0];
+    if(file){
+        if(file.size<=MAX_FILE_SIZE){
             this.setState({
-                emptyCodeTipsShow:true,
-                codeTipsTitle:"学校代码不能为空"
+                selectedImageFile:file //将文件占时存放到state中
+            },()=>{
+                this.setState({
+                    coreModalVisible:true//弹出裁剪框
+                })
+                console.log(file)
             })
         }
         else{
-            this.setState({
-                emptyCodeTipsShow:false
-            })
+            dispatch(AppAlertAction.alertError({title:"文件过大"}))
         }
-        
-    } 
+    }
+}
 
+
+handleGetResultImgUrl = key => blob => {
+    const str = URL.createObjectURL(blob)
+    this.setState({
+      [key]: str
+    })
+  }
+
+
+//图片上传弹层点击事件
+imageUpload=()=>{
+    this.setState({
+        imageUploadModal:true,
+        edit_visible:false
+    })
+}
+
+//图片上传弹层关闭和取消事件
+upLoadCancel=()=>{
+
+    this.setState({
+        imageUploadModal:false,
+        edit_visible:true
+    })
+    console.log("hhhh")
+}
+//图片上传弹层确认按钮点击事件
 
 
     render() {
         const {  schoolInfo,semesterloading ,periodInfo} = this.props;
-        console.log(periodInfo)
+        // console.log(periodInfo)
         let schoolSys ='';
         let schoolLength='';
+
+
 
 //根据学校类型选择渲染内容
             switch(schoolInfo.SchoolType){
@@ -519,13 +594,49 @@ handelSchoolSystem = (e) => {
                     width={"724px"}
                     bodyStyle={{ height: "348px" }}
                     visible={this.state.edit_visible}
+                    okText="保存"
 
                 >
                     <div className="editContent">
-                        <div className="content-left">
-                            <div className="school-logo"> <img  src={boom_school_logo}/* src={schoolInfo.SchoolLogoUrl} */ alt=""/></div>
-                            <button className="btn choose-pic">选择图片</button>
-                            <button className="btn upload-pic">上传图片</button>
+                        <div className="content-left"> 
+                            <div className="school-logo">
+                             <img  src={boom_school_logo}/* src={schoolInfo.SchoolLogoUrl} */ alt=""/>
+                             </div>
+                           
+                         {/*  <label  className='btn choose-pic'>
+                                <div className="inputBox">上传图片</div>
+                            
+                                <input type="file"  style={{display:"none"}}
+                                    onChange={this.handleFileChange}
+                                    accept="image/jpg,image/png"
+                                /* className="btn choose-pic"  /></label> */}
+                              {/*this.state.coreModalVisible && (
+                                <ClassCropperModal
+                                    uploadedImageFile={this.state.selectedImageFile}
+                                    onClose={() => {
+                                    this.setState({ coreModalVisible: false })
+                                    }}
+                                    onSubmit={this.handleGetResultImgUrl('coreResultImage')}
+                                />
+                                )*/} 
+                            <button className="btn choose-pic"  onClick={this.imageUpload}>上传图片</button>
+                                <Modal
+                                    type="1"
+                                    title="图片上传"
+                                    onClick={this.imageUpload}
+                                    visible={this.state.imageUploadModal}
+                                    onOk={this.upLoadComfirm}
+                                    onCancel={this.upLoadCancel}
+                                    width={"724px"}
+                                    bodyStyle={{ height: "348px" }}
+                                    okText="确认上传"
+
+
+                                
+                                >
+
+                                </Modal>
+                            <button className="btn upload-pic">使用默认</button>
                             <p className="upload-tips">上传要求：请上传png/jpg格式的图片，图片大小不能超过2MB</p>
                         </div>
 
@@ -534,8 +645,7 @@ handelSchoolSystem = (e) => {
                             <div className="win-shcool-name">学校名称:
                             <Tooltip  visible={this.state.emptyNameTipsShow} placement="right" title={this.state.tipsTitle}>
                             <input type="text"  value={schoolInfo.SchoolName} onChange={this.getSchoolName}
-                                //   disabled={this.state.inputBan}   
-                                maxLength="21"
+                               
                             onBlur={this.visibleName}
                             />
                             
@@ -547,7 +657,7 @@ handelSchoolSystem = (e) => {
                             <div className="win-school-code">学校代码: 
                             <Tooltip  visible={this.state.emptyCodeTipsShow} placement="right" title={this.state.codeTipsTitle}>
                             <input type="text"  value={schoolInfo.SchoolCode} onChange={this.getSchoolCode}
-                                 maxLength="21"
+                               
                                 onBlur={this.visibleCode}
                             />
                             </Tooltip>

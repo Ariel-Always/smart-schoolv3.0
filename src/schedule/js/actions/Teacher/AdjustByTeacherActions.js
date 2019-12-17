@@ -294,7 +294,7 @@ const replaceScheduleInit = () => {
 
                                    id:item.ClassID,
 
-                                   name:item.ClasstName
+                                   name:item.ClassName
 
                                }
 
@@ -322,7 +322,7 @@ const replaceScheduleInit = () => {
 
                        let subjectObj = { id:subject.SubjectID,name:subject.SubjectName };
 
-                       let classList = data.ItemClass.length>1?data.ItemClass.map(item => {
+                       let classList = data.ItemClass.length>0?data.ItemClass.map(item => {
 
                            return {
 
@@ -377,7 +377,7 @@ const replaceTeacherClickSearch = (key) => {
 
     return (dispatch,getState) => {
 
-        if (key !== ''){
+        if (key.trim() !== ''){
 
             let {SchoolID} = getState().LoginUser;
 
@@ -481,9 +481,11 @@ const radioChange = (id) => {
 
                 if (id === 'month') {
 
-                    const {ItemMoth} = data;
+                    const {ItemMonth} = data;
 
-                    let list = ItemMoth.map(item => {
+                    console.log(data);
+
+                    let list = ItemMonth.map(item => {
 
                         return {
 
@@ -495,6 +497,8 @@ const radioChange = (id) => {
 
                     });
 
+                    list.sort((a,b)=>{ return parseInt(a.id) - parseInt(b.id) });
+
                     dispatch({type: REPLACE_SHCEDULE_MONTHS_LIST_UPDATE, data: list});
                 }
 
@@ -503,6 +507,8 @@ const radioChange = (id) => {
                     const { ItemWeek } = data;
 
                     let  list = ItemWeek.map(item => item.WeekNO);
+
+                    list.sort((a,b)=>parseInt(a) - parseInt(b));
 
                     dispatch({type:REPLACE_SHCEDULE_WEEK_LIST_UPDATE,data:list});
 
@@ -550,17 +556,23 @@ const radioChange = (id) => {
 
                     if (morning.list.length>0){
 
+                        morning.list.sort((a,b)=>parseInt(a)-parseInt(b));
+
                         classHourList.push(morning);
 
                     }
 
                     if (afternoon.list.length>0){
 
+                        afternoon.list.sort((a,b)=>parseInt(a)-parseInt(b));
+
                         classHourList.push(afternoon);
 
                     }
 
                     if (night.list.length>0){
+
+                        night.list.sort((a,b)=>parseInt(a)-parseInt(b));
 
                         classHourList.push(night);
 
@@ -1072,7 +1084,7 @@ const targetTeacherClickSearch = (key) => {
 
     return (dispatch,getState) => {
 
-        if (key !== ''){
+        if (key.trim() !== ''){
 
             let SchoolID = getState().LoginUser;
 

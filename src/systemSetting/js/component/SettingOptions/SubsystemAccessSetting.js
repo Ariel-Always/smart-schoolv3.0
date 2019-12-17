@@ -363,7 +363,12 @@ class SubsystemAccessSetting extends Component {
                     </div>
 
                     <div className="subsystem-detail" style={{ display: `${exeit === "0" ? 'block' : 'none'}` }}>
-                        共计<span>{subsystemInfo.Total}</span>个系统，其中<span>{subsystemInfo.TotalClose}</span>个已关闭访问</div>
+                        共计<span>{subsystemInfo.Total}</span>个系统
+                        
+                        {
+                            this.state.UserDropValue===""&&this.state.AccessDropValue==="2"&&subsystemInfo.TotalClose!==0?<React.Fragment>，其中<span>{subsystemInfo.TotalClose }</span>个已关闭访问</React.Fragment>:""
+                        }
+                        </div>
 
                     <div className="clearfix subsystem-container">
 

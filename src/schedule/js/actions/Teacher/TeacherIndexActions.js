@@ -358,19 +358,29 @@ const STTPageInit = () => {
                     }else{
 
                         let list = res[1].map((i) => {
+                            
+                            if (i.SubjectID===res[0].ItemSubject[0].SubjectID){
 
-                            return {
+                                return {
 
-                                id:i.TeacherID,
+                                    id:i.TeacherID,
 
-                                name:i.TeacherName
+                                    name:i.TeacherName
+
+                                }
+
+                            }else{
+
+                                return;
 
                             }
 
-                        });
+
+
+                        }).filter(it=>it!==undefined);
 
                         //查找subjectID和对应的Subjectname
-                        let subjectID = '';
+                        /*let subjectID = '';
 
                         for (let i = 0; i <= res[1].length-1; i++){
 
@@ -381,6 +391,8 @@ const STTPageInit = () => {
                         }
 
                         let subjectName = subjectList.find((item) => {return item.SubjectID === subjectID }).SubjectName;
+*/
+                        let subjectName = res[0].ItemSubject[0].SubjectName;
 
                         dispatch({type:STTActions.SEARCH_TEACHER_RESULT_UPDATE,data:list});
 

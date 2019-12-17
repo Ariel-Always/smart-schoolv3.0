@@ -1,6 +1,6 @@
 import React,{ Component } from 'react';
 
-import {Modal, Loading, Search} from "../../../common";
+import {Modal, Loading, Search,Empty} from "../../../common";
 
 import ScrollBars from 'react-custom-scrollbars';
 
@@ -67,7 +67,7 @@ class ReplaceScheduleModal extends Component{
 
                                 onChange={e=>SearchValueChange(e)}
 
-                                placeHolder='输入教室名称进行搜索'
+                                placeHolder='输入教师名称进行搜索'
 
                                 onClickSearch={e=>ReplaceSearchClick(SearchValue)}
 
@@ -90,11 +90,11 @@ class ReplaceScheduleModal extends Component{
 
                                     SearchWrapperShow?
 
-                                        SearchList.map((item,key)=>{
+                                        SearchList.length>0?SearchList.map((item,key)=>{
 
                                             return <div key={key} className={`teacher-item ${ActiveTeacherID===item.ID?'active':''}`} title={item.Name} onClick={e=>ReplaceTeacherPick(item.ID)}>{item.Name}</div>
 
-                                        })
+                                        }):<Empty type="5" title="没有搜索到内容,请换个搜索词试试"></Empty>
 
                                         :
 
