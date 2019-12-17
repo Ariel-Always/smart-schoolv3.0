@@ -520,7 +520,7 @@ const ClassRoomSearchClick = (SearchValue) => {
 
     return (dispatch,getState)=>{
 
-        const Key = SearchValue;
+        const Key = SearchValue.trim();
 
         if (Key){
 
@@ -707,7 +707,7 @@ const ReplaceSearchClick = (SearchValue) => {
 
     return (dispatch,getState)=>{
 
-        const Key = SearchValue;
+        const Key = SearchValue.trim();
 
         if (Key){
 

@@ -100,7 +100,7 @@ class Teacher extends Component{
 
         const {dispatch} = this.props;
 
-        if (e.value===''){
+        if (e.value.trim()===''){
 
             dispatch(AppAlertActions.alertWarn({title:"搜索不能为空！"}));
 

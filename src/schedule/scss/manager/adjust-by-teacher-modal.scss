@@ -22,16 +22,21 @@
 
   }
 
+  .ant-tabs{
+
+    overflow: inherit;
+
+  }
+
   .modal-wrapper{
 
-    float: left;
+   /* float: left;*/
 
     width: 840px;
 
    margin-left: -36px;
 
     margin-top: -24px;
-
 
   }
 
@@ -96,7 +101,7 @@
 
   .dropdown_container{
 
-    position: fixed;
+    position:absolute;
 
     margin-top: -2px;
 

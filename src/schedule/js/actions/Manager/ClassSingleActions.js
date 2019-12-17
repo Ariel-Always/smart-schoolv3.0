@@ -687,7 +687,7 @@ const ClassRoomSearchClick = (SearchValue) => {
 
     return (dispatch,getState)=>{
 
-        const Key = SearchValue;
+        const Key = SearchValue.trim();
 
         if (Key){
 
@@ -874,7 +874,7 @@ const ReplaceSearchClick = (SearchValue) => {
 
     return (dispatch,getState)=>{
 
-        const Key = SearchValue;
+        const Key = SearchValue.trim();
 
         if (Key){
 
@@ -886,7 +886,7 @@ const ReplaceSearchClick = (SearchValue) => {
 
             const { SchoolID } = getState().LoginUser;
 
-            const { SubjectID } = getState().Manager.ClassSingle.ScheduleDetailModal;
+            const { SubjectID } = getState().Manager.ClassSingle.ScheduleDetail;
 
             let SearchList = [];
 

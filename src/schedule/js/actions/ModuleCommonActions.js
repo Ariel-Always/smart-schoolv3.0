@@ -42,43 +42,57 @@ const getCommonInfo = () => {
 
             }
 
-            //获取学段等等的信息
+            //如果是导入界面
+            const Hash = location.hash;
 
-            ApiActions.GetTermAndPeriodAndWeekNOInfo({SchoolID,UserID,UserType,dispatch}).then(data => {
+            if (Hash.includes('Import')||Hash.includes('adjustlog')||Hash.includes('scheduleSetting')){
 
-                if (data){
+                dispatch({type:LoginUserActions.UPDATE_LOGIN_USER,data:UserInfo});
 
-                    if ( UserType === 1 ){
+            }else{
 
-                        if ( data.ItemPeriod.length  <= 1 ){
+                //获取学段等等的信息
 
-                            dispatch({type:ModuleSettingActions.TIME_BARNER_HIDE});
+                ApiActions.GetTermAndPeriodAndWeekNOInfo({SchoolID,UserID,UserType,dispatch}).then(data => {
 
-                        }else{
+                    if (data){
 
-                            dispatch({type:ModuleSettingActions.TIME_BARNER_SHOW});
+                        if ( UserType === 1 ){
+
+                            if ( data.ItemPeriod.length  <= 1 ){
+
+                                dispatch({type:ModuleSettingActions.TIME_BARNER_HIDE});
+
+                            }else{
+
+                                dispatch({type:ModuleSettingActions.TIME_BARNER_SHOW});
+
+                            }
 
                         }
 
+                        const {ItemPeriod,DefaultPeriod} = data;
+
+                        if (DefaultPeriod){
+
+                            let key = ItemPeriod.findIndex(item=>item.PeriodID===DefaultPeriod);
+
+                            dispatch({type:PeriodWeekTermActions.PERIOD_VALUE_CHANGE,key:key});
+
+                        }
+
+                        dispatch({type:PeriodWeekTermActions.UPDATE_PERIOD_TERM_WEEK,data:data});
+
+                        dispatch({type:LoginUserActions.UPDATE_LOGIN_USER,data:UserInfo});
+
                     }
 
-                    const {ItemPeriod,DefaultPeriod} = data;
+                });
 
-                    if (DefaultPeriod){
 
-                        let key = ItemPeriod.findIndex(item=>item.PeriodID===DefaultPeriod);
+            }
 
-                        dispatch({type:PeriodWeekTermActions.PERIOD_VALUE_CHANGE,key:key});
 
-                    }
-
-                    dispatch({type:PeriodWeekTermActions.UPDATE_PERIOD_TERM_WEEK,data:data});
-
-                    dispatch({type:LoginUserActions.UPDATE_LOGIN_USER,data:UserInfo});
-
-                }
-
-            });
     }
 
 };
