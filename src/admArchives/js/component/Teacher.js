@@ -429,11 +429,16 @@ class Teacher extends React.Component {
       return;
     } else {
       if (picObj.picUploader.uploadSubmit()) {
+        let PhotoEdit = 0;
+        if (picObj.picUploader.isChanged()) {
+          PhotoEdit = 1;
+        }
         postData(
           CONFIG.UserInfoProxy + url,
           {
             ...changeTeacherMsg,
-            photoPath: picObj.picUploader.getCurImgPath()
+            photoPath: picObj.picUploader.getCurImgPath(),
+            PhotoEdit:PhotoEdit
           },
           2
         )

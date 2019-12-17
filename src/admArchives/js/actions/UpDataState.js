@@ -577,7 +577,7 @@ const getTeacherClassMsg = (url,route='0') => {
           let {DataState} = getState();
           if(DataState.GradeClassMsg.TeacherClass instanceof Array || DataState.GradeClassMsg.TeacherClass[0]){
             dispatch(
-              getDidSignUpLog(
+              getWillSignUpLog(
                 "/GetSignUpLogToPage?SchoolID=" +
                 DataState.LoginUser.SchoolID +
                   "&PageIndex=0&PageSize=10&status="+route+"&classID=" +

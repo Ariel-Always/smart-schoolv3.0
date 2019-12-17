@@ -719,6 +719,10 @@ class Admin extends React.Component {
     //     if (child.length !== 0)
     //         ModulesID.push(child.join())
     // })
+    let PhotoEdit = 0
+    if(picObj.picUploader.isChanged()){
+      PhotoEdit = 1
+    }
     if (picObj.picUploader.uploadSubmit()) {
       postData(
         CONFIG.UserAccountProxy + url,
@@ -727,7 +731,8 @@ class Admin extends React.Component {
           UserName: DataState.AdminPreview.TrasferData.UserName,
           ModuleIDs: DataState.AdminPreview.TrasferData.ModuleIDs,
           PhotoPath: picObj.picUploader.getCurImgPath(),
-          Pwd: "0"
+          Pwd: "0",
+          PhotoEdit:PhotoEdit
         },
         2
       )

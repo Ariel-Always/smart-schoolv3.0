@@ -775,7 +775,7 @@ class EditModal extends React.Component {
                             {this.state.type === 'student' ? '学号：' : '工号：'}
                         </span>
                         <div className='culonm-2'>
-                            <span style={{ display: this.state.UserKey !== 'add' ? 'block' : 'none' }} className='UserID-text'>{this.state.UserIDChange}</span>
+                            <span style={{ display: this.state.UserKey !== 'add' ? 'block' : 'none' }} className='UserID-text' title={this.state.UserIDChange}>{this.state.UserIDChange}</span>
                             <Tips overlayClassName='tips' visible={EditModalTipsVisible.UserIDTipsVisible} autoAdjustOverflow={false} getPopupContainer= {e=>e.parentNode} title={(this.state.type === 'student' ? '学号' : this.state.type === 'teacher' ? '工号' : '学号') + this.state.UserIDTipsTitle} >
                                 <Input maxLength={24} id="123" style={{ display: this.state.UserKey === 'add' ? 'block' : 'none' }} className='UserName-input'
                                     type='text'
@@ -995,6 +995,7 @@ class EditModal extends React.Component {
                                     className='inputarea'
                                     rows='2'
                                     cols='30'
+                                    height='56'
                                     name='EditAddress'
                                     value={this.state.AddressChange}
                                     onChange={this.onEditAddressChange}

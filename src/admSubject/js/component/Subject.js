@@ -25,6 +25,7 @@ class Subject extends React.Component {
           title: "学科名称",
           align: "left",
           key: "SubjectName",
+          width:270,
           dataIndex: "SubjectName",
           render: arr => {
             return (
@@ -46,6 +47,7 @@ class Subject extends React.Component {
         {
           title: "开课年级",
           align: "left",
+          width:340,
           dataIndex: "Grades",
           key: "Grades",
           render: Grades => {
@@ -82,6 +84,7 @@ class Subject extends React.Component {
         {
           title: "教研组长",
           align: "left",
+          width:196,
           dataIndex: "Teacher",
           key: "Teacher",
           render: Teacher => {
@@ -119,6 +122,7 @@ class Subject extends React.Component {
         {
           title: "操作",
           align: "center",
+          width:290,
           key: "handle",
           dataIndex: "key",
           render: key => {

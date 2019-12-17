@@ -637,7 +637,7 @@ class EditModal extends React.Component {
                               key={child.value + index}
                               title={child.PowerChildName}
                             >
-                              {child.PowerChildName}
+                              <span className='checkChild-title' title={child.PowerChildName}>{child.PowerChildName}</span>
                             </CheckBox>
                           );
                         }

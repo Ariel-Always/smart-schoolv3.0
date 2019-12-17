@@ -146,6 +146,10 @@ $image-url: "../images";
                         }
                         th {
                             padding: 0;
+                            height: 56px;
+                            .ant-table-header-column .ant-table-column-sorters:before {
+                                height: 56px;
+                            }
                         }
                     }
                     .ant-table-row {

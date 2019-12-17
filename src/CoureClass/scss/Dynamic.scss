@@ -119,8 +119,11 @@
         .ant-table-column-title {
             white-space: nowrap;
         }
+        .ant-checkbox-group {
+            float: left;
+        }
         .checkAll-box {
-            margin-top: -50px;
+            margin-top: -45px;
             margin-left: 33px;
             float: left;
             .ant-checkbox {

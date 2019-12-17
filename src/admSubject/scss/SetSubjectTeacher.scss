@@ -137,14 +137,24 @@
                 width: 100%;
                 margin: 10px auto;
             }
+            .DropMenu {
+                float: left;
+                width: 120px;
+                height: 28px;
+                margin-right: 10px;
+            }
             .TeacherChange {
                 display: inline-block;
-                margin-left: 140px;
+                //margin-left: 140px;
                 font-size: 14px;
                 color: #ff6600;
                 line-height: 28px;
                 text-align: center;
                 transform: translateY(-15%);
+                -webkit-transform: translateY(-15%);
+                -moz-transform: translateY(-15%);
+                -ms-transform: translateY(-15%);
+                -o-transform: translateY(-15%);
             }
         }
     }

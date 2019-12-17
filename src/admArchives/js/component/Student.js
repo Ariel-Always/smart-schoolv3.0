@@ -251,7 +251,8 @@ class Student extends React.Component {
 
     if (
       nextProps.DataState.GradeClassMsg.returnData.AllClasses &&
-      Select.GradeID && Select.GradeID.value !== 0
+      Select.GradeID &&
+      Select.GradeID.value !== 0
     ) {
       let ClassArr =
         nextProps.DataState.GradeClassMsg.returnData.AllClasses[
@@ -526,11 +527,16 @@ class Student extends React.Component {
     } else {
       if (picObj.picUploader.uploadSubmit()) {
         // console.log(picObj.picUploader.getCurImgPath())
+        let PhotoEdit = 0;
+        if (picObj.picUploader.isChanged()) {
+          PhotoEdit = 1;
+        }
         postData(
           CONFIG.UserInfoProxy + url,
           {
             ...changeStudentMsg,
-            photoPath: picObj.picUploader.getCurImgPath()
+            photoPath: picObj.picUploader.getCurImgPath(),
+            PhotoEdit: PhotoEdit
           },
           2
         )
@@ -1091,7 +1097,7 @@ class Student extends React.Component {
             "&PageIndex=" +
             (this.state.pagination - 1) +
             "&PageSize=10&" +
-            sortType,
+            sortType+this.state.keyword,
           this.state.firstSelect,
           this.state.secondSelect
         )
@@ -1289,14 +1295,14 @@ class Student extends React.Component {
                   ></Table>
                 </CheckBoxGroup>
                 {DataState.GradeStudentPreview.Total > 0 ? (
-                  <div style={{    display: 'inline-block'}}>
-                  <CheckBox
-                    className="checkAll-box"
-                    type="gray"
-                    onChange={this.OnCheckAllChange}
-                    checked={this.state.checkAll}
-                  >
-                    <span className="checkAll-title">全选</span>
+                  <div style={{ display: "inline-block" }}>
+                    <CheckBox
+                      className="checkAll-box"
+                      type="gray"
+                      onChange={this.OnCheckAllChange}
+                      checked={this.state.checkAll}
+                    >
+                      <span className="checkAll-title">全选</span>
                     </CheckBox>
                     <Button
                       onClick={this.onDeleteAllClick}
