@@ -10,36 +10,51 @@ class APP extends Component {
 
     constructor(props) {
         super(props);
-        this.state={
 
-        }
         const { dispatch } = this.props;
         //获取接口一种的数据
         // dispatch(LoadingData.getLinkData());
         //获取接口二中的数据
-        // dispatch(LoadingData.getResBaseData());
+        //dispatch(LoadingData.getResBaseData());
         TokenCheck_Connect()
 
-        if (sessionStorage.getItem('userInfo')) {
-            dispatch(HomeData.getLinkData("P1"))
-            dispatch(HomeData.getPeriodList())
-            // dispatch(HomeData.getResLinkList());
-            // dispatch(HomeData.getMyResLibList())
+        if (sessionStorage.getItem('UserInfo')) {
+            // let SubjectId = document.cookie
+            let SubjectId="S2-English"
+            // alert(SubjectId)
+            const { dispatch } = this.props;
+           
+            dispatch({
+                type: HomeData.GETCOURSEID_FROM_COOKIE,
+                data: SubjectId
+            })
+            dispatch(HomeData.getPeriodList(SubjectId))
+
 
 
 
         } else {
             let timerID = setInterval(() => {
                 if (sessionStorage.getItem('UserInfo')) {
-                    dispatch(HomeData.getLinkData("P1"));
-                    dispatch(HomeData.getPeriodList());
-                    // dispatch(HomeData.getResLinkList());
-                    // dispatch(HomeData.getMyResLibList())
+                    let SubjectId = document.cookie
+                    const { dispatch } = this.props;
+                    dispatch({
+                        type: HomeData.GETCOURSEID_FROM_COOKIE,
+                        data: SubjectId
+                    })
+                    dispatch(HomeData.getPeriodList(SubjectId));
                     clearInterval(timerID)
                 }
+
             }, 20)
+
         }
 
+
+    }
+
+    senddata = (param) => {
+        return param
     }
 
 
@@ -73,9 +88,12 @@ class APP extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const { AppAlert } = state;
+    const { AppAlert, HomeDataUpdate } = state;
+    // console.log(HomeDataUpdate.PeriodList)
     return {
-        AppAlert: AppAlert
+        AppAlert: AppAlert,
+        PeriodList: HomeDataUpdate.PeriodList
+
     }
 }
 

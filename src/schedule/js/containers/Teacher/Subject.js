@@ -185,7 +185,7 @@ class Subject extends Component{
 
         dispatch({type:STSAction.TEACHER_STS_SCHEDULE_DETAIL_MODAL_HIDE});
 
-        ComPageRefresh.ComPageUpdate(dispatch);
+      /*  ComPageRefresh.ComPageUpdate(dispatch);*/
 
     }
 

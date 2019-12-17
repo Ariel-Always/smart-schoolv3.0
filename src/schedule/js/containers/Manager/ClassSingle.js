@@ -208,7 +208,9 @@ class ClassSingle extends Component{
 
         dispatch({type:CSActions.MANAGER_CS_SCHEDULE_DETAIL_MODAL_HIDE});
 
-        ComPageRefresh.ComPageUpdate(dispatch);
+        /*ComPageRefresh.ComPageUpdate(dispatch);*/
+
+        dispatch(CSActions.WeekUpdate());
 
     }
 

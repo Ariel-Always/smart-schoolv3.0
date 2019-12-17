@@ -160,7 +160,9 @@ class TeacherPersonalSchedule extends Component{
 
         dispatch({type:TPActions.TEACHER_TP_SCHEDULE_DETAIL_MODAL_HIDE});
 
-        ComPageRefresh.ComPageUpdate(dispatch);
+        /*ComPageRefresh.ComPageUpdate(dispatch);*/
+
+        dispatch(TPActions.TPSUpdate());
 
     }
 

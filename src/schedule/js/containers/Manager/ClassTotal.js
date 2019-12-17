@@ -195,7 +195,9 @@ class ClassTotal extends Component{
 
         dispatch({type:CTActions.MANAGER_CT_SCHEDULE_DETAIL_MODAL_HIDE});
 
-        ComPageRefresh.ComPageUpdate(dispatch);
+       /* ComPageRefresh.ComPageUpdate(dispatch);*/
+
+        dispatch(CTActions.ClassTotalPageUpdate());
 
     }
 

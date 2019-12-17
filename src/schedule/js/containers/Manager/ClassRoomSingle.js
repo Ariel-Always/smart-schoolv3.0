@@ -171,7 +171,9 @@ class ClassRoomSingle extends Component{
 
         dispatch({type:CRSActions.MANAGER_CRS_SCHEDULE_DETAIL_MODAL_HIDE});
 
-        ComPageRefresh.ComPageUpdate(dispatch);
+        /*ComPageRefresh.ComPageUpdate(dispatch);*/
+
+        dispatch(CRSActions.WeekUpdate());
 
     }
 

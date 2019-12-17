@@ -23,7 +23,10 @@ const getCurrentSemester = (SchoolID) => {
 
 
         ApiActions.getMethod(url).then(json => {
-            let semesterInfo = json.Data
+            let semesterInfo = json.Data;
+
+            console.log(semesterInfo);
+
             for (let item in semesterInfo) {
                 if (item === "Term") {
                     let termNum = semesterInfo[item][semesterInfo[item].length - 1]
@@ -40,30 +43,36 @@ const getCurrentSemester = (SchoolID) => {
                 else if (item === "TermStartDate") {
                     semesterInfo = {
                         ...semesterInfo,
-                        "StartYear": new Date(semesterInfo[item]).getFullYear(),
-                        "StartMonth": new Date(semesterInfo[item]).getMonth() + 1,
-                        "StartDay": new Date(semesterInfo[item]).getDate(),
+                        "StartYear": new Date(semesterInfo[item].replace(/-/g,'/')).getFullYear().toString(),
+                        "StartMonth": new Date(semesterInfo[item].replace(/-/g,'/')).getMonth() + 1,
+                        "StartDay": new Date(semesterInfo[item].replace(/-/g,'/')).getDate(),
                     }
 
                 }
                 else if (item === "TermEndDate") {
 
+                    
+
                     semesterInfo = {
                         ...semesterInfo,
-                        "EndYear": new Date(semesterInfo[item]).getFullYear(),
-                        "EndMonth": new Date(semesterInfo[item]).getMonth() + 1,
-                        "EndDay": new Date(semesterInfo[item]).getDate(),
+                        "EndYear": new Date(semesterInfo[item].replace(/-/g,'/')).getFullYear(),
+                        "EndMonth": new Date(semesterInfo[item].replace(/-/g,'/')).getMonth() + 1,
+                        "EndDay": new Date(semesterInfo[item].replace(/-/g,'/')).getDate(),
 
                     }
 
                 }
             }
+
             let SemesterName = `${semesterInfo.StartYear}-${semesterInfo.EndYear}`
             semesterInfo = {
                 ...semesterInfo,
                 "SemesterName": SemesterName
 
             }
+            console.log( typeof semesterInfo.StartYear) ;
+            console.log( typeof semesterInfo.StartMonth);
+            console.log( semesterInfo)
             if (json.StatusCode === 200) {
                 dispatch({
                     type: GET_CURRENT_SEMESTER_INFO,
@@ -72,6 +81,7 @@ const getCurrentSemester = (SchoolID) => {
                 dispatch({
                     type: SEMESTER_LOADING_HIDE
                 })
+             
 
             }
             else {

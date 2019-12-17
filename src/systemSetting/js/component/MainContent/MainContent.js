@@ -93,7 +93,7 @@ class MainContent extends Component {
 
         } else {
 
-            //如果为登录成功则开启定时器,直到登录后获取到token
+            //如果登录不成功则开启定时器,直到登录后获取到token
             let getUserInfo = setInterval(() => {
 
                 if (sessionStorage.getItem('UserInfo')) {

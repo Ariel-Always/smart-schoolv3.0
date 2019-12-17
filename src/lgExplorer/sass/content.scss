@@ -98,8 +98,11 @@
     }
     .main-content {
       // margin-left: 120px ;
-
+      min-height: 800px;
       width: 100%;
+      .ant-spin-nested-loading {
+        min-height: 600px;
+      }
 
       .wall {
         width: 100%;
@@ -224,10 +227,10 @@
     margin-top: 66px;
     .base-resource {
       width: 100%;
-      // height: 500px;
-      //   position: absolute;
-      //   left: 0;
-      min-height: 750px;
+    min-height: 750px;
+      .ant-spin-nested-loading {
+        min-height: 600px;
+      }
 
       //   vertical-align: middle;
       text-align: center;
@@ -309,53 +312,55 @@
     }
   }
   .page-three {
-    //   @include Hcenter();
     width: 1200px;
-    // background-color: rgb(10, 241, 230);
     min-height: 700px;
     display: none;
-    .pic-box {
-      position: relative;
-      left: 0;
-      top: 149px;
-      width: 100%;
-      height: 320px;
-      ul {
+    .ant-spin-nested-loading {
+      min-height: 600px;
+
+      .pic-box {
+        position: relative;
+        left: 0;
+        top: 149px;
         width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: space-between;
-        li {
-          list-style: none;
-          height: 319px;
-          width: 268px;
-          position: relative;
-          border-radius: 15px;
-          p {
-            position: absolute;
-            top: 235px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-family: MicrosoftYaHei;
-            font-size: 20px;
-            font-weight: normal;
-            font-stretch: normal;
-          }
-          &:nth-child(1) {
-            background: url("../images/base_tecplan.png");
-            color: #4a1900;
-          }
-          &:nth-child(2) {
-            background: url("../images/base_personal.png");
-            color: #003050;
-          }
-          &:nth-child(3) {
-            background: url("../images/base_store.png");
-            color: #00480d;
-          }
-          &:nth-child(4) {
-            background: url("../images/base_desktop.png");
-            color: #000b52;
+        height: 320px;
+        ul {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: space-between;
+          li {
+            list-style: none;
+            height: 319px;
+            width: 268px;
+            position: relative;
+            border-radius: 15px;
+            p {
+              position: absolute;
+              top: 235px;
+              left: 50%;
+              transform: translateX(-50%);
+              font-family: MicrosoftYaHei;
+              font-size: 20px;
+              font-weight: normal;
+              font-stretch: normal;
+            }
+            &:nth-child(1) {
+              background: url("../images/base_tecplan.png");
+              color: #4a1900;
+            }
+            &:nth-child(2) {
+              background: url("../images/base_personal.png");
+              color: #003050;
+            }
+            &:nth-child(3) {
+              background: url("../images/base_store.png");
+              color: #00480d;
+            }
+            &:nth-child(4) {
+              background: url("../images/base_desktop.png");
+              color: #000b52;
+            }
           }
         }
       }

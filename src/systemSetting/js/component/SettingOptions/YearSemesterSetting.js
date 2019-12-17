@@ -339,7 +339,8 @@ class YearSemesterSetting extends Component {
                                     <div className="year-num">
                                         {
                                             
-                                            `${semesterInfo.StartYear} - ${semesterInfo.EndYear}`
+                                            // `${semesterInfo.StartYear} - ${semesterInfo.EndYear}`
+                                           `${semesterInfo.SemesterName}` 
                                         }
                                     </div>
                                     <span>学年</span>

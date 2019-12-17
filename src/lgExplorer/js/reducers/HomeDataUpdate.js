@@ -5,8 +5,12 @@ const HomeDataUpdate = (state = {
     WebsiteResLink: [],
     PeriodList: [],
     ResLinkList: [],
-    MyResLibList:[],
-    websiteLoading:true
+    MyResLibList: [],
+    defaultLoading: true,
+    periodWebsiteLoading: true,
+    resourceLoading: true,
+    SubjectId:""
+
 
 }, action) => {
     switch (action.type) {
@@ -33,20 +37,35 @@ const HomeDataUpdate = (state = {
                 ResLinkList: action.data
             }
         case HomeData.REFRESH_RESOURCELINK_INFO:
-            return{
+            return {
                 ...state,
                 ResLinkList: action.data
             }
         case HomeData.GET_MYRESOURCE_INFO:
+            return {
+                ...state,
+                MyResLibList: action.data
+            }
+        case HomeData.INIT_LOADING_HIDE:
+            return {
+                ...state,
+                defaultLoading: false
+            }
+        case HomeData.PERIOD_WEBLISTLINK_LOADING:
+            return {
+                ...state,
+                periodWebsiteLoading: action.data
+            }
+        case HomeData.RESOURCE_LOADING:
             return{
                 ...state,
-                MyResLibList:action.data
-            } 
-        case HomeData.WEBSITELINK_LOADING_HIDE:
+                resourceLoading:action.data
+            }
+        case HomeData.GETCOURSEID_FROM_COOKIE:
             return{
                 ...state,
-                websiteLoading:false
-            }       
+                SubjectId:action.data
+            }    
 
         default:
             return state;

@@ -170,7 +170,7 @@ class ClassStudent extends Component{
 
         dispatch({type:CSActions.TEACHER_CS_SCHEDULE_DETAIL_MODAL_HIDE});
 
-        ComPageRefresh.ComPageUpdate(dispatch);
+        /*ComPageRefresh.ComPageUpdate(dispatch);*/
 
     }
 

@@ -1,19 +1,15 @@
 import React, { Component } from 'react';
 import '../../../sass/content.scss';
-import { getData, postData } from '../../../../common/js/fetch'
 import { connect } from 'react-redux'
 import { Loading } from '../../../../common'
-import bg_img1 from '../../../images/bg_tomato.png'
-import bg_img2 from '../../../images/bg_green.png'
-import bg_img3 from '../../../images/bg_blue.png'
+
 import HomeData from '../../action/HomeData'
-// import { TokenCheck_Connect } from '../../../../common/js/disconnect';
+import { TokenCheck_Connect } from '../../../../common/js/disconnect';
 import AppAlertAction from '../../action/AppAlertAction'
 import pic from '../../../images/default_web.png'
-import { ok } from 'assert';
-const url2 = " http://192.168.2.202:7300/mock/5db974a3a1aded10689632eb/example/interface4";
+import publicMethod from '../../../../common/js/public.js'
 
-const bgList = [bg_img1, bg_img2, bg_img3];
+const url2 = " http://192.168.2.202:7300/mock/5db974a3a1aded10689632eb/example/interface4";
 
 class Content extends Component {
     constructor(props) {
@@ -26,30 +22,6 @@ class Content extends Component {
         }
 
 
-        // const { dispatch } = this.props;
-        // //获取接口一种的数据
-        // // dispatch(LoadingData.getLinkData());
-        // //获取接口二中的数据
-        // // dispatch(LoadingData.getResBaseData());
-        // TokenCheck_Connect()
-
-        // if (sessionStorage.getItem('userInfo')) {
-        //     dispatch(HomeData.getLinkData("P1"))
-        //     dispatch(HomeData.getPeriodList())
-
-
-
-        // } else {
-        //     let timerID = setInterval(() => {
-        //         if (sessionStorage.getItem('UserInfo')) {
-        //             dispatch(HomeData.getLinkData("P1"));
-        //             dispatch(HomeData.getPeriodList());
-        //             dispatch(HomeData.getResLinkList());
-        //             dispatch(HomeData.getMyResLibList())
-        //             clearInterval(timerID)
-        //         }
-        //     }, 20)
-        // }
 
 
     }
@@ -64,13 +36,7 @@ class Content extends Component {
         event.target.style.color = "black";
 
     }
-    //监听年级信息栏
-    // setGrade(id) {
-    //     const { dispatch } = this.props;
-    //     dispatch({
-    //         type: id
-    //     })
-    // }
+
 
     //如果网站图片加载失败，取网站名第一个字作为图标
     // linkImgLoading(event, { TypeID, ID, name }) {
@@ -147,10 +113,7 @@ class Content extends Component {
         @Name 该网址对应的名称 
     */
     webPicLoadError = (e, { GroupID, ID, Name }) => {
-        // 在0到图片数组最大索引值之间随机生成一个整数，作为选中图片的索引号
-        // console.log(GroupID,ID,Name)
-        // let bgIndexs = bgList.length - 1
-        // let ranNum = Math.floor(Math.random() * (bgIndexs - 0 + bgIndexs)) + 0;
+        e.target.src = ""
         const { WebsiteResLink, dispatch } = this.props
         const newWebResbLink = WebsiteResLink.map(item => {
 
@@ -161,6 +124,7 @@ class Content extends Component {
                     if (i.Id === ID) {
 
                         i.word = Name[0];
+                        i.imgShow = "2"
 
                         return i;
 
@@ -193,21 +157,72 @@ class Content extends Component {
             data: newWebResbLink
         })
 
-        // console.log(newWebResbLink)
-        this.setState({
-            imgShow: true
-        })
+
 
     }
 
+    //监听图片的onLoad事件
+    webPicLoading = (e, { GroupID, ID }) => {
+        const { WebsiteResLink, dispatch } = this.props
+        const newWebResbLink = WebsiteResLink.map(item => {
+
+            if (GroupID === item.GroupID) {
+
+                let list = item.List.map(i => {
+
+                    if (i.Id === ID) {
+                        i.imgShow = "1"
+                        return i;
+
+
+                    } else {
+
+                        return i;
+
+                    }
+
+                });
+
+                return {
+
+                    ...item,
+
+                    List: list
+
+                }
+
+            } else {
+
+                return item;
+
+            }
+
+        });
+        dispatch({
+            type: HomeData.REFRESH_WEBSITELINK_RESOURCE,
+            data: newWebResbLink
+        })
+
+    }
+   
 
     //监听年级信息栏
     periodChange = (PeriodId) => {
-        const { dispatch } = this.props;
+
+
+        let { dispatch, WebsiteResLink,SubjectId } = this.props;
+        WebsiteResLink = [];
+        dispatch({
+            type: HomeData.REFRESH_WEBSITELINK_RESOURCE,
+            data: WebsiteResLink
+        })
+
         this.setState({
             active: PeriodId
+        }, () => {
+            dispatch(HomeData.getLinkData(PeriodId, SubjectId))
         })
-        dispatch(HomeData.getLinkData(PeriodId))
+
     }
     //搜索框按钮的点击事件
     handelSearch = () => {
@@ -240,21 +255,21 @@ class Content extends Component {
 
     //监听资源的每个项的点击事件
     myReslibary = ({ Name, AccessParam, AccessType }) => {
-        const { dispatch } = this.props
-        dispatch(AppAlertAction.alertQuery({
-            title: `是否要打开${Name}`,
-            okTitle: "是",
-            cancelTitle: "否",
-            ok: () => { return this.myResClick.bind(this, AccessParam, AccessType) }
-        }))
-
-
+        // const { dispatch } = this.props
+        // dispatch(AppAlertAction.alertQuery({
+        //     title: `是否要打开${Name}`,
+        //     okTitle: "是",
+        //     cancelTitle: "否",
+        //     ok: () => { return this.myResClick.bind(this, AccessParam, AccessType) }
+        // }))
+        // this.myResClick.bind( AccessParam, AccessType)
+        window.external.MyMessageBox(AccessType, AccessParam)
     }
     //
     myResClick = (AccessParam, AccessType) => {
         const { dispatch } = this.props
         window.external.MyMessageBox(AccessType, AccessParam)
-        dispatch(AppAlertAction.closeAlert(dispatch))
+        // dispatch(AppAlertAction.closeAlert(dispatch))
         // console.log(AccessParam, AccessType)
     }
 
@@ -269,35 +284,18 @@ class Content extends Component {
 
     render() {
 
-        // const graderList = [
-        //     { id: "primary", name: "小学" },
-        //     { id: "middle", name: "中学" },
-        //     { id: "high", name: "高中" }
-        // ]
-        const colorList = ["red", "green", "blue"];
-        const colorIndex = colorList.length - 1;
+
+        // const colorList = ["red", "green", "blue"];
+        // const colorIndex = colorList.length - 1;
         const { tabActive,
-            current,
-            linkArr,
-            baseArr,
-            word,
             WebsiteResLink,
             PeriodList,
             ResLinkList,
             MyResLibList,
-            websiteLoading } = this.props;
-
-        // console.log(WebsiteResLink)
-        // /*
-        // *获取年级列表 
-        // *为年级列表添加点击事件,并且通过绑定active类名来更新组件状态
-        // *返回循环结束后生成的html代码 
-        // */
-        // let graderResult = graderList.map((item, key) => {
-        //     return <li className={current === item.id ? "current" : ""}
-        //         key={key} onClick={(e) => this.setGrade(item.id)}>{item.name}</li>;
-
-
+            defaultLoading,
+            periodWebsiteLoading,
+            resourceLoading
+        } = this.props;
         // })
         let periodResult = PeriodList.map(item => {
             return (
@@ -321,14 +319,18 @@ class Content extends Component {
                                 return (
                                     <div className="link">
                                         <div className={`img-box ${i.backgroundColor}`}>
-                                            <img src={pic} alt="" style={{ display: `${this.state.imgShow === false ? 'block' : 'none'}` }} />
+                                            <img src={pic} alt="" style={{ display: `${i.imgShow === "0" ? 'block' : 'none'}` }} />
                                             {
                                                 i.word === "" ?
-                                                    <img src={`${i.Url}/favicon.ico`} /* alt="图片加载失败"  */
+                                                    <img src={`${publicMethod.UrlGetIcon(i.Url)}/favicon.ico`} /* alt="图片加载失败"  */
+                                                        onLoad={(e) => this.webPicLoading(e, { GroupID: item.GroupID, ID: i.Id })}
                                                         onError={(e) => this.webPicLoadError(e, { GroupID: item.GroupID, ID: i.Id, Name: i.Name })}
-                                                        style={{ display: `${!this.state.imgShow === false ? 'block' : 'none'}` }} />
-                                                    : ""
+                                                        style={{ display: `${i.imgShow === "2" || i.imgShow === "1" ? 'block' : 'none'}` }}
+
+
+                                                    /> : ""
                                             }
+
 
                                             <span>{i.word}</span>
                                         </div>
@@ -433,7 +435,7 @@ class Content extends Component {
                     >
                         {
                             item.word === '' ?
-                                <img src={`${item.LogoPath}favicon.ico`} /* alt="图片丢失" */ title={item.name}
+                                <img src={`${publicMethod.UrlGetIcon(item.LogoPath)}/favicon.ico`} /* alt="图片丢失" */ title={item.name}
                                     onError={(e) => this.resPicLoadError({ Name: item.Name })} /> : ""
                         }
                         <span>{item.word}</span>
@@ -458,10 +460,12 @@ class Content extends Component {
 
             // <div></div>
 
-            <Loading spinning={websiteLoading} opacity={false} tip="请稍后...">
 
-                <div className="content" >
-                    <div className="page-one" style={{ display: `${tabActive === 'website' ? 'block' : 'none'}` }}>
+
+            <div className="content" >
+
+                <div className="page-one" style={{ display: `${tabActive === 'website' ? 'block' : 'none'}` }}>
+                    <Loading spinning={defaultLoading} opacity={false} tip="请稍后...">
                         <div className="serach">
                             <input
                                 placeholder="搜你想搜的..."
@@ -479,49 +483,63 @@ class Content extends Component {
                         </ul>
 
                         <div className="main-content">
-                            {linkResultRender}
-                        </div>
-                    </div>
+                            <Loading
+                                spinning={periodWebsiteLoading} opacity={false} tip="请稍后..."
+                            >
 
-              
+                                {linkResultRender}
+                            </Loading>
+
+                        </div>
+                    </Loading>
+
+                </div>
+
+
+
                 <div className="page-two" style={{ display: `${tabActive === 'resourceBase' ? 'block' : 'none'}` }}>
-                        <div className="base-resource clearfix">
+
+                    <div className="base-resource clearfix">
+                        <Loading spinning={resourceLoading} opacity={false} tip="请稍后...">
                             {ResResust}
-                        </div>
+                        </Loading>
                     </div>
-                   
 
-                    <div className="page-three" style={{ display: `${tabActive === 'myResourceBase' ? 'block' : 'none'}` }}>
+                </div>
 
+
+
+                <div className="page-three" style={{ display: `${tabActive === 'myResourceBase' ? 'block' : 'none'}` }}>
+                    <Loading spinning={resourceLoading} opacity={false} tip="请稍后...">
                         <div className="pic-box">
                             <ul >
                                 {myResLibResult}
                             </ul>
                         </div>
+                    </Loading>
+                </div >
 
-                    </div >
+            </div >
 
-                </div>
-            </Loading>
 
         );
     }
 }
 const mapStateToProps = (state) => {
 
-    const { Toggle, UIdata, HomeDataUpdate } = state;
+    const { Toggle, HomeDataUpdate } = state;
     // console.log(HomeDataUpdate.ResLinkList)
     return {
         tabActive: Toggle.tabActive,
-        current: Toggle.current,
-        linkArr: UIdata.linkArr,
-        baseArr: UIdata.resourceArr,
-        word: UIdata.word,
+       
         WebsiteResLink: HomeDataUpdate.WebsiteResLink,
         PeriodList: HomeDataUpdate.PeriodList,
         ResLinkList: HomeDataUpdate.ResLinkList,
         MyResLibList: HomeDataUpdate.MyResLibList,
-        websiteLoading: HomeDataUpdate.websiteLoading
+        defaultLoading: HomeDataUpdate.defaultLoading,
+        periodWebsiteLoading: HomeDataUpdate.periodWebsiteLoading,
+        resourceLoading: HomeDataUpdate.resourceLoading,
+        SubjectId:HomeDataUpdate.SubjectId
 
     }
 

@@ -176,7 +176,9 @@ class Teacher extends Component{
 
         dispatch({type:STTActions.MANAGER_STT_SCHEDULE_DETAIL_MODAL_HIDE});
 
-        ComPageRefresh.ComPageUpdate(dispatch);
+        /*ComPageRefresh.ComPageUpdate(dispatch);*/
+
+        dispatch(STTActions.STTWeekUpdate());
 
     }
 

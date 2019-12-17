@@ -1,10 +1,8 @@
 
-import ToggleOptions from "../action/ToggleOptions"
+import ToggleOptions from "../action/HeadChange"
 const toggle = (state = {
 
     tabActive: 'website',
-    current: "primary"
-
 }, action = {}) => {
     switch (action.type) {
 
@@ -26,22 +24,6 @@ const toggle = (state = {
                 ...state,
                 tabActive: "myResourceBase"
             }
-        case ToggleOptions.Toggle_primary:
-            return {
-                ...state,
-                current: "primary"
-            }
-        case ToggleOptions.Toggle_middle:
-            return {
-                ...state,
-                current: "middle"
-            }
-        case ToggleOptions.Toggle_hign:
-            return {
-                ...state,
-                current: "high"
-            }
-
 
 
         default:
