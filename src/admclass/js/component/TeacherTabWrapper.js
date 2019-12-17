@@ -95,6 +95,8 @@ class TeacherTabWrapper extends Component{
 
                         </div>
 
+                        <div className="ganger-tab">班主任</div>
+
                     </div>
 
                         {

@@ -74,7 +74,12 @@ const StudentInfoModal = (state={
 
     //性别
 
-    SexDrop:{value:3,title:"保密"}
+    SexDrop:{value:3,title:"保密"},
+
+
+    //ftp服务器地址
+
+    FtpServer:'',
 
 
 },actions) => {
@@ -458,6 +463,10 @@ const StudentInfoModal = (state={
         case SIMActions.TEACHER_STUDENT_INFO_MODAL_CLASS_CHANGE:
 
             return { ...state,ClassDrop:actions.data };
+
+        case SIMActions.TEACHER_STUDENT_INFO_MODAL_FTP_SERVER_UPDATE:
+
+            return {...state,FtpServer:actions.data};
 
         default:
 

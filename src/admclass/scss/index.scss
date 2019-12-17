@@ -215,20 +215,6 @@ $image-url:'../images';
 }
 .admclass-teacher-ganger{
   background-image: url("#{$image-url}/teacher-tab-ganger.png");
-  &:before{
-    position: absolute;
-    content: '班主任';
-    width: 50px;
-    height: 20px;
-    left:1px;
-    top:5px;
-    text-align: center;
-    line-height: 18px;
-    color: #ffffff;
-    font-size:12px;
-    background: url("#{$image-url}/ganger-tab.png") no-repeat center;
-    @include background-size(100%);
-  }
   &:hover{
     &:after{
       position: absolute;
@@ -241,6 +227,23 @@ $image-url:'../images';
       @include background-size(100%);
     }
   }
+
+  .ganger-tab{
+
+    position: absolute;
+    width: 50px;
+    height: 20px;
+    left:1px;
+    top:5px;
+    text-align: center;
+    line-height: 18px;
+    color: #ffffff;
+    font-size:12px;
+    background: url("#{$image-url}/ganger-tab.png") no-repeat center;
+    @include background-size(100%);
+
+  }
+
 }
 .admclass-teacher-item{
   background-image: url("#{$image-url}/teacher-tab.png");

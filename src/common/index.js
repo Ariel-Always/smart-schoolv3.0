@@ -1621,7 +1621,7 @@ class Alert extends React.Component {
 
                     let my = event.clientY;
 
-                    console.log(my,that.state.yTemp);
+
 
                     if (mx - that.state.xTemp > 0 && mx - that.state.xTemp < $window.width() - $win.width()) {
 
@@ -1639,7 +1639,7 @@ class Alert extends React.Component {
 
                         that.setState({top:my - that.state.yTemp});
 
-                        console.log(that,my - that.state.yTemp);
+
 
                     }
 
@@ -1652,8 +1652,6 @@ class Alert extends React.Component {
             if (that.AlertBody){
 
                 that.setState({can_move:false});
-
-                console.log('up');
 
                 $('.alert_dialog_wrapper').css('cursor', 'default');
 

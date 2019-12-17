@@ -284,7 +284,7 @@ class Import extends Component{
 
                                     <React.Fragment>
 
-                                        成功导入<span id="counter_success" className="color_green">0</span>张
+                                        成功导入<span id="counter_success" className="color_green">{UpLoadResult.Total}</span>张
 
                                     </React.Fragment>
 

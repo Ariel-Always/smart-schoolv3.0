@@ -794,7 +794,19 @@ class Import extends Component{
 
                                                             ,失败 <span id="failed_count" className="color_red">{UpLoadResult.Error}</span>条
 
-                                                            (其中有 <span id="unique_count" className="color_red">{UpLoadResult.Unique}</span> 条重复)
+                                                            {
+
+                                                                UpLoadResult.Error>0?
+
+                                                                    <React.Fragment>
+
+                                                                        (其中有 <span id="unique_count" className="color_red">{UpLoadResult.Unique}</span> 条重复)
+
+                                                                    </React.Fragment>
+
+                                                                :''
+
+                                                            }
 
                                                         </span>
 

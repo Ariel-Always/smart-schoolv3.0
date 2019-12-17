@@ -11,15 +11,19 @@ class ClassTab extends Component{
 
             <div className="class-top-change-tab">
 
-                {
+                <div className="class-top-wrapper clearfix">
 
-                    ClassList.map((item,key) => {
+                    {
 
-                        return  <div key={key} className={`tab-item ${ActiveID===item.ClassID?'active':''}`}  title={item.ClassName} onClick={e=>ClassChange(item.ClassID)}>{item.ClassName}</div>
+                        ClassList.map((item,key) => {
 
-                    })
+                            return  <div key={key} className={`tab-item ${ActiveID===item.ClassID?'active':''}`}  title={item.ClassName} onClick={e=>ClassChange(item.ClassID)}>{item.ClassName}</div>
 
-                }
+                        })
+
+                    }
+
+                </div>
 
             </div>
 
