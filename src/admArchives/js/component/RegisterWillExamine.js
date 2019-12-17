@@ -454,7 +454,7 @@ class RegisterWillExamine extends React.Component {
         "/GetSignUpLogToPage?SchoolID=" +
           this.state.userMsg.SchoolID +
           "&PageIndex=" +
-          (this.state.pagination - 1) +
+          (e - 1) +
           "&PageSize=10&status=0" +
           (this.state.keyword ? "&Keyword=" + this.state.keyword : "") +
           this.state.firstParam +
@@ -811,12 +811,12 @@ class RegisterWillExamine extends React.Component {
     ) {
       let sortType =
         sorter.order === "descend"
-          ? "SortType=DESC"
+          ? "&SortType=DESC"
           : sorter.order === "ascend"
-          ? "SortType=ASC"
+          ? "&SortType=ASC"
           : "";
       this.setState({
-        sortType: "&" + sortType,
+        sortType: sortType,
         sortFiled: "&sortFiled=" + sorter.columnKey
       });
       dispatch(

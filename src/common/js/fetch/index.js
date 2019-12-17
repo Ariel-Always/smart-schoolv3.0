@@ -101,7 +101,7 @@ function postData(
 function handleStatusCode(json, element = true) {
   let title = "";
   // return
-  if(!json){
+  if (!json) {
     title = "服务器出现未知异常，请重试或联系管理员";
     ReactDOM.render(
       // eslint-disable-next-line react/react-in-jsx-scope
@@ -113,7 +113,6 @@ function handleStatusCode(json, element = true) {
       document.getElementById("alert")
     );
     return;
-
   }
   if (json.StatusCode === undefined) {
     title = "服务器出现未知异常，请重试或联系管理员";
@@ -127,7 +126,6 @@ function handleStatusCode(json, element = true) {
       document.getElementById("alert")
     );
     return;
-
   }
   if (!element || json.StatusCode === 200) return;
   // console.log(json.StatusCode);
@@ -204,7 +202,11 @@ function getData(
   //         }
   //     });
   // }
-
+  // console.log(isIE());
+  if(isIE()){
+    url = encodeURI(url)
+  }
+  // console.log(url)
   let result = fetch(AESEncryptionUrl(url, TESTKEY, SecurityLevel, IsDesk), {
     method: "get", //*post、get、put、delete，此项为请求方法相关的配置
     mode: mode, //no-cors(跨域模式但服务器端不支持cors),*cors(跨域模式，需要服务器通过Access-control-Allow-Origin来
@@ -265,4 +267,18 @@ function getQueryVariable(variable) {
   }
   return false;
 }
+function isIE() {
+  //获取当前浏览器相关信息
+  var explorer = window.navigator.userAgent.toLowerCase();
+  //判断是否是ie浏览器
+  if (
+    explorer.indexOf("msie") >= 0 ||
+    explorer.indexOf("rv:11.0) like gecko") >= 0
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 export { postData, getData };

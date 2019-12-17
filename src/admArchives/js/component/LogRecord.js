@@ -735,6 +735,27 @@ class LogRecord extends React.Component {
     });
   };
   onStartTimeSelectChange = (Moment, time) => {
+    const { DataState, dispatch } = this.props;
+
+    if(Moment===null){
+      dispatch(
+        actions.UpDataState.getLogRecordPreview(
+          "/GetAllLogToPage?SchoolID=" +
+            this.state.userMsg.SchoolID +
+            
+            (this.state.endTime ? "&endTime=" + this.state.endTime : "") +
+
+            "&OperationType=" +
+            this.state.HandleTypeSelect.value +
+            "&UserType=" +
+            this.state.FileTypeSelect.value +
+            "&PageIndex=0&PageSize=10"
+        )
+      );
+      this.setState({
+        pagination: 1
+      });
+    }
     this.setState({
       startTime: time,
       startMomentTime: Moment
@@ -761,6 +782,26 @@ class LogRecord extends React.Component {
     });
   };
   onEndTimeSelectChange = (Moment, time) => {
+    const { DataState, dispatch } = this.props;
+
+    // console.log(Moment, time)
+    if(Moment===null){
+      dispatch(
+        actions.UpDataState.getLogRecordPreview(
+          "/GetAllLogToPage?SchoolID=" +
+            this.state.userMsg.SchoolID +
+            (this.state.startTime ? "&beginTime=" + this.state.startTime : "") +
+            "&OperationType=" +
+            this.state.HandleTypeSelect.value +
+            "&UserType=" +
+            this.state.FileTypeSelect.value +
+            "&PageIndex=0&PageSize=10"
+        )
+      );
+      this.setState({
+        pagination: 1
+      });
+    }
     this.setState({
       endMomentTime: Moment,
       endTime: time

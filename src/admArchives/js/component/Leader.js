@@ -429,12 +429,17 @@ class Leader extends React.Component {
     } else {
       if (picObj.picUploader.uploadSubmit()) {
         let { position, ...data } = changeLeaderMsg;
+        let PhotoEdit = 0;
+        if (picObj.picUploader.isChanged()) {
+          PhotoEdit = 1;
+        }
         postData(
           CONFIG.UserInfoProxy + url,
           {
             ...data,
             position: position.title,
-            photoPath: picObj.picUploader.getCurImgPath()
+            photoPath: picObj.picUploader.getCurImgPath(),
+            PhotoEdit:PhotoEdit
           },
           2
         )

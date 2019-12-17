@@ -133,13 +133,25 @@
                     line-height: 23px;
                     margin-left: 20px;
                     width: 140px;
+                    // span {
+                    //     max-width: 120px;
+                    //     overflow: hidden;
+                    //     text-overflow: ellipsis;
+                    //     white-space: nowrap;
+                    //     display: inline-block;
+                    //     // vertical-align: bottom;
+                    // }
                     span {
+                        padding: 0;
+                    }
+                    .checkChild-title {
                         max-width: 120px;
                         overflow: hidden;
                         text-overflow: ellipsis;
+                        padding-right: 8px;
+                        padding-left: 8px;
                         white-space: nowrap;
                         display: inline-block;
-                        // vertical-align: bottom;
                     }
                 }
                 .editModal-hr {

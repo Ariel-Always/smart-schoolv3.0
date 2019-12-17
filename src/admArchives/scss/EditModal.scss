@@ -95,6 +95,7 @@
                 .inputarea {
                     width: 400px;
                     top: 50%;
+                    height: 58px;
                     padding: 0 6px;
                     line-height: 28px;
                     transform: translateY(-16px);
@@ -108,11 +109,18 @@
                         height: 28px;
                         line-height: 28px;
                         overflow: hidden;
-                        .ant-checkbox .checkedBoxMap-title {
+                        .ant-checkbox+span {
+                            width: 78px;
+                            padding: 0;
+                        }
+                        .checkedBoxMap-title {
                             overflow: hidden; //超出一行文字自动隐藏
                             text-overflow: ellipsis; //文字隐藏后添加省略号
                             white-space: nowrap; //强制不换行
                             width: 78px;
+                            padding-right: 8px;
+                            padding-left: 8px;
+                            vertical-align: bottom;
                         }
                     }
                 }

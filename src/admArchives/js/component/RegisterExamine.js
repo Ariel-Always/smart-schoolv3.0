@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import logo from "../../images/icon-logo.png";
-import { Frame, Menu, Loading, Alert } from "../../../common";
+import {  Menu, Loading, Alert } from "../../../common";
+import Frame from "../../../common/Frame";
 import {
   HashRouter as Router,
   Route,
@@ -105,11 +106,11 @@ class RegisterExamine extends React.Component {
       ) {
         this.setState({
           logo: TeacherLogo,
-          cnname: "行政班管理",
-          enname: "Administration class management",
+          cnname: "班级管理",
+          enname: "Class management",
           Admin:false
         });
-       document.title='行政班管理'
+       document.title='班级管理'
         
       }
     if (pathname.split("/")[2] === "RegisterDidExamine") {
