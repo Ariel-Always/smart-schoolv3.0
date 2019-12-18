@@ -36,6 +36,35 @@ class TimeBanner extends React.Component {
         searchValue: routeID
 
       });
+    }else{
+      this.setState({
+        CancelBtnShow: "n",
+        keyword: '',
+        searchValue : ''
+      });
+    }
+  }
+  componentWillReceiveProps(nextProps){
+    let route = history.location.pathname;
+    let pathArr = route.split("/");
+    let handleRoute = pathArr[1];
+    let routeID = pathArr[2];
+    let subjectID = pathArr[3];
+    let classID = pathArr[4];
+    let Key = ''
+    if(handleRoute==='Search'){
+      this.setState({
+        CancelBtnShow: "y",
+        keyword: routeID,
+        searchValue: routeID
+
+      });
+    }else{
+      this.setState({
+        CancelBtnShow: "n",
+        keyword: '',
+        searchValue : ''
+      });
     }
   }
   onAddCourseClassClick = () => {
@@ -133,10 +162,23 @@ class TimeBanner extends React.Component {
     let routeID = pathArr[2];
     let subjectID = pathArr[3];
     let classID = pathArr[4];
-    let searchValue = "";
-    if (handleRoute === "Search") {
-      searchValue = routeID;
-    }
+    // let searchValue = "";
+    // if (handleRoute === "Search") {
+    //   // searchValue = routeID;
+    //   this.setState({
+    //     CancelBtnShow: "y",
+    //     keyword: value.value,
+    //     searchValue : routeID
+    //   });
+    // }else{
+      
+    //   this.setState({
+    //     CancelBtnShow: "y",
+    //     keyword: value.value,
+    //     searchValue : ''
+    //   });
+
+    // }
     return (
       <React.Fragment>
         <Router>

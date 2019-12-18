@@ -518,7 +518,7 @@ const getLogRecordPreview = url => {
 };
 //获取用户信息
 const getUserMsg = url => {
-  return dispatch => {
+  return (dispatch,getState) => {
     getData(CONFIG.Xproxy + url, 2)
       .then(res => {
         return res.json();
@@ -526,10 +526,31 @@ const getUserMsg = url => {
       .then(json => {
         if (json.StatusCode === 200) {
           dispatch({ type: GET_USER_MSG, data: json.Data });
-          dispatch({ type: actions.UpUIState.USER_INFO_MODAL_OPEN });
+          let state = getState();
+          let DataState = state.DataState;
+          if(DataState.UserMsg.isNull){
+            dispatch(
+              actions.UpUIState.showErrorAlert({
+                type: "error",
+                title: "该用户已删除",
+                onHide:()=>{
+                  dispatch(actions.UpUIState.hideErrorAlert());
+                }
+              })
+            );
+          }else{
+            dispatch({ type: actions.UpUIState.USER_INFO_MODAL_OPEN });
+
+          }
         }
       });
   };
+};
+ //关闭
+ const onAlertWarnHide = (dispatch) => {
+  // const { dispatch } = this.props;
+  //console.log('ddd')
+  dispatch(actions.UpUIState.hideErrorAlert());
 };
 // 获取照片上传链接
 const getPicObject = data => {

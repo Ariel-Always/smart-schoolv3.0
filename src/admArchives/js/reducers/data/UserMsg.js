@@ -2,7 +2,7 @@ import UpDataState from '../../actions/UpDataState';
 
 
 
-const UserMsg = (state = {}, actions) => {
+const UserMsg = (state = {isNull:true}, actions) => {
     switch (actions.type) {
         case UpDataState.GET_TEACHER_MSG:
 
@@ -12,16 +12,16 @@ const UserMsg = (state = {}, actions) => {
         case UpDataState.GET_USER_MSG:
 
             let Data = handleData(actions.data)
-
+            // console.log(Data)
             return Object.assign({}, state, { ...Data });
         default:
             return state;
     }
 };
 function handleData(data) {
-    // console.log(data)
-    if(!data&&!(data instanceof Array)){
-        return {}
+    // console.log(data===null)
+    if(data===null||(!data&&!(data instanceof Array))){
+        return {isNull:true}
     }
     return {
         userName: data.UserName,
@@ -40,7 +40,8 @@ function handleData(data) {
         source: data.Source,
         position: data.Position,
         sign: data.Sign,
-        userType: data.UserType
+        userType: data.UserType,
+        isNull:false
     }
 }
 export default UserMsg;
