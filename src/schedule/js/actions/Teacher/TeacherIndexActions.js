@@ -16,6 +16,8 @@ import CSActions from "./ClassStudentActions";
 
 import ApiActions from '../ApiActions';
 
+import AppAlertActions from '../AppAlertActions';
+
 import $ from 'jquery';
 
 
@@ -560,7 +562,7 @@ const ClassTotalInit = () => {
         dispatch({type:CTActions.TEACHER_CLASS_TOTAL_WEEK_CHANGE,data:WeekNO});
 
 
-        ApiActions.GetClassInfoByGanger({SchoolID,UserID,UserType,UserClass,dispatch}).then(data=>{
+        /*ApiActions.GetClassInfoByGanger({SchoolID,UserID,UserType,UserClass,dispatch}).then(data=>{
 
             if (data){
 
@@ -634,7 +636,118 @@ const ClassTotalInit = () => {
             }
 
         });
+*/
 
+        //获取行政班
+        ApiActions.GetMyClass({UserID,dispatch}).then(data=>{
+
+                if (data.length>0){
+
+                    let {ClassID,ClassName} = data[0];
+
+                    //判断班级数量
+
+                    if (data.length>1){
+
+                        let list = data.map(item=>{ return { value:item.ClassID,title:item.ClassName}});
+
+                        dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_DROP_SHOW});
+
+                        dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_DROP_CHANGE,data:{value:ClassID,title:ClassName}});
+
+                        dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_DROP_LIST_UPDATE,data:list});
+
+                    }else{
+
+                        dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_DROP_HIDE});
+
+                        dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_UPDATE,data:{ClassID,ClassName}});
+
+                    }
+
+                    //获取该行政班级的课时
+
+                    ApiActions.GetClassInfoByGanger({SchoolID,ClassID,dispatch}).then(data=>{
+
+                       if (data){
+
+                           const { ItemClassHour,ItemClassHourCount } = data;
+
+                           dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_CLASSHOUR_UPDATE,data:{ItemClassHour,ItemClassHourCount}});
+
+                           ApiActions.GetScheduleOfClassOne({SchoolID,ClassID,WeekNO,dispatch}).then(json=>{
+
+                               if (json){
+
+                                   let Schedule = json.ItemSchedule.map((item) => {
+
+                                       return {
+
+                                           ...item,
+
+                                           title:item.SubjectName,
+
+                                           titleID:item.SubjectID,
+
+                                           secondTitle:item.TeacherName,
+
+                                           secondTitleID:item.TeacherID,
+
+                                           thirdTitle:item.ClassRoomName,
+
+                                           thirdTitleID:item.ClassRoomID,
+
+                                           WeekDay:item.WeekDay,
+
+                                           ClassHourNO:item.ClassHourNO,
+
+                                           ScheduleType:item.ScheduleType
+
+                                       }
+
+                                   });
+
+                                   json.ItemCourseClass.map(item=>{
+
+                                       let ShiftClass = {
+
+                                           ClassID:item.ClassID,
+
+                                           WeekDay:item.WeekDayNO,
+
+                                           ClassHourNO:item.ClassHourNO,
+
+                                           IsShift:true
+
+                                       };
+
+                                       Schedule.push(ShiftClass);
+
+                                   });
+
+                                   dispatch({type:CTActions.TEACHER_CLASS_TOTAL_SCHEDULE_UPDATE,data:Schedule});
+
+                               }
+
+                               dispatch({type:CTActions.TEACHER_CLASS_TOTAL_LOADING_HIDE});
+
+                               dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
+
+                           });
+
+
+                       }
+
+                   });
+
+
+                }else{
+
+                    dispatch(AppAlertActions.alertWarn({title:"您还没有担任任何一个班级的班主任！"}))
+
+                }
+
+        })
 
        /* ApiActions.GetSubjectAndClassInfoByTeacherID({TeacherID:UserID,dispatch}).then(data=>{
 

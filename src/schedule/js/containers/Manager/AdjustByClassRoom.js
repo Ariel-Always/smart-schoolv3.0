@@ -56,7 +56,7 @@ class AdjustByClassRoom extends Component{
                    onCancel={this.CloseModal.bind(this)}
                    footer={[
 
-                       <span key="footer-tips" className="footer-tips">注:调整上课时间后，上课节次的数量与顺序须与调整前一致。</span>,
+
 
                        <Button key='agree' color='green' onClick={this.ModalOk.bind(this)}>确定</Button>,
 

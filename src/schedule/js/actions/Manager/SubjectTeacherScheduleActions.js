@@ -2,6 +2,8 @@ import ApiActions from '../ApiActions';
 
 import AppAlertActions from "../AppAlertActions";
 
+import $ from 'jquery';
+
 const SUBJECT_TEACHER_SCHEDULE_INIT = 'SUBJECT_TEACHER_SCHEDULE_INIT';
 
 const SUBJECT_TEACHER_SCHEDULE_TEACHER_COUNT = 'SUBJECT_TEACHER_SCHEDULE_TEACHER_COUNT';
@@ -13,6 +15,8 @@ const STS_SUBJECT_CHANGE = 'STS_SUBJECT_CHANGE';
 const STS_NOW_WEEK_CHANGE = 'STS_NOW_WEEK_CHANGE';
 
 const STS_PAGE_ADD = 'STS_PAGE_ADD';
+
+const MANAGER_STS_PAGE_UPDATE = 'MANAGER_STS_PAGE_UPDATE';
 
 const LOADING_SHOW = 'LOADING_SHOW';
 
@@ -207,7 +211,11 @@ const STSPageUpdate = (opt) => {
 
                 }else{
 
+                    $('#tb').find('div.ant-table-body').scrollTop(0);
+
                     dispatch({type:SUBJECT_TEACHER_SCHEDULE_UPDATE,data:SubjectTeacherSchedule});
+
+                    dispatch({type:MANAGER_STS_PAGE_UPDATE,data:1});
 
                 }
 
@@ -866,6 +874,8 @@ export default {
     SUBJECT_TEACHER_SCHEDULE_UPDATE,
 
     STS_PAGE_ADD,
+
+    MANAGER_STS_PAGE_UPDATE,
 
     LOADING_SHOW,
 

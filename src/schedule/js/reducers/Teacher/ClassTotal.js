@@ -2,11 +2,11 @@ import CTActions from '../../actions/Teacher/ClassTotalActions';
 
 const ClassTotal = (state={
 
-  /*  ClassDropShow:false,
+    ClassDropShow:false,
 
-    ClassDropSelectd:'',
+    ClassDropSelectd:{},
 
-    ClassDropList:[],*/
+    ClassDropList:[],
 
     ClassName:'',
 
@@ -105,7 +105,7 @@ const ClassTotal = (state={
 
     switch (actions.type) {
 
-        /*case CTActions.TEACHER_CLASS_TOTAL_CLASS_DROP_SHOW:
+        case CTActions.TEACHER_CLASS_TOTAL_CLASS_DROP_SHOW:
 
              return {
 
@@ -131,7 +131,7 @@ const ClassTotal = (state={
 
         case CTActions.TEACHER_CLASS_TOTAL_CLASS_DROP_LIST_UPDATE:
 
-            return { ...state,ClassDropList:actions.data };*/
+            return { ...state,ClassDropList:actions.data };
 
         case CTActions.TEACHER_CLASS_TOTAL_CLASS_UPDATE:
 

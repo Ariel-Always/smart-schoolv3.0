@@ -582,9 +582,9 @@ const ShiftClassHourModel = async ({SchoolID,CreateType=0,dispatch}) => {
 
 //获取班主任所在行政班的信息
 
-const GetClassInfoByGanger = async ({SchoolID,UserID,UserType,UserClass,dispatch}) => {
+const GetClassInfoByGanger = async ({SchoolID,ClassID,dispatch}) => {
 
-    let res = await Method.getGetData(`/ScheduleTea/api/GetClassInfoByGanger?SchoolID=${SchoolID}&UserID=${UserID}&UserType=${UserType}&UserClass=${UserClass}`,
+    let res = await Method.getGetData(`/ScheduleTea/api/GetClassInfoByGanger?SchoolID=${SchoolID}&ClassID=${ClassID}`,
 
         2,
 
@@ -631,6 +631,31 @@ const GetScheduleDetailByUserID = async ({SchoolID,TeacherID,ScheduleID,ClassDat
     }
 
 };
+
+//获取班主任所带行政班
+const GetMyClass = async ({UserID,dispatch}) => {
+
+    let res = await Method.getGetData(`/UserMgr/ClassMgr/GetMyClass?UserID=${UserID}`,
+
+        2,CONFIG.AdmClassProxy);
+
+    //'http://192.168.2.202:7300/mock/5d7726e0ed0ccd1564c8df05/webCloudDev');
+
+    //'http://192.168.2.26:8084');
+
+
+    if (res.StatusCode === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常"}));
+
+    }
+
+};
+
 
 
 
@@ -1246,6 +1271,8 @@ export default {
     GetClassRoomByClassTypeAndKey,
 
     InsertSchedule,
+
+    GetMyClass,
 
     GetSubjectAndClassInfoByTeacherID,
 

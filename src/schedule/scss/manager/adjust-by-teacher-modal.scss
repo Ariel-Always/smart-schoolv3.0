@@ -534,13 +534,13 @@
 
     .month-item{
 
-      width: 60px;
+      width:92px;
 
-      margin-left: 30px;
+      margin-left: 20px;
 
       margin-bottom:10px;
 
-      &:nth-child(7n+1){
+      &:nth-child(5n+1){
 
         margin-left: 0;
 
@@ -682,7 +682,7 @@
 
       height: 28px;
 
-      line-height: 28px;
+      line-height:1;
 
     }
 
@@ -905,7 +905,7 @@
 
       height: 28px;
 
-      line-height: 28px;
+      line-height: 1;
 
       width: 146px;
 
@@ -965,7 +965,7 @@
 
       height:28px;
 
-      line-height: 28px;
+      line-height: 1;
 
       margin-left: 8px;
 
@@ -1126,7 +1126,7 @@
 
     .ant-input{
 
-      line-height: 28px;
+      line-height: 1;
 
       height: 28px;
 

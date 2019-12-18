@@ -210,6 +210,10 @@ const ClassTotal = (state={
 
             return { ...state,PageIndex:state.PageIndex+1 };
 
+        case ClassTotalActions.MANAGER_CLASS_TOTAL_PAGE_UPDATE:
+
+            return { ...state,PageIndex:actions.data };
+
         case ClassTotalActions.MANAGER_CT_SCHEDULE_DETAIL_MODAL_SHOW:
 
             return {...state,ScheduleDetail:{...state.ScheduleDetail,Show:true,ModalLoading:true}};

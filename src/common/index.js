@@ -1465,6 +1465,9 @@ class Loading extends React.Component {
  * 弹出框 start
  * */
 
+
+
+
 class Alert extends React.Component {
 
     constructor(props) {
@@ -1523,19 +1526,14 @@ class Alert extends React.Component {
 
                 if (onHide) {
 
-                    setTimeout(onHide, 1800);
+                    setTimeout(onHide, 1000);
 
                 }
             }
 
         }
 
-        if(this.AlertBody&&show&&!this.state.readyShow){
-
-           /* this.AlertBody.style.top = ($(window).height() - this.AlertBody.clientHeight)/ 2 + 'px';
-
-            this.AlertBody.style.left = ($(window).width() - this.AlertBody.clientWidth) / 2 + 'px';
-*/
+        /*if(this.AlertBody&&show&&!this.state.readyShow){
 
             this.setState({readyShow:true,left:($(window).width() - this.AlertBody.clientWidth) /2,top:($(window).height() - this.AlertBody.clientHeight)/ 2});
 
@@ -1544,6 +1542,25 @@ class Alert extends React.Component {
         if(!show&&this.state.readyShow){
 
             this.setState({can_move:false,readyShow:false});
+
+        }*/
+
+
+        //新的尝试 new try
+
+        if (this.AlertBody&&show&&!this.state.readyShow){
+
+            this.AlertBody.style.left = ($(window).width() - this.AlertBody.clientWidth)/2 +'px';
+
+            this.AlertBody.style.top = ($(window).height() - this.AlertBody.clientHeight)/2 +'px';
+
+            this.setState({readyShow:true});
+
+        }
+
+        if(!show&&this.state.readyShow){
+
+            this.setState({readyShow:false});
 
         }
 
@@ -1551,20 +1568,10 @@ class Alert extends React.Component {
 
     componentDidMount(){
 
-        /*if(this.AlertBody){
-
-           /!* this.AlertBody.style.top = ($(window).height() - this.AlertBody.clientHeight)/ 2 + 'px';
-
-            this.AlertBody.style.left = ($(window).width() - this.AlertBody.clientWidth) / 2 + 'px';
-*!/
-           this.setState({left:($(window).width() - this.AlertBody.clientWidth) /2,top:($(window).height() - this.AlertBody.clientHeight)/ 2});
-
-        }*/
-
         const { show } = this.props;
 
 
-        if(this.AlertBody&&show&&!this.state.readyShow){
+       /* if(this.AlertBody&&show&&!this.state.readyShow){
 
             this.setState({readyShow:true,left:($(window).width() - this.AlertBody.clientWidth) /2,top:($(window).height() - this.AlertBody.clientHeight)/ 2});
 
@@ -1575,7 +1582,6 @@ class Alert extends React.Component {
             this.setState({can_move:false,readyShow:false});
 
         }
-
 
         const that = this;
 
@@ -1625,7 +1631,7 @@ class Alert extends React.Component {
 
                     if (mx - that.state.xTemp > 0 && mx - that.state.xTemp < $window.width() - $win.width()) {
 
-                        /*$win.css('left', mx - xTemp+'px');*/
+                        /!*$win.css('left', mx - xTemp+'px');*!/
 
                         that.setState({left:mx - that.state.xTemp});
 
@@ -1635,7 +1641,7 @@ class Alert extends React.Component {
 
                     if (my - that.state.yTemp > 0 && my - that.state.yTemp < $window.height() - $win.height()) {
 
-                        /*$win.css('top', my - yTemp+'px');*/
+                        /!*$win.css('top', my - yTemp+'px');*!/
 
                         that.setState({top:my - that.state.yTemp});
 
@@ -1658,7 +1664,81 @@ class Alert extends React.Component {
             }
 
         });
+*/
 
+
+
+      //新的尝试 new try
+
+        if (this.AlertBody&&show&&!this.state.readyShow){
+
+            this.AlertBody.style.left = ($(window).width() - this.AlertBody.clientWidth)/2 +'px';
+
+            this.AlertBody.style.top = ($(window).height() - this.AlertBody.clientHeight)/2 +'px';
+
+            this.setState({readyShow:true});
+
+        }
+
+        if(!show&&this.state.readyShow){
+
+            this.setState({readyShow:false});
+
+        }
+
+        $(function() {
+
+            var xTemp, yTemp;
+
+            var can_move = false;
+
+
+
+            $(document).on('dragstart', '.alert_dialog_dragheader', function() { return false; });
+
+            $(document).on('mousedown', '.alert_dialog_dragheader', function(event) {
+
+                let $win = $(event.target).closest('.alert_dialog_wrapper');
+
+                can_move = true;
+
+                $('.alert_dialog_wrapper').css('cursor', 'move');
+
+                var mx = event.pageX;
+
+                var my = event.pageY;
+
+                xTemp = mx - parseInt($win.css('left'));
+
+                yTemp = my - parseInt($win.css('top'));
+
+            });
+
+            $(window).mousemove(function(event) {
+
+                if (can_move) {
+
+                    let $win = $(event.target).closest('.alert_dialog_wrapper');
+
+                    var $window = $(window);
+
+                    var mx = event.pageX;
+
+                    var my = event.pageY;
+
+                    if (mx - xTemp > 0 && mx - xTemp < $window.width() - $win.width()) { $win.css('left', mx - xTemp); }
+
+                    if (my - yTemp > 0 && my - yTemp < $window.height() - $win.height()) { $win.css('top', my - yTemp); }
+                }
+
+            }).mouseup(function() {
+
+                can_move = false;
+
+                $('.alert_dialog_wrapper').css('cursor', 'default');
+
+            });
+        });
 
     }
 
@@ -1708,7 +1788,12 @@ class Alert extends React.Component {
                         <React.Fragment>
                             <div className="alert_dialog_mask" style={{ display: `${show ? 'block' : 'none'}` }}></div>
                             <div className="alert_dialog_tab" style={{ display: `${show ? 'block' : 'none'}` }}>
-                                <div ref={ref=>this.AlertBody=ref} className="border alert_dialog_wrapper" id="alert_dialog_wrapper" style={{left:this.state.left,top:this.state.top}}>
+                                <div ref={ref=>this.AlertBody=ref} className="border alert_dialog_wrapper" id="alert_dialog_wrapper" >
+
+                                    {/*style={{left:this.state.left,top:this.state.top}} 这个地方应该是AlertBody的行内样式*/}
+
+                                    <div className="alert_dialog_dragheader"></div>
+
                                     <div className="alert_close_btn" onClick={this.closeAlert.bind(this)}></div>
                                     <div className={`alert_dialog_content ${abstract?'has-abstract':''}`}>
                                         {

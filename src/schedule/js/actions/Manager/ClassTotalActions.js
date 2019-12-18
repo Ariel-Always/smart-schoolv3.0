@@ -2,6 +2,8 @@ import ApiActions from "../ApiActions";
 
 import AppAlertActions from "../AppAlertActions";
 
+import $ from 'jquery';
+
 const MANAGER_CLASS_TOTAL_INIT = 'MANAGER_CLASS_TOTAL_INIT';
 
 
@@ -22,6 +24,8 @@ const MANAGER_CLASS_TOTAL_LOADING_HIDE = 'MANAGER_CLASS_TOTAL_LOADING_HIDE';
 const MANAGER_CLASS_TOTAL_LOADING_SHOW = 'MANAGER_CLASS_TOTAL_LOADING_SHOW';
 
 const MANAGER_CLASS_TOTAL_PAGE_ADD = 'MANAGER_CLASS_TOTAL_PAGE_ADD';
+
+const MANAGER_CLASS_TOTAL_PAGE_UPDATE = 'MANAGER_CLASS_TOTAL_PAGE_UPDATE';
 
 const MANAGER_CLASS_TOTAL_GRADE_SELECT_CHANGE = 'MANAGER_CLASS_TOTAL_GRADE_SELECT_CHANGE';
 
@@ -222,7 +226,11 @@ const ClassTotalPageUpdate = (opt) =>{
 
                 }else{
 
+                    $('#tb').find('div.ant-table-body').scrollTop(0);
+
                     dispatch({type:MANAGER_CLASS_TOTAL_SCHEDULE_UPDATE,data:NextSchedule});
+
+                    dispatch({type:MANAGER_CLASS_TOTAL_PAGE_UPDATE,data:1});
 
                 }
 
@@ -885,6 +893,8 @@ export default {
     MANAGER_CLASS_TOTAL_LOADING_SHOW,
 
     MANAGER_CLASS_TOTAL_PAGE_ADD,
+
+    MANAGER_CLASS_TOTAL_PAGE_UPDATE,
 
     MANAGER_CLASS_TOTAL_GRADE_SELECT_CHANGE,
 
