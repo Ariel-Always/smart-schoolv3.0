@@ -26,6 +26,7 @@ require('../../../../common/js/PicUpload/juqery.cp.picUploader');
 
 
 class StudentInfoModal extends Component {
+
     constructor(props) {
 
         super(props);
@@ -44,13 +45,13 @@ class StudentInfoModal extends Component {
 
         // 图片上传
 
-        $(document).on('click', '#up_btn_del',this.DelPhoto.bind(this));
+        //$(document).on('click', '#up_btn_del',this.DelPhoto.bind(this));
 
 
     }
 
 
-    DelPhoto(e){
+    /*DelPhoto(e){
 
         const {dispatch,StudentInfoModal} = this.props;
 
@@ -66,7 +67,7 @@ class StudentInfoModal extends Component {
 
         }
 
-    }
+    }*/
 
    /* componentWillReceiveProps(nextProps) {
         const { DataState } = nextProps
@@ -377,16 +378,22 @@ class StudentInfoModal extends Component {
 
 
         return (
+
             <div className='EditModal'>
 
                 <div className='Left' id='picUpload'></div>
 
                 <div className='Right'>
+
                     <div className="row clearfix" >
+
                         <span className='culonm-1'>
+
                             <span className='must-icon'>*</span>
                              学号：
+
                         </span>
+
                         <div className='culonm-2'>
 
                             {
@@ -397,8 +404,9 @@ class StudentInfoModal extends Component {
 
                                     :
 
-                                    <Tips overlayClassName='tips' visible={UserIDTipsVisible} title={UserIDTipsTitle}>
-                                        <Input maxLength={24} id="123"  className='UserName-input'
+                                    <Tips autoAdjustOverflow={false} getPopupContainer={trigger =>trigger.parentNode} overlayClassName='tips' visible={UserIDTipsVisible} title={UserIDTipsTitle}>
+
+                                        <Input maxLength={24}   className='UserName-input'
                                                type='text'
                                                name='EditID'
                                                value={UserIDValue}
@@ -406,17 +414,24 @@ class StudentInfoModal extends Component {
                                                onBlur={this.onEditBlur.bind(this)} />
                                     </Tips>
 
+
                             }
 
 
                         </div>
                     </div>
                     <div className="row clearfix">
+
                         <span className='culonm-1'>
+
                             <span className='must-icon'>*</span>姓名：
+
                         </span>
+
                         <div className='culonm-2'>
-                            <Tips overlayClassName='tips' visible={UserNameTipsVisible} title={UserNameTipsTitle} >
+
+                            <Tips  autoAdjustOverflow={false} getPopupContainer={trigger =>trigger.parentNode} overlayClassName='tips' visible={UserNameTipsVisible} title={UserNameTipsTitle} >
+
                                 <Input className='UserName-input'
                                        maxLength={20}
                                        type='text'
@@ -425,14 +440,23 @@ class StudentInfoModal extends Component {
                                        onChange={this.onEditNameChange.bind(this)}
                                        onBlur={this.onEditNameBlur.bind(this)} />
                             </Tips>
+
                         </div>
+
                     </div>
+
                     <div className="row clearfix">
+
                         <span className='culonm-1'>
+
                             <span className='must-icon'>*</span>性别：
+
                         </span>
+
                         <div className='culonm-2'>
-                            <Tips overlayClassName='tips' visible={GenderTipsVisible} title={GenderTipsTitle} >
+
+                            <Tips autoAdjustOverflow={false} getPopupContainer={trigger =>trigger.parentNode} overlayClassName='tips' visible={GenderTipsVisible} title={GenderTipsTitle} >
+
                                 <DropDown
                                     style={{ zIndex: 3 }}
                                     dropSelectd={SexDrop}
@@ -455,21 +479,28 @@ class StudentInfoModal extends Component {
                                 >
 
                                 </DropDown>
+
                             </Tips>
+
                         </div>
+
                     </div>
 
                     <div className="row clearfix">
+
                         <span className='culonm-1'>
+
                             <span className='must-icon'>*</span>班级：
+
                         </span>
+
                         <div className='culonm-2'>
 
                             {
 
                                 ClassDropShow?
 
-                                    <Tips overlayClassName='tips' visible={ClassTipsVisible} title={ClassTipsTitle} >
+                                    <Tips autoAdjustOverflow={false} getPopupContainer={trigger =>trigger.parentNode} overlayClassName='tips' visible={ClassTipsVisible} title={ClassTipsTitle} >
 
                                         <DropDown
                                             style={{ zIndex: 1 }}
@@ -494,7 +525,7 @@ class StudentInfoModal extends Component {
                             身份证号码：
                         </span>
                         <div className='culonm-2'>
-                            <Tips overlayClassName='tips' visible={IDCardNoTipsVisible} title={IDCardNoTipsTitle} >
+                            <Tips autoAdjustOverflow={false} getPopupContainer={trigger =>trigger.parentNode} overlayClassName='tips' visible={IDCardNoTipsVisible} title={IDCardNoTipsTitle} >
                                 <Input
                                     className='input'
                                     value={IDCardValue}
@@ -512,7 +543,7 @@ class StudentInfoModal extends Component {
                             联系电话：
                         </span>
                         <div className='culonm-2'>
-                            <Tips overlayClassName='tips' visible={TelephoneTipsVisible} title={TelephoneTipsTitle} >
+                            <Tips autoAdjustOverflow={false} getPopupContainer={trigger =>trigger.parentNode} overlayClassName='tips' visible={TelephoneTipsVisible} title={TelephoneTipsTitle} >
                                 <Input
                                     className='input'
                                     maxLength={11}
@@ -530,7 +561,7 @@ class StudentInfoModal extends Component {
                             电子邮箱：
                         </span>
                         <div className='culonm-2'>
-                            <Tips overlayClassName='tips' visible={EmailTipsVisible} title={EmailTipsTitle} >
+                            <Tips autoAdjustOverflow={false} getPopupContainer={trigger =>trigger.parentNode} overlayClassName='tips' visible={EmailTipsVisible} title={EmailTipsTitle} >
                                 <Input
                                     className='input'
                                     type='text'
@@ -547,7 +578,9 @@ class StudentInfoModal extends Component {
                             家庭住址：
                         </span>
                         <div className='culonm-2'>
-                            <Tips overlayClassName='tips' visible={HomeAdressTipsVisible} title={HomeAdressTipsTitle} >
+
+                            <Tips autoAdjustOverflow={false} getPopupContainer={trigger =>trigger.parentNode} overlayClassName='tips' visible={HomeAdressTipsVisible} title={HomeAdressTipsTitle} >
+
                                 <Input.TextArea
                                     className='inputarea'
                                     rows='2'
@@ -556,7 +589,9 @@ class StudentInfoModal extends Component {
                                     value={AddressValue}
                                     onChange={this.onEditAddressChange}
                                     onBlur={this.onEditAddressBlur}
-                                ></Input.TextArea>
+                                >
+
+                                </Input.TextArea>
                             </Tips>
                         </div>
                     </div>

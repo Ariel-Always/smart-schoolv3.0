@@ -402,6 +402,8 @@ const StudentModalOk = () =>{
 
                 if (EditorStudentID){
 
+                    let PhotoEdit = $('#picUpload').picUploader.isChanged()?1:0;
+
                     ApiActions.EditStudent({
 
                         UserID:EditorStudentID,UserName:UserNameValue,
@@ -412,7 +414,7 @@ const StudentModalOk = () =>{
 
                         Telephone:PhoneValue,HomeAdress:AddressValue,
 
-                        dispatch
+                        dispatch,PhotoEdit
 
                     }).then(data=>{
 

@@ -263,11 +263,11 @@ const AddStudent =  async ({UserID,UserName,Gender,classID,PhotoPath,IDCardNo=''
 
 //编辑学生
 
-const EditStudent =  async ({UserID,UserName,Gender,classID,PhotoPath,IDCardNo='',Email='',Telephone='',HomeAdress='',dispatch}) => {
+const EditStudent =  async ({PhotoEdit,UserID,UserName,Gender,classID,PhotoPath,IDCardNo='',Email='',Telephone='',HomeAdress='',dispatch}) => {
 
     let res = await Method.getPostData(`/UserMgr/UserInfoMgr/EditStudent`,{
 
-        UserID,UserName,Gender,classID,PhotoPath,IDCardNo,Email,Telephone,HomeAdress
+        PhotoEdit,UserID,UserName,Gender,classID,PhotoPath,IDCardNo,Email,Telephone,HomeAdress
 
     },2);
 
