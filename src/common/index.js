@@ -1488,7 +1488,11 @@ class Alert extends React.Component {
 
             readyShow:false
 
-        }
+        };
+
+        window.AlertShow=false;
+
+        window.AlertType = 0;
 
     }
 
@@ -1749,6 +1753,7 @@ class Alert extends React.Component {
         let maskShow, cancelShow, okShow = false;
 
         let okContent, cancelContent = '';
+
 
         switch (type) {
             case "btn-success":

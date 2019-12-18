@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import logo from "../../images/admAriHeadImg-1.png";
-import { Frame, Menu, Loading, Alert } from "../../../common";
+import {  Menu, Loading, Alert } from "../../../common";
+import Frame from '../../../common/Frame';
 import {
   HashRouter as Router,
   Route,
