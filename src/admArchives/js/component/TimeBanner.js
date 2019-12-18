@@ -31,7 +31,7 @@ class TimeBanner extends React.Component {
                 <Link to='/UserArchives/LogDynamic' target='_blank' className='tips_handle'>
                         查看详情>></Link>
                 </span>:<span className='timeBanner_tips'>
-                    最近没有档案发生了变更，
+                    最近没有档案发生变更，
                 <Link to='/UserArchives/LogDynamic' target='_blank' className='tips_handle'>
                         查看详情>></Link>
                 </span>):''}

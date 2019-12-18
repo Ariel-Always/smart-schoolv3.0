@@ -694,6 +694,7 @@ class Graduate extends React.Component {
             )
           );
         }
+        dispatch(actions.UpUIState.editModalTipsVisible({ HomeAdressTipsVisible: false,EmailTipsVisible: false,TelephoneTipsVisible: false }))
         dispatch(actions.UpDataState.getGraduateMsg());
         dispatch(actions.UpUIState.HandleGraduateContactModalClose());
       });
@@ -701,6 +702,8 @@ class Graduate extends React.Component {
   // handleGraduaContactModalCancel
   handleGraduateContactModalCancel = () => {
     const { dispatch } = this.props;
+    dispatch(actions.UpUIState.editModalTipsVisible({ HomeAdressTipsVisible: false,EmailTipsVisible: false,TelephoneTipsVisible: false }))
+
     dispatch(actions.UpDataState.getGraduateMsg());
     dispatch(actions.UpUIState.HandleGraduateContactModalClose());
   };

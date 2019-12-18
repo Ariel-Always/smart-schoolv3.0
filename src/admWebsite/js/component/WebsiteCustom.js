@@ -193,7 +193,7 @@ class WebsiteCustom extends React.Component {
             <Input
               className="right webName"
               placeholder="请输入网站名称.."
-              maxLength={200}
+              maxLength={20}
               onChange={this.onWebNameChange.bind(this)}
               onBlur={this.onWebNameBlur.bind(this)}
               value={this.state.WebName}

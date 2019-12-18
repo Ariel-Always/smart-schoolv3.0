@@ -759,14 +759,14 @@ class LogDynamic extends React.Component {
             </div>
           </div>
         </div>
-        <DetailsModal
+        {!DataState.UserMsg.isNull?<DetailsModal
           ref="UserDetailsMsgModal"
           visible={UIState.AppModal.userInfoModalVisible}
           onOk={this.UserDetailsMsgModalOk}
           onCancel={this.UserDetailsMsgModalCancel}
           data={DataState.UserMsg}
           type={this.state.UserTypeList[this.state.UserType || 1]}
-        ></DetailsModal>
+        ></DetailsModal>:''}
       </div>
     );
   }
