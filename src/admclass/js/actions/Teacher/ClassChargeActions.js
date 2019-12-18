@@ -361,13 +361,25 @@ const SetMonitor = ({UserID,isMonitor}) =>{
 
 const StuSearchClick = ()=>{
 
-    return dispatch=>{
+    return (dispatch,getState)=>{
 
-        dispatch({type:TEACHER_CLASS_CHARGE_STUDENT_SEARCH_RESULT_SHOW});
+        const { ActiveClassID,StudentPage,StudentSearchValue } = getState().Teacher.ClassCharge;
 
-        dispatch({type:TEACHER_CLASS_CHARGE_STUDENT_SEARCH_CANCEL_SHOW});
+        let Keyword = StudentSearchValue.trim();
 
-        dispatch(StudentUpdate(0));
+        if (Keyword!==''){
+
+            dispatch({type:TEACHER_CLASS_CHARGE_STUDENT_SEARCH_RESULT_SHOW});
+
+            dispatch({type:TEACHER_CLASS_CHARGE_STUDENT_SEARCH_CANCEL_SHOW});
+
+            dispatch(StudentUpdate(0));
+
+        }else{
+
+            dispatch(AppAlertActions.alertWarn({title:"搜索不能为空！"}));
+
+        }
 
     }
 

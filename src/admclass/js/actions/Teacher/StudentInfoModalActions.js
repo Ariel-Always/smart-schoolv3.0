@@ -63,6 +63,9 @@ const TEACHER_STUDENT_INFO_MODAL_SEX_CHANGE = 'TEACHER_STUDENT_INFO_MODAL_SEX_CH
 
 const TEACHER_STUDENT_INFO_MODAL_CLASS_CHANGE = 'TEACHER_STUDENT_INFO_MODAL_CLASS_CHANGE';
 
+//将资源服务器地址放到redux上
+
+const TEACHER_STUDENT_INFO_MODAL_FTP_SERVER_UPDATE = 'TEACHER_STUDENT_INFO_MODAL_FTP_SERVER_UPDATE';
 
 
 
@@ -73,7 +76,7 @@ const ModalInit = () =>{
 
     return (dispatch,getState)=>{
 
-        const { EditorStudentID } = getState().Teacher.StudentInfoModal;
+        const { EditorStudentID,FtpServer } = getState().Teacher.StudentInfoModal;
 
         const { Class } = getState().Teacher.ClassCharge;
 
@@ -85,9 +88,13 @@ const ModalInit = () =>{
 
             ApiActions.GetUserDetail({UserID:EditorStudentID,dispatch}).then(data=>{
 
+                let Gender = '保密';
+
                 if (data){
 
-                    const { UserName,Gender,IDCardNo,Email,Telephone,HomeAddress,PhotoPath_NOcache } = data;
+                    const { UserName,IDCardNo,Email,Telephone,HomeAddress,PhotoPath_NOcache } = data;
+
+                    Gender = data.Gender;
 
                     let SexDrop = {};
 
@@ -172,12 +179,35 @@ const ModalInit = () =>{
 
                     if (data) {
 
+                        let genger = '-1';
+
+                        switch (Gender) {
+
+                            case '男':
+
+                                genger = '0';
+
+                                break;
+
+                            case '女':
+
+                                genger = '1';
+
+                                break;
+
+                            default:
+
+                                genger = '-1';
+
+                        }
+
                         let option = {
                             token: Token,
                             resWebUrl: data, //资源站点地址
                             userType: 'Student',   //用户类型，可选值Admin、Student、Teacher、SchoolLeader
                             userID:EditorStudentID, //新增时传空字符串、编辑时传相应UserID
-                            curImgPath:PhotoPath //用户当前头像，新增时可不传
+                            curImgPath:PhotoPath, //用户当前头像，新增时可不传
+                            genger
 
                         };// //console.log(this.state.option, $("#picUpload"))
 
@@ -227,7 +257,9 @@ const ModalInit = () =>{
                         resWebUrl: data, //资源站点地址
                         userType: 'Student',   //用户类型，可选值Admin、Student、Teacher、SchoolLeader
                         userID:EditorStudentID, //新增时传空字符串、编辑时传相应UserID
-                        curImgPath:PhotoPath //用户当前头像，新增时可不传
+                        curImgPath:PhotoPath, //用户当前头像，新增时可不传
+                        genger:'-1'
+
 
                     };// //console.log(this.state.option, $("#picUpload"))
 
@@ -540,6 +572,8 @@ export default {
     TEACHER_STUDENT_INFO_MODAL_CLASS_CHANGE,
 
     TEACHER_STUDENT_INFO_EDITOR_STUDENT_ID_CHANGE,
+
+    TEACHER_STUDENT_INFO_MODAL_FTP_SERVER_UPDATE,
 
     ModalInit,
 

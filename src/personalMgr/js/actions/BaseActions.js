@@ -84,7 +84,7 @@ const Init = () => {
 
         dispatch({type:BASE_SETTING_LOADING_SHOW});
 
-        let { UserID,UserType } = getState().LoginUser;
+        let { UserID,UserType,Gender } = getState().LoginUser;
 
         let { BaseSetting } = getState();
 
@@ -106,6 +106,8 @@ const Init = () => {
                 const { PhotoPath_NoCache } = data;
 
                 let userType = '';
+
+                let gender = '';
 
                 switch (UserType) {
 
@@ -133,6 +135,26 @@ const Init = () => {
 
                 }
 
+                switch (Gender) {
+
+                    case '男':
+
+                        gender = '0';
+
+                        break;
+
+                    case '女':
+
+                        gender = '1';
+
+                        break;
+
+                    default:
+
+                        gender = '-1';
+
+                }
+
                 ApiActions.GetResHttpServerAddr({dispatch}).then(data=>{
 
                     if (data){
@@ -151,7 +173,7 @@ const Init = () => {
 
                             size:"small",
 
-                            gender:'-1'
+                            gender
 
                         };
 
@@ -196,17 +218,23 @@ const Commit = (dom) => {
 
               let PhotoPath =  $(dom).picUploader.getCurImgPath();
 
+              let PhotoEdit = $("#picUpload").picUploader.isChanged()?1:0;
+
               UpdateBasicInfo({
 
                   UserID,UserType,ShortName:ShortNameValue?ShortNameValue:'',QQ:QQValue?QQValue:'',Weixin:WeixinValue?WeixinValue:'',
 
-                  Weibo:WeiboValue?WeiboValue:'',Telephone:TelephoneValue?TelephoneValue:'',Sign:SignValue?SignValue:'',PhotoPath,dispatch
+                  Weibo:WeiboValue?WeiboValue:'',Telephone:TelephoneValue?TelephoneValue:'',Sign:SignValue?SignValue:'',PhotoPath,dispatch,
+
+                  PhotoEdit
 
               }).then(data => {
 
                   if (data==='success'){
 
                       dispatch(AppAlertActions.alertSuccess({title:"保存成功"}));
+
+                      UpdateSesstionStorage();
 
                       getBaseInfo({UserID,UserType,dispatch}).then(data => {
 
@@ -251,6 +279,72 @@ const Commit = (dom) => {
 
 
 
+//更新sesstionStorage
+
+const UpdateSesstionStorage = () => {
+
+    let date = new Date();
+
+    let time = date.getTime();
+
+    const token = sessionStorage.getItem('token');
+
+    $.ajax({
+
+        url:`${CONFIG.TokenProxy}/UserMgr/Login/Api/Login.ashx?token=${token}&method=GetUserInfo&params=000`,
+
+        type: "GET",
+
+        dataType: "jsonp",
+
+        jsonp: "jsoncallback", //这里的值需要和回调函数名一样
+
+        success: function(data) {
+
+            let loginInfo = data.data;
+
+            let UserInfo = {};
+
+            Object.keys(loginInfo).forEach((key)=>{
+
+                if (key === "PhotoPath") {
+
+                    let date = new Date();
+
+                    let time = date.getTime();
+
+                    loginInfo[key] = loginInfo[key] + "?T=" + time;
+
+                }
+
+                UserInfo[key] = decodeURIComponent(loginInfo[key]);
+
+            });
+
+           /* for (let [key, value] of Object.entries(loginInfo)) {
+
+                if (key === "PhotoPath") {
+
+                    let date = new Date();
+
+                    let time = date.getTime();
+
+                    value = value + "?T=" + time;
+
+                }
+
+                UserInfo[key] = decodeURIComponent(value);
+
+            }*/
+
+            sessionStorage.setItem("UserInfo", JSON.stringify(UserInfo));
+
+        }
+
+    });
+
+};
+
 
 
 
@@ -274,13 +368,13 @@ let getBaseInfo =  async ({UserID,UserType,dispatch}) => {
 
 
 //更新信息
-let UpdateBasicInfo =  async ({UserID,UserType,ShortName,PhotoPath,QQ,Weixin,Telephone,Weibo,Sign,dispatch}) => {
+let UpdateBasicInfo =  async ({PhotoEdit,UserID,UserType,ShortName,PhotoPath,QQ,Weixin,Telephone,Weibo,Sign,dispatch}) => {
 
     let res = await Method.getPostData('/UserMgr/PersonalMgr/UpdateBasicInfo',{
 
         UserID,UserType,ShortName,QQ,Weixin,
 
-        Weibo,Telephone,Sign,PhotoPath
+        Weibo,Telephone,Sign,PhotoPath,PhotoEdit
 
     },2,CONFIG.PersonalProxy);
 

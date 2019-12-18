@@ -27,42 +27,8 @@ require('../../../../common/js/PicUpload/juqery.cp.picUploader');
 
 class StudentInfoModal extends Component {
     constructor(props) {
-        super(props);
-        this.state = {
-            Gende: '',
-            UserName: '',
-            UserKey: props.userKey,
-            type: props.type,
-            UserIDTipsVisible: false,
-            UserIDTipsTitle: '由1-24位字母与数字组成',
-            UserNameTipsVisible: false,
-            UserNameTipsTitle: '姓名由1-20位的汉字、字母、数字、下划线、空格组成（首尾不允许空格）',
-            GradeTipsVisible: false,
-            GradeTipsTitle: '请选择年级',
-            TitleTipsVisible: false,
-            TitleTipsTitle: '请选择职称',
-            ClassTipsVisible: false,
-            ClassTipsTitle: '请选择班级',
-            TelephoneTipsVisible: false,
-            TelephoneTipsTitle: '电话由数字及-/组成',
-            EmailTipsVisible: false,
-            EmailTipsTitle: '邮箱格式错误',
-            IDCardNoTipsVisible: false,
-            IDCardNoTipsTitle: '身份证格式错误',
-            HomeAdressTipsVisible: false,
-            HomeAdressTipsTitle: '家庭住址格式错误',
-            GenderTipsVisible: false,
-            GenderTipsTitle: '请选择性别',
-            Grades: [],
-            Classes: [],
-            TeacherTitle: [],
-            changeSubjectTipsTitle: '请选择班级学科',
-            changeSubjectVisible: false,
-            TitleIDTipsTitle: '请选择职称',
-            TitleIDVisible: false,
-            PositionTipsTitle: '请选择行政职称'
 
-        }
+        super(props);
 
         const { dispatch } = props;
 
