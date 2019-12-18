@@ -1490,10 +1490,6 @@ class Alert extends React.Component {
 
         };
 
-        window.AlertShow=false;
-
-        window.AlertType = 0;
-
     }
 
 
