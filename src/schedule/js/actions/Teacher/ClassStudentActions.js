@@ -1,6 +1,7 @@
 import ApiActions from "../ApiActions";
 
 import AppAlertActions from '../AppAlertActions';
+import AppLoadingActions from "../AppLoadingActions";
 
 
 //初始化
@@ -111,6 +112,12 @@ const TEACHER_CS_REPLACE_SCHEDULE_MODAL_SEARCH_LOADING_HIDE = 'TEACHER_CS_REPLAC
 
 //左侧菜单
 
+const TEACHER_CS_SEARCH_STU_RESULT_HIDE = 'TEACHER_CS_SEARCH_STU_RESULT_HIDE';
+
+const TEACHER_CS_SEARCH_TITLE_HIDE = 'TEACHER_CS_SEARCH_TITLE_HIDE';
+
+const TEACHER_CS_STUDENT_LEFT_LIST_UPDATE = 'TEACHER_CS_STUDENT_LEFT_LIST_UPDATE';
+
 const  TEACHER_CS_SEARCH_STUDENT_RESULT_UPDATE = 'TEACHER_CS_SEARCH_STUDENT_RESULT_UPDATE';
 
 const TEACHER_CS_SEARCH_STU_RESULT_SHOW = 'TEACHER_CS_SEARCH_STU_RESULT_SHOW';
@@ -150,58 +157,127 @@ const ClassStudentUpdate = (pickInfo) => {
 
         let { SchoolID } = LoginUser;
 
+        const { Classes } = Teacher.GangerClass;
+
         let UserID = pickInfo.catChildrenId;
 
         let UserType = 2;
 
         let {WeekNO} = Teacher.ClassStudent;
 
-        ApiActions.GetScheduleByUserID({
+        if (Classes.length>1){
 
-            SchoolID,PeriodID:'',UserType,UserID,WeekNO,dispatch
+            ApiActions.GetClassInfoByGanger({SchoolID,ClassID:pickInfo.catId,dispatch}).then(json=>{
 
-        }).then(data => {
+                if (json){
 
-            if (data){
+                    const {ItemClassHour, ItemClassHourCount} = json;
 
-                let { ScheduleCount} = data;
+                    dispatch({type:TEACHER_CLASS_TOTAL_STUDENT_CLASSHOUR_UPDATE, data: {ItemClassHour, ItemClassHourCount}});
 
-                let Schedule = data.ItemSchedule.map((item) => {
+                    ApiActions.GetScheduleByUserID({
 
-                    return {
+                        SchoolID,PeriodID:'',UserType,UserID,WeekNO,dispatch
 
-                        ...item,
+                    }).then(data => {
 
-                        title:item.SubjectName,
+                        if (data){
 
-                        titleID:item.SubjectID,
+                            let { ScheduleCount} = data;
 
-                        secondTitle:(item.ClassName===''?item.CourseClassName:item.ClassName),
+                            let Schedule = data.ItemSchedule.map((item) => {
 
-                        secondTitleID:(item.ClassName===''?item.CourseClassID:item.ClassID),
+                                return {
 
-                        thirdTitle:item.ClassRoomName,
+                                    ...item,
 
-                        thirdTitleID:item.ClassRoomID,
+                                    title:item.SubjectName,
 
-                        WeekDay:item.WeekDay,
+                                    titleID:item.SubjectID,
 
-                        ClassHourNO:item.ClassHourNO,
+                                    secondTitle:(item.ClassName===''?item.CourseClassName:item.ClassName),
 
-                        ScheduleType:item.ScheduleType
+                                    secondTitleID:(item.ClassName===''?item.CourseClassID:item.ClassID),
 
-                    }
+                                    thirdTitle:item.ClassRoomName,
+
+                                    thirdTitleID:item.ClassRoomID,
+
+                                    WeekDay:item.WeekDay,
+
+                                    ClassHourNO:item.ClassHourNO,
+
+                                    ScheduleType:item.ScheduleType
+
+                                }
 
 
-                });
+                            });
 
-                dispatch({type:TEACHER_CS_SCHEDULE_CHANGE,data:{ScheduleCount,Schedule,PickStudentName:pickInfo.catChildrenName,PickStudentID:pickInfo.catChildrenId}});
+                            dispatch({type:TEACHER_CS_SCHEDULE_CHANGE,data:{ScheduleCount,Schedule,PickStudentName:pickInfo.catChildrenName,PickStudentID:pickInfo.catChildrenId}});
 
-                dispatch({type:TEACHER_CS_LOADING_HIDE});
+                            dispatch({type:TEACHER_CS_LOADING_HIDE});
 
-            }
+                        }
 
-        });
+                    });
+
+                }
+
+            });
+
+        }else{
+
+            ApiActions.GetScheduleByUserID({
+
+                SchoolID,PeriodID:'',UserType,UserID,WeekNO,dispatch
+
+            }).then(data => {
+
+                if (data){
+
+                    let { ScheduleCount} = data;
+
+                    let Schedule = data.ItemSchedule.map((item) => {
+
+                        return {
+
+                            ...item,
+
+                            title:item.SubjectName,
+
+                            titleID:item.SubjectID,
+
+                            secondTitle:(item.ClassName===''?item.CourseClassName:item.ClassName),
+
+                            secondTitleID:(item.ClassName===''?item.CourseClassID:item.ClassID),
+
+                            thirdTitle:item.ClassRoomName,
+
+                            thirdTitleID:item.ClassRoomID,
+
+                            WeekDay:item.WeekDay,
+
+                            ClassHourNO:item.ClassHourNO,
+
+                            ScheduleType:item.ScheduleType
+
+                        }
+
+
+                    });
+
+                    dispatch({type:TEACHER_CS_SCHEDULE_CHANGE,data:{ScheduleCount,Schedule,PickStudentName:pickInfo.catChildrenName,PickStudentID:pickInfo.catChildrenId}});
+
+                    dispatch({type:TEACHER_CS_LOADING_HIDE});
+
+                }
+
+            });
+
+        }
+
+
 
     }
 
@@ -299,13 +375,17 @@ const StudentSearch = (val) => {
 
         let { SchoolID } = LoginUser;
 
-        let { ClassID } = Teacher.ClassStudent;
+        let { Classes } = Teacher.GangerClass;
 
         let Key = val;
 
+
+
+        const ClassesStr = Classes.map(item=>item.ClassID).join(',');
+
         ApiActions.GetSudentInfoByClassIDAndKey({
 
-            ClassID,Key,dispatch
+            ClassID:ClassesStr,Key,dispatch
 
         }).then(data => {
 
@@ -317,7 +397,11 @@ const StudentSearch = (val) => {
 
                       id:item.StudentID,
 
-                      name:item.StudentName
+                      name:item.StudentName,
+
+                      catId:item.ClassID,
+
+                      catName:item.ClassName
 
                   }
 
@@ -347,9 +431,78 @@ const CancelStuSearch = () => {
 
       dispatch({type:TEACHER_CS_SEARCH_LOADING_SHOW});
 
-      const { ClassID } = getState().Teacher.ClassStudent;
+      const { Classes } = getState().Teacher.GangerClass;
 
-      ApiActions.GetSudentInfoByClassIDAndKey({ClassID,Key:'',dispatch}).then(json=>{
+      const ClassesStr = Classes.map(item=>item.ClassID).join(',');
+
+      ApiActions.GetSudentInfoByClassIDAndKey({ClassID:ClassesStr,Key:'',dispatch}).then(json=>{
+
+          if (json){
+
+              //判断是单个的行政班还是多个的行政班
+
+              if (Classes.length>1){//多个行政班的情况下
+
+                  const StudentList = Classes.map(item=>{
+
+                      let list = json.map(i=>{ return i.ClassID===item.ClassID?{id:i.StudentID,name:i.StudentName}:undefined }).filter(it=>it!==undefined);
+
+                      // let StuList = list.map(i=>{return {id:i.StudentID,name:i.StudentName}});
+
+                      return {
+
+                          id:item.ClassID,
+
+                          name:item.ClassName,
+
+                          list
+
+                      }
+
+                  });
+
+                  dispatch({type:TEACHER_CS_SEARCH_TITLE_HIDE});
+
+                  dispatch({type:TEACHER_CS_SEARCH_STU_RESULT_HIDE});
+
+                  dispatch({type:TEACHER_CS_STUDENT_LEFT_LIST_UPDATE,data:StudentList});
+
+              }else{
+
+                  let list = json.map((i) => {
+
+                      return {
+
+                          id:i.StudentID,
+
+                          name:i.StudentName
+
+                      }
+
+                  });
+
+                  const { ClassName } = Classes[0];
+
+                  dispatch({type:TEACHER_CS_SEARCH_STUDENT_RESULT_UPDATE,data:list});
+
+                  dispatch({type:TEACHER_CS_SEARCH_STU_RESULT_SHOW});
+
+                  dispatch({type:TEACHER_CS_SEARCH_TITLE_SHOW,data:`${ClassName}学生列表`});
+
+              }
+
+          }
+
+          dispatch({type:TEACHER_CS_LOADING_HIDE});
+
+          dispatch({type:TEACHER_CS_SEARCH_LOADING_HIDE});
+
+          dispatch({type:AppLoadingActions.APP_LOADING_HIDE})
+
+      })
+
+
+     /* ApiActions.GetSudentInfoByClassIDAndKey({ClassID,Key:'',dispatch}).then(json=>{
 
           if (json){
 
@@ -374,7 +527,7 @@ const CancelStuSearch = () => {
           dispatch({type:TEACHER_CS_SEARCH_LOADING_HIDE});
 
       })
-
+*/
 
 
   }
@@ -1019,6 +1172,12 @@ export default {
     TEACHER_CS_CLASS_INFO_UPDATE,
 
     TEACHER_CLASS_TOTAL_STUDENT_CLASSHOUR_UPDATE,
+
+    TEACHER_CS_SEARCH_STU_RESULT_HIDE,
+
+    TEACHER_CS_SEARCH_TITLE_HIDE,
+
+    TEACHER_CS_STUDENT_LEFT_LIST_UPDATE,
 
     TEACHER_CS_SEARCH_STUDENT_RESULT_UPDATE,
 

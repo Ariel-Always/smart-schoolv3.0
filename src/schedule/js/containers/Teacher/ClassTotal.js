@@ -91,13 +91,13 @@ class ClassTotal extends Component{
 
     //走班详情弹窗打开
 
-    OptionalClassShow({ClassHourNO,WeekDay}){
+    OptionalClassShow({ClassID,ClassHourNO,WeekDay}){
 
         const { dispatch,ClassTotal } = this.props;
 
-        let {ClassID,WeekNO } = ClassTotal;
+        let {WeekNO } = ClassTotal;
 
-        dispatch(CTActions.OptionalClassInit({ClassHourNO,WeekDay,ClassID,WeekNO}))
+        dispatch(CTActions.OptionalClassInit({ClassHourNO,WeekDay,ClassID,WeekNO}));
 
     }
 

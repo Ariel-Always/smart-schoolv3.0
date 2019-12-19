@@ -42,7 +42,7 @@ class Index extends Component{
 
                                 {link:"/teacher/mine",name:"我的课表",logo:"mine"},
 
-                                /*{link:"/teacher/class",name:"班级课表",logo:"class"},*/
+                                {link:"/teacher/class",name:"班级课表",logo:"class"},
 
                             ];
 
@@ -66,9 +66,6 @@ class Index extends Component{
 
         }
 
-
-
-        console.log(HeaderLinkList);
 
         return (
 

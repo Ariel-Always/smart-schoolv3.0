@@ -89,6 +89,8 @@ class ClassStudent extends Component{
 
         dispatch({type:CSActions.TEACHER_CS_LOADING_SHOW});
 
+        console.log(pickInfo);
+
         dispatch(CSActions.ClassStudentUpdate(pickInfo));
 
     }
@@ -441,7 +443,7 @@ class ClassStudent extends Component{
                     <LeftMenu
                         title="学生列表"
                         type="person"
-                        pickList={ClassStudent.teacherList}
+                        pickList={ClassStudent.StudentList}
                         searchTitleShow={true}
                         searchTitle={ClassStudent.searchTitle}
                         pickClick={this.menuPickClick.bind(this)}

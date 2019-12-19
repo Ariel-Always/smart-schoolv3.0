@@ -266,7 +266,7 @@ class SingleDoubleTable extends Component{
 
                                                     it.IsShift?
 
-                                                        <a className="shift-wrapper" onClick={()=>OptionalClassShow({WeekDay:it.WeekDay,ClassHourNO:it.ClassHourNO})}>走班课程</a>
+                                                        <a className="shift-wrapper" onClick={()=>OptionalClassShow({ClassID:it.ClassID,WeekDay:it.WeekDay,ClassHourNO:it.ClassHourNO})}>走班课程</a>
 
                                                         :
 
