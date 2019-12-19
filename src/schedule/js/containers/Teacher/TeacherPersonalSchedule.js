@@ -431,18 +431,26 @@ class TeacherPersonalSchedule extends Component{
 
             <div className="teacher-mine-wrapper">
 
-                <TopButtons
+                {
 
-                    AdjustScheduleShow={this.AdjustScheduleShow.bind(this)}
+                    Power.Adjust||Power.AddImport?
 
-                    Import={this.Import.bind(this)}
+                        <TopButtons
 
-                    AddTempScheduleShow={this.AddTempScheduleShow.bind(this)}
+                            AdjustScheduleShow={this.AdjustScheduleShow.bind(this)}
 
-                    Power={Power}>
+                            Import={this.Import.bind(this)}
+
+                            AddTempScheduleShow={this.AddTempScheduleShow.bind(this)}
+
+                            Power={Power}>
 
 
-                </TopButtons>
+                        </TopButtons>
+
+                        :''
+
+                }
 
                 <TermPick
 
