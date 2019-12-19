@@ -2,7 +2,7 @@ import UpDataState from '../../actions/UpDataState';
 
 
 
-const GetSignUpLog = (state = { DidData: {}, newStatus: 0, WillData: {} }, actions) => {
+const GetSignUpLog = (state = { DidData: {}, newStatus: 0, WillData: {},Grade:{ value: 0, title: "全部年级"},Class:{value: 0, title: "全部班级"} }, actions) => {
     switch (actions.type) {
         case UpDataState.GET_WILL_SIGN_UP_LOG_MSG:
             let WillData = handleData(actions.data);
@@ -12,6 +12,8 @@ const GetSignUpLog = (state = { DidData: {}, newStatus: 0, WillData: {} }, actio
             return Object.assign({}, state, { DidData: DidData });
         case UpDataState.SET_SIGN_UP_LOG_STATUS_MSG:
             return Object.assign({}, state, { newStatus: actions.data });
+            case UpDataState.SET_REGISTER_GRADE_CLASS_MSG:
+                return Object.assign({}, state, { ...actions.data });
         default:
             return state;
     }

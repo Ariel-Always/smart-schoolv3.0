@@ -33,7 +33,7 @@ class GraduateContact extends React.Component {
     onTelephoneBlur = (e) => {
         const { dispatch } = this.props;
         let value = e.target.value;
-        let Test = /^[0-9]{11}$/.test(value)
+        let Test = /^([0-9\/-]){1,40}$/.test(value)
         if (Test || !e.target.value) {
             dispatch(actions.UpUIState.editModalTipsVisible({ TelephoneTipsVisible: false }))
             dispatch(actions.UpDataState.setGraduateContactMsg({ Telephone: e.target.value }))

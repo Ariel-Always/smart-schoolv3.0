@@ -61,7 +61,7 @@ class RegisterDidExamine extends React.Component {
           align: "right",
           dataIndex: "UserName",
           key: "UserImg",
-          colSpan:0,
+          colSpan: 0,
           width: 60,
           render: arr => {
             return (
@@ -82,7 +82,7 @@ class RegisterDidExamine extends React.Component {
           title: "姓名",
           align: "left",
           dataIndex: "UserName",
-          colSpan:2,
+          colSpan: 2,
           width: 90,
           key: "UserName",
           sorter: true,
@@ -212,7 +212,7 @@ class RegisterDidExamine extends React.Component {
       secondParam: "",
       TeacherClassSelect: {},
       firstParam: "",
-      searchWord:''
+      searchWord: ""
     };
   }
 
@@ -220,14 +220,90 @@ class RegisterDidExamine extends React.Component {
     const { dispatch, DataState } = this.props;
     let userMsg = DataState.LoginUser;
     let isWho = "1";
-    if (userMsg.UserType === "0" && userMsg.UserType === "7") {
+
+    if (userMsg.UserType === "0" || userMsg.UserType === "7") {
       isWho = "1";
+      if (DataState.GetSignUpLog.Grade.value !== 0) {
+        let Classes = [{ value: 0, title: "全部班级" }];
+
+        let ClassArr = this.props.DataState.GradeClassMsg.returnData.AllClasses[
+          DataState.GetSignUpLog.Grade.value
+        ];
+        ClassArr.map(Class => {
+          Classes.push(Class);
+        });
+        this.setState({
+          DropMenuShow: true,
+          secondDropList: Classes
+        });
+      }
+      this.setState({
+        firstSelect: DataState.GetSignUpLog.Grade,
+        secondSelect: DataState.GetSignUpLog.Class
+      });
+      if (DataState.GetSignUpLog.Class.value === 0) {
+        this.StudentDropMenu(DataState.GetSignUpLog.Grade);
+      } else {
+        this.StudentDropMenuSecond(DataState.GetSignUpLog.Class);
+      }
     } else if (userMsg.UserType === "1" && userMsg.UserClass[2] === "1") {
       isWho = "2";
+      this.TeacherDropMenuSecond(DataState.GetSignUpLog.Class);
     }
     this.setState({
       isWho: isWho
     });
+
+    // if(DataState.GetSignUpLog.Grade!==this.state.firstSelect||DataState.GetSignUpLog.Class!==this.state.secondSelect){
+    //   this.setState({
+    //     firstSelect:DataState.GetSignUpLog.Grade,
+    //     secondSelect:DataState.GetSignUpLog.Class
+    //   })
+    //   if(DataState.GetSignUpLog.Grade.value!==0){
+    //     this.setState({
+    //       DropMenuShow: true
+    //     })
+    //   }else{
+    //     this.setState({
+    //       DropMenuShow: false
+    //     })
+    //   }
+    // }
+    // if(DataState.GetSignUpLog.Grade!==this.state.firstSelect){
+    // let Classes = [{ value: 0, title: "全部班级" }];
+
+    // this.setState({
+    //   firstSelect: DataState.GetSignUpLog.Grade,
+    //   secondSelect: DataState.GetSignUpLog.Class
+    // });
+    // if (DataState.GetSignUpLog.Grade.value !== 0) {
+    //   let ClassArr = this.props.DataState.GradeClassMsg.returnData.AllClasses[
+    //     DataState.GetSignUpLog.Grade.value
+    //   ];
+    //   ClassArr.map(Class => {
+    //     Classes.push(Class);
+    //   });
+    //   this.setState({
+    //     DropMenuShow: true,
+    //     secondDropList: Classes,
+    //     firstParam: "&gradeID=" + DataState.GetSignUpLog.Grade.value
+    //   });
+    // }
+    // if (DataState.GetSignUpLog.Class.value === 0) {
+    //   // this.StudentDropMenu(DataState.GetSignUpLog.Grade);
+    // } else {
+    //   // this.StudentDropMenuSecond(DataState.GetSignUpLog.Class);
+    //   this.setState({
+    //     secondSelect: DataState.GetSignUpLog.Class,
+    //     secondParam: "&classID=" + DataState.GetSignUpLog.Class.value
+    //   });
+    // }
+    // }
+    // if(DataState.GetSignUpLog.Class!==this.state.secondSelect){
+
+    //   this.StudentDropMenuSecond(DataState.GetSignUpLog.Class);
+
+    // }
   }
   componentWillReceiveProps(nextProps) {
     const { dispatch, DataState } = nextProps;
@@ -241,6 +317,41 @@ class RegisterDidExamine extends React.Component {
         secondParam: "&classID=" + TeacherClass[0].value
       });
     }
+    // if(DataState.GetSignUpLog.Grade.value!==this.state.firstSelect.value||DataState.GetSignUpLog.Class.value!==this.state.secondSelect.value){
+
+    //   if(DataState.GetSignUpLog.Class.value===0){
+    //     this.StudentDropMenu(DataState.GetSignUpLog.Grade);
+
+    //    }else{
+    //     this.StudentDropMenuSecond(DataState.GetSignUpLog.Class);
+    //    }
+
+    // }
+    // if(DataState.GetSignUpLog.Grade!==this.state.firstSelect||DataState.GetSignUpLog.Class!==this.state.secondSelect){
+    //   this.setState({
+    //     firstSelect:DataState.GetSignUpLog.Grade,
+    //     secondSelect:DataState.GetSignUpLog.Class
+    //   })
+    //   if(DataState.GetSignUpLog.Grade.value!==0){
+    //     this.setState({
+    //       DropMenuShow: true
+    //     })
+    //   }else{
+    //     this.setState({
+    //       DropMenuShow: false
+    //     })
+    //   }
+    // }
+    // if(DataState.GetSignUpLog.Grade!==this.state.firstSelect){
+
+    //   this.StudentDropMenu(DataState.GetSignUpLog.Grade);
+
+    // }
+    // if(DataState.GetSignUpLog.Class!==this.state.secondSelect){
+
+    //   this.StudentDropMenuSecond(DataState.GetSignUpLog.Class);
+
+    // }
   }
   StudentDropMenu = e => {
     const { dispatch } = this.props;
@@ -251,6 +362,11 @@ class RegisterDidExamine extends React.Component {
       firstSelect: e,
       secondParam: ""
     });
+    dispatch({
+      type: actions.UpDataState.SET_REGISTER_GRADE_CLASS_MSG,
+      data: { Grade: e }
+    });
+
     ////console.log(this.refs.dropMenuSecond)
     if (e.value !== 0) {
       let ClassArr = this.props.DataState.GradeClassMsg.returnData.AllClasses[
@@ -267,7 +383,8 @@ class RegisterDidExamine extends React.Component {
         keyword: "",
         firstParam: "&gradeID=" + e.value,
         CancelBtnShow: "n",
-        searchValue: ""
+        searchValue: "",
+        secondSelect: { value: 0, title: "全部班级" }
       });
       dispatch(
         actions.UpDataState.getDidSignUpLog(
@@ -316,6 +433,11 @@ class RegisterDidExamine extends React.Component {
       CancelBtnShow: "n",
       searchValue: ""
     });
+    dispatch({
+      type: actions.UpDataState.SET_REGISTER_GRADE_CLASS_MSG,
+      data: { Class: e }
+    });
+
     if (e.value === 0) {
       this.setState({
         secondParam: ""
@@ -609,7 +731,7 @@ class RegisterDidExamine extends React.Component {
         keyword: e.value,
         CancelBtnShow: "y",
         pagination: 1,
-        searchWord:e.value
+        searchWord: e.value
       });
       dispatch(
         actions.UpDataState.getDidSignUpLog(
