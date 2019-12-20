@@ -2,6 +2,8 @@ import AppAlertActions from '../AppAlertActions'
 
 import ApiActions from '../ApiActions';
 
+import ComPageRefresh from '../ComPageRefresh';
+
 //停课弹窗
 const STOP_SCHEDULE_SHOW = 'STOP_SCHEDULE_SHOW';
 
@@ -739,11 +741,15 @@ const commitInfo = () => {
 
                    dispatch(AppAlertActions.alertSuccess({title:"停课成功！"}));
 
+                    ComPageRefresh.ComPageUpdate(dispatch);
+
                 }
 
                 dispatch({type:STOP_SCHEDULE_LOADING_HIDE});
 
             });
+
+
 
         }
 

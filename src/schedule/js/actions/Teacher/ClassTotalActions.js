@@ -5,7 +5,8 @@ import AppAlertActions from '../AppAlertActions';
 const TEACHER_CLASS_TOTAL_INIT = 'TEACHER_CLASS_TOTAL_INIT';
 
 
-/*
+
+
 //设置班级下拉菜单
 
 const TEACHER_CLASS_TOTAL_CLASS_DROP_SHOW = 'TEACHER_CLASS_TOTAL_CLASS_DROP_SHOW';
@@ -18,7 +19,6 @@ const TEACHER_CLASS_TOTAL_CLASS_DROP_CHANGE = 'TEACHER_CLASS_TOTAL_CLASS_DROP_CH
 
 //班级列表更新
 const  TEACHER_CLASS_TOTAL_CLASS_DROP_LIST_UPDATE = 'TEACHER_CLASS_TOTAL_CLASS_DROP_LIST_UPDATE';
-*/
 
 
 //单个班级名称和ID变化
@@ -39,6 +39,8 @@ const TEACHER_CLASS_TOTAL_WEEK_LIST_UPDATE = 'TEACHER_CLASS_TOTAL_WEEK_LIST_UPDA
 const TEACHER_CLASS_TOTAL_LOADING_HIDE = 'TEACHER_CLASS_TOTAL_LOADING_HIDE';
 
 const TEACHER_CLASS_TOTAL_LOADING_SHOW = 'TEACHER_CLASS_TOTAL_LOADING_SHOW';
+
+
 
 
 //走班弹窗
@@ -161,17 +163,30 @@ const ClassTotalPageUpdate = () =>{
         //获取需要传递的参数
         let {SchoolID} =LoginUser;
 
-        let { WeekNO,ClassID } = Teacher.ClassTotal;
+        let { WeekNO,ClassDropSelectd,ClassID,ClassDropShow } = Teacher.ClassTotal;
+
+        let NewClassID = '';
+
+        //判断是否是多个行政班的班主任
+        if (ClassDropShow){
+
+            NewClassID = ClassDropSelectd.value;
+
+        }else{
+
+            NewClassID = ClassID;
+
+        }
 
         ApiActions.GetScheduleOfClassOne({
 
-            SchoolID,WeekNO,ClassID,dispatch
+            SchoolID,WeekNO,ClassID:NewClassID,dispatch
 
-        }).then(data => {
+        }).then(json => {
 
-            if (data){
+            if (json){
 
-                let Schedule = data.ItemSchedule.map((item) => {
+                let Schedule = json.ItemSchedule.map((item) => {
 
                     return {
 
@@ -199,7 +214,7 @@ const ClassTotalPageUpdate = () =>{
 
                 });
 
-                data.ItemCourseClass.map(item=>{
+                json.ItemCourseClass.map(item=>{
 
                     let ShiftClass = {
 
@@ -222,6 +237,98 @@ const ClassTotalPageUpdate = () =>{
             }
 
             dispatch({type:TEACHER_CLASS_TOTAL_LOADING_HIDE});
+
+        });
+
+
+    }
+
+};
+
+
+const ClassTotalClassDropChange = () =>{
+
+    return (dispatch,getState)=>{
+
+        dispatch({type:TEACHER_CLASS_TOTAL_LOADING_SHOW});
+
+        const { ClassDropSelectd,WeekNO } = getState().Teacher.ClassTotal;
+
+        const { SchoolID } = getState().LoginUser;
+
+        const ClassID = ClassDropSelectd.value;
+
+        ApiActions.GetClassInfoByGanger({SchoolID,ClassID,dispatch}).then(data=>{
+
+            if (data){
+
+                const { ItemClassHour,ItemClassHourCount } = data;
+
+                dispatch({type:TEACHER_CLASS_TOTAL_CLASS_CLASSHOUR_UPDATE,data:{ItemClassHour,ItemClassHourCount}});
+
+                ApiActions.GetScheduleOfClassOne({
+
+                    SchoolID,WeekNO,ClassID,dispatch
+
+                }).then(json => {
+
+                    if (json){
+
+                        let Schedule = json.ItemSchedule.map((item) => {
+
+                            return {
+
+                                ...item,
+
+                                title:item.SubjectName,
+
+                                titleID:item.SubjectID,
+
+                                secondTitle:item.TeacherName,
+
+                                secondTitleID:item.TeacherID,
+
+                                thirdTitle:item.ClassRoomName,
+
+                                thirdTitleID:item.ClassRoomID,
+
+                                WeekDay:item.WeekDay,
+
+                                ClassHourNO:item.ClassHourNO,
+
+                                ScheduleType:item.ScheduleType
+
+                            }
+
+                        });
+
+                        json.ItemCourseClass.map(item=>{
+
+                            let ShiftClass = {
+
+                                ClassID:item.ClassID,
+
+                                WeekDay:item.WeekDayNO,
+
+                                ClassHourNO:item.ClassHourNO,
+
+                                IsShift:true
+
+                            };
+
+                            Schedule.push(ShiftClass);
+
+                        });
+
+                        dispatch({type:TEACHER_CLASS_TOTAL_SCHEDULE_UPDATE,data:Schedule});
+
+                    }
+
+                    dispatch({type:TEACHER_CLASS_TOTAL_LOADING_HIDE});
+
+                });
+
+            }
 
         });
 
@@ -902,13 +1009,13 @@ export default {
 
     TEACHER_CLASS_TOTAL_INIT,
 
-    /*TEACHER_CLASS_TOTAL_CLASS_DROP_SHOW,
+    TEACHER_CLASS_TOTAL_CLASS_DROP_SHOW,
 
     TEACHER_CLASS_TOTAL_CLASS_DROP_HIDE,
 
     TEACHER_CLASS_TOTAL_CLASS_DROP_CHANGE,
 
-    TEACHER_CLASS_TOTAL_CLASS_DROP_LIST_UPDATE,*/
+    TEACHER_CLASS_TOTAL_CLASS_DROP_LIST_UPDATE,
 
     TEACHER_CLASS_TOTAL_CLASS_UPDATE,
 
@@ -1062,6 +1169,8 @@ export default {
 
     ReplaceScheduleCommit,
 
-    RebackReplaceSchedule
+    RebackReplaceSchedule,
+
+    ClassTotalClassDropChange
 
 }

@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 
 import { connect } from 'react-redux';
 
-import {Loading} from "../../../../common";
+import {Loading,DropDown} from "../../../../common";
 
 import TeacherIndexActions from "../../actions/Teacher/TeacherIndexActions";
 
@@ -40,25 +40,17 @@ class ClassTotal extends Component{
 
     //班级下拉改变
 
-    /*ClassChange(e){
+    ClassChange(e){
 
-        const {dispatch} = this.props;
+        const { dispatch } = this.props;
 
-        let data = {};
+        let data = {value:e.value,title:e.title};
 
-        if (e.value!=="none"){
+        dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_DROP_CHANGE,data:data});
 
-            data = {value:e.value,title:e.title};
+        dispatch(CTActions.ClassTotalClassDropChange());
 
-        }
-
-        dispatch({type:CTActions.TEACHER_CLASS_TOTAL_GRADE_SELECT_CHANGE,data:data});
-
-        $('#tb').find('div.ant-table-body').scrollTop(0);
-
-        dispatch(CTActions.ClassTotalPageUpdate());
-
-    }*/
+    }
 
     //选择某一周次
     weekPickEvent(e){
@@ -99,13 +91,13 @@ class ClassTotal extends Component{
 
     //走班详情弹窗打开
 
-    OptionalClassShow({ClassHourNO,WeekDay}){
+    OptionalClassShow({ClassID,ClassHourNO,WeekDay}){
 
         const { dispatch,ClassTotal } = this.props;
 
-        let {ClassID,WeekNO } = ClassTotal;
+        let {WeekNO } = ClassTotal;
 
-        dispatch(CTActions.OptionalClassInit({ClassHourNO,WeekDay,ClassID,WeekNO}))
+        dispatch(CTActions.OptionalClassInit({ClassHourNO,WeekDay,ClassID,WeekNO}));
 
     }
 
@@ -423,7 +415,7 @@ class ClassTotal extends Component{
 
             <Loading spinning={ClassTotal.LoadingShow} tip="正在为您查找，请稍后...">
 
-                {/*{
+                {
 
                     ClassTotal.ClassDropShow?
 
@@ -441,11 +433,11 @@ class ClassTotal extends Component{
 
                         </DropDown>
 
-                        :*/}
+                        :
 
                         <div className={`class-name ${ClassTotal.ClassName===''?'unset':''}`}>{ClassTotal.ClassName?ClassTotal.ClassName:'您未有授课班级'}</div>
 
-                {/*}*/}
+                }
 
                 <TermPick
 

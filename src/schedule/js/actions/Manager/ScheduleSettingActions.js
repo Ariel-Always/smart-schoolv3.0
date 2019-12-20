@@ -527,7 +527,7 @@ const AdjustClassHourOk = () =>{
 
           let MorningTimes,AfternoonTimes = 0;
 
-          if (MorningTime<0||MorningTime<0){
+          if (parseInt(MorningTime)<0||parseInt(MorningTime)<0){
 
               dispatch(AppAlertActions.alertWarn({title:"时间不能为负!"}));
 
@@ -535,22 +535,22 @@ const AdjustClassHourOk = () =>{
 
               if (MorningRadioChecked==='before'){
 
-                  MorningTimes = -MorningTime;
+                  MorningTimes = -parseInt(MorningTime);
 
 
               }else{
 
-                  MorningTimes = MorningTime
+                  MorningTimes = parseInt(MorningTime);
 
               }
 
               if (AfternoonRadioChecked==='before'){
 
-                  AfternoonTimes = -AfternoonTime
+                  AfternoonTimes = -parseInt(AfternoonTime);
 
               }else{
 
-                  AfternoonTimes = AfternoonTime
+                  AfternoonTimes = parseInt(AfternoonTime);
 
               }
 

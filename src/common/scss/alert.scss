@@ -14,7 +14,7 @@ $img_url:"#{$image_url}/alert";
   max-width:500px;
   &.animation{
     display: block;
-    @include animation(hide 1s 1s linear);
+    @include animation(hide 0.8s 0.4s linear);
   }
   .border{
     box-shadow: 0 0 16px 0
@@ -101,13 +101,23 @@ $img_url:"#{$image_url}/alert";
   }
 
 }
+
+.alert_dialog_dragheader{
+
+  height: 50px;
+
+}
+
 .alert_dialog_content{
   @include flex;
   @include justify-content(center);
   @include align-items(center);
   //@include flex-direction(column);
   padding:0 30px;
-  padding-top:50px;
+  /*padding-top:50px;*/
+
+
+
   //大图标
   .big_icon{
     width: 54px;
@@ -235,7 +245,7 @@ $img_url:"#{$image_url}/alert";
     outline: none;
     border-radius: 16px;
     font-size: 16px;
-    box-shadow: 0px 7px 22px -6px #5dcbfe;
+    box-shadow: 0 7px 22px -6px #5dcbfe;
     cursor: pointer;
     @include textOverFlow;
     &.ok{

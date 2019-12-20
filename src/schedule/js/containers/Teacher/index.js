@@ -14,15 +14,19 @@ import { connect } from 'react-redux';
 
 
 
+
 class Index extends Component{
+
+
+
 
     render() {
 
         let HeaderLinkList = [];
 
-        const { LoginUser } = this.props;
+        const { LoginUser,dispatch } = this.props;
 
-        const { UserType,UserClass } = LoginUser;
+        const { UserType,UserClass,UserID } = LoginUser;
 
         if (Object.keys(LoginUser).length>0){
 
@@ -34,13 +38,13 @@ class Index extends Component{
 
                     HeaderLinkList = [
 
-                        {link:"/teacher/subject-teacher",name:"学科教师课表",logo:"subject"},
+                                {link:"/teacher/subject-teacher",name:"学科教师课表",logo:"subject"},
 
-                        {link:"/teacher/mine",name:"我的课表",logo:"mine"},
+                                {link:"/teacher/mine",name:"我的课表",logo:"mine"},
 
-                        {link:"/teacher/class",name:"班级课表",logo:"class"},
+                                {link:"/teacher/class",name:"班级课表",logo:"class"},
 
-                    ];
+                            ];
 
                 }else{
 
@@ -56,14 +60,11 @@ class Index extends Component{
 
             }else {
 
-                //window.location.href='/Error.aspx?errcode=E011';
-
-                console.log(123);
+                window.location.href='/Error.aspx?errcode=E011';
 
             }
 
         }
-
 
 
         return (

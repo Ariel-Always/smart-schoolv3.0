@@ -239,6 +239,10 @@ const ClassStudent = (state={
 
             return { ...state,WeekNO:actions.data };
 
+        case CSActions.TEACHER_CS_STUDENT_LEFT_LIST_UPDATE:
+
+            return { ...state,StudentList:actions.data };
+
         case CSActions.TEACHER_CS_SEARCH_STUDENT_RESULT_UPDATE:
 
             return { ...state,searchResult:actions.data };
@@ -247,9 +251,17 @@ const ClassStudent = (state={
 
             return { ...state,searchWrapperShow:true };
 
+        case CSActions.TEACHER_CS_SEARCH_STU_RESULT_HIDE:
+
+            return { ...state,searchWrapperShow:false };
+
         case CSActions.TEACHER_CS_SEARCH_TITLE_SHOW:
 
             return { ...state,searchTitle:actions.data };
+
+        case CSActions.TEACHER_CS_SEARCH_TITLE_HIDE:
+
+            return { ...state,searchTitle:false };
 
         case CSActions.TEACHER_CS_LOADING_SHOW:
 

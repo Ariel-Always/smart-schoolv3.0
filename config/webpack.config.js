@@ -218,8 +218,8 @@ module.exports = function(webpackEnv) {
           },*/
       output: {
           path:paths.appBuild,
-          filename: "JS/[name]/[name].[hash].js",  //打包模块js放置到 JS/xxx/xxx.js
-          chunkFilename: "JS/common/[name].[hash].js" //打包公共的js放置到 JS/common下
+          filename: `JS/[name]/[name].js?v=${new Date().getTime()}`,  //打包模块js放置到 JS/xxx/xxx.js
+          chunkFilename: `JS/common/[name].js?v=${new Date().getTime()}` //打包公共的js放置到 JS/common下
       },
       optimization: {
       minimize: isEnvProduction,
@@ -622,8 +622,8 @@ module.exports = function(webpackEnv) {
         new MiniCssExtractPlugin({
           // Options similar to the same options in webpackOptions.output
           // both options are optional
-          filename: 'App_Themes/Skin/css/[name]/index.[hash].css', //打包模块的css文件放置到这里
-          chunkFilename: 'App_Themes/Skin/css/common/[name].[hash].css', //打包公共的css放置到这里
+          filename: `App_Themes/Skin/css/[name]/index.css?v=${new Date().getTime()}`, //打包模块的css文件放置到这里
+          chunkFilename: `App_Themes/Skin/css/common/[name].css?v=${new Date().getTime()}`, //打包公共的css放置到这里
         }),
       // Generate a manifest file which contains a mapping of all asset filenames
       // to their corresponding output file so that tools can pick it up without

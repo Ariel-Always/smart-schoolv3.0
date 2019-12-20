@@ -1,7 +1,8 @@
-import Method from '../Method';
-
 import AppAlertActions from '../AppAlertActions'
+
 import ApiActions from "../ApiActions";
+
+import ComPageRefresh from "../ComPageRefresh";
 
 //停课弹窗
 const DEL_SCHEDULE_SHOW = 'DEL_SCHEDULE_SHOW';
@@ -348,6 +349,8 @@ const commitInfo = () => {
                     dispatch({type:DEL_SCHEDULE_HIDE});
 
                     dispatch(AppAlertActions.alertSuccess({title:"删除课程成功！"}))
+
+                    ComPageRefresh.ComPageUpdate(dispatch);
 
                 }
 

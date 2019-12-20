@@ -107,9 +107,9 @@ class App extends Component{
 
                 }else{
 
-                   let GetAdjustPower =  QueryOtherPower({UserType,ModuleID:'000-2-0-07',SchoolID:UserInfo.SchoolID,Power:'Teacher_Schedule_U'});
+                   let GetAdjustPower =  QueryOtherPower({UserType,SchoolID:UserInfo.SchoolID,Power:'Teacher_Schedule_U'});
 
-                   let GetImportPower = QueryOtherPower({UserType,ModuleID:'000-2-0-07',SchoolID:UserInfo.SchoolID,Power:'Teacher_Schedule_C'})
+                   let GetImportPower = QueryOtherPower({UserType,SchoolID:UserInfo.SchoolID,Power:'Teacher_Schedule_C'})
 
                     Promise.all([GetAdjustPower,GetImportPower]).then(res=>{
 
@@ -196,8 +196,7 @@ class App extends Component{
 
                             let GetAdjustPower =  QueryOtherPower({UserType,ModuleID:'000-2-0-07',SchoolID:UserInfo.SchoolID,Power:'Teacher_Schedule_U'});
 
-                            let GetImportPower = QueryOtherPower({UserType,ModuleID:'000-2-0-07',SchoolID:UserInfo.SchoolID,Power:'Teacher_Schedule_C'})
-
+                            let GetImportPower = QueryOtherPower({UserType,ModuleID:'000-2-0-07',SchoolID:UserInfo.SchoolID,Power:'Teacher_Schedule_C'});
 
                             dispatch(ModuleCommonActions.getCommonInfo());
 

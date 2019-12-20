@@ -21,7 +21,7 @@ const StudentInfoModal = (state={
 
     UserNameTipsVisible: false,
 
-    UserNameTipsTitle: '姓名由1-20位的汉字、字母、数字、下划线、空格组成（首尾不允许空格）',
+    UserNameTipsTitle: '姓名由1-20位的汉字、字母、数字、下划线、空格组成',
 
     TelephoneTipsVisible: false,
 
@@ -121,7 +121,7 @@ const StudentInfoModal = (state={
 
                 UserNameTipsVisible: false,
 
-                UserNameTipsTitle: '姓名由1-20位的汉字、字母、数字、下划线、空格组成（首尾不允许空格）',
+                UserNameTipsTitle: '姓名由1-20位的汉字、字母、数字、下划线、空格组成',
 
                 TelephoneTipsVisible: false,
 
@@ -344,7 +344,7 @@ const StudentInfoModal = (state={
 
                         ...state,
 
-                        HomeAdressTipsTitle:true
+                        HomeAdressTipsVisible:true
 
                     };
 

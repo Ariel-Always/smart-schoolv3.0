@@ -497,8 +497,6 @@ const radioChange = (id) => {
 
                     });
 
-                    list.sort((a,b)=>{ return parseInt(a.id) - parseInt(b.id) });
-
                     dispatch({type: REPLACE_SHCEDULE_MONTHS_LIST_UPDATE, data: list});
                 }
 

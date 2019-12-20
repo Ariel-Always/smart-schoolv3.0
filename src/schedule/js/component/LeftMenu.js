@@ -115,7 +115,7 @@ class LeftMenu extends Component{
 
                                         return <div key={key} className={`cat-item ${item.id===PickID?'active':''}`} data-id={item.id}>
 
-                                                    <span className="cat-children-name" title={item.name} onClick={this.onPickSearch.bind(this,{catChildrenId:item.id,catChildrenName:item.name})}>
+                                                    <span className="cat-children-name" title={item.name} onClick={this.onPickSearch.bind(this,{catChildrenId:item.id,catChildrenName:item.name,catId:`${item.catId?item.catId:''}`,catName:`${item.catName?item.catName:''}`})}>
 
                                                         {item.name}
 

@@ -210,6 +210,10 @@ const ClassRoomTotal = (state={
 
             return { ...state,PageIndex:state.PageIndex+1};
 
+        case CRTActions.MANAGER_CLASS_ROOM_TOTAL_PAGE_UPDATE:
+
+            return { ...state,PageIndex:actions.data };
+
         case CRTActions.MANAGER_CRT_SCHEDULE_DETAIL_MODAL_SHOW:
 
             return {...state,ScheduleDetail:{...state.ScheduleDetail,Show:true,ModalLoading:true}};

@@ -137,7 +137,10 @@ async function QueryOtherPower({
     }
   } else if (ModuleID === COURSEARRANGEMENT_MODULEID) {
     //课程安排管理
+
+
     PowerName = Dean_Schedule_CURD;
+
   }
   let url = config.PowerProxy + "/GetGlobalUserPowerV2?SchoolID=" + SchoolID;
 

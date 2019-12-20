@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import logo from '../../images/icon-logo.png'
-import { Frame, Menu, Loading, Alert } from "../../../common";
+import { Menu, Loading, Alert } from "../../../common";
+import Frame from '../../../common/Frame';
 import { HashRouter as Router, Route, Link, BrowserRouter } from 'react-router-dom';
 import history from '../containers/history'
 import TimeBanner from './TimeBanner'
