@@ -136,6 +136,8 @@ class Index extends Component {
 
     const {CanVisit} = BsToCs;
 
+    const SubjectID = Teacher.HeaderSetting.SubjectSelect.id;
+
     Event.stopPropagation();
 
     switch (ModuleStatus) {
@@ -147,15 +149,32 @@ class Index extends Component {
 
           if (SysID !== "") {
 
-            let lg_tk =
+            let lg_tk = getQueryVariable("lg_tk") || sessionStorage.getItem("token");
 
-              getQueryVariable("lg_tk") || sessionStorage.getItem("token");
+            //判断是否是应用
+            if (ModuleType==='application'){
 
-            window.open(`${AccessParam}?lg_tk=${lg_tk}`);
+                window.open(`${AccessParam}?lg_tk=${lg_tk}&subjectid=${SubjectID}`);
+
+            }else{
+
+                window.open(`${AccessParam}?lg_tk=${lg_tk}`);
+
+            }
+
 
           } else {
 
-            window.open(AccessParam);
+              //判断是否是应用
+              if (ModuleType==='application'){
+
+                  window.open(`${AccessParam}?subjectid=${SubjectID}`);
+
+              }else{
+
+                  window.open(AccessParam);
+
+              }
 
           }
 
@@ -172,7 +191,6 @@ class Index extends Component {
 
               const token = sessionStorage.getItem('token');
 
-              const SubjectID = Teacher.HeaderSetting.SubjectSelect.id;
               //判断是否是网站或者资源库
               if (ModuleType==='website') {
 
@@ -208,7 +226,7 @@ class Index extends Component {
           }else{
 
 
-          }
+        }
 
         break;
 
