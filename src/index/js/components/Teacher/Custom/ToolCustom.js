@@ -1,12 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Tips, RadioGroup, Radio } from "../../../../../common";
+import { Tips, RadioGroup, Radio,Button } from "../../../../../common";
+import ClassCropperModal from '../../../../../common/js/CropperModal'
 import { Input } from "antd";
 import TeacherCustomActions from "../../../actions/Teacher/TeacherCustomActions";
 import { postData, getData } from "../../../../../common/js/fetch";
 import CONFIG from "../../../../../common/js/config";
 import "../../../../scss/AddWebsiteCustom.scss";
-
+import DefaultImg from '../../../../images/tool-3x.png'
 class ToolCustom extends React.Component {
   constructor(props) {
     super(props);
@@ -16,7 +17,10 @@ class ToolCustom extends React.Component {
       ToolUrl: "",
       ToolUrlTipsTitle: "访问参数不能为空",
       ToolType: 1,
-      ToolImgUrl: ""
+      ToolImgUrl: "",
+      classResultImgUrl:'',
+      picVisible:false,
+      
     };
   }
 
@@ -124,13 +128,37 @@ class ToolCustom extends React.Component {
       );
     }
   };
-
-
+  handleGetResultImgUrl = key => blob => {
+    const str = URL.createObjectURL(blob);
+    this.setState({
+      [key]: str
+    });
+  };
+  CropperModalClose = ()=>{
+    this.setState({
+      picVisible:false
+    })
+  }
+  CropperModalOpen = ()=>{
+    this.setState({
+      picVisible:true
+    })
+  }
   render() {
     const { LoginUser, Teacher, AppLoading } = this.props;
     return (
       <div className="ToolCustom" id="ToolCustom">
-        <div className="box-left"></div>
+        <div className="box-left">
+          <div className='ToolImgBox' style={{background:'url('+(this.state.classResultImgUrl?this.state.classResultImgUrl:DefaultImg)+') no-repeat center',backgroundSize:'contain'}}></div>
+          <Button className='imgBtn' onClick={this.CropperModalOpen}>上传图标</Button>
+          <ClassCropperModal
+          // uploadedImageFile={classModalFile}
+          ImgUrl={CONFIG.ImgUrlProxy+'/http_subjectResMgr/WebUploadHandler.ashx?method=doUpload_WholeFile&userid='+LoginUser.UserID}
+          Visiable={this.state.picVisible}
+          onClose={this.CropperModalClose}
+          onSubmit={this.handleGetResultImgUrl("classResultImgUrl")}
+        ></ClassCropperModal>
+        </div>
         <div className="box-right">
           <div className="row clearfix">
             <span className="left">工具名称:</span>
@@ -181,6 +209,7 @@ class ToolCustom extends React.Component {
             </Tips>
           </div>
         </div>
+        
       </div>
     );
   }

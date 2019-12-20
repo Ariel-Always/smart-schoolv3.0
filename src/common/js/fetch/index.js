@@ -41,13 +41,16 @@ function postData(
   // }
   let ContentTypeArr = [
     "application/x-www-form-urlencoded",
-    "application/json"
+    "application/json",
+    "multipart/form-data"
   ];
   let ContentType = "";
   if (content_type === "urlencoded") {
     ContentType = ContentTypeArr[0];
   } else if (content_type === "json") {
     ContentType = ContentTypeArr[1];
+  }else if (content_type === "file") {
+    ContentType = ContentTypeArr[2];
   } else {
     ContentType = ContentTypeArr[0];
   }
@@ -92,8 +95,10 @@ function postData(
     )
     .then(json => {
       // console.log(json, json.StatusCode === 200)
+      if(element!==false){
+        handleStatusCode(json, element);
 
-      handleStatusCode(json, element);
+      }
     });
   return result;
 }
@@ -244,7 +249,10 @@ function getData(
     )
     .then(json => {
       // console.log(json, json.StatusCode === 200)
-      handleStatusCode(json, element);
+      if(element!==false){
+        handleStatusCode(json, element);
+
+      }
     });
 
   return result;

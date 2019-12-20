@@ -790,6 +790,7 @@ class Index extends Component {
           type="1"
           title={"添加工具"}
           width={684}
+          mask = {true}
           destroyOnClose={true}
           visible={Teacher.TeacherCustomModalShow.AddToolCustomModalShow}
           onCancel={this.AddCustomToolMadalCancel}

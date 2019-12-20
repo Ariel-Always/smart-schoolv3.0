@@ -259,7 +259,7 @@ class ErrorAlert extends React.Component {
     }
     
     render() {
-        console.log(this.state.show)
+        // console.log(this.state.show)
         return <Alert
             show={this.state.show}
             type='btn-error'
