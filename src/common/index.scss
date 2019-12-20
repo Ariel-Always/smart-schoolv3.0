@@ -51,13 +51,11 @@ $MenuSelect: linear-gradient(90deg, #ff4200 0%, #ffab3d 100%);
     -ms-flex-align: $dir;
 }
 
-@mixin flex-wrap($dir){
-
-    flex-wrap:$dir;
-
-    -ms-flex-wrap:$dir;
-
+@mixin flex-wrap($dir) {
+    flex-wrap: $dir;
+    -ms-flex-wrap: $dir;
 }
+
 
 /*公共mixin end*/
 
@@ -593,7 +591,7 @@ textarea.ant-input {
         // overflow: auto;
         .content-box {
             width: 100%;
-            margin-top: 30px;
+            padding-top: 30px;
             .row {
                 width: 100%;
                 min-height: 30px;

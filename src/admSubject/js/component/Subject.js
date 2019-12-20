@@ -330,17 +330,23 @@ class Subject extends React.Component {
     let url = "/UpdateSubjectForSchoolOne";
     const { dispatch, DataState } = this.props;
     let userMsg = DataState.LoginUser;
-    if (DataState.ChangeSubjectMsg.GlobalGradeIDs.length === 0) {
-      dispatch(
-        actions.UpUIState.showErrorAlert({
-          type: "btn-error",
-          title: "开课年级没有选择哦~",
-          ok: this.onAppAlertOK.bind(this),
-          cancel: this.onAppAlertCancel.bind(this),
-          close: this.onAppAlertClose.bind(this)
-        })
-      );
+    // if (DataState.ChangeSubjectMsg.GlobalGradeIDs.length === 0) {
+    //   dispatch(
+    //     actions.UpUIState.showErrorAlert({
+    //       type: "btn-error",
+    //       title: "开课年级没有选择哦~",
+    //       ok: this.onAppAlertOK.bind(this),
+    //       cancel: this.onAppAlertCancel.bind(this),
+    //       close: this.onAppAlertClose.bind(this)
+    //     })
+    //   );
+    //   return;
+    // }
+    if (DataState.ChangeSubjectMsg.GlobalGradeIDs=== '') {
+      dispatch({ type: actions.UpUIState.TIPS_VISIBLE_GRADE_OPEN });
       return;
+    }else{
+      dispatch({ type: actions.UpUIState.TIPS_VISIBLE_GRADE_CLOSE });
     }
     dispatch({ type: actions.UpUIState.MODAL_LOADING_OPEN });
     postData(
@@ -395,36 +401,51 @@ class Subject extends React.Component {
   };
   changeSubjectModalCancel = () => {
     const { dispatch, DataState } = this.props;
+    dispatch({ type: actions.UpUIState.TIPS_VISIBLE_CLOSE });
+
+    dispatch({ type: actions.UpUIState.TIPS_VISIBLE_GRADE_CLOSE });
     dispatch(actions.UpUIState.changeSubjectModalClose());
   };
   //添加弹窗操作
   AddSubjectModalOk = () => {
-    const { dispatch, DataState } = this.props;
+    const { dispatch, DataState,UIState } = this.props;
     let url = "/InsertSubjectForSchoolOne";
     let userMsg = DataState.LoginUser;
-    if (!DataState.ChangeSubjectMsg.SubjectName) {
-      dispatch(
-        actions.UpUIState.showErrorAlert({
-          type: "btn-error",
-          title: "学科名称没有选择哦~",
-          ok: this.onAppAlertOK.bind(this),
-          cancel: this.onAppAlertCancel.bind(this),
-          close: this.onAppAlertClose.bind(this)
-        })
-      );
-      return;
+    let isFalse = false
+    if (UIState.AppTips.SubjectNameTips) {
+      isFalse = true
+      // return;
     }
-    if (DataState.ChangeSubjectMsg.GlobalGradeIDs.length === 0) {
-      dispatch(
-        actions.UpUIState.showErrorAlert({
-          type: "btn-error",
-          title: "开课年级没有选择哦~",
-          ok: this.onAppAlertOK.bind(this),
-          cancel: this.onAppAlertCancel.bind(this),
-          close: this.onAppAlertClose.bind(this)
-        })
-      );
-      return;
+    let Test = /^[,_\->/()（）A-Za-z0-9\u4e00-\u9fa5]{1,50}$/;
+    if (Test.test(DataState.ChangeSubjectMsg.SubjectName)) {
+      dispatch({ type: actions.UpUIState.TIPS_VISIBLE_CLOSE });
+
+    } else {
+      dispatch({ type: actions.UpUIState.TIPS_VISIBLE_OPEN });
+      isFalse = true
+      // return;
+    }
+    // if (!DataState.ChangeSubjectMsg.SubjectName) {
+    //   dispatch(
+    //     actions.UpUIState.showErrorAlert({
+    //       type: "btn-error",
+    //       title: "学科名称没有选择哦~",
+    //       ok: this.onAppAlertOK.bind(this),
+    //       cancel: this.onAppAlertCancel.bind(this),
+    //       close: this.onAppAlertClose.bind(this)
+    //     })
+    //   );
+    //   return;
+    // }
+    if (DataState.ChangeSubjectMsg.GlobalGradeIDs=== '') {
+      dispatch({ type: actions.UpUIState.TIPS_VISIBLE_GRADE_OPEN });
+      isFalse = true
+      // return;
+    }else{
+      dispatch({ type: actions.UpUIState.TIPS_VISIBLE_GRADE_CLOSE });
+    }
+    if(isFalse){
+      return
     }
     dispatch({ type: actions.UpUIState.MODAL_LOADING_OPEN });
     postData(
@@ -482,6 +503,9 @@ class Subject extends React.Component {
   };
   AddSubjectModalCancel = () => {
     const { dispatch, DataState } = this.props;
+    dispatch({ type: actions.UpUIState.TIPS_VISIBLE_CLOSE });
+
+    dispatch({ type: actions.UpUIState.TIPS_VISIBLE_GRADE_CLOSE });
     dispatch(actions.UpUIState.addSubjectModalClose());
   };
 

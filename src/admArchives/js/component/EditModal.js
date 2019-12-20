@@ -9,6 +9,7 @@ import '../../../common/js/PicUpload/Cropper/cropper.css';
 import '../../../common/js/PicUpload/photoUpload.scss';
 
 import '../../../common/js/PicUpload/Cropper/cropper';
+import { Scrollbars } from "react-custom-scrollbars";
 
 import $ from 'jquery';
 
@@ -908,9 +909,11 @@ class EditModal extends React.Component {
                         </span>
                         <div className='culonm-2'>
                             <Tips overlayClassName='tips'  visible={EditModalTipsVisible.changeSubjectTipsVisible} getPopupContainer= {e=>e.parentNode} title={this.state.changeSubjectTipsTitle} >
+                            <Scrollbars style={{height:'100px', width: "450px" }}>
                                 <CheckBoxGroup onChange={this.changeCheckBox} className={'checkedBoxGroupMap'} value={this.state.checkedList}>
                                     {this.state.type === 'teacher' ? this.MapPlainOptions(this.state.plainOptions) : ''}
                                 </CheckBoxGroup>
+                                </Scrollbars>
                             </Tips>
                         </div>
                     </div>

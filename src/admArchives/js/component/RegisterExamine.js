@@ -122,7 +122,9 @@ class RegisterExamine extends React.Component {
           actions.UpDataState.getDidSignUpLog(
             "/GetSignUpLogToPage?SchoolID=" +
               this.state.userMsg.SchoolID +
-              "&PageIndex=0&PageSize=10&status=1"
+              "&PageIndex=0&PageSize=10&status=1"+
+              (DataState.GetSignUpLog.Grade.value!==0?'&gradeID='+DataState.GetSignUpLog.Grade.value:'') +
+              (DataState.GetSignUpLog.Class.value!==0?'&classID='+DataState.GetSignUpLog.Class.value:'') 
           )
         );
       }
@@ -135,7 +137,9 @@ class RegisterExamine extends React.Component {
           actions.UpDataState.getWillSignUpLog(
             "/GetSignUpLogToPage?SchoolID=" +
               this.state.userMsg.SchoolID +
-              "&PageIndex=0&PageSize=10&status=0"
+              "&PageIndex=0&PageSize=10&status=0"+
+              (DataState.GetSignUpLog.Grade.value!==0?'&gradeID='+DataState.GetSignUpLog.Grade.value:'') +
+              (DataState.GetSignUpLog.Class.value!==0?'&classID='+DataState.GetSignUpLog.Class.value:'') 
           )
         );
       }
@@ -143,7 +147,7 @@ class RegisterExamine extends React.Component {
     history.listen(() => {
       //路由监听
       let pathname = history.location.pathname;
-      // console.log(pathname.split('/')[2])
+      // console.log(DataState.GetSignUpLog)
       if (userMsg.UserType === "0" || userMsg.UserType === "7") {
         if (pathname.split("/")[2] === "RegisterDidExamine") {
           this.setState({
@@ -151,24 +155,28 @@ class RegisterExamine extends React.Component {
           });
           dispatch(actions.UpDataState.setSignUpLogCountMsg(0));
 
-          dispatch(
-            actions.UpDataState.getDidSignUpLog(
-              "/GetSignUpLogToPage?SchoolID=" +
-                this.state.userMsg.SchoolID +
-                "&PageIndex=0&PageSize=10&status=1"
-            )
-          );
+          // dispatch(
+          //   actions.UpDataState.getDidSignUpLog(
+          //     "/GetSignUpLogToPage?SchoolID=" +
+          //       this.state.userMsg.SchoolID +
+          //       "&PageIndex=0&PageSize=10&status=1"+
+          //       (DataState.GetSignUpLog.Grade.value!==0?'&gradeID='+DataState.GetSignUpLog.Grade.value:'') +
+          //       (DataState.GetSignUpLog.Class.value!==0?'&classID='+DataState.GetSignUpLog.Class.value:'') 
+          //   )
+          // );
         } else if (pathname.split("/")[2] === "RegisterWillExamine") {
           this.setState({
             handleClick: true
           });
-          dispatch(
-            actions.UpDataState.getWillSignUpLog(
-              "/GetSignUpLogToPage?SchoolID=" +
-                this.state.userMsg.SchoolID +
-                "&PageIndex=0&PageSize=10&status=0"
-            )
-          );
+          // dispatch(
+          //   actions.UpDataState.getWillSignUpLog(
+          //     "/GetSignUpLogToPage?SchoolID=" +
+          //       this.state.userMsg.SchoolID +
+          //       "&PageIndex=0&PageSize=10&status=0"+
+          //       (DataState.GetSignUpLog.Grade.value!==0?'&gradeID='+DataState.GetSignUpLog.Grade.value:'') +
+          //       (DataState.GetSignUpLog.Class.value!==0?'&classID='+DataState.GetSignUpLog.Class.value:'') 
+          //   )
+          // );
         }
       }
     });
@@ -199,7 +207,9 @@ class RegisterExamine extends React.Component {
               actions.UpDataState.getDidSignUpLog(
                 "/GetSignUpLogToPage?SchoolID=" +
                   this.state.userMsg.SchoolID +
-                  "&PageIndex=0&PageSize=10&status=1"
+                  "&PageIndex=0&PageSize=10&status=1"+
+                  (DataState.GetSignUpLog.Grade.value!==0?'&gradeID='+DataState.GetSignUpLog.Grade.value:'') +
+                  (DataState.GetSignUpLog.Class.value!==0?'&classID='+DataState.GetSignUpLog.Class.value:'') 
               )
             );
           } else if (pathname.split("/")[2] === "RegisterWillExamine") {
@@ -210,7 +220,9 @@ class RegisterExamine extends React.Component {
               actions.UpDataState.getWillSignUpLog(
                 "/GetSignUpLogToPage?SchoolID=" +
                   this.state.userMsg.SchoolID +
-                  "&PageIndex=0&PageSize=10&status=0"
+                  "&PageIndex=0&PageSize=10&status=0"+
+                  (DataState.GetSignUpLog.Grade.value!==0?'&gradeID='+DataState.GetSignUpLog.Grade.value:'') +
+                  (DataState.GetSignUpLog.Class.value!==0?'&classID='+DataState.GetSignUpLog.Class.value:'') 
               )
             );
           }

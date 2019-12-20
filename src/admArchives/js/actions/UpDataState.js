@@ -71,7 +71,8 @@ const GET_PIC_URL = "GET_PIC_URL";
 const GET_PIC_OBJECT = "GET_PIC_OBJECT";
 // 获取班主任所带的行政班
 const GET_TEACHER_CLASS_DATA = "GET_TEACHER_CLASS_DATA";
-
+// 设置学生注册审核年级班级
+const SET_REGISTER_GRADE_CLASS_MSG = "SET_REGISTER_GRADE_CLASS_MSG";
 // 获取变更记录
 const GET_USER_LOG = "GET_USER_LOG";
 //
@@ -684,5 +685,6 @@ export default {
   GET_USER_LOG,
   getUserLog,
   GET_TEACHER_CLASS_DATA,
-  getTeacherClassMsg
+  getTeacherClassMsg,
+  SET_REGISTER_GRADE_CLASS_MSG
 };
