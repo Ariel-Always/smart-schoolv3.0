@@ -88,6 +88,8 @@
             .checkBoxGroup {
                 position: relative;
                 margin-bottom: 10px;
+                display: inline-block;
+                width: 94%;
                 .checkAll,
                 .checkBox {
                     display: inline-block;

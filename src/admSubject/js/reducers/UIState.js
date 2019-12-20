@@ -5,13 +5,15 @@ import SubjectDetailsMsgModalShow from './ui/SubjectDetailsMsgModalShow';
 import SubjectTableLoading from './ui/SubjectTableLoading';
 import ChangeSubjectModal from './ui/ChangeSubjectModal';
 import SetSubjectTeacher from './ui/SetSubjectTeacher';
+import AppTips from './ui/AppTips';
 const  UIState = combineReducers({
     AppLoading,
     AppAlert,
     SubjectTableLoading,
     SubjectDetailsMsgModalShow,
     ChangeSubjectModal,
-    SetSubjectTeacher
+    SetSubjectTeacher,
+    AppTips
 });
 
 export default UIState;
