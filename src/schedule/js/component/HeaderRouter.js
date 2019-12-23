@@ -22,7 +22,7 @@ class HeaderRouter extends Component{
 
                                     <span className={`router-logo ${item.logo}`}></span>
 
-                                    <span className={`router-title ${item.logo}`} title={item.link}>{item.name}</span>
+                                    <span className={`router-title ${item.logo}`} >{item.name}</span>
 
                                 </NavLink>
 

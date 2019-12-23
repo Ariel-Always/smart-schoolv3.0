@@ -449,21 +449,27 @@ class ClassRoomSingle extends Component{
 
                     </LeftMenu>
 
-                    {
+                    <div className="pick-teacher-wrapper">
 
-                        ClassRoomSingle.PickClassRoom===''?
+                            {
 
-                            '':
+                                ClassRoomSingle.PickClassRoom===''?
 
-                            <div className="pick-teacher-wrapper">
+                                <div className="please-select-teacher">请选择教室</div>
 
-                                <span className="teacher-name">{ClassRoomSingle.PickClassRoom}</span>
+                                :
 
-                                <span className="course-count"> (本周共<span className="count">{ClassRoomSingle.ScheduleCount}</span>节课)</span>
+                                <React.Fragment>
+
+                                    <span className="teacher-name">{ClassRoomSingle.PickClassRoom}</span>
+
+                                    <span className="course-count"> (本周共<span className="count">{ClassRoomSingle.ScheduleCount}</span>节课)</span>
+
+                                </React.Fragment>
+
+                            }
 
                             </div>
-
-                    }
 
                     <TermPick
 

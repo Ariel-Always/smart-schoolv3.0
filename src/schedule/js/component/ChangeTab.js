@@ -25,7 +25,7 @@ class ChangeTab extends Component{
 
                                     <React.Fragment>
 
-                                        <NavLink className="schedule-change-tab-item" activeClassName="active"  to={item.link} title={item.name}>
+                                        <NavLink className="schedule-change-tab-item" activeClassName="active"  to={item.link} >
 
                                             {item.name}
 
@@ -41,7 +41,7 @@ class ChangeTab extends Component{
 
                                     :
 
-                                    <NavLink className="schedule-change-tab-item"  to={item.link} title={item.name}>
+                                    <NavLink className="schedule-change-tab-item"  to={item.link}>
 
                                         <div className="blank-title">{item.name}</div>
 

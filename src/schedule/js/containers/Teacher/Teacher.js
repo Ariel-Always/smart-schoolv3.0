@@ -448,21 +448,27 @@ class Teacher extends Component{
 
                     </LeftMenu>
 
-                    {
+                    <div className="pick-teacher-wrapper">
 
-                        SubjectTeacherTeacherSchedule.pickTeacher===''?
+                        {
 
-                            '':
+                            SubjectTeacherTeacherSchedule.pickTeacher===''?
 
-                            <div className="pick-teacher-wrapper">
+                                <div className="please-select-teacher">请选择教师</div>
 
-                                <span className="teacher-name">{SubjectTeacherTeacherSchedule.pickTeacher}</span>
+                                :
 
-                                <span className="course-count"> (本周共<span className="count">{SubjectTeacherTeacherSchedule.ScheduleCount}</span>节课)</span>
+                                <React.Fragment>
 
-                            </div>
+                                    <span className="teacher-name">{SubjectTeacherTeacherSchedule.pickTeacher}</span>
 
-                    }
+                                    <span className="course-count"> (本周共<span className="count">{SubjectTeacherTeacherSchedule.ScheduleCount}</span>节课)</span>
+
+                                </React.Fragment>
+
+                        }
+
+                    </div>
 
                     <TermPick
 
