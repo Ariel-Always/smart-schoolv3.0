@@ -462,7 +462,7 @@ class Modal extends React.Component {
             onOk: props.onOk, /*点击确定回调*/
             visible: props.visible, /*对话框是否可见*/
             className: props.className ? props.className : '', /**/
-
+            destroyOnClose:props.destroyOnClose ? props.destroyOnClose : false,
 
         }
     }
@@ -613,6 +613,7 @@ class Modal extends React.Component {
                 mask={this.state.mask}
                 maskStyle={this.props.maskStyle}
                 closable={this.state.closable}
+                destroyOnClose={this.state.destroyOnClose}
                 bodyStyle={this.state.bodyStyle}
                 afterClose={this.state.afterClose}
                 visible={this.props.visible}
