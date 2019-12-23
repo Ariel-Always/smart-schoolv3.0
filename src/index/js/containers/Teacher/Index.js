@@ -569,7 +569,14 @@ class Index extends Component {
         })
       );
     }
-
+    if(ToolData.ToolImgUrl===''){
+      isHaveFalse = true;
+      dispatch(
+        AppAlertActions.alertWarn({
+          title: "请上传工具图标"
+        })
+      );
+    }
     if (
       TeacherTipsVisible.ToolNameTipsVisible ||
       TeacherTipsVisible.ToolUrlTipsVisible
