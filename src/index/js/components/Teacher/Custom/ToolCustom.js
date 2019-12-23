@@ -1,16 +1,17 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Tips, RadioGroup, Radio,Button } from "../../../../../common";
-import ClassCropperModal from '../../../../../common/js/CropperModal'
+import { Tips, RadioGroup, Radio, Button } from "../../../../../common";
+import ClassCropperModal from "../../../../../common/js/CropperModal";
 import { Input } from "antd";
 import TeacherCustomActions from "../../../actions/Teacher/TeacherCustomActions";
 import { postData, getData } from "../../../../../common/js/fetch";
 import CONFIG from "../../../../../common/js/config";
 import "../../../../scss/AddWebsiteCustom.scss";
-import DefaultImg from '../../../../images/tool-3x.png'
+import DefaultImg from "../../../../images/tool-3x.png";
 class ToolCustom extends React.Component {
   constructor(props) {
     super(props);
+   
     this.state = {
       ToolName: "",
       ToolNameTipsTitle: "工具名称不能为空",
@@ -18,9 +19,8 @@ class ToolCustom extends React.Component {
       ToolUrlTipsTitle: "访问参数不能为空",
       ToolType: 1,
       ToolImgUrl: "",
-      classResultImgUrl:'',
-      picVisible:false,
-      
+      classResultImgUrl: "",
+      picVisible: false
     };
   }
 
@@ -32,7 +32,7 @@ class ToolCustom extends React.Component {
       ToolName: ToolData.ToolName,
       ToolUrl: ToolData.ToolUrl,
       ToolType: ToolData.ToolType,
-      ToolImgUrl: ToolData.ToolImgUrl
+      classResultImgUrl: ToolData.ToolImgUrl?ToolData.ToolImgUrl:''
     });
   }
   //   工具名称修改
@@ -44,7 +44,7 @@ class ToolCustom extends React.Component {
   // 工具名称修改失去焦点
   onToolNameBlur = e => {
     const { dispatch } = this.props;
-    let Test = /\S/
+    let Test = /\S/;
     // console.log(e.target.value);
     let value = e.target.value;
     if (!Test.test(value)) {
@@ -78,6 +78,8 @@ class ToolCustom extends React.Component {
         ToolType: e.target.value
       })
     );
+    this.onToolUrlBlur(e.target.value,{target:{value:this.state.ToolUrl}})
+   
   };
 
   //   工具地址修改
@@ -87,10 +89,10 @@ class ToolCustom extends React.Component {
     });
   };
   // 工具地址修改失去焦点
-  onToolUrlBlur = e => {
+  onToolUrlBlur = (ToolType,e) => {
     const { dispatch } = this.props;
     let Test = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\*\+,;=.]+$/;
-    // console.log(e.target.value);
+    console.log(e,ToolType,e.target.value);
     let value = e.target.value;
     let isTrue = Test.test(value);
 
@@ -103,7 +105,7 @@ class ToolCustom extends React.Component {
           ToolUrlTipsVisible: true
         })
       );
-    } else if (!isTrue) {
+    } else if (ToolType===1&&!isTrue) {
       this.setState({
         ToolUrlTipsTitle: "访问参数格式错误"
       });
@@ -128,36 +130,69 @@ class ToolCustom extends React.Component {
       );
     }
   };
-  handleGetResultImgUrl = key => blob => {
+  handleGetResultImgUrl = key => (blob, filePath) => {
+    const { dispatch, Teacher } = this.props;
+
     const str = URL.createObjectURL(blob);
     this.setState({
-      [key]: str
+      [key]: str,
+      //[key]: this.state.baseUrl+'/http_subjectResMgr/'+filePath
+    });
+    dispatch(
+      TeacherCustomActions.setHandleToolData({
+        ToolImgUrl: filePath
+      })
+    );
+  };
+  CropperModalClose = () => {
+    this.setState({
+      picVisible: false
     });
   };
-  CropperModalClose = ()=>{
+  CropperModalOpen = () => {
     this.setState({
-      picVisible:false
-    })
-  }
-  CropperModalOpen = ()=>{
-    this.setState({
-      picVisible:true
-    })
-  }
+      picVisible: true
+    });
+  };
   render() {
     const { LoginUser, Teacher, AppLoading } = this.props;
     return (
       <div className="ToolCustom" id="ToolCustom">
         <div className="box-left">
-          <div className='ToolImgBox' style={{background:'url('+(this.state.classResultImgUrl?this.state.classResultImgUrl:DefaultImg)+') no-repeat center',backgroundSize:'contain'}}></div>
-          <Button className='imgBtn' onClick={this.CropperModalOpen}>上传图标</Button>
+          <div
+            className="ToolImgBox"
+            style={{
+              background:
+                "url(" +
+                (this.state.classResultImgUrl
+                  ? this.state.classResultImgUrl
+                  : DefaultImg) +
+                ") no-repeat center / contain",
+              // backgroundSize: "contain"
+            }}
+          ></div>
+          <Button
+            className="imgBtn"
+            color="green"
+            onClick={this.CropperModalOpen}
+          >
+            上传图标
+          </Button>
+          <p className="imgTips">
+            请选择类型为png/jpg、大小在128*128以内的图片。
+          </p>
           <ClassCropperModal
-          // uploadedImageFile={classModalFile}
-          ImgUrl={CONFIG.ImgUrlProxy+'/http_subjectResMgr/WebUploadHandler.ashx?method=doUpload_WholeFile&userid='+LoginUser.UserID}
-          Visiable={this.state.picVisible}
-          onClose={this.CropperModalClose}
-          onSubmit={this.handleGetResultImgUrl("classResultImgUrl")}
-        ></ClassCropperModal>
+            // uploadedImageFile={classModalFile}
+            UpDataUrl={
+              CONFIG.ImgUrlProxy +
+              "/http_subjectResMgr/WebUploadHandler.ashx?method=doUpload_WholeFile&userid=" +
+              LoginUser.UserID
+            }
+            Visiable={this.state.picVisible}
+            InitPic={this.state.classResultImgUrl}
+            onClose={this.CropperModalClose}
+            onSubmit={this.handleGetResultImgUrl("classResultImgUrl")}
+          ></ClassCropperModal>
         </div>
         <div className="box-right">
           <div className="row clearfix">
@@ -180,12 +215,16 @@ class ToolCustom extends React.Component {
           <div className="row clearfix">
             <span className="left">工具类型:</span>
             <RadioGroup
-            className='right ToolType'
+              className="right ToolType"
               value={this.state.ToolType}
               onChange={this.onToolTypeChange.bind(this)}
             >
-              <Radio type='gray' value={1}>网站网址</Radio>
-              <Radio type='gray' value={2}>本地exe应用</Radio>
+              <Radio type="gray" value={1}>
+                网站网址
+              </Radio>
+              <Radio type="gray" value={2}>
+                本地exe应用
+              </Radio>
             </RadioGroup>
           </div>
           <div className="row clearfix">
@@ -199,17 +238,14 @@ class ToolCustom extends React.Component {
                 className="right ToolUrl"
                 placeholder="请输入访问参数..."
                 maxLength={200}
-                autosize={
-                  {minRows: 2, maxRows: 3}
-                }
+                autosize={{ minRows: 2, maxRows: 3 }}
                 onChange={this.onToolUrlChange.bind(this)}
-                onBlur={this.onToolUrlBlur.bind(this)}
+                onBlur={this.onToolUrlBlur.bind(this,this.state.ToolType)}
                 value={this.state.ToolUrl}
               ></Input.TextArea>
             </Tips>
           </div>
         </div>
-        
       </div>
     );
   }

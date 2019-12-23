@@ -112,7 +112,9 @@ class Card extends React.Component {
         </p>
         {this.props.type === "main" ? (
           <span
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
+              e.nativeEvent.stopImmediatePropagation();
               this.props.onEditClick();
             }}
             className="main-btn"
@@ -121,7 +123,9 @@ class Card extends React.Component {
           </span>
         ) : (
           <span
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();
+              e.nativeEvent.stopImmediatePropagation();
               this.props.onAddClick();
             }}
             className="alter-btn"
@@ -132,13 +136,17 @@ class Card extends React.Component {
         {this.props.data.IsCreatedByMe ? (
           <div className="handle-box">
             <span
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
+                e.nativeEvent.stopImmediatePropagation();
                 this.props.onDeleteClick();
               }}
               className="delete"
             ></span>
             <span
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
+                e.nativeEvent.stopImmediatePropagation();
                 this.props.onResetClick(data);
               }}
               className="reset"

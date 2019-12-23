@@ -11,7 +11,8 @@ export default class ClassCropperModal extends Component {
     // uploadedImageFile: PropTypes.object.isRequired,
     onClose: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
-    Visiable: PropTypes.bool.isRequired
+    Visiable: PropTypes.bool.isRequired,
+    UpDataUrl: PropTypes.string.isRequired,
   };
 
   constructor(props) {
@@ -19,10 +20,11 @@ export default class ClassCropperModal extends Component {
     this.state = {
       src: null,
       classModalVisible: props.Visiable,
-      classModalFile: null,
+      classModalFile:null,
       title: props.title ? props.title : "上传图片",
       bodyStyle: props.bodyStyle ? props.bodyStyle : {},
       filename:props.filename ? props.filename : '',
+      baseUrl:props.baseUrl ? props.baseUrl : 'http://192.168.129.1:30101',//图片上传基地址
     };
   }
 
@@ -62,7 +64,7 @@ export default class ClassCropperModal extends Component {
         // console.log(resp)
         // 提示上传完毕
         // this.setState({submitting: false})
-        fetch(this.props.ImgUrl,{ 
+        fetch(this.props.UpDataUrl,{ 
             method :"POST",
             // mode: "cors", 
             // cache: "no-cache",
@@ -75,8 +77,11 @@ export default class ClassCropperModal extends Component {
         }).then(res=>res.json()
         ).then(json=>{
             if(json.result){
-                this.props.onSubmit(blob);
+                this.props.onSubmit(blob,json.filePath);
                 this.props.onClose();
+                this.setState({
+                  classModalFile: null
+                });
             }else{
                 console.log(json)
             }
@@ -124,7 +129,7 @@ export default class ClassCropperModal extends Component {
   render() {
     const { classModalVisible, classModalFile } = this.state;
 
-    console.log(this.props.Visiable);
+    // console.log(this.props.Visiable,this.state.src);
 
     return (
       <Modal
@@ -137,6 +142,7 @@ export default class ClassCropperModal extends Component {
         }}
         type="1"
         width='774'
+        destroyOnClose={true}
         title={this.state.title}
         visible={this.props.Visiable}
         onOk={this.handleSubmit}

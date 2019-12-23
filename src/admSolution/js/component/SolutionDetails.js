@@ -59,7 +59,7 @@ class SolutionDetails extends React.Component {
                     render: FileName => { 
                         return (
                             <React.Fragment>
-                                <span  className='FileName'><img width={15} height={17} style={{marginRight:10+'px'}} alt={FileName} src={FileType[FileName.slice(FileName.lastIndexOf('.')+1)]||FileType['Default']}></img>{FileName}</span>
+                                <span title={FileName} className='FileName'><img width={15} height={17} style={{marginRight:10+'px'}} alt={FileName} src={FileType[FileName.slice(FileName.lastIndexOf('.')+1)]||FileType['Default']}></img>{FileName}</span>
                             </React.Fragment>
                         )
                     }
@@ -73,7 +73,7 @@ class SolutionDetails extends React.Component {
                     render: FileSize => {
                         return (
                             <React.Fragment>
-                                <span className='FileSize'>{this.setFileSize(FileSize)}</span>
+                                <span title={this.setFileSize(FileSize)} className='FileSize'>{this.setFileSize(FileSize)}</span>
                             </React.Fragment>
                         )
                     }
@@ -130,15 +130,15 @@ class SolutionDetails extends React.Component {
                 <div className='top'>
                     <span className='top-content'>
                         <span className='left'>方案名称：</span>
-                        <span className='right SolutionName'>{SolutionMsg.SolutionName}</span>
+                        <span title={SolutionMsg.SolutionName} className='right SolutionName'>{SolutionMsg.SolutionName}</span>
                     </span>
                     <span className='top-content'>
                         <span className='left'>学科：</span>
-                        <span className='right'>{SolutionMsg.SubjectName}</span>
+                        <span title={SolutionMsg.SubjectName} className='right'>{SolutionMsg.SubjectName}</span>
                     </span>
                     <span className='top-content'>
                         <span className='left'>创建时间：</span>
-                        <span className='right'>{SolutionMsg.CreateTime}</span>
+                        <span title={SolutionMsg.CreateTime} className='right'>{SolutionMsg.CreateTime}</span>
                     </span>
                     
                 </div>
@@ -146,7 +146,7 @@ class SolutionDetails extends React.Component {
                     <div className='main-top'>
                     <span className='top-content'>
                         <span className='left'>文件列表[</span>
-                        <span className='right'>{SolutionMsg.FilesCount}</span>
+                        <span title={SolutionMsg.FilesCount} className='right'>{SolutionMsg.FilesCount}</span>
                         个]</span>
                     </div>
                     <Table

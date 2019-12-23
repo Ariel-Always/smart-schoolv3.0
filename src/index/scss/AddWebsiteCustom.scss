@@ -54,9 +54,10 @@
             position: relative;
             margin: 24px auto 12px;
         }
-        .ImgBtn {
+        .imgBtn {
             width: 128px;
             height: 28px;
+            display: block;
             background-color: #05c305;
             position: relative;
             margin: 0 auto;
@@ -64,10 +65,18 @@
             span {
                 font-size: 14px;
                 color: #fff;
-                height: 28px;
+                // height: 28px;
                 line-height: 1;
+                display: inherit;
                 text-align: center;
             }
+        }
+        .imgTips {
+            font-size: 12px;
+            line-height: 20px;
+            width: 144px;
+            color: #999999;
+            margin: 10px auto;
         }
     }
     .box-right {

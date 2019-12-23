@@ -190,7 +190,7 @@ componentWillReceiveProps(nextProps){
             <Input
               className="right webName"
               placeholder="请输入网站名称.."
-              maxLength={200}
+              maxLength={20}
               onChange={this.onWebNameChange.bind(this)}
               onBlur={this.onWebNameBlur.bind(this)}
               value={this.state.WebName}
@@ -207,7 +207,7 @@ componentWillReceiveProps(nextProps){
             <Input
               className="right webAddress"
               placeholder="http(s)://"
-              maxLength={400}
+              maxLength={500}
               onChange={this.onWebAddressChange.bind(this)}
               onBlur={this.onWebAddressBlur.bind(this)}
               value={this.state.WebAddress}

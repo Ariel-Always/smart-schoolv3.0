@@ -96,7 +96,9 @@ function handleData(data) {
         CourseClassID: data.CourseClassID
       },
       Teacher: { value: data.TeacherID, title: data.TeacherName },
-      Student: Student
+      Student: Student,
+      Grade:{value:data.GradeID,title:data.GradeName},
+      Subject:{value:data.SubjectID,title:data.SubjectName}
     }
   };
 }

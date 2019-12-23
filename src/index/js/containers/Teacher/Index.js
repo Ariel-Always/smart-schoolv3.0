@@ -569,7 +569,14 @@ class Index extends Component {
         })
       );
     }
-
+    if(ToolData.ToolImgUrl===''){
+      isHaveFalse = true;
+      dispatch(
+        AppAlertActions.alertWarn({
+          title: "请上传工具图标"
+        })
+      );
+    }
     if (
       TeacherTipsVisible.ToolNameTipsVisible ||
       TeacherTipsVisible.ToolUrlTipsVisible
@@ -588,7 +595,7 @@ class Index extends Component {
         Name: ToolData.ToolName,
         Url: ToolData.ToolUrl,
         Type: ToolData.ToolType,
-        ImgUrl: 'www.baidu.com'||ToolData.ToolImgUrl,
+        ImgUrl: ToolData.ToolImgUrl,
         GroupID:'Group002'
         
       },
@@ -674,7 +681,7 @@ class Index extends Component {
         Name: ToolData.ToolName,
         Url: ToolData.ToolUrl,
         Type: ToolData.ToolType,
-        ImgUrl: 'www.baidu.com'||ToolData.ToolImgUrl,
+        ImgUrl: ToolData.ToolImgUrl,
         ID:ToolData.ToolID
       },
       2
@@ -715,7 +722,7 @@ class Index extends Component {
     );
     dispatch(TeacherCustomActions.setHandleToolInitData({}));
     dispatch({
-      type: TeacherCustomActions.TEACHER_ADD_TOOL_CUSTOM_MODAL_CLOSE
+      type: TeacherCustomActions.TEACHER_EDIT_TOOL_CUSTOM_MODAL_CLOSE
     });
   };
   render() {

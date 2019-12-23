@@ -452,7 +452,8 @@ class SelectStudent extends React.Component {
                     ) : (
                       <Empty
                         type="4"
-                        noTitle
+                        title="暂无符合条件的学生"
+
                         style={{
                           marginTop: "238.5px",
                           transform: "translateY(-50%)"
@@ -495,7 +496,7 @@ class SelectStudent extends React.Component {
             ) : (
               <Empty
                 type="4"
-                noTitle
+                title="暂无符合条件的学生"
                 style={{ marginTop: "238.5px", transform: "translateY(-50%)" }}
               ></Empty>
             )}

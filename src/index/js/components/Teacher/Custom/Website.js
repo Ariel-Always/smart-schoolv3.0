@@ -380,7 +380,7 @@ class Website extends React.Component {
   };
   // main内card移除
   onEditCombineClick = (e,source) => {
-    console.log(e)
+    // console.log(e)
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
     const { Teacher, dispatch } = this.props;

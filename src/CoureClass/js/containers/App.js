@@ -368,6 +368,7 @@ class App extends Component {
     let classID = pathArr[4];
     let SubjectID = DataState.GetCoureClassAllMsg.Subject;
     let GradeID = DataState.GetCoureClassAllMsg.Grade;
+    // console.log(deepCompare.deepCompare(data.selectData.Student, data.TableSource))
     if (
       data.selectData.Teacher.value === data.TeacherID &&
       data.selectData.CourseClass.CourseClassName === data.CourseClassName &&
@@ -507,6 +508,7 @@ class App extends Component {
     dispatch(actions.UpDataState.setClassStudentTransferMsg({}));
     dispatch(actions.UpDataState.setClassStudentTransferTransferMsg({}));
     dispatch(actions.UpDataState.setSubjectTeacherTransferMsg({}));
+    dispatch(actions.UpDataState.setCourseClassDataMsg({ Subject: {}, Grade: {},Teacher:[],Student:[] }))
     dispatch(actions.UpUIState.ChangeCourseClassModalClose());
     dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
   };
@@ -656,7 +658,8 @@ class App extends Component {
     dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
 
     // dispatch(actions.UpUIState.ChangeCourseClassModalClose())
-    dispatch(actions.UpDataState.setCourseClassName([]));
+    dispatch(actions.UpDataState.setCourseClassName({CourseClassName: "" }));
+    dispatch(actions.UpDataState.setCourseClassDataMsg({ Subject: {}, Grade: {},Teacher:[],Student:[] }))
     dispatch(actions.UpDataState.setCourseClassStudentMsg([]));
     dispatch(actions.UpDataState.setSubjectTeacherMsg([]));
     dispatch(actions.UpDataState.setClassStudentTransferMsg([]));
