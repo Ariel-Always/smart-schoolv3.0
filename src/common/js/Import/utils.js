@@ -354,7 +354,9 @@ const FileUpLoad = async ({Url=Api+'/usermgr/comm/controls/import/upload',formDa
 
 const LastStepCommit = async ({cols,colNames,fileName,userId,userName,token,tbName,contentStartNum,schoolID,that}) => {
 
-    const result = await postData(Api+'/usermgr/comm/controls/import/import',{...cols,colNames,fileName,userId,userName,token,tbName,contentStartNum,schoolID});
+    //const result = await fetch(Api+'/usermgr/comm/controls/import/import',{method :"POST",body:JSON.stringify({...cols,colNames,fileName,userId,userName,token,tbName,contentStartNum,schoolID})});
+
+    const result = await postData(Api+'/usermgr/comm/controls/import/import',{...cols,colNames,fileName,userId,userName,token,tbName,contentStartNum,schoolID},1,'urlencoded',false,false);
 
     const res = await result.json();
 
@@ -374,7 +376,7 @@ const LastStepCommit = async ({cols,colNames,fileName,userId,userName,token,tbNa
 
 const DeleteFile = async ({fileName,userId,userName,token,schoolID,that}) => {
 
-    const result = await postData(Api+'/usermgr/comm/controls/import/delete',{fileName,userId,userName,token,schoolID});
+    const result = await postData(Api+'/usermgr/comm/controls/import/delete',{fileName,userId,userName,token,schoolID},1,'urlencoded',false,false);
 
     const res = await result.json();
 

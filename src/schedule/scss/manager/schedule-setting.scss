@@ -131,11 +131,11 @@
 
         font-weight: bold;
 
-        background-image: linear-gradient(to bottom,rgba(0,206,255,0.89),rgba(0,88,250,0.89));
-
+       /* background-image: linear-gradient(to bottom,rgba(0,206,255,0.89),rgba(0,88,250,0.89));
+*/
         @include background-clip(text);
 
-        color: transparent;
+        color: rgba(0, 88, 250, 0.89);
 
         &:after{
 
@@ -777,13 +777,15 @@
 
       height: 28px;
 
+      line-height: 1;
+
       float: left;
 
       margin: 2px 4px 0 4px;
 
       text-align: center;
 
-      padding-right: 0;
+      /*padding-right: 0;*/
 
     }
 

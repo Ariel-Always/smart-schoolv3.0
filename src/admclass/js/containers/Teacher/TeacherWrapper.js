@@ -220,7 +220,7 @@ class TeacherWrapper extends Component{
 
             <Loading spinning={TeacherLoading}>
 
-                <TitleBar type="icon3" title="班级教师" abstract={`(共${Total}人)`}></TitleBar>
+                <TitleBar type="icon3" title="班级教师" abstract={`(共${List.length}人)`}></TitleBar>
 
                 <div className="teacher-list-wrapper clearfix">
 

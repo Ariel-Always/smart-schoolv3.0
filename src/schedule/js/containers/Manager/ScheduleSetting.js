@@ -141,7 +141,9 @@ class ScheduleSetting extends Component{
 
         const { dispatch } = this.props;
 
-        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_ADJUST_MORNING_INPUT_CHANGE,data:e.target.value});
+        let number =  e.target.value.replace(/[^\d]/g,'');
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_ADJUST_MORNING_INPUT_CHANGE,data:number});
 
     }
 
@@ -151,7 +153,9 @@ class ScheduleSetting extends Component{
 
         const { dispatch } = this.props;
 
-        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_ADJUST_AFTERNOON_INPUT_CHANGE,data:e.target.value});
+        let number =  e.target.value.replace(/[^\d]/g,'');
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_ADJUST_AFTERNOON_INPUT_CHANGE,data:number});
 
     }
 
@@ -270,7 +274,9 @@ class ScheduleSetting extends Component{
 
         const { dispatch } = this.props;
 
-        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_START_HOUR_CHANGE,data:e.target.value});
+        let number =  e.target.value.replace(/[^\d]/g,'');
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_START_HOUR_CHANGE,data:number});
 
     }
 
@@ -280,7 +286,9 @@ class ScheduleSetting extends Component{
 
         const { dispatch } = this.props;
 
-        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_START_MIN_CHANGE,data:e.target.value});
+        let number =  e.target.value.replace(/[^\d]/g,'');
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_START_MIN_CHANGE,data:number});
 
     }
 
@@ -290,7 +298,9 @@ class ScheduleSetting extends Component{
 
         const { dispatch } = this.props;
 
-        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_END_HOUR_CHANGE,data:e.target.value});
+        let number =  e.target.value.replace(/[^\d]/g,'');
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_END_HOUR_CHANGE,data:number});
 
     }
 
@@ -300,7 +310,9 @@ class ScheduleSetting extends Component{
 
         const { dispatch } = this.props;
 
-        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_END_MIN_CHANGE,data:e.target.value});
+        let number =  e.target.value.replace(/[^\d]/g,'');
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_EDIT_CLASSHOUR_END_MIN_CHANGE,data:number});
 
     }
 
@@ -373,7 +385,9 @@ class ScheduleSetting extends Component{
 
         const { dispatch } = this.props;
 
-        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_LINKAGE_INPUT_CHANGE,data:e.target.value});
+        let number =  e.target.value.replace(/[^\d]/g,'');
+
+        dispatch({type:SSActions.MANAGER_SCHEDULE_SETTING_LINKAGE_INPUT_CHANGE,data:number});
 
 
     }
@@ -522,7 +536,7 @@ class ScheduleSetting extends Component{
 
                         LinkageEditStatus?
 
-                            <Input value={EditTimes} type="number" onChange={this.LinkageInputChange.bind(this)}/>
+                            <Input value={EditTimes}  onChange={this.LinkageInputChange.bind(this)}/>
 
                             :
 
@@ -640,11 +654,11 @@ class ScheduleSetting extends Component{
 
                     <span className="title">开始时间:</span>
 
-                    <Input onChange={this.AddStartHourChange.bind(this)} className="start-hour" type="number" maxLength={2} min={0} max={23} value={AddClassHourModal.StartHour}/>
+                    <Input onChange={this.AddStartHourChange.bind(this)} className="start-hour"  maxLength={2} min={0} max={23} value={AddClassHourModal.StartHour}/>
 
                     <span className="unit">时</span>
 
-                    <Input onChange={this.AddStartMinChange.bind(this)} className="start-min" type="number" maxLength={2} min={0} max={59} value={AddClassHourModal.StartMin}/>
+                    <Input onChange={this.AddStartMinChange.bind(this)} className="start-min"  maxLength={2} min={0} max={59} value={AddClassHourModal.StartMin}/>
 
                     <span className="unit">分</span>
 
@@ -654,11 +668,11 @@ class ScheduleSetting extends Component{
 
                     <span className="title">结束时间:</span>
 
-                    <Input onChange={this.AddEndHourChange.bind(this)} className="end-hour" type="number" maxLength={2} min={0} max={23} value={AddClassHourModal.EndHour}/>
+                    <Input onChange={this.AddEndHourChange.bind(this)} className="end-hour"  maxLength={2} min={0} max={23} value={AddClassHourModal.EndHour}/>
 
                     <span className="unit">时</span>
 
-                    <Input onChange={this.AddEndMinChange.bind(this)} className="end-min" type="number" maxLength={2} min={0} max={59} value={AddClassHourModal.EndMin}/>
+                    <Input onChange={this.AddEndMinChange.bind(this)} className="end-min"  maxLength={2} min={0} max={59} value={AddClassHourModal.EndMin}/>
 
                     <span className="unit">分</span>
 
@@ -707,11 +721,11 @@ class ScheduleSetting extends Component{
 
                     <span className="title">开始时间:</span>
 
-                    <Input onChange={this.EditStartHourChange.bind(this)} className="start-hour" type="number" maxLength={2} min={0} max={23} value={EditClassHourModal.StartHour}/>
+                    <Input onChange={this.EditStartHourChange.bind(this)} className="start-hour"  maxLength={2} min={0} max={23} value={EditClassHourModal.StartHour}/>
 
                     <span className="unit">时</span>
 
-                    <Input onChange={this.EditStartMinChange.bind(this)} className="start-min" type="number" maxLength={2} min={0} max={59} value={EditClassHourModal.StartMin}/>
+                    <Input onChange={this.EditStartMinChange.bind(this)} className="start-min"  maxLength={2} min={0} max={59} value={EditClassHourModal.StartMin}/>
 
                     <span className="unit">分</span>
 
@@ -721,11 +735,11 @@ class ScheduleSetting extends Component{
 
                     <span className="title">结束时间:</span>
 
-                    <Input onChange={this.EditEndHourChange.bind(this)} className="end-hour" type="number" maxLength={2} min={0} max={23} value={EditClassHourModal.EndHour}/>
+                    <Input onChange={this.EditEndHourChange.bind(this)} className="end-hour"  maxLength={2} min={0} max={23} value={EditClassHourModal.EndHour}/>
 
                     <span className="unit">时</span>
 
-                    <Input onChange={this.EditEndMinChange.bind(this)} className="end-min" type="number" maxLength={2} min={0} max={59} value={EditClassHourModal.EndMin}/>
+                    <Input onChange={this.EditEndMinChange.bind(this)} className="end-min"  maxLength={2} min={0} max={59} value={EditClassHourModal.EndMin}/>
 
                     <span className="unit">分</span>
 

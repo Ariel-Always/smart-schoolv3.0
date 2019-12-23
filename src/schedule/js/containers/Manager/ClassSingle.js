@@ -488,21 +488,21 @@ class ClassSingle extends Component{
 
                     </LeftMenu>
 
-                    {
+                    <div className="pick-teacher-wrapper">
 
-                        ClassSingle.PickClass===''?
+                        {ClassSingle.PickClass === '' ?
 
-                            '':
+                            <div className="please-select-teacher">请选择班级</div>
 
-                            <div className="pick-teacher-wrapper">
 
-                                <span className="teacher-name">{ClassSingle.PickClass}</span>
+                            :
 
+                            <span className="teacher-name">{ClassSingle.PickClass}</span>
+
+                        }
                                 {/*<span className="course-count"> (本周共<span className="count">{ClassSingle.ScheduleCount}</span>节课)</span>*/}
 
-                            </div>
-
-                    }
+                    </div>
 
                     <TermPick
 
