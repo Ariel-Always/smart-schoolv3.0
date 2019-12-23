@@ -37,7 +37,7 @@ class App extends Component {
     this.state = {
       UserMsg: props.DataState.LoginUser,
       resetName: "",
-      period:{ value: 0, title: "全部" }
+      period:{ value: 0, title: "全部",StartDate:'', EndDate:''}
     };
   }
 
@@ -54,6 +54,11 @@ class App extends Component {
       dispatch(
         actions.UpDataState.getLoginUser(
           JSON.parse(sessionStorage.getItem("UserInfo"))
+        )
+      );
+      dispatch(
+        actions.UpDataState.getTeachingSolutionTermMsg(
+          "/GetTermInfoList"
         )
       );
       dispatch(
@@ -148,7 +153,7 @@ class App extends Component {
           });
           dispatch(
             actions.UpDataState.getTeachingSolutionMsg(
-              "/ListTeachingSolutions?period=&beginTime=&endTime=&pageSize=12&currentPage=1&userId=" +
+              "/ListTeachingSolutions?period=&beginTime="+this.state.period.StartDate+"&endTime="+this.state.period.EndDate+"&pageSize=12&currentPage=1&userId=" +
                 JSON.parse(sessionStorage.getItem("UserInfo")).UserID
             )
           );
@@ -183,16 +188,17 @@ class App extends Component {
   };
   // 方案数据子传父
   upData = childObj => {
-    if (!(childObj instanceof Array)) {
+    // console.log(childObj)
+
+    if (!(childObj instanceof Object)) {
       console.log("upData所传递参数错误");
       return;
     }
-
     if(childObj.period){
         this.setState({
             period:childObj.period
         })
-        console.log(childObj.period)
+        // console.log(childObj.period)
     }
   };
   render() {

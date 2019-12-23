@@ -588,6 +588,8 @@ class Admin extends React.Component {
     //     if (child.length !== 0)
     //         ModulesID.push(child.join())
     // })
+    if (picObj.picUploader.uploadSubmit()) {
+
     postData(
       CONFIG.UserAccountProxy + url,
       {
@@ -650,6 +652,7 @@ class Admin extends React.Component {
           dispatch(actions.UpUIState.AllTipsVisibleClose());
         }
       });
+    }
   };
   handleAddAdminModalCancel = e => {
     const { dispatch, DataState } = this.props;

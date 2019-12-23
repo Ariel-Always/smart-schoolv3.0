@@ -14,6 +14,8 @@ const GET_LOGIN_USER_INFO = 'GET_LOGIN_USER_INFO';
 const GET_TEACHING_SOLUTION_MSG = 'GET_TEACHING_SOLUTION_MSG'
 // 查看教学方案
 const GET_TEACHING_SOLUTION_DETAILS_MSG = 'GET_TEACHING_SOLUTION_DETAILS_MSG'
+// 查看教学学期
+const GET_TEACHING_SOLUTION_TERM_MSG = 'GET_TEACHING_SOLUTION_TERM_MSG'
 // 重命名方案ID
 const GET_SOLUTION_ID = 'GET_SOLUTION_ID'
 //操作的执行
@@ -62,6 +64,25 @@ const getTeachingSolutionDetailsMsg = (url) => {
         });
     }
 }
+//获取教学方案详情
+const getTeachingSolutionTermMsg = (url) => {
+    return (dispatch) => {
+        getData(CONFIG.TeachingSolutionProxy + url, 2).then(res => {
+            // dispatch(actions.UpUIState.ModalLoadingOpen());
+
+
+            return res.json()
+        }).then(json => {
+            if (json.StatusCode === 200) {
+
+                dispatch({ type: GET_TEACHING_SOLUTION_TERM_MSG, data: json.Data });
+                // dispatch(actions.UpUIState.ModalLoadingClose());
+
+
+            }
+        });
+    }
+}
 //获取方案ID
 const getSolutionID = (id) => {
     return (dispatch) => {
@@ -82,6 +103,8 @@ export default {
     getTeachingSolutionDetailsMsg,
 
     GET_SOLUTION_ID,
-    getSolutionID
+    getSolutionID,
+    GET_TEACHING_SOLUTION_TERM_MSG,
+    getTeachingSolutionTermMsg
 
 }

@@ -740,7 +740,7 @@ class Teacher extends React.Component {
             this.state.userMsg.SchoolID +
             "&sortFiled=" +
             sorter.columnKey +
-            "PageSize=10&" +
+            "&PageSize=10&" +
             sortType +
             "&PageIndex=" +
             (this.state.pagination - 1) +

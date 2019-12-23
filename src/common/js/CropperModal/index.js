@@ -25,6 +25,7 @@ export default class ClassCropperModal extends Component {
       bodyStyle: props.bodyStyle ? props.bodyStyle : {},
       filename:props.filename ? props.filename : '',
       baseUrl:props.baseUrl ? props.baseUrl : 'http://192.168.129.1:30101',//图片上传基地址
+      aspectRatio:props.aspectRatio?props.aspectRatio:1
     };
   }
 
@@ -181,7 +182,7 @@ export default class ClassCropperModal extends Component {
                   // Cropper.js options
                   viewMode={1}
                   zoomable={true}
-                  aspectRatio={1} // 固定为1:1  可以自己设置比例, 默认情况为自由比例
+                  aspectRatio={this.state.aspectRatio} // 固定为1:1  可以自己设置比例, 默认情况为自由比例
                   guides={true}
                   preview=".cropper-preview"
                   movable={true}

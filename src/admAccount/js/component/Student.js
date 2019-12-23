@@ -775,11 +775,12 @@ class Student extends React.Component {
             "&PageIndex=" +
             (this.state.pagination - 1) +
             keyword +
-            firstSelect +
-            "&sortFiled=" +
-            sorter.columnKey +
-            "&" +
-            sortType
+            firstSelect
+            //  +
+            // "&sortFiled=" +
+            // sorter.columnKey +
+            // "&" +
+            // sortType
         )
       );
     } else if (sorter) {

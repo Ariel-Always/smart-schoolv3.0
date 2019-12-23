@@ -569,14 +569,7 @@ class Index extends Component {
         })
       );
     }
-    if(ToolData.ToolImgUrl===''){
-      isHaveFalse = true;
-      dispatch(
-        AppAlertActions.alertWarn({
-          title: "请上传工具图标"
-        })
-      );
-    }
+   
     if (
       TeacherTipsVisible.ToolNameTipsVisible ||
       TeacherTipsVisible.ToolUrlTipsVisible
@@ -586,7 +579,16 @@ class Index extends Component {
     if (isHaveFalse) {
       return;
     }
-
+    if(ToolData.ToolImgUrl===''){
+      
+      dispatch(
+        AppAlertActions.alertWarn({
+          title: "请上传工具图标"
+        })
+      );
+      return;
+    }
+    
     
     postData(
       config.CustomProxy + url,

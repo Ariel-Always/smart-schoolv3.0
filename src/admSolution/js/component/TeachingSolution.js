@@ -22,16 +22,14 @@ class TeachingSolution extends Component {
     this.state = {
       dropSelect: { value: 0, title: "全部" },
       DropList: [
-        { value: 0, title: "全部" },
-        { value: 1, title: "上学期" },
-        { value: 2, title: "本学期" },
-        { value: 3, title: "下学期" }
+        { value: 0, title: "全部",StartDate:'', EndDate:''},
+        
       ],
       CancelBtnShow: "n",
       keyword: "",
       searchValue: "",
       userMsg: props.DataState.LoginUser,
-
+      pagination:1
     };
   }
 
@@ -46,7 +44,7 @@ class TeachingSolution extends Component {
       actions.UpDataState.getTeachingSolutionMsg(
         "/ListTeachingSolutions?period=" +
           this.state.keyword +
-          "&beginTime=&endTime=&pageSize=12&currentPage=" +
+          "&beginTime="+this.state.dropSelect.StartDate+"&endTime="+this.state.dropSelect.EndDate+"&pageSize=12&currentPage=" +
           page +
           "&userId=" +
           this.state.userMsg.UserID
@@ -56,15 +54,28 @@ class TeachingSolution extends Component {
   // 学期下拉
   periodDropMenuSecond = e => {
     const { dispatch, DataState } = this.props;
-    this.props.upData({ period: e });
     this.setState({
       dropSelect: e
     });
+    console.log(e)
+    let time = e.value;
+    let StartDate = '';
+    let EndDate = '';
+    let period = { value: 0, title: "全部",StartDate:'', EndDate:''};
+    DataState.GetTeachingSolutionMsg.solutionTerm.map((child,index)=> {
+      if(child.value===time){
+        StartDate = child.StartDate;
+        EndDate = child.EndDate;
+        period = child
+      }
+    })
+    this.props.upData({ period: period });
+
     dispatch(
       actions.UpDataState.getTeachingSolutionMsg(
         "/ListTeachingSolutions?period=" +
           this.state.keyword +
-          "&beginTime=&endTime=&pageSize=12&currentPage=" +
+          "&beginTime="+StartDate+"&endTime="+EndDate+"&pageSize=12&currentPage=" +
           this.state.pagination +
           "&userId=" +
           this.state.userMsg.UserID
@@ -96,7 +107,7 @@ class TeachingSolution extends Component {
       actions.UpDataState.getTeachingSolutionMsg(
         "/ListTeachingSolutions?period=&keyword=" +
           e.value +
-          "&beginTime=&endTime=&pageSize=12&currentPage=" +
+          "&beginTime="+this.state.dropSelect.StartDate+"&endTime="+this.state.dropSelect.EndDate+"&pageSize=12&currentPage=" +
           this.state.pagination +
           "&userId=" +
           this.state.userMsg.UserID
@@ -121,7 +132,7 @@ class TeachingSolution extends Component {
     });
     dispatch(
       actions.UpDataState.getTeachingSolutionMsg(
-        "/ListTeachingSolutions?period=&keyword=&beginTime=&endTime=&pageSize=12&currentPage=" +
+        "/ListTeachingSolutions?period=&keyword=&beginTime="+this.state.dropSelect.StartDate+"&endTime="+this.state.dropSelect.EndDate+"&pageSize=12&currentPage=" +
           this.state.pagination +
           "&userId=" +
           this.state.userMsg.UserID
@@ -152,12 +163,12 @@ class TeachingSolution extends Component {
             <span className='period-tips'>学期</span>
             <DropDown
               ref="dropMenu"
-              width={108}
+              width={120}
               height={240}
             //   title={"学期"}
             //   className="top-period"
               dropSelectd={this.state.dropSelect}
-              dropList={this.state.DropList}
+              dropList={DataState.GetTeachingSolutionMsg.solutionTerm}
               onChange={this.periodDropMenuSecond.bind(this)}
             ></DropDown>
             </div>
