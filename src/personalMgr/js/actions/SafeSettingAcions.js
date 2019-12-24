@@ -974,7 +974,9 @@ const UserComm_CheckUserPwd = (strInput) => {
 
 //检测密保
 const UserComm_CheckQA = (strInput) => {
+
     return /^[?？+-=\.\\/\*()（）A-Za-z0-9\u4e00-\u9fa5]{1,30}$/.test(strInput);
+
 };
 
 

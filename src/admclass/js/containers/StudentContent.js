@@ -39,13 +39,27 @@ class StudentContent extends Component{
 
     }
 
-    onCheckChange(checkList){
+    onCheckChange({IsChecked,value}){
 
         const {dispatch,DataState} = this.props;
 
-        console.log(checkList);
+        const { StudentsCheckList } = DataState;
 
-        dispatch(UpDataState.changeStudentCheckList(checkList));
+        if (IsChecked){
+
+            let index = StudentsCheckList.findIndex(item=>item===value);
+
+            StudentsCheckList.splice(index,1);
+
+        }else{
+
+            StudentsCheckList.push(value);
+
+        }
+
+        console.log(StudentsCheckList);
+
+        dispatch(UpDataState.changeStudentCheckList(StudentsCheckList));
 
     }
 

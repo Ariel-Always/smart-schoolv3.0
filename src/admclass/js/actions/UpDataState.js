@@ -947,6 +947,14 @@ const SetMonitorAction = ({UserID='',ClassID}) =>{
 
                         dispatch({type:GET_THE_CLASS_STUDENTS,data:data});
 
+                        dispatch({type:STUDENTS_CHECKED_NONE});
+
+                        dispatch({type:STUDENTS_CHECK_LIST_CHANGE,list:[]});
+
+                        let list = data.List.map(item =>{return JSON.stringify({id:item.UserID,name:item.UserName})});
+
+                        dispatch({type:INIT_STUDEUNT_PLAIN_OPTIONS,data:list});
+
                         dispatch({type:PaginationActions.STUDENT_PAGINATION_CURRENT_UPDATE,data:1});
 
                         dispatch({type:PaginationActions.STUDENT_PAGINATION_TOTAL_UPDATE,data:data.Total});
