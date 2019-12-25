@@ -16,6 +16,8 @@ import {
     DetailsModal
 } from "../../../../common";
 
+import SelfCheckBox from '../../component/CheckBox';
+
 import CCActions from '../../actions/Teacher/ClassChargeActions'
 
 import StudentInfo from './StudentInfoModal';
@@ -23,6 +25,7 @@ import StudentInfo from './StudentInfoModal';
 import SIMActions from '../../actions/Teacher/StudentInfoModalActions';
 
 import DMActions from "../../actions/DetailModalActions";
+import StudentsCheckList from "../../reducers/data/StudentsCheckList";
 
 
 
@@ -87,11 +90,25 @@ class StudentWrapper extends Component{
 
     //点击某一个学生
 
-    StuCheckedChange(e){
+    StuCheckedChange({IsChecked,value}){
 
-        const { dispatch } = this.props;
+        const { dispatch,ClassCharge } = this.props;
 
-        dispatch(CCActions.StuCheckedChange(e));
+        let { StudentCheckList } = ClassCharge;
+
+        if (IsChecked){
+
+            let index = StudentCheckList.findIndex(item=>item===value);
+
+            StudentCheckList.splice(index,1);
+
+        }else{
+
+            StudentCheckList.push(value);
+
+        }
+
+        dispatch(CCActions.StuCheckedChange(StudentCheckList));
 
     }
 
@@ -204,7 +221,7 @@ class StudentWrapper extends Component{
 
                         <React.Fragment>
 
-                            <CheckBoxGroup className="clearfix" value={StudentCheckList} onChange={this.StuCheckedChange.bind(this)}>
+                           {/* <CheckBoxGroup className="clearfix" value={StudentCheckList} onChange={this.StuCheckedChange.bind(this)}>
 
                                 {
                                     List.map((item,key) => {
@@ -286,7 +303,91 @@ class StudentWrapper extends Component{
                                     })
                                 }
 
-                            </CheckBoxGroup>
+                            </CheckBoxGroup>*/}
+
+                             <div className="clearfix"  >
+
+                                {
+                                    List.map((item,key) => {
+                                        //是否是班长
+                                        let isMonitor = item.UserClass===1?true:false;
+                                        //性别男女或者保密
+                                        let sex= 'none';
+
+                                        switch (item.Gender) {
+                                            case '男':
+                                                sex = 'men';
+                                                break;
+                                            case '女':
+                                                sex = 'women';
+                                                break;
+                                            default:
+                                                sex = 'none'
+                                        }
+
+                                        return <div key={key} className={`person-item-wrapper ${isMonitor?'monitor':''}`} >
+
+                                            <div className="person-item-content clearfix">
+
+                                                <div className="person-item-photo" onClick={this.DetailModalShow.bind(this,{UserID:item.UserID,UserType:2})} style={{backgroundImage:`url(${item.PhotoPath})`}}></div>
+
+                                                <div className="person-item-info-wrapper">
+
+                                                    <div className="person-item-info">
+
+                                                        <div className="person-item-name" onClick={this.DetailModalShow.bind(this,{UserID:item.UserID,UserType:2})} title={item.UserName}>{item.UserName}</div>
+
+                                                        <div className={`person-sex-icon ${sex}`}></div>
+
+                                                    </div>
+
+                                                    <div className="person-item-id" title={item.UserID}>{item.UserID}</div>
+
+                                                </div>
+
+                                                {
+
+                                                    StudentPower?
+
+                                                        <SelfCheckBox  value={item.UserID} IsChecked={StudentCheckList.includes(item.UserID)?true:false} onClick={this.StuCheckedChange.bind(this)}></SelfCheckBox>
+
+                                                    :''
+
+                                                }
+
+                                                <div className="cooperate">
+
+                                                    <div className="set-monitor" onClick={()=>{this.MonitorClick({UserID:item.UserID,isMonitor})}}>{isMonitor?'取消班长':'设为班长'}</div>
+
+                                                    {
+
+                                                        StudentPower?
+
+                                                            <React.Fragment>
+
+                                                                <div className="line"></div>
+
+                                                                <div className="editor-stu" onClick={this.EditorModalShow.bind(this,item.UserID)}>编辑</div>
+
+                                                            </React.Fragment>
+
+                                                            :''
+
+                                                    }
+
+
+                                                </div>
+
+                                            </div>
+
+                                            <div className="person-item-border"></div>
+
+                                        </div>
+
+                                    })
+                                }
+
+                            </div>
 
                             {
 
