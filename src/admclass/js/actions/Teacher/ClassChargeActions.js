@@ -10,8 +10,7 @@ import TeacherLogo from '../../../images/teacher-logo.png';
 
 import AppAlertActions from "../AppAlertActions";
 
-import PaginationActions from "../PaginationActions";
-import StudentsCheckList from "../../reducers/data/StudentsCheckList";
+import AASActions from '../AppAlertSuccess';
 
 const  TEACHER_CLASS_CHARGE_PAGE_INIT = 'TEACHER_CLASS_CHARGE_PAGE_INIT';
 
@@ -344,7 +343,9 @@ const SetMonitor = ({UserID,isMonitor}) =>{
 
                 dispatch({type:TEACHER_CLASS_CHARGE_STUDENT_LIST_UPDATE,data:Student});*/
 
-                dispatch(AppAlertActions.alertSuccess({title:`成功${isMonitor?'取消':'设置'}班长`}));
+               /* dispatch(AppAlertActions.alertSuccess({title:`成功${isMonitor?'取消':'设置'}班长`}));
+*/
+               dispatch(AASActions.AlertSuccess({title:`成功${isMonitor?'取消':'设置'}班长`}));
 
                 dispatch(StudentUpdate(0));
 
@@ -516,7 +517,11 @@ const DelStudentOk = ({PageIndex,SchoolID,UserIDs,dispatch})=>{
 
             dispatch({type:AppAlertActions.CLOSE_ERROR_ALERT});
 
-            dispatch(AppAlertActions.alertSuccess({title:"删除成功！"}));
+            /*dispatch(AppAlertActions.alertSuccess({title:"删除成功！"}));*/
+
+            /*dispatch(AASActions.AlertSuccess({title:'删除成功！'}));*/
+
+            dispatch(AASActions.AlertSuccess({title:`删除成功！`}));
 
             dispatch(StudentUpdate(PageIndex,true));
 

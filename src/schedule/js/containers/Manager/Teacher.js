@@ -8,6 +8,8 @@ import LeftMenu from '../../component/LeftMenu';
 
 import { Loading } from "../../../../common";
 
+import $ from 'jquery';
+
 import ComPageRefresh from '../../actions/ComPageRefresh';
 
 import SingleDoubleTable from '../../component/SingleDoubleTable';
@@ -415,6 +417,16 @@ class Teacher extends Component{
         const { dispatch } = this.props;
 
         dispatch(STTActions.RebackReplaceSchedule(params));
+
+    }
+
+    componentWillUpdate(){
+
+        if (window.ScheduleLeftMenuHeightChange){
+
+            window.ScheduleLeftMenuHeightChange($('.subject-teacher-teacher-content').height());
+
+        }
 
     }
 

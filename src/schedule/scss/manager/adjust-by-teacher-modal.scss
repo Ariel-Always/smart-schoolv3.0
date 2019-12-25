@@ -326,7 +326,7 @@
 
       .trangle{
 
-        left:90px;
+        left:91px;
 
       }
 
@@ -336,7 +336,7 @@
 
       .trangle{
 
-        left:196px;
+        left:197px;
 
       }
 
@@ -346,7 +346,7 @@
 
       .trangle{
 
-        left:302px;
+        left:303px;
 
       }
 
@@ -356,7 +356,7 @@
 
       .trangle{
 
-        left: 406px;
+        left: 409px;
 
       }
 
@@ -755,6 +755,8 @@
 
         margin-right: 12px;
 
+        float: left;
+
       }
 
       .error-tips{
@@ -951,6 +953,18 @@
 
       margin-right: 12px;
 
+      float:left;
+
+    }
+
+    .class-room-wrapper{
+
+      .props{
+
+        float:none;
+
+      }
+
     }
 
     &>*{
@@ -1121,6 +1135,8 @@
       color: #666666;
 
       margin-right: 12px;
+
+      float:left;
 
     }
 
@@ -1345,6 +1361,12 @@
         left: 240px;
 
         top: 2px;
+
+      }
+
+      .props{
+
+        margin-right:10px;
 
       }
 

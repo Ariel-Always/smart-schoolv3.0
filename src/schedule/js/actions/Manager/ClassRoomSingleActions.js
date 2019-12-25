@@ -288,7 +288,7 @@ const ClassSearch = (val) => {
 
         ApiActions.GetClassRoomByClassTypeAndKey({
 
-            SchoolID,PeriodID,ClassRoomTypeID:'',Key,dispatch
+            SchoolID,PeriodID,ClassRoomTypeID:'',Key,Flag:0,dispatch
 
         }).then(data => {
 

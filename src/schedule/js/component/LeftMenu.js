@@ -8,11 +8,11 @@ import ScrollBars from 'react-custom-scrollbars';
 
 class LeftMenu extends Component{
 
-   /* constructor(props) {
+    constructor(props) {
 
         super(props);
 
-       /!* this.state={
+       /* this.state={
 
             catActive:'',
 
@@ -20,9 +20,17 @@ class LeftMenu extends Component{
 
             searchActive:''
 
-        };*!/
+        };*/
 
-    }*/
+       this.state={
+
+           MaxHeight:600
+
+       };
+
+       window.ScheduleLeftMenuHeightChange=this.ScheduleLeftMenuHeightChange.bind(this);
+
+    }
 
     //点击分类的名称
     catNameClick(id,e){
@@ -64,6 +72,12 @@ class LeftMenu extends Component{
 
     }
 
+    ScheduleLeftMenuHeightChange(MaxHeight){
+
+        this.setState({MaxHeight:MaxHeight});
+
+    }
+
 
     render() {
 
@@ -81,7 +95,7 @@ class LeftMenu extends Component{
 
         return (
 
-            <div className="left-menu-wrapper">
+            <div className="left-menu-wrapper" style={{height:this.state.MaxHeight}}>
 
                 <div className="left-menu-title">{title}</div>
 
@@ -103,7 +117,7 @@ class LeftMenu extends Component{
 
                             }
 
-                            <ScrollBars autoHide autoHeight autoHeightMax={760}>
+                            <ScrollBars   autoHeight autoHeightMin={200} autoHeightMax={this.state.MaxHeight-100}>
 
                                 <div className={`left-menu-search-wrapper ${type}`}>
 
@@ -140,7 +154,7 @@ class LeftMenu extends Component{
 
                         <div className={`pick-wrapper ${type}`}>
 
-                            <ScrollBars autoHide autoHeight autoHeightMax={760}>
+                            <ScrollBars autoHeight autoHeightMin={200} autoHeightMax={this.state.MaxHeight-100}>
 
                             {
 

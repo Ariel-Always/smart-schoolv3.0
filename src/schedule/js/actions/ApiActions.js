@@ -345,9 +345,9 @@ const GetAllOptionForAddSchedule = async ({SchoolID,dispatch}) => {
 
 //获取课表班级信息（含搜索）
 
-const GetClassByGradeIDAndKey = async ({SchoolID,PeriodID='',GradeID='',Key='',dispatch}) => {
+const GetClassByGradeIDAndKey = async ({SchoolID,PeriodID='',GradeID='',Key='',Flag=1,dispatch}) => {
 
-    let res = await Method.getGetData(`/Schedule/api/GetClassByGradeIDAndKey?SchoolID=${SchoolID}&PeriodID=${PeriodID}&GradeID=${GradeID}&Key=${Key}`,
+    let res = await Method.getGetData(`/Schedule/api/GetClassByGradeIDAndKey?SchoolID=${SchoolID}&PeriodID=${PeriodID}&GradeID=${GradeID}&Key=${Key}&Flag=${Flag}`,
 
         2,
 
@@ -371,9 +371,9 @@ const GetClassByGradeIDAndKey = async ({SchoolID,PeriodID='',GradeID='',Key='',d
 
 //获取课表教室信息（含搜索）
 
-const GetClassRoomByClassTypeAndKey = async ({SchoolID,PeriodID='',ClassRoomTypeID='',GradeID='',Key='',dispatch}) => {
+const GetClassRoomByClassTypeAndKey = async ({SchoolID,Flag=1,PeriodID='',ClassRoomTypeID='',GradeID='',Key='',dispatch}) => {
 
-    let res = await Method.getGetData(`/Schedule/api/GetClassRoomByClassTypeAndKey?SchoolID=${SchoolID}&PeriodID=${PeriodID}&ClassRoomTypeID=${ClassRoomTypeID}&Key=${Key}`,
+    let res = await Method.getGetData(`/Schedule/api/GetClassRoomByClassTypeAndKey?SchoolID=${SchoolID}&PeriodID=${PeriodID}&ClassRoomTypeID=${ClassRoomTypeID}&Key=${Key}&Flag=${Flag}`,
 
         2,
 

@@ -67,8 +67,6 @@
 
     height:172px;
 
-    line-height: 1;
-
     cursor: pointer;
 
     border: 1px solid #Ffffff;
@@ -133,7 +131,7 @@
 
     width: 98px;
 
-    margin: 10px auto 0 auto;
+    margin:2px auto 0 auto;
 
     @include textOverFlow;
 
@@ -151,7 +149,7 @@
 
     width:106px;
 
-    margin:4px auto 0 auto;
+    margin:0 auto;
 
   }
   .id-body{
@@ -259,9 +257,7 @@
 
     color: #000;
 
-    line-height:1;
-
-    margin: 12px auto 0 auto;
+    margin:4px auto 0 auto;
 
     &.no-picked{
 
@@ -279,11 +275,9 @@
 
     max-width: 168px;
 
-    margin: 8px auto 0 auto;
+    margin:0 auto;
 
     text-align: center;
-
-    line-height: 1;
 
     .id-body{
 

@@ -2,6 +2,8 @@ import React,{Component} from 'react';
 
 import { connect } from 'react-redux';
 
+import $ from 'jquery';
+
 import ManagerIndexActions from "../../actions/Manager/ManagerIndexActions";
 
 import CRSActions from '../../actions/Manager/ClassRoomSingleActions';
@@ -410,6 +412,16 @@ class ClassRoomSingle extends Component{
         const { dispatch } = this.props;
 
         dispatch(CRSActions.RebackReplaceSchedule(params));
+
+    }
+
+    componentWillUpdate(){
+
+        if (window.ScheduleLeftMenuHeightChange){
+
+            window.ScheduleLeftMenuHeightChange($('.subject-teacher-teacher-content').height());
+
+        }
 
     }
 

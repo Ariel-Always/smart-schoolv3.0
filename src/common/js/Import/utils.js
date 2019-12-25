@@ -167,6 +167,10 @@ const GetFtpPath = async (that) => {
 
         AlertError({title:"资源站点获取失败！",that});
 
+        that.setState({Step:1,UpLoadFileName:'请选择文件...',UpLoadFile:''});
+
+        that.Input.value = '';
+
     }
 
 };
@@ -213,6 +217,10 @@ const UpLoadPhoto =  async ({FtpPath,FileName,Skip=0,that}) => {
 
                 AlertError({title:"上传出错！",that});
 
+                that.setState({Step:1,UpLoadFileName:'请选择文件...',UpLoadFile:''});
+
+                that.Input.value = '';
+
                 return { ErrCode:-1 };
 
             }
@@ -222,6 +230,10 @@ const UpLoadPhoto =  async ({FtpPath,FileName,Skip=0,that}) => {
             if (json.Status!==200){
 
                 AlertError({title:json.Message,that});
+
+                that.setState({Step:1,UpLoadFileName:'请选择文件...',UpLoadFile:''});
+
+                that.Input.value = '';
 
                 return ;
 
@@ -249,6 +261,10 @@ const UpLoadPhoto =  async ({FtpPath,FileName,Skip=0,that}) => {
         catch (e) {
 
             AlertError({title:"上传出错！",that});
+
+            that.setState({Step:1,UpLoadFileName:'请选择文件...',UpLoadFile:''});
+
+            that.Input.value = '';
 
             return;
 
@@ -292,7 +308,9 @@ const BackEndUnCompress = async ({FileName,FtpPath,that}) => {
 
             AlertError({title:"解压校对失败！",that});
 
-            that.setState({Step:1});
+            that.setState({Step:1,UpLoadFileName:'请选择文件...',UpLoadFile:''});
+
+            that.Input.value = '';
 
         }
 
@@ -302,7 +320,9 @@ const BackEndUnCompress = async ({FileName,FtpPath,that}) => {
 
             AlertError({title:json.Message,that});
 
-            that.setState({Step:1});
+            that.setState({Step:1,UpLoadFileName:'请选择文件...',UpLoadFile:''});
+
+            that.Input.value = '';
 
         }else{
 
@@ -318,7 +338,9 @@ const BackEndUnCompress = async ({FileName,FtpPath,that}) => {
 
         AlertError({title:"解压校对失败！",that});
 
-        that.setState({Step:1});
+        that.setState({Step:1,UpLoadFileName:'请选择文件...',UpLoadFile:''});
+
+        that.Input.value = '';
 
     }
 
@@ -341,6 +363,10 @@ const FileUpLoad = async ({Url=Api+'/usermgr/comm/controls/import/upload',formDa
     }else{
 
         AlertError({title:res.Msg,that});
+
+        that.setState({Step:1,UpLoadFile:'',UpLoadFileName:'请选择文件...'});
+
+        that.Input.value='';
 
     }
 

@@ -63,6 +63,8 @@ class Import extends Component{
 
                 utils.AlertWarn({that:this,title:"文件大小不能为0，请重新选择文件！"});
 
+                this.setState({UpLoadFileName:'请选择文件...',UpLoadFile:''});
+
                 this.Input.value = '';
 
             }
@@ -72,6 +74,8 @@ class Import extends Component{
             //弹出警告窗
 
             utils.AlertWarn({that:this,title:"请上传后缀名为zip、7z或rar文件!"});
+
+            this.setState({UpLoadFileName:'请选择文件...',UpLoadFile:''});
 
             this.Input.value = '';
 
@@ -105,10 +109,6 @@ class Import extends Component{
                         utils.UpLoadPhoto({FtpPath:data,that:this,FileName});
 
                     });
-
-                }else{//没有获取到ftp路径
-
-                    this.setState({Step:1});
 
                 }
 

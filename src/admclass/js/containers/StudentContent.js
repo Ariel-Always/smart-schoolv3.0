@@ -14,6 +14,7 @@ import AddTeacherModal from '../component/AddTeacherModal';
 import PaginationActions from "../actions/PaginationActions";
 import DMActions from "../actions/DetailModalActions";
 import ApiActions from "../actions/ApiActions";
+import AASActions from "../actions/AppAlertSuccess";
 
 
 
@@ -141,7 +142,9 @@ class StudentContent extends Component{
 
                     dispatch({type:UpUIState.ADJUST_CLASS_MODAL_HIDE});
 
-                    dispatch(AppAlertActions.alertSuccess({title:"调班成功"}));
+                    /*dispatch(AppAlertActions.alertSuccess({title:"调班成功"}));*/
+
+                    dispatch(AASActions.AlertSuccess({title:"调班成功！"}));
 
                     dispatch({type:UpDataState.STUDENTS_CHECK_LIST_CHANGE,list:[]});
 

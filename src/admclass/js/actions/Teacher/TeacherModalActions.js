@@ -5,6 +5,8 @@ import ApiActions from '../../actions/ApiActions';
 
 import CCActions from '../../actions/Teacher/ClassChargeActions';
 
+import AppAlertSuccess from "../AppAlertSuccess";
+
 
 const TEACHER_TEACHER_MODAL_SHOW = 'TEACHER_TEACHER_MODAL_SHOW';
 const TEACHER_TEACHER_MODAL_HIDE = 'TEACHER_TEACHER_MODAL_HIDE';
@@ -119,6 +121,8 @@ const teacherModalSelectChange = (selectData) => {
         const { ActiveClassID } = getState().Teacher.ClassCharge;
 
         dispatch({type:TEACHER_TEACHER_MODAL_LIST_LOADING_SHOW});
+
+        dispatch({type:TEACHER_TEACHER_MODAL_UPDATE_NEW_TEACHER,data:{id:'',photo:'',name:''}});
 
         let TeacherID = '';
 
@@ -311,7 +315,9 @@ const updateTeacher = (classInfo) => {
 
             if (data===0){
 
-                dispatch(AppAlertActions.alertSuccess({title:tips}));
+                /*dispatch(AppAlertActions.alertSuccess({title:tips}));*/
+
+                dispatch(AppAlertSuccess.AlertSuccess({title:tips}));
 
                 dispatch({type:TEACHER_TEACHER_MODAL_HIDE});
 
@@ -337,7 +343,9 @@ const delSubjectTeacher = ({ClassID,SubjectID}) => {
 
                 dispatch({type:AppAlertActions.CLOSE_ERROR_ALERT});
 
-                dispatch(AppAlertActions.alertSuccess({title:"删除成功！"}));
+                /*dispatch(AppAlertActions.alertSuccess({title:"删除成功！"}));*/
+
+                dispatch(AppAlertSuccess.AlertSuccess({title:'删除成功！'}));
 
                 dispatch(CCActions.TeacherUpdate());
 

@@ -1,3 +1,4 @@
+import AASActions from '../actions/AppAlertSuccess';
 
 import UpUIState from './UpUIState';
 
@@ -308,11 +309,13 @@ const addClass = ({GradeID,ClassName,TheGradePreviewID}) =>{
         //关闭的弹窗的时候重置一些操作
         addClassPost({GradeID,ClassName,dispatch}).then(data=>{
 
-           if (data==='success'){
+           if (data===0){
 
                dispatch({type:UpUIState.ADD_CLASS_MODAL_HIDE});
 
-               dispatch(AppAlertActions.alertSuccess({title:'添加班级成功！'}));
+              /* dispatch(AppAlertActions.alertSuccess({title:'添加班级成功！'}));*/
+
+               dispatch(AASActions.AlertSuccess({title:"添加班级成功！"}));
 
                if (SchoolSearchKey){
 
@@ -474,6 +477,8 @@ const teacherModalSelectChange = (selectData) => {
         const ClassID = getState().UIState.ComponentChange.classInfo.id;
 
         dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_SHOW});
+
+        dispatch({type:ADD_TEACHER_UPDATE_NEW_TEACHER,data:{id:'',photo:'',name:''}});
 
         let TeacherID = '';
 
@@ -713,7 +718,9 @@ const updateGenger = (classInfo) =>{
 
             if (data==='success'){
 
-                dispatch(AppAlertActions.alertSuccess({title:tips}));
+                /*dispatch(AppAlertActions.alertSuccess({title:tips}));*/
+
+                dispatch(AASActions.AlertSuccess({title:tips}));
 
                 getTeachers({ClassID:classId,dispatch}).then(data=>{
 
@@ -745,7 +752,11 @@ const delGanger = ({ClassID}) => {
 
           if (data==='success'){
 
-            dispatch(AppAlertActions.alertSuccess({title:"删除班主任成功"}));
+            /*dispatch(AppAlertActions.alertSuccess({title:"删除班主任成功"}));*/
+
+              dispatch({type:AppAlertActions.CLOSE_ERROR_ALERT});
+
+              dispatch(AASActions.AlertSuccess({title:"删除班主任成功!"}));
 
               getTeachers({ClassID,dispatch}).then(data=>{
 
@@ -815,7 +826,9 @@ const updateTeacher = (classInfo) => {
 
             if (data==='success'){
 
-                dispatch(AppAlertActions.alertSuccess({title:tips}));
+                /*dispatch(AppAlertActions.alertSuccess({title:tips}));*/
+
+                dispatch(AASActions.AlertSuccess({title:tips}));
 
             }
 
@@ -847,7 +860,11 @@ const delSubjectTeacher = ({ClassID,SubjectID}) => {
 
             if (data){
 
-                dispatch(AppAlertActions.alertSuccess({title:"删除成功！"}));
+                /*dispatch(AppAlertActions.alertSuccess({title:"删除成功！"}));*/
+
+                dispatch({type:AppAlertActions.CLOSE_ERROR_ALERT});
+
+                dispatch(AASActions.AlertSuccess({title:"删除成功！"}));
 
             }
 
@@ -888,7 +905,9 @@ const UpdateClassName = ({IsAllPreview,GradeID,ClassID,ClassName}) => {
 
               dispatch({type:UpUIState.RESET_CLASS_NAME_HIDE});
 
-              dispatch(AppAlertActions.alertSuccess({title:"修改成功！"}));
+              /*dispatch(AppAlertActions.alertSuccess({title:"修改成功！"}));*/
+
+              dispatch(AASActions.AlertSuccess({title:"修改成功！"}));
 
               console.log(IsAllPreview);
 
@@ -933,11 +952,15 @@ const SetMonitorAction = ({UserID='',ClassID}) =>{
 
                 if (UserID){
 
-                    dispatch(AppAlertActions.alertSuccess({title:"成功设置班长!"}));
+                    /*dispatch(AppAlertActions.alertSuccess({title:"成功设置班长!"}));*/
+
+                    dispatch(AASActions.AlertSuccess({title:"成功设置班长！"}));
 
                 }else{
 
-                    dispatch(AppAlertActions.alertSuccess({title:"成功取消班长!"}));
+                    /*dispatch(AppAlertActions.alertSuccess({title:"成功取消班长!"}));*/
+
+                    dispatch(AASActions.AlertSuccess({title:"成功取消班长！"}));
 
                 }
 
@@ -1229,7 +1252,7 @@ const addClassPost =  async ({GradeID,ClassName,dispatch}) => {
 
     if (res.StatusCode === 200){
 
-        return res.Msg;
+        return res.ErrCode;
 
     }else{
 

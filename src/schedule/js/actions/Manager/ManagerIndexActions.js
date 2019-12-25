@@ -395,7 +395,7 @@ const ClassSingleInit = () => {
 
         let GetClassByGradeIDAndKey = ApiActions.GetClassByGradeIDAndKey({
 
-            SchoolID,GradeID:'',PeriodID,Key:'',dispatch
+            SchoolID,GradeID:'',PeriodID,Key:'',Flag:0,dispatch
 
         });
 
@@ -658,7 +658,7 @@ const ClassRoomSingleInit = () => {
 
         let GetClassRoomByClassTypeAndKey = ApiActions.GetClassRoomByClassTypeAndKey({
 
-            SchoolID,ClassRoomTypeID:'',PeriodID,Key:'',dispatch
+            SchoolID,ClassRoomTypeID:'',PeriodID,Key:'',Flag:0,dispatch
 
         });
 

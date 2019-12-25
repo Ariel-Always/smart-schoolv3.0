@@ -333,7 +333,7 @@ const ClassSearch = (val) => {
 
         ApiActions.GetClassByGradeIDAndKey({
 
-            SchoolID,PeriodID,GradeID:'',Key,dispatch
+            SchoolID,PeriodID,GradeID:'',Flag:0,Key,dispatch
 
         }).then(data => {
 

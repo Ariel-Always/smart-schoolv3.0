@@ -110,7 +110,7 @@ const  AddTeacherModal = (state={
 
         case UpDataState.ADD_TEACHER_UPDATE_NEW_TEACHER:
 
-            return  {...state,newPickTeacher:actions.data};
+            return  {...state,newPickTeacher:(actions.data.id?actions.data:{id:'',name:'未选择',photo:defaultPick})};
 
         case UpDataState.ADD_TEACHER_UPDATE_ORIGIN_TEACHER:
 

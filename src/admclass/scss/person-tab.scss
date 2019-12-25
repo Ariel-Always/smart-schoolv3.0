@@ -101,20 +101,19 @@
 
   .person-item-info{
     font-size: 14px;
-    margin-top:22px;
+    margin-top:20px;
     color: #333333;
   }
   .person-item-name{
     display: inline-block;
     cursor: pointer;
     max-width: 92px;
-    line-height: 1;
     @include textOverFlow;
   }
   .person-sex-icon{
     display: inline-block;
     width: 10px;
-    height: 12px;
+    height:20px;
     margin-left: 4px;
     background-size: contain;
     background-position: center;

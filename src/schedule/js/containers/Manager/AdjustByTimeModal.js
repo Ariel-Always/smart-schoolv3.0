@@ -133,7 +133,6 @@ class AdjustByTimeModal extends Component{
                    type={1}
                    visible={AdjustByTimeModal.show}
                    width={1042}
-                   bodyStyle={{height:380}}
                    mask={true}
                    cancelText="取消"
                    onCancel={this.AlertHide.bind(this)}

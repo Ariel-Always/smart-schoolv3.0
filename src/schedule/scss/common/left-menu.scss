@@ -8,21 +8,31 @@
 
   .emptyBox{
 
+    display: block;
+
     .empty{
 
-      width: 236px;
+      width: 232px;
 
       height: 64px;
 
-      @include background-size(236px 64px);
+      @include background-size(230px 64px);
 
       &.tips-error-5{
 
         height: 100px;
 
-        @include background-size(236px 128px);
+        @include background-size(230px 128px);
 
       }
+
+    }
+
+    .initTitle{
+
+      display: block;
+
+      text-align: center;
 
     }
 

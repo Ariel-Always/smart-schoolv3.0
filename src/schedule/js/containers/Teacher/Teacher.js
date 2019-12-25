@@ -2,6 +2,8 @@ import React,{Component} from 'react';
 
 import {connect} from 'react-redux';
 
+import $ from 'jquery';
+
 import TermPick from  '../../component/TermPick';
 
 import LeftMenu from '../../component/LeftMenu';
@@ -36,6 +38,7 @@ class Teacher extends Component{
         dispatch(ComPageRefresh.ComPageInit(TeacherIndexActions.STTPageInit()));
 
     }
+
 
     //选择某一周次
     weekPickEvent(e){
@@ -402,6 +405,16 @@ class Teacher extends Component{
 
     }
 
+    componentWillUpdate(){
+
+        if (window.ScheduleLeftMenuHeightChange){
+
+            window.ScheduleLeftMenuHeightChange($('.subject-teacher-teacher-content').height());
+
+        }
+
+    }
+
 
     render() {
 
@@ -485,7 +498,6 @@ class Teacher extends Component{
                         weekPrevEvent = {this.weekPrevEvent.bind(this)}>
 
                     </TermPick>
-
 
                     <SingleDoubleTable
                             topHeight = {64}

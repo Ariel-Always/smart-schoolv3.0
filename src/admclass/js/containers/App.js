@@ -183,8 +183,6 @@ class App extends Component{
 
                             }});
 
-                        console.log(1);
-
                     }
 
                     /*dispatch({type:ModuleActions.MODULE_SETTING_INFO_UPDATE,data:{
@@ -1042,7 +1040,7 @@ class App extends Component{
 
     render() {
 
-        const {UIState,DataState,RouterSet,ModuleSetting} = this.props;
+        const {UIState,DataState,RouterSet,ModuleSetting,AppAlertSuccess} = this.props;
 
         const { Grades = []} = DataState.SchoolGradeClasses;//左侧菜单的年级和班级信息
 
@@ -1176,6 +1174,8 @@ class App extends Component{
 
                         </Alert>
 
+                        <Alert  show={AppAlertSuccess.show}  type={AppAlertSuccess.type} title={AppAlertSuccess.title} onHide = {AppAlertSuccess.hide}></Alert>
+
                        {/* 添加班级弹出层*/}
 
                         <Modal type={1} title="添加班级"
@@ -1214,7 +1214,7 @@ class App extends Component{
 }
 const  mapStateToProps = (state) => {
 
-    let {UIState,DataState,RouterSet,ModuleSetting,Teacher} = state;
+    let {UIState,DataState,RouterSet,ModuleSetting,Teacher,AppAlertSuccess} = state;
 
     const { ClassCharge } = Teacher;
 
@@ -1228,7 +1228,9 @@ const  mapStateToProps = (state) => {
 
         ModuleSetting,
 
-        ClassCharge
+        ClassCharge,
+
+        AppAlertSuccess
 
     }
 

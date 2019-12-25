@@ -12,6 +12,8 @@ import Teacher from './Teacher';
 
 import DetailModal from './DetailModal';
 
+import AppAlertSuccess from './AppAlertSuccess';
+
 export let initialState = {};
 
 let rootReducers = combineReducers({
@@ -26,7 +28,9 @@ let rootReducers = combineReducers({
 
     Teacher,
 
-    DetailModal
+    DetailModal,
+
+    AppAlertSuccess
 
 });
 

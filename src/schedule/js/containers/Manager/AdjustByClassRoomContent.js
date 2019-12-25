@@ -264,7 +264,7 @@ class AdjustByClassRoomContent extends Component{
                                     dropClickSearch:this.OriginClassRoomSearch.bind(this),
                                     dropCancelSearch:this.OriginClassRoomCancelSearch.bind(this),
                                     searchList:OriginClassRoom.SearchList,
-                                    searchPlaceholder:"请输入教师名称进行搜索...",
+                                    searchPlaceholder:"请输入教室名称或ID进行搜索...",
                                     searchOpen:OriginClassRoom.SearchOpen,
                                     searchLoadingShow:OriginClassRoom.SearchLoadingShow
                                 }}>
@@ -293,7 +293,7 @@ class AdjustByClassRoomContent extends Component{
                                     dropClickSearch:this.TargetClassRoomSearch.bind(this),
                                     dropCancelSearch:this.TargetClassRoomCancelSearch.bind(this),
                                     searchList:TargetClassRoom.SearchList,
-                                    searchPlaceholder:"请输入教师名称进行搜索...",
+                                    searchPlaceholder:"请输入教室名称或ID进行搜索...",
                                     searchOpen:TargetClassRoom.SearchOpen,
                                     searchLoadingShow:TargetClassRoom.SearchLoadingShow
                                 }}>

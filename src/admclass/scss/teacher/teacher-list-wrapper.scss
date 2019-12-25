@@ -130,3 +130,27 @@
   }
 
 }
+
+.teacher-class-charge-wrapper{
+
+  .teacher-list-wrapper{
+
+    &>div:not(.emptyBox){
+
+      &:not(:nth-child(4n+1)){
+
+        margin-left:0;
+
+      }
+
+      &:not(:nth-child(5n+1)){
+
+        margin-left:18px;
+
+      }
+
+    }
+
+  }
+
+}

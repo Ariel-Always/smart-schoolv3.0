@@ -2,6 +2,8 @@ import React,{Component} from 'react';
 
 import {connect} from 'react-redux';
 
+import $ from 'jquery';
+
 import TermPick from  '../../component/TermPick';
 
 import LeftMenu from '../../component/LeftMenu';
@@ -409,6 +411,16 @@ class ClassStudent extends Component{
         const { dispatch } = this.props;
 
         dispatch(CSActions.RebackReplaceSchedule(params));
+
+    }
+
+    componentWillUpdate(){
+
+        if (window.ScheduleLeftMenuHeightChange){
+
+            window.ScheduleLeftMenuHeightChange($('.subject-teacher-teacher-content').height());
+
+        }
 
     }
 

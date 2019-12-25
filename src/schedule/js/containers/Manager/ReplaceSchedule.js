@@ -396,8 +396,8 @@ class ReplaceSchedule extends Component{
                                 dropMultipleList:teacherList,
                                 dropMultipleChange:this.replaceTeacherDropChange.bind(this),
                                 dropClickSearch:this.replaceTeacherClickSearch.bind(this),
-                                //dropCancelSearch:this.classSearchClose.bind(this),
-                                searchList:replaceTeacherOptions.dropList,
+                                dropCancelSearch:this.replaceTeacherSearchClose.bind(this),
+                                searchList:replaceTeacherOptions.searchList,
                                 searchPlaceholder:"请输入教师名称进行搜索...",
                                 searchOpen:replaceTeacherOptions.searchOpen,
                                 searchLoadingShow:replaceTeacherOptions.searchLoadingShow
