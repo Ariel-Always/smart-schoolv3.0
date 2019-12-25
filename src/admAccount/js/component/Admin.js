@@ -44,7 +44,7 @@ class Admin extends React.Component {
           render: handle => {
             return (
               <div className="registerTime-content">
-               <label>
+               <label style={{whiteSpace:'nowrap'}}>
                <CheckBox
                 type='gray'
                   value={handle.key}

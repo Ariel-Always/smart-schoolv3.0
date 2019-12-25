@@ -21,8 +21,9 @@ const GetSignUpLog = (state = { DidData: {}, newStatus: 0, WillData: {},Grade:{ 
 
 function handleData(data) {
     const { Total, List } = data;
-    
+    let keyList = []
     let returnData = List.map((child, index) => {
+        keyList.push(index+1)
         return {
             key: index,
             OrderNo: index + 1,
@@ -60,7 +61,7 @@ function handleData(data) {
         }
     })
 
-    return {Total:Total, returnData: returnData};
+    return {Total:Total, returnData: returnData,keyList};
 }
 
 function getStatus(oldData, newData) {

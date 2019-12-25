@@ -61,6 +61,7 @@ export function TokenCheck(IsDesk = false, SysID = "000") {
           //result为true
 
           sessionStorage.setItem("token", token);
+          localStorage.setItem("token", token);
 
           if (!sessionStorage.getItem("UserInfo")) {
             getUserInfo(token, "000");
@@ -141,7 +142,7 @@ export function TokenCheck(IsDesk = false, SysID = "000") {
                   // if (url.split('html/')[1]) {//有就说明不在登录页
 
                   sessionStorage.setItem("token", url_token);
-
+                  localStorage.setItem("token", url_token);
                   if (!sessionStorage.getItem("UserInfo")) {
                     getUserInfo(token, "000");
                   }
@@ -315,13 +316,15 @@ export function TokenCheck_Connect(IsDesk) {
   let date = new Date();
   let time = date.getTime();
   let i = 1;
-
+  let url_token = getQueryVariable("lg_tk"); //lg_tk为链接上带的token
   let checkTokenNull = setInterval(function() {
     ////  console.log(i++)
-
-    if (!sessionStorage.getItem("token")) {
-      clearInterval(checkTokenNull);
-      window.location.href = "/UserMgr/Login/Login.aspx";
+    // localStorage.setItem("token", url_token);
+    // !url_token&&!sessionStorage.getItem("token")&&
+    if (!localStorage.getItem("token")) {
+      TokenCheck(IsDesk);
+      // clearInterval(checkTokenNull);
+      // window.location.href = "/UserMgr/Login/Login.aspx";
     }
   }, 500);
   /*   if (time - lastTime >= 60000) {*/
@@ -360,7 +363,7 @@ export function LogOut(SysID = "000") {
 
       if (json.data.result) {
         //result为true
-
+        localStorage.removeItem("token");
         sessionStorage.clear();
 
         window.location.href = "/UserMgr/Login/Login.aspx";

@@ -13,6 +13,9 @@
             transform: translateY(-50%);
         }
     }
+    .ant-checkbox-group {
+        width: 100%;
+    }
     .box-content {
         //padding: 30px 17px;
         background: #fff;
@@ -71,13 +74,16 @@
                 display: inline-block;
                 color: #333333;
                 background-color: #fafafa;
-                border-bottom: 2px #ebebeb solid;
+                border-bottom: 1px #ebebeb solid;
                 // &:nth-of-type(2n+1) {
                 //   background-color: #fafafa;
                 // }
                 // &:nth-of-type(2n) {
                 //   background-color: #ffffff;
                 // }
+                &:nth-of-type(2n) {
+                    background-color: #fff;
+                }
                 &:last-of-type {
                     border-bottom: none;
                 }
@@ -96,7 +102,7 @@
             }
             .selectAllBox {
                 background-color: #ffffff !important;
-                border-bottom: 2px #ebebeb solid !important;
+                border-bottom: 1px #ebebeb solid !important;
                 .selectAll {
                     font-size: 14px;
                     color: #666666;

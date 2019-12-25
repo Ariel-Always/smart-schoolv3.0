@@ -51,7 +51,7 @@ class RegisterWillExamine extends React.Component {
           render: key => {
             return (
               <div className="registerTime-content">
-                <label>
+                <label style={{whiteSpace:'normal'}}>
                   <CheckBox
                     type="gray"
                     value={key}
@@ -511,9 +511,10 @@ class RegisterWillExamine extends React.Component {
   };
   OnCheckAllChange = e => {
     //console.log(e.target.checked, this.state.keyList)
+    const {DataState} = this.props
     if (e.target.checked) {
       this.setState({
-        checkedList: this.state.keyList,
+        checkedList: DataState.GetSignUpLog.WillData.keyList,
         checkAll: e.target.checked
       });
     } else {
@@ -524,10 +525,11 @@ class RegisterWillExamine extends React.Component {
     }
   };
   onCheckBoxGroupChange = checkedList => {
-    //console.log(checkedList)
+    const {DataState} = this.props
+    console.log(checkedList)
     this.setState({
       checkedList,
-      checkAll: checkedList.length === this.state.keyList.length ? true : false
+      checkAll: checkedList.length === DataState.GetSignUpLog.WillData.keyList.length ? true : false
     });
   };
   onExamineClick = key => {
@@ -703,7 +705,9 @@ class RegisterWillExamine extends React.Component {
   onFailQueryOk = () => {
     const { dispatch, DataState } = this.props;
     let checkedList = this.state.checkedList;
+    console.log(checkedList,DataState)
     let logID = checkedList.map((child, index) => {
+      console.log(child)
       return DataState.GetSignUpLog.WillData.returnData[child - 1].UserMsg
         .logID;
     });

@@ -771,6 +771,7 @@ class App extends Component {
           bodyStyle={{ padding: 0 }}
           width={720}
           type="1"
+          destroyOnClose={true}
           title={"教学班详情"}
           visible={
             UIState.SetCourseClassDetailsModalShow

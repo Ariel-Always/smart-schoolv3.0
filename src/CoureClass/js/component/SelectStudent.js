@@ -403,7 +403,7 @@ class SelectStudent extends React.Component {
                 >
                   <ul
                     className="selectClassBox"
-                    style={{ width: 177 + "px", height: 437 + "px", margin: 0 }}
+                    style={{ width: 176 + "px", height: 436 + "px", margin: 0 }}
                   >
                     {ClassList.map((child, index) => {
                       return (

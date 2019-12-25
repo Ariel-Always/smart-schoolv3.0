@@ -43,7 +43,7 @@ class Student extends React.Component {
           render: key => {
             return (
               <div className="registerTime-content">
-                <label>
+                <label style={{whiteSpace:'nowrap'}}>
                   <CheckBox
                     value={key.key}
                     type="gray"

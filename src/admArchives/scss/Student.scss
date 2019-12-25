@@ -160,7 +160,7 @@ $image-url: "../images";
                         font-size: 14px;
                         line-height: 23px;
                         color: #999;
-                        margin: 0 3px;
+                        margin: 0 0 0 3px;
                     }
                     .name-key {
                         font-size: 14px;
@@ -178,6 +178,7 @@ $image-url: "../images";
                     .name-UserName {
                         text-decoration: underline;
                         color: #333;
+                        height: 17px;
                         font-size: 16px;
                         cursor: pointer;
                         display: inline-block;
@@ -190,6 +191,7 @@ $image-url: "../images";
                     .UserID {
                         font-size: 14px;
                         color: #999;
+                        height: 17px;
                         display: inline-block;
                         width: 95px;
                         overflow: hidden; //超出一行文字自动隐藏

@@ -7,7 +7,7 @@ const GetCoureClassAllMsg = (
 ) => {
   switch (actions.type) {
     case UpDataState.GET_COURE_CLASS_ALL_MSG:
-      let data = handleData(actions.data, actions.func);
+      let data = handleData(actions.data, actions.func,state.Subject,state.Grade);
       return Object.assign({}, state, { ...data });
     case UpDataState.SET_COURE_CLASS_ALL_MSG:
       // console.log(state)
@@ -89,7 +89,8 @@ function setNewData(MenuParams, key, subjectID) {
   return { setData: { children: params, MenuBox: MenuBox }, isError };
 }
 
-function handleData(data, func) {
+function handleData(data, func,Subject,Grade) {
+  console.log(Subject,Grade)
   let oldData = data;
   let route = history.location.pathname;
   let pathArr = route.split("/");
@@ -99,8 +100,8 @@ function handleData(data, func) {
   let classID = pathArr[4];
   let AllActive = false;
   let AllSelect = false;
-  let Subject = "";
-  let Grade = "";
+  // let Subject = "";
+  // let Grade = "";
   let isSubject = false;
   let isGrade = false;
   let isError = false;
@@ -113,6 +114,10 @@ function handleData(data, func) {
   } else if (handleRoute !== "Search") {
     Subject = routeID;
   }
+  // else if (handleRoute === "Search"){
+  //   routeID = Subject;
+  //   classID = Grade;
+  // }
   if (classID) {
     Grade = classID;
   }
@@ -162,6 +167,9 @@ function handleData(data, func) {
         isSubject === false
       ) {
         isError = true;
+      }else if(handleRoute === "Search"&&!Grade&&child.SubjectID === Subject){
+        menu["active"] = true;
+        isSubject = true;
       }
       let childMenu = [];
       ID.map((id, key) => {
@@ -173,6 +181,19 @@ function handleData(data, func) {
           child.SubjectID === routeID &&
           classID === id
         ) {
+          childMenu.push({
+            key: child.SubjectID + id,
+            title: name[key],
+            type: "Class",
+            selected: true,
+            active: true,
+            onTitleClick: () => {
+              func(id, "Class", child.SubjectID);
+            }
+          });
+          menu["selected"] = true;
+          isGrade = true;
+        }else if(handleRoute === "Search"&&child.SubjectID ===Subject&&id ===Grade){
           childMenu.push({
             key: child.SubjectID + id,
             title: name[key],

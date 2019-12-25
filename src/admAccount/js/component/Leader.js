@@ -44,7 +44,7 @@ class Leader extends React.Component {
           render: key => {
             return (
               <div className="registerTime-content">
-                <label>
+                <label style={{whiteSpace:'nowrap'}}>
                   {" "}
                   <CheckBox type="gray" value={key}></CheckBox>
                   <span className="key-content">

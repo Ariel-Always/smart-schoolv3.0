@@ -129,7 +129,7 @@ $image-url: "../images";
                         font-size: 14px;
                         line-height: 23px;
                         color: #999;
-                        margin: 0 3px;
+                        margin: 0 0 0 3px;
                     }
                     .name-key {
                         font-size: 14px;
@@ -150,6 +150,7 @@ $image-url: "../images";
                         font-size: 16px;
                         cursor: pointer;
                         display: inline-block;
+                        height: 17px;
                         width: 90px;
                         overflow: hidden; //超出一行文字自动隐藏
                         text-overflow: ellipsis; //文字隐藏后添加省略号
@@ -159,6 +160,7 @@ $image-url: "../images";
                         font-size: 14px;
                         color: #999;
                         display: inline-block;
+                        height: 17px;
                         width: 95px;
                         overflow: hidden; //超出一行文字自动隐藏
                         text-overflow: ellipsis; //文字隐藏后添加省略号

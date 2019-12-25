@@ -104,6 +104,18 @@ class TimeBanner extends React.Component {
       );
       return;
     }
+    if (/^[_\->/()（）A-Za-z0-9\u4e00-\u9fa5]{0,50}$/.test(value.value) ===false ) {
+      dispatch(
+        actions.UpUIState.showErrorAlert({
+          type: "btn-warn",
+          title: "搜索关键字为汉字、字母、数字以及括号组成",
+          ok: this.onAppAlertOK.bind(this),
+          cancel: this.onAppAlertCancel.bind(this),
+          close: this.onAppAlertClose.bind(this)
+        })
+      );
+      return;
+    }
     history.push("/Search/" + value.value);
     let SubjectID = DataState.GetCoureClassAllMsg.Subject;
     let GradeID = DataState.GetCoureClassAllMsg.Grade;

@@ -43,7 +43,7 @@ class Teacher extends React.Component {
           render: handle => {
             return (
               <div className="registerTime-content">
-               <label> <CheckBox
+               <label style={{whiteSpace:'nowrap'}}> <CheckBox
                   type="gray"
                   value={handle.key}
                   onChange={this.onCheckChange}
