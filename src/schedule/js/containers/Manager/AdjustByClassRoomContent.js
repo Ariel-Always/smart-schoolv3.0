@@ -56,7 +56,9 @@ class AdjustByClassRoomContent extends Component{
 
         const { dispatch,AdjustByClassRoom } = this.props;
 
-        const { ClassRoomList } = AdjustByClassRoom;
+        const { ClassRoomList,TargetClassRoom } = AdjustByClassRoom;
+
+        const { SearchOpen } = TargetClassRoom;
 
         let ClassRoomType = '';
 
@@ -74,9 +76,30 @@ class AdjustByClassRoomContent extends Component{
 
         });
 
-        let title = <span>{e.value}<span style={{color:"#999999"}}>({ClassRoomType})</span></span>
+        let NewClassRoomList = JSON.parse(JSON.stringify(ClassRoomList));
+
+        let title = <span title={`${e.value}(${ClassRoomType})`}>{e.value}<span style={{color:"#999999"}}>({ClassRoomType})</span></span>
 
         dispatch({type:ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_CLASSROOM_CHANGE,data:{value:e.id,title}});
+
+        const NewTargetClassRoom = NewClassRoomList.map(item=>{
+
+            let RoomIndex = item.list.findIndex(i=>i.id===e.id);
+
+            if (RoomIndex>=0){
+
+                item.list.splice(RoomIndex,1);
+
+            }
+
+            return item;
+
+        });
+
+        dispatch({type:ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_TARGET_CLASSROOM_LIST_UPDATE,data:NewTargetClassRoom});
+
+        //dispatch({type:ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_CLASSROOM_LIST_UPDATE,data:ClassRoomList});
+
 
     }
 
@@ -110,6 +133,8 @@ class AdjustByClassRoomContent extends Component{
 
         let ClassRoomType = '';
 
+        let NewClassRoomList = JSON.parse(JSON.stringify(ClassRoomList));
+
         ClassRoomList.map(item=>{
 
             item.list.map(i=>{
@@ -124,9 +149,28 @@ class AdjustByClassRoomContent extends Component{
 
         });
 
-        let title = <span>{e.value}<span style={{color:"#999999"}}>({ClassRoomType})</span></span>
+        let title = <span title={`${e.value}(${ClassRoomType})`}>{e.value}<span style={{color:"#999999"}}>({ClassRoomType})</span></span>
 
         dispatch({type:ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_TARGET_CLASSROOM_CHANGE,data:{value:e.id,title}});
+
+        const NewOriginClassRoom = NewClassRoomList.map(item=>{
+
+            let RoomIndex = item.list.findIndex(i=>i.id===e.id);
+
+            if (RoomIndex>=0){
+
+                item.list.splice(RoomIndex,1);
+
+            }
+
+            return item;
+
+        });
+
+        //dispatch({type:ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_TARGET_CLASSROOM_LIST_UPDATE,data:ClassRoomList});
+
+        dispatch({type:ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_CLASSROOM_LIST_UPDATE,data:NewOriginClassRoom});
+
 
     }
 
@@ -210,7 +254,7 @@ class AdjustByClassRoomContent extends Component{
 
         const {
 
-            LoadingShow,ClassRoomList,OriginClassRoom,TargetClassRoom,activeRadio,
+            LoadingShow,OriginClassRoom,TargetClassRoom,activeRadio,
 
             monthsList, monthsCheckedList, weeksList, weeksCheckedList,
 
@@ -259,7 +303,7 @@ class AdjustByClassRoomContent extends Component{
                                 style={{zIndex:9}}
                                 mutipleOptions={{
                                     range:2,
-                                    dropMultipleList:ClassRoomList,
+                                    dropMultipleList:OriginClassRoom.ClassRoomList,
                                     dropMultipleChange:this.OriginClassRoomChange.bind(this),
                                     dropClickSearch:this.OriginClassRoomSearch.bind(this),
                                     dropCancelSearch:this.OriginClassRoomCancelSearch.bind(this),
@@ -288,7 +332,7 @@ class AdjustByClassRoomContent extends Component{
                                 style={{zIndex:9}}
                                 mutipleOptions={{
                                     range:2,
-                                    dropMultipleList:ClassRoomList,
+                                    dropMultipleList:TargetClassRoom.ClassRoomList,
                                     dropMultipleChange:this.TargetClassRoomChange.bind(this),
                                     dropClickSearch:this.TargetClassRoomSearch.bind(this),
                                     dropCancelSearch:this.TargetClassRoomCancelSearch.bind(this),

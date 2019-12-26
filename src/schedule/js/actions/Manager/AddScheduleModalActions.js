@@ -102,6 +102,18 @@ const ADD_SCHEDULE_MODAL_TEACHER_SEARCH_OPEN = 'ADD_SCHEDULE_MODAL_TEACHER_SEARC
 
 const ADD_SCHEDULE_MODAL_TEACHER_SEARCH_CLOSE = 'ADD_SCHEDULE_MODAL_TEACHER_SEARCH_CLOSE';
 
+//将班级和教师的下拉置为可选状态
+
+const  MANAGER_ADD_SCHEDULE_MODAL_CLASS_TEACHER_DROP_ABLED = 'MANAGER_ADD_SCHEDULE_MODAL_CLASS_TEACHER_DROP_ABLED';
+
+//将班级和教师下拉置空
+
+const MANAGER_ADD_SCHEDULE_MODAL_CLASS_TEACHER_DROP_CHANGE = 'MANAGER_ADD_SCHEDULE_MODAL_CLASS_TEACHER_DROP_CHANGE';
+
+//将班级和教师的list更换。
+
+const MANAGER_ADD_SCHEDULE_MODAL_CLASS_TEACHER_LIST_UPDATE = 'MANAGER_ADD_SCHEDULE_MODAL_CLASS_TEACHER_LIST_UPDATE';
+
 
 //取消按钮消失与否
 
@@ -124,9 +136,11 @@ const InfoInit = () => {
 
     return (dispatch,getState) => {
 
-        let {NowWeekNo} = getState().PeriodWeekTerm;
+        let {WeekNO} = getState().PeriodWeekTerm;
 
         let { SchoolID } = getState().LoginUser;
+
+
 
         ApiActions.GetAllOptionForAddSchedule({
 
@@ -178,13 +192,15 @@ const InfoInit = () => {
 
                        value:item.SubjectID,
 
-                       title:item.SubjectName
+                       title:item.SubjectName,
+
+                       Grades:item.Grades
 
                    }
 
                });
                 //组织教师信息
-               let teachers = data.ItemSubject.map((item) => {
+               /*let teachers = data.ItemSubject.map((item) => {
 
                   let list = data.ItemTeacher.map((i) => {
 
@@ -216,20 +232,26 @@ const InfoInit = () => {
 
                   }
 
-               });
+               });*/
+
+               let teachers = data.ItemTeacher;
 
                //组织周次信息
                let week = data.ItemWeek.map((item) => {
 
-                  return{
+                  if (item.WeekNO>=WeekNO){
 
-                      value:item.WeekNO,
+                      return{
 
-                      title:<span>第{item.WeekNO}周 {item.WeekNO === NowWeekNo?<span className="nowWeek">(本周)</span>:''}</span>
+                          value:item.WeekNO,
+
+                          title:<span>第{item.WeekNO}周 {item.WeekNO === WeekNO?<span className="nowWeek">(本周)</span>:''}</span>
+
+                      }
 
                   }
 
-               });
+               }).filter(i=>i!==undefined);
 
                //组织星期信息
                let date = [];
@@ -376,7 +398,7 @@ const InfoInit = () => {
 
                });
 
-               dispatch({type:ADD_SHEDULE_MODAL_INFO_UPDATE,data:{gradeClass,subject,teachers,week,date,classHour,classRoom}})
+               dispatch({type:ADD_SHEDULE_MODAL_INFO_UPDATE,data:{classList:[],teacherList:[],gradeClass,subject,teachers,week,date,classHour,classRoom}});
 
                dispatch({type:ADD_SHEDULE_MODAL_LOADING_HIDE});
 
@@ -398,13 +420,15 @@ const classSearch = (key) => {
 
         let {SchoolID} = getState().LoginUser;
 
+        const { classList } = getState().Manager.AddScheduleModal;
+
         dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_OPEN});
 
         dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_CANCEL_SHOW});
 
         dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_LOADING_SHOW});
 
-          ApiActions.GetClassByGradeIDAndKey({SchoolID,Key:key,dispatch}).then(data => {
+         /* ApiActions.GetClassByGradeIDAndKey({SchoolID,Key:key,dispatch}).then(data => {
 
             if (data){
 
@@ -427,6 +451,17 @@ const classSearch = (key) => {
             }
 
         });
+*/
+
+        const classSearchList = classList.map(item=>{
+
+             return item.list.filter(i=>i.name.includes(key));
+
+        }).filter(item=>item.length>0).map(i=>i[0]);
+
+        dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_LIST_UPDATE,data:classSearchList});
+
+        dispatch({type:ADD_SCHEDULE_MODAL_CLASS_SEARCH_LOADING_HIDE});
 
         }else{
 
@@ -617,7 +652,7 @@ const commitInfo = () => {
 
             SubjectID, WeekNO, WeekDay, ClassHourNO, TeacherID, ClassID,ClassRoomID,
 
-            SchoolID,UserID,UserType,dispatch
+            SchoolID,UserID,UserType:parseInt(UserType),dispatch
 
 
         }).then((data) => {
@@ -754,6 +789,11 @@ ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_CANCEL_SHOW,
 
 ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_CANCEL_HIDE,
 
+MANAGER_ADD_SCHEDULE_MODAL_CLASS_TEACHER_DROP_ABLED,
+
+MANAGER_ADD_SCHEDULE_MODAL_CLASS_TEACHER_DROP_CHANGE,
+
+MANAGER_ADD_SCHEDULE_MODAL_CLASS_TEACHER_LIST_UPDATE,
 
 InfoInit,
 

@@ -22,6 +22,8 @@ const AddTempScheduleModal = (state={
 
     dateDisabled:true,
 
+    classDisabled:true,
+
     classHourDisabled:true,
 
     subjectErrorShow:false,
@@ -91,6 +93,8 @@ const AddTempScheduleModal = (state={
                 checkedClassRoom:'',
 
                 dateDisabled:true,
+
+                classDisabled:true,
 
                 classHourDisabled:true,
 
@@ -173,6 +177,14 @@ const AddTempScheduleModal = (state={
         case ATSMActions.TEACHER_ADD_SCHEDULE_MODAL_SUBJECT_CHANGE:
 
             return {...state,checkedSubject:actions.data};
+
+        case ATSMActions.TEACHER_ADD_SCHEDULE_MODAL_CLASS_DROP_ABLED:
+
+            return { ...state,classDisabled:false };
+
+        case ATSMActions.TEACHER_ADD_SCHEDULE_MODAL_CLASS_LIST_UPDATE:
+
+            return { ...state,classList:actions.data };
 
         case ATSMActions.TEACHER_ADD_SCHEDULE_MODAL_CLASS_CHANGE:
 

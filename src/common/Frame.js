@@ -2,7 +2,11 @@ import React,{Component} from 'react';
 
 import {Frame,Alert} from './index.js';
 
+import { getData } from "./js/fetch";
+
 import { LogOut } from "./js/disconnect";
+
+import CONFIG from './js/config';
 
 import dynamicFile from 'dynamic-file';
 
@@ -52,31 +56,39 @@ class FrameContainer extends Component{
 
         let host = `http://${window.location.host}/`;
 
-        let PsnMgrLgAssistantAddr = 'http://192.168.129.1:10103';
+        this.GetMethod().then(data=>{
 
-        sessionStorage.setItem('PsnMgrToken',token);//用户Token
+            if (data){
 
-        sessionStorage.setItem('PsnMgrMainServerAddr', host); //基础平台IP地址和端口号 形如：http://192.168.129.1:30103/
+                let PsnMgrLgAssistantAddr = data.WebSvrAddr;
 
-        sessionStorage.setItem('PsnMgrLgAssistantAddr','http://192.168.129.1:10103/');
+                sessionStorage.setItem('PsnMgrToken',token);//用户Token
 
-        dynamicFile([
+                sessionStorage.setItem('PsnMgrMainServerAddr', host); //基础平台IP地址和端口号 形如：http://192.168.129.1:30103/
 
-            `${PsnMgrLgAssistantAddr}/PsnMgr/LgAssistant/css/lancoo.cp.assistantInfoCenter.css`,
+                sessionStorage.setItem('PsnMgrLgAssistantAddr',PsnMgrLgAssistantAddr);
 
-            `${PsnMgrLgAssistantAddr}/PsnMgr/LgAssistant/js/jquery-1.7.2.min.js`
+                dynamicFile([
 
-        ]).then(()=>{
+                    `${PsnMgrLgAssistantAddr}/PsnMgr/LgAssistant/css/lancoo.cp.assistantInfoCenter.css`,
 
-            dynamicFile([
+                    `${PsnMgrLgAssistantAddr}/PsnMgr/LgAssistant/js/jquery-1.7.2.min.js`
 
-                `${PsnMgrLgAssistantAddr}/PsnMgr/LgAssistant/assets/jquery.pagination.js`,
+                ]).then(()=>{
 
-                `${PsnMgrLgAssistantAddr}/PsnMgr/LgAssistant/js/lancoo.cp.assistantInfoCenter.js`
+                    dynamicFile([
 
-            ])
+                        `${PsnMgrLgAssistantAddr}/PsnMgr/LgAssistant/assets/jquery.pagination.js`,
 
-        })
+                        `${PsnMgrLgAssistantAddr}/PsnMgr/LgAssistant/js/lancoo.cp.assistantInfoCenter.js`
+
+                    ])
+
+                })
+
+            }
+
+        });
 
     }
 
@@ -100,6 +112,21 @@ class FrameContainer extends Component{
     Logout(){
 
         this.setState({AlertShow:true});
+
+    }
+
+
+    async GetMethod(){
+
+        const result = await getData(CONFIG.Import+'/Base/GetSingleSubsystemServer?SysID=200',1);
+
+        const res = await result.json();
+
+        if (res.StatusCode===200){
+
+            return res.Data;
+
+        }
 
     }
 
@@ -146,6 +173,8 @@ class FrameContainer extends Component{
                 >
 
                 </Alert>
+
+
 
             </React.Fragment>
 

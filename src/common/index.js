@@ -1168,7 +1168,7 @@ class DropDown extends React.Component {
     render() {
         const {
 
-            title, width, height,activeValue,disabled, dropSelectd, dropList, onChange, type, className,
+            Title,TitleShow=true,title, width, height,activeValue,disabled, dropSelectd, dropList, onChange, type, className,
 
             mutipleOptions, dropLoadingShow, ...reset
 
@@ -1212,7 +1212,7 @@ class DropDown extends React.Component {
                                     id: item.id,
                                     onChange: mutipleOptions.dropMultipleChange
                                 })}//绑定点击事件
-                                title={item.name}>
+                                title={TitleShow?(Title?Title:item.name):''}>
                                 <span className="dropdown_item3_name">{item.name}</span>
                             </li>
 
@@ -1238,13 +1238,13 @@ class DropDown extends React.Component {
                     return <li key={k1} className="dropdown_list_item1">
                         <div
                             className={`dropdown_item1_name ${this.state.range2ListShow === k1 ? 'slide' : ''}`} //判断是否是活动状态
-                            title={item1.name} onClick={this.onRange2ListShow.bind(this, k1)}>{item1.name}</div>
+                            title={TitleShow?(Title?Title:item1.name):''} onClick={this.onRange2ListShow.bind(this, k1)}>{item1.name}</div>
                         <ul ref={`dropdown_list_ul3_${k1}`} className={`dropdown_list_ul3 clearfix`} style={{ display: `${this.state.range2ListShow === k1 ? 'block' : 'none'}` }}>
                             {//遍历第二个数组
                                 item1.list.map((item2, k2) => {
                                     return <li key={k2}
                                                className={`dropdown_item3_li ${this.state.range2ListActive === item2.id ? 'active' : ''}`} //判断是否是active
-                                               title={item2.name}
+                                               title={TitleShow?(Title?Title:item2.name):''}
                                                onClick={this.onMultipleRang2DropChange.bind(this, {
                                                    name: item2.name,
                                                    id: item2.id,
@@ -1335,7 +1335,7 @@ class DropDown extends React.Component {
                             dropList ?
                                 dropList.map((item, key) => {
                                     return <li key={key} className={`dropdown_select_li ${activeValue&&activeValue===item.value?'active':(dropSelectd.value===item.value?'active':'')}`}
-                                        title={item.title}
+                                        title={TitleShow?(Title?Title:item.title):''}
                                         data-vaule={item.value}
                                         onClick={
                                             this.onSimpleDropChange.bind(this, {
@@ -1371,10 +1371,16 @@ class DropDown extends React.Component {
                         {   //判断this.state.dropSelectd?this.state.dropSelectd:(判断外界传入的dropSelectd？外界传入的dropSelectd:'')
                             this.state.dropSelectd ?
                                 <span data-value={this.state.dropSelectd.value} className="dropdown_text_span"
-                                    title={this.state.dropSelectd.title}>{this.state.dropSelectd.title}</span>
+
+                                      title={TitleShow?(Title?Title:this.state.dropSelectd.title):''}
+
+                                >{this.state.dropSelectd.title}</span>
                                 : (dropSelectd ?
                                     <span data-value={dropSelectd.value} className="dropdown_text_span"
-                                        title={dropSelectd.title}>{dropSelectd.title}</span>
+
+                                         title={TitleShow?(Title?Title:dropSelectd.title):''}
+
+                                    >{dropSelectd.title}</span>
                                     : ''
                                 )
                         }

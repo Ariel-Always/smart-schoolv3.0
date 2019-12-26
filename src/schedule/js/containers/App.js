@@ -253,8 +253,6 @@ class App extends Component{
 
         $('.add-schedule-modal-wrapper .dropdown_item3_li').removeClass('active');
 
-        console.log($('.add-schedule-modal-wrapper .search_text_input').val(''));
-
         dispatch(ASMAction.InfoInit());
 
     }

@@ -13,6 +13,10 @@ const MANAGER_ADJUST_BY_CLASSROOM_HIDE = 'MANAGER_ADJUST_BY_CLASSROOM_HIDE';
 
 const MANAGER_ADJUST_BY_CLASSROOM_CLASSROOM_LIST_UPDATE = 'MANAGER_ADJUST_BY_CLASSROOM_CLASSROOM_LIST_UPDATE';
 
+//初始教室列表更新
+
+const MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_CLASSROOM_LIST_UPDATE = 'MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_CLASSROOM_LIST_UPDATE';
+
 const MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_CLASSROOM_CHANGE = 'MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_CLASSROOM_CHANGE';
 
 const MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_OPEN = 'MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_OPEN';
@@ -24,6 +28,11 @@ const MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_LOADING_HIDE = 'MANAGER_ADJUST_B
 const MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_LIST_UPDATE = 'MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_LIST_UPDATE';
 
 const MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_CLOSE = 'MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_CLOSE';
+
+
+//目标教室列表更新
+
+const MANAGER_ADJUST_BY_CLASSROOM_TARGET_CLASSROOM_LIST_UPDATE = 'MANAGER_ADJUST_BY_CLASSROOM_TARGET_CLASSROOM_LIST_UPDATE';
 
 
 const MANAGER_ADJUST_BY_CLASSROOM_TARGET_CLASSROOM_CHANGE = 'MANAGER_ADJUST_BY_CLASSROOM_TARGET_CLASSROOM_CHANGE';
@@ -156,6 +165,8 @@ const OriginClassRoomSearch = (key) => {
 
             let {SchoolID} = getState().LoginUser;
 
+            const ClassRoomID = getState().Manager.AdjustByClassRoom.TargetClassRoom.DropSelectd.value;
+
             dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_OPEN});
 
             dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_LOADING_SHOW});
@@ -164,17 +175,39 @@ const OriginClassRoomSearch = (key) => {
 
                 if (data){
 
-                    let SearchList = data.map(item => {
+                    let SearchList = [];
 
-                        return{
+                    if (ClassRoomID!=='none'){
 
-                            id:item.ClassRoomID,
+                        SearchList = data.map(item => {
 
-                            name:item.ClassRoomName
+                            return{
 
-                        };
+                                id:item.ClassRoomID,
 
-                    });
+                                name:item.ClassRoomName
+
+                            };
+
+                        }).filter(i=>i.id!==ClassRoomID);
+
+                    }else{
+
+                        SearchList = data.map(item => {
+
+                            return{
+
+                                id:item.ClassRoomID,
+
+                                name:item.ClassRoomName
+
+                            };
+
+                        });
+
+                    }
+
+
 
                     dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_LIST_UPDATE,data:SearchList});
 
@@ -218,6 +251,8 @@ const TargetClassRoomSearch = (key) => {
 
             let {SchoolID} = getState().LoginUser;
 
+            const ClassRoomID = getState().Manager.AdjustByClassRoom.OriginClassRoom.DropSelectd.value;
+
             dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_TARGET_SEARCH_OPEN});
 
             dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_TARGET_SEARCH_LOADING_SHOW});
@@ -226,17 +261,37 @@ const TargetClassRoomSearch = (key) => {
 
                 if (data){
 
-                    let SearchList = data.map(item => {
+                    let SearchList = [];
 
-                        return{
+                    if (ClassRoomID!=='none'){
 
-                            id:item.ClassRoomID,
+                        SearchList = data.map(item => {
 
-                            name:item.ClassRoomName
+                            return{
 
-                        };
+                                id:item.ClassRoomID,
 
-                    });
+                                name:item.ClassRoomName
+
+                            };
+
+                        }).filter(i=>i.id!==ClassRoomID);
+
+                    }else{
+
+                        SearchList = data.map(item => {
+
+                            return{
+
+                                id:item.ClassRoomID,
+
+                                name:item.ClassRoomName
+
+                            };
+
+                        });
+
+                    }
 
                     dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_TARGET_SEARCH_LIST_UPDATE,data:SearchList});
 
@@ -1090,6 +1145,10 @@ export default {
     MANAGER_ADJUST_BY_CLASSROOM_CLASSHOUR_LIST_CHANGE,
 
     MANAGER_ADJUST_BY_CLASSROOM_CLASSHOUR_CHECKED_LIST_CHANGE,
+
+    MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_CLASSROOM_LIST_UPDATE,
+
+    MANAGER_ADJUST_BY_CLASSROOM_TARGET_CLASSROOM_LIST_UPDATE,
 
     PageInit,
 

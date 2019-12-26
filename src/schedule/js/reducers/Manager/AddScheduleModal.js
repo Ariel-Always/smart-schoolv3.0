@@ -22,6 +22,10 @@ const AddScheduleModal = (state={
 
     dateDisabled:true,
 
+    classDisabled:true,
+
+    teacherDisabled:true,
+
     classHourDisabled:true,
 
     subjectErrorShow:false,
@@ -91,6 +95,10 @@ const AddScheduleModal = (state={
                 checkedClassRoom:'',
 
                 dateDisabled:true,
+
+                classDisabled:true,
+
+                teacherDisabled:true,
 
                 classHourDisabled:true,
 
@@ -173,6 +181,18 @@ const AddScheduleModal = (state={
         case ASMActions.ADD_SHEDULE_MODAL_SUBJECT_CHANGE:
 
             return {...state,checkedSubject:actions.data};
+
+        case ASMActions.MANAGER_ADD_SCHEDULE_MODAL_CLASS_TEACHER_DROP_ABLED:
+
+            return { ...state,classDisabled:false,teacherDisabled:false};
+
+        case ASMActions.MANAGER_ADD_SCHEDULE_MODAL_CLASS_TEACHER_DROP_CHANGE:
+
+            return { ...state,checkedClass:'',checkedTeacher:''};
+
+        case ASMActions.MANAGER_ADD_SCHEDULE_MODAL_CLASS_TEACHER_LIST_UPDATE:
+
+            return { ...state,...actions.data };
 
         case ASMActions.ADD_SHEDULE_MODAL_CLASS_CHANGE:
 

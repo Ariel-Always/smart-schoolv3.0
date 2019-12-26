@@ -105,8 +105,6 @@ class TeacherPersonalSchedule extends Component{
 
         const { dispatch } = this.props;
 
-
-
         dispatch({type:ATSMActions.TEACHER_ADD_SCHEDULE_MODAL_SHOW});
 
         $('.add-schedule-modal-wrapper .dropdown_list_ul3').hide();

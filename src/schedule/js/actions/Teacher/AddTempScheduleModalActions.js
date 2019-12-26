@@ -106,6 +106,19 @@ const TEACHER_ADD_SCHEDULE_MODAL_TEACHER_SEARCH_OPEN = 'TEACHER_ADD_SCHEDULE_MOD
 const TEACHER_ADD_SCHEDULE_MODAL_TEACHER_SEARCH_CLOSE = 'TEACHER_ADD_SCHEDULE_MODAL_TEACHER_SEARCH_CLOSE';
 
 
+//将班级和教师的下拉置为可选状态
+
+const  TEACHER_ADD_SCHEDULE_MODAL_CLASS_DROP_ABLED = 'TEACHER_ADD_SCHEDULE_MODAL_CLASS_DROP_ABLED';
+
+//将班级和教师下拉置空
+
+const TEACHER_ADD_SCHEDULE_MODAL_CLASS_DROP_CHANGE = 'TEACHER_ADD_SCHEDULE_MODAL_CLASS_DROP_CHANGE';
+
+//将班级和教师的list更换。
+
+const TEACHER_ADD_SCHEDULE_MODAL_CLASS_LIST_UPDATE = 'TEACHER_ADD_SCHEDULE_MODAL_CLASS_LIST_UPDATE';
+
+
 //取消按钮消失与否
 
 const TEACHER_ADD_SCHEDULE_MODAL_CLASS_SEARCH_CANCEL_SHOW = 'TEACHER_ADD_SCHEDULE_MODAL_CLASS_SEARCH_CANCEL_SHOW';
@@ -126,7 +139,7 @@ const InfoInit = () => {
 
     return (dispatch,getState) => {
 
-        let {NowWeekNo} = getState().PeriodWeekTerm;
+        const {WeekNO} = getState().PeriodWeekTerm;
 
         let { SchoolID,SubjectIDs,SubjectNames } = getState().LoginUser;
 
@@ -181,9 +194,13 @@ const InfoInit = () => {
 
                 let subject = [];
 
+                let classList = [];
+
                 let SubjectDropShow = false;
 
                 let SubjectID,SubjectName = '';
+
+                const SubjectList = data.ItemSubject;
 
                 if (SubjectIDList.length>1){
 
@@ -201,6 +218,28 @@ const InfoInit = () => {
 
                     SubjectName = SubjectNameList[0];
 
+                    const SubjectGrades = SubjectList.filter(item=>item.SubjectID===SubjectID)[0].Grades;
+
+                    console.log(SubjectList,SubjectID);
+
+                    const SubjectGradeList = SubjectGrades.split(',');
+
+                    classList = gradeClass.map(item=>{
+
+                        if (SubjectGradeList.findIndex(i=>i===item.id)>=0){
+
+                            return item
+
+                        }else{
+
+                            return;
+
+                        }
+
+                    }).filter(item=>item!==undefined);
+
+                    dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASS_DROP_ABLED});
+
                 }
 
 
@@ -208,17 +247,25 @@ const InfoInit = () => {
                 //组织周次信息
                 let week = data.ItemWeek.map((item) => {
 
-                    let Title = <span>第{item.WeekNO}周 {item.WeekNO === NowWeekNo?<span className="nowWeek">(本周)</span>:''}</span>;
+                    if (item.WeekNO>=WeekNO){
 
-                    return{
+                        let Title = <span>第{item.WeekNO}周 {item.WeekNO === WeekNO?<span className="nowWeek">(本周)</span>:''}</span>;
 
-                        value:item.WeekNO,
+                        return{
 
-                        title:Title
+                            value:item.WeekNO,
+
+                            title:Title
+
+                        }
+
+                    }else{
+
+                        return;
 
                     }
 
-                });
+                }).filter(i=>i!==undefined);
 
                 //组织星期信息
                 let date = [];
@@ -365,7 +412,7 @@ const InfoInit = () => {
 
                 });
 
-                dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_INFO_UPDATE,data:{SubjectDropShow,SubjectName,SubjectID,gradeClass,subject,week,date,classHour,classRoom}});
+                dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_INFO_UPDATE,data:{SubjectList,SubjectDropShow,SubjectName,SubjectID,classList,gradeClass,subject,week,date,classHour,classRoom}});
 
                 dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_LOADING_HIDE});
 
@@ -387,13 +434,15 @@ const classSearch = (key) => {
 
             let {SchoolID} = getState().LoginUser;
 
+            const { classList } = getState().Teacher.AddTempScheduleModal;
+
             dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASS_SEARCH_OPEN});
 
             dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASS_SEARCH_CANCEL_SHOW});
 
             dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASS_SEARCH_LOADING_SHOW});
 
-            ApiActions.GetClassByGradeIDAndKey({SchoolID,Key:key,dispatch}).then(data => {
+           /* ApiActions.GetClassByGradeIDAndKey({SchoolID,Key:key,dispatch}).then(data => {
 
                 if (data){
 
@@ -416,6 +465,16 @@ const classSearch = (key) => {
                 }
 
             });
+*/
+            const classSearchList = classList.map(item=>{
+
+                return item.list.filter(i=>i.name.includes(key));
+
+            }).filter(item=>item.length>0).map(i=>i[0]);
+
+            dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASS_SEARCH_LIST_UPDATE,data:classSearchList});
+
+            dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASS_SEARCH_LOADING_HIDE});
 
         }else{
 
@@ -749,6 +808,12 @@ export default {
     TEACHER_ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_CANCEL_SHOW,
 
     TEACHER_ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_CANCEL_HIDE,
+
+    TEACHER_ADD_SCHEDULE_MODAL_CLASS_DROP_ABLED,
+
+    TEACHER_ADD_SCHEDULE_MODAL_CLASS_DROP_CHANGE,
+
+    TEACHER_ADD_SCHEDULE_MODAL_CLASS_LIST_UPDATE,
 
     InfoInit,
 

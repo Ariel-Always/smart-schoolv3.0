@@ -5,7 +5,7 @@ import CONFIG from '../../../common/js/config';
 const Api = CONFIG.DeskTopProxy;
 
 //获取数据以及封装数据格式
-const getGetData =  async (url,level,api=Api,mode='cors',arr=[401,403]) =>{
+const getGetData =  async (url,level,api=Api,mode='cors',arr=false) =>{
 
     console.log(Api+url);
 
@@ -38,7 +38,7 @@ const getGetData =  async (url,level,api=Api,mode='cors',arr=[401,403]) =>{
     }
 };
 //调用post接口
-const getPostData = async (url,data,level,api=Api,content_type='urlencoded',arr=[401,403]) =>{
+const getPostData = async (url,data,level,api=Api,content_type='urlencoded',arr=false) =>{
 
     try {
         let fetchAsync = '';

@@ -10,6 +10,7 @@ import CONFIG from "../../../../common/js/config";
 
 import dynamicFile from "dynamic-file";
 
+import {getData} from "../../../../common/js/fetch";
 
 const MODULES_INFO_UPDATE = 'MODULES_INFO_UPDATE';
 
@@ -36,31 +37,41 @@ const PageInit = () => {
 
             let host = `http://${window.location.host}/`;
 
-            let PsnMgrLgAssistantAddr = 'http://192.168.129.1:10103';
+            GetMsgWebServerAddress({dispatch}).then(data=>{
 
-            sessionStorage.setItem('PsnMgrToken',token);//用户Token
+                if (data){
 
-            sessionStorage.setItem('PsnMgrMainServerAddr', host); //基础平台IP地址和端口号 形如：http://192.168.129.1:30103/
+                    let PsnMgrLgAssistantAddr = data.WebSvrAddr;
 
-            sessionStorage.setItem('PsnMgrLgAssistantAddr','http://192.168.129.1:10103/');
+                    sessionStorage.setItem('PsnMgrToken',token);//用户Token
 
-            dynamicFile([
+                    sessionStorage.setItem('PsnMgrMainServerAddr', host); //基础平台IP地址和端口号 形如：http://192.168.129.1:30103/
 
-                `${PsnMgrLgAssistantAddr}/PsnMgr/LgAssistant/css/lancoo.cp.assistantInfoCenter.css`,
+                    sessionStorage.setItem('PsnMgrLgAssistantAddr',PsnMgrLgAssistantAddr);
 
-                `${PsnMgrLgAssistantAddr}/PsnMgr/LgAssistant/js/jquery-1.7.2.min.js`
+                    dynamicFile([
 
-            ]).then(()=>{
+                        `${PsnMgrLgAssistantAddr}/PsnMgr/LgAssistant/css/lancoo.cp.assistantInfoCenter.css`,
 
-                dynamicFile([
+                        `${PsnMgrLgAssistantAddr}/PsnMgr/LgAssistant/js/jquery-1.7.2.min.js`
 
-                    `${PsnMgrLgAssistantAddr}/PsnMgr/LgAssistant/assets/jquery.pagination.js`,
+                    ]).then(()=>{
 
-                    `${PsnMgrLgAssistantAddr}/PsnMgr/LgAssistant/js/lancoo.cp.assistantInfoCenter.js`
+                        dynamicFile([
 
-                ])
+                            `${PsnMgrLgAssistantAddr}/PsnMgr/LgAssistant/assets/jquery.pagination.js`,
+
+                            `${PsnMgrLgAssistantAddr}/PsnMgr/LgAssistant/js/lancoo.cp.assistantInfoCenter.js`
+
+                        ])
+
+                    })
+
+                }
 
             })
+
+
 
         }
 
@@ -89,6 +100,22 @@ const getManagerDesk = async ({UserID,dispatch}) => {
 
 };
 
+
+const GetMsgWebServerAddress = async ({dispatch}) => {
+
+    const res = await Method.getGetData('/Base/GetSingleSubsystemServer?SysID=200',1);
+
+    if (res.StatusCode===200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:'消息获取失败！'}));
+
+    }
+
+};
 
 
 export default {
