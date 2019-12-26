@@ -144,51 +144,58 @@ class RegisterExamine extends React.Component {
         );
       }
     }
-    history.listen(() => {
-      //路由监听
-      let pathname = history.location.pathname;
-      // console.log(DataState.GetSignUpLog)
-      if (userMsg.UserType === "0" || userMsg.UserType === "7") {
-        if (pathname.split("/")[2] === "RegisterDidExamine") {
-          this.setState({
-            handleClick: false
-          });
-          dispatch(actions.UpDataState.setSignUpLogCountMsg(0));
+    // history.listen(() => {
+    //   //路由监听
+    //   let pathname = history.location.pathname;
+    //   // console.log(DataState.GetSignUpLog)
+    //   if (userMsg.UserType === "0" || userMsg.UserType === "7") {
+    //     if (pathname.split("/")[2] === "RegisterDidExamine") {
+    //       this.setState({
+    //         handleClick: false
+    //       });
+    //       dispatch(actions.UpDataState.setSignUpLogCountMsg(0));
 
-          // dispatch(
-          //   actions.UpDataState.getDidSignUpLog(
-          //     "/GetSignUpLogToPage?SchoolID=" +
-          //       this.state.userMsg.SchoolID +
-          //       "&PageIndex=0&PageSize=10&status=1"+
-          //       (DataState.GetSignUpLog.Grade.value!==0?'&gradeID='+DataState.GetSignUpLog.Grade.value:'') +
-          //       (DataState.GetSignUpLog.Class.value!==0?'&classID='+DataState.GetSignUpLog.Class.value:'') 
-          //   )
-          // );
-        } else if (pathname.split("/")[2] === "RegisterWillExamine") {
-          this.setState({
-            handleClick: true
-          });
-          // dispatch(
-          //   actions.UpDataState.getWillSignUpLog(
-          //     "/GetSignUpLogToPage?SchoolID=" +
-          //       this.state.userMsg.SchoolID +
-          //       "&PageIndex=0&PageSize=10&status=0"+
-          //       (DataState.GetSignUpLog.Grade.value!==0?'&gradeID='+DataState.GetSignUpLog.Grade.value:'') +
-          //       (DataState.GetSignUpLog.Class.value!==0?'&classID='+DataState.GetSignUpLog.Class.value:'') 
-          //   )
-          // );
-        }
-      }
-    });
+    //       // dispatch(
+    //       //   actions.UpDataState.getDidSignUpLog(
+    //       //     "/GetSignUpLogToPage?SchoolID=" +
+    //       //       this.state.userMsg.SchoolID +
+    //       //       "&PageIndex=0&PageSize=10&status=1"+
+    //       //       (DataState.GetSignUpLog.Grade.value!==0?'&gradeID='+DataState.GetSignUpLog.Grade.value:'') +
+    //       //       (DataState.GetSignUpLog.Class.value!==0?'&classID='+DataState.GetSignUpLog.Class.value:'') 
+    //       //   )
+    //       // );
+    //     } else if (pathname.split("/")[2] === "RegisterWillExamine") {
+    //       this.setState({
+    //         handleClick: true
+    //       });
+    //       // dispatch(
+    //       //   actions.UpDataState.getWillSignUpLog(
+    //       //     "/GetSignUpLogToPage?SchoolID=" +
+    //       //       this.state.userMsg.SchoolID +
+    //       //       "&PageIndex=0&PageSize=10&status=0"+
+    //       //       (DataState.GetSignUpLog.Grade.value!==0?'&gradeID='+DataState.GetSignUpLog.Grade.value:'') +
+    //       //       (DataState.GetSignUpLog.Class.value!==0?'&classID='+DataState.GetSignUpLog.Class.value:'') 
+    //       //   )
+    //       // );
+    //     }
+    //   }
+    // });
   }
   componentWillReceiveProps(nextProps) {
     const { dispatch, DataState } = nextProps;
     let TeacherClass = DataState.GradeClassMsg.TeacherClass;
+    // console.log(this.state.TeacherClass.length === 0 && TeacherClass[0],this.state.TeacherClass.length === 0 , TeacherClass[0])
+
     if (this.state.TeacherClass.length === 0 && TeacherClass[0]) {
+      // console.log('ss')
+      let TeacherClasses = TeacherClass[0]
+      if(DataState.GetSignUpLog.Class.value!==0){
+        TeacherClasses = DataState.GetSignUpLog.Class
+      }
       this.setState({
         TeacherClass: TeacherClass
       });
-      history.listen(() => {
+      // history.listen(() => {
         let userMsg = DataState.LoginUser;
 
         // console.log('11',DataState.GradeClassMsg.TeacherClass)
@@ -243,7 +250,7 @@ class RegisterExamine extends React.Component {
                 "/GetSignUpLogToPage?SchoolID=" +
                   this.state.userMsg.SchoolID +
                   "&PageIndex=0&PageSize=10&status=1&classID=" +
-                  TeacherClass[0].value
+                  TeacherClasses.value
               )
             );
           } else if (pathname.split("/")[2] === "RegisterWillExamine") {
@@ -255,12 +262,12 @@ class RegisterExamine extends React.Component {
                 "/GetSignUpLogToPage?SchoolID=" +
                   this.state.userMsg.SchoolID +
                   "&PageIndex=0&PageSize=10&status=0&classID=" +
-                  TeacherClass[0].value
+                  TeacherClasses.value
               )
             );
           }
         }
-      });
+      // });
     }
   }
 
@@ -286,47 +293,195 @@ class RegisterExamine extends React.Component {
   onExaminedClick = () => {
     const { UIState, DataState, dispatch } = this.props;
     let userMsg = DataState.LoginUser;
-    if (userMsg.UserType === "1" || userMsg.UserClass[2] === "1") {
-      let TeacherClass = DataState.GradeClassMsg.TeacherClass;
+    // if (userMsg.UserType === "1" || userMsg.UserClass[2] === "1") {
+    //   let TeacherClass = DataState.GradeClassMsg.TeacherClass;
 
-      // console.log('11')
-      this.setState({
-        handleClick: false
-      });
-      dispatch(actions.UpDataState.setSignUpLogCountMsg(0));
+    //   // console.log('11')
+    //   this.setState({
+    //     handleClick: false
+    //   });
+    //   dispatch(actions.UpDataState.setSignUpLogCountMsg(0));
 
-      dispatch(
-        actions.UpDataState.getDidSignUpLog(
-          "/GetSignUpLogToPage?SchoolID=" +
-            this.state.userMsg.SchoolID +
-            "&PageIndex=0&PageSize=10&status=1&classID=" +
-            TeacherClass[0].value
-        )
-      );
-    }
+    //   dispatch(
+    //     actions.UpDataState.getDidSignUpLog(
+    //       "/GetSignUpLogToPage?SchoolID=" +
+    //         this.state.userMsg.SchoolID +
+    //         "&PageIndex=0&PageSize=10&status=1&classID=" +
+    //         TeacherClass[0].value
+    //     )
+    //   );
+    // }
     //   this.setState({
     //       handleClick: false
     //   })
+    // let userMsg = DataState.LoginUser;
+    let TeacherClass = DataState.GradeClassMsg.TeacherClass;
+
+        // console.log('11',DataState.GradeClassMsg.TeacherClass)
+        let TeacherClasses = TeacherClass[0]
+        if(DataState.GetSignUpLog.Class.value!==0){
+          TeacherClasses = DataState.GetSignUpLog.Class
+        }
+        //路由监听
+        let pathname = history.location.pathname;
+        // console.log(pathname.split('/')[2])
+        if (userMsg.UserType === "0" || userMsg.UserType === "7") {
+          // if (pathname.split("/")[2] === "RegisterDidExamine") {
+            this.setState({
+              handleClick: false
+            });
+            dispatch(actions.UpDataState.setSignUpLogCountMsg(0));
+
+            // dispatch(
+            //   actions.UpDataState.getDidSignUpLog(
+            //     "/GetSignUpLogToPage?SchoolID=" +
+            //       this.state.userMsg.SchoolID +
+            //       "&PageIndex=0&PageSize=10&status=1"+
+            //       (DataState.GetSignUpLog.Grade.value!==0?'&gradeID='+DataState.GetSignUpLog.Grade.value:'') +
+            //       (DataState.GetSignUpLog.Class.value!==0?'&classID='+DataState.GetSignUpLog.Class.value:'') 
+            //   )
+            // );
+          // } else if (pathname.split("/")[2] === "RegisterWillExamine") {
+          //   this.setState({
+          //     handleClick: true
+          //   });
+          //   dispatch(
+          //     actions.UpDataState.getWillSignUpLog(
+          //       "/GetSignUpLogToPage?SchoolID=" +
+          //         this.state.userMsg.SchoolID +
+          //         "&PageIndex=0&PageSize=10&status=0"+
+          //         (DataState.GetSignUpLog.Grade.value!==0?'&gradeID='+DataState.GetSignUpLog.Grade.value:'') +
+          //         (DataState.GetSignUpLog.Class.value!==0?'&classID='+DataState.GetSignUpLog.Class.value:'') 
+          //     )
+          //   );
+          // }
+        } else if (userMsg.UserType === "1" || userMsg.UserClass[2] === "1") {
+          let TeacherClass = DataState.GradeClassMsg.TeacherClass;
+          if (!(TeacherClass instanceof Array) || !TeacherClass[0]) {
+            return;
+          }
+          // console.log("11");
+          // if (pathname.split("/")[2] === "RegisterDidExamine") {
+            this.setState({
+              handleClick: false
+            });
+            dispatch(actions.UpDataState.setSignUpLogCountMsg(0));
+
+            // dispatch(
+            //   actions.UpDataState.getDidSignUpLog(
+            //     "/GetSignUpLogToPage?SchoolID=" +
+            //       this.state.userMsg.SchoolID +
+            //       "&PageIndex=0&PageSize=10&status=1&classID=" +
+            //       TeacherClasses.value
+            //   )
+            // );
+          // } else if (pathname.split("/")[2] === "RegisterWillExamine") {
+          //   this.setState({
+          //     handleClick: true
+          //   });
+          //   dispatch(
+          //     actions.UpDataState.getWillSignUpLog(
+          //       "/GetSignUpLogToPage?SchoolID=" +
+          //         this.state.userMsg.SchoolID +
+          //         "&PageIndex=0&PageSize=10&status=0&classID=" +
+          //         TeacherClasses.value
+          //     )
+          //   );
+          // }
+        }
   };
   onExaminingClick = () => {
     const { UIState, DataState, dispatch } = this.props;
     let userMsg = DataState.LoginUser;
-    if (userMsg.UserType === "1" || userMsg.UserClass[2] === "1") {
+    // if (userMsg.UserType === "1" || userMsg.UserClass[2] === "1") {
+    //   let TeacherClass = DataState.GradeClassMsg.TeacherClass;
+
+    //   // console.log('11')
+
+    //   this.setState({
+    //     handleClick: true
+    //   });
+    //   dispatch(
+    //     actions.UpDataState.getWillSignUpLog(
+    //       "/GetSignUpLogToPage?SchoolID=" +
+    //         this.state.userMsg.SchoolID +
+    //         "&PageIndex=0&PageSize=10&status=0&classID=" +
+    //         TeacherClass[0].value
+    //     )
+    //   );
+    // }
+    let TeacherClass = DataState.GradeClassMsg.TeacherClass;
+
+    let TeacherClasses = TeacherClass[0]
+    if(DataState.GetSignUpLog.Class.value!==0){
+      TeacherClasses = DataState.GetSignUpLog.Class
+    }
+    //路由监听
+    let pathname = history.location.pathname;
+    // console.log(pathname.split('/')[2])
+    if (userMsg.UserType === "0" || userMsg.UserType === "7") {
+      // if (pathname.split("/")[2] === "RegisterDidExamine") {
+      //   this.setState({
+      //     handleClick: false
+      //   });
+      //   dispatch(actions.UpDataState.setSignUpLogCountMsg(0));
+
+      //   dispatch(
+      //     actions.UpDataState.getDidSignUpLog(
+      //       "/GetSignUpLogToPage?SchoolID=" +
+      //         this.state.userMsg.SchoolID +
+      //         "&PageIndex=0&PageSize=10&status=1"+
+      //         (DataState.GetSignUpLog.Grade.value!==0?'&gradeID='+DataState.GetSignUpLog.Grade.value:'') +
+      //         (DataState.GetSignUpLog.Class.value!==0?'&classID='+DataState.GetSignUpLog.Class.value:'') 
+      //     )
+      //   );
+      // } else if (pathname.split("/")[2] === "RegisterWillExamine") {
+        this.setState({
+          handleClick: true
+        });
+        // dispatch(
+        //   actions.UpDataState.getWillSignUpLog(
+        //     "/GetSignUpLogToPage?SchoolID=" +
+        //       this.state.userMsg.SchoolID +
+        //       "&PageIndex=0&PageSize=10&status=0"+
+        //       (DataState.GetSignUpLog.Grade.value!==0?'&gradeID='+DataState.GetSignUpLog.Grade.value:'') +
+        //       (DataState.GetSignUpLog.Class.value!==0?'&classID='+DataState.GetSignUpLog.Class.value:'') 
+        //   )
+        // );
+      // }
+    } else if (userMsg.UserType === "1" || userMsg.UserClass[2] === "1") {
       let TeacherClass = DataState.GradeClassMsg.TeacherClass;
+      if (!(TeacherClass instanceof Array) || !TeacherClass[0]) {
+        return;
+      }
+      // console.log("11");
+      // if (pathname.split("/")[2] === "RegisterDidExamine") {
+      //   this.setState({
+      //     handleClick: false
+      //   });
+      //   dispatch(actions.UpDataState.setSignUpLogCountMsg(0));
 
-      // console.log('11')
-
-      this.setState({
-        handleClick: true
-      });
-      dispatch(
-        actions.UpDataState.getWillSignUpLog(
-          "/GetSignUpLogToPage?SchoolID=" +
-            this.state.userMsg.SchoolID +
-            "&PageIndex=0&PageSize=10&status=0&classID=" +
-            TeacherClass[0].value
-        )
-      );
+      //   dispatch(
+      //     actions.UpDataState.getDidSignUpLog(
+      //       "/GetSignUpLogToPage?SchoolID=" +
+      //         this.state.userMsg.SchoolID +
+      //         "&PageIndex=0&PageSize=10&status=1&classID=" +
+      //         TeacherClasses.value
+      //     )
+      //   );
+      // } else if (pathname.split("/")[2] === "RegisterWillExamine") {
+        this.setState({
+          handleClick: true
+        });
+        // dispatch(
+        //   actions.UpDataState.getWillSignUpLog(
+        //     "/GetSignUpLogToPage?SchoolID=" +
+        //       this.state.userMsg.SchoolID +
+        //       "&PageIndex=0&PageSize=10&status=0&classID=" +
+        //       TeacherClasses.value
+        //   )
+        // );
+      // }
     }
   };
 

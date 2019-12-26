@@ -247,9 +247,14 @@ class RegisterDidExamine extends React.Component {
       } else {
         this.StudentDropMenuSecond(DataState.GetSignUpLog.Class);
       }
-    } else if (userMsg.UserType === "1" && userMsg.UserClass[2] === "1") {
+    } else if(userMsg.UserType === "1" && userMsg.UserClass[2] === "1"){
       isWho = "2";
-      this.TeacherDropMenuSecond(DataState.GetSignUpLog.Class);
+
+     if(  DataState.GetSignUpLog.Class.value!==0
+     ){
+ 
+       this.TeacherDropMenuSecond(DataState.GetSignUpLog.Class);
+     }
     }
     this.setState({
       isWho: isWho
@@ -309,14 +314,18 @@ class RegisterDidExamine extends React.Component {
   componentWillReceiveProps(nextProps) {
     const { dispatch, DataState } = nextProps;
     let TeacherClass = DataState.GradeClassMsg.TeacherClass;
-    if (
+    let userMsg = DataState.LoginUser;
+
+    if (userMsg.UserType === "1" && userMsg.UserClass[2] === "1"&&
       Object.keys(this.state.TeacherClassSelect).length === 0 &&
-      TeacherClass[0]
+      TeacherClass[0]&&DataState.GetSignUpLog.Class.value===0
     ) {
-      this.setState({
-        TeacherClassSelect: TeacherClass[0],
-        secondParam: "&classID=" + TeacherClass[0].value
-      });
+      this.TeacherDropMenuSecond(TeacherClass[0]);
+
+      // this.setState({
+      //   TeacherClassSelect: TeacherClass[0],
+      //   secondParam: "&classID=" + TeacherClass[0].value
+      // });
     }
     // if(DataState.GetSignUpLog.Grade.value!==this.state.firstSelect.value||DataState.GetSignUpLog.Class.value!==this.state.secondSelect.value){
 
@@ -482,6 +491,10 @@ class RegisterDidExamine extends React.Component {
       keyword: "",
       CancelBtnShow: "n",
       searchValue: ""
+    });
+    dispatch({
+      type: actions.UpDataState.SET_REGISTER_GRADE_CLASS_MSG,
+      data: { Class: e }
     });
     if (e.value === 0) {
       this.setState({

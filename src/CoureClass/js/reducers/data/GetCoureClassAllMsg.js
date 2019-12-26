@@ -114,10 +114,10 @@ function handleData(data, func,Subject,Grade) {
   } else if (handleRoute !== "Search") {
     Subject = routeID;
   }
-  // else if (handleRoute === "Search"){
-  //   routeID = Subject;
-  //   classID = Grade;
-  // }
+  else if (handleRoute === "Search"&&!Subject&&!Grade){
+    AllActive = true;
+    AllSelect = true;
+  }
   if (classID) {
     Grade = classID;
   }

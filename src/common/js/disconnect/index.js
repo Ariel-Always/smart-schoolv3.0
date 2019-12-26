@@ -9,11 +9,13 @@ export function TokenCheck(IsDesk = false, SysID = "000") {
 
   let url_token = getQueryVariable("lg_tk"); //lg_tk为链接上带的token
 
+  let local_token = localStorage.getItem("token");
+
   let preUrl = encodeURIComponent(Public.getLg_tk(window.location.href));
 
   let url = window.location.href;
 
-  if (!session_token && !url_token) {
+  if (!session_token && !url_token && !local_token) {
     //没有token,跳转至掉线界面
 
     //根据是否传参来判断是否是桌面方调用
@@ -35,7 +37,7 @@ export function TokenCheck(IsDesk = false, SysID = "000") {
   } else {
     //有token，对token进行验证
 
-    let token = session_token || url_token;
+    let token = session_token || url_token || local_token;
 
     //回调函数
     let jsoncallback = json => {
@@ -117,15 +119,16 @@ export function TokenCheck(IsDesk = false, SysID = "000") {
           let jsoncallback = json => {
             ////  console.log(json + 1);
           };
-          if (token !== url_token) {
+          if (token !== session_token) {
             //如果第一个验证失败，判断是否用的是session的token，不是就进行url的token验证
             //jsonp验证token
-
+            let token_2 = url_token || local_token
+           
             $.ajax({
               url:
                 config.TokenProxy +
                 "/UserMgr/Login/Api/Login.ashx?token=" +
-                url_token +
+                token_2 +
                 "&method=tokenCheck&params=" +
                 SysID,
               type: "GET",
@@ -141,8 +144,8 @@ export function TokenCheck(IsDesk = false, SysID = "000") {
                   //result为true
                   // if (url.split('html/')[1]) {//有就说明不在登录页
 
-                  sessionStorage.setItem("token", url_token);
-                  localStorage.setItem("token", url_token);
+                  sessionStorage.setItem("token", token_2);
+                  localStorage.setItem("token", token_2);
                   if (!sessionStorage.getItem("UserInfo")) {
                     getUserInfo(token, "000");
                   }
@@ -179,24 +182,110 @@ export function TokenCheck(IsDesk = false, SysID = "000") {
                 } else {
                   //验证不成功
                   // if (url.split('html/')[1]) {//有就说明不在登录页
+                  if (token !== url_token) {
+                    //如果第一个验证失败，判断是否用的是session的token，不是就进行url的token验证
+                    //jsonp验证token
+                    let token_3 = local_token
+                   
+                    $.ajax({
+                      url:
+                        config.TokenProxy +
+                        "/UserMgr/Login/Api/Login.ashx?token=" +
+                        token_3 +
+                        "&method=tokenCheck&params=" +
+                        SysID,
+                      type: "GET",
+                      dataType: "jsonp",
+                      jsonp: "jsoncallback", //这里的值需要和回调函数名一样
+                      success: function(data) {
+                        //验证成功，则
+        
+                        let json = data;
+                        // if (!sessionStorage.getItem('UserInfo'))
+        
+                        if (json.data.result) {
+                          //result为true
+                          // if (url.split('html/')[1]) {//有就说明不在登录页
+        
+                          sessionStorage.setItem("token", token_3);
+                          localStorage.setItem("token", token_3);
+                          if (!sessionStorage.getItem("UserInfo")) {
+                            getUserInfo(token, "000");
+                          }
+        
+                          setTimeout(function() {
+                            let lastTime = sessionStorage.getItem("lastTime");
+                            let date = new Date();
+                            let time = date.getTime();
+                            if (time - lastTime >= 60000) {
+                              sessionStorage.setItem("lastTime", time);
+                              TokenCheck(IsDesk);
+                            }
+                          }, 60000);
+                          if (url.includes("html/admDisconnect")) {
+                            //本身在掉线界面
+        
+                            if (getQueryVariable("lg_preurl")) {
+                              //查询是否有lg_preurl,有则跳至该地址，没有则跳至桌面
+        
+                              window.location.href = decodeURIComponent(
+                                url.split("lg_preurl=")[1]
+                              );
+                            } else {
+                              window.location.href = "/";
+                            }
+                          } else {
+                            return;
+                          }
+                          // } else if (!getQueryVariable('lg_preurl')) {//查询是否有lg_preurl,有则跳至该地址，没有则跳至桌面
+                          //     window.location.href = getQueryVariable('lg_preurl');
+                          // } else {
+                          //     window.location.href = config.BasicProxy;
+                          // }
+                        } else {
+                          //验证不成功
+                          // if (url.split('html/')[1]) {//有就说明不在登录页
+        
+                          sessionStorage.clear();
+        
+                          if (!url.includes("html/admDisconnect")) {
+                            if (IsDesk) {
+                              window.location.href = "/UserMgr/Login/Login.aspx";
+                            } else {
+                              window.location.href =
+                                "/html/admDisconnect?lg_preurl=" +
+                                encodeURIComponent(Public.getLg_tk(url));
+                            }
+        
+                            // } else {
+                            //     return;
+                            // }
+                          } else {
+                            return;
+                          }
+                        }
+                      }
+                    });
+                  }else{
+                    sessionStorage.clear();
 
-                  sessionStorage.clear();
-
-                  if (!url.includes("html/admDisconnect")) {
-                    if (IsDesk) {
-                      window.location.href = "/UserMgr/Login/Login.aspx";
+                    if (!url.includes("html/admDisconnect")) {
+                      if (IsDesk) {
+                        window.location.href = "/UserMgr/Login/Login.aspx";
+                      } else {
+                        window.location.href =
+                          "/html/admDisconnect?lg_preurl=" +
+                          encodeURIComponent(Public.getLg_tk(url));
+                      }
+  
+                      // } else {
+                      //     return;
+                      // }
                     } else {
-                      window.location.href =
-                        "/html/admDisconnect?lg_preurl=" +
-                        encodeURIComponent(Public.getLg_tk(url));
+                      return;
                     }
-
-                    // } else {
-                    //     return;
-                    // }
-                  } else {
-                    return;
                   }
+                 
                 }
               }
             });

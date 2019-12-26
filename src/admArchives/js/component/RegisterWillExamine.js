@@ -218,7 +218,7 @@ class RegisterWillExamine extends React.Component {
       alertQueryTitle: "查询提示~",
       firstSelect: { value: 0, title: "全部年级" },
       secondSelect: { value: 0, title: "全部班级" },
-      TeacherClassSelect: {},
+      TeacherClassSelect: { },
       firstParam: "",
       secondParam: "",
       handleUserMsg: [],
@@ -264,9 +264,15 @@ class RegisterWillExamine extends React.Component {
       } else {
         this.StudentDropMenuSecond(DataState.GetSignUpLog.Class);
       }
-    } else if (userMsg.UserType === "1" && userMsg.UserClass[2] === "1") {
+    }  else if(userMsg.UserType === "1" && userMsg.UserClass[2] === "1"){
       isWho = "2";
-      this.TeacherDropMenuSecond(DataState.GetSignUpLog.Class);
+// console.log(DataState.GetSignUpLog.Class)
+     if(  DataState.GetSignUpLog.Class.value!==0
+     ){
+
+
+       this.TeacherDropMenuSecond(DataState.GetSignUpLog.Class);
+     }
     }
     this.setState({
       isWho: isWho
@@ -314,14 +320,18 @@ class RegisterWillExamine extends React.Component {
   componentWillReceiveProps(nextProps) {
     const { dispatch, DataState } = nextProps;
     let TeacherClass = DataState.GradeClassMsg.TeacherClass;
-    if (
+    console.log(TeacherClass,this.state.TeacherClassSelect)
+    let userMsg = DataState.LoginUser;
+    if (userMsg.UserType === "1" && userMsg.UserClass[2] === "1"&&
       Object.keys(this.state.TeacherClassSelect).length === 0 &&
-      TeacherClass[0]
+      TeacherClass[0]&&DataState.GetSignUpLog.Class.value===0
     ) {
-      this.setState({
-        TeacherClassSelect: TeacherClass[0],
-        secondParam: "&classID=" + TeacherClass[0].value
-      });
+      // console.log(TeacherClass,this.state.TeacherClassSelect)
+      this.TeacherDropMenuSecond(TeacherClass[0]);
+      // this.setState({
+      //   TeacherClassSelect: TeacherClass[0],
+      //   secondParam: "&classID=" + TeacherClass[0].value
+      // });
     }
     // if(DataState.GetSignUpLog.Grade.value!==this.state.firstSelect.value||DataState.GetSignUpLog.Class.value!==this.state.secondSelect.value){
 
@@ -474,6 +484,10 @@ class RegisterWillExamine extends React.Component {
       keyword: "",
       CancelBtnShow: "n",
       searchValue: ""
+    });
+    dispatch({
+      type: actions.UpDataState.SET_REGISTER_GRADE_CLASS_MSG,
+      data: { Class: e }
     });
     if (e.value === 0) {
       this.setState({
@@ -1001,22 +1015,7 @@ class RegisterWillExamine extends React.Component {
   render() {
     const { UIState, DataState } = this.props;
     let TeacherClass = DataState.GradeClassMsg.TeacherClass;
-    const data = {
-      userName: "康欣",
-      userImg:
-        "http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg",
-      Gende: "男",
-      userText: "学如逆水行舟，不进则退",
-      userID: "20170025444",
-      userGrade: "一年级",
-      userClass: "1班",
-      userIDCard: "",
-      userPhone: "15626248624",
-      userMail: "1519406168@qq.com",
-      userAddress: "蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团",
-      userRegisterTime: "2019-01-01 12:24",
-      userRegisterIP: "190.163.252.198"
-    };
+    console.log(TeacherClass,this.state.TeacherClassSelect)
     return (
       <React.Fragment>
         <div className="main-select">
