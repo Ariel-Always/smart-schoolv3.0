@@ -36,6 +36,9 @@ class Card extends React.Component {
   }
   // 点击跳转
   onLinkClick = data => {
+    if(data.type==='database'){
+      return
+    }
     let Url = data.Url;
     window.open(Url);
   };

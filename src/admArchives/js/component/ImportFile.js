@@ -172,7 +172,7 @@ console.log(this.state.Route)
                         </Loading> */}
                         <div className={'content-box'} style={{borderRadius:this.state.Route==='graduate'?'12px 12px 12px 12px':'0 12px 12px 12px'}}>
                             {
-                                this.state.select==='file'?<ImportExcel  ImportTarget={this.state.Route}></ImportExcel>:<ImportPhoto ImportTarget={this.state.Route}></ImportPhoto>
+                                this.state.select==='file'?<ImportExcel  ImportTarget={this.state.Route}></ImportExcel>:<ImportPhoto ImportTarget={this.state.Route==='Leader'?'SchoolLeader':this.state.Route}></ImportPhoto>
                             }
                         </div>
 
