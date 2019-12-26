@@ -8,7 +8,7 @@ class Banner extends Component{
         return (
                <React.Fragment>
 
-                   <Button size="small" color="blue" className="import-admteacher"  shape="round" onClick={()=>Import(2)}>导入班主任班长</Button>
+                   <Button size="small" color="blue" className="import-admteacher"  shape="round" onClick={()=>Import(2)}>导入班主任及班长</Button>
 
                    <Button size="small" color="blue"  className="import-teacher"   shape="round" onClick={()=>Import(1)}>导入任课教师</Button>
 

@@ -8,16 +8,49 @@ import ATSMActions from '../../actions/Teacher/AddTempScheduleModalActions'
 
 import { Tooltip } from 'antd';
 
+
+
 class AddTempScheduleModal extends Component{
 
     //学科选项改变
     subjectChange(e){
 
-       const {dispatch} = this.props;
+       const {dispatch,AddTempScheduleModal} = this.props;
 
        dispatch({type:ATSMActions.TEACHER_ADD_SCHEDULE_MODAL_SUBJECT_CHANGE,data:e});
 
        dispatch({type:ATSMActions.TEACHER_ADD_SCHEDULE_MODAL_SUBJECT_ERROR_HIDE});
+
+        const { SubjectList,gradeClass,teachers,classDisabled,teacherDisabled,checkedClass,checkedTeacher } = AddTempScheduleModal;
+
+        if (classDisabled){
+
+            dispatch({type: ATSMActions.TEACHER_ADD_SCHEDULE_MODAL_CLASS_DROP_ABLED});
+
+        }
+
+        const SubjectGrades = SubjectList.find(item=>item.SubjectID===e.value).Grades;
+
+        const SubjectGradeList = SubjectGrades.split(',');
+
+        const classList = gradeClass.map(item=>{
+
+            if (SubjectGradeList.findIndex(i=>i===item.id)>=0){
+
+                return item
+
+            }else{
+
+                return;
+
+            }
+
+        }).filter(item=>item!==undefined);
+
+        dispatch({type:ATSMActions.TEACHER_ADD_SCHEDULE_MODAL_CLASS_LIST_UPDATE,data:classList});
+
+        dispatch({type: ATSMActions.TEACHER_ADD_SCHEDULE_MODAL_CLASS_CHANGE,data:''});
+
 
     }
 
@@ -284,9 +317,9 @@ class AddTempScheduleModal extends Component{
 
                                 <td className="props">学科:</td>
 
-                                <td>
+                                <td style={{position:'relative',zIndex:4}}>
 
-                                    <Tooltip title="请选择学科" visible={AddTempScheduleModal.subjectErrorShow} placement="right">
+                                    <Tooltip title="请选择学科" getPopupContainer={trigger=>trigger.parentNode} visible={AddTempScheduleModal.subjectErrorShow} placement="right">
 
                                         {
 
@@ -320,18 +353,18 @@ class AddTempScheduleModal extends Component{
 
                                 <td className="props">上课班级:</td>
 
-                                <td>
+                                <td style={{position:'relative',zIndex:3}}>
 
-                                    <Tooltip title="请选择班级" visible={AddTempScheduleModal.classErrorShow} placement="right">
+                                    <Tooltip title="请选择班级" getPopupContainer={trigger=>trigger.parentNode} visible={AddTempScheduleModal.classErrorShow} placement="right">
 
                                         <DropDown
                                         width={150}
                                         type="multiple"
                                         dropSelectd={AddTempScheduleModal.checkedClass?AddTempScheduleModal.checkedClass:{value:"none",title:"请选择班级"}}
-
+                                        disabled={AddTempScheduleModal.classDisabled}
                                         mutipleOptions={{
                                             range:2,
-                                            dropMultipleList:AddTempScheduleModal.gradeClass,
+                                            dropMultipleList:AddTempScheduleModal.classList,
                                             dropMultipleChange:this.classChange.bind(this),
                                             dropClickSearch:this.classSearchClick.bind(this),
                                             dropCancelSearch:this.classSearchClose.bind(this),
@@ -367,14 +400,15 @@ class AddTempScheduleModal extends Component{
 
                                 <td className="props">上课时间:</td>
 
-                                <td>
+                                <td style={{position:'relative',zIndex:2}}>
 
-                                    <Tooltip title="请选择周次" visible={AddTempScheduleModal.weekErrorShow} placement="right">
+                                    <Tooltip title="请选择周次" getPopupContainer={trigger=>trigger.parentNode} visible={AddTempScheduleModal.weekErrorShow} placement="right">
 
                                         <DropDown
                                         width={150}
                                         style={{zIndex:7}}
-                                        height={108}
+                                        TitleShow={false}
+                                        height={200}
                                         className="week"
                                         dropSelectd={AddTempScheduleModal.checkedWeek?AddTempScheduleModal.checkedWeek:{value:"none",title:"请选择周次"}}
                                         dropList={AddTempScheduleModal.week}
@@ -384,12 +418,12 @@ class AddTempScheduleModal extends Component{
 
                                     </Tooltip>
 
-                                    <Tooltip title="请选择星期" visible={AddTempScheduleModal.dateErrorShow} placement="right">
+                                    <Tooltip title="请选择星期" getPopupContainer={trigger=>trigger.parentNode} visible={AddTempScheduleModal.dateErrorShow} placement="right">
 
                                         <DropDown
                                         width={150}
                                         style={{zIndex:7}}
-                                        height={108}
+                                        height={200}
                                         className="date"
                                         disabled={AddTempScheduleModal.dateDisabled}
                                         dropSelectd={AddTempScheduleModal.checkedDate?AddTempScheduleModal.checkedDate:{value:"none",title:"请选择星期"}}
@@ -400,12 +434,13 @@ class AddTempScheduleModal extends Component{
 
                                     </Tooltip>
 
-                                    <Tooltip title="请选择课时" visible={AddTempScheduleModal.classHourErrorShow} placement="right">
+                                    <Tooltip title="请选择课时" getPopupContainer={trigger=>trigger.parentNode} visible={AddTempScheduleModal.classHourErrorShow} placement="right">
 
                                         <DropDown
                                         width={150}
                                         style={{zIndex:7}}
                                         height={108}
+                                        TitleShow={false}
                                         className="classHour"
                                         disabled={AddTempScheduleModal.classHourDisabled}
                                         dropSelectd={AddTempScheduleModal.checkedClassHour?AddTempScheduleModal.checkedClassHour:{value:"none",title:"请选择课时"}}
@@ -424,9 +459,9 @@ class AddTempScheduleModal extends Component{
 
                                 <td className="props">上课教室:</td>
 
-                                <td>
+                                <td style={{position:'relative',zIndex:1}}>
 
-                                    <Tooltip title="请选择教室" visible={AddTempScheduleModal.classRoomErrorShow} placement="right">
+                                    <Tooltip title="请选择教室" getPopupContainer={trigger=>trigger.parentNode} visible={AddTempScheduleModal.classRoomErrorShow} placement="right">
 
                                         <DropDown
                                         width={470}

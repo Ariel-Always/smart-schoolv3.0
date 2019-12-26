@@ -41,43 +41,47 @@ class Import extends Component{
         const FileName = this.Input.value;
 
         const FileType = FileName.substring(FileName.lastIndexOf('.')).toLowerCase();
-        
-        if(FileType==='.rar'||FileType==='.7z'||FileType==='.zip'){
 
-            //是rar,zip,7z的类型
+        if (File){
 
-            if (File.size!==0){
+            if(FileType==='.rar'||FileType==='.7z'||FileType==='.zip'){
 
-                //查看是否含有虚假路径
-                if(FileName.includes('C:\\fakepath\\')){
+                //是rar,zip,7z的类型
 
-                    this.setState({UpLoadFileName:File.name,UpLoadFile:File});
+                if (File.size!==0){
+
+                    //查看是否含有虚假路径
+                    if(FileName.includes('C:\\fakepath\\')){
+
+                        this.setState({UpLoadFileName:File.name,UpLoadFile:File});
+
+                    }else{
+
+                        this.setState({UpLoadFileName:FileName,UpLoadFile:File});
+
+                    }
 
                 }else{
 
-                    this.setState({UpLoadFileName:FileName.name,UpLoadFile:File});
+                    utils.AlertWarn({that:this,title:"文件大小不能为0，请重新选择文件！"});
+
+                    this.setState({UpLoadFileName:'请选择文件...',UpLoadFile:''});
+
+                    this.Input.value = '';
 
                 }
 
             }else{
 
-                utils.AlertWarn({that:this,title:"文件大小不能为0，请重新选择文件！"});
+                //弹出警告窗
+
+                utils.AlertWarn({that:this,title:"请上传后缀名为zip、7z或rar文件!"});
 
                 this.setState({UpLoadFileName:'请选择文件...',UpLoadFile:''});
 
                 this.Input.value = '';
 
             }
-
-        }else{
-
-            //弹出警告窗
-
-            utils.AlertWarn({that:this,title:"请上传后缀名为zip、7z或rar文件!"});
-
-            this.setState({UpLoadFileName:'请选择文件...',UpLoadFile:''});
-
-            this.Input.value = '';
 
         }
 

@@ -20,7 +20,9 @@ const AdjustByClassRoom = (state={
 
       SearchOpen:false,
 
-      SearchLoadingShow:true
+      SearchLoadingShow:true,
+
+      ClassRoomList:[]
 
     },
 
@@ -32,7 +34,9 @@ const AdjustByClassRoom = (state={
 
         SearchOpen:false,
 
-        SearchLoadingShow:true
+        SearchLoadingShow:true,
+
+        ClassRoomList:[]
 
     },
 
@@ -118,6 +122,8 @@ const AdjustByClassRoom = (state={
 
                     SearchList:[],
 
+                    ClassRoomList:[],
+
                     SearchOpen:false,
 
                     SearchLoadingShow:true
@@ -129,6 +135,8 @@ const AdjustByClassRoom = (state={
                     DropSelectd:{value:"none",title:"请选择教室"},
 
                     SearchList:[],
+
+                    ClassRoomList:[],
 
                     SearchOpen:false,
 
@@ -214,9 +222,35 @@ const AdjustByClassRoom = (state={
 
                 ...state,
 
-                ClassRoomList:actions.data
+                ClassRoomList:actions.data,
+
+                OriginClassRoom:{
+
+                    ...state.OriginClassRoom,
+
+                    ClassRoomList:actions.data
+
+                },
+
+                TargetClassRoom:{
+
+                    ...state.TargetClassRoom,
+
+                    ClassRoomList:actions.data
+
+                }
 
             };
+
+        case ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_CLASSROOM_LIST_UPDATE:
+
+            return {
+
+                ...state,
+
+                OriginClassRoom:{...state.OriginClassRoom,ClassRoomList:actions.data}
+
+            }
 
         case ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_CLASSROOM_CHANGE:
 
@@ -244,6 +278,16 @@ const AdjustByClassRoom = (state={
 
 
 
+
+        case ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_TARGET_CLASSROOM_LIST_UPDATE:
+
+            return {
+
+                ...state,
+
+                TargetClassRoom:{...state.TargetClassRoom,ClassRoomList:actions.data}
+
+            }
 
         case ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_TARGET_CLASSROOM_CHANGE:
 

@@ -11,15 +11,67 @@ import { Tooltip } from 'antd';
 class AddScheduleModal extends Component{
 
     //学科选项改变
-    subjectChange(e){
+    subjectChange(e) {
 
-       const {dispatch} = this.props;
+        const {dispatch, AddScheduleModal} = this.props;
 
-       dispatch({type:ASMActions.ADD_SHEDULE_MODAL_SUBJECT_CHANGE,data:e});
+        dispatch({type: ASMActions.ADD_SHEDULE_MODAL_SUBJECT_CHANGE, data: e});
 
-       dispatch({type:ASMActions.ADD_SCHEDULE_MODAL_SUBJECT_ERROR_HIDE});
+        dispatch({type: ASMActions.ADD_SCHEDULE_MODAL_SUBJECT_ERROR_HIDE});
+
+        const { subject,gradeClass,teachers,classDisabled,teacherDisabled,checkedClass,checkedTeacher } = AddScheduleModal;
+
+        if (classDisabled||teacherDisabled){
+
+            dispatch({type: ASMActions.MANAGER_ADD_SCHEDULE_MODAL_CLASS_TEACHER_DROP_ABLED});
+
+        }
+
+        const SubjectGrades = subject.find(item=>item.value===e.value).Grades;
+
+        const SubjectGradeList = SubjectGrades.split(',');
+
+        const classList = gradeClass.map(item=>{
+
+            if (SubjectGradeList.findIndex(i=>i===item.id)>=0){
+
+                return item
+
+            }else{
+
+                return;
+
+            }
+
+        }).filter(item=>item!==undefined);
+
+        const teacherList = teachers.map(item=>{
+
+            if (item.SubjectID===e.value){
+
+                return {
+
+                    value:item.TeacherID,
+
+                    title:<span className="teacher-id-name" title={`${item.TeacherName}[${item.TeacherID}]`}><span className="teacher-name">{item.TeacherName}</span><span className="teacher-id">[{item.TeacherID}]</span></span>
+
+                }
+
+            }else{
+
+                return;
+
+            }
+
+        }).filter(i=>i!==undefined);
+
+        dispatch({type:ASMActions.MANAGER_ADD_SCHEDULE_MODAL_CLASS_TEACHER_LIST_UPDATE,data:{teacherList,classList}});
+
+        dispatch({type: ASMActions.MANAGER_ADD_SCHEDULE_MODAL_CLASS_TEACHER_DROP_CHANGE});
 
     }
+
+
 
     //班级选项改变
     classChange(e){
@@ -37,7 +89,7 @@ class AddScheduleModal extends Component{
 
         const {dispatch} = this.props;
 
-        dispatch({type:ASMActions.ADD_SHEDULE_MODAL_TEACHER_CHANGE,data:{title:e.value,value:e.id}});
+        dispatch({type:ASMActions.ADD_SHEDULE_MODAL_TEACHER_CHANGE,data:e});
 
         dispatch({type:ASMActions.ADD_SCHEDULE_MODAL_TEACHER_ERROR_HIDE});
 
@@ -261,9 +313,9 @@ class AddScheduleModal extends Component{
 
                                 <td className="props">学科:</td>
 
-                                <td>
+                                <td style={{position:"relative",zIndex:5}}>
 
-                                    <Tooltip title="请选择学科" visible={AddScheduleModal.subjectErrorShow} placement="right">
+                                    <Tooltip title="请选择学科" getPopupContainer={trigger =>trigger.parentNode} visible={AddScheduleModal.subjectErrorShow} placement="right">
 
                                         <DropDown
                                             width={150}
@@ -285,18 +337,21 @@ class AddScheduleModal extends Component{
 
                                 <td className="props">上课班级:</td>
 
-                                <td>
+                                <td style={{position:"relative",zIndex:4}}>
 
-                                    <Tooltip title="请选择班级" visible={AddScheduleModal.classErrorShow} placement="right">
+                                    <Tooltip title="请选择班级" getPopupContainer={trigger =>trigger.parentNode} visible={AddScheduleModal.classErrorShow} placement="right">
 
                                         <DropDown
                                         width={150}
                                         type="multiple"
+
+                                        disabled={AddScheduleModal.classDisabled}
+
                                         dropSelectd={AddScheduleModal.checkedClass?AddScheduleModal.checkedClass:{value:"none",title:"请选择班级"}}
 
                                         mutipleOptions={{
                                             range:2,
-                                            dropMultipleList:AddScheduleModal.gradeClass,
+                                            dropMultipleList:AddScheduleModal.classList,
                                             dropMultipleChange:this.classChange.bind(this),
                                             dropClickSearch:this.classSearchClick.bind(this),
                                             dropCancelSearch:this.classSearchClose.bind(this),
@@ -320,26 +375,19 @@ class AddScheduleModal extends Component{
 
                                 <td className="props">上课老师:</td>
 
-                                <td>
+                                <td style={{position:"relative",zIndex:3}}>
 
-                                    <Tooltip title="请选择教师" visible={AddScheduleModal.teacherErrorShow} placement="right">
+                                    <Tooltip title="请选择教师" getPopupContainer={trigger =>trigger.parentNode} visible={AddScheduleModal.teacherErrorShow} placement="right">
 
                                         <DropDown
                                         width={150}
-                                        type="multiple"
+                                        type="simple"
+                                        TitleShow={false}
+                                        disabled={AddScheduleModal.teacherDisabled}
                                         dropSelectd={AddScheduleModal.checkedTeacher?AddScheduleModal.checkedTeacher:{value:"none",title:"请选择老师"}}
-                                        mutipleOptions={{
-                                            range:2,
-                                            dropMultipleList:AddScheduleModal.teachers,
-                                            dropMultipleChange:this.teacherChange.bind(this),
-                                            dropClickSearch:this.teacherSearchClick.bind(this),
-                                            searchList:AddScheduleModal.teacherSearchList,
-                                            dropCancelSearch:this.teacherSearchClose.bind(this),
-                                            searchOpen:AddScheduleModal.teacherSearchOpen,
-                                            searchPlaceholder:"请输入教师工号或者教师姓名进行搜索...",
-                                            searchLoadingShow:AddScheduleModal.teacherSearchLoadingShow,
-                                            CancelBtnShow:AddScheduleModal.teacherSearchCancelShow
-                                        }}
+                                        dropList={AddScheduleModal.teacherList}
+                                        onChange={this.teacherChange.bind(this)}
+                                        height={200}
                                         style={{zIndex:8}}>
 
                                     </DropDown>
@@ -354,15 +402,16 @@ class AddScheduleModal extends Component{
 
                                 <td className="props">上课时间:</td>
 
-                                <td>
+                                <td style={{position:"relative",zIndex:2}}>
 
-                                    <Tooltip title="请选择周次" visible={AddScheduleModal.weekErrorShow} placement="right">
+                                    <Tooltip title="请选择周次" getPopupContainer={trigger =>trigger.parentNode} visible={AddScheduleModal.weekErrorShow} placement="right">
 
                                         <DropDown
                                         width={150}
                                         style={{zIndex:7}}
-                                        height={108}
+                                        height={200}
                                         className="week"
+                                        TitleShow={false}
                                         dropSelectd={AddScheduleModal.checkedWeek?AddScheduleModal.checkedWeek:{value:"none",title:"请选择周次"}}
                                         dropList={AddScheduleModal.week}
                                         onChange={this.weekChange.bind(this)}>
@@ -371,7 +420,7 @@ class AddScheduleModal extends Component{
 
                                     </Tooltip>
 
-                                    <Tooltip title="请选择星期" visible={AddScheduleModal.dateErrorShow} placement="right">
+                                    <Tooltip title="请选择星期" getPopupContainer={trigger =>trigger.parentNode} visible={AddScheduleModal.dateErrorShow} placement="right">
 
                                         <DropDown
                                         width={150}
@@ -387,12 +436,13 @@ class AddScheduleModal extends Component{
 
                                     </Tooltip>
 
-                                    <Tooltip title="请选择课时" visible={AddScheduleModal.classHourErrorShow} placement="right">
+                                    <Tooltip title="请选择课时" getPopupContainer={trigger =>trigger.parentNode} visible={AddScheduleModal.classHourErrorShow} placement="right">
 
                                         <DropDown
                                         width={150}
                                         style={{zIndex:7}}
                                         height={108}
+                                        TitleShow={false}
                                         className="classHour"
                                         disabled={AddScheduleModal.classHourDisabled}
                                         dropSelectd={AddScheduleModal.checkedClassHour?AddScheduleModal.checkedClassHour:{value:"none",title:"请选择课时"}}
@@ -411,9 +461,9 @@ class AddScheduleModal extends Component{
 
                                 <td className="props">上课教室:</td>
 
-                                <td>
+                                <td style={{position:"relative",zIndex:1}}>
 
-                                    <Tooltip title="请选择教室" visible={AddScheduleModal.classRoomErrorShow} placement="right">
+                                    <Tooltip title="请选择教室" getPopupContainer={trigger =>trigger.parentNode} visible={AddScheduleModal.classRoomErrorShow} placement="right">
 
                                         <DropDown
                                         width={470}
