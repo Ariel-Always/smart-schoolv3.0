@@ -117,6 +117,21 @@ class SelectStudent extends React.Component {
       );
       return;
     }
+    let Test = /^[A-Za-z0-9]{1,30}$|^[a-zA-Z0-9_.·\u4e00-\u9fa5 ]{0,48}[a-zA-Z0-9_.·\u4e00-\u9fa5]$/.test(
+      value.value
+    );
+    if (!Test) {
+      dispatch(
+        actions.UpUIState.showErrorAlert({
+          type: "btn-error",
+          title: "您输入的学号或姓名格式不正确",
+          ok: this.onAppAlertOK.bind(this),
+          cancel: this.onAppAlertCancel.bind(this),
+          close: this.onAppAlertCancel.bind(this)
+        })
+      );
+      return;
+    }
     this.setState({
       show: true,
       CancelBtnShow: "y",

@@ -301,7 +301,21 @@ class Teacher extends React.Component {
           close: this.onAlertWarnClose.bind(this)
         })
       );
-    } else {
+      return
+    } 
+    let Test = /^[A-Za-z0-9]{1,30}$|^[a-zA-Z0-9_.·\u4e00-\u9fa5 ]{0,48}[a-zA-Z0-9_.·\u4e00-\u9fa5]$/.test(e.value)
+    if (!Test) {
+      dispatch(
+        actions.UpUIState.showErrorAlert({
+          type: "btn-error",
+          title: "您输入的学号或姓名格式不正确",
+          ok: this.onAlertWarnOk.bind(this),
+          cancel: this.onAlertWarnClose.bind(this),
+          close: this.onAlertWarnClose.bind(this)
+        })
+      );
+      return;
+    }
       this.setState({
         keyword: e.value,
         CancelBtnShow: "y",
@@ -323,7 +337,7 @@ class Teacher extends React.Component {
             this.state.sortType
         )
       );
-    }
+    
   };
   //搜索change
   onChangeSearch = e => {
