@@ -58,7 +58,7 @@ class AdjustByClassRoomContent extends Component{
 
         const { ClassRoomList,TargetClassRoom } = AdjustByClassRoom;
 
-        const { SearchOpen } = TargetClassRoom;
+        const { SearchOpen,SearchAllList } = TargetClassRoom;
 
         let ClassRoomType = '';
 
@@ -98,6 +98,19 @@ class AdjustByClassRoomContent extends Component{
 
         dispatch({type:ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_TARGET_CLASSROOM_LIST_UPDATE,data:NewTargetClassRoom});
 
+        //如果target教室处于搜索状态
+        if (SearchOpen){
+
+            console.log(SearchAllList);
+
+            const NewSearchAllList = JSON.parse(JSON.stringify(SearchAllList));
+
+            const NewSearchList = NewSearchAllList.filter(item=>item.id!==e.id);
+
+            dispatch({type:ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_TARGET_SEARCH_LIST_UPDATE,data:NewSearchList});
+
+        }
+
         //dispatch({type:ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_CLASSROOM_LIST_UPDATE,data:ClassRoomList});
 
 
@@ -129,7 +142,9 @@ class AdjustByClassRoomContent extends Component{
 
         const { dispatch,AdjustByClassRoom } = this.props;
 
-        const { ClassRoomList } = AdjustByClassRoom;
+        const { ClassRoomList,OriginClassRoom } = AdjustByClassRoom;
+
+        const { SearchOpen,SearchAllList } = OriginClassRoom;
 
         let ClassRoomType = '';
 
@@ -170,6 +185,18 @@ class AdjustByClassRoomContent extends Component{
         //dispatch({type:ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_TARGET_CLASSROOM_LIST_UPDATE,data:ClassRoomList});
 
         dispatch({type:ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_CLASSROOM_LIST_UPDATE,data:NewOriginClassRoom});
+
+        if (SearchOpen){
+
+            console.log(SearchAllList);
+
+            const NewSearchAllList = JSON.parse(JSON.stringify(SearchAllList));
+
+            const NewSearchList = NewSearchAllList.filter(item=>item.id!==e.id);
+
+            dispatch({type:ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_LIST_UPDATE,data:NewSearchList});
+
+        }
 
 
     }

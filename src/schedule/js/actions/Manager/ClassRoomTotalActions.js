@@ -2,6 +2,8 @@ import ApiActions from "../ApiActions";
 
 import AppAlertActions from '../AppAlertActions';
 
+import utils from '../utils';
+
 import $ from 'jquery';
 
 const MANAGER_CLASS_ROOM_TOTAL_INIT = 'MANAGER_CLASS_ROOM_TOTAL_INIT';
@@ -170,7 +172,7 @@ const ClassTotalPageUpdate = (opt) =>{
 
                     };
 
-                    let list = data.ItemSchedule.map((i) => {
+                    let list = utils.ScheduleRemoveRepeat(data.ItemSchedule.map((i) => {
 
                         if (i.ClassRoomID === item.ClassRoomID){
 
@@ -204,7 +206,7 @@ const ClassTotalPageUpdate = (opt) =>{
 
                         }
 
-                    }).filter(i => {return i!==undefined});
+                    }).filter(i => {return i!==undefined}));
 
                     classRoomObj['list'] = list;
 

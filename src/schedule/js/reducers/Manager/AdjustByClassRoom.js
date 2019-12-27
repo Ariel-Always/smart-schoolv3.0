@@ -18,6 +18,8 @@ const AdjustByClassRoom = (state={
 
       SearchList:[],
 
+      SearchAllList:[],
+
       SearchOpen:false,
 
       SearchLoadingShow:true,
@@ -31,6 +33,8 @@ const AdjustByClassRoom = (state={
         DropSelectd:{value:"none",title:"请选择教室"},
 
         SearchList:[],
+
+        SearchAllList:[],
 
         SearchOpen:false,
 
@@ -122,6 +126,8 @@ const AdjustByClassRoom = (state={
 
                     SearchList:[],
 
+                    SearchAllList:[],
+
                     ClassRoomList:[],
 
                     SearchOpen:false,
@@ -135,6 +141,8 @@ const AdjustByClassRoom = (state={
                     DropSelectd:{value:"none",title:"请选择教室"},
 
                     SearchList:[],
+
+                    SearchAllList:[],
 
                     ClassRoomList:[],
 
@@ -260,6 +268,11 @@ const AdjustByClassRoom = (state={
 
             return { ...state,OriginClassRoom:{...state.OriginClassRoom,SearchList:actions.data} }
 
+        case ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_ALL_LIST_UPDATE:
+
+            return { ...state,OriginClassRoom:{...state.OriginClassRoom,SearchAllList:actions.data} }
+
+
         case ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_OPEN:
 
             return { ...state,OriginClassRoom:{...state.OriginClassRoom,SearchOpen:true}};
@@ -295,7 +308,12 @@ const AdjustByClassRoom = (state={
 
         case ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_TARGET_SEARCH_LIST_UPDATE:
 
-            return { ...state,TargetClassRoom:{...state.TargetClassRoom,SearchList:actions.data} }
+            return { ...state,TargetClassRoom:{...state.TargetClassRoom,SearchList:actions.data} };
+
+        case ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_TARGET_SEARCH_ALL_LIST_UPDATE:
+
+            return { ...state,TargetClassRoom:{...state.TargetClassRoom,SearchAllList:actions.data} };
+
 
         case ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_TARGET_SEARCH_OPEN:
 

@@ -2,6 +2,8 @@ import ApiActions from "../ApiActions";
 
 import AppAlertActions from '../AppAlertActions';
 
+import utils from '../utils';
+
 const MANAGER_CLASS_SINGLE_SCHEDULE_LOADING_SHOW = 'MANAGER_CLASS_SINGLE_SCHEDULE_LOADING_SHOW';
 
 const MANAGER_CLASS_SINGLE_SCHEDULE_LOADING_HIDE = 'MANAGER_CLASS_SINGLE_SCHEDULE_LOADING_HIDE';
@@ -159,7 +161,7 @@ const ClassSingleScheduleUpdate = (pickInfo) =>{
 
                 let { ScheduleCount} = data;
 
-                let Schedule = data.ItemSchedule.map((item) => {
+                let Schedule = utils.ScheduleRemoveRepeat(data.ItemSchedule.map((item) => {
 
                     return {
 
@@ -185,7 +187,7 @@ const ClassSingleScheduleUpdate = (pickInfo) =>{
 
                     }
 
-                });
+                }));
 
                 data.ItemCourseClass.map(item=>{
 
@@ -247,7 +249,7 @@ const WeekUpdate = () => {
 
                     let { ScheduleCount} = data;
 
-                    let Schedule = data.ItemSchedule.map((item) => {
+                    let Schedule = utils.ScheduleRemoveRepeat(data.ItemSchedule.map((item) => {
 
                         return {
 
@@ -273,7 +275,7 @@ const WeekUpdate = () => {
 
                         }
 
-                    });
+                    }));
 
                     data.ItemCourseClass.map(item=>{
 
@@ -313,53 +315,59 @@ const ClassSearch = (val) => {
 
     return (dispatch,getState) => {
 
-        dispatch({type:MANAGER_CLASS_SINGLE_SEARCH_RESULT_SHOW});
-
-        dispatch({type:MANAGER_CLASS_SINGLE_SEARCHLIST_UPDATE,data:[]});
-
-        dispatch({type:MANAGER_CLASS_SINGLE_SEARCH_LOADING_SHOW});
-
-        dispatch({type:MANAGER_CSA_LEFT_MENU_CANCEL_BTN_SHOW});
-
-        let { LoginUser,Manager,PeriodWeekTerm } = getState();
-
-        let SchoolID = LoginUser.SchoolID;
-
-        let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;
-
-        let SubjectID ='';
-
         let Key = val;
 
-        ApiActions.GetClassByGradeIDAndKey({
+        let pattern =  utils.SearchReg({type:2,dispatch,ErrorTips:"您输入的班级ID或名称不正确",key:Key});
 
-            SchoolID,PeriodID,GradeID:'',Flag:0,Key,dispatch
+        if (pattern){
 
-        }).then(data => {
+            dispatch({type:MANAGER_CLASS_SINGLE_SEARCH_RESULT_SHOW});
 
-            if (data){
+            dispatch({type:MANAGER_CLASS_SINGLE_SEARCHLIST_UPDATE,data:[]});
 
-                const result = data.map((item) => {
+            dispatch({type:MANAGER_CLASS_SINGLE_SEARCH_LOADING_SHOW});
 
-                    return {
+            dispatch({type:MANAGER_CSA_LEFT_MENU_CANCEL_BTN_SHOW});
 
-                        id:item.ClassID,
+            let { LoginUser,Manager,PeriodWeekTerm } = getState();
 
-                        name:item.ClassName
+            let SchoolID = LoginUser.SchoolID;
 
-                    }
+            let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;
 
-                });
+            let SubjectID ='';
 
-                dispatch({type:MANAGER_CLASS_SINGLE_SEARCHLIST_UPDATE,data:result});
+            ApiActions.GetClassByGradeIDAndKey({
+
+                SchoolID,PeriodID,GradeID:'',Flag:0,Key,dispatch
+
+            }).then(data => {
+
+                if (data){
+
+                    const result = data.map((item) => {
+
+                        return {
+
+                            id:item.ClassID,
+
+                            name:item.ClassName
+
+                        }
+
+                    });
+
+                    dispatch({type:MANAGER_CLASS_SINGLE_SEARCHLIST_UPDATE,data:result});
 
 
 
-                dispatch({type:MANAGER_CLASS_SINGLE_SEARCH_LOADING_HIDE});
+                    dispatch({type:MANAGER_CLASS_SINGLE_SEARCH_LOADING_HIDE});
 
-            }
+                }
 
-        });
+            });
+
+        }
 
     };
 

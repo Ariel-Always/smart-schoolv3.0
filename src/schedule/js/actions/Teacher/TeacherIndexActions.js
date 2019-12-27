@@ -16,7 +16,7 @@ import CSActions from "./ClassStudentActions";
 
 import ApiActions from '../ApiActions';
 
-import AppAlertActions from '../AppAlertActions';
+import utils from '../utils';
 
 import $ from 'jquery';
 
@@ -119,7 +119,7 @@ const STSPageInit = () => {
 
                                    };
 
-                                   let list = json.ItemSchedule.map((i) => {
+                                   let list = utils.ScheduleRemoveRepeat(json.ItemSchedule.map((i) => {
 
                                        if (i.TeacherID === item.TeacherID){
 
@@ -153,7 +153,7 @@ const STSPageInit = () => {
 
                                        }
 
-                                   }).filter(i => {return i!==undefined});
+                                   }).filter(i => {return i!==undefined}));
 
                                    teacherObj['list'] = list;
 
@@ -484,7 +484,7 @@ const TeacherPersonalInit = () => {
 
             if (res[1]){
 
-                let schedule = res[1].ItemSchedule.map((item) => {
+                let schedule = utils.ScheduleRemoveRepeat(res[1].ItemSchedule.map((item) => {
 
                     return {
 
@@ -511,7 +511,7 @@ const TeacherPersonalInit = () => {
                     }
 
 
-                });
+                }));
 
                 dispatch({type:TPActions.TP_SCHEDULE_CHANGE,data:{schedule}});
 
@@ -602,7 +602,7 @@ const ClassTotalInit = () => {
 
                     if (json){
 
-                        let Schedule = json.ItemSchedule.map((item) => {
+                        let Schedule = utils.ScheduleRemoveRepeat(json.ItemSchedule.map((item) => {
 
                             return {
 
@@ -628,7 +628,7 @@ const ClassTotalInit = () => {
 
                             }
 
-                        });
+                        }));
 
                         json.ItemCourseClass.map(item=>{
 

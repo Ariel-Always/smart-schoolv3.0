@@ -394,13 +394,9 @@
 
       padding-left: 12px;
 
-      margin-top:12px;
+      padding-top:8px;
 
-      margin-right: 4px;
-
-      height: 22px;
-
-      line-height: 22px;
+      margin-right: 20px;
 
       @include textOverFlow;
 
@@ -411,6 +407,12 @@
       &.unend{
 
         color: #333333;
+
+      }
+
+      &.has-flag{
+
+        margin-right: 28px;
 
       }
 
@@ -498,6 +500,74 @@
         @include box-shadow(0px 2px 14px 1px #aaddea);
 
       }
+
+    }
+
+    .ongoing-flag{
+
+      position: absolute;
+
+      right:0;
+
+      top:0;
+
+      width: 50px;
+
+      height:50px;
+
+      background: url("#{$image-url}/active-class-flag.png") no-repeat right top;
+
+      &:after{
+
+        position: absolute;
+
+        content:'进行中';
+
+        color: #ffffff;
+
+        width:50px;
+
+        height:18px;
+
+        left: 14px;
+
+        top: 14px;
+
+        font-size: 12px;
+
+        @include transform(rotate(45deg));
+
+        @include text-shadow(0 1px 2px #000000);
+
+      }
+
+    }
+
+    .stoped-flag{
+
+      position: absolute;
+
+      font-size: 12px;
+
+      right: 2px;
+
+      top: 2px;
+
+      color: #ffffff;
+
+      background-color: #ff6600;
+
+      width: 40px;
+
+      height: 16px;
+
+      line-height: 16px;
+
+      text-align: center;
+
+      border-radius: 2px;
+
+      vertical-align: middle;
 
     }
 

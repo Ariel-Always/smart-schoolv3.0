@@ -1,5 +1,7 @@
 import SCGCRActions  from './SCGCRActions'
 
+import utils from '../utils';
+
 import AppLoadingActions from '../../actions/AppLoadingActions'
 
 import STSActions from './SubjectTeacherScheduleActions';
@@ -72,7 +74,7 @@ const STSPageInit = () => {
 
                         };
 
-                        let list = json.ItemSchedule.map((i) => {
+                        let list = utils.ScheduleRemoveRepeat(json.ItemSchedule.map((i) => {
 
                             if (i.TeacherID === item.TeacherID){
 
@@ -102,7 +104,7 @@ const STSPageInit = () => {
 
                             }
 
-                        }).filter(i => {return i!==undefined});
+                        }).filter(i => {return i!==undefined}));
 
                         teacherObj['list'] = list;
 
@@ -310,7 +312,7 @@ const ClassTotalInit = () => {
 
                             };
 
-                            let list = json.ItemSchedule.map((i) => {
+                            let list = utils.ScheduleRemoveRepeat(json.ItemSchedule.map((i) => {
 
                                 if (i.ClassID === item.ClassID){
 
@@ -344,7 +346,7 @@ const ClassTotalInit = () => {
 
                                 }
 
-                            }).filter(i => {return i!==undefined});
+                            }).filter(i => {return i!==undefined}));
 
                             classObj['list'] = list;
 
@@ -575,7 +577,7 @@ const ClassRoomTotalInit = () => {
 
                             };
 
-                            let list = json.ItemSchedule.map((i) => {
+                            let list = utils.ScheduleRemoveRepeat(json.ItemSchedule.map((i) => {
 
                                 if (i.ClassRoomID === item.ClassRoomID){
 
@@ -609,7 +611,7 @@ const ClassRoomTotalInit = () => {
 
                                 }
 
-                            }).filter(i => {return i!==undefined});
+                            }).filter(i => {return i!==undefined}));
 
                             classRoomObj['list'] = list;
 

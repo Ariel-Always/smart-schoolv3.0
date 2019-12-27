@@ -250,6 +250,34 @@
 
     }
 
+    .stoped-flag{
+
+      position: absolute;
+
+      font-size: 12px;
+
+      right: 2px;
+
+      top: 2px;
+
+      color: #ffffff;
+
+      background-color: #ff6600;
+
+      width: 40px;
+
+      height: 16px;
+
+      line-height: 16px;
+
+      text-align: center;
+
+      border-radius: 2px;
+
+      vertical-align: middle;
+
+    }
+
   }
 
   .noon{
@@ -289,6 +317,12 @@
     &.active{
 
       color: #333333;
+
+    }
+
+    &.has-flag{
+
+      padding-right: 33px;
 
     }
 

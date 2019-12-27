@@ -190,7 +190,7 @@ class ChangeSchedule extends Component{
                                        dropClickSearch:this.targetTeacherClickSearch.bind(this),
                                        dropCancelSearch:this.targetTeacherSearchClose.bind(this),
                                        searchList:targetSearchList,
-                                       searchPlaceholder:"请输入教师名称进行搜索...",
+                                       searchPlaceholder:"请输入教师姓名或工号搜索...",
                                        searchOpen:targetSearchOpen,
                                        searchLoadingShow:targetSearchLoadingShow
                                    }}>

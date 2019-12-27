@@ -475,7 +475,7 @@ class AddScheduleModal extends Component{
                                             dropMultipleChange:this.classRoomChange.bind(this),
                                             dropClickSearch:this.classRoomSearchClick.bind(this),
                                             searchList:AddScheduleModal.classRoomSearchList,
-                                            searchPlaceholder:"请输入教室名称进行搜索...",
+                                            searchPlaceholder:"请输入教室名称或ID进行搜索...",
                                             searchLoadingShow:AddScheduleModal.classRoomSearchLoadingShow,
                                             dropCancelSearch:this.classRoomSearchClose.bind(this),
                                             searchOpen:AddScheduleModal.classRoomSearchOpen,

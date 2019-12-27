@@ -258,11 +258,31 @@ class DoubleSingleTable extends Component{
 
                             return <div  className={`schedule-wrapper ${record.active?'active':''}`} style={{height:commonRowHeight}}>
 
-                                <div className={`title ${item.type!==1?'unend':''}`} onClick={(e)=>{this.ScheduleDetailShow({Event:e,Params:item})}} data-id={item.titleID}>{item.title}</div>
+                                <div className={`title ${item.type!==1?'unend':''} ${item.ScheduleType!==1&&(parseInt(item.IsOver)===1||item.ScheduleType===2)?'has-flag':''}`} onClick={(e)=>{this.ScheduleDetailShow({Event:e,Params:item})}} data-id={item.titleID}>{item.title}</div>
 
                                 <div className="second-title" data-id={item.secondTitleID}>{item.secondTitle}</div>
 
                                 <div className="second-title" data-id={item.thirdTitleID}>{item.thirdTitle}</div>
+
+                                {
+
+                                    item.ScheduleType!==1?
+
+                                        item.IsOver&&(parseInt(item.IsOver)===1)?
+
+                                        <div className="stoped-flag">已停课</div>
+
+                                        :
+
+                                        (item.ScheduleType===2?
+
+                                            <div className="ongoing-flag"></div>
+
+                                            :'')
+
+                                    :''
+
+                                }
 
                             </div>
 

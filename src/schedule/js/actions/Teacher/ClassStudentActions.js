@@ -4,6 +4,8 @@ import AppAlertActions from '../AppAlertActions';
 
 import AppLoadingActions from "../AppLoadingActions";
 
+import utils from '../utils';
+
 
 //初始化
 
@@ -186,7 +188,7 @@ const ClassStudentUpdate = (pickInfo) => {
 
                             let { ScheduleCount} = data;
 
-                            let Schedule = data.ItemSchedule.map((item) => {
+                            let Schedule = utils.ScheduleRemoveRepeat(data.ItemSchedule.map((item) => {
 
                                 return {
 
@@ -213,7 +215,7 @@ const ClassStudentUpdate = (pickInfo) => {
                                 }
 
 
-                            });
+                            }));
 
                             dispatch({type:TEACHER_CS_SCHEDULE_CHANGE,data:{ScheduleCount,Schedule,PickStudentName:pickInfo.catChildrenName,PickStudentID:pickInfo.catChildrenId}});
 
@@ -239,7 +241,7 @@ const ClassStudentUpdate = (pickInfo) => {
 
                     let { ScheduleCount} = data;
 
-                    let Schedule = data.ItemSchedule.map((item) => {
+                    let Schedule = utils.ScheduleRemoveRepeat(data.ItemSchedule.map((item) => {
 
                         return {
 
@@ -266,7 +268,7 @@ const ClassStudentUpdate = (pickInfo) => {
                         }
 
 
-                    });
+                    }));
 
                     dispatch({type:TEACHER_CS_SCHEDULE_CHANGE,data:{ScheduleCount,Schedule,PickStudentName:pickInfo.catChildrenName,PickStudentID:pickInfo.catChildrenId}});
 
@@ -318,7 +320,7 @@ const CSWeekUpdate = () => {
 
                     let { ScheduleCount} = data;
 
-                    let Schedule = data.ItemSchedule.map((item) => {
+                    let Schedule = utils.ScheduleRemoveRepeat(data.ItemSchedule.map((item) => {
 
                         return {
 
@@ -345,7 +347,7 @@ const CSWeekUpdate = () => {
                         }
 
 
-                    });
+                    }));
 
                     dispatch({type:TEACHER_CS_SCHEDULE_CHANGE,data:{ScheduleCount,Schedule}});
 
@@ -366,55 +368,61 @@ const StudentSearch = (val) => {
 
     return (dispatch,getState) => {
 
-        dispatch({type:TEACHER_CS_SEARCH_LOADING_SHOW});
-
-        dispatch({type:TEACHER_CS_LEFT_MENU_CANCEL_BTN_SHOW});
-
-        dispatch({type:TEACHER_CS_SEARCH_STU_RESULT_SHOW});
-
-        let { LoginUser,Teacher,PeriodWeekTerm } = getState();
-
-        let { SchoolID } = LoginUser;
-
-        let { Classes } = Teacher.GangerClass;
-
         let Key = val;
 
+        let pattern =  utils.SearchReg({type:1,dispatch,ErrorTips:"您输入的学生姓名或工号不正确",key:Key});
+
+        if (pattern){
+
+            dispatch({type:TEACHER_CS_SEARCH_LOADING_SHOW});
+
+            dispatch({type:TEACHER_CS_LEFT_MENU_CANCEL_BTN_SHOW});
+
+            dispatch({type:TEACHER_CS_SEARCH_STU_RESULT_SHOW});
+
+            let { LoginUser,Teacher,PeriodWeekTerm } = getState();
+
+            let { SchoolID } = LoginUser;
+
+            let { Classes } = Teacher.GangerClass;
+
+            const ClassesStr = Classes.map(item=>item.ClassID).join(',');
+
+            ApiActions.GetSudentInfoByClassIDAndKey({
+
+                ClassID:ClassesStr,Key,dispatch
+
+            }).then(data => {
+
+                if (data){
+
+                    const result = data.map((item) => {
+
+                        return {
+
+                            id:item.StudentID,
+
+                            name:item.StudentName,
+
+                            catId:item.ClassID,
+
+                            catName:item.ClassName
+
+                        }
+
+                    });
+
+                    dispatch({type:TEACHER_CS_SEARCH_STUDENT_RESULT_UPDATE,data:result});
+
+                    dispatch({type:TEACHER_CS_SEARCH_LOADING_HIDE});
+
+                }
+
+            });
 
 
-        const ClassesStr = Classes.map(item=>item.ClassID).join(',');
+        }
 
-        ApiActions.GetSudentInfoByClassIDAndKey({
-
-            ClassID:ClassesStr,Key,dispatch
-
-        }).then(data => {
-
-           if (data){
-
-               const result = data.map((item) => {
-
-                  return {
-
-                      id:item.StudentID,
-
-                      name:item.StudentName,
-
-                      catId:item.ClassID,
-
-                      catName:item.ClassName
-
-                  }
-
-               });
-
-                dispatch({type:TEACHER_CS_SEARCH_STUDENT_RESULT_UPDATE,data:result});
-
-                dispatch({type:TEACHER_CS_SEARCH_LOADING_HIDE});
-
-           }
-
-        });
 
     };
 

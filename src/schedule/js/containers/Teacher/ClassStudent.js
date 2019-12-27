@@ -467,7 +467,9 @@ class ClassStudent extends Component{
                         PickID={ClassStudent.PickStudentID}
                         CancelBtnShow={ClassStudent.CancelBtnShow}
                         SearchValue={ClassStudent.SearchValue}
-                        SearchValueChange={this.LeftMenuSearchValueChange.bind(this)}>
+                        SearchValueChange={this.LeftMenuSearchValueChange.bind(this)}
+                        placeHolder={"请输入学生姓名或学号搜索"}
+                    >
 
                     </LeftMenu>
 

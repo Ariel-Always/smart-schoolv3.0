@@ -149,7 +149,7 @@ class ChangeClassRoom extends Component{
                                    dropClickSearch:this.teacherClickSearch.bind(this),
                                    dropCancelSearch:this.teacherSearchClose.bind(this),
                                    searchList:teacherSearchList,
-                                   searchPlaceholder:"请输入教师名称进行搜索...",
+                                   searchPlaceholder:"请输入姓名或工号进行搜索...",
                                    searchOpen:teacherSearchOpen,
                                    searchLoadingShow:teacherSearchLoadingShow
                                }}>

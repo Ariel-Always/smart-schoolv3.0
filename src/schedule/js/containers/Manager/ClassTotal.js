@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 
 import {DropDown, Loading} from "../../../../common";
 
-
 import ManagerIndexActions from "../../actions/Manager/ManagerIndexActions";
 
 import CTActions from '../../actions/Manager/ClassTotalActions';

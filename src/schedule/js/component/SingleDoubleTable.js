@@ -272,7 +272,7 @@ class SingleDoubleTable extends Component{
 
                                                         <React.Fragment>
 
-                                                            <div className={`title ${it.ScheduleType===1?'':'active'}`} onClick={ScheduleDetailShow?(e)=>ScheduleDetailShow(it):()=>{}} title={it.title} data-id={it.titleID}>{it.title}</div>
+                                                            <div className={`title ${it.ScheduleType===1?'':'active'} ${item.ScheduleType!==1&&(parseInt(item.IsOver)===1||item.ScheduleType===2)?'has-flag':''} `} onClick={ScheduleDetailShow?(e)=>ScheduleDetailShow(it):()=>{}} title={it.title} data-id={it.titleID}>{it.title}</div>
 
                                                             <div className="second-title" title={it.secondTitle} data-id={it.secondTitleID}>{it.secondTitle}</div>
 
@@ -280,11 +280,21 @@ class SingleDoubleTable extends Component{
 
                                                             {
 
-                                                                it.ScheduleType===2?
+                                                                it.ScheduleType!==1?
+
+                                                                    parseInt(it.IsOver)===1?
+
+                                                                        <div className="stoped-flag">已停课</div>
+
+                                                                    :
+
+                                                                    (it.ScheduleType===2?
 
                                                                     <div className="ongoing-flag"></div>
 
-                                                                    :''
+                                                                    :'')
+
+                                                                :''
 
                                                             }
 

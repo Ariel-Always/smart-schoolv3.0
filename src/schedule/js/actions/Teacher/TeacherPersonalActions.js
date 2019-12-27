@@ -4,6 +4,8 @@ import ApiActions from '../ApiActions';
 
 import AppAlertActions from '../AppAlertActions';
 
+import utils from '../utils';
+
 const TP_NOW_WEEK_CHANGE = 'TP_NOW_WEEK_CHANGE';
 
 const TEACHER_PERSONAL_SCHEDULE_INIT = 'TEACHER_PERSONAL_SCHEDULE_INIT';
@@ -126,7 +128,7 @@ const TPSUpdate = () => {
 
             if (data){
 
-                let schedule = data.ItemSchedule.map((item) => {
+                let schedule = utils.ScheduleRemoveRepeat(data.ItemSchedule.map((item) => {
 
                     return {
 
@@ -153,7 +155,7 @@ const TPSUpdate = () => {
                     }
 
 
-                });
+                }));
 
                 dispatch({type:TP_SCHEDULE_CHANGE,data:{schedule}});
 
