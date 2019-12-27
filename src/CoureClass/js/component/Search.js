@@ -252,7 +252,9 @@ class Search extends React.Component {
       Key = routeID
     }
     this.setState({
-      pageIndex:value
+      pageIndex:value,
+      checkedList: [],
+      checkAll: false
     })
     dispatch(
       actions.UpDataState.getClassAllMsg(

@@ -221,7 +221,7 @@ class Class extends React.Component {
     dispatch(
       actions.UpDataState.getClassAllMsg(
         "/GetGradeCouseclassDetailForPage?schoolID=" +
-          this.state.UserMsg.schoolID +
+          this.state.UserMsg.SchoolID +
           "&pageIndex=" +
           value +
           "&key=&pageSize=10&subjectID=" +
@@ -233,7 +233,7 @@ class Class extends React.Component {
       )
     );
     this.setState({
-      pagination: e,
+      pagination: value,
       checkedList: [],
       checkAll: false
     });

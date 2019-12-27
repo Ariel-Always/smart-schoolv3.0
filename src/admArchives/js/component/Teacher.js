@@ -297,7 +297,20 @@ class Teacher extends React.Component {
         })
       );
       return;
-    } else {
+    } 
+    let Test = /^[A-Za-z0-9]{1,30}$|^[a-zA-Z0-9_.·\u4e00-\u9fa5 ]{0,48}[a-zA-Z0-9_.·\u4e00-\u9fa5]$/.test(e.value)
+    if (!Test) {
+      dispatch(
+        actions.UpUIState.showErrorAlert({
+          type: "btn-error",
+          title: "您输入的工号或姓名格式不正确",
+          ok: this.onAppAlertOK.bind(this),
+          cancel: this.onAppAlertCancel.bind(this),
+          close: this.onAppAlertClose.bind(this)
+        })
+      );
+      return;
+    }
       this.setState({
         checkedList: [],
         checkAll: false,
@@ -319,7 +332,7 @@ class Teacher extends React.Component {
           this.state.selectSubject
         )
       );
-    }
+    
   };
 
   onSelectChange = e => {
