@@ -89,7 +89,7 @@ class LeftMenu extends Component{
 
             searchTitleShow,searchTitle,PickID,CancelBtnShow,SearchValue,
 
-            SearchValueChange
+            SearchValueChange,placeHolder
 
         } = this.props;
 
@@ -99,13 +99,13 @@ class LeftMenu extends Component{
 
                 <div className="left-menu-title">{title}</div>
 
-                <Search width={204} CancelBtnShow={CancelBtnShow} Value={SearchValue} onChange={(e)=>SearchValueChange(e)} onClickSearch={searchClick} onCancelSearch={cancelSearch}></Search>
+                <Search placeHolder={placeHolder}  width={204} CancelBtnShow={CancelBtnShow} Value={SearchValue} onChange={(e)=>SearchValueChange(e)} onClickSearch={searchClick} onCancelSearch={cancelSearch}></Search>
 
                 {
 
                     searchShow?
 
-                        <Loading tip="加载中..." spinning={leftMenuSearchLoading}>
+                        <Loading tip="加载中..." opacity={false} spinning={leftMenuSearchLoading}>
 
                             {
 

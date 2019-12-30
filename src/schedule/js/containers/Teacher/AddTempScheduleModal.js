@@ -369,7 +369,7 @@ class AddTempScheduleModal extends Component{
                                             dropClickSearch:this.classSearchClick.bind(this),
                                             dropCancelSearch:this.classSearchClose.bind(this),
                                             searchList:AddTempScheduleModal.classSearchList,
-                                            searchPlaceholder:"请输入班级名称进行搜索...",
+                                            searchPlaceholder:"请输入班级名称搜索...",
                                             searchOpen:AddTempScheduleModal.classSearchOpen,
                                             searchLoadingShow:AddTempScheduleModal.classSearchLoadingShow,
                                             CancelBtnShow:AddTempScheduleModal.classSearchCancelShow
@@ -473,7 +473,7 @@ class AddTempScheduleModal extends Component{
                                             dropMultipleChange:this.classRoomChange.bind(this),
                                             dropClickSearch:this.classRoomSearchClick.bind(this),
                                             searchList:AddTempScheduleModal.classRoomSearchList,
-                                            searchPlaceholder:"请输入教室名称进行搜索...",
+                                            searchPlaceholder:"请输入教室名称或ID搜索...",
                                             searchLoadingShow:AddTempScheduleModal.classRoomSearchLoadingShow,
                                             dropCancelSearch:this.classRoomSearchClose.bind(this),
                                             searchOpen:AddTempScheduleModal.classRoomSearchOpen,

@@ -495,8 +495,10 @@ class ClassSingle extends Component{
                         PickID={ClassSingle.PickClassID}
                         CancelBtnShow={ClassSingle.CancelBtnShow}
                         SearchValue={ClassSingle.SearchValue}
-                        SearchValueChange={this.LeftSearchValueChange.bind(this)}>
-                        >
+                        SearchValueChange={this.LeftSearchValueChange.bind(this)}
+                        placeHolder={"请输入名称或ID搜索"}
+                    >
+
 
                     </LeftMenu>
 

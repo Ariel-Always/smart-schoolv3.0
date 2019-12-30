@@ -4,7 +4,10 @@ import AppAlertActions from '../AppAlertActions';
 
 import ApiActions from '../ApiActions';
 
-import ComPageRefresh from '../ComPageRefresh'
+import ComPageRefresh from '../ComPageRefresh';
+
+import utils from '../utils';
+
 
 //关于弹窗公共部分
 const MANAGER_ADJUST_BY_CLASSROOM_SHOW = 'MANAGER_ADJUST_BY_CLASSROOM_SHOW';
@@ -27,6 +30,8 @@ const MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_LOADING_HIDE = 'MANAGER_ADJUST_B
 
 const MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_LIST_UPDATE = 'MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_LIST_UPDATE';
 
+const MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_ALL_LIST_UPDATE = 'MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_ALL_LIST_UPDATE';
+
 const MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_CLOSE = 'MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_CLOSE';
 
 
@@ -44,6 +49,8 @@ const MANAGER_ADJUST_BY_CLASSROOM_TARGET_SEARCH_LOADING_SHOW = 'MANAGER_ADJUST_B
 const MANAGER_ADJUST_BY_CLASSROOM_TARGET_SEARCH_LOADING_HIDE = 'MANAGER_ADJUST_BY_CLASSROOM_TARGET_SEARCH_LOADING_HIDE';
 
 const MANAGER_ADJUST_BY_CLASSROOM_TARGET_SEARCH_LIST_UPDATE = 'MANAGER_ADJUST_BY_CLASSROOM_TARGET_SEARCH_LIST_UPDATE';
+
+const MANAGER_ADJUST_BY_CLASSROOM_TARGET_SEARCH_ALL_LIST_UPDATE = 'MANAGER_ADJUST_BY_CLASSROOM_TARGET_SEARCH_ALL_LIST_UPDATE';
 
 const MANAGER_ADJUST_BY_CLASSROOM_TARGET_SEARCH_CLOSE = 'MANAGER_ADJUST_BY_CLASSROOM_TARGET_SEARCH_CLOSE';
 
@@ -163,37 +170,25 @@ const OriginClassRoomSearch = (key) => {
 
         if (key.trim() !== ''){
 
-            let {SchoolID} = getState().LoginUser;
+            let pattern =  utils.SearchReg({type:2,dispatch,ErrorTips:"您输入的教室名称或ID不正确",key:key});
 
-            const ClassRoomID = getState().Manager.AdjustByClassRoom.TargetClassRoom.DropSelectd.value;
+            if (pattern){
 
-            dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_OPEN});
+                let {SchoolID} = getState().LoginUser;
 
-            dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_LOADING_SHOW});
+                const ClassRoomID = getState().Manager.AdjustByClassRoom.TargetClassRoom.DropSelectd.value;
 
-            ApiActions.GetClassRoomByClassTypeAndKey({SchoolID,PeriodID:'',ClassRoomTypeID:'',Key:key,dispatch}).then(data=>{
+                dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_OPEN});
 
-                if (data){
+                dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_LOADING_SHOW});
 
-                    let SearchList = [];
+                ApiActions.GetClassRoomByClassTypeAndKey({SchoolID,PeriodID:'',ClassRoomTypeID:'',Key:key,dispatch}).then(data=>{
 
-                    if (ClassRoomID!=='none'){
+                    if (data){
 
-                        SearchList = data.map(item => {
+                        let SearchList = [];
 
-                            return{
-
-                                id:item.ClassRoomID,
-
-                                name:item.ClassRoomName
-
-                            };
-
-                        }).filter(i=>i.id!==ClassRoomID);
-
-                    }else{
-
-                        SearchList = data.map(item => {
+                        const SearchAllList = data.map(item => {
 
                             return{
 
@@ -205,20 +200,49 @@ const OriginClassRoomSearch = (key) => {
 
                         });
 
+                        if (ClassRoomID!=='none'){
+
+                            SearchList = data.map(item => {
+
+                                return{
+
+                                    id:item.ClassRoomID,
+
+                                    name:item.ClassRoomName
+
+                                };
+
+                            }).filter(i=>i.id!==ClassRoomID);
+
+                        }else{
+
+                            SearchList = data.map(item => {
+
+                                return{
+
+                                    id:item.ClassRoomID,
+
+                                    name:item.ClassRoomName
+
+                                };
+
+                            });
+
+                        }
+
+                        dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_ALL_LIST_UPDATE,data:SearchAllList});
+
+                        dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_LIST_UPDATE,data:SearchList});
+
+
                     }
 
+                    dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_LOADING_HIDE});
 
 
-                    dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_LIST_UPDATE,data:SearchList});
+                });
 
-
-                }
-
-                dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_LOADING_HIDE});
-
-
-            });
-
+            }
 
         }else{
 
@@ -249,37 +273,25 @@ const TargetClassRoomSearch = (key) => {
 
         if (key.trim() !== ''){
 
-            let {SchoolID} = getState().LoginUser;
+            let pattern =  utils.SearchReg({type:2,dispatch,ErrorTips:"您输入的教室名称或ID不正确",key:key});
 
-            const ClassRoomID = getState().Manager.AdjustByClassRoom.OriginClassRoom.DropSelectd.value;
+            if (pattern){
 
-            dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_TARGET_SEARCH_OPEN});
+                let {SchoolID} = getState().LoginUser;
 
-            dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_TARGET_SEARCH_LOADING_SHOW});
+                const ClassRoomID = getState().Manager.AdjustByClassRoom.OriginClassRoom.DropSelectd.value;
 
-            ApiActions.GetClassRoomByClassTypeAndKey({SchoolID,PeriodID:'',ClassRoomTypeID:'',Key:key,dispatch}).then(data=>{
+                dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_TARGET_SEARCH_OPEN});
 
-                if (data){
+                dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_TARGET_SEARCH_LOADING_SHOW});
 
-                    let SearchList = [];
+                ApiActions.GetClassRoomByClassTypeAndKey({SchoolID,PeriodID:'',ClassRoomTypeID:'',Key:key,dispatch}).then(data=>{
 
-                    if (ClassRoomID!=='none'){
+                    if (data){
 
-                        SearchList = data.map(item => {
+                        let SearchList = [];
 
-                            return{
-
-                                id:item.ClassRoomID,
-
-                                name:item.ClassRoomName
-
-                            };
-
-                        }).filter(i=>i.id!==ClassRoomID);
-
-                    }else{
-
-                        SearchList = data.map(item => {
+                        const SearchAllList = data.map(item => {
 
                             return{
 
@@ -291,18 +303,49 @@ const TargetClassRoomSearch = (key) => {
 
                         });
 
+                        if (ClassRoomID!=='none'){
+
+                            SearchList = data.map(item => {
+
+                                return{
+
+                                    id:item.ClassRoomID,
+
+                                    name:item.ClassRoomName
+
+                                };
+
+                            }).filter(i=>i.id!==ClassRoomID);
+
+                        }else{
+
+                            SearchList = data.map(item => {
+
+                                return{
+
+                                    id:item.ClassRoomID,
+
+                                    name:item.ClassRoomName
+
+                                };
+
+                            });
+
+                        }
+
+                        dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_TARGET_SEARCH_LIST_UPDATE,data:SearchList});
+
+                        dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_TARGET_SEARCH_ALL_LIST_UPDATE,data:SearchAllList});
+
+
                     }
 
-                    dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_TARGET_SEARCH_LIST_UPDATE,data:SearchList});
+                    dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_TARGET_SEARCH_LOADING_HIDE});
 
 
-                }
+                });
 
-                dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_TARGET_SEARCH_LOADING_HIDE});
-
-
-            });
-
+            }
 
         }else{
 
@@ -1149,6 +1192,10 @@ export default {
     MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_CLASSROOM_LIST_UPDATE,
 
     MANAGER_ADJUST_BY_CLASSROOM_TARGET_CLASSROOM_LIST_UPDATE,
+
+    MANAGER_ADJUST_BY_CLASSROOM_ORIGIN_SEARCH_ALL_LIST_UPDATE,
+
+    MANAGER_ADJUST_BY_CLASSROOM_TARGET_SEARCH_ALL_LIST_UPDATE,
 
     PageInit,
 

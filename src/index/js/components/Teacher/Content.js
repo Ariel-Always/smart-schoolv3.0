@@ -510,7 +510,7 @@ class Content extends Component{
 
                                                                                }
 
-                                                                               return <div key={kt} className="module-detail-item" onClick={(e)=>ClickModule({ModuleStatus:it.ModuleStatus,AccessType:it.AccessType,AccessParam:it.AccessParam,SysID:i.SysID,Event:e,ModuleType:i.ModuleType})}>
+                                                                               return <div key={kt} className="module-detail-item" onClick={(e)=>ClickModule({ModuleStatus:it.ModuleStatus,AccessType:it.AccessType,AccessParam:it.AccessParam,SysID:it.SysID,Event:e,ModuleType:it.ModuleType})}>
 
                                                                                    {
 
@@ -725,7 +725,7 @@ class Content extends Component{
 
                                                                                }
 
-                                                                               return <div key={kt} className="module-detail-item" onClick={(e)=>ClickModule({ModuleStatus:it.ModuleStatus,AccessType:it.AccessType,AccessParam:it.AccessParam,SysID:i.SysID,Event:e,ModuleType:i.ModuleType})}>
+                                                                               return <div key={kt} className="module-detail-item" onClick={(e)=>ClickModule({ModuleStatus:it.ModuleStatus,AccessType:it.AccessType,AccessParam:it.AccessParam,SysID:it.SysID,Event:e,ModuleType:it.ModuleType})}>
 
                                                                                    {
 

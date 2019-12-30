@@ -1,5 +1,7 @@
 import React from 'react';
 
+import utils from '../utils';
+
 import AppAlertActions from '../AppAlertActions';
 
 import ApiActions from '../ApiActions';
@@ -375,37 +377,42 @@ const teacherClickSearch = (key) => {
 
         if (key.trim() !== ''){
 
-            let {SchoolID} = getState().LoginUser;
+            let pattern =  utils.SearchReg({type:1,dispatch,ErrorTips:"您输入的教师名称或工号不正确",key:key});
 
-            dispatch({type:REPLACE_SHCEDULE_TEACHER_SEARCH_OPEN});
+            if (pattern){
 
-            dispatch({type:REPLACE_SHCEDULE_TEACHER_SEARCH_LOADING_SHOW});
+                let {SchoolID} = getState().LoginUser;
 
-            ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,Key:key,dispatch}).then(data=>{
+                dispatch({type:REPLACE_SHCEDULE_TEACHER_SEARCH_OPEN});
 
-                if (data){
+                dispatch({type:REPLACE_SHCEDULE_TEACHER_SEARCH_LOADING_SHOW});
 
-                    let teacherSearchList = data.map(item => {
+                ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,Key:key,dispatch}).then(data=>{
 
-                        return{
+                    if (data){
 
-                            id:item.TeacherID,
+                        let teacherSearchList = data.map(item => {
 
-                            name:item.TeacherName
+                            return{
 
-                        };
+                                id:item.TeacherID,
 
-                    });
+                                name:item.TeacherName
 
-                    dispatch({type:REPLACE_SHCEDULE_TEACHER_SEARCH_LIST_UPDATE,data:teacherSearchList});
+                            };
 
-                    dispatch({type:REPLACE_SHCEDULE_TEACHER_SEARCH_LOADING_HIDE});
+                        });
 
-                }
+                        dispatch({type:REPLACE_SHCEDULE_TEACHER_SEARCH_LIST_UPDATE,data:teacherSearchList});
+
+                        dispatch({type:REPLACE_SHCEDULE_TEACHER_SEARCH_LOADING_HIDE});
+
+                    }
 
 
-            });
+                });
 
+            }
 
         }else{
 
@@ -447,35 +454,41 @@ const replaceTeacherClickSearch = (key) => {
 
         if (key.trim() !== ''){
 
-            dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_OPEN});
+            let pattern =  utils.SearchReg({type:1,dispatch,ErrorTips:"您输入的教师名称或工号不正确",key:key});
 
-            dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LOADING_SHOW});
+            if (pattern){
 
-            let {SchoolID} = getState().LoginUser;
+                dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_OPEN});
 
-            ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,Key:key,dispatch}).then(data=>{
+                dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LOADING_SHOW});
 
-                if (data){
+                let {SchoolID} = getState().LoginUser;
 
-                    let teacherSearchList = data.map(item => {
+                ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,Key:key,dispatch}).then(data=>{
 
-                        return{
+                    if (data){
 
-                            id:item.TeacherID,
+                        let teacherSearchList = data.map(item => {
 
-                            name:item.TeacherName
+                            return{
 
-                        };
+                                id:item.TeacherID,
 
-                    });
+                                name:item.TeacherName
 
-                    dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LIST_UPDATE,data:teacherSearchList});
+                            };
 
-                    dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LOADING_HIDE});
+                        });
 
-                }
+                        dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LIST_UPDATE,data:teacherSearchList});
 
-            });
+                        dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LOADING_HIDE});
+
+                    }
+
+                });
+
+            }
 
         }else{
 
@@ -1098,35 +1111,42 @@ const originTeacherClickSearch = (key) => {
 
         if (key.trim() !== ''){
 
-            let {SchoolID} = getState().LoginUser;
+            let pattern =  utils.SearchReg({type:1,dispatch,ErrorTips:"您输入的教师名称或工号不正确",key:key});
 
-            dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SEARCH_OPEN});
+            if (pattern){
 
-            dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SEARCH_LOADING_SHOW});
+                let {SchoolID} = getState().LoginUser;
 
-            ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,Key:key,dispatch}).then(data => {
+                dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SEARCH_OPEN});
 
-                if (data){
+                dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SEARCH_LOADING_SHOW});
 
-                    let teacherSearchList = data.map(item => {
+                ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,Key:key,dispatch}).then(data => {
 
-                        return{
+                    if (data){
 
-                            id:item.TeacherID,
+                        let teacherSearchList = data.map(item => {
 
-                            name:item.TeacherName
+                            return{
 
-                        };
+                                id:item.TeacherID,
 
-                    });
+                                name:item.TeacherName
 
-                    dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SEARCH_LIST_UPDATE,data:teacherSearchList});
+                            };
 
-                    dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SEARCH_LOADING_HIDE});
+                        });
 
-                }
+                        dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SEARCH_LIST_UPDATE,data:teacherSearchList});
 
-            });
+                        dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SEARCH_LOADING_HIDE});
+
+                    }
+
+                });
+
+            }
+
 
         }else{
 
@@ -1335,35 +1355,41 @@ const targetTeacherClickSearch = (key) => {
 
         if (key.trim() !== ''){
 
-            let {SchoolID} = getState().LoginUser;
+            let pattern =  utils.SearchReg({type:1,dispatch,ErrorTips:"您输入的教师名称或工号不正确",key:key});
 
-            dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_OPEN});
+            if (pattern){
 
-            dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LOADING_SHOW});
+                let {SchoolID} = getState().LoginUser;
 
-            ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,Key:key,dispatch}).then(data => {
+                dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_OPEN});
 
-                if (data){
+                dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LOADING_SHOW});
 
-                    let teacherSearchList = data.map(item => {
+                ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,Key:key,dispatch}).then(data => {
 
-                        return{
+                    if (data){
 
-                            id:item.TeacherID,
+                        let teacherSearchList = data.map(item => {
 
-                            name:item.TeacherName
+                            return{
 
-                        };
+                                id:item.TeacherID,
 
-                    });
+                                name:item.TeacherName
 
-                    dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LIST_UPDATE,data:teacherSearchList});
+                            };
 
-                    dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LOADING_HIDE});
+                        });
 
-                }
+                        dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LIST_UPDATE,data:teacherSearchList});
 
-            });
+                        dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LOADING_HIDE});
+
+                    }
+
+                });
+
+            }
 
         }else{
 
@@ -1591,35 +1617,41 @@ const changeTimeTeacherClickSearch = (key) => {
 
         if (key.trim() !== ''){
 
-            let {SchoolID} = getState().LoginUser;
+            let pattern =  utils.SearchReg({type:1,dispatch,ErrorTips:"您输入的教师名称或工号不正确",key:key});
 
-            dispatch({type:CHANGE_TIME_TEACHER_DROP_CHANGE,data:{type:"search"}});
+            if (pattern){
 
-            dispatch({type:CHANGE_TIME_TEACHER_DROP_CHANGE,data:{type:"searchLoadingShow"}});
+                let {SchoolID} = getState().LoginUser;
 
-            ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,Key:key,dispatch}).then(data => {
+                dispatch({type:CHANGE_TIME_TEACHER_DROP_CHANGE,data:{type:"search"}});
 
-                if (data){
+                dispatch({type:CHANGE_TIME_TEACHER_DROP_CHANGE,data:{type:"searchLoadingShow"}});
 
-                    let teacherSearchList = data.map(item => {
+                ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,Key:key,dispatch}).then(data => {
 
-                        return{
+                    if (data){
 
-                            id:item.TeacherID,
+                        let teacherSearchList = data.map(item => {
 
-                            name:item.TeacherName
+                            return{
 
-                        };
+                                id:item.TeacherID,
 
-                    });
+                                name:item.TeacherName
 
-                    dispatch({type:CHANGE_TIME_TEACHER_DROP_CHANGE,data:{type:'teacherListChange',value:teacherSearchList}});
+                            };
 
-                    dispatch({type:CHANGE_TIME_TEACHER_DROP_CHANGE,data:{type:"searchLoadingHide"}});
+                        });
 
-                }
+                        dispatch({type:CHANGE_TIME_TEACHER_DROP_CHANGE,data:{type:'teacherListChange',value:teacherSearchList}});
 
-            });
+                        dispatch({type:CHANGE_TIME_TEACHER_DROP_CHANGE,data:{type:"searchLoadingHide"}});
+
+                    }
+
+                });
+
+            }
 
         }else{
 
@@ -2717,35 +2749,41 @@ const changeClassRoomTeacherSearch = (key) => {
 
         if (key.trim() !== ''){
 
-            let {SchoolID} = getState().LoginUser;
+            let pattern =  utils.SearchReg({type:1,dispatch,ErrorTips:"您输入的教师名称或工号不正确",key:key});
 
-            dispatch({type:CHANGE_CLASS_ROOM_TEACHER_CHANGE,data:{type:"search"}});
+            if (pattern){
 
-            dispatch({type:CHANGE_CLASS_ROOM_TEACHER_CHANGE,data:{type:"searchLoadingShow"}});
+                let {SchoolID} = getState().LoginUser;
 
-            ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,Key:key,dispatch}).then(data=>{
+                dispatch({type:CHANGE_CLASS_ROOM_TEACHER_CHANGE,data:{type:"search"}});
 
-               if (data){
+                dispatch({type:CHANGE_CLASS_ROOM_TEACHER_CHANGE,data:{type:"searchLoadingShow"}});
 
-                   let teacherSearchList = data.map(item => {
+                ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,Key:key,dispatch}).then(data=>{
 
-                       return{
+                    if (data){
 
-                           id:item.TeacherID,
+                        let teacherSearchList = data.map(item => {
 
-                           name:item.TeacherName
+                            return{
 
-                       };
+                                id:item.TeacherID,
 
-                   });
+                                name:item.TeacherName
 
-                   dispatch({type:CHANGE_CLASS_ROOM_TEACHER_CHANGE,data:{type:'searchListChange',value:teacherSearchList}});
+                            };
 
-                   dispatch({type:CHANGE_CLASS_ROOM_TEACHER_CHANGE,data:{type:"searchLoadingHide"}});
+                        });
 
-               }
+                        dispatch({type:CHANGE_CLASS_ROOM_TEACHER_CHANGE,data:{type:'searchListChange',value:teacherSearchList}});
 
-            });
+                        dispatch({type:CHANGE_CLASS_ROOM_TEACHER_CHANGE,data:{type:"searchLoadingHide"}});
+
+                    }
+
+                });
+
+            }
 
         }else{
 
@@ -2908,35 +2946,41 @@ const stopScheduleTeacherClickSearch = (key) => {
 
         if (key.trim() !== ''){
 
-            let {SchoolID} = getState().LoginUser;
+            let pattern =  utils.SearchReg({type:1,dispatch,ErrorTips:"您输入的教师名称或工号不正确",key:key});
 
-            dispatch({type:STOP_SCHEDULE_TEACHER_CHANGE,data:{type:"search"}});
+            if (pattern){
 
-            dispatch({type:STOP_SCHEDULE_TEACHER_CHANGE,data:{type:"searchLoadingShow"}});
+                let {SchoolID} = getState().LoginUser;
 
-            ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,Key:key,dispatch}).then(data => {
+                dispatch({type:STOP_SCHEDULE_TEACHER_CHANGE,data:{type:"search"}});
 
-                if (data){
+                dispatch({type:STOP_SCHEDULE_TEACHER_CHANGE,data:{type:"searchLoadingShow"}});
 
-                    let teacherSearchList = data.map(item => {
+                ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,Key:key,dispatch}).then(data => {
 
-                        return{
+                    if (data){
 
-                            id:item.TeacherID,
+                        let teacherSearchList = data.map(item => {
 
-                            name:item.TeacherName
+                            return{
 
-                        };
+                                id:item.TeacherID,
 
-                    });
+                                name:item.TeacherName
 
-                    dispatch({type:STOP_SCHEDULE_TEACHER_CHANGE,data:{type:'teacherSearchListChange',value:teacherSearchList}});
+                            };
 
-                    dispatch({type:STOP_SCHEDULE_TEACHER_CHANGE,data:{type:"searchLoadingHide"}});
+                        });
 
-                }
+                        dispatch({type:STOP_SCHEDULE_TEACHER_CHANGE,data:{type:'teacherSearchListChange',value:teacherSearchList}});
 
-            });
+                        dispatch({type:STOP_SCHEDULE_TEACHER_CHANGE,data:{type:"searchLoadingHide"}});
+
+                    }
+
+                });
+
+            }
 
         }else{
 

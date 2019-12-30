@@ -4,6 +4,8 @@ import AppAlertActions from "../AppAlertActions";
 
 import $ from 'jquery';
 
+import utils from '../utils';
+
 const SUBJECT_TEACHER_SCHEDULE_INIT = 'SUBJECT_TEACHER_SCHEDULE_INIT';
 
 const SUBJECT_TEACHER_SCHEDULE_TEACHER_COUNT = 'SUBJECT_TEACHER_SCHEDULE_TEACHER_COUNT';
@@ -163,7 +165,7 @@ const STSPageUpdate = (opt) => {
 
                     };
 
-                    let list = data.ItemSchedule.map((i) => {
+                    let list = utils.ScheduleRemoveRepeat(data.ItemSchedule.map((i) => {
 
                         if (i.TeacherID === item.TeacherID){
 
@@ -193,7 +195,7 @@ const STSPageUpdate = (opt) => {
 
                         }
 
-                    }).filter(i => {return i!==undefined});
+                    }).filter(i => {return i!==undefined}));
 
                     teacherObj['list'] = list;
 

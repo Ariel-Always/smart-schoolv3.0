@@ -1199,7 +1199,7 @@ class DropDown extends React.Component {
 
                 <ul className="dropdown_list_ul3 clearfix" style={{ display: "block" }}>
 
-                    <Loading tip="加载中..." spinning={mutipleOptions && mutipleOptions.searchLoadingShow ? mutipleOptions.searchLoadingShow : false}>
+                    <Loading tip="加载中..."  opacity={false} spinning={mutipleOptions && mutipleOptions.searchLoadingShow ? mutipleOptions.searchLoadingShow : false}>
 
                         {
                             mutipleOptions.searchList.length>0?
@@ -1293,7 +1293,7 @@ class DropDown extends React.Component {
 
                         <Scrollbars  autoHeight autoHeightMin={160} autoHeightMax={scrollWrapperHeight} style={{ width: scrollWrapperWidth }} >
 
-                            <Loading spinning={mutipleOptions && mutipleOptions.dropLoadingShow ? mutipleOptions.dropLoadingShow : false}>
+                            <Loading opacity={false} spinning={mutipleOptions && mutipleOptions.dropLoadingShow ? mutipleOptions.dropLoadingShow : false}>
 
                                 <ul className="dropdown_list_ul">
 
@@ -1326,7 +1326,7 @@ class DropDown extends React.Component {
 
                 <ul className="dropdown_select_ul" ref="dropdown_select_ul" style={{ width: width ? width : 120, overflow: "initial" }}>
 
-                    <Loading spinning={dropLoadingShow ? dropLoadingShow : false}>
+                    <Loading opacity={false} spinning={dropLoadingShow ? dropLoadingShow : false}>
 
                         <Scrollbars  style={{ width: width ? (width-2) : 118, height:ClientHeight}}>
 

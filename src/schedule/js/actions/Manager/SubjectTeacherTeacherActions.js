@@ -2,6 +2,8 @@ import ApiActions from "../ApiActions";
 
 import AppAlertActions from '../AppAlertActions';
 
+import utils from '../utils';
+
 const STT_SCHEDULE_INIT = 'STT_SCHEDULE_INIT';
 
 const STT_NOW_WEEK_CHANGE = 'STT_NOW_WEEK_CHANGE';
@@ -150,7 +152,7 @@ const STTTeacherUpdate = (pickInfo) => {
 
                 let { ScheduleCount} = data;
 
-                let schedule = data.ItemSchedule.map((item) => {
+                let schedule = utils.ScheduleRemoveRepeat(data.ItemSchedule.map((item) => {
 
                     return {
 
@@ -177,7 +179,7 @@ const STTTeacherUpdate = (pickInfo) => {
                     }
 
 
-                });
+                }));
 
                 dispatch({type:STT_SCHEDULE_CHANGE,data:{ScheduleCount,schedule,pickTeacher:pickInfo.catChildrenName,pickTeacherID:pickInfo.catChildrenId}});
 
@@ -227,7 +229,7 @@ const STTWeekUpdate = () => {
 
                     let { ScheduleCount} = data;
 
-                    let schedule = data.ItemSchedule.map((item) => {
+                    let schedule = utils.ScheduleRemoveRepeat(data.ItemSchedule.map((item) => {
 
                         return {
                             ...item,
@@ -253,7 +255,7 @@ const STTWeekUpdate = () => {
                         }
 
 
-                    });
+                    }));
 
                     dispatch({type:STT_SCHEDULE_CHANGE,data:{ScheduleCount,schedule}});
 
@@ -274,49 +276,57 @@ const STTTeacherSearch = (val) => {
 
     return (dispatch,getState) => {
 
-        dispatch({type:SEARCH_LOADING_SHOW});
-
-        dispatch({type:MANAGER_STT_LEFT_MENU_CANCEL_BTN_SHOW});
-
-        dispatch({type:SEARCH_TEACHER_RESULT_SHOW});
-
-        let { LoginUser,Manager,PeriodWeekTerm } = getState();
-
-        let SchoolID = LoginUser.SchoolID;
-
-        let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;
-
-        let SubjectID ='';
-
         let Key = val;
 
-        ApiActions.GetTeacherBySubjectIDAndKey({
+        let pattern =  utils.SearchReg({type:1,dispatch,ErrorTips:"您输入的工号或姓名不正确",key:Key});
 
-            SchoolID,PeriodID,SubjectID:'',Key,dispatch,Flag:0
+        if (pattern){
 
-        }).then(data => {
+            dispatch({type:SEARCH_LOADING_SHOW});
 
-           if (data){
+            dispatch({type:MANAGER_STT_LEFT_MENU_CANCEL_BTN_SHOW});
 
-               const result = data.map((item) => {
+            dispatch({type:SEARCH_TEACHER_RESULT_SHOW});
 
-                  return {
+            let { LoginUser,Manager,PeriodWeekTerm } = getState();
 
-                      id:item.TeacherID,
+            let SchoolID = LoginUser.SchoolID;
 
-                      name:item.TeacherName
+            let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;
 
-                  }
+            let SubjectID ='';
 
-               });
+            ApiActions.GetTeacherBySubjectIDAndKey({
 
-                dispatch({type:SEARCH_TEACHER_RESULT_UPDATE,data:result});
+                SchoolID,PeriodID,SubjectID:'',Key,dispatch,Flag:0
 
-                dispatch({type:SEARCH_LOADING_HIDE});
+            }).then(data => {
 
-           }
+                if (data){
 
-        });
+                    const result = data.map((item) => {
+
+                        return {
+
+                            id:item.TeacherID,
+
+                            name:item.TeacherName
+
+                        }
+
+                    });
+
+                    dispatch({type:SEARCH_TEACHER_RESULT_UPDATE,data:result});
+
+                    dispatch({type:SEARCH_LOADING_HIDE});
+
+                }
+
+            });
+
+        }
+
+
 
     };
 
@@ -606,53 +616,60 @@ const ClassRoomSearchClick = (SearchValue) => {
 
         if (Key){
 
-            dispatch({type:MANAGER_STT_ADJUST_CLASSROOM_MODAL_SEARCH_LOADING_SHOW});
+            let pattern =  utils.SearchReg({type:2,dispatch,ErrorTips:"您输入的教室ID或名称不正确",key:Key});
 
-            dispatch({type:MANAGER_STT_ADJUST_CLASSROOM_MODAL_SEARCH_CANCEL_BTN_SHOW});
+            if (pattern){
 
-            dispatch({type:MANAGER_STT_ADJUST_CLASSROOM_MODAL_SEARCH_WRAPPER_SHOW});
+                dispatch({type:MANAGER_STT_ADJUST_CLASSROOM_MODAL_SEARCH_LOADING_SHOW});
 
-            const { SchoolID } = getState().LoginUser;
+                dispatch({type:MANAGER_STT_ADJUST_CLASSROOM_MODAL_SEARCH_CANCEL_BTN_SHOW});
 
-            const { ClassRoomList,NowClassRoomID } = getState().Manager.SubjectTeacherTeacherSchedule.AdjustClassRoom;
+                dispatch({type:MANAGER_STT_ADJUST_CLASSROOM_MODAL_SEARCH_WRAPPER_SHOW});
 
-            let SearchList = [];
+                const { SchoolID } = getState().LoginUser;
 
-            ApiActions.GetClassRoomByClassTypeAndKey({SchoolID,PeriodID:'',ClassRoomTypeID:'',Key,dispatch}).then(data=>{
+                const { ClassRoomList,NowClassRoomID } = getState().Manager.SubjectTeacherTeacherSchedule.AdjustClassRoom;
 
-                if (data){
+                let SearchList = [];
 
-                    data.map(item=>{
+                ApiActions.GetClassRoomByClassTypeAndKey({SchoolID,PeriodID:'',ClassRoomTypeID:'',Key,dispatch}).then(data=>{
 
-                        let ClassTypeName = ClassRoomList.find(i=>i.ID===item.ClassRoomTypeID).Name;
+                    if (data){
 
-                        if (item.ClassRoomID!==NowClassRoomID){
+                        data.map(item=>{
 
-                            SearchList.push({
+                            let ClassTypeName = ClassRoomList.find(i=>i.ID===item.ClassRoomTypeID).Name;
 
-                                ID:item.ClassRoomID,
+                            if (item.ClassRoomID!==NowClassRoomID){
 
-                                Name:item.ClassRoomName,
+                                SearchList.push({
 
-                                TypeID:item.ClassRoomTypeID,
+                                    ID:item.ClassRoomID,
 
-                                TypeName:ClassTypeName
+                                    Name:item.ClassRoomName,
 
-                            });
+                                    TypeID:item.ClassRoomTypeID,
 
-                        }
+                                    TypeName:ClassTypeName
 
-                    })
+                                });
 
-                }
+                            }
 
-                dispatch({type:MANAGER_STT_ADJUST_CLASSROOM_MODAL_SEARCH_LIST_UPDATE,data:SearchList});
+                        })
+
+                    }
+
+                    dispatch({type:MANAGER_STT_ADJUST_CLASSROOM_MODAL_SEARCH_LIST_UPDATE,data:SearchList});
 
 
 
-                dispatch({type:MANAGER_STT_ADJUST_CLASSROOM_MODAL_SEARCH_LOADING_HIDE});
+                    dispatch({type:MANAGER_STT_ADJUST_CLASSROOM_MODAL_SEARCH_LOADING_HIDE});
 
-            });
+                });
+
+            }
+
 
         }else{
 
@@ -792,6 +809,8 @@ const ReplaceSearchClick = (SearchValue) => {
         const Key = SearchValue.trim();
 
         if (Key){
+
+            utils.SearchReg({key:Key,dispatch,ErrorTips:""})
 
             dispatch({type:MANAGER_STT_REPLACE_SCHEDULE_MODAL_SEARCH_LOADING_SHOW});
 

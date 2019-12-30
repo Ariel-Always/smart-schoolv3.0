@@ -2,6 +2,8 @@ import ApiActions from "../ApiActions";
 
 import AppAlertActions from '../AppAlertActions';
 
+import utils from '../utils';
+
 const TEACHER_CLASS_TOTAL_INIT = 'TEACHER_CLASS_TOTAL_INIT';
 
 
@@ -186,7 +188,7 @@ const ClassTotalPageUpdate = () =>{
 
             if (json){
 
-                let Schedule = json.ItemSchedule.map((item) => {
+                let Schedule = utils.ScheduleRemoveRepeat(json.ItemSchedule.map((item) => {
 
                     return {
 
@@ -212,7 +214,7 @@ const ClassTotalPageUpdate = () =>{
 
                     }
 
-                });
+                }));
 
                 json.ItemCourseClass.map(item=>{
 

@@ -132,13 +132,14 @@ class Index extends Component {
 
   ClickModule({ ModuleStatus, AccessType, AccessParam, SysID, Event,ModuleType }) {
 
+    Event.stopPropagation();
+
     const { dispatch,BsToCs,Teacher } = this.props;
 
     const {CanVisit} = BsToCs;
 
     const SubjectID = Teacher.HeaderSetting.SubjectSelect.id;
 
-    Event.stopPropagation();
 
     switch (ModuleStatus) {
 
@@ -182,6 +183,8 @@ class Index extends Component {
 
           //判断是否有基础插件包
           if (CanVisit){
+
+              console.log(ModuleType);
 
               // let  AccessParam = 'lgsoft://LgExplorer::LgExplorer::LgExplorer.exe::{Web_Basic}|{lg_tk}|{SubjectID}|localDisk|';
 

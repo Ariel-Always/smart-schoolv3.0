@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Method from '../Method';
+import utils from '../utils';
 
 import AppAlertActions from '../AppAlertActions';
 
@@ -379,35 +379,41 @@ const replaceTeacherClickSearch = (key) => {
 
         if (key.trim() !== ''){
 
-            let {SchoolID} = getState().LoginUser;
+            let pattern =  utils.SearchReg({type:1,dispatch,ErrorTips:"您输入的教师姓名或工号不正确",key:key});
 
-            dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_OPEN});
+            if (pattern){
 
-            dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LOADING_SHOW});
+                let {SchoolID} = getState().LoginUser;
 
-            ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,Key:key,dispatch}).then(data => {
+                dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_OPEN});
 
-                if (data){
+                dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LOADING_SHOW});
 
-                    let teacherSearchList = data.map(item => {
+                ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,Key:key,dispatch}).then(data => {
 
-                        return{
+                    if (data){
 
-                            id:item.TeacherID,
+                        let teacherSearchList = data.map(item => {
 
-                            name:item.TeacherName
+                            return{
 
-                        };
+                                id:item.TeacherID,
 
-                    });
+                                name:item.TeacherName
 
-                    dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LIST_UPDATE,data:teacherSearchList});
+                            };
 
-                    dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LOADING_HIDE});
+                        });
 
-                }
+                        dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LIST_UPDATE,data:teacherSearchList});
 
-            });
+                        dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LOADING_HIDE});
+
+                    }
+
+                });
+
+            }
 
         }else{
 
@@ -1084,36 +1090,41 @@ const targetTeacherClickSearch = (key) => {
 
         if (key.trim() !== ''){
 
-            let SchoolID = getState().LoginUser;
+            let pattern =  utils.SearchReg({type:1,dispatch,ErrorTips:"您输入的教师姓名或工号不正确",key:key});
 
-            dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_OPEN});
+            if (pattern){
 
-            dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LOADING_SHOW});
+                let SchoolID = getState().LoginUser;
 
+                dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_OPEN});
 
-            ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,dispatch}).then(data => {
+                dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LOADING_SHOW});
 
-                if (data){
+                ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,dispatch}).then(data => {
 
-                    let teacherSearchList =data.map(item => {
+                    if (data){
 
-                        return{
+                        let teacherSearchList =data.map(item => {
 
-                            id:item.TeacherID,
+                            return{
 
-                            name:item.TeacherName
+                                id:item.TeacherID,
 
-                        };
+                                name:item.TeacherName
 
-                    });
+                            };
 
-                    dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LIST_UPDATE,data:teacherSearchList});
+                        });
 
-                    dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LOADING_HIDE});
+                        dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LIST_UPDATE,data:teacherSearchList});
 
-                }
+                        dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SEARCH_LOADING_HIDE});
 
-            });
+                    }
+
+                });
+
+            }
 
         }else{
 

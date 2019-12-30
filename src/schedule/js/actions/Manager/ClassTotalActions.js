@@ -4,6 +4,8 @@ import AppAlertActions from "../AppAlertActions";
 
 import $ from 'jquery';
 
+import utils from '../utils';
+
 const MANAGER_CLASS_TOTAL_INIT = 'MANAGER_CLASS_TOTAL_INIT';
 
 
@@ -173,7 +175,7 @@ const ClassTotalPageUpdate = (opt) =>{
 
                     };
 
-                    let list = data.ItemSchedule.map((i) => {
+                    let list = utils.ScheduleRemoveRepeat(data.ItemSchedule.map((i) => {
 
                         if (i.ClassID === item.ClassID){
 
@@ -207,7 +209,7 @@ const ClassTotalPageUpdate = (opt) =>{
 
                         }
 
-                    }).filter(i => {return i!==undefined});
+                    }).filter(i => {return i!==undefined}));
 
                     classObj['list'] = list;
 

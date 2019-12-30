@@ -445,7 +445,7 @@ class ClassRoomSingle extends Component{
                 <Loading tip="请稍后..." spinning={ClassRoomSingle.ScheduleLoadingShow}>
 
                     <LeftMenu
-                        title="教室课表"
+                        title="教室列表"
                         type="classroom"
                         pickList={ClassRoomSingle.ClassRoomList}
                         pickClick={this.menuPickClick.bind(this)}
@@ -457,7 +457,8 @@ class ClassRoomSingle extends Component{
                         PickID={ClassRoomSingle.PickClassRoomID}
                         CancelBtnShow={ClassRoomSingle.CancelBtnShow}
                         SearchValue={ClassRoomSingle.SearchValue}
-                        SearchValueChange={this.LeftMenuSearchValueChange.bind(this)}>
+                        SearchValueChange={this.LeftMenuSearchValueChange.bind(this)}
+                        placeHolder={"请输入名称或ID搜索"}>
 
                     </LeftMenu>
 

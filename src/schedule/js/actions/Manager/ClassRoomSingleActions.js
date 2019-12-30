@@ -2,6 +2,8 @@ import ApiActions from "../ApiActions";
 
 import AppAlertActions from '../AppAlertActions';
 
+import utils from '../utils';
+
 const MANAGER_CLASS_ROOM_SINGLE_SCHEDULE_LOADING_SHOW = 'MANAGER_CLASS_ROOM_SINGLE_SCHEDULE_LOADING_SHOW';
 
 const MANAGER_CLASS_ROOM_SINGLE_SCHEDULE_LOADING_HIDE = 'MANAGER_CLASS_ROOM_SINGLE_SCHEDULE_LOADING_HIDE';
@@ -146,7 +148,7 @@ const ClassRoomSingleScheduleUpdate = (pickInfo) =>{
 
                 let { ScheduleCount} = data;
 
-                let Schedule = data.ItemSchedule.map((item) => {
+                let Schedule = utils.ScheduleRemoveRepeat(data.ItemSchedule.map((item) => {
 
                     return {
 
@@ -172,7 +174,7 @@ const ClassRoomSingleScheduleUpdate = (pickInfo) =>{
 
                     }
 
-                });
+                }));
 
                 dispatch({type:MANAGER_CLASS_ROOM_SINGLE_SCHEDULE_UPDATE,data:{ScheduleCount,Schedule,PickClassRoom:pickInfo.catChildrenName,PickClassRoomID:pickInfo.catChildrenId}});
 
@@ -218,7 +220,7 @@ const WeekUpdate = () => {
 
                     let { ScheduleCount} = data;
 
-                    let Schedule = data.ItemSchedule.map((item) => {
+                    let Schedule = utils.ScheduleRemoveRepeat(data.ItemSchedule.map((item) => {
 
                         return {
 
@@ -244,7 +246,7 @@ const WeekUpdate = () => {
 
                         }
 
-                    });
+                    }));
 
                     dispatch({type:MANAGER_CLASS_ROOM_SINGLE_SCHEDULE_UPDATE,data:{ScheduleCount,Schedule}});
 
@@ -268,52 +270,59 @@ const ClassSearch = (val) => {
 
     return (dispatch,getState) => {
 
-        dispatch({type:MANAGER_CLASS_ROOM_SINGLE_SEARCH_RESULT_SHOW});
-
-        dispatch({type:MANAGER_CLASS_ROOM_SINGLE_SEARCHLIST_UPDATE,data:[]});
-
-        dispatch({type:MANAGER_CLASS_ROOM_SINGLE_SEARCH_LOADING_SHOW});
-
-        dispatch({type:MANAGER_CRS_LEFT_MENU_CANCEL_BTN_SHOW});
-
-        let { LoginUser,Manager,PeriodWeekTerm } = getState();
-
-        let SchoolID = LoginUser.SchoolID;
-
-        let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;
-
-        let SubjectID ='';
-
         let Key = val;
 
-        ApiActions.GetClassRoomByClassTypeAndKey({
+        let pattern =  utils.SearchReg({type:2,dispatch,ErrorTips:"您输入的教室ID或名称不正确",key:Key});
 
-            SchoolID,PeriodID,ClassRoomTypeID:'',Key,Flag:0,dispatch
+        if (pattern){
 
-        }).then(data => {
+            dispatch({type:MANAGER_CLASS_ROOM_SINGLE_SEARCH_RESULT_SHOW});
 
-            if (data){
+            dispatch({type:MANAGER_CLASS_ROOM_SINGLE_SEARCHLIST_UPDATE,data:[]});
 
-                const result = data.map((item) => {
+            dispatch({type:MANAGER_CLASS_ROOM_SINGLE_SEARCH_LOADING_SHOW});
 
-                    return {
+            dispatch({type:MANAGER_CRS_LEFT_MENU_CANCEL_BTN_SHOW});
 
-                        id:item.ClassRoomID,
+            let { LoginUser,Manager,PeriodWeekTerm } = getState();
 
-                        name:item.ClassRoomName
+            let SchoolID = LoginUser.SchoolID;
 
-                    }
+            let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;
 
-                });
+            let SubjectID ='';
 
-                dispatch({type:MANAGER_CLASS_ROOM_SINGLE_SEARCHLIST_UPDATE,data:result});
+            ApiActions.GetClassRoomByClassTypeAndKey({
 
-            }
+                SchoolID,PeriodID,ClassRoomTypeID:'',Key,Flag:0,dispatch
 
-            dispatch({type:MANAGER_CLASS_ROOM_SINGLE_SEARCH_LOADING_HIDE});
+            }).then(data => {
+
+                if (data){
+
+                    const result = data.map((item) => {
+
+                        return {
+
+                            id:item.ClassRoomID,
+
+                            name:item.ClassRoomName
+
+                        }
+
+                    });
+
+                    dispatch({type:MANAGER_CLASS_ROOM_SINGLE_SEARCHLIST_UPDATE,data:result});
+
+                }
+
+                dispatch({type:MANAGER_CLASS_ROOM_SINGLE_SEARCH_LOADING_HIDE});
 
 
-        });
+            });
+
+        }
+
 
     };
 

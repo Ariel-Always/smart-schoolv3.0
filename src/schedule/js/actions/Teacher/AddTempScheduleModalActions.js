@@ -6,6 +6,8 @@ import AppAlertActions from '../AppAlertActions';
 
 import ComPageRefresh from '../ComPageRefresh';
 
+import utils from '../utils';
+
 
 //添加临时课程
 
@@ -432,49 +434,55 @@ const classSearch = (key) => {
 
         if (key.trim() !== ''){
 
-            let {SchoolID} = getState().LoginUser;
+            let pattern =  utils.SearchReg({type:2,dispatch,ErrorTips:"您输入的班级名称或ID不正确",key:key});
 
-            const { classList } = getState().Teacher.AddTempScheduleModal;
+            if (pattern){
 
-            dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASS_SEARCH_OPEN});
+                let {SchoolID} = getState().LoginUser;
 
-            dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASS_SEARCH_CANCEL_SHOW});
+                const { classList } = getState().Teacher.AddTempScheduleModal;
 
-            dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASS_SEARCH_LOADING_SHOW});
+                dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASS_SEARCH_OPEN});
 
-           /* ApiActions.GetClassByGradeIDAndKey({SchoolID,Key:key,dispatch}).then(data => {
+                dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASS_SEARCH_CANCEL_SHOW});
 
-                if (data){
+                dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASS_SEARCH_LOADING_SHOW});
 
-                    let classSearchList = data.map(item => {
+                /* ApiActions.GetClassByGradeIDAndKey({SchoolID,Key:key,dispatch}).then(data => {
 
-                        return{
+                     if (data){
 
-                            id:item.ClassID,
+                         let classSearchList = data.map(item => {
 
-                            name:item.ClassName
+                             return{
 
-                        };
+                                 id:item.ClassID,
 
-                    });
+                                 name:item.ClassName
 
-                    dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASS_SEARCH_LIST_UPDATE,data:classSearchList});
+                             };
 
-                    dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASS_SEARCH_LOADING_HIDE});
+                         });
 
-                }
+                         dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASS_SEARCH_LIST_UPDATE,data:classSearchList});
 
-            });
-*/
-            const classSearchList = classList.map(item=>{
+                         dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASS_SEARCH_LOADING_HIDE});
 
-                return item.list.filter(i=>i.name.includes(key));
+                     }
 
-            }).filter(item=>item.length>0).map(i=>i[0]);
+                 });
+     */
+                const classSearchList = classList.map(item=>{
 
-            dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASS_SEARCH_LIST_UPDATE,data:classSearchList});
+                    return item.list.filter(i=>i.name.includes(key));
 
-            dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASS_SEARCH_LOADING_HIDE});
+                }).filter(item=>item.length>0).map(i=>i[0]);
+
+                dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASS_SEARCH_LIST_UPDATE,data:classSearchList});
+
+                dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASS_SEARCH_LOADING_HIDE});
+
+            }
 
         }else{
 
@@ -574,41 +582,47 @@ const classRoomSearch = (key) => {
 
         if(key.trim() !== ''){
 
-            let {SchoolID} = getState().LoginUser;
+            let pattern =  utils.SearchReg({type:2,dispatch,ErrorTips:"您输入的教室名称或ID不正确",key:key});
 
-            dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_OPEN});
+            if (pattern){
 
-            dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_CANCEL_SHOW});
+                let {SchoolID} = getState().LoginUser;
 
-            dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LOADING_SHOW});
+                dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_OPEN});
 
-            ApiActions.GetClassRoomByClassTypeAndKey({
+                dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_CANCEL_SHOW});
 
-                SchoolID,Key:key,dispatch
+                dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LOADING_SHOW});
 
-            }).then(data => {
+                ApiActions.GetClassRoomByClassTypeAndKey({
 
-                if (data){
+                    SchoolID,Key:key,dispatch
 
-                    let classRoomSearchList = data.map(item => {
+                }).then(data => {
 
-                        return{
+                    if (data){
 
-                            id:item.ClassRoomID,
+                        let classRoomSearchList = data.map(item => {
 
-                            name:item.ClassRoomName
+                            return{
 
-                        };
+                                id:item.ClassRoomID,
 
-                    });
+                                name:item.ClassRoomName
 
-                    dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LIST_UPDATE,data:classRoomSearchList});
+                            };
 
-                    dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LOADING_HIDE});
+                        });
 
-                }
+                        dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LIST_UPDATE,data:classRoomSearchList});
 
-            });
+                        dispatch({type:TEACHER_ADD_SCHEDULE_MODAL_CLASSROOM_SEARCH_LOADING_HIDE});
+
+                    }
+
+                });
+
+            }
 
         }else{
 

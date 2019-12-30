@@ -470,7 +470,9 @@ class Teacher extends Component{
                         PickID={SubjectTeacherTeacherSchedule.pickTeacherID}
                         CancelBtnShow={SubjectTeacherTeacherSchedule.CancelBtnShow}
                         SearchValue={SubjectTeacherTeacherSchedule.SearchValue}
-                        SearchValueChange={this.LeftMenuSearchValueChange.bind(this)}>
+                        SearchValueChange={this.LeftMenuSearchValueChange.bind(this)}
+                        placeHolder={'请输入工号或姓名搜索'}
+                        >
 
                     </LeftMenu>
 

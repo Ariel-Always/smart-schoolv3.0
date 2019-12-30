@@ -2,6 +2,8 @@ import ApiActions from '../ApiActions';
 
 import AppAlertActions from '../AppAlertActions';
 
+import utils from '../utils';
+
 const STT_SCHEDULE_INIT = 'STT_SCHEDULE_INIT';
 
 const STT_NOW_WEEK_CHANGE = 'STT_NOW_WEEK_CHANGE';
@@ -154,7 +156,7 @@ const STTTeacherUpdate = (pickInfo) => {
 
                 let { ScheduleCount} = data;
 
-                let schedule = data.ItemSchedule.map((item) => {
+                let schedule = utils.ScheduleRemoveRepeat(data.ItemSchedule.map((item) => {
 
                     return {
 
@@ -181,7 +183,7 @@ const STTTeacherUpdate = (pickInfo) => {
                     }
 
 
-                });
+                }));
 
                 dispatch({type:STT_SCHEDULE_CHANGE,data:{ScheduleCount,schedule,pickTeacher:pickInfo.catChildrenName,pickTeacherID:pickInfo.catChildrenId}});
 
@@ -231,7 +233,7 @@ const STTWeekUpdate = () => {
 
                     let { ScheduleCount} = data;
 
-                    let schedule = data.ItemSchedule.map((item) => {
+                    let schedule = utils.ScheduleRemoveRepeat(data.ItemSchedule.map((item) => {
 
                         return {
 
@@ -258,7 +260,7 @@ const STTWeekUpdate = () => {
                         }
 
 
-                    });
+                    }));
 
                     dispatch({type:STT_SCHEDULE_CHANGE,data:{ScheduleCount,schedule}});
 
@@ -279,51 +281,58 @@ const STTTeacherSearch = (val) => {
 
     return (dispatch,getState) => {
 
-        dispatch({type:SEARCH_LOADING_SHOW});
-
-        dispatch({type:TEACHER_STT_LEFT_MENU_CANCEL_BTN_SHOW});
-
-        dispatch({type:SEARCH_TEACHER_RESULT_SHOW});
-
-        let { LoginUser,Teacher,PeriodWeekTerm } = getState();
-
-        let SchoolID = LoginUser.SchoolID;
-
-        let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;
-
-        let SubjectID ='';
-
         let Key = val.trim();
 
         if (Key){
 
-            ApiActions.GetTeacherBySubjectIDAndKey({
+            let pattern =  utils.SearchReg({type:1,dispatch,ErrorTips:"您输入的教师姓名或工号不正确",key:Key});
 
-                SchoolID,PeriodID,SubjectID,Key,Flag:0,dispatch
+            if (pattern){
 
-            }).then(data => {
+                dispatch({type:SEARCH_LOADING_SHOW});
 
-                if (data){
+                dispatch({type:TEACHER_STT_LEFT_MENU_CANCEL_BTN_SHOW});
 
-                    const result = data.map((item) => {
+                dispatch({type:SEARCH_TEACHER_RESULT_SHOW});
 
-                        return {
+                let { LoginUser,Teacher,PeriodWeekTerm } = getState();
 
-                            id:item.TeacherID,
+                let SchoolID = LoginUser.SchoolID;
 
-                            name:item.TeacherName
+                let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;
 
-                        }
+                let SubjectID ='';
 
-                    });
+                ApiActions.GetTeacherBySubjectIDAndKey({
 
-                    dispatch({type:SEARCH_TEACHER_RESULT_UPDATE,data:result})
+                    SchoolID,PeriodID,SubjectID,Key,Flag:0,dispatch
 
-                    dispatch({type:SEARCH_LOADING_HIDE});
+                }).then(data => {
 
-                }
+                    if (data){
 
-            });
+                        const result = data.map((item) => {
+
+                            return {
+
+                                id:item.TeacherID,
+
+                                name:item.TeacherName
+
+                            }
+
+                        });
+
+                        dispatch({type:SEARCH_TEACHER_RESULT_UPDATE,data:result})
+
+                        dispatch({type:SEARCH_LOADING_HIDE});
+
+                    }
+
+                });
+
+            }
+
 
         }else{
 
