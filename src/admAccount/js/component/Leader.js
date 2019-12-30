@@ -198,7 +198,8 @@ class Leader extends React.Component {
       sortType: "",
       sortFiled: "",
       userMsg: props.DataState.LoginUser,
-      PwdTipsTitle:'密码由6-20个字符，只能由字母、数字、下划线及部分特殊字符组成'
+      PwdTipsTitle:'密码由6-20个字符，只能由字母、数字、下划线及部分特殊字符组成',
+      ChangeAllPwdMadalVisible:false
     };
   }
   componentWillMount() {
@@ -312,15 +313,18 @@ class Leader extends React.Component {
         })
       );
     } else {
-      dispatch(
-        actions.UpUIState.showErrorAlert({
-          type: "btn-query",
-          title: "确定批量重置密码？",
-          ok: this.onAlertQueryOk.bind(this, "888888"),
-          cancel: this.onAlertQueryClose.bind(this),
-          close: this.onAlertQueryClose.bind(this)
-        })
-      );
+      // dispatch(
+      //   actions.UpUIState.showErrorAlert({
+      //     type: "btn-query",
+      //     title: "确定批量重置密码？",
+      //     ok: this.onAlertQueryOk.bind(this, "888888"),
+      //     cancel: this.onAlertQueryClose.bind(this),
+      //     close: this.onAlertQueryClose.bind(this)
+      //   })
+      // );
+      this.setState({
+        ChangeAllPwdMadalVisible:true
+      })
     }
   };
   onChangePwdClick = key => {
@@ -386,6 +390,64 @@ class Leader extends React.Component {
         });
     }
   };
+  // 批量
+  onAllPwdchangeOk = pwd => {
+    //  console.log(pwd);
+    const { dispatch, DataState,UIState } = this.props;
+    let url = "/ResetPwd";
+    let UserMsg = DataState.LoginUser;
+    let userIDs = this.state.checkedList.map((child, index) => {
+      return DataState.SchoolLeaderPreview.newList[child].Others.UserID;
+    });
+    if (this.state.defaultPwd === "") {
+      dispatch({type:actions.UpUIState.PWD_TIPS_OPEN})
+      return;
+    } else if (UIState.TipsVisible.PwdTipsShow) {
+      // dispatch({type:actions.UpUIState.PWD_TIPS_OPEN})
+      return;
+    } else{
+     
+      postData(
+        CONFIG.UserAccountProxy + url,
+        {
+          userID: userIDs.join(),
+          userType: 7,
+          newPwd: md5(this.state.defaultPwd)
+        },
+        2
+      )
+        .then(res => {
+          return res.json();
+        })
+        .then(json => {
+          if (json.StatusCode === 200) {
+            dispatch(actions.UpUIState.hideErrorAlert());
+  
+            dispatch(
+              actions.UpUIState.showErrorAlert({
+                type: "success",
+                title: "操作成功",
+                onHide: this.onAlertWarnHide.bind(this)
+              })
+            );
+            this.setState({
+              checkedList: [],
+              checkAll: false,
+              ChangeAllPwdMadalVisible: false,
+              defaultPwd: "888888"
+            });
+            dispatch(
+              actions.UpDataState.getSchoolLeaderPreview(
+                "/GetSchoolLeader?SchoolID=" +
+                  this.state.userMsg.SchoolID +
+                  this.state.sortFiled +
+                  this.state.sortType
+              )
+            );
+          }
+        });
+    }
+  };
   onPwdchangeClose = () => {
     const { dispatch } = this.props;
 
@@ -406,6 +468,38 @@ class Leader extends React.Component {
   onPwdBlur = e => {
     const { dispatch } = this.props;
      console.log(e.target.value)
+    let value = e.target.value
+    let Test = /^([0-9a-zA-Z`~\!@#$%\^&*\(\)_\+-={}|\[\]:\";\'<>\?,.\/\\]){6,20}$/.test(value)
+    if(!Test||value===''){
+      dispatch({type:actions.UpUIState.PWD_TIPS_OPEN})
+      return;
+    }else{
+      dispatch({type:actions.UpUIState.PWD_TIPS_CLOSE})
+      return;
+    }
+    
+  };
+  // 批量
+  onAllPwdchangeClose = () => {
+    const { dispatch } = this.props;
+
+    dispatch({type:actions.UpUIState.PWD_TIPS_CLOSE})
+
+    this.setState({
+      ChangeAllPwdMadalVisible: false,
+      defaultPwd: "888888"
+    });
+  };
+  onAllPwdchange = e => {
+    const { dispatch } = this.props;
+    //  console.log(e.target.value)
+    this.setState({
+      defaultPwd: e.target.value
+    });
+  };
+  onAllPwdBlur = e => {
+    const { dispatch } = this.props;
+    //  console.log(e.target.value)
     let value = e.target.value
     let Test = /^([0-9a-zA-Z`~\!@#$%\^&*\(\)_\+-={}|\[\]:\";\'<>\?,.\/\\]){6,20}$/.test(value)
     if(!Test||value===''){
@@ -776,6 +870,72 @@ class Leader extends React.Component {
           onOk={this.onPwdchangeOk}
           onCancel={this.onPwdchangeClose}
           onClose={this.onPwdchangeClose}
+        ></Alert>
+        {/* 批量 */}
+        <Alert
+          show={this.state.ChangeAllPwdMadalVisible}
+          type={"btn-query"}
+          abstract={
+            <div className="alert-pwd">
+              <span className="alert-pwd-tips">新密码：</span>
+              <Tips
+                overlayClassName="tips"
+                visible={UIState.TipsVisible.PwdTipsShow}
+                title={this.state.PwdTipsTitle}
+                getPopupContainer={e=>e.parentNode}
+              >
+                <Input
+                  size="small"
+                  onChange={this.onAllPwdchange.bind(this)}
+                  onBlur={this.onAllPwdBlur.bind(this)}
+                  style={{ width: 120 + "px" }}
+                  value={this.state.defaultPwd}
+                ></Input>
+              </Tips>
+              {/* <br></br>
+            <span className='PwdTips' style={{display:UIState.TipsVisible.PwdTipsShow?'inline-block':'false'}}>{this.state.PwdTipsTitle}</span> */}
+            </div>
+          }
+          title={
+            this.state.ChangeAllPwdMadalVisible ? (
+              <p className="alert-Title">
+                确定重置
+                {/* <span
+                  title={
+                    DataState.SchoolLeaderPreview.newList[this.state.onClickKey]
+                      .UserName.Name
+                  }
+                  className="alert-Title-name"
+                >
+                  {
+                    DataState.SchoolLeaderPreview.newList[this.state.onClickKey]
+                      .UserName.Name
+                  }
+                </span>
+                <span
+                  title={
+                    DataState.SchoolLeaderPreview.newList[this.state.onClickKey]
+                      .UserName.UserID
+                  }
+                  className="alert-Title-id"
+                >
+                  (
+                  {
+                    DataState.SchoolLeaderPreview.newList[this.state.onClickKey]
+                      .UserName.UserID
+                  }
+                  )
+                </span>{" "}
+                的 */}
+                密码？
+              </p>
+            ) : (
+              ""
+            )
+          }
+          onOk={this.onAllPwdchangeOk}
+          onCancel={this.onAllPwdchangeClose}
+          onClose={this.onAllPwdchangeClose}
         ></Alert>
       </div>
     );
