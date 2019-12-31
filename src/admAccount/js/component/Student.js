@@ -187,48 +187,14 @@ class Student extends React.Component {
       CancelBtnShow: "n",
       firstSelect: { value: 0, title: "全部年级" },
       secondSelect: { value: 0, title: "全部班级" },
-      data: [
-        {
-          key: 1,
-          UserName: {
-            key: "01",
-            PhotoPath:
-              "http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg",
-            UserName: "祝泽森"
-          },
-          UserID: "S00001",
-          Grader: "男",
-          GradeName: "一年级",
-          ClassName: "一年1班",
-          Others: {}
-        }
-      ],
+      
 
-      StudentAccountData: [
-        {
-          key: 0,
-          Name: {
-            Name: "张心仪",
-            UserID: "201700121245",
-            key: 0
-          },
-          UserName: "ZXSTU_001",
-          Sign:
-            "人生重要的不是所站的位置，而是所朝的方向`````````````````11111111111",
-          Gender: "男",
-          UserImg: {
-            PhotoPath:
-              "http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg",
-            PhotoPath_NOcache:
-              "http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg"
-          }
-        }
-      ],
       userMsg: props.DataState.LoginUser,
       sortType: "",
       sortFiled: "",
       PwdTipsTitle:
-        "密码由6-20个字符，只能由字母、数字、下划线及部分特殊字符组成"
+        "密码由6-20个字符，只能由字母、数字、下划线及部分特殊字符组成",
+        ChangeAllPwdMadalVisible:false
     };
   }
   componentWillMount() {
@@ -459,7 +425,23 @@ class Student extends React.Component {
   // }
   onPwdBlur = e => {
     const { dispatch } = this.props;
-    console.log(e.target.value);
+    // console.log(e.target.value);
+    let value = e.target.value;
+    let Test = /^([0-9a-zA-Z`~\!@#$%\^&*\(\)_\+-={}|\[\]:\";\'<>\?,.\/\\]){6,20}$/.test(
+      value
+    );
+    if (!Test || value === "") {
+      dispatch({ type: actions.UpUIState.PWD_TIPS_OPEN });
+      return;
+    } else {
+      dispatch({ type: actions.UpUIState.PWD_TIPS_CLOSE });
+      return;
+    }
+  };
+  // 批量重置
+  onAllPwdBlur = e => {
+    const { dispatch } = this.props;
+    // console.log(e.target.value);
     let value = e.target.value;
     let Test = /^([0-9a-zA-Z`~\!@#$%\^&*\(\)_\+-={}|\[\]:\";\'<>\?,.\/\\]){6,20}$/.test(
       value
@@ -512,9 +494,9 @@ class Student extends React.Component {
       ChangePwdMadalVisible: false
     });
   };
-  ChangePwdMadalOk = e => {
+  ChangeAllPwdMadalOk = e => {
     this.setState({
-      ChangePwdMadalVisible: false
+      ChangeAllPwdMadalVisible: false
     });
   };
 
@@ -532,21 +514,24 @@ class Student extends React.Component {
       );
       return;
     } else {
-      dispatch(
-        actions.UpUIState.showErrorAlert({
-          type: "btn-query",
-          title: "确定批量重置密码？",
-          ok: this.onAlertQueryOk.bind(this, "888888"),
-          cancel: this.onAlertQueryClose.bind(this),
-          close: this.onAlertQueryClose.bind(this)
-        })
-      );
+      // dispatch(
+      //   actions.UpUIState.showErrorAlert({
+      //     type: "btn-query",
+      //     title: "确定批量重置密码？",
+      //     ok: this.onAlertQueryOk.bind(this, "888888"),
+      //     cancel: this.onAlertQueryClose.bind(this),
+      //     close: this.onAlertQueryClose.bind(this)
+      //   })
+      // );
+      this.setState({
+        ChangeAllPwdMadalVisible:true
+      })
     }
   };
   //table点击重置密码
   onChangePwdClick = key => {
     const { dispatch, DataState } = this.props;
-    let data = this.state.StudentAccountData;
+    
     let pwd = "888888";
     // console.log(key)
     this.setState({
@@ -617,6 +602,73 @@ class Student extends React.Component {
         });
     }
   };
+   // 批量重置密码ok
+   onAllPwdchangeOk = pwd => {
+    const { dispatch, DataState, UIState } = this.props;
+    let url = "/ResetPwd";
+    let UserMsg = DataState.LoginUser;
+    if (this.state.defaultPwd === "") {
+      dispatch({ type: actions.UpUIState.PWD_TIPS_OPEN });
+      return;
+    } else if (UIState.TipsVisible.PwdTipsShow) {
+      // dispatch({type:actions.UpUIState.PWD_TIPS_OPEN})
+      return;
+    } else {
+      let userIDs = this.state.checkedList.map((child, index) => {
+        return DataState.GradeStudentPreview.newList[child].Others.UserID;
+      });
+      postData(
+        CONFIG.UserAccountProxy + url,
+        {
+          userID: userIDs.join(),
+          userType: 2,
+          newPwd: md5(this.state.defaultPwd)
+        },
+        2
+      )
+        .then(res => {
+          return res.json();
+        })
+        .then(json => {
+          if (json.StatusCode === 200) {
+            dispatch(
+              actions.UpUIState.showErrorAlert({
+                type: "success",
+                title: "操作成功",
+                onHide: this.onAlertWarnHide.bind(this)
+              })
+            );
+           
+            this.setState({
+              ChangeAllPwdMadalVisible: false,
+              defaultPwd: "888888",
+              checkedList: [],
+              checkAll: false
+            });
+            dispatch(
+              actions.UpDataState.getGradeStudentPreview(
+                "/GetStudentToPage?SchoolID=" +
+                  this.state.userMsg.SchoolID +
+                  "&PageIndex=" +
+                  (this.state.pagination - 1) +
+                  "&PageSize=10&keyword=" +
+                  this.state.keyword +
+                  (this.state.firstSelect.value
+                    ? "&gradeID=" + this.state.firstSelect.value
+                    : "") +
+                  (this.state.secondSelect.value
+                    ? "&classID=" + this.state.secondSelect.value
+                    : "") +
+                  this.state.sortFiled +
+                  this.state.sortType
+              )
+            );
+          }
+        });
+
+    
+    }
+  };
   //关闭
   onAlertWarnHide = () => {
     const { dispatch } = this.props;
@@ -634,7 +686,25 @@ class Student extends React.Component {
       defaultPwd: "888888"
     });
   };
+   // 批量重置密码close
+   onAllPwdchangeClose = () => {
+    const { dispatch } = this.props;
+
+    dispatch({ type: actions.UpUIState.PWD_TIPS_CLOSE });
+
+    this.setState({
+      ChangeAllPwdMadalVisible: false,
+      defaultPwd: "888888"
+    });
+  };
   onPwdchange = e => {
+    const { dispatch } = this.props;
+    this.setState({
+      defaultPwd: e.target.value
+    });
+  };
+  // 批量change
+  onAllPwdchange = e => {
     const { dispatch } = this.props;
     this.setState({
       defaultPwd: e.target.value
@@ -1105,6 +1175,70 @@ class Student extends React.Component {
           onOk={this.onPwdchangeOk.bind(this)}
           onCancel={this.onPwdchangeClose}
           onClose={this.onPwdchangeClose}
+        ></Alert>
+{/* 批量重置 */}
+<Alert
+          show={this.state.ChangeAllPwdMadalVisible}
+          type={"btn-query"}
+          abstract={
+            <div className="alert-pwd">
+              <span className="alert-pwd-tips">新密码：</span>
+              <Tips
+                overlayClassName="tips"
+                visible={UIState.TipsVisible.PwdTipsShow}
+                title={this.state.PwdTipsTitle}
+                getPopupContainer={e => e.parentNode}
+              >
+                <Input
+                  onBlur={this.onAllPwdBlur.bind(this)}
+                  size="small"
+                  onChange={this.onAllPwdchange.bind(this)}
+                  style={{ width: 120 + "px" }}
+                  value={this.state.defaultPwd}
+                ></Input>
+              </Tips>
+            </div>
+          }
+          title={
+            this.state.ChangeAllPwdMadalVisible ? (
+              <p className="alert-Title">
+                确定重置
+                {/* <span
+                  title={
+                    DataState.GradeStudentPreview.newList[this.state.onClickKey]
+                      .UserName.Name
+                  }
+                  className="alert-Title-name"
+                >
+                  {
+                    DataState.GradeStudentPreview.newList[this.state.onClickKey]
+                      .UserName.Name
+                  }
+                </span>
+                <span
+                  title={
+                    DataState.GradeStudentPreview.newList[this.state.onClickKey]
+                      .UserName.UserID
+                  }
+                  className="alert-Title-id"
+                >
+                  (
+                  {
+                    DataState.GradeStudentPreview.newList[this.state.onClickKey]
+                      .UserName.UserID
+                  }
+                  )
+                </span>{" "}
+                的 */}
+                密码？
+              </p>
+            ) : (
+              ""
+            )
+          }
+          onOk={this.onAllPwdchangeOk.bind(this)}
+          onCancel={this.onAllPwdchangeClose}
+          onClose={this.onAllPwdchangeClose}
         ></Alert>
       </div>
     );
