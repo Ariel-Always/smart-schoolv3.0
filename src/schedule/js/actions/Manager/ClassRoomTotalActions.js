@@ -8,6 +8,8 @@ import $ from 'jquery';
 
 const MANAGER_CLASS_ROOM_TOTAL_INIT = 'MANAGER_CLASS_ROOM_TOTAL_INIT';
 
+const MANAGER_CRT_SCHEDULE_LIST_UPDATE = 'MANAGER_CRT_SCHEDULE_LIST_UPDATE';
+
 
 const  MANAGER_CLASS_ROOM_TOTAL_ROOMTYPE_LIST_UPDATE = 'MANAGER_CLASS_ROOM_TOTAL_ROOMTYPE_LIST_UPDATE';
 
@@ -132,7 +134,7 @@ const ClassTotalPageUpdate = (opt) =>{
 
         let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;
 
-        let { WeekNO,RoomTypeDropSelectd,Schedule,PageIndex} = Manager.ClassRoomTotal;
+        let { WeekNO,RoomTypeDropSelectd,Schedule,ScheduleList,PageIndex} = Manager.ClassRoomTotal;
 
         let RoomTypeID = '';
 
@@ -214,12 +216,14 @@ const ClassTotalPageUpdate = (opt) =>{
 
                 });
 
+                let scheduleList = [];
+
                 //判断操作是否是下一页操作
                 if (opt&&opt.nextPage){
 
-                    console.log(opt);
-
                     Schedule.push(...NextSchedule);
+
+                    scheduleList = Array.from(ScheduleList);
 
                     dispatch({type:MANAGER_CLASS_ROOM_TOTAL_SCHEDULE_UPDATE,data:Schedule});
 
@@ -235,6 +239,10 @@ const ClassTotalPageUpdate = (opt) =>{
 
                 }
 
+                scheduleList.push(Array.from(NextSchedule));
+
+                dispatch({type:MANAGER_CRT_SCHEDULE_LIST_UPDATE,data:scheduleList});
+
                 dispatch({type:MANAGER_CLASS_ROOM_TOTAL_CLASS_COUNT,data:data.ClassRoomCount});
 
                 dispatch({type:MANAGER_CLASS_ROOM_TOTAL_LOADING_HIDE});
@@ -246,6 +254,123 @@ const ClassTotalPageUpdate = (opt) =>{
     }
 
 };
+
+
+const ScheduleListUpdate = (PageIndex) =>{
+
+    return (dispatch,getState)=>{
+
+        dispatch({type:MANAGER_CLASS_ROOM_TOTAL_LOADING_SHOW});
+
+        const {PeriodWeekTerm,LoginUser,Manager} = getState();
+        //获取需要传递的参数
+        let  {SchoolID} = LoginUser;
+
+        let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;
+
+        let { WeekNO,RoomTypeDropSelectd,ScheduleList,PageIndex} = Manager.ClassRoomTotal;
+
+        let RoomTypeID = '';
+
+        //判断已选中的学科是否为全部学科
+        if (RoomTypeDropSelectd.value!=='none'){
+
+            RoomTypeID = RoomTypeDropSelectd.value;
+
+        }
+
+
+        ApiActions.GetAllScheduleOfClassRoomByClassRoomTypeForPage({
+
+            PeriodID,SchoolID,WeekNO:WeekNO,PageIndex,PageSize:10,ClassRoomType:RoomTypeID,dispatch
+
+        }).then(data => {
+
+            if (data){
+
+                let NextSchedule = [];
+
+                NextSchedule =  data.ItemClassRoom.map((item) => {
+
+                    let classRoomObj = {
+
+                        id:item.ClassRoomID,
+
+                        name:item.ClassRoomName,
+
+                        active:false
+
+                    };
+
+                    let list = utils.ScheduleRemoveRepeat(data.ItemSchedule.map((i) => {
+
+                        if (i.ClassRoomID === item.ClassRoomID){
+
+                            return {
+
+                                ...i,
+
+                                type:i.ScheduleType,
+
+                                title:i.SubjectName,
+
+                                titleID:i.SubjectName,
+
+                                secondTitle:i.TeacherName,
+
+                                secondTitleID:i.TeacherID,
+
+                                thirdTitle:(i.ClassName?i.ClassName:i.CourseClassName),
+
+                                thirdTitleID:(i.ClassName?i.ClassID:i.CourseClassID),
+
+                                WeekDay:i.WeekDay,
+
+                                ClassHourNO:i.ClassHourNO
+
+                            };
+
+                        }else {
+
+                            return ;
+
+                        }
+
+                    }).filter(i => {return i!==undefined}));
+
+                    classRoomObj['list'] = list;
+
+                    return classRoomObj;
+
+                });
+
+                let schedule = [];
+
+                ScheduleList.splice(PageIndex-1,1,NextSchedule);
+
+                ScheduleList.map(item=>{
+
+                    schedule.push(...item);
+
+                });
+
+
+                dispatch({type:MANAGER_CRT_SCHEDULE_LIST_UPDATE,data:ScheduleList});
+
+                dispatch({type:MANAGER_CLASS_ROOM_TOTAL_CLASS_COUNT,data:data.ClassRoomCount});
+
+                dispatch({type:MANAGER_CLASS_ROOM_TOTAL_SCHEDULE_UPDATE,data:schedule});
+
+                dispatch({type:MANAGER_CLASS_ROOM_TOTAL_LOADING_HIDE});
+
+            }
+
+        });
+
+    }
+
+};
+
 
 //课程详情弹窗
 
@@ -879,6 +1004,8 @@ export default {
 
     MANAGER_CLASS_ROOM_TOTAL_INIT,
 
+    MANAGER_CRT_SCHEDULE_LIST_UPDATE,
+
     MANAGER_CLASS_ROOM_TOTAL_ROOMTYPE_LIST_UPDATE,
 
     MANAGER_CLASS_ROOM_TOTAL_WEEK_CHANGE,
@@ -1020,6 +1147,8 @@ export default {
 
     ReplaceScheduleCommit,
 
-    RebackReplaceSchedule
+    RebackReplaceSchedule,
+
+    ScheduleListUpdate
 
 }

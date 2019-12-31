@@ -14,7 +14,9 @@ const SubjectTeacherSchedule = (state={
 
     TeacherCount:0,
 
-    ScheduleDetail:{
+    ScheduleList:[]
+
+    /*ScheduleDetail:{
 
         Show:false,
 
@@ -80,7 +82,7 @@ const SubjectTeacherSchedule = (state={
 
         ActiveTeacherID:'',
 
-    }
+    }*/
 
 },actions) => {
 
@@ -99,6 +101,8 @@ const SubjectTeacherSchedule = (state={
                 loadingShow:true,
 
                 schedule:actions.data,
+
+                ScheduleList:[],
 
                 ScheduleDetailModal:{
 
@@ -204,7 +208,11 @@ const SubjectTeacherSchedule = (state={
 
             return {...state,loadingShow:true};
 
-        case STSActions.MANAGER_STS_SCHEDULE_DETAIL_MODAL_SHOW:
+        case STSActions.MANAGER_STS_SCHEDULE_UPDATE:
+
+            return { ...state,ScheduleList:actions.data };
+
+        /*case STSActions.MANAGER_STS_SCHEDULE_DETAIL_MODAL_SHOW:
 
             return {...state,ScheduleDetail:{...state.ScheduleDetail,Show:true,ModalLoading:true}};
 
@@ -431,7 +439,7 @@ const SubjectTeacherSchedule = (state={
         case STSActions.MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_LOADING_HIDE:
 
             return { ...state,ReplaceSchedule:{...state.ReplaceSchedule,SearchLoadingShow:false}};
-
+*/
         default:
 
             return state;

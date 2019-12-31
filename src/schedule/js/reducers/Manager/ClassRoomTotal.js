@@ -10,6 +10,8 @@ const ClassRoomTotal = (state={
 
     Schedule:[],
 
+    ScheduleList:[],
+
     WeekList:[],
 
     LoadingShow:true,
@@ -104,6 +106,8 @@ const ClassRoomTotal = (state={
 
                 Schedule:actions.data,
 
+                ScheduleList:[],
+
                 ScheduleDetail:{
 
                     Show:false,
@@ -189,6 +193,10 @@ const ClassRoomTotal = (state={
         case CRTActions.MANAGER_CLASS_ROOM_TOTAL_SCHEDULE_UPDATE:
 
         return { ...state,Schedule:actions.data };
+
+        case CRTActions.MANAGER_CRT_SCHEDULE_LIST_UPDATE:
+
+            return { ...state,ScheduleList:actions.data };
 
         case CRTActions.MANAGER_CLASS_ROOM_TOTAL_CLASS_COUNT:
 

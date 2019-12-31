@@ -8,6 +8,8 @@ import STSAction from '../../actions/Manager/SubjectTeacherScheduleActions';
 
 import ManagerIndexActions from '../../actions/Manager/ManagerIndexActions';
 
+import SDActions from '../../actions/ScheduleDetailActions';
+
 import ComPageRefresh from '../../actions/ComPageRefresh';
 
 import TermPick from '../../component/TermPick';
@@ -18,13 +20,13 @@ import $ from 'jquery';
 
 import {connect} from 'react-redux';
 
-import ScheduleDetailModal from "../../component/ScheduleDetailModal";
+/*import ScheduleDetailModal from "../../component/ScheduleDetailModal";
 
 import ChangeTimeModal from '../../component/ChangeTimeModal';
 
 import AdjustClassRoomModal from "../../component/AdjustClassRoomModal";
 
-import ReplaceScheduleModal from '../../component/ReplaceScheduleModal';
+import ReplaceScheduleModal from '../../component/ReplaceScheduleModal';*/
 
 
 class Subject extends Component{
@@ -156,9 +158,38 @@ class Subject extends Component{
 
     ScheduleDetailShow(Params){
 
-        const { dispatch } = this.props;
+        const { dispatch,Manager } = this.props;
 
-        dispatch(STSAction.ScheduleDetailShow(Params));
+
+        //旧代码
+        //dispatch(STSAction.ScheduleDetailShow(Params));
+
+        const { TeacherID } = Params;
+
+        const { ScheduleList } = Manager.SubjectTeacherSchedule;
+
+        let FindPage = 1;
+
+        ScheduleList.map((item,key)=>{
+
+            let FindIndex = item.findIndex(i=>i.id===TeacherID);
+
+            if(FindIndex>=0){
+
+                FindPage = key+1
+
+            }
+
+        });
+
+        const { ItemClassHour,ItemClassHourCount,NowClassHourNO } = Manager.SubjectCourseGradeClassRoom;
+
+        const WeekNO = Manager.SubjectTeacherSchedule.NowWeekNo;
+
+        dispatch({type:SDActions.COMPONENT_SCHEDULE_DETAIL_MODAL_PARAMS_UPDATE,data:{ItemClassHour,ItemClassHourCount,NowClassHourNO,WeekNO,PageIndex:FindPage}});
+
+        dispatch(SDActions.ScheduleDetailShow(Params));
+
 
     }
 
@@ -184,13 +215,13 @@ class Subject extends Component{
 
     //关闭弹窗
 
-    ScheduleDetailClose(){
+/*    ScheduleDetailClose(){
 
         const { dispatch } = this.props;
 
         dispatch({type:STSAction.MANAGER_STS_SCHEDULE_DETAIL_MODAL_HIDE});
 
-        /*ComPageRefresh.ComPageUpdate(dispatch);*/
+        /!*ComPageRefresh.ComPageUpdate(dispatch);*!/
 
         dispatch(STSAction.STSPageUpdate());
 
@@ -432,7 +463,7 @@ class Subject extends Component{
 
         dispatch(STSAction.RebackReplaceSchedule(params));
 
-    }
+    }*/
 
 
 
@@ -542,7 +573,7 @@ class Subject extends Component{
 
                 </Loading>
 
-                <ScheduleDetailModal
+                {/*<ScheduleDetailModal
 
                     Params={ScheduleDetail}
 
@@ -626,7 +657,7 @@ class Subject extends Component{
 
 
 
-                </ReplaceScheduleModal>
+                </ReplaceScheduleModal>*/}
 
             </div>
 

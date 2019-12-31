@@ -2,6 +2,21 @@ import TeacherIndexActions from "./Teacher/TeacherIndexActions";
 
 import ManagerIndexActions from "./Manager/ManagerIndexActions";
 
+//更新课表
+
+import STSActions from './Manager/SubjectTeacherScheduleActions';
+
+import STTActions from './Manager/SubjectTeacherTeacherActions';
+
+import CTActions from './Manager/ClassTotalActions';
+
+import CSActions from './Manager/ClassSingleActions'
+
+import CRTActions from './Manager/ClassRoomTotalActions';
+
+import CRSActions from './Manager/ClassRoomSingleActions';
+
+import TPActions from './Teacher/TeacherPersonalActions';
 
 
 const ComPageInit  = (PageInit) => {
@@ -158,10 +173,55 @@ const ComPageUpdate = (dispatch) =>{
 };
 
 
+const ComPageScheduleUpdate = () => {
+
+    return (dispatch,getState) =>{
+
+        const Hash = location.hash;
+
+        const { PageIndex } = getState().ScheduleDetail.Params;
+
+        if (Hash.includes('manager/subject-teacher/subject')){
+
+            dispatch(STSActions.ScheduleListUpdate(PageIndex));
+
+        }else if (Hash.includes('manager/subject-teacher/teacher')){
+
+            dispatch(STTActions.STTWeekUpdate())
+
+        }else if (Hash.includes('manager/class/total')){
+
+            dispatch(CTActions.ScheduleListUpdate(PageIndex));
+
+        }else if (Hash.includes('manager/class/single')){
+
+            dispatch(CSActions.WeekUpdate())
+
+        }else if (Hash.includes('manager/room/total')){
+
+            dispatch(CRTActions.ScheduleListUpdate(PageIndex));
+
+        }else if (Hash.includes('manager/room/single')){
+
+            dispatch(CRSActions.WeekUpdate())
+
+        }else if (Hash.includes('teacher/mine')){
+
+            dispatch(TPActions.TPSUpdate())
+
+        }
+
+    }
+
+};
+
+
 export default{
 
     ComPageInit,
 
-    ComPageUpdate
+    ComPageUpdate,
+
+    ComPageScheduleUpdate
 
 };

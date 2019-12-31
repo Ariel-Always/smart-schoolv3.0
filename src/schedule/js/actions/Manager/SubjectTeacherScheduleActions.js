@@ -114,6 +114,11 @@ const MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_LOADING_SHOW = 'MANAGER_STS_REPL
 const MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_LOADING_HIDE = 'MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_LOADING_HIDE';
 
 
+//更新对应页码的教师数据
+
+const MANAGER_STS_SCHEDULE_UPDATE = 'MANAGER_STS_SCHEDULE_UPDATE';
+
+
 //学科教师总表学科课表界面更新
 const STSPageUpdate = (opt) => {
 
@@ -127,7 +132,7 @@ const STSPageUpdate = (opt) => {
 
         let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;
 
-        let {NowWeekNo,ItemSubjectSelect,schedule,pageIndex} = Manager.SubjectTeacherSchedule;
+        let {NowWeekNo,ItemSubjectSelect,schedule,ScheduleList,pageIndex} = Manager.SubjectTeacherSchedule;
 
         let SubjectID = '';
 
@@ -202,10 +207,15 @@ const STSPageUpdate = (opt) => {
                     return teacherObj;
 
                 });
+
+
+                let scheduleList = [];
                 //判断操作是否是下一页操作
                 if (opt&&opt.nextPage){
 
                     schedule.push(...SubjectTeacherSchedule);
+
+                    scheduleList = Array.from(ScheduleList);
 
                     dispatch({type:SUBJECT_TEACHER_SCHEDULE_UPDATE,data:schedule});
 
@@ -221,6 +231,11 @@ const STSPageUpdate = (opt) => {
 
                 }
 
+
+                scheduleList.push(Array.from(SubjectTeacherSchedule));
+
+                dispatch({type:MANAGER_STS_SCHEDULE_UPDATE,data:scheduleList});
+
                 dispatch({type:SUBJECT_TEACHER_SCHEDULE_TEACHER_COUNT,data:data.TeacherCount});
 
                 dispatch({type:LOADING_HIDE});
@@ -234,6 +249,115 @@ const STSPageUpdate = (opt) => {
 };
 
 
+const ScheduleListUpdate = (PageIndex) =>{
+
+    return (dispatch,getState)=>{
+
+        dispatch({type:LOADING_SHOW});
+
+        const {PeriodWeekTerm,LoginUser,Manager} = getState();
+        //获取需要传递的参数
+        let  {SchoolID} = LoginUser;
+
+        let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;
+
+        let {NowWeekNo,ItemSubjectSelect,ScheduleList,pageIndex} = Manager.SubjectTeacherSchedule;
+
+        let SubjectID = '';
+
+        //判断已选中的学科是否为全部学科
+        if (ItemSubjectSelect.value!==0){
+
+            SubjectID = ItemSubjectSelect.value;
+
+        }
+
+
+        ApiActions.GetAllScheduleOfTeachersBySubjectIDForPage({
+
+            PeriodID,SchoolID,SubjectID,WeekNO:NowWeekNo,PageIndex,PageSize:10,dispatch
+
+        }).then(data => {
+
+            if (data){
+
+                let SubjectTeacherSchedule =  data.ItemTeacher.map((item) => {
+
+                    let teacherObj = {
+
+                        id:item.TeacherID,
+
+                        name:item.TeacherName,
+
+                        active:false
+
+                    };
+
+                    let list = utils.ScheduleRemoveRepeat(data.ItemSchedule.map((i) => {
+
+                        if (i.TeacherID === item.TeacherID){
+
+                            return {
+
+                                ...i,
+
+                                type:i.ScheduleType,
+
+                                title:(i.ClassName!==''?i.ClassName:i.CourseClassName),
+
+                                titleID:(i.ClassName!==''?i.ClassID:i.CourseClassID),
+
+                                secondTitle:i.SubjectName,
+
+                                secondTitleID:i.SubjectID,
+
+                                thirdTitle:i.ClassRoomName,
+
+                                thirdTitleID:i.ClassRoomID
+
+                            };
+
+                        }else{
+
+                            return;
+
+                        }
+
+                    }).filter(i => {return i!==undefined}));
+
+                    teacherObj['list'] = list;
+
+                    return teacherObj;
+
+                });
+
+                let schedule = [];
+
+                ScheduleList.splice(PageIndex-1,1,SubjectTeacherSchedule);
+
+                ScheduleList.map(item=>{
+
+                   schedule.push(...item);
+
+                });
+
+
+                dispatch({type:MANAGER_STS_SCHEDULE_UPDATE,data:ScheduleList});
+
+                dispatch({type:SUBJECT_TEACHER_SCHEDULE_TEACHER_COUNT,data:data.TeacherCount});
+
+                dispatch({type:SUBJECT_TEACHER_SCHEDULE_UPDATE,data:schedule});
+
+                dispatch({type:LOADING_HIDE});
+
+            }
+
+        });
+
+    }
+
+};
+
 
 //课程详情弹窗
 
@@ -245,7 +369,7 @@ const ScheduleDetailShow = (Params) => {
 
         const { TeacherID,ScheduleID,ClassDate,ClassHourNO,SubjectID } = Params;
 
-        dispatch({type:MANAGER_STS_SCHEDULE_DETAIL_MODAL_SHOW});
+        /*dispatch({type:MANAGER_STS_SCHEDULE_DETAIL_MODAL_SHOW});
 
         ApiActions.GetScheduleDetailByUserID({SchoolID,TeacherID,ScheduleID,ClassDate,ClassHourNO,dispatch}).then(data=>{
 
@@ -260,6 +384,8 @@ const ScheduleDetailShow = (Params) => {
             dispatch({type:MANAGER_STS_SCHEDULE_DETAIL_MODAL_LOADING_HIDE});
 
         })
+*/
+
 
     }
 
@@ -970,6 +1096,8 @@ export default {
 
     MANAGER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_LOADING_HIDE,
 
+    MANAGER_STS_SCHEDULE_UPDATE,
+
     STSPageUpdate,
 
     //从这里开始是课程详情的弹窗
@@ -1004,6 +1132,8 @@ export default {
 
     ReplaceScheduleCommit,
 
-    RebackReplaceSchedule
+    RebackReplaceSchedule,
+
+    ScheduleListUpdate
 
 }

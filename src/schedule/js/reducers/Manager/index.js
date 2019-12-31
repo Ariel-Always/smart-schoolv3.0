@@ -33,6 +33,8 @@ import AdjustLog from './AdjustLog';
 
 import AdjustByClassRoom from './AdjustByClassRoom';
 
+import Intellenct from './Intellenct';
+
 //管理员角色的reduce
 
 const Index = combineReducers({
@@ -67,7 +69,9 @@ const Index = combineReducers({
 
     AdjustLog,
 
-    AdjustByClassRoom
+    AdjustByClassRoom,
+
+    Intellenct
 
 });
 

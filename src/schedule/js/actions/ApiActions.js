@@ -12,6 +12,32 @@ import CONFIG from "../../../common/js/config";
 //GET
 
 
+
+
+//获取子系统地址链接
+
+const GetSingleSubsystemServer = async ({dispatch}) => {
+
+    let res = await Method.getGetData(`/Base/GetSingleSubsystemServer?SysID=E31`,
+
+        2,
+
+        CONFIG.ScheduleProxy);
+
+    if (res.StatusCode === 200){
+
+        return res.Data;
+
+    }else{
+
+        dispatch(AppAlertActions.alertError({title:res.Msg?res.Msg:"未知异常",ok:()=>{ return ()=>window.location.href='/error.aspx'}}));
+
+    }
+
+
+};
+
+
 //获取学期、学段、周、年级、教室类型信息，如果是教师则返回只任教的学段
 
 const GetTermAndPeriodAndWeekNOInfo = async ({SchoolID,UserID,UserType,dispatch}) => {
@@ -1350,6 +1376,8 @@ export default {
 
     ChangeTeacher,
 
-    CancelChangeTeacherAndGetTea
+    CancelChangeTeacherAndGetTea,
+
+    GetSingleSubsystemServer
 
 }

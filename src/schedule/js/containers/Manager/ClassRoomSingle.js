@@ -20,6 +20,7 @@ import SingleDoubleTable from "../../component/SingleDoubleTable";
 
 import ComPageRefresh from "../../actions/ComPageRefresh";
 
+/*
 import ScheduleDetailModal from "../../component/ScheduleDetailModal";
 
 import ChangeTimeModal from "../../component/ChangeTimeModal";
@@ -27,6 +28,9 @@ import ChangeTimeModal from "../../component/ChangeTimeModal";
 import AdjustClassRoomModal from "../../component/AdjustClassRoomModal";
 
 import ReplaceScheduleModal from "../../component/ReplaceScheduleModal";
+*/
+
+import SDActions from "../../actions/ScheduleDetailActions";
 
 
 class ClassRoomSingle extends Component{
@@ -139,14 +143,22 @@ class ClassRoomSingle extends Component{
 
     ScheduleDetailShow(Params){
 
-        const { dispatch } = this.props;
+        const { dispatch,Manager,ClassRoomSingle } = this.props;
 
-        dispatch(CRSActions.ScheduleDetailShow(Params));
+        /*dispatch(CRSActions.ScheduleDetailShow(Params));*/
+
+        const { ItemClassHour,ItemClassHourCount,NowClassHourNO } = Manager.SubjectCourseGradeClassRoom;
+
+        const {WeekNO} = ClassRoomSingle;
+
+        dispatch({type:SDActions.COMPONENT_SCHEDULE_DETAIL_MODAL_PARAMS_UPDATE,data:{ItemClassHour,ItemClassHourCount,NowClassHourNO,WeekNO}});
+
+        dispatch(SDActions.ScheduleDetailShow(Params));
 
     }
 
 
-    //停课
+    /*//停课
 
     StopSchedule(params){
 
@@ -173,7 +185,7 @@ class ClassRoomSingle extends Component{
 
         dispatch({type:CRSActions.MANAGER_CRS_SCHEDULE_DETAIL_MODAL_HIDE});
 
-        /*ComPageRefresh.ComPageUpdate(dispatch);*/
+        /!*ComPageRefresh.ComPageUpdate(dispatch);*!/
 
         dispatch(CRSActions.WeekUpdate());
 
@@ -413,7 +425,7 @@ class ClassRoomSingle extends Component{
 
         dispatch(CRSActions.RebackReplaceSchedule(params));
 
-    }
+    }*/
 
     componentWillUpdate(){
 
@@ -519,7 +531,7 @@ class ClassRoomSingle extends Component{
 
                 </Loading>
 
-                <ScheduleDetailModal
+                {/*<ScheduleDetailModal
 
                     Params={ScheduleDetail}
 
@@ -603,7 +615,7 @@ class ClassRoomSingle extends Component{
 
 
 
-                </ReplaceScheduleModal>
+                </ReplaceScheduleModal>*/}
 
             </div>
 

@@ -10,6 +10,8 @@ const ClassTotal = (state={
 
     Schedule:[],
 
+    ScheduleList:[],
+
     WeekList:[],
 
     LoadingShow:true,
@@ -189,6 +191,10 @@ const ClassTotal = (state={
         case ClassTotalActions.MANAGER_CLASS_TOTAL_SCHEDULE_UPDATE:
 
             return { ...state,Schedule:actions.data };
+
+        case ClassTotalActions.MANAGER_CT_SCHEDULE_LIST_UPDATE:
+
+            return { ...state,ScheduleList:actions.data };
 
         case ClassTotalActions.MANAGER_CLASS_TOTAL_CLASS_COUNT:
 

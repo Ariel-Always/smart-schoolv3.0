@@ -8,6 +8,7 @@ import utils from '../utils';
 
 const MANAGER_CLASS_TOTAL_INIT = 'MANAGER_CLASS_TOTAL_INIT';
 
+const MANAGER_CT_SCHEDULE_LIST_UPDATE = 'MANAGER_CT_SCHEDULE_LIST_UPDATE';
 
 const  MANAGER_CLASS_TOTAL_GRADE_UPDATE = 'MANAGER_CLASS_TOTAL_GRADE_UPDATE';
 
@@ -135,7 +136,7 @@ const ClassTotalPageUpdate = (opt) =>{
 
         let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;
 
-        let { WeekNO,GradeDropSelectd,Schedule,PageIndex} = Manager.ClassTotal;
+        let { WeekNO,GradeDropSelectd,Schedule,ScheduleList,PageIndex} = Manager.ClassTotal;
 
         let GradeID = '';
 
@@ -217,10 +218,14 @@ const ClassTotalPageUpdate = (opt) =>{
 
                 });
 
+                let scheduleList = [];
+
                 //判断操作是否是下一页操作
                 if (opt&&opt.nextPage){
 
                     Schedule.push(...NextSchedule);
+
+                    scheduleList = Array.from(ScheduleList);
 
                     dispatch({type:MANAGER_CLASS_TOTAL_SCHEDULE_UPDATE,data:Schedule});
 
@@ -236,6 +241,10 @@ const ClassTotalPageUpdate = (opt) =>{
 
                 }
 
+                scheduleList.push(Array.from(NextSchedule));
+
+                dispatch({type:MANAGER_CT_SCHEDULE_LIST_UPDATE,data:scheduleList});
+
                 dispatch({type:MANAGER_CLASS_TOTAL_CLASS_COUNT,data:data.ClassCount});
 
                 dispatch({type:MANAGER_CLASS_TOTAL_LOADING_HIDE});
@@ -248,6 +257,120 @@ const ClassTotalPageUpdate = (opt) =>{
 
 };
 
+
+
+const ScheduleListUpdate = (PageIndex) =>{
+
+    return (dispatch,getState)=>{
+
+        dispatch({type:MANAGER_CLASS_TOTAL_LOADING_SHOW});
+
+        const {PeriodWeekTerm,LoginUser,Manager} = getState();
+        //获取需要传递的参数
+        let  {SchoolID} = LoginUser;
+
+        let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;
+
+        let { WeekNO,GradeDropSelectd,Schedule,ScheduleList,PageIndex} = Manager.ClassTotal;
+
+        let GradeID = '';
+        //判断已选中的学科是否为全部学科
+        if (GradeDropSelectd.value!=='none'){
+
+            GradeID = GradeDropSelectd.value;
+
+        }
+
+
+        ApiActions.GetAllScheduleOfClassByGradeIDForPage({
+
+            PeriodID,SchoolID,WeekNO:WeekNO,PageIndex,PageSize:10,GradeID
+
+        }).then(data => {
+
+            if (data){
+
+                let NextSchedule = [];
+
+                NextSchedule =  data.ItemClass.map((item) => {
+
+                    let classObj = {
+
+                        id:item.ClassID,
+
+                        name:item.ClassName,
+
+                        active:false
+
+                    };
+
+                    let list = utils.ScheduleRemoveRepeat(data.ItemSchedule.map((i) => {
+
+                        if (i.ClassID === item.ClassID){
+
+                            return {
+
+                                ...i,
+
+                                type:i.ScheduleType,
+
+                                title:i.SubjectName,
+
+                                titleID:i.SubjectName,
+
+                                secondTitle:i.TeacherName,
+
+                                secondTitleID:i.TeacherID,
+
+                                thirdTitle:i.ClassRoomName,
+
+                                thirdTitleID:i.ClassRoomID,
+
+                                WeekDay:i.WeekDay,
+
+                                ClassHourNO:i.ClassHourNO
+
+                            };
+
+                        }else {
+
+                            return ;
+
+                        }
+
+                    }).filter(i => {return i!==undefined}));
+
+                    classObj['list'] = list;
+
+                    return classObj;
+
+                });
+
+                let schedule = [];
+
+                ScheduleList.splice(PageIndex-1,1,NextSchedule);
+
+                ScheduleList.map(item=>{
+
+                    schedule.push(...item);
+
+                });
+
+                dispatch({type:MANAGER_CT_SCHEDULE_LIST_UPDATE,data:ScheduleList});
+
+                dispatch({type:MANAGER_CLASS_TOTAL_SCHEDULE_UPDATE,data:schedule});
+
+                dispatch({type:MANAGER_CLASS_TOTAL_CLASS_COUNT,data:data.ClassCount});
+
+                dispatch({type:MANAGER_CLASS_TOTAL_LOADING_HIDE});
+
+            }
+
+        });
+
+    }
+
+};
 
 
 //课程详情弹窗
@@ -882,6 +1005,8 @@ export default {
 
     MANAGER_CLASS_TOTAL_INIT,
 
+    MANAGER_CT_SCHEDULE_LIST_UPDATE,
+
     MANAGER_CLASS_TOTAL_GRADE_UPDATE,
 
     MANAGER_CLASS_TOTAL_WEEK_CHANGE,
@@ -1023,6 +1148,8 @@ export default {
 
     ReplaceScheduleCommit,
 
-    RebackReplaceSchedule
+    RebackReplaceSchedule,
+
+    ScheduleListUpdate
 
 }
