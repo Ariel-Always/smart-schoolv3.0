@@ -687,7 +687,7 @@ class Subject extends React.Component {
           ref="handleTeacherMadal"
           bodyStyle={{ height: 332 + "px", padding: 0 }}
           width={780}
-          type="3"
+          type="1"
           title={"编辑学科"}
           visible={UIState.ChangeSubjectModal.changeModalShow}
           onOk={this.changeSubjectModalOk}
@@ -702,7 +702,7 @@ class Subject extends React.Component {
         <Modal
           ref="addTeacherMadal"
           bodyStyle={{ height: 332 + "px", padding: 0 }}
-          type="3"
+          type="1"
           width={780}
           title={"添加学科"}
           visible={UIState.ChangeSubjectModal.addModalShow}
@@ -717,8 +717,10 @@ class Subject extends React.Component {
         </Modal>
         <Modal
           ref="addTeacherMadal"
-          bodyStyle={{ padding: 0 }}
-          type="3"
+          bodyStyle={{height: 276 + "px", padding: 0 }}
+          type="1"
+          width={580}
+
           title={"设置教研组长"}
           visible={UIState.SetSubjectTeacher.setSubjectTeacherModalShow}
           onOk={this.SetSubjectTeacherModalOk}

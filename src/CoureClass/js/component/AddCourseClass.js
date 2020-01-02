@@ -412,6 +412,7 @@ class AddCourseClass extends React.Component {
                     type='1'
                     width={680}
                     title={'选择教师'}
+                    mask={false}
                     bodyStyle={{ height: 525 + 'px', padding: 0 }}
                     visible={UIState.AddTeacherModalShow.Show}
                     onOk={this.AddTeacherModalOk}
@@ -423,6 +424,8 @@ class AddCourseClass extends React.Component {
                     ref='SelectStudentMadal'
                     type='1'
                     width={680}
+                    mask={false}
+
                     title={'选择学生'}
                     bodyStyle={{ height: 477 + 'px', padding: 0 }}
                     visible={UIState.AddStudentModalShow.Show}

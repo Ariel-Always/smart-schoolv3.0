@@ -71,7 +71,7 @@ $image-url: "../images";
             //   margin: 0 auto;
         }
         .Graduate-content {
-            margin: 6px auto 0;
+            margin: 16px auto 0;
             position: relative;
             padding-left: 6px;
             width: 1114px;
@@ -135,6 +135,10 @@ $image-url: "../images";
                         th {
                             padding: 0;
                         }
+                        th:nth-child(6) {
+                            // text-align: left;
+                            text-align: center!important;
+                        }
                     }
                     .ant-table-row {
                         td:nth-child(2),
@@ -174,7 +178,7 @@ $image-url: "../images";
                         text-decoration: underline;
                         color: #333;
                         font-size: 14px;
-                        height: 15px;
+                        height: 20px;
                         line-height: 1;
                         cursor: pointer;
                         display: inline-block;
@@ -187,6 +191,8 @@ $image-url: "../images";
                         display: block;
                         text-align: left;
                         font-size: 14px;
+                        height: 20px;
+                        line-height: 1;
                         color: #999;
                         display: inline-block;
                         width: 90px;

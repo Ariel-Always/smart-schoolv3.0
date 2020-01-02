@@ -1,5 +1,5 @@
 .tips-Box {
-    padding: 10px 16px;
+    padding: 10px 0 10px 16px;
     max-height: 400px;
     overflow: auto;
     .box-top {
@@ -22,7 +22,7 @@
             display: inline-block;
             .content-text {
                 display: inline-block;
-                max-width: 400px;
+                max-width: 380px;
                 line-height: 28px;
                 text-align: left;
                 overflow: hidden;
@@ -50,6 +50,7 @@
         min-width: 0;
         font-size: 12px;
         line-height: 14px;
+        padding: 6px 0 6px 8px;
         color: #333;
         white-space: nowrap;
     }

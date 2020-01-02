@@ -357,6 +357,7 @@ class HandleCourseClass extends React.Component {
           title={"选择教师"}
           bodyStyle={{ height: 525 + "px", padding: 0 }}
           visible={UIState.AddTeacherModalShow.Show}
+          mask={false}
           onOk={this.AddTeacherModalOk}
           onCancel={this.AddTeacherModalCancel}
         >
@@ -366,6 +367,7 @@ class HandleCourseClass extends React.Component {
           ref="SelectStudentMadal"
           type="1"
           width={680}
+          mask={false}
           title={"选择学生"}
           bodyStyle={{ height: 477 + "px", padding: 0 }}
           visible={UIState.AddStudentModalShow.Show}
