@@ -236,7 +236,7 @@ class SubsystemAccessSetting extends Component {
         if (subsystemInfo.List) {
             if (subsystemInfo.List.length === 0) {
                 console.log("不存在")
-                tipInfo = <Empty type="3" className="Empty" title={'再检查一下，没有你要的子系统'} />
+                tipInfo = <Empty type="3" className="Empty" title={'再检查一下，没有你要的子系统喔'} />
                 exeit = "1"
 
 

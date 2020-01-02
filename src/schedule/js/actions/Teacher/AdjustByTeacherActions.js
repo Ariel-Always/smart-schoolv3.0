@@ -2701,6 +2701,8 @@ const ModalCommit = () => {
 
                   if (data===0){
 
+                      dispatch({type:ADJUST_BY_TEACHER_HIDE});
+
                       dispatch(AppAlertActions.alertSuccess({title:"找人代课成功！"}));
 
                       ComPageRefresh.ComPageUpdate(dispatch);

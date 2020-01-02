@@ -121,7 +121,7 @@ class YearSemesterSetting extends Component {
 
                 }
                 else {
-                    dispatch(AppAlertAction.alertError({ title: "启用新学期失败!" }))
+                    dispatch(AppAlertAction.alertError({ title: `启用新学期失败!${data.ErrCode}` }))
                 }
 
             })
@@ -356,7 +356,7 @@ class YearSemesterSetting extends Component {
  
                              <button className={`btn create-newTerm ${semesterInfo.TermStatus === 2 ? '':'disabled bander'}`}
                                 // onClick={semesterInfo.TermStatus===2?() => this.createNewTerm():()=>this.nothing()}
-                                disabled={semesterInfo===2?false:true}    
+                                disabled={semesterInfo!==2?false:true}    
                                 onClick={ this.createNewTerm}
                                     
                         > 启用新学期</button>

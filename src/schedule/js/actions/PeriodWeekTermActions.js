@@ -1,4 +1,3 @@
-import Method from './Method';
 //学段，学期，周actions
 const UPDATE_PERIOD_TERM_WEEK = 'UPDATE_PERIOD_TERM_WEEK';
 

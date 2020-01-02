@@ -481,9 +481,9 @@ const STTPageInit = () => {
 
                         }else{
 
-                            let list = res[1].map((i) => {
+                            let list = data.map((i) => {
 
-                                if (i.SubjectID===res[0].ItemSubject[0].SubjectID){
+                                if (i.SubjectID===Teacher.SubjectCourseGradeClassRoom.ItemSubject[0].SubjectID){
 
                                     return {
 

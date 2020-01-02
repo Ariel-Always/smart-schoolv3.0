@@ -8,6 +8,10 @@ const SubjectCourseGradeClassRoom = (state={},actions) => {
 
             return {...state,...actions.data};
 
+        case SCGCRActions.SCGCR_INFO_UPDATE:
+
+            return actions.data;
+
         default:
 
             return state;

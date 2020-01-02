@@ -2,6 +2,10 @@ import TeacherIndexActions from "./Teacher/TeacherIndexActions";
 
 import ManagerIndexActions from "./Manager/ManagerIndexActions";
 
+import MSCGCRActions from './Manager/SCGCRActions';
+
+import TSCGCRActions from './Teacher/SCGCRActions';
+
 //更新课表
 
 import STSActions from './Manager/SubjectTeacherScheduleActions';
@@ -116,6 +120,8 @@ const ComPageUpdate = (dispatch) =>{
 
     if (hash.includes('#/teacher/subject-teacher/subject')){
 
+        dispatch({type:MSCGCRActions.SCGCR_INFO_UPDATE,data:{}});
+
         dispatch(TeacherIndexActions.STSPageInit());
 
     }
@@ -124,15 +130,21 @@ const ComPageUpdate = (dispatch) =>{
 
         dispatch(TeacherIndexActions.STTPageInit());
 
+        dispatch({type:TSCGCRActions.SCGCR_INFO_UPDATE,data:{}});
+
     }
 
     if (hash.includes('#/teacher/mine')){
 
         dispatch(TeacherIndexActions.TeacherPersonalInit());
 
+        dispatch({type:TSCGCRActions.SCGCR_INFO_UPDATE,data:{}});
+
     }
 
     if (hash.includes('#/manager/subject-teacher/subject')){
+
+        dispatch({type:MSCGCRActions.SCGCR_INFO_UPDATE,data:{}});
 
         dispatch(ManagerIndexActions.STSPageInit());
 
@@ -141,11 +153,15 @@ const ComPageUpdate = (dispatch) =>{
 
     if (hash.includes('#/manager/subject-teacher/teacher')){
 
+        dispatch({type:MSCGCRActions.SCGCR_INFO_UPDATE,data:{}});
+
         dispatch(ManagerIndexActions.STTPageInit());
 
     }
 
     if (hash.includes('#/manager/class/total')){
+
+        dispatch({type:MSCGCRActions.SCGCR_INFO_UPDATE,data:{}});
 
         dispatch(ManagerIndexActions.ClassTotalInit());
 
@@ -153,17 +169,23 @@ const ComPageUpdate = (dispatch) =>{
 
     if (hash.includes('#/manager/class/single')){
 
+        dispatch({type:MSCGCRActions.SCGCR_INFO_UPDATE,data:{}});
+
         dispatch(ManagerIndexActions.ClassSingleInit());
 
     }
 
     if (hash.includes('#/manager/room/total')){
 
+        dispatch({type:MSCGCRActions.SCGCR_INFO_UPDATE,data:{}});
+
         dispatch(ManagerIndexActions.ClassRoomTotalInit());
 
     }
 
     if (hash.includes('#/manager/room/single')){
+
+        dispatch({type:MSCGCRActions.SCGCR_INFO_UPDATE,data:{}});
 
         dispatch(ManagerIndexActions.ClassRoomSingleInit());
 
