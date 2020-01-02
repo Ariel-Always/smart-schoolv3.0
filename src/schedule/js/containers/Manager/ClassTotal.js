@@ -17,14 +17,15 @@ import $ from "jquery";
 import DoubleSingleTable from "../../component/DoubleSingleTable";
 
 import {message} from "antd";
+import SDActions from "../../actions/ScheduleDetailActions";
 
-import ScheduleDetailModal from "../../component/ScheduleDetailModal";
+/*import ScheduleDetailModal from "../../component/ScheduleDetailModal";
 
 import ChangeTimeModal from "../../component/ChangeTimeModal";
 
 import AdjustClassRoomModal from "../../component/AdjustClassRoomModal";
 
-import ReplaceScheduleModal from "../../component/ReplaceScheduleModal";
+import ReplaceScheduleModal from "../../component/ReplaceScheduleModal";*/
 
 
 
@@ -160,14 +161,38 @@ class ClassTotal extends Component{
 
     ScheduleDetailShow(Params){
 
-        const { dispatch } = this.props;
+        const { dispatch,SubjectCourseGradeClassRoom,ClassTotal } = this.props;
 
-        dispatch(CTActions.ScheduleDetailShow(Params));
+        /*dispatch(CTActions.ScheduleDetailShow(Params));*/
+
+        const { ItemClassHour,ItemClassHourCount,NowClassHourNO } = SubjectCourseGradeClassRoom;
+
+        const {WeekNO,ScheduleList} = ClassTotal;
+
+        const { ClassID } = Params;
+
+        let FindPage = 1;
+
+        ScheduleList.map((item,key)=>{
+
+            let FindIndex = item.findIndex(i=>i.id===ClassID);
+
+            if(FindIndex>=0){
+
+                FindPage = key+1
+
+            }
+
+        });
+
+        dispatch({type:SDActions.COMPONENT_SCHEDULE_DETAIL_MODAL_PARAMS_UPDATE,data:{ItemClassHour,ItemClassHourCount,NowClassHourNO,WeekNO,PageIndex:FindPage}});
+
+        dispatch(SDActions.ScheduleDetailShow(Params));
 
     }
 
 
-    //停课
+   /* //停课
 
     StopSchedule(params){
 
@@ -194,7 +219,7 @@ class ClassTotal extends Component{
 
         dispatch({type:CTActions.MANAGER_CT_SCHEDULE_DETAIL_MODAL_HIDE});
 
-       /* ComPageRefresh.ComPageUpdate(dispatch);*/
+       /!* ComPageRefresh.ComPageUpdate(dispatch);*!/
 
         dispatch(CTActions.ClassTotalPageUpdate());
 
@@ -434,7 +459,7 @@ class ClassTotal extends Component{
 
         dispatch(CTActions.RebackReplaceSchedule(params));
 
-    }
+    }*/
 
 
     render(){
@@ -506,7 +531,7 @@ class ClassTotal extends Component{
 
             </Loading>
 
-            <ScheduleDetailModal
+           {/* <ScheduleDetailModal
 
                 Params={ScheduleDetail}
 
@@ -590,7 +615,7 @@ class ClassTotal extends Component{
 
 
 
-            </ReplaceScheduleModal>
+            </ReplaceScheduleModal>*/}
 
         </div>
 

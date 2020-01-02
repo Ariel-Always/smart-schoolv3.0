@@ -10,7 +10,7 @@
 
     margin-left: 32px;
 
-    padding-left:18px;
+    padding-left:20px;
 
     background-position: left center;
 
@@ -28,13 +28,9 @@
 
   }
 
-  .import-schedule{
-
-    background-image:url("#{$image-url}/import-schedule.png");
-
-  }
-
   .adjust-schedule{
+
+    position: relative;
 
     background-image:url("#{$image-url}/adjust-schedule.png");
 
@@ -54,13 +50,35 @@
 
   }
 
+  .enter-schedule{
+
+    position: relative;
+
+    background-image:url("#{$image-url}/enter-schedule.png");
+
+    display: inline-block;
+
+    height: 50px;
+
+    &:hover{
+
+      .import-list-wrapper{
+
+        display: block;
+
+      }
+
+    }
+
+  }
+
   .see-adjust-log{
 
     background-image:url("#{$image-url}/schedule-log.png");
 
   }
 
-  .adjust-list-wrapper{
+  .adjust-list-wrapper,.import-list-wrapper{
 
     position: absolute;
 
@@ -72,7 +90,7 @@
 
     @include box-shadow(0 0 6px 0 rgba(0, 0, 0, 0.2));
 
-    right: 56px;
+    left:-16px;
 
     top: 46px;
 
@@ -165,6 +183,30 @@
       span{
 
         background-image: url("#{$image-url}/del.png");
+
+      }
+
+    }
+
+    .import-schedule{
+
+      span{
+
+          background-image:url("#{$image-url}/import-schedule.png");
+
+          margin-left: 46px;
+
+      }
+
+    }
+
+    .intellenct-schedule{
+
+      span{
+
+        background-image:url("#{$image-url}/intellenct-schedule.png");
+
+        margin-left: 46px;
 
       }
 

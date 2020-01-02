@@ -22,6 +22,7 @@ import AdjustByTeacherModal from './AdjustByTeacherModal';
 
 import ComPageRefresh from "../../actions/ComPageRefresh";
 
+/*
 import ScheduleDetailModal from "../../component/ScheduleDetailModal";
 
 import ChangeTimeModal from "../../component/ChangeTimeModal";
@@ -29,10 +30,13 @@ import ChangeTimeModal from "../../component/ChangeTimeModal";
 import AdjustClassRoomModal from "../../component/AdjustClassRoomModal";
 
 import ReplaceScheduleModal from "../../component/ReplaceScheduleModal";
+*/
 
 import AddTempScheduleModal from './AddTempScheduleModal';
 
 import $ from "jquery";
+
+import SDActions from "../../actions/ScheduleDetailActions";
 
 
 class TeacherPersonalSchedule extends Component{
@@ -124,14 +128,24 @@ class TeacherPersonalSchedule extends Component{
 
     ScheduleDetailShow(Params){
 
-        const { dispatch } = this.props;
+        const { dispatch,Teacher } = this.props;
 
-        dispatch(TPActions.ScheduleDetailShow(Params));
+        /*dispatch(TPActions.ScheduleDetailShow(Params));*/
+
+        const { PersonalSchedule,SubjectCourseGradeClassRoom } = Teacher;
+
+        const { ItemClassHour,ItemClassHourCount,NowClassHourNO } = SubjectCourseGradeClassRoom;
+
+        const WeekNO = PersonalSchedule.NowWeekNo;
+
+        dispatch({type:SDActions.COMPONENT_SCHEDULE_DETAIL_MODAL_PARAMS_UPDATE,data:{ItemClassHour,ItemClassHourCount,NowClassHourNO,WeekNO,CanOperate:true}});
+
+        dispatch(SDActions.ScheduleDetailShow(Params));
 
     }
 
 
-    //停课
+ /*   //停课
 
     StopSchedule(params){
 
@@ -158,7 +172,7 @@ class TeacherPersonalSchedule extends Component{
 
         dispatch({type:TPActions.TEACHER_TP_SCHEDULE_DETAIL_MODAL_HIDE});
 
-        /*ComPageRefresh.ComPageUpdate(dispatch);*/
+        /!*ComPageRefresh.ComPageUpdate(dispatch);*!/
 
         dispatch(TPActions.TPSUpdate());
 
@@ -398,7 +412,7 @@ class TeacherPersonalSchedule extends Component{
 
         dispatch(TPActions.RebackReplaceSchedule(params));
 
-    }
+    }*/
 
 
 
@@ -488,7 +502,7 @@ class TeacherPersonalSchedule extends Component{
 
                 <AdjustByTeacherModal></AdjustByTeacherModal>
 
-                <ScheduleDetailModal
+                {/*<ScheduleDetailModal
 
                     Params={ScheduleDetail}
 
@@ -574,7 +588,7 @@ class TeacherPersonalSchedule extends Component{
 
 
 
-                </ReplaceScheduleModal>
+                </ReplaceScheduleModal>*/}
 
                 <AddTempScheduleModal>
 

@@ -6,6 +6,7 @@ import ApiActions from './ApiActions';
 
 import LoginUserActions from "./LoginUserActions";
 
+const MANAGER_INTELLENCT_URL_UPDATE = 'MANAGER_INTELLENCT_URL_UPDATE';
 
 const getCommonInfo = () => {
 
@@ -15,6 +16,22 @@ const getCommonInfo = () => {
             let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
 
             let {SchoolID,UserID,UserType} = UserInfo;
+
+            if (parseInt(UserType)===0){
+
+                //获取智能排课的URL
+
+                ApiActions.GetSingleSubsystemServer(dispatch).then(data=>{
+
+                    if (data){
+
+                        dispatch({type:MANAGER_INTELLENCT_URL_UPDATE,data:data.WebSvrAddr});
+
+                    }
+
+                })
+
+            }
 
             switch (UserType) {
 
@@ -103,6 +120,8 @@ const getCommonInfo = () => {
 
 export default {
 
-    getCommonInfo
+    getCommonInfo,
+
+    MANAGER_INTELLENCT_URL_UPDATE
 
 }

@@ -19,13 +19,15 @@ import ComPageRefresh from "../../actions/ComPageRefresh";
 
 import {message} from "antd";
 
-import ScheduleDetailModal from "../../component/ScheduleDetailModal";
+import SDActions from "../../actions/ScheduleDetailActions";
+
+/*import ScheduleDetailModal from "../../component/ScheduleDetailModal";
 
 import ChangeTimeModal from "../../component/ChangeTimeModal";
 
 import AdjustClassRoomModal from "../../component/AdjustClassRoomModal";
 
-import ReplaceScheduleModal from "../../component/ReplaceScheduleModal";
+import ReplaceScheduleModal from "../../component/ReplaceScheduleModal";*/
 
 
 class ClassRoomTotal extends Component{
@@ -161,14 +163,38 @@ class ClassRoomTotal extends Component{
 
     ScheduleDetailShow(Params){
 
-        const { dispatch } = this.props;
+        const { dispatch,SubjectCourseGradeClassRoom,ClassRoomTotal } = this.props;
 
-        dispatch(CRTActions.ScheduleDetailShow(Params));
+        /*dispatch(CRTActions.ScheduleDetailShow(Params));*/
+
+        const { ItemClassHour,ItemClassHourCount,NowClassHourNO } = SubjectCourseGradeClassRoom;
+
+        const {WeekNO,ScheduleList} = ClassRoomTotal;
+
+        const { ClassRoomID } = Params;
+
+        let FindPage = 1;
+
+        ScheduleList.map((item,key)=>{
+
+            let FindIndex = item.findIndex(i=>i.id===ClassRoomID);
+
+            if(FindIndex>=0){
+
+                FindPage = key+1
+
+            }
+
+        });
+
+        dispatch({type:SDActions.COMPONENT_SCHEDULE_DETAIL_MODAL_PARAMS_UPDATE,data:{ItemClassHour,ItemClassHourCount,NowClassHourNO,WeekNO,PageIndex:FindPage}});
+
+        dispatch(SDActions.ScheduleDetailShow(Params));
 
     }
 
 
-    //停课
+   /* //停课
 
     StopSchedule(params){
 
@@ -195,7 +221,7 @@ class ClassRoomTotal extends Component{
 
         dispatch({type:CRTActions.MANAGER_CRT_SCHEDULE_DETAIL_MODAL_HIDE});
 
-        /*ComPageRefresh.ComPageUpdate(dispatch);*/
+        /!*ComPageRefresh.ComPageUpdate(dispatch);*!/
 
         dispatch(CRTActions.ClassTotalPageUpdate());
 
@@ -435,7 +461,7 @@ class ClassRoomTotal extends Component{
 
         dispatch(CRTActions.RebackReplaceSchedule(params));
 
-    }
+    }*/
 
 
     render(){
@@ -506,7 +532,7 @@ class ClassRoomTotal extends Component{
 
             </Loading>
 
-            <ScheduleDetailModal
+            {/*<ScheduleDetailModal
 
                 Params={ScheduleDetail}
 
@@ -590,7 +616,7 @@ class ClassRoomTotal extends Component{
 
 
 
-            </ReplaceScheduleModal>
+            </ReplaceScheduleModal>*/}
 
         </div>
 

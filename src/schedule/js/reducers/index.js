@@ -16,6 +16,8 @@ import AppAlert from './AppAlert';
 
 import RouterSet from './RouterSet';
 
+import ScheduleDetail from './ScheduleDetail';
+
 export let initialState = {};
 
 let rootReducers = combineReducers({
@@ -34,7 +36,9 @@ let rootReducers = combineReducers({
 
     AppAlert,
 
-    RouterSet
+    RouterSet,
+
+    ScheduleDetail
 
 });
 

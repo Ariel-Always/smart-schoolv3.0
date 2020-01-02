@@ -18,13 +18,8 @@ import ComPageRefresh from "../../actions/ComPageRefresh";
 
 import {message} from "antd";
 
-import ScheduleDetailModal from "../../component/ScheduleDetailModal";
 
-import ChangeTimeModal from "../../component/ChangeTimeModal";
-
-import AdjustClassRoomModal from "../../component/AdjustClassRoomModal";
-
-import ReplaceScheduleModal from "../../component/ReplaceScheduleModal";
+import SDActions from "../../actions/ScheduleDetailActions";
 
 class Subject extends Component{
 
@@ -151,279 +146,24 @@ class Subject extends Component{
 
     ScheduleDetailShow(Params){
 
-        const { dispatch } = this.props;
+        const { dispatch,Teacher } = this.props;
 
-        dispatch(STSAction.ScheduleDetailShow(Params));
+        /*dispatch(STSAction.ScheduleDetailShow(Params));*/
 
-    }
+        const { SubjectTeacherSubjectSchedule,SubjectCourseGradeClassRoom } = Teacher;
 
+        const { ItemClassHour,ItemClassHourCount,NowClassHourNO } = SubjectCourseGradeClassRoom;
 
-    //停课
+        const WeekNO = SubjectTeacherSubjectSchedule.NowWeekNo;
 
-    StopSchedule(params){
+        dispatch({type:SDActions.COMPONENT_SCHEDULE_DETAIL_MODAL_PARAMS_UPDATE,data:{ItemClassHour,ItemClassHourCount,NowClassHourNO,WeekNO,CanOperate:false}});
 
-        const { dispatch } = this.props;
-
-        dispatch(STSAction.StopSchedule(params));
-
-    }
-
-    //恢复上课
-    RebackStopSchedule(params){
-
-        const { dispatch } = this.props;
-
-        dispatch(STSAction.RebackStopSchedule(params));
-
-    }
-
-    //关闭弹窗
-
-    ScheduleDetailClose(){
-
-        const { dispatch } = this.props;
-
-        dispatch({type:STSAction.TEACHER_STS_SCHEDULE_DETAIL_MODAL_HIDE});
-
-      /*  ComPageRefresh.ComPageUpdate(dispatch);*/
-
-    }
-
-    //调整时间弹窗
-
-    ChangeTimeShow(params){
-
-        const { dispatch } = this.props;
-
-        dispatch(STSAction.ChangeTimeShow(params));
-
-    }
-
-    //调整时间弹窗点击某一个课时
-
-    SelectClassHour(params){
-
-        const { dispatch } = this.props;
-
-        dispatch(STSAction.SelectClassHour(params));
+        dispatch(SDActions.ScheduleDetailShow(Params));
 
     }
 
 
-    //调整时间弹窗切换周次
 
-    WeekPick(WeekNO){
-
-        const { dispatch } = this.props;
-
-        dispatch(STSAction.WeekPick(WeekNO));
-
-    }
-
-    //调整时间弹窗关闭
-
-    CloseChangeTime(){
-
-        const { dispatch } = this.props;
-
-        dispatch({type:STSAction.TEACHER_STS_CHANGE_TIME_MODAL_HIDE});
-
-    }
-
-    //点击调整时间弹窗确定
-    ChangeTimeCommit(){
-
-        const { dispatch } = this.props;
-
-        dispatch(STSAction.ChangeTimeCommit());
-
-    }
-
-    //撤销调整时间
-    RebackTime(params){
-
-        const { dispatch } = this.props;
-
-        dispatch(STSAction.RebackTime(params));
-
-    }
-
-    //调整教室弹窗
-    AdjustClassRoomShow(params){
-
-        const { dispatch } = this.props;
-
-        dispatch(STSAction.AdjustClassRoomShow(params));
-
-    }
-
-    //调整教室弹窗切换选中教室事件
-
-    ChangeClassRoomPick(e){
-
-        const { dispatch } = this.props;
-
-        dispatch({type:STSAction.TEACHER_STS_ADJUST_CLASSROOM_MODAL_CHECKED_CHANGE,data:e.target.value});
-
-    }
-
-    //调整教室教室类型切换
-
-    ChangeClassRoomType(key){
-
-        const { dispatch } = this.props;
-
-        dispatch({type:STSAction.TEACHER_STS_ADJUST_CLASSROOM_MODAL_CLASSROOM_TYPE_CHANGE,data:key});
-
-    }
-
-    //调整教室搜索值变化
-
-    SearchValueChange(e){
-
-        const { dispatch } = this.props;
-
-        dispatch({type:STSAction.TEACHER_STS_ADJUST_CLASSROOM_MODAL_SEARCH_VALUE_CHANGE,data:e.target.value});
-
-
-    }
-
-    //点击教室搜索
-
-    ClassRoomSearchClick(SearchValue){
-
-        const { dispatch } = this.props;
-
-        dispatch(STSAction.ClassRoomSearchClick(SearchValue))
-
-    }
-
-    //取消搜索教室
-
-    ClassRoomSearchCancel(){
-
-        const { dispatch } = this.props;
-
-        dispatch({type:STSAction.TEACHER_STS_ADJUST_CLASSROOM_MODAL_SEARCH_CANCEL_BTN_HIDE});
-
-        dispatch({type:STSAction.TEACHER_STS_ADJUST_CLASSROOM_MODAL_SEARCH_WRAPPER_HIDE});
-
-        dispatch({type:STSAction.TEACHER_STS_ADJUST_CLASSROOM_MODAL_SEARCH_VALUE_CHANGE,data:''});
-
-    }
-
-
-    //关闭调整教室弹窗
-
-    CloseAdjustClassRoom(){
-
-        const { dispatch } = this.props;
-
-        dispatch({type:STSAction.TEACHER_STS_ADJUST_CLASSROOM_MODAL_HIDE});
-
-    }
-
-    //调整教室弹窗提交
-    AdjustClassRoomCommit(){
-
-        const { dispatch } = this.props;
-
-        dispatch(STSAction.AdjustClassRoomCommit());
-
-    }
-
-    //撤销教室调整
-
-    RebackClassRoom(params){
-
-        const { dispatch } = this.props;
-
-        dispatch(STSAction.RebackClassRoom(params));
-
-    }
-
-    //找人代课弹窗出现
-
-    ChooseReplaceTeacherShow(params){
-
-        const { dispatch } = this.props;
-
-        dispatch(STSAction.ChooseReplaceTeacherShow(params));
-
-    }
-
-    //找人代课教师选择
-
-    ReplaceTeacherPick(ID){
-
-        const { dispatch } = this.props;
-
-        dispatch({type:STSAction.TEACHER_STS_REPLACE_SCHEDULE_MODAL_TEACHER_PICK,data:ID});
-
-    }
-
-    //找人代课输入框改变
-
-    ReplaceSearchValueChange(e){
-
-        const { dispatch } = this.props;
-
-        dispatch({type:STSAction.TEACHER_STS_REPLACE_SCHEDULE_MODAL_INPUT_CHANGE,data:e.target.value});
-
-    }
-
-    //点击代课教师搜索
-
-    ReplaceSearchClick(SearchValue){
-
-        const { dispatch } = this.props;
-
-        dispatch(STSAction.ReplaceSearchClick(SearchValue));
-
-    }
-
-    //取消搜索教师
-
-    ReplaceSearchCancel(){
-
-        const { dispatch } = this.props;
-
-        dispatch({type:STSAction.TEACHER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_CANCEL_BTN_HIDE});
-
-        dispatch({type:STSAction.TEACHER_STS_REPLACE_SCHEDULE_MODAL_SEARCH_WRAPPER_HIDE});
-
-        dispatch({type:STSAction.TEACHER_STS_REPLACE_SCHEDULE_MODAL_INPUT_CHANGE,data:''});
-
-    }
-
-    //关闭找人代课弹窗
-
-    ReplaceScheduleClose(){
-
-        const { dispatch } = this.props;
-
-        dispatch({type:STSAction.TEACHER_STS_REPLACE_SCHEDULE_MODAL_HIDE});
-
-    }
-
-    //找人代课弹窗提交
-    ReplaceScheduleCommit(){
-
-        const { dispatch } = this.props;
-
-        dispatch(STSAction.ReplaceScheduleCommit());
-
-    }
-
-    //找人代课撤销
-
-    RebackReplaceSchedule(params){
-
-        const { dispatch } = this.props;
-
-        dispatch(STSAction.RebackReplaceSchedule(params));
-
-    }
 
 
     render() {
@@ -517,94 +257,6 @@ class Subject extends Component{
                     </div>
 
                 </Loading>
-
-                <ScheduleDetailModal
-
-                    Params={ScheduleDetail}
-
-                    StopSchedule={this.StopSchedule.bind(this)}
-
-                    RebackStopSchedule={this.RebackStopSchedule.bind(this)}
-
-                    ChangeTimeShow={this.ChangeTimeShow.bind(this)}
-
-                    ScheduleDetailClose={this.ScheduleDetailClose.bind(this)}
-
-                    RebackTime={this.RebackTime.bind(this)}
-
-                    AdjustClassRoomShow={this.AdjustClassRoomShow.bind(this)}
-
-                    RebackClassRoom={this.RebackClassRoom.bind(this)}
-
-                    ChooseReplaceTeacherShow={this.ChooseReplaceTeacherShow.bind(this)}
-
-                    RebackReplaceSchedule={this.RebackReplaceSchedule.bind(this)}
-
-                    CanOperate={false}
-
-                >
-
-                </ScheduleDetailModal>
-
-                <ChangeTimeModal
-
-                    Params={ChangeTime}
-
-                    SelectClassHour={this.SelectClassHour.bind(this)}
-
-                    WeekPick={this.WeekPick.bind(this)}
-
-                    CloseChangeTime={this.CloseChangeTime.bind(this)}
-
-                    ChangeTimeCommit={this.ChangeTimeCommit.bind(this)}
-
-                >
-
-                </ChangeTimeModal>
-
-                <AdjustClassRoomModal
-
-                    Params={AdjustClassRoom}
-
-                    ChangeClassRoomPick={this.ChangeClassRoomPick.bind(this)}
-
-                    ChangeClassRoomType={this.ChangeClassRoomType.bind(this)}
-
-                    SearchValueChange={this.SearchValueChange.bind(this)}
-
-                    ClassRoomSearchClick={this.ClassRoomSearchClick.bind(this)}
-
-                    ClassRoomSearchCancel={this.ClassRoomSearchCancel.bind(this)}
-
-                    CloseAdjustClassRoom={this.CloseAdjustClassRoom.bind(this)}
-
-                    AdjustClassRoomCommit={this.AdjustClassRoomCommit.bind(this)}
-
-                >
-
-                </AdjustClassRoomModal>
-
-                <ReplaceScheduleModal
-
-                    Params={ReplaceSchedule}
-
-                    ReplaceTeacherPick={this.ReplaceTeacherPick.bind(this)}
-
-                    SearchValueChange={this.ReplaceSearchValueChange.bind(this)}
-
-                    ReplaceSearchClick={this.ReplaceSearchClick.bind(this)}
-
-                    ReplaceSearchCancel={this.ReplaceSearchCancel.bind(this)}
-
-                    ReplaceScheduleClose={this.ReplaceScheduleClose.bind(this)}
-
-                    ReplaceScheduleCommit={this.ReplaceScheduleCommit.bind(this)}
-
-                >
-
-
-
-                </ReplaceScheduleModal>
 
             </div>
 

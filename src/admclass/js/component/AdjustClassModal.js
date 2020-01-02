@@ -36,8 +36,18 @@ class AdjustClassModal extends Component{
 
                     <span className="objs">
                         {
-                            stuList.map(item => {
-                                return `${item.name}、`;
+                            stuList.map((item,key) => {
+
+                                if (key===stuList.length-1){
+
+                                    return `${item.name}`;
+
+                                }else{
+
+                                    return `${item.name}、`;
+
+                                }
+
                             })
                         }
                         <span className="total">(共<span className="red">{stuList.length}</span>人)</span>
