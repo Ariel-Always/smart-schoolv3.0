@@ -205,7 +205,7 @@ class UserArchives extends React.Component {
           type="circle"
           showLeftMenu={this.state.showLeftMenu}
           showBarner={this.state.showBarner}
-          className='myFrame'
+          className='myFrame mainFrame'
         >
           <div ref="frame-time-barner">
             <TimeBanner route={this.state.route} />

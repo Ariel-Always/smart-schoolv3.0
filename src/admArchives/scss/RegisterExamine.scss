@@ -34,6 +34,7 @@
             .handle-btn {
                 width: 128px;
                 height: 36px;
+                font-size: 16px;
                 line-height: 36px;
                 background: #fff;
                 text-align: center;
@@ -214,7 +215,7 @@
                     line-height: 24px;
                     width: 56px;
                     font-size: 14px;
-                    padding: 0 14px;
+                    padding: 0;
                     margin-right: 2px;
                 }
                 .handle-tips {
@@ -290,7 +291,7 @@
 .ant-modal {
     .modal-studentChange {
         position: relative;
-        padding: 42px;
+        padding: 42px 0 42px 42px;
         height: 100%;
         box-sizing: border-box;
         .content-top {
@@ -330,7 +331,7 @@
 
 .adminFrame {
     .frame-block-wrapper {
-        padding-left: 87px;
+        padding-left: 100px;
     }
 }
 

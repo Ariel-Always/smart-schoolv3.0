@@ -270,7 +270,8 @@ $image-url: "../images";
 .ant-modal {
     .modal-TeacherChange {
         position: relative;
-        padding: 42px;
+        padding: 42px 0 42px 42px;
+        // padding: 42px;
         height: 100%;
         box-sizing: border-box;
         .content-top {

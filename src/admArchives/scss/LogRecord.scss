@@ -71,7 +71,7 @@ $image-url: "../images";
             //   margin: 0 auto;
         }
         .Graduate-content {
-            margin: 6px auto 0;
+            margin: 16px auto 0;
             position: relative;
             padding-left: 6px;
             width: 1114px;
@@ -111,6 +111,7 @@ $image-url: "../images";
                 }
                 .handleTimeSelect {
                     display: inline-block;
+                    vertical-align: middle;
                     .ant-calendar-picker {
                         margin: 0 5px;
                     }
@@ -136,7 +137,7 @@ $image-url: "../images";
                 }
             }
             .content-render {
-                margin-top: 17px;
+                margin-top: 16px;
                 position: relative;
                 .table {
                     .ant-table-thead {
@@ -144,6 +145,10 @@ $image-url: "../images";
                             // text-align: left;
                             padding-left: 60px;
                         }
+                        // th:nth-child(6) {
+                        //     // text-align: left;
+                        //     text-align: center;
+                        // }
                         th {
                             padding: 0;
                             height: 56px;

@@ -2509,7 +2509,8 @@ class DetailsModal extends React.Component {
         super(props);
         this.state = {
             type: props.type,
-            examineFooter: ''
+            examineFooter: '',
+            mask:props.mask?props.mask:true
         }
     }
 
@@ -2538,6 +2539,7 @@ class DetailsModal extends React.Component {
             <AntdModal
                 bodyStyle={{ padding: 0 }}
                 width={400}
+                mask={this.state.mask}
                 footer={type === 'examine' ? [
                     <Button key='agree' className='antdModal-btn-footer left' color='blue' onClick={params.onOk ? params.onOk.bind(this, data) : ''}>通过</Button>,
                     <Button key='refuse' className='antdModal-btn-footer right' color='red' onClick={params.onFail ? params.onFail.bind(this, data) : ''}>不通过</Button>

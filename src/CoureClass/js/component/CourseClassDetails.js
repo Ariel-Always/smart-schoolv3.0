@@ -267,6 +267,7 @@ class CourseClassDetails extends React.Component {
         </div>
         <DetailsModal
           ref="SubjectDetailsMsgModal"
+          mask={false}
           visible={UIState.SubjectDetailsMsgModalShow.Show}
           onCancel={this.TeacherMsgModalCancel}
           data={DataState.TeacherMsg ? DataState.TeacherMsg.data : {}}
