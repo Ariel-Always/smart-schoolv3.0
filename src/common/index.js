@@ -1538,6 +1538,8 @@ class Alert extends React.Component {
                 }
             }
 
+
+
         }
 
         /*if(this.AlertBody&&show&&!this.state.readyShow){
@@ -1562,6 +1564,8 @@ class Alert extends React.Component {
             this.AlertBody.style.top = ($(window).height() - this.AlertBody.clientHeight)/2 +'px';
 
             this.setState({readyShow:true});
+
+            $('.alert_dialog_footer input.cancel').focus();
 
         }
 

@@ -20,7 +20,15 @@
 
     height: auto;
 
+    &>.ant-spin-nested-loading{
+
+      min-height:300px;
+
+    }
+
   }
+
+
 
   .modal-wrapper{
 

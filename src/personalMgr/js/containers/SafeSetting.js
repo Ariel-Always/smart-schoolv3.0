@@ -513,7 +513,7 @@ class SafeSetting extends Component{
 
                             <div className="safe-title-explains">
 
-                                {HasSetPwd?`建议您定期更换密码，且设置一个包含数据和字母，并长度超过6位以上的密码,上次修改时间:  ${LastTimeEditPwd}`:'密码为初始密码，请尽快修改。'}
+                                {HasSetPwd?`建议您定期更换密码，且设置一个包含数据和字母，并长度超过6位以上的密码。<br/>${LastTimeEditPwd?`上次修改时间：${LastTimeEditPwd}`:''}`:'密码为初始密码，请尽快修改。'}
 
                             </div>
 

@@ -212,7 +212,7 @@ const Commit = (dom) => {
 
       if ((!ShortNameTipsShow)&&(!QQTipsShow)&&(!WeixinTipsShow)&&(!WeiboTipsShow)&&(!TelephoneTipsShow)){
 
-          dispatch({type:BASE_SETTING_EDITOR_CLOSE});
+
 
           if($(dom).picUploader.uploadSubmit()){
 
@@ -230,7 +230,9 @@ const Commit = (dom) => {
 
               }).then(data => {
 
-                  if (data==='success'){
+                  if (data===0){
+
+                      dispatch({type:BASE_SETTING_EDITOR_CLOSE});
 
                       dispatch(AppAlertActions.alertSuccess({title:"保存成功"}));
 
@@ -382,7 +384,7 @@ let UpdateBasicInfo =  async ({PhotoEdit,UserID,UserType,ShortName,PhotoPath,QQ,
 
     if (res.StatusCode === 200){
 
-        return res.Msg;
+        return res.ErrCode;
 
     }else{
 

@@ -3365,6 +3365,14 @@ const ModalCommit = () => {
 
               }
 
+          }else{
+
+              if (teacherOptions.dropSelectd.value!=='none'){
+
+                  dispatch(AppAlertActions.alertWarn({title:"该教师暂无课程安排，不可找人代课"}));
+
+              }
+
           }
 
 

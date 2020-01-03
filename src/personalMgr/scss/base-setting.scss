@@ -147,7 +147,17 @@
 
   }
 
+  .subject-wrapper{
 
+    .val{
+
+      max-width:600px;
+
+      @include textOverFlow;
+
+    }
+
+  }
 
   .props{
 
