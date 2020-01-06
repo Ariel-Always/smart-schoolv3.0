@@ -53,51 +53,57 @@ class Import extends Component{
         const FileName = this.Input.value;
 
         const FileType = FileName.substring(FileName.lastIndexOf('.')).toLowerCase();
-        
-        if(FileType==='.xls'||FileType==='.xlsx'){
 
-            //是Excel的类型
-            //excel大小
-            if (File.size<=4194304){
+        if (File){
 
-                if (File.size!==0){
+            if(FileType==='.xls'||FileType==='.xlsx'){
 
-                    //查看是否含有虚假路径
-                    if(FileName.includes('C:\\fakepath\\')){
+                //是Excel的类型
+                //excel大小
+                if (File.size<=4194304){
 
-                        this.setState({UpLoadFileName:File.name,UpLoadFile:File});
+                    if (File.size!==0){
+
+                        //查看是否含有虚假路径
+                        if(FileName.includes('C:\\fakepath\\')){
+
+                            this.setState({UpLoadFileName:File.name,UpLoadFile:File});
+
+                        }else{
+
+                            this.setState({UpLoadFileName:FileName,UpLoadFile:File});
+
+                        }
 
                     }else{
 
-                        this.setState({UpLoadFileName:FileName.name,UpLoadFile:File});
+                        utils.AlertWarn({that:this,title:"Excel文件大小不能为0，请重新选择文件！"});
+
+                        this.Input.value = '';
 
                     }
 
                 }else{
 
-                    utils.AlertWarn({that:this,title:"Excel文件大小不能为0，请重新选择文件！"});
+                    utils.AlertWarn({that:this,title:"Excel文件最大为4M，请重新选择文件!"});
 
                     this.Input.value = '';
 
                 }
 
+
+
             }else{
 
-                utils.AlertWarn({that:this,title:"Excel文件最大为4M，请重新选择文件!"});
+                //弹出警告窗
+
+                console.log('弹出了提示');
+
+                utils.AlertWarn({that:this,title:"请上传后缀名为xlsx或xls的Excel文件!"});
 
                 this.Input.value = '';
 
             }
-
-
-
-        }else{
-
-            //弹出警告窗
-
-            utils.AlertWarn({that:this,title:"请上传后缀名为xlsx或xls的Excel文件!"});
-
-            this.Input.value = '';
 
         }
 

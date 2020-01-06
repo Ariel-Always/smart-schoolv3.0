@@ -53,7 +53,7 @@ class AddScheduleModal extends Component{
 
                     value:item.TeacherID,
 
-                    title:<span className="teacher-id-name" title={`${item.TeacherName}[${item.TeacherID}]`}><span className="teacher-name">{item.TeacherName}</span><span className="teacher-id">[{item.TeacherID}]</span></span>
+                    title:<span className="teacher-id-name" title={`${item.TeacherName}[${item.TeacherID}]`}><span className="teacher-name">{item.TeacherName}</span><span className="teacher-id" style={{color:'#999'}}>[{item.TeacherID}]</span></span>
 
                 }
 

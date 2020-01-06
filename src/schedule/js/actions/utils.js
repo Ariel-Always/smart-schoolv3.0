@@ -13,7 +13,7 @@ const ScheduleRemoveRepeat = (Schedule) =>{
 
         if (FindIndex>=0){
 
-            if (item.IsOver&&(parseInt(item.IsOver)===0)){
+            if (parseInt(item.IsOver)===0){
 
                 NewSchedule.splice(FindIndex,1,item)
 

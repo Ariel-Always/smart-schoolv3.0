@@ -4,7 +4,7 @@ import MainContent from '../component/MainContent/MainContent'
 
 import { connect } from 'react-redux'
 import { Alert}  from  '../../../common/index'
-import { thisExpression } from '@babel/types';
+
 import AppAlertAction from '../action/UI/AppAlertAction';
 
 

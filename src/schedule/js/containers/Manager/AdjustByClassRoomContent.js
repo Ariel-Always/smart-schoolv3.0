@@ -315,7 +315,7 @@ class AdjustByClassRoomContent extends Component{
 
         return (
 
-                <Loading tip="加载中..." type="loading" spinning={LoadingShow}>
+                <Loading tip="加载中..." type="loading" opacity={false} spinning={LoadingShow}>
 
                     <div className="class-room-pick-wrapper clearfix">
 

@@ -639,7 +639,7 @@ class BaseSetting extends Component{
                                     <span className="props">所教学科:</span>
 
 
-                                    <span className="val">{SubjectName}</span>
+                                    <span className="val" title={SubjectName}>{SubjectName}</span>
 
 
                                 </div>
