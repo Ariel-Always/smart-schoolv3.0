@@ -164,7 +164,13 @@ class Subject extends React.Component {
   }
   // 钩子
   componentWillMount() {}
-  componentWillReceiveProps() {}
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.DataState.SubjectMsg.pageIndex && nextProps.DataState.SubjectMsg.pageIndex!==this.state.pagination){
+      this.setState({
+        pagination: nextProps.DataState.SubjectMsg.pageIndex
+      });
+    }
+  }
 
   //事件
 
@@ -209,9 +215,9 @@ class Subject extends React.Component {
   //操作分页
   onPagiNationChange = value => {
     const { dispatch } = this.props;
-    this.setState({
-      pagination: value
-    });
+    // this.setState({
+    //   pagination: value
+    // });
     dispatch(
       actions.UpDataState.getSubjectMsg(
         "/GetSchoolSubjectInfo?schoolID=" +
@@ -237,7 +243,7 @@ class Subject extends React.Component {
     let periodID = "";
     this.setState({
       SubjectSelect: value,
-      pagination: 1
+      // pagination: 1
     });
     if (value.value !== 0) {
       periodID = value.value;
@@ -260,7 +266,7 @@ class Subject extends React.Component {
     dispatch(
       actions.UpUIState.showErrorAlert({
         type: "btn-warn",
-        title: "你确定删除吗？",
+        title: "删除学科将删除相关的教学班、课表等数据",
         ok: this.onAlertWarnOk.bind(this, key),
         cancel: this.onAlertWarnClose.bind(this),
         close: this.onAlertWarnClose.bind(this)
@@ -278,6 +284,7 @@ class Subject extends React.Component {
     const { dispatch, DataState, UIState } = this.props;
     let url = "/DeleteSubjectForSchoolOne";
     let userMsg = DataState.LoginUser;
+    let pagination = this.state.pagination
     // console.log(userMsg)
     dispatch(actions.UpUIState.hideErrorAlert());
     postData(
@@ -296,9 +303,15 @@ class Subject extends React.Component {
       })
       .then(json => {
         if (json.StatusCode === 200) {
-          this.setState({
-            pagination: 1
-          });
+          // this.setState({
+          //   pagination: 1
+          // });
+          // if(DataState.SubjectMsg.Total%8===1){
+          //   pagination -= 1;
+          //   this.setState({
+          //     pagination:pagination
+          //   })
+          // }
           dispatch(
             actions.UpDataState.getSubjectMsg(
               "/GetSchoolSubjectInfo?schoolID=" +
@@ -307,7 +320,7 @@ class Subject extends React.Component {
                 (this.state.SubjectSelect.value
                   ? this.state.SubjectSelect.value
                   : "") +
-                "&pageSize=8&pageIndex=1"
+                "&pageSize=8&pageIndex="+pagination
             )
           );
           dispatch(
@@ -475,9 +488,9 @@ class Subject extends React.Component {
         //     // console.log('错误码：' + json.StatusCode)
         // } else
         if (json.StatusCode === 200) {
-          this.setState({
-            pagination: 1
-          });
+          // this.setState({
+          //   pagination: 1
+          // });
           dispatch(actions.UpUIState.addSubjectModalClose());
           dispatch(
             actions.UpDataState.getSubjectMsg(

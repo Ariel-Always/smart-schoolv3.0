@@ -1,6 +1,6 @@
 import UpDataState from '../../actions/UpDataState';
 
-const SubjectTeacherPreview = (state = {}, actions) => {
+const SubjectTeacherPreview = (state = {pageIndex:0}, actions) => {
     switch (actions.type) {
         case UpDataState.GET_SUBJECT_TEACHER_PREVIEW:
             let { Total, ...list } = actions.data;
@@ -18,13 +18,15 @@ const SubjectTeacherPreview = (state = {}, actions) => {
 function handleData(data,pageIndex,pageSize) {
     let keyList = [];
     let pensonalList = [];
+    let PageIndex = data.PageIndex ;
+    
     let newList = data.List.map((child, index) => {
         let list = {}
         list.UserName = { key: index, UserName: child.UserName };
         list.UserID = child.UserID;
         list.UserImgs = { key: index, UserName: child.UserName, UserImg: child.PhotoPath_NoCache||child.PhotoPath, UserImg_Nocache: child.PhotoPath_NoCache };
         list.Gender = child.Gender;
-        list.OrderNo = { key: index, OrderNo: index + pageIndex * pageSize };
+        list.OrderNo = { key: index, OrderNo: index + PageIndex * pageSize };
         list.key = index;
         keyList.push(list.key);
 
@@ -53,7 +55,7 @@ function handleData(data,pageIndex,pageSize) {
         return { ...list, child }
 
     })
-    return { newList, keyList, pensonalList,pageIndex,pageSize };
+    return { newList, keyList, pensonalList,pageIndex:PageIndex,pageSize };
 }
 function handleSubject(name = '', id = '') {
     let nameArr = name.split(',');

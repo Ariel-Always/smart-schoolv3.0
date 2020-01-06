@@ -274,6 +274,28 @@ class App extends Component {
   };
   //左侧菜单每项的点击事件
   handleClick = key => {
+    let route = history.location.pathname;
+    // 获取接口数据
+    //this.requestData(route)
+    //let route = history.location.pathname;
+    // let userMsg = DataState.LoginUser.SchoolID ? DataState.LoginUser : JSON.parse(sessionStorage.getItem('UserInfo'))
+    let pathArr = route.split("/");
+    let handleRoute = pathArr[1];
+    if(handleRoute==='Student'){
+      window.StudentCancelSearch()
+    }else if(handleRoute==='Teacher'){
+     
+        window.TeacherCancelSearch()
+      
+    }else if(handleRoute==='Leader'){
+     
+      window.LeaderCancelSearch()
+    
+  }else if(handleRoute==='Admin'){
+     
+      window.AdminCancelSearch()
+    
+  }
     history.push("/" + key);
   };
   //每个组件的下拉菜单的数据请求

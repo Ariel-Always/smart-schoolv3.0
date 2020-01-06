@@ -44,7 +44,7 @@ class Student extends React.Component {
           render: handle => {
             return (
               <div className="registerTime-content">
-                <label style={{whiteSpace:'nowrap'}}>
+                <label style={{ whiteSpace: "nowrap" }}>
                   {" "}
                   <CheckBox
                     value={handle.key}
@@ -187,16 +187,29 @@ class Student extends React.Component {
       CancelBtnShow: "n",
       firstSelect: { value: 0, title: "全部年级" },
       secondSelect: { value: 0, title: "全部班级" },
-      
 
       userMsg: props.DataState.LoginUser,
       sortType: "",
       sortFiled: "",
       PwdTipsTitle:
         "密码由6-20个字符，只能由字母、数字、下划线及部分特殊字符组成",
-        ChangeAllPwdMadalVisible:false
+      ChangeAllPwdMadalVisible: false
     };
+    window.StudentCancelSearch = this.StudentCancelSearch.bind(this);
   }
+  StudentCancelSearch = () => {
+    this.setState({
+      CancelBtnShow: "n",
+      keyword: "",
+      checkedList: [],
+      checkAll: false,
+      pagination: 1,
+      searchValue: "",
+      DropMenuShow: false,
+      secondSelect: { value: 0, title: "全部班级" },
+      firstSelect: { value: 0, title: "全部年级" }
+    });
+  };
   componentWillMount() {
     const { dispatch } = this.props;
     let pwd = "888888";
@@ -330,9 +343,11 @@ class Student extends React.Component {
           close: this.onAlertWarnClose.bind(this)
         })
       );
-      return
-    } 
-    let Test = /^[A-Za-z0-9]{1,30}$|^[a-zA-Z0-9_.·\u4e00-\u9fa5 ]{0,48}[a-zA-Z0-9_.·\u4e00-\u9fa5]$/.test(e.value)
+      return;
+    }
+    let Test = /^[A-Za-z0-9]{1,30}$|^[a-zA-Z0-9_.·\u4e00-\u9fa5 ]{0,48}[a-zA-Z0-9_.·\u4e00-\u9fa5]$/.test(
+      e.value
+    );
     if (!Test) {
       dispatch(
         actions.UpUIState.showErrorAlert({
@@ -345,29 +360,28 @@ class Student extends React.Component {
       );
       return;
     }
-      dispatch(
-        actions.UpDataState.getGradeStudentPreview(
-          "/GetStudentToPage?SchoolID=" +
-            this.state.userMsg.SchoolID +
-            "&PageIndex=0&PageSize=10&keyword=" +
-            e.value +
-            (this.state.firstSelect.value
-              ? "&gradeID=" + this.state.firstSelect.value
-              : "") +
-            (this.state.secondSelect.value
-              ? "&classID=" + this.state.secondSelect.value
-              : "") +
-            this.state.sortFiled +
-            this.state.sortType
-        )
-      );
-      this.setState({
-        checkedList: [],
-        checkAll: false,
-        keyword: e.value,
-        CancelBtnShow: "y"
-      });
-    
+    dispatch(
+      actions.UpDataState.getGradeStudentPreview(
+        "/GetStudentToPage?SchoolID=" +
+          this.state.userMsg.SchoolID +
+          "&PageIndex=0&PageSize=10&keyword=" +
+          e.value +
+          (this.state.firstSelect.value
+            ? "&gradeID=" + this.state.firstSelect.value
+            : "") +
+          (this.state.secondSelect.value
+            ? "&classID=" + this.state.secondSelect.value
+            : "") +
+          this.state.sortFiled +
+          this.state.sortType
+      )
+    );
+    this.setState({
+      checkedList: [],
+      checkAll: false,
+      keyword: e.value,
+      CancelBtnShow: "y"
+    });
   };
 
   //搜索change
@@ -524,14 +538,14 @@ class Student extends React.Component {
       //   })
       // );
       this.setState({
-        ChangeAllPwdMadalVisible:true
-      })
+        ChangeAllPwdMadalVisible: true
+      });
     }
   };
   //table点击重置密码
   onChangePwdClick = key => {
     const { dispatch, DataState } = this.props;
-    
+
     let pwd = "888888";
     // console.log(key)
     this.setState({
@@ -602,8 +616,8 @@ class Student extends React.Component {
         });
     }
   };
-   // 批量重置密码ok
-   onAllPwdchangeOk = pwd => {
+  // 批量重置密码ok
+  onAllPwdchangeOk = pwd => {
     const { dispatch, DataState, UIState } = this.props;
     let url = "/ResetPwd";
     let UserMsg = DataState.LoginUser;
@@ -638,7 +652,7 @@ class Student extends React.Component {
                 onHide: this.onAlertWarnHide.bind(this)
               })
             );
-           
+
             this.setState({
               ChangeAllPwdMadalVisible: false,
               defaultPwd: "888888",
@@ -665,8 +679,6 @@ class Student extends React.Component {
             );
           }
         });
-
-    
     }
   };
   //关闭
@@ -686,8 +698,8 @@ class Student extends React.Component {
       defaultPwd: "888888"
     });
   };
-   // 批量重置密码close
-   onAllPwdchangeClose = () => {
+  // 批量重置密码close
+  onAllPwdchangeClose = () => {
     const { dispatch } = this.props;
 
     dispatch({ type: actions.UpUIState.PWD_TIPS_CLOSE });
@@ -860,11 +872,11 @@ class Student extends React.Component {
             (this.state.pagination - 1) +
             keyword +
             firstSelect
-            //  +
-            // "&sortFiled=" +
-            // sorter.columnKey +
-            // "&" +
-            // sortType
+          //  +
+          // "&sortFiled=" +
+          // sorter.columnKey +
+          // "&" +
+          // sortType
         )
       );
     } else if (sorter) {
@@ -1007,7 +1019,7 @@ class Student extends React.Component {
                   ></Table>
                 </CheckBoxGroup>
                 {DataState.GradeStudentPreview.Total ? (
-                  <div style={{    display: 'inline-block'}}>
+                  <div style={{ display: "inline-block" }}>
                     <CheckBox
                       style={{
                         display:
@@ -1176,8 +1188,8 @@ class Student extends React.Component {
           onCancel={this.onPwdchangeClose}
           onClose={this.onPwdchangeClose}
         ></Alert>
-{/* 批量重置 */}
-<Alert
+        {/* 批量重置 */}
+        <Alert
           show={this.state.ChangeAllPwdMadalVisible}
           type={"btn-query"}
           abstract={

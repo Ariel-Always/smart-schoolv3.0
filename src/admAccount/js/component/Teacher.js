@@ -233,7 +233,19 @@ class Teacher extends React.Component {
       ChangeAllPwdMadalVisible:false
 
     };
+    window.TeacherCancelSearch = this.TeacherCancelSearch.bind(this);
   }
+  TeacherCancelSearch = () => {
+    this.setState({
+      CancelBtnShow: "n",
+      keyword: "",
+      searchValue: '',
+      checkedList: [],
+      pagination: 1,
+      checkAll: false,
+      SubjectSelect: { value: 0, title: "全部学科" },
+    });
+  };
   componentWillMount() {
     const { dispatch } = this.props;
     let pwd = "888888";
@@ -309,7 +321,7 @@ class Teacher extends React.Component {
       dispatch(
         actions.UpUIState.showErrorAlert({
           type: "btn-error",
-          title: "您输入的学号或姓名格式不正确",
+          title: "您输入的工号或姓名格式不正确",
           ok: this.onAlertWarnOk.bind(this),
           cancel: this.onAlertWarnClose.bind(this),
           close: this.onAlertWarnClose.bind(this)
@@ -919,20 +931,7 @@ class Teacher extends React.Component {
   // };
   render() {
     const { UIState, DataState } = this.props;
-    const data = {
-      userName: "康欣",
-      userImg:
-        "http://192.168.129.1:10101/LgTTFtp/UserInfo/Photo/Default/Nopic001.jpg",
-      Gende: "男",
-      userText: "学如逆水行舟，不进则退",
-      userID: "20170025444",
-      userGrade: "一年级",
-      userClass: "1班",
-      userIDCard: "",
-      userPhone: "15626248624",
-      userMail: "1519406168@qq.com",
-      userAddress: "蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团蓝鸽集团"
-    };
+   
     return (
       <div className="Teacher">
         <div className="Teacher-box">

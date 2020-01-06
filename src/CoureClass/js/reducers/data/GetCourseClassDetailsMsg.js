@@ -25,7 +25,7 @@ function handleData(data) {
             Gender: child.Gender,
             Class: {
                 Class: child.ClassName,
-                Grade: otherData.GradeName
+                Grade: child.GradeName
             }, 
             key: child.OrderNO - 1
         }

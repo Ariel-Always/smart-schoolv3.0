@@ -53,7 +53,7 @@ class EditModal extends React.Component {
             Grades: [],
             Classes: [],
             TeacherTitle: [],
-            changeSubjectTipsTitle: '请选择班级学科',
+            changeSubjectTipsTitle: '请选择所教学科',
             changeSubjectVisible: false,
             TitleIDTipsTitle: '请选择职称',
             TitleIDVisible: false,

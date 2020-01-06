@@ -368,6 +368,7 @@ class App extends Component {
     let classID = pathArr[4];
     let SubjectID = DataState.GetCoureClassAllMsg.Subject;
     let GradeID = DataState.GetCoureClassAllMsg.Grade;
+    let pageIndex = DataState.GetClassAllMsg.allClass.pageIndex
     // console.log(deepCompare.deepCompare(data.selectData.Student, data.TableSource))
     if (
       data.selectData.Teacher.value === data.TeacherID &&
@@ -457,7 +458,7 @@ class App extends Component {
                     this.state.UserMsg.SchoolID +
                     "&key=" +
                     routeID +
-                    "&pageIndex=1&pageSize=10&subjectID=" +
+                    "&pageIndex="+pageIndex+"&pageSize=10&subjectID=" +
                     SubjectID +
                     "&gradeID=" +
                     GradeID
@@ -468,7 +469,7 @@ class App extends Component {
                 actions.UpDataState.getClassAllMsg(
                   "/GetGradeCouseclassDetailForPage?schoolID=" +
                     this.state.UserMsg.SchoolID +
-                    "&key=&pageIndex=1&pageSize=10&subjectID=" +
+                    "&key=&pageIndex="+pageIndex+"&pageSize=10&subjectID=" +
                     routeID +
                     "&gradeID=" +
                     classID,
@@ -792,6 +793,7 @@ class App extends Component {
           ref="CourseClassDetailsMadal"
           type="1"
           width={680}
+          destroyOnClose={true}
           title={"编辑教学班"}
           bodyStyle={{ height: 305 + "px", padding: 0 }}
           visible={UIState.ChangeCourseClassModalShow.Show}
@@ -803,17 +805,16 @@ class App extends Component {
             opacity={false}
             spinning={UIState.AppLoading.modalLoading}
           >
-            {UIState.ChangeCourseClassModalShow.Show ? (
+           
               <HandleCourseClass></HandleCourseClass>
-            ) : (
-              ""
-            )}
+           
           </Loading>
         </Modal>
         <Modal
           ref="AddCourseClassDetailsMadal"
           type="1"
           width={680}
+          destroyOnClose={true}
           title={"添加教学班"}
           bodyStyle={{ height: 305 + "px", padding: 0 }}
           visible={UIState.AddCourseClassModalShow.Show}
@@ -840,6 +841,7 @@ class App extends Component {
           bodyStyle={{ height: 532 + "px", padding: 0 }}
           visible={UIState.LogDetailsModalShow.Show}
           footer={null}
+          destroyOnClose={true}
           onOk={this.LogDetailsModalOk}
           onCancel={this.LogDetailsModalCancel}
         >
