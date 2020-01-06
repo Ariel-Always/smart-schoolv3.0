@@ -24,15 +24,23 @@ class CollectorRank extends Component {
         })
         if (clickParam === "rank") {
             dispatch(CollectorAction.getCollectionRankList())
+            dispatch({
+                type: CollectorAction.STORE_RIGHT_CONTENT,
+                data: "rank"
+            })
         }
         else {
             dispatch(CollectorAction.getRecentCollection())
+            dispatch({
+                type: CollectorAction.STORE_RIGHT_CONTENT,
+                data: "recent"
+            })
         }
     }
     /* 收藏项的点击事件
     @param1 收藏项点击后跳转的相对地址（网络地址） */
     skipTolink = (address) => {
-        // window.location.href = ""
+        window.location.href = address
     }
 
     /*  监听从排行榜收藏或者取消收藏切换提示事件
@@ -131,7 +139,7 @@ class CollectorRank extends Component {
                 {key < 9 ? `0${key + 1}` : `${key + 1}`}
             </div>
                 <div className="collector-detail"
-                    onClick={() => this.skipTolink()}
+                    onClick={() => this.skipTolink(item.ResLinkForWeb)}
                 >
                     <span className="top-wrap" title={item.Name}>{item.Name}</span>
                     <span className="bottom-wrap" >{selected === "recent" ? `${item.CreateTime}` : `${item.TypeName}`}  &nbsp;|&nbsp;
@@ -161,7 +169,7 @@ class CollectorRank extends Component {
                         <span >2019-01-01 12:12  &nbsp;|&nbsp;&nbsp;电子教案</span></div>
                         <div className="splitline"></div>
                     </li> */}
-                    <Loading spinning={rankLoading} /* opacity={false} */ tip="请稍后...">
+                    <Loading spinning={rankLoading} opacity={false} tip="请稍后...">
                         {collectorRes}
                     </Loading>
 
@@ -173,13 +181,14 @@ class CollectorRank extends Component {
 }
 const mapStateToProps = (state) => {
     const { CollectorDataChange, UILoading } = state
-    const { collectionResult, currentPath } = CollectorDataChange
+    const { collectionResult, currentPath, rightSelect } = CollectorDataChange
     const { rankLoading } = UILoading
     // console.log(currentPath);
     return {
         collectionResult,
         currentPath,
-        rankLoading
+        rankLoading,
+        rightSelect
     }
 }
 export default connect(mapStateToProps)(CollectorRank);

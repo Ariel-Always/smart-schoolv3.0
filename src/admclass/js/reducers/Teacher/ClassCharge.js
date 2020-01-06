@@ -34,6 +34,8 @@ const ClassCharge = (state={
 
     StudentSearchValue:'',
 
+    StudentSearchResultKey:'',
+
     StudentPage:1,
 
     StudentLoading:false,
@@ -153,6 +155,10 @@ const ClassCharge = (state={
         case CCActions.TEACHER_CLASS_CHARGE_STUDENT_CHECK_ALL_FALSE:
 
             return { ...state,StudentAllCheck:false };
+
+        case CCActions.TEACHER_CLASS_CHARGE_STUDENT_SEARCH_RESULT_KEY_CHANGE:
+
+            return { ...state,StudentSearchResultKey:state.StudentSearchValue };
 
         default:
 

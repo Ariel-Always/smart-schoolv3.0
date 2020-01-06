@@ -199,7 +199,7 @@ class StudentWrapper extends Component{
 
             StudentSearchValue,StuCancelSearchBtn,StudentLoading,
 
-            StudentPage
+            StudentPage,StudentSearchOpen,StudentSearchResultKey
 
         } = ClassCharge;
 
@@ -207,11 +207,25 @@ class StudentWrapper extends Component{
 
         return <div className="teacher-stu-list-wrapper">
 
-            <TitleBar type="icon3" title="班级学生" abstract={`(共${Total}人)`}></TitleBar>
+            <TitleBar type="icon3" title="班级学生" abstract={StudentSearchOpen?false:`(共${Total}人)`}></TitleBar>
+
+            {
+
+                StudentSearchOpen?
+
+                    <div className="stu-search-result-tips teacher">
+
+                        搜索关键词"{StudentSearchResultKey}"，共找到<span style={{color:"#ff6600"}}>{Total}</span>人
+
+                    </div>
+
+                    :''
+
+            }
 
             <Search onCancelSearch={this.StuCancelSearch.bind(this)} placeHolder="请输入学号或姓名进行搜索..." Value={StudentSearchValue} CancelBtnShow={StuCancelSearchBtn} onChange={this.StuSearchInputChange.bind(this)} width={240} onClickSearch={this.StuSearchClick.bind(this)}></Search>
 
-            <Loading spinning={StudentLoading}>
+            <Loading spinning={StudentLoading} opacity={false}>
 
                 <div className="person-tab-wrapper clearfix">
 
@@ -411,7 +425,8 @@ class StudentWrapper extends Component{
                         </React.Fragment>
 
                         :
-                        <Empty type="3" title="没有对应的学生数据"></Empty>
+
+                        <Empty type="5" title={StudentSearchOpen?'未搜索到学生':"该行政班暂未有学生数据"}></Empty>
 
 
                 }

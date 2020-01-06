@@ -12,6 +12,8 @@ import AppAlertActions from "../AppAlertActions";
 
 import AASActions from '../AppAlertSuccess';
 
+import utils from '../utils';
+
 const  TEACHER_CLASS_CHARGE_PAGE_INIT = 'TEACHER_CLASS_CHARGE_PAGE_INIT';
 
 const  TEACHER_CLASS_CHARGE_CLASS_ACTIVE = 'TEACHER_CLASS_CHARGE_CLASS_ACTIVE';
@@ -59,7 +61,7 @@ const TEACHER_CLASS_CHARGE_STUDENT_CHECK_ALL_FALSE = 'TEACHER_CLASS_CHARGE_STUDE
 
 const TEACHER_CLASS_CHARGE_STUDENT_CHECK_ALL_TRUE = 'TEACHER_CLASS_CHARGE_STUDENT_CHECK_ALL_TRUE';
 
-
+const TEACHER_CLASS_CHARGE_STUDENT_SEARCH_RESULT_KEY_CHANGE = 'TEACHER_CLASS_CHARGE_STUDENT_SEARCH_RESULT_KEY_CHANGE';
 
 
 
@@ -370,11 +372,20 @@ const StuSearchClick = ()=>{
 
         if (Keyword!==''){
 
-            dispatch({type:TEACHER_CLASS_CHARGE_STUDENT_SEARCH_RESULT_SHOW});
+            let RegResult = utils.SearchReg({type:1,ErrorTips:"您输入的姓名或学号格式不正确!",dispatch,key:Keyword});
 
-            dispatch({type:TEACHER_CLASS_CHARGE_STUDENT_SEARCH_CANCEL_SHOW});
+            if (RegResult){
 
-            dispatch(StudentUpdate(0));
+                dispatch({type:TEACHER_CLASS_CHARGE_STUDENT_SEARCH_RESULT_SHOW});
+
+                dispatch({type:TEACHER_CLASS_CHARGE_STUDENT_SEARCH_CANCEL_SHOW});
+
+                dispatch(StudentUpdate(0));
+
+                dispatch({type:TEACHER_CLASS_CHARGE_STUDENT_SEARCH_RESULT_KEY_CHANGE});
+
+            }
+
 
         }else{
 
@@ -573,6 +584,8 @@ export default {
     TEACHER_CLASS_CHARGE_STUDENT_CHECK_ALL_TRUE,
 
     TEACHER_CLASS_CHARGE_STUDENT_CHECK_ALL_FALSE,
+
+    TEACHER_CLASS_CHARGE_STUDENT_SEARCH_RESULT_KEY_CHANGE,
 
     PageInit,
 

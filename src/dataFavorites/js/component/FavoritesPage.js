@@ -32,7 +32,7 @@ class FavoritesPage extends Component {
             selectAll: false,//全选框的状态控制
             MoveOptionType: "",//当前操作移动功能弹层的操作类型
             beMoveID: "",//当前被移动的目录或者资料ID
-
+            currentPage: 1,//默认请求收藏夹第一页的数据
             selectedFolder: ""//移动目录弹层中被选中的目录Id
         };
     }
@@ -84,14 +84,19 @@ class FavoritesPage extends Component {
                 folderID: currFoleder,
                 startTime: this.state.startDate,
                 endDate: this.state.endDate,
-                keyword: ""
+                keyword: "",
+                pageIndex: this.state.currentPage
             }))
         })
 
 
 
     }
-    //监听日历控件的范围变化事件
+    /* 监听日历控件的范围变化事件
+    @param1 选择日期后回调函数返回的moment对象
+    @param2 选择日期后回调函数返回的日期的字符串数组
+     */
+
     dateChange = (dates, dateStrings) => {
 
         const { dispatch } = this.props
@@ -106,10 +111,14 @@ class FavoritesPage extends Component {
         // console.log(dateStrings[1]  ,typeof (this.state.endDate))
         // dispatch(CollectorAction.getFolderResInfo({ typeId: '', folderID: currFoleder, startTime: dateStrings[0], endDate: dateStrings[1], keyword: "" }))
 
-        dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder, startTime: dateStrings[0], endDate: dateStrings[1] }))
+        dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder, startTime: dateStrings[0], endDate: dateStrings[1], pageIndex: this.state.currentPage }))
     }
 
-    //监听目录的点击事件
+    /* 监听目录的点击事件
+    @param1 当前的操作类型(pathClick)从所在目录路径上点击,(contentClick)从内容区中点击
+    @param2 被点击的目录对应的目录ID
+    @param3 被点击的目录对应的目录名，从来更新当前用户所在目录的路径
+     */
     skipToNewFolder = (type, folderId, folderName) => {
         const { dispatch } = this.props
         //根据点击类型进行数据处理
@@ -135,7 +144,7 @@ class FavoritesPage extends Component {
                 })
                 // dispatch(CollectorAction.getFolderResInfo({ typeId: '', folderID: folderId, startTime: "", endDate: "", keyword: "" }))
 
-                dispatch(CollectorAction.getFolderResInfo({ folderID: folderId }))
+                dispatch(CollectorAction.getFolderResInfo({ folderID: folderId, pageIndex: this.state.currentPage }))
             })
         }
         else if (type === "contentClick") {
@@ -149,7 +158,7 @@ class FavoritesPage extends Component {
                     type: CollectorAction.UPDATE_CURRENT_PATH,
                     data: newPath
                 })
-                dispatch(CollectorAction.getFolderResInfo({ folderID: folderId }))
+                dispatch(CollectorAction.getFolderResInfo({ folderID: folderId, pageIndex: this.state.currentPage }))
                 // dispatch(CollectorAction.getFolderResInfo({ typeId: '', folderID: folderId, startTime: "", endDate: "", keyword: "" }))
             })
         }
@@ -169,12 +178,15 @@ class FavoritesPage extends Component {
     fallback = () => {
         const { dispatch } = this.props
         // let newPath=this.state.currentPath.splice(this.state.currentPath.length)
-        let currFoleder = this.state.currentPath[this.state.currentPath.length - 1].folderId
+        let currFoleder = ""
         if (this.state.currentPath.length === 1) {
             return
         }
         else {
+            //先删掉路径数组中最后一个元素
             this.state.currentPath.pop()
+            //获取当前所在的目录ID，因为删除了最后一个，所以此时数组的最后一个就是当前所在的
+            currFoleder = this.state.currentPath[this.state.currentPath.length - 1].folderId
             this.setState({
                 currentPath: this.state.currentPath,
                 startDate: "",
@@ -189,16 +201,7 @@ class FavoritesPage extends Component {
                     type: CollectorAction.UPDATE_CURRENT_PATH,
                     data: this.state.currentPath
                 })
-                dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder }))
-                // dispatch(CollectorAction.getFolderResInfo({
-                //     typeId: "",
-                //     folderID: currFoleder,
-                //     startTime: "",
-                //     endDate: "",
-                //     keyword: ""
-
-                // }))
-
+                dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder, pageIndex: this.state.currentPage }))
             })
         }
 
@@ -208,29 +211,34 @@ class FavoritesPage extends Component {
         window.location.href = address
     }
 
-    //添加目录按钮的点击事件
-    modalClick = (optionType, ID) => {
+    /* 添加目录按钮的点击事件
+    @param1 当前用户操作的类型，因为共用一个弹层，所以根据操作类型区分对应的弹层
+    @param2 当前被操作的目录或者资料的ID
+    @param3 被操作的资料或者目录名
+    */
+    modalClick = (optionType, ID, Name) => {
         console.log(optionType)
-        let title = ""
-        let name = ""
+        let title = ""  //弹层的title
+        let tips = ""   //弹层中输入框前的提示
         if (optionType === "addFolder") {
             title = "添加目录"
-            name = "目录名称"
+            tips = "目录名称"
         }
         else if (optionType === "reNameFolder") {
             title = "重名命"
-            name = "目录名称"
+            tips = "目录名称"
         }
         else {
             title = "重名命"
-            name = "资料名称"
+            tips = "资料名称"
         }
         this.setState({
             ModalShow: true,
             modalOptionType: optionType,
             modalTitle: title,
-            newName: name,
-            beRenameID: ID
+            newName: tips,
+            beRenameID: ID,
+            modalInput: Name
         })
         // console.log(this.state.modalOptionType)
     }
@@ -242,7 +250,7 @@ class FavoritesPage extends Component {
         let optionType = this.state.modalOptionType
         //被选中需要重命名的目录或者资料的ID
         let ID = this.state.beRenameID
-        const { dispatch, folderResInfo } = this.props
+        const { dispatch, folderResInfo, rightSelect } = this.props
         let currFoleder = this.state.currentPath[this.state.currentPath.length - 1].folderId
 
         // 当前用户操作的是添加目录操作
@@ -267,7 +275,7 @@ class FavoritesPage extends Component {
                     if (data === 0) {
                         dispatch(AppAlertAction.alertSuccess({ title: "添加目录成功" }))
                         //dispatch(CollectorAction.getFolderResInfo({ typeId: "", folderID: currFoleder, startTime: '', endDate: '', keyword: "" }))
-                        dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder }))
+                        dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder, pageIndex: this.state.currentPage }))
                     }
                     else {
                         dispatch(AppAlertAction.alertError({ title: data ? data : "未知异常" }))
@@ -293,7 +301,8 @@ class FavoritesPage extends Component {
                     if (data === 0) {
                         dispatch(AppAlertAction.alertSuccess({ title: "目录重命名成功" }))
                         //dispatch(CollectorAction.getFolderResInfo({ typeId: "", folderID: currFoleder, startTime: '', endDate: '', keyword: "" }))
-                        dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder }))
+
+                        dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder, pageIndex: this.state.currentPage }))
                     }
                     else {
                         dispatch(AppAlertAction.alertError({ title: data ? data : "未知异常" }))
@@ -318,8 +327,11 @@ class FavoritesPage extends Component {
                     if (data === 0) {
                         dispatch(AppAlertAction.alertSuccess({ title: "资料重命名成功" }))
                         //dispatch(CollectorAction.getFolderResInfo({ typeId: "", folderID: currFoleder, startTime: '', endDate: '', keyword: "" }))
-                        dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder }))
-                        dispatch(CollectorAction.getRecentCollection())
+                        dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder, pageIndex: this.state.currentPage }))
+                        if (rightSelect === "recent") {
+                            dispatch(CollectorAction.getRecentCollection())
+                        }
+
                     }
                     else {
                         dispatch(AppAlertAction.alertError({ title: data ? data : "未知异常" }))
@@ -363,13 +375,19 @@ class FavoritesPage extends Component {
 
     //删除目录
     deleteFoleder = (currFoleder, ID) => {
-        const { dispatch } = this.props
+        const { dispatch,rightSelect } = this.props
         const url = `/SysMgr/Favorite/DeleteFolderInfo`
         ApiAction.postMethod(url, { FolderId: ID }).then(data => {
             if (data === 0) {
                 dispatch(AppAlertAction.alertSuccess({ title: "删除目录成功" }))
                 //dispatch(CollectorAction.getFolderResInfo({ typeId: "", folderID: currFoleder, startTime: '', endDate: '', keyword: "" }))
-                dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder }))
+                dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder, pageIndex: this.state.currentPage }))
+                if (rightSelect === "recent") {
+                    dispatch(CollectorAction.getRecentCollection())
+                }
+                else {
+                    dispatch(CollectorAction.getCollectionRankList())
+                }
             }
             else {
                 dispatch(AppAlertAction.alertError({ title: data ? data : "未知异常" }))
@@ -378,13 +396,19 @@ class FavoritesPage extends Component {
     }
     //取消收藏
     cancelcollect = (currFoleder, ID) => {
-        const { dispatch } = this.props
+        const { dispatch, rightSelect } = this.props
         const url = `/SysMgr/Favorite/CancelCollectRes`
         ApiAction.postMethod(url, { resIds: ID }).then(data => {
             if (data === 0) {
                 dispatch(AppAlertAction.alertSuccess({ title: "取消收藏成功" }))
                 //dispatch(CollectorAction.getFolderResInfo({ typeId: "", folderID: currFoleder, startTime: '', endDate: '', keyword: "" }))
-                dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder }))
+                dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder, pageIndex: this.state.currentPage }))
+                if (rightSelect === "recent") {
+                    dispatch(CollectorAction.getRecentCollection())
+                }
+                else {
+                    dispatch(CollectorAction.getCollectionRankList())
+                }
             }
             else {
                 dispatch(AppAlertAction.alertError({ title: data ? data : "未知异常" }))
@@ -448,7 +472,7 @@ class FavoritesPage extends Component {
                     //     endDate: '',
                     //     keyword: ""
                     // }))
-                    dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder }))
+                    dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder, pageIndex: this.state.currentPage }))
 
                 } else {
                     dispatch(AppAlertAction.alertError({ title: data ? data : "未知异常" }))
@@ -464,32 +488,37 @@ class FavoritesPage extends Component {
                 }
 
             })
-            const url = `/SysMgr/Favorite/TransferResInfo`
-            ApiAction.postMethod(url, {
-                resIds: resIdsList.join(","),
-                oldFolderID: currFoleder,
-                newFolderID: this.state.selectedFolder === "0-0" ? '' : this.state.selectedFolder
-            }).then(data => {
-                if (data === 0) {
-                    dispatch(AppAlertAction.alertSuccess({ title: "移动成功!" }))
-                    // dispatch(CollectorAction.getFolderResInfo({
-                    //     typeId: "",
-                    //     folderID: currFoleder,
-                    //     startTime: '',
-                    //     endDate: '',
-                    //     keyword: ""
-                    // }))
-                    dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder }))
+            if (resIdsList.length === 0) {
+                dispatch(AppAlertAction.alertTips({ title: "请先选中需要进行批量移动的项！", cancelTitle: "确定" }))
 
-                } else {
-                    dispatch(AppAlertAction.alertError({ title: data ? data : "未知异常" }))
-                }
-            })
+            } else {
+                const url = `/SysMgr/Favorite/TransferResInfo`
+                ApiAction.postMethod(url, {
+                    resIds: resIdsList.join(","),
+                    oldFolderID: currFoleder,
+                    newFolderID: this.state.selectedFolder === "0-0" ? '' : this.state.selectedFolder
+                }).then(data => {
+                    if (data === 0) {
+                        dispatch(AppAlertAction.alertSuccess({ title: "移动成功!" }))
+                        // dispatch(CollectorAction.getFolderResInfo({
+                        //     typeId: "",
+                        //     folderID: currFoleder,
+                        //     startTime: '',
+                        //     endDate: '',
+                        //     keyword: ""
+                        // }))
+                        dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder, pageIndex: this.state.currentPage }))
 
-            console.log(resIdsList.join(","))
+                    } else {
+                        dispatch(AppAlertAction.alertError({ title: data ? data : "未知异常" }))
+                    }
+                })
+            }
+
+
 
         }
-        console.log(this.state.selectedFolder)
+
 
 
         this.setState({
@@ -565,18 +594,17 @@ class FavoritesPage extends Component {
 
 
     }
-    //监听分页显示事件
+    /*   监听分页显示事件
+    @param1 当前跳转到的页码数
+    @param2 每页显示的内容条数
+     */
     togglePage = (page, pagesize) => {
         let { dispatch, folderResInfo } = this.props
         let currFoleder = this.state.currentPath[this.state.currentPath.length - 1].folderId
-        // dispatch(CollectorAction.getFolderResInfo({
-        //     typeId: "",
-        //     folderID: currFoleder,
-        //     startTime: '',
-        //     endDate: '',
-        //     keyword: "",
-        //     pageIndex: page
-        // }))
+        //刷新当前所在目录的对应页码上的内容
+        this.setState({
+            currentPage: page
+        })
         dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder, pageIndex: page }))
     }
 
@@ -650,7 +678,7 @@ class FavoritesPage extends Component {
 
                         <div className={`option-logo ${item.fileType}`} >
                             <span className="rename"
-                                onClick={item.fileType === "folder" ? () => this.modalClick("reNameFolder", item.ID) : () => this.modalClick("reNameCollect", item.ID)}></span>
+                                onClick={item.fileType === "folder" ? () => this.modalClick("reNameFolder", item.ID, item.Name) : () => this.modalClick("reNameCollect", item.ID, item.Name)}></span>
                             <span className="move"
                                 onClick={item.fileType === "folder" ? () => this.MoveModal("folder", item.ID) : () => this.MoveModal("single", item.ID)}
                             >
@@ -721,13 +749,13 @@ class FavoritesPage extends Component {
                         value={[Mstart, Mend]}
                         // value={[null, null]}
                         onChange={this.dateChange}
-
+                        suffixIcon={<span className="calender-logo"></span>}
                     >
 
                     </RangePicker>
 
                 </div>
-                {/* <button className="add-newfolder"></button> */}
+
                 <Button
                     className="add-newfolder"
                     title="添加目录"
@@ -778,6 +806,7 @@ class FavoritesPage extends Component {
                         >批量移动</Button>
 
                         <Pagination onChange={this.togglePage} total={folderResInfo.total}
+                            current={this.state.currentPage}
                             showQuickJumper={true}
                             hideOnSinglePage={false}
                             defaultPageSize={10} />
@@ -820,14 +849,15 @@ class FavoritesPage extends Component {
 }
 const mapStateToProps = (state) => {
     const { CollectorDataChange, UILoading } = state
-    const { folderResInfo, typeList, folderInfo } = CollectorDataChange
+    const { folderResInfo, typeList, folderInfo, rightSelect } = CollectorDataChange
     const { favoriteLoading } = UILoading
     // console.log(CollectDataChange)
     return {
         folderResInfo,
         typeList,
         favoriteLoading,
-        folderInfo
+        folderInfo,
+        rightSelect
     }
 }
 

@@ -380,7 +380,11 @@ class Empty extends React.Component {
 
         const { style } = nextProps;
 
-        this.setState({ style: style });
+        this.setState({
+            title:nextProps.title,
+            style: style
+        });
+        this.selectType(this.state.type)
 
     }
 
@@ -426,10 +430,10 @@ class Empty extends React.Component {
     }
 
     componentWillMount() {
-        this.selectType(this.state.type)
     }
 
     render() {
+
         return (
             <div className={`emptyBox ${this.state.className}`} style={this.state.style}>
                 <i style={this.state.imageStyle} className={`empty ${this.state.className_1}`}></i>

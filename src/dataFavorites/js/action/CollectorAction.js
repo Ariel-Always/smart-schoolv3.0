@@ -9,6 +9,7 @@ const GET_COLLECTOR_RANK_INFO = "GET_COLLECTOR_RANK_INFO"//获取搜藏排行榜
 const GET_COLLECTOR_INFO_FROM_TYPE = "GET_COLLECTOR_INFO_FROM_TYPE"//根据来源获取目录下资料信息
 const REFRESH_COLLECT_RESULT = "REFRESH_COLLECT_RESULT"//更新右侧排行表内容区内容//
 const UPDATE_CURRENT_PATH = "UPDATE_CURRENT_PATH"//更新当前所在目录
+const STORE_RIGHT_CONTENT="STORE_RIGHT_CONTENT"//存储右侧当前被选中显示的内容区
 
 
 
@@ -188,7 +189,8 @@ export default {
     UPDATE_CURRENT_PATH,
     REFRESH_FOLDERRES_INFO,
     GET_FOLDER_INFO,
-    getfolderInfo
+    getfolderInfo,
+    STORE_RIGHT_CONTENT
 
 
 

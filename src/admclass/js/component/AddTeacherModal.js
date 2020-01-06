@@ -134,7 +134,26 @@ class AddTeacherModal extends Component{
 
                                             <div className="empty-wrapper">
 
-                                                <Empty type="4"  title="没有相对应的教师"></Empty>
+                                               {/* <Empty type="4"  title="没有相对应的教师"></Empty>*/}
+
+                                                {
+
+                                                    subjectsSelect.value==='none'?
+
+                                                        <Empty type="4" title="请选择学科"></Empty>
+
+                                                        :
+
+                                                        closeShow?
+
+                                                            <Empty type="4" title="未搜索到教师"></Empty>
+
+                                                            :
+
+                                                            <Empty type="4" title="未找到对应学科的教师"></Empty>
+
+                                                }
+
 
                                             </div>
 

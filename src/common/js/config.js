@@ -37,7 +37,9 @@ if (process.env.NODE_ENV === 'development'){
         SysSettingProxy:'http://192.168.129.1:30103',
         ImgUrlProxy:'http://192.168.129.1:30101',
         // SysSettingProxy:'http://192.168.2.114:8090',
-        tempSubsystemProxy:'http://192.168.2.202:7300/mock/5db974a3a1aded10689632eb/example'
+        tempSubsystemProxy:'http://192.168.2.202:7300/mock/5db974a3a1aded10689632eb/example',
+        DataCollectorProxy:"http://192.168.129.1:30103",
+        // DataCollectorProxy:"http://192.168.2.114:8090",
 
     }
 
@@ -74,7 +76,8 @@ if (process.env.NODE_ENV === 'production'){
         XTestProxy:'/UserMgr/UserInfoMgr',
         Import:'',
         SysSettingProxy:"",
-        tempSubsystemProxy:""
+        tempSubsystemProxy:"",
+        DataCollectorProxy:""
 
     }
 

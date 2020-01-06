@@ -70,7 +70,7 @@ class AuthorSetting extends Component{
 
         const { dispatch } = this.props;
 
-        dispatch(AppAlertActions.alertQuery({title:`您确定要取消${Name}的绑定么？`,ok:()=>{ return ()=>{this.CancelBind(params,dispatch)}  }}));
+        dispatch(AppAlertActions.alertQuery({title:`您确定要解除${Name}的绑定么？`,ok:()=>{ return ()=>{this.CancelBind(params,dispatch)}  }}));
 
     }
 

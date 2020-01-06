@@ -10,7 +10,7 @@ const REFRESH_SCHOOL_INFO = "REFRESH_SCHOOL_INFO"//刷新当前学校信息
 const CET_CURRENT_SUBSYSTEM_INFO = "CET_CURRENT_SUBSYSTEM_INFO"//获取子系统详情
 const REFRESH_SUBSYSTEM_INFO = "REFRESH_SUBSYSTEM_INFO"//刷新当前子系统信息
 const INIT_PERIOD_LIST = "INIT_PERIOD_LIST"//初始化学制选择表
-
+// const UPDATA_SCHOOL_LOGOURL="UPDATA_SCHOOL_LOGOURL"//更新学校校徽
 
 
 
@@ -19,6 +19,10 @@ const INIT_PERIOD_LIST = "INIT_PERIOD_LIST"//初始化学制选择表
 const getCurrentSemester = (SchoolID) => {
 
     return dispatch => {
+        dispatch({
+            type: SEMESTER_LOADING_HIDE,
+            data:true
+        })
         const url = `/SysMgr/Setting/GetCurrentTermInfo?SchoolID=${SchoolID}`;
 
 
@@ -79,7 +83,8 @@ const getCurrentSemester = (SchoolID) => {
                     data: semesterInfo
                 })
                 dispatch({
-                    type: SEMESTER_LOADING_HIDE
+                    type: SEMESTER_LOADING_HIDE,
+                    data:false
                 })
              
 
@@ -106,6 +111,10 @@ const getCurrentSemester = (SchoolID) => {
 
 const getCurrentSchoolInfo = (SchoolID) => {
     return dispatch => {
+        dispatch({
+            type: SEMESTER_LOADING_HIDE,
+            data:true
+        })
         const url = `/SysMgr/Setting/GetSchoolInfo?SchoolID=${SchoolID}`;
         ApiActions.getMethod(url).then(json => {
             let schoolInfo = json.Data;
@@ -189,7 +198,8 @@ const getCurrentSchoolInfo = (SchoolID) => {
                 })
                 // console.log(schoolInfo)
                 dispatch({
-                    type: SEMESTER_LOADING_HIDE
+                    type: SEMESTER_LOADING_HIDE,
+                    data:false
                 })
             }
             else {
@@ -213,6 +223,10 @@ const getCurrentSbusystemInfo = ({ UserType, IsOpened, keyword }) => {
     keyword = keyword ? keyword : "";
 
     return dispatch => {
+        dispatch({
+            type: SEMESTER_LOADING_HIDE,
+            data:true
+        })
         const url = `/SysMgr/Setting/GetAccessInfo?UserType=${UserType}&IsOpened=${IsOpened}&keyword=${keyword}`;
         ApiActions.getMethod(url).then(json => {
             // let subsystemInfo = json.Data;
@@ -259,7 +273,8 @@ const getCurrentSbusystemInfo = ({ UserType, IsOpened, keyword }) => {
                     data: subsystemInfo
                 })
                 dispatch({
-                    type: SEMESTER_LOADING_HIDE
+                    type: SEMESTER_LOADING_HIDE,
+                    data:false
                 })
             }
             else {
@@ -345,6 +360,7 @@ export default {
     getCurrentSbusystemInfo1,
     CET_CURRENT_SUBSYSTEM_INFO,
     REFRESH_SUBSYSTEM_INFO,
-    INIT_PERIOD_LIST
+    INIT_PERIOD_LIST,
+    // UPDATA_SCHOOL_LOGOURL
 
 }

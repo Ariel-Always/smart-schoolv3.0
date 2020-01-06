@@ -6,13 +6,11 @@
   right: 0px;
   width: 944px;
   height: 626px;
-  box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.03);
+//   box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.03);
   border-radius: 12px;
-  background: url("../images/school_bg.png") ;
+  background: url("../images/school_bg.jpg") no-repeat;
   background-size: cover;
   box-sizing: border-box;
-
-
 
   .edite-info {
     position: absolute;
@@ -21,7 +19,7 @@
     width: 48px;
     height: 16px;
     line-height: 16px;
-    color: #0099ff;
+    color: #cccccc;
     cursor: pointer;
     span {
       display: inline-block;
@@ -30,16 +28,26 @@
       background: url("../images/edite_logo.png") no-repeat;
       margin-right: 4px;
     }
+    &:hover {
+      color: #0099ff;
+    }
   }
 
   .school-logo {
     @include Hcenter();
     top: 111px;
-    width: 118px;
-    height: 118px;
+    width: 124px;
+    height: 124px;
     // background-color: red;
-    img{
+    border-radius: 50%;
+    border: 2px solid #ccc;
+    padding: 3px 3px;
+    overflow: hidden;
+    img {
       @include Center();
+      max-width: 118px;
+      max-height: 118px;
+      border-radius: 50%;
     }
   }
 
@@ -58,7 +66,7 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    cursor: default; 
+    cursor: default;
   }
   .school-info {
     position: absolute;
@@ -75,7 +83,7 @@
     color: #999999;
     .school-code,
     .school-type {
-        cursor: default; 
+      cursor: default;
       span {
         color: #000;
         margin-left: 5px;
@@ -98,9 +106,13 @@
       top: 36px;
       width: 130px;
       height: 130px;
-      background: url("../images/school_pic_bg.png") no-repeat;
-      img{
+      //   background: url("../images/school_pic_bg.png") no-repeat;
+    //   border: 1px solid #999999;
+      overflow: hidden;
+      img {
         @include Center();
+        max-width: 130px;
+        max-height: 130px;
       }
     }
     .choose-pic,
@@ -111,7 +123,7 @@
       height: 28px;
       background: url("../images/modify_cancel.png");
       background-size: cover;
-      border: none;
+    //   border: none;
       border-radius: 4px;
       font-family: MicrosoftYaHei;
       font-size: 14px;
@@ -122,8 +134,8 @@
       text-align: center;
       line-height: 28px;
       cursor: pointer;
-      input{
-          margin: auto auto;
+      input {
+        margin: auto auto;
       }
     }
     .upload-pic {
@@ -159,18 +171,17 @@
       width: 400px;
       height: 28px;
       line-height: 28px;
-  
-        input {
-          width: 320px;
-          height: 28px;
-          margin-left: 8px;
-          background-color: #ffffff;
-          border-radius: 4px;
-          border: solid 1px #bac7d9;
-          padding-left: 10px;
-          color: #000;
-        }
-      
+
+      input {
+        width: 320px;
+        height: 28px;
+        margin-left: 8px;
+        background-color: #ffffff;
+        border-radius: 4px;
+        border: solid 1px #bac7d9;
+        padding-left: 10px;
+        color: #000;
+      }
     }
     .win-school-code {
       position: absolute;
@@ -250,9 +261,8 @@
         position: absolute;
         top: 80px;
       }
-
     }
-    .edit-tips{
+    .edit-tips {
       position: absolute;
       top: 280px;
       left: 32px;
@@ -261,14 +271,14 @@
       // line-height: 22px;
       color: red;
       font-size: 14px;
-      padding-left:26px;
+      padding-left: 26px;
       font-weight: bold;
       span {
         @include Vcenter();
         display: inline-block;
         width: 16px;
         height: 22px;
-        background: url('../images/light_but.png');
+        background: url("../images/light_but.png");
         //  background: url('http://img.lancoo.cn/test/123');
         margin-right: 8px;
       }

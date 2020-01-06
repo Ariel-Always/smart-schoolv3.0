@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
 import '../../../sass/yearSemesterSet.scss'
 import { connect } from 'react-redux';
-import { Modal, Loading, Button } from '../../../../common';
+import { Modal, Loading, DropDown} from '../../../../common';
 import moment from 'moment';
-import { DropDown } from '../../../../common';
+
 import ApiActions from '../../action/data/Api';
 import CONFIG from '../../../../common/js/config'
 import DataChange from '../../action/data/DataChange'
 
-import { DatePicker } from 'antd'
+import { DatePicker ,Button} from 'antd'
 import AppAlertAction from '../../action/UI/AppAlertAction';
-let startDate = new Date();
-let endDate = new Date();
-let termNum = ""
+
 
 
 
@@ -29,6 +27,11 @@ class YearSemesterSetting extends Component {
             available: false,
 
 
+        }
+        const{dispatch}=props
+        if(sessionStorage.getItem('UserInfo')){
+            const {SchoolID}=JSON.parse(sessionStorage.getItem('UserInfo'))
+            dispatch(DataChange.getCurrentSemester(SchoolID));
         }
 
     }
@@ -460,7 +463,8 @@ class YearSemesterSetting extends Component {
     <div className="day">{semesterInfo.EndDay < 10 ? `0${semesterInfo.EndDay}` : semesterInfo.EndDay}</div>
                                     日
                     </div>
-                                <button className="btn adjust-limit" onClick={(e) => this.modifyLimit()}>调整学期期限</button>
+                                <Button className="btn adjust-limit" onClick={(e) => this.modifyLimit()}>调整学期期限</Button>
+                        
                                 <Modal
                                     type="1"
                                     title="调整学年期限"

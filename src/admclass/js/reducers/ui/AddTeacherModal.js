@@ -10,7 +10,7 @@ const  AddTeacherModal = (state={
 
     loadingShow:true,
 
-    teacherList:[],
+    teacherList:{},
 
     subjects:[],
 
@@ -18,7 +18,7 @@ const  AddTeacherModal = (state={
 
     subjectsSelect:{value:'all',title:"全部教师"},
 
-    colseShow:false,
+    closeShow:false,
 
     newPickTeacher:{id:'',name:'',photo:''},
 

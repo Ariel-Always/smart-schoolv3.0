@@ -36,7 +36,7 @@ class Import extends Component{
 */
             this.state={
 
-                ImportTitle:'导入班主任班长',
+                ImportTitle:'导入班主任及班长',
 
                 ImportTarget:'gangermonitor'
 

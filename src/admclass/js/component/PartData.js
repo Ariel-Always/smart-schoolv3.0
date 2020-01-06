@@ -6,7 +6,7 @@ class PartData extends Component{
 
     render() {
 
-        const { PartDataList,type,GradeClick,ClassClick,ResetClassName,delClass } = this.props;
+        const { PartDataList,type,GradeClick,ClassClick,ResetClassName,delClass,SearchResultShow } = this.props;
 
 
         let DataItem ='';
@@ -75,7 +75,10 @@ class PartData extends Component{
 
                     })
 
-                :<Empty type="4" title="还没有任何年级存在哦，请先导入数据"></Empty>;
+                :
+
+
+                <Empty type="4" title="还没有任何年级存在哦!"></Empty>;
 
         }else if (type==='class'){
 
@@ -127,7 +130,15 @@ class PartData extends Component{
                             </div>
                 })
 
-                :<Empty type="4" title="还没有班级存在哦，请先导入班级"></Empty>;;
+                :
+
+                SearchResultShow?
+
+                    <Empty type="5" title="未搜索到班级"></Empty>
+
+                    :
+
+                    <Empty type="4" title="还没有任何班级存在哦!"></Empty>;
 
         }
 

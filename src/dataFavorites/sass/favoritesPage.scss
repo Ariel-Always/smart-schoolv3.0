@@ -66,6 +66,12 @@
       height: 29px;
       width: 230px;
       border: solid 1px #bac7d9;
+      .calender-logo {
+        display: inline-block;
+        width: 16px;
+        height: 14px;
+        background: url("../images/calendar_logo.png") no-repeat;
+      }
     }
   }
   .add-newfolder {
@@ -355,8 +361,8 @@
 
           //   }
         }
-        ul{
-            padding-left: 33px;
+        ul {
+          padding-left: 33px;
         }
       }
     }

@@ -230,11 +230,25 @@
 
             });
 
-            $('#up_btn_del').click(function () {
+            /*$('#up_btn_del').click(function () {
                 var imgSrc = $('.up_img_current').show().attr('data-src');
                 $('#up_img_preview,#up_btn_del').hide();
                 _up_obj.perviewImgUrl = '';
                 _userPhoto_setUsingDefaultVal(imgSrc.indexOf('Photo/Default') > -1);
+            });*/
+
+            $('#up_btn_del').click(function () {
+                var imgSrc = $('.up_img_current').show().attr('data-src');
+                $('#up_img_preview,#up_btn_del').hide();
+                _up_obj.perviewImgUrl = '';
+
+                if (imgSrc.indexOf('Photo/Default') > -1) {
+                    _userPhoto_setUsingDefaultVal(true);
+                    $('.up_img_current').hide();
+                    $('#up_img_preview').css('background-image', 'url(' + _userPhoto_getDefaultPhoto() + ')').show();
+                } else {
+                    _userPhoto_setUsingDefaultVal(false);
+                }
             });
 
             $('#up_btn_default').click(function () {

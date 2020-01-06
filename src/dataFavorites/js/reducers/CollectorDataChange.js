@@ -10,7 +10,8 @@ const CollectDataChange = (state = {
     collectionResult: [],
     typeList: [],
     currentPath: [{ "folderId": "", "folderName": "资料收藏夹" }],
-    folderInfo:[]
+    folderInfo:[],
+    rightSelect:"recent"
 
 
 }, action) => {
@@ -57,6 +58,11 @@ const CollectDataChange = (state = {
                 ...state,
                 folderInfo: action.data
             }
+        case CollectorAction.STORE_RIGHT_CONTENT:
+            return{
+                ...state,
+                rightSelect:action.data
+            }    
 
         default:
             return state;

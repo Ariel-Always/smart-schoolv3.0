@@ -350,6 +350,26 @@ $image-url:'../images';
 
 }
 
+.stu-search-result-tips{
+
+  float: right;
+
+  line-height: 28px;
+
+  margin-right:10px;
+
+  &.teacher{
+
+    position: absolute;
+
+    right: 280px;
+
+    top: 0;
+
+  }
+
+}
+
 
 .ant-pagination{
 

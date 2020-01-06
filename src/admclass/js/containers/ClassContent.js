@@ -300,7 +300,9 @@ class ClassContent extends Component{
                                   PartDataList={TheGradePreview.List}
                                   ClassClick={this.ClassClick.bind(this)}
                                   ResetClassName={this.ResetClassName.bind(this)}
-                                  delClass={this.delClass.bind(this)}  >
+                                  delClass={this.delClass.bind(this)}
+                                  SearchResultShow={!TheGradePreview.StaticsShow}
+                        >
 
                         </PartData>
 

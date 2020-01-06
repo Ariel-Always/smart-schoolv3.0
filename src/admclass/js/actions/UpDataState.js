@@ -236,6 +236,8 @@ const getTheClassPreview = (ClassID) =>{
 
         Promise.all([getStudentsPromise,getTeachersPromise]).then((res) => {
 
+            dispatch({type:SearchActions.MANAGER_STUDENT_SEARCH_INIT});
+
             dispatch({type:GET_THE_CLASS_STUDENTS,data:res[0]});
 
             dispatch({type:PaginationActions.STUDENT_PAGINATION_CURRENT_UPDATE,data:1});
