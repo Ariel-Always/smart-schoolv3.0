@@ -3,7 +3,7 @@ import UpDataState from '../../actions/UpDataState';
 
 
 const AdminPreview = (state = {
-    keyList: [], newList: [], Total: 0, TrasferData: {
+    keyList: [], newList: [], Total: 0,PageIndex:0, TrasferData: {
         isChange: false,
         UserID: '',
         UserName: '',
@@ -28,7 +28,7 @@ const AdminPreview = (state = {
 };
 
 function handleData(data, pageIndex, pageSize) {
-    const { Total, ...others } = data;
+    const { Total,PageIndex, ...others } = data;
     let keyList = [];
     let TrasferData = {
         isChange: false,
@@ -41,7 +41,7 @@ function handleData(data, pageIndex, pageSize) {
     let newList = data.List.map((child, index) => {
         let list = {}
         list.key = index;
-        list.OrderNo = index + pageIndex * pageSize;
+        list.OrderNo = index + PageIndex * pageSize;
         list.UserName = {
             Name: child.UserName,
             UserID: child.UserID,
@@ -59,7 +59,7 @@ function handleData(data, pageIndex, pageSize) {
         }
         list.handle = {
             key: index,
-            OrderNo: index + pageIndex * pageSize
+            OrderNo: index + PageIndex * pageSize
         }
         keyList.push(list.key);
 
@@ -108,7 +108,7 @@ function handleData(data, pageIndex, pageSize) {
             PowerChild
         }
     })
-    return { PowerList, Total, newList, keyList, TrasferData };
+    return { PowerList, Total, newList, keyList, TrasferData,PageIndex };
 }
 
 export default AdminPreview;

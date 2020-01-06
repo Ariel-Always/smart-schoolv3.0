@@ -7,7 +7,8 @@ import {
   PagiNation,
   Search,
   Table,
-  Button,Tips,
+  Button,
+  Tips,
   CheckBox,
   CheckBoxGroup,
   Modal
@@ -44,18 +45,18 @@ class Admin extends React.Component {
           render: handle => {
             return (
               <div className="registerTime-content">
-               <label style={{whiteSpace:'nowrap'}}>
-               <CheckBox
-                type='gray'
-                  value={handle.key}
-                  onChange={this.onCheckChange}
-                ></CheckBox>
-                <span className="key-content">
-                  {handle.OrderNo + 1 >= 10
-                    ? handle.OrderNo + 1
-                    : "0" + (handle.OrderNo + 1)}
-                </span>
-               </label>
+                <label style={{ whiteSpace: "nowrap" }}>
+                  <CheckBox
+                    type="gray"
+                    value={handle.key}
+                    onChange={this.onCheckChange}
+                  ></CheckBox>
+                  <span className="key-content">
+                    {handle.OrderNo + 1 >= 10
+                      ? handle.OrderNo + 1
+                      : "0" + (handle.OrderNo + 1)}
+                  </span>
+                </label>
               </div>
             );
           }
@@ -94,7 +95,9 @@ class Admin extends React.Component {
           sorter: true,
           render: ShortName => {
             return (
-              <span title={ShortName} className="UserName">{ShortName ? ShortName : "--"}</span>
+              <span title={ShortName} className="UserName">
+                {ShortName ? ShortName : "--"}
+              </span>
             );
           }
         },
@@ -110,7 +113,7 @@ class Admin extends React.Component {
                 placement="topLeft"
                 width={540}
                 trigger="click"
-                overlayClassName='PowerTip'
+                overlayClassName="PowerTip"
                 arrowPointAtCenter={true}
                 title={<TipsPower data={Power}></TipsPower>}
               >
@@ -184,8 +187,8 @@ class Admin extends React.Component {
           Others: {}
         }
       ],
-      PwdTipsTitle:'密码由6-20个字符，只能由字母、数字、下划线及部分特殊字符组成'
-,
+      PwdTipsTitle:
+        "密码由6-20个字符，只能由字母、数字、下划线及部分特殊字符组成",
       pagination: 1,
       loading: false,
       selectedAll: false,
@@ -214,14 +217,25 @@ class Admin extends React.Component {
       sortType: "",
       sortFiled: ""
     };
+    window.AdminCancelSearch = this.AdminCancelSearch.bind(this);
   }
+  AdminCancelSearch = () => {
+    this.setState({
+      CancelBtnShow: "n",
+      keyword: "",
+      searchValue: "",
+      checkAll: false,
+      // pagination: 1,
+      checkedList: []
+    });
+  };
   componentWillMount() {
     const { dispatch } = this.props;
     let pwd = "0";
 
     dispatch(actions.UpDataState.getChangeInputValue(pwd));
   }
-  componentWillReceiveProps() {
+  componentWillReceiveProps(nextProps) {
     let Grades = this.props.DataState.GradeClassMsg.Grades
       ? this.props.DataState.GradeClassMsg.Grades
       : [];
@@ -233,7 +247,11 @@ class Admin extends React.Component {
       let Grade = { value: Grades[i].GradeID, title: Grades[i].GradeName };
       GradeArr.push(Grade);
     }
-
+    if(nextProps.DataState.AdminPreview.PageIndex!==undefined&&nextProps.DataState.AdminPreview.PageIndex+1!==this.state.pagination){
+      this.setState({
+        pagination: nextProps.DataState.AdminPreview.PageIndex+1
+      });
+    }
     this.setState({
       GradeArr: GradeArr
     });
@@ -253,9 +271,11 @@ class Admin extends React.Component {
           close: this.onAlertWarnClose.bind(this)
         })
       );
-      return
-    } 
-    let Test = /^[A-Za-z0-9]{1,30}$|^[a-zA-Z0-9_.·\u4e00-\u9fa5 ]{0,48}[a-zA-Z0-9_.·\u4e00-\u9fa5]$/.test(e.value)
+      return;
+    }
+    let Test = /^[A-Za-z0-9]{1,30}$|^[a-zA-Z0-9_.·\u4e00-\u9fa5 ]{0,48}[a-zA-Z0-9_.·\u4e00-\u9fa5]$/.test(
+      e.value
+    );
     if (!Test) {
       dispatch(
         actions.UpUIState.showErrorAlert({
@@ -268,24 +288,23 @@ class Admin extends React.Component {
       );
       return;
     }
-      this.setState({
-        checkedList: [],
-        checkAll: false,
-        keyword: e.value,
-        CancelBtnShow: "y",
-        pagination: 1
-      });
-      dispatch(
-        actions.UpDataState.getAdminPreview(
-          "/GetAdminToPage?SchoolID=" +
-            this.state.userMsg.SchoolID +
-            "&PageIndex=0&PageSize=10&keyword=" +
-            e.value +
-            this.state.sortFiled +
-            this.state.sortType
-        )
-      );
-    
+    this.setState({
+      checkedList: [],
+      checkAll: false,
+      keyword: e.value,
+      CancelBtnShow: "y",
+      // pagination: 1
+    });
+    dispatch(
+      actions.UpDataState.getAdminPreview(
+        "/GetAdminToPage?SchoolID=" +
+          this.state.userMsg.SchoolID +
+          "&PageIndex=0&PageSize=10&keyword=" +
+          e.value +
+          this.state.sortFiled +
+          this.state.sortType
+      )
+    );
   };
   onChangeSearch = e => {
     this.setState({
@@ -309,10 +328,11 @@ class Admin extends React.Component {
   // }
 
   OnCheckAllChange = e => {
+    const { dispatch, DataState } = this.props;
     //  console.log(e)
     if (e.target.checked) {
       this.setState({
-        checkedList: this.state.keyList,
+        checkedList: DataState.AdminPreview.keyList,
         checkAll: e.target.checked
       });
     } else {
@@ -400,10 +420,10 @@ class Admin extends React.Component {
   };
   onAddAdmin = e => {
     //  console.log(e)
-    const { dispatch ,UIState} = this.props;
+    const { dispatch, UIState } = this.props;
 
-    if(UIState.AppLoading.TableLoading){
-      return
+    if (UIState.AppLoading.TableLoading) {
+      return;
     }
     this.setState({
       addAdminModalVisible: true,
@@ -438,9 +458,14 @@ class Admin extends React.Component {
   onAlertDeleteOk = () => {
     const { dispatch, DataState } = this.props;
     let url = "/DeleteAdmin";
+    console.log(this.state.checkedList)
+    let Total = DataState.AdminPreview.Total;
+
     let UserIDs = this.state.checkedList.map(child => {
       return DataState.AdminPreview.newList[child].UserName.UserID;
     });
+    let len = UserIDs.length;
+    let pagination = this.state.pagination - 1
     postData(
       CONFIG.UserAccountProxy + url,
       {
@@ -466,6 +491,12 @@ class Admin extends React.Component {
               onHide: this.onAlertWarnHide.bind(this)
             })
           );
+          // if((Total-len)%(this.state.pagination-1)===0){
+          //   pagination = this.state.pagination - 2;
+          //   this.setState({
+          //     pagination:pagination+1
+          //   })
+          // }
           this.setState({
             checkedList: [],
             checkAll: false
@@ -476,7 +507,7 @@ class Admin extends React.Component {
                 "/GetAdminToPage?SchoolID=" +
                   this.state.userMsg.SchoolID +
                   "&PageIndex=" +
-                  (this.state.pagination - 1) +
+                  pagination +
                   "&PageSize=10&Keyword=" +
                   this.state.keyword +
                   this.state.sortFiled +
@@ -502,7 +533,7 @@ class Admin extends React.Component {
   onPagiNationChange = value => {
     const { dispatch } = this.props;
     this.setState({
-      pagination: value,
+      // pagination: value,
       checkedList: [],
       checkAll: false
     });
@@ -603,69 +634,68 @@ class Admin extends React.Component {
     //         ModulesID.push(child.join())
     // })
     if (picObj.picUploader.uploadSubmit()) {
-
-    postData(
-      CONFIG.UserAccountProxy + url,
-      {
-        userID: DataState.AdminPreview.TrasferData.UserID,
-        UserName: DataState.AdminPreview.TrasferData.UserName,
-        ModuleIDs: DataState.AdminPreview.TrasferData.ModuleIDs,
-        PhotoPath: picObj.picUploader.getCurImgPath(),
-        Pwd: "0"
-      },
-      2
-    )
-      .then(res => {
-        return res.json();
-      })
-      .then(json => {
-        // if (json.StatusCode !== 200) {
-        //     dispatch(actions.UpUIState.showErrorAlert({
-        //         type: 'btn-error',
-        //         title: json.Msg,
-        //         ok: this.onAlertWarnOk.bind(this),
-        //         cancel: this.onAlertWarnClose.bind(this),
-        //         close: this.onAlertWarnClose.bind(this)
-        //     }));
-        // } else
-        if (json.StatusCode === 200) {
-          dispatch(
-            actions.UpUIState.showErrorAlert({
-              type: "success",
-              title: "操作成功",
-              onHide: this.onAlertWarnHide.bind(this)
-            })
-          );
-          this.setState({
-            addAdminModalVisible: false,
-            checkedList: [],
-            checkAll: false
-          });
-          dispatch(
-            actions.UpDataState.setAdminPreview({
-              isChange: false,
-              UserID: "",
-              UserName: "",
-              ModuleIDs: "",
-              PhotoPath: "",
-              Pwd: "0"
-            })
-          );
-          dispatch(
-            actions.UpDataState.getAdminPreview(
-              "/GetAdminToPage?SchoolID=" +
-                this.state.userMsg.SchoolID +
-                "&PageIndex=" +
-                (this.state.pagination - 1) +
-                "&PageSize=10" +
-                (this.state.keyword ? "&Keyword" + this.state.keyword : "") +
-                this.state.sortFiled +
-                this.state.sortType
-            )
-          );
-          dispatch(actions.UpUIState.AllTipsVisibleClose());
-        }
-      });
+      postData(
+        CONFIG.UserAccountProxy + url,
+        {
+          userID: DataState.AdminPreview.TrasferData.UserID,
+          UserName: DataState.AdminPreview.TrasferData.UserName,
+          ModuleIDs: DataState.AdminPreview.TrasferData.ModuleIDs,
+          PhotoPath: picObj.picUploader.getCurImgPath(),
+          Pwd: "0"
+        },
+        2
+      )
+        .then(res => {
+          return res.json();
+        })
+        .then(json => {
+          // if (json.StatusCode !== 200) {
+          //     dispatch(actions.UpUIState.showErrorAlert({
+          //         type: 'btn-error',
+          //         title: json.Msg,
+          //         ok: this.onAlertWarnOk.bind(this),
+          //         cancel: this.onAlertWarnClose.bind(this),
+          //         close: this.onAlertWarnClose.bind(this)
+          //     }));
+          // } else
+          if (json.StatusCode === 200) {
+            dispatch(
+              actions.UpUIState.showErrorAlert({
+                type: "success",
+                title: "操作成功",
+                onHide: this.onAlertWarnHide.bind(this)
+              })
+            );
+            this.setState({
+              addAdminModalVisible: false,
+              checkedList: [],
+              checkAll: false
+            });
+            dispatch(
+              actions.UpDataState.setAdminPreview({
+                isChange: false,
+                UserID: "",
+                UserName: "",
+                ModuleIDs: "",
+                PhotoPath: "",
+                Pwd: "0"
+              })
+            );
+            dispatch(
+              actions.UpDataState.getAdminPreview(
+                "/GetAdminToPage?SchoolID=" +
+                  this.state.userMsg.SchoolID +
+                  "&PageIndex=" +
+                  (this.state.pagination - 1) +
+                  "&PageSize=10" +
+                  (this.state.keyword ? "&Keyword" + this.state.keyword : "") +
+                  this.state.sortFiled +
+                  this.state.sortType
+              )
+            );
+            dispatch(actions.UpUIState.AllTipsVisibleClose());
+          }
+        });
     }
   };
   handleAddAdminModalCancel = e => {
@@ -736,9 +766,9 @@ class Admin extends React.Component {
     //     if (child.length !== 0)
     //         ModulesID.push(child.join())
     // })
-    let PhotoEdit = 0
-    if(picObj.picUploader.isChanged()){
-      PhotoEdit = 1
+    let PhotoEdit = 0;
+    if (picObj.picUploader.isChanged()) {
+      PhotoEdit = 1;
     }
     if (picObj.picUploader.uploadSubmit()) {
       postData(
@@ -749,7 +779,7 @@ class Admin extends React.Component {
           ModuleIDs: DataState.AdminPreview.TrasferData.ModuleIDs,
           PhotoPath: picObj.picUploader.getCurImgPath(),
           Pwd: "0",
-          PhotoEdit:PhotoEdit
+          PhotoEdit: PhotoEdit
         },
         2
       )
@@ -816,15 +846,15 @@ class Admin extends React.Component {
   };
   //修改密码
   onPwdchangeOk = () => {
-    const { dispatch, DataState,UIState } = this.props;
+    const { dispatch, DataState, UIState } = this.props;
     let pwd = this.state.defaultPwd;
     if (this.state.defaultPwd === "") {
-      dispatch({type:actions.UpUIState.PWD_TIPS_OPEN})
+      dispatch({ type: actions.UpUIState.PWD_TIPS_OPEN });
       return;
     } else if (UIState.TipsVisible.PwdTipsShow) {
       // dispatch({type:actions.UpUIState.PWD_TIPS_OPEN})
       return;
-    } 
+    }
     //  console.log(this.state.onClickKey)
     let url = "/ResetPwd";
     postData(
@@ -886,7 +916,7 @@ class Admin extends React.Component {
   onPwdchangeClose = () => {
     const { dispatch } = this.props;
 
-    dispatch({type:actions.UpUIState.PWD_TIPS_CLOSE})
+    dispatch({ type: actions.UpUIState.PWD_TIPS_CLOSE });
     this.setState({
       ChangePwdMadalVisible: false,
       defaultPwd: "888888"
@@ -969,15 +999,15 @@ class Admin extends React.Component {
       keyword: "",
       searchValue: "",
       checkAll: false,
-pagination:1,
-checkedList: [],
+      // pagination: 1,
+      checkedList: []
     });
     dispatch(
       actions.UpDataState.getAdminPreview(
         "/GetAdminToPage?SchoolID=" +
           this.state.userMsg.SchoolID +
           "&PageIndex=" +
-          ( 0) +
+          0 +
           "&PageSize=10" +
           this.state.sortFiled +
           this.state.sortType
@@ -986,17 +1016,18 @@ checkedList: [],
   };
   onPwdBlur = e => {
     const { dispatch } = this.props;
-     console.log(e.target.value)
-    let value = e.target.value
-    let Test = /^([0-9a-zA-Z`~\!@#$%\^&*\(\)_\+-={}|\[\]:\";\'<>\?,.\/\\]){6,20}$/.test(value)
-    if(!Test||value===''){
-      dispatch({type:actions.UpUIState.PWD_TIPS_OPEN})
+    console.log(e.target.value);
+    let value = e.target.value;
+    let Test = /^([0-9a-zA-Z`~\!@#$%\^&*\(\)_\+-={}|\[\]:\";\'<>\?,.\/\\]){6,20}$/.test(
+      value
+    );
+    if (!Test || value === "") {
+      dispatch({ type: actions.UpUIState.PWD_TIPS_OPEN });
       return;
-    }else{
-      dispatch({type:actions.UpUIState.PWD_TIPS_CLOSE})
+    } else {
+      dispatch({ type: actions.UpUIState.PWD_TIPS_CLOSE });
       return;
     }
-    
   };
   render() {
     const { UIState, DataState } = this.props;
@@ -1027,7 +1058,6 @@ checkedList: [],
                 style={{ cursor: "pointer" }}
                 onClick={this.onAddAdmin.bind(this)}
               >
-                
                 <span className="add">添加管理员</span>
               </span>
             </div>
@@ -1063,24 +1093,23 @@ checkedList: [],
                   ></Table>
                 </CheckBoxGroup>
                 {DataState.AdminPreview.Total ? (
-                  <div style={{    display: 'inline-block'}}>
-                  <CheckBox
-                    className="checkAll-box"
-                    type='gray'
-                    onChange={this.OnCheckAllChange}
-                    checked={this.state.checkAll}
-                  >
-                   <span className='checkAll-title'>全选</span>
-                    
-                  </CheckBox>
-                  <Button
-                  onClick={this.onDeleteAllClick}
-                  className="deleteAll"
-                  color="red"
-                >
-                  删除
-                </Button>
-                </div>
+                  <div style={{ display: "inline-block" }}>
+                    <CheckBox
+                      className="checkAll-box"
+                      type="gray"
+                      onChange={this.OnCheckAllChange}
+                      checked={this.state.checkAll}
+                    >
+                      <span className="checkAll-title">全选</span>
+                    </CheckBox>
+                    <Button
+                      onClick={this.onDeleteAllClick}
+                      className="deleteAll"
+                      color="red"
+                    >
+                      删除
+                    </Button>
+                  </div>
                 ) : (
                   ""
                 )}
@@ -1202,15 +1231,15 @@ checkedList: [],
                 overlayClassName="tips"
                 visible={UIState.TipsVisible.PwdTipsShow}
                 title={this.state.PwdTipsTitle}
-                getPopupContainer={e=>e.parentNode}
+                getPopupContainer={e => e.parentNode}
               >
-              <Input
-                size="small"
-                onChange={this.onPwdchange.bind(this)}
+                <Input
+                  size="small"
+                  onChange={this.onPwdchange.bind(this)}
                   onBlur={this.onPwdBlur.bind(this)}
                   style={{ width: 120 + "px" }}
-                value={this.state.defaultPwd}
-              ></Input>
+                  value={this.state.defaultPwd}
+                ></Input>
               </Tips>
             </div>
           }
@@ -1218,15 +1247,25 @@ checkedList: [],
             this.state.ChangePwdMadalVisible ? (
               <p className="alert-Title">
                 确定重置
-                <span title={DataState.AdminPreview.newList[this.state.onClickKey]
-                      .UserName.Name} className="alert-Title-name">
+                <span
+                  title={
+                    DataState.AdminPreview.newList[this.state.onClickKey]
+                      .UserName.Name
+                  }
+                  className="alert-Title-name"
+                >
                   {
                     DataState.AdminPreview.newList[this.state.onClickKey]
                       .UserName.Name
                   }
                 </span>
-                <span title={DataState.AdminPreview.newList[this.state.onClickKey]
-                      .UserName.UserID} className="alert-Title-id">
+                <span
+                  title={
+                    DataState.AdminPreview.newList[this.state.onClickKey]
+                      .UserName.UserID
+                  }
+                  className="alert-Title-id"
+                >
                   (
                   {
                     DataState.AdminPreview.newList[this.state.onClickKey]

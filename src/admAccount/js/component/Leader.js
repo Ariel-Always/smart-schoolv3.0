@@ -201,7 +201,16 @@ class Leader extends React.Component {
       PwdTipsTitle:'密码由6-20个字符，只能由字母、数字、下划线及部分特殊字符组成',
       ChangeAllPwdMadalVisible:false
     };
+    window.LeaderCancelSearch = this.LeaderCancelSearch.bind(this);
   }
+  LeaderCancelSearch = () => {
+    this.setState({
+    
+      checkedList: [],
+      checkAll: false,
+     
+    });
+  };
   componentWillMount() {
     const { dispatch } = this.props;
     let pwd = "888888";

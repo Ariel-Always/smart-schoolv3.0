@@ -2,7 +2,7 @@ import UpDataState from '../../actions/UpDataState';
 
 
 
-const GradeStudentPreview = (state={},actions)=>{
+const GradeStudentPreview = (state={pageIndex:0},actions)=>{
     switch (actions.type) {
         case UpDataState.GET_GRADE_STUDENT_PREVIEW:
             let {Total,...list} = actions.data;
@@ -17,7 +17,10 @@ const GradeStudentPreview = (state={},actions)=>{
 
 function handleData(data,pageIndex,pageSize){
     let keyList = [];
+    let PageIndex = data.PageIndex ;
     let pensonalList = [];
+    // console.log(window.StudentPagination)
+    // window.StudentPagination&&window.StudentPagination(PageIndex)
     let newList = data.List.map((child,index) => {
         let list = {}
         list.UserName = {key:index,PhotoPath:child.PhotoPath_NoCache||child.PhotoPath,UserName:child.UserName};
@@ -27,7 +30,7 @@ function handleData(data,pageIndex,pageSize){
         keyList.push(list.key);
         list.GradeName = child.GradeName;
         list.ClassName = child.ClassName;
-        list.OrderNo = { key: index, OrderNo: index + pageIndex * pageSize };
+        list.OrderNo = { key: index, OrderNo: index + PageIndex * pageSize };
         let {UserID,Grader,GradeName,ClassName,PhotoPath,UserName,...others} = child;
         list.Others = child;
         let person = {
@@ -48,7 +51,7 @@ function handleData(data,pageIndex,pageSize){
 
     })
     
-    return {newList,keyList,pensonalList,pageIndex,pageSize};
+    return {newList,keyList,pensonalList,pageIndex:PageIndex,pageSize};
 }
 
 export default  GradeStudentPreview;

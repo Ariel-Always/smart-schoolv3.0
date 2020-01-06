@@ -181,6 +181,12 @@ class Search extends React.Component {
     options = tableSource.map((child, index) => {
       return index;
     });
+    // console.log(nextProps.DataState.GetClassAllMsg.allClass.pageIndex,this.state.pageIndex)
+    if(nextProps.DataState.GetClassAllMsg.allClass.pageIndex && nextProps.DataState.GetClassAllMsg.allClass.pageIndex!==this.state.pageIndex){
+      this.setState({
+        pageIndex: nextProps.DataState.GetClassAllMsg.allClass.pageIndex
+      });
+    }
     this.setState({
       options: options
     });
@@ -252,7 +258,7 @@ class Search extends React.Component {
       Key = routeID
     }
     this.setState({
-      pageIndex:value,
+      // pageIndex:value,
       checkedList: [],
       checkAll: false
     })
@@ -547,10 +553,8 @@ class Search extends React.Component {
             <div className="pagination-box">
               <PagiNation
                 showQuickJumper
-                defaultCurrent={
-                  DataState.GetClassAllMsg.allClass
-                    ? DataState.GetClassAllMsg.allClass.PageIndex
-                    : 1
+                current={
+                   this.state.pageIndex
                 }
                 defaultPageSize={10}
                 total={

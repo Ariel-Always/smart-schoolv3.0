@@ -229,7 +229,20 @@ class Teacher extends React.Component {
       searchWord:'',
       teacherChangeUserLog: {}
     };
+    window.TeacherCancelSearch = this.TeacherCancelSearch.bind(this);
+
   }
+  TeacherCancelSearch = () => {
+    this.setState({
+      CancelBtnShow: "n",
+      keyword: "",
+      searchValue: "",
+      checkAll: false,
+      checkedList: [],
+      // pagination: 1
+    });
+   
+  };
   componentWillReceiveProps(nextProps) {
     const { DataState, UIState,dispatch } = nextProps;
     let SubjectTeacherPreview = DataState.SubjectTeacherPreview;
@@ -266,7 +279,7 @@ class Teacher extends React.Component {
       selectSubject: e,
       searchValue: "",
       keyword: "",
-      pagination: 1,
+      // pagination: 1,
       CancelBtnShow: "n"
     });
     dispatch(
@@ -317,7 +330,7 @@ class Teacher extends React.Component {
         keyword: "&keyword=" + e.value,
         CancelBtnShow: "y",
         searchWord:e.value,
-        pagination: 1
+        // pagination: 1
       });
       dispatch(
         actions.UpDataState.getSubjectTeacherPreview(
@@ -732,25 +745,80 @@ class Teacher extends React.Component {
     const { dispatch, DataState } = this.props;
     let url = "/DeleteTeacher";
     let checkList = this.state.checkedList;
+    let Total = DataState.SubjectTeacherPreview.Total;
+
     let dataList = DataState.SubjectTeacherPreview.newList;
     let UserIDList = checkList.map((child, index) => {
       return dataList[child].UserID;
     });
-    let UserIDListString = UserIDList.join();
+    let len = UserIDList.length;
 
+    let UserIDListString = UserIDList.join();
+    let pagination = this.state.pagination - 1
     postData(
       CONFIG.UserInfoProxy + url,
       {
         userIDs: UserIDListString,
         schoolID: this.state.userMsg.SchoolID
       },
-      2
+      2,
+      "urlencoded",
+      false,
+      false
     )
       .then(res => {
         return res.json();
       })
       .then(json => {
-        if (json.StatusCode === 200) {
+        if(json.StatusCode === 400){
+          let id = [];
+          let name = [];
+          json.Data instanceof Array && json.Data.map(child=>{
+            id.push(child.UserID);
+            name.push(child.UserName+'（'+child.UserID+'）');
+          })
+          if(json.ErrCode===-2){
+            // UserIDList.join()
+          
+            dispatch(
+              actions.UpUIState.showErrorAlert({
+                type: "btn-error",
+                title: "工号"+id.join('、')+'的教师不存在',
+                ok: this.onAlertQueryClose.bind(this),
+                cancel: this.onAlertQueryClose.bind(this),
+                close: this.onAlertQueryClose.bind(this)
+              })
+            );
+          }else  if(json.ErrCode===-3||json.ErrCode===-4){
+            // UserIDList.join()
+            dispatch(
+              actions.UpUIState.showErrorAlert({
+                type: "btn-error",
+                title: name.join('、')+'带有教学班，不允许删除',
+                ok: this.onAlertQueryClose.bind(this),
+                cancel: this.onAlertQueryClose.bind(this),
+                close: this.onAlertQueryClose.bind(this)
+              })
+            );
+          }else{
+            dispatch(
+              actions.UpUIState.showErrorAlert({
+                type: "btn-error",
+                title: json.Msg,
+                ok: this.onAlertQueryClose.bind(this),
+                cancel: this.onAlertQueryClose.bind(this),
+                close: this.onAlertQueryClose.bind(this)
+              })
+            );
+          }
+        }
+        else if (json.StatusCode === 200) {
+          // if((Total-len)%(this.state.pagination-1)===0){
+          //   pagination = this.state.pagination - 2;
+          //   this.setState({
+          //     pagination:pagination+1
+          //   })
+          // }
           this.setState({
             checkedList: [],
             checkAll: false
@@ -770,7 +838,7 @@ class Teacher extends React.Component {
                 "&SubjectIDs=" +
                 this.state.selectSubject.value +
                 "&PageIndex=" +
-                (this.state.pagination - 1) +
+                pagination +
                 "&PageSize=10" +
                 this.state.keyword +
                 this.state.sortType +
@@ -792,7 +860,7 @@ class Teacher extends React.Component {
     this.setState({
       checkedList: [],
       checkAll: false,
-      pagination: e
+      // pagination: e
     });
     dispatch(
       actions.UpDataState.getSubjectTeacherPreview(
@@ -809,11 +877,11 @@ class Teacher extends React.Component {
         this.state.selectSubject
       )
     );
-    this.setState({
-      checkedList: [],
-      checkAll: false,
-      pagination: e
-    });
+    // this.setState({
+    //   checkedList: [],
+    //   checkAll: false,
+    //   // pagination: e
+    // });
   };
   onUserNameClick = key => {
     const { DataState } = this.props;
@@ -845,124 +913,7 @@ class Teacher extends React.Component {
     //console.log('ddd')
     dispatch(actions.UpUIState.hideErrorAlert());
   };
-  //对象深度对比
-  deepCompare(x, y) {
-    var i, l, leftChain, rightChain;
-
-    function compare2Objects(x, y) {
-      var p;
-
-      // remember that NaN === NaN returns false
-      // and isNaN(undefined) returns true
-      if (
-        isNaN(x) &&
-        isNaN(y) &&
-        typeof x === "number" &&
-        typeof y === "number"
-      ) {
-        return true;
-      }
-
-      // Compare primitives and functions.
-      // Check if both arguments link to the same object.
-      // Especially useful on the step where we compare prototypes
-      if (x === y) {
-        return true;
-      }
-
-      // Works in case when functions are created in constructor.
-      // Comparing dates is a common scenario. Another built-ins?
-      // We can even handle functions passed across iframes
-      if (
-        (typeof x === "function" && typeof y === "function") ||
-        (x instanceof Date && y instanceof Date) ||
-        (x instanceof RegExp && y instanceof RegExp) ||
-        (x instanceof String && y instanceof String) ||
-        (x instanceof Number && y instanceof Number)
-      ) {
-        return x.toString() === y.toString();
-      }
-
-      // At last checking prototypes as good as we can
-      if (!(x instanceof Object && y instanceof Object)) {
-        return false;
-      }
-
-      if (x.isPrototypeOf(y) || y.isPrototypeOf(x)) {
-        return false;
-      }
-
-      if (x.constructor !== y.constructor) {
-        return false;
-      }
-
-      if (x.prototype !== y.prototype) {
-        return false;
-      }
-
-      // Check for infinitive linking loops
-      if (leftChain.indexOf(x) > -1 || rightChain.indexOf(y) > -1) {
-        return false;
-      }
-
-      // Quick checking of one object being a subset of another.
-      // todo: cache the structure of arguments[0] for performance
-      for (p in y) {
-        if (y.hasOwnProperty(p) !== x.hasOwnProperty(p)) {
-          return false;
-        } else if (typeof y[p] !== typeof x[p]) {
-          return false;
-        }
-      }
-
-      for (p in x) {
-        if (y.hasOwnProperty(p) !== x.hasOwnProperty(p)) {
-          return false;
-        } else if (typeof y[p] !== typeof x[p]) {
-          return false;
-        }
-
-        switch (typeof x[p]) {
-          case "object":
-          case "function":
-            leftChain.push(x);
-            rightChain.push(y);
-
-            if (!compare2Objects(x[p], y[p])) {
-              return false;
-            }
-
-            leftChain.pop();
-            rightChain.pop();
-            break;
-
-          default:
-            if (x[p] !== y[p]) {
-              return false;
-            }
-            break;
-        }
-      }
-
-      return true;
-    }
-
-    if (arguments.length < 1) {
-      return true; //Die silently? Don't know how to handle such case, please help...
-      // throw "Need two or more arguments to compare";
-    }
-
-    for (i = 1, l = arguments.length; i < l; i++) {
-      leftChain = []; //Todo: this can be cached
-      rightChain = [];
-
-      if (!compare2Objects(arguments[0], arguments[i])) {
-        return false;
-      }
-    }
-
-    return true;
-  }
+ 
   //监听table的change进行排序操作
   onTableChange = (page, filters, sorter) => {
     const { DataState, dispatch } = this.props;
@@ -1037,7 +988,7 @@ class Teacher extends React.Component {
       searchValue: "",
       checkAll: false,
       checkedList: [],
-      pagination: 1
+      // pagination: 1
     });
     dispatch(
       actions.UpDataState.getSubjectTeacherPreview(

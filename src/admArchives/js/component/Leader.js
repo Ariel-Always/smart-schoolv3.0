@@ -178,7 +178,18 @@ class Leader extends React.Component {
       sortFiled: "",
       leaderChangeUserLog:{}
     };
+    window.LeaderCancelSearch = this.LeaderCancelSearch.bind(this);
+
   }
+  LeaderCancelSearch = () => {
+    this.setState({
+     
+      checkAll: false,
+      checkedList: [],
+      // pagination: 1
+    });
+   
+  };
   // 点击全选
   OnCheckAllChange = e => {
     // console.log(e)

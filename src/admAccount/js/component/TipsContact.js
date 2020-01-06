@@ -22,20 +22,20 @@ class TipsContact extends React.Component{
                     <div className='box-content'>
                         <div className='content'>
                             <img alt='QQ' src={img_QQ} width='28' height='28'/>
-                            <span className={`content-text ${this.props.data.QQ?'':'content-null'}`}>{this.props.data.QQ?this.props.data.QQ:'未填写'}</span>
+                            <span title={this.props.data.QQ?this.props.data.QQ:""} className={`content-text ${this.props.data.QQ?'':'content-null'}`}>{this.props.data.QQ?this.props.data.QQ:'未填写'}</span>
                         </div>
                         <div className='content'>
                             <img alt='微信' src={img_weixin} width='28' height='28'/>
-                            <span className={`content-text ${this.props.data.WeiXin?'':'content-null'}`}>{this.props.data.WeiXin?this.props.data.WeiXin:'未填写'}</span>
+                            <span title={this.props.data.WeiXin?this.props.data.WeiXin:""} className={`content-text ${this.props.data.WeiXin?'':'content-null'}`}>{this.props.data.WeiXin?this.props.data.WeiXin:'未填写'}</span>
                         </div>
                         <br />
                         <div className='content'>
                             <img alt='微博' src={img_weibo} width='28' height='28'/>
-                            <span className={`content-text ${this.props.data.Weibo?'':'content-null'}`}>{this.props.data.Weibo?this.props.data.Weibo:'未填写'}</span>
+                            <span title={this.props.data.Weibo?this.props.data.Weibo:""} className={`content-text ${this.props.data.Weibo?'':'content-null'}`}>{this.props.data.Weibo?this.props.data.Weibo:'未填写'}</span>
                         </div>
                         <div className='content'>
                             <img alt='手机号码' src={img_telephone} width='28' height='28'/>
-                            <span className={`content-text ${this.props.data.Telephone?'':'content-null'}`}>{this.props.data.Telephone?this.props.data.Telephone:'未填写'}</span>
+                            <span title={this.props.data.Telephone?this.props.data.Telephone:""} className={`content-text ${this.props.data.Telephone?'':'content-null'}`}>{this.props.data.Telephone?this.props.data.Telephone:'未填写'}</span>
                         </div>
                     </div>
                 </div>

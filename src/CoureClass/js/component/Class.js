@@ -153,6 +153,13 @@ class Class extends React.Component {
       tableSource.map((child, index) => {
         return index;
       });
+      // console.log(nextProps.DataState.GetClassAllMsg.allClass.pageIndex,this.state.pagination)
+
+      if(nextProps.DataState.GetClassAllMsg.allClass.pageIndex && nextProps.DataState.GetClassAllMsg.allClass.pageIndex!==this.state.pagination){
+        this.setState({
+          pagination: nextProps.DataState.GetClassAllMsg.allClass.pageIndex
+        });
+      }
     this.setState({
       options: options
     });
@@ -233,7 +240,7 @@ class Class extends React.Component {
       )
     );
     this.setState({
-      pagination: value,
+      // pagination: value,
       checkedList: [],
       checkAll: false
     });
