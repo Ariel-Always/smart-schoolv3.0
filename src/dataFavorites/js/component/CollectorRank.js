@@ -15,7 +15,7 @@ class CollectorRank extends Component {
     }
 
     /* 监听最近收藏与收藏排行榜的切换事件
-        @param1 头部表的点击项
+        @param1 头部表的点击项(recent)、(rank)
     */
     clickChange = (clickParam) => {
         const { dispatch } = this.props
@@ -43,10 +43,11 @@ class CollectorRank extends Component {
         window.location.href = address
     }
 
+
     /*  监听从排行榜收藏或者取消收藏切换提示事件
-    @param1 资源Id(排行榜上收藏项Id)
-    @param2 当前收藏项的收藏状态（true/false）
-    @param3 收藏说明（非必选）
+        @param1 资源Id(排行榜上收藏项Id)
+        @param2 当前收藏项的收藏状态（true/false）
+        @param3 收藏说明（非必选）
      */
     rankCollectAction = (ResId, Iscollected, resRemark = "") => {
         let { dispatch, collectionResult, currentPath } = this.props
@@ -81,8 +82,8 @@ class CollectorRank extends Component {
 
     }
     /* 取消收藏事件
-    @param1 资源ID(收藏项的ID)
-    @param2 当前用户所在目录的目录Id
+        @param1 资源ID(收藏项的ID)
+        @param2 当前用户所在目录的目录Id
     */
     cancelCollect = (ResId, currentFolderId) => {
         let url = `/SysMgr/Favorite/CancelCollectRes`;
@@ -102,7 +103,7 @@ class CollectorRank extends Component {
     }
 
     /* 更新收藏排行榜上被收藏项的图标状态
-    @param1 资源ID
+        @param1 资源ID
     */
     upDateCollector = (ResId) => {
         let { dispatch, collectionResult } = this.props
