@@ -15,7 +15,7 @@ class CollectorRank extends Component {
     }
 
     /* 监听最近收藏与收藏排行榜的切换事件
-        @param1 头部表的点击项
+        @param1 头部表的点击项(recent)、(rank)
     */
     clickChange = (clickParam) => {
         const { dispatch } = this.props
@@ -24,21 +24,30 @@ class CollectorRank extends Component {
         })
         if (clickParam === "rank") {
             dispatch(CollectorAction.getCollectionRankList())
+            dispatch({
+                type: CollectorAction.STORE_RIGHT_CONTENT,
+                data: "rank"
+            })
         }
         else {
             dispatch(CollectorAction.getRecentCollection())
+            dispatch({
+                type: CollectorAction.STORE_RIGHT_CONTENT,
+                data: "recent"
+            })
         }
     }
     /* 收藏项的点击事件
     @param1 收藏项点击后跳转的相对地址（网络地址） */
     skipTolink = (address) => {
-        // window.location.href = ""
+        window.location.href = address
     }
 
+
     /*  监听从排行榜收藏或者取消收藏切换提示事件
-    @param1 资源Id(排行榜上收藏项Id)
-    @param2 当前收藏项的收藏状态（true/false）
-    @param3 收藏说明（非必选）
+        @param1 资源Id(排行榜上收藏项Id)
+        @param2 当前收藏项的收藏状态（true/false）
+        @param3 收藏说明（非必选）
      */
     rankCollectAction = (ResId, Iscollected, resRemark = "") => {
         let { dispatch, collectionResult, currentPath } = this.props
@@ -73,8 +82,8 @@ class CollectorRank extends Component {
 
     }
     /* 取消收藏事件
-    @param1 资源ID(收藏项的ID)
-    @param2 当前用户所在目录的目录Id
+        @param1 资源ID(收藏项的ID)
+        @param2 当前用户所在目录的目录Id
     */
     cancelCollect = (ResId, currentFolderId) => {
         let url = `/SysMgr/Favorite/CancelCollectRes`;
@@ -94,7 +103,7 @@ class CollectorRank extends Component {
     }
 
     /* 更新收藏排行榜上被收藏项的图标状态
-    @param1 资源ID
+        @param1 资源ID
     */
     upDateCollector = (ResId) => {
         let { dispatch, collectionResult } = this.props
@@ -131,7 +140,7 @@ class CollectorRank extends Component {
                 {key < 9 ? `0${key + 1}` : `${key + 1}`}
             </div>
                 <div className="collector-detail"
-                    onClick={() => this.skipTolink()}
+                    onClick={() => this.skipTolink(item.ResLinkForWeb)}
                 >
                     <span className="top-wrap" title={item.Name}>{item.Name}</span>
                     <span className="bottom-wrap" >{selected === "recent" ? `${item.CreateTime}` : `${item.TypeName}`}  &nbsp;|&nbsp;
@@ -161,7 +170,7 @@ class CollectorRank extends Component {
                         <span >2019-01-01 12:12  &nbsp;|&nbsp;&nbsp;电子教案</span></div>
                         <div className="splitline"></div>
                     </li> */}
-                    <Loading spinning={rankLoading} /* opacity={false} */ tip="请稍后...">
+                    <Loading spinning={rankLoading} opacity={false} tip="请稍后...">
                         {collectorRes}
                     </Loading>
 
@@ -173,13 +182,14 @@ class CollectorRank extends Component {
 }
 const mapStateToProps = (state) => {
     const { CollectorDataChange, UILoading } = state
-    const { collectionResult, currentPath } = CollectorDataChange
+    const { collectionResult, currentPath, rightSelect } = CollectorDataChange
     const { rankLoading } = UILoading
     // console.log(currentPath);
     return {
         collectionResult,
         currentPath,
-        rankLoading
+        rankLoading,
+        rightSelect
     }
 }
 export default connect(mapStateToProps)(CollectorRank);

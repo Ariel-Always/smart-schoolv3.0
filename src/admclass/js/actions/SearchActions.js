@@ -1,7 +1,26 @@
 import UpDataState from './UpDataState';
 
+import utils from './utils';
 
 import PaginationActions from "./PaginationActions";
+
+
+const MANAGER_STUDENT_SEARCH_INIT = 'MANAGER_STUDENT_SEARCH_INIT';
+
+const MANAGER_STUDENT_SEARCH_RESULT_KEY_CHANGE = 'MANAGER_STUDENT_SEARCH_RESULT_KEY_CHANGE';
+
+const MANAGER_STUDENT_CLOSE_SEARCH_BTN_SHOW = 'MANAGER_STUDENT_CLOSE_SEARCH_BTN_SHOW';
+
+const MANAGER_STUDENT_CLOSE_SEARCH_BTN_HIDE = 'MANAGER_STUDENT_CLOSE_SEARCH_BTN_HIDE';
+
+const MANAGER_STUDENT_TOTAL_HIDE = 'MANAGER_STUDENT_TOTAL_HIDE';
+
+const MANAGER_STUDENT_TOTAL_SHOW = 'MANAGER_STUDENT_TOTAL_SHOW';
+
+const MANAGER_STUDENT_SEARCH_RESULT_TIPS_SHOW = 'MANAGER_STUDENT_SEARCH_RESULT_TIPS_SHOW';
+
+const MANAGER_STUDENT_SEARCH_RESULT_TIPS_HIDE = 'MANAGER_STUDENT_SEARCH_RESULT_TIPS_HIDE';
+
 
 
 //学生搜索
@@ -9,42 +28,56 @@ const StudentSearch = (ClassID,key) => {
 
     return (dispatch,getState) => {
 
-        dispatch({type:UpDataState.STUDENT_WRAPPER_LOADING_SHOW});
+        const RegResult = utils.SearchReg({key,type:1,ErrorTips:"您输入的学号或姓名不正确！",dispatch});
 
-        dispatch({type:UpDataState.STUDENT_SEARCHKEY_CHANGE,data:key});
+        if (RegResult){
 
-        UpDataState.getStudents({ClassID,PageIndex:0,PageSize:12,dispatch,Keyword:key}).then(data=>{
+            dispatch({type:UpDataState.STUDENT_WRAPPER_LOADING_SHOW});
+
+            dispatch({type:UpDataState.STUDENT_SEARCHKEY_CHANGE,data:key});
+
+            dispatch({type:MANAGER_STUDENT_CLOSE_SEARCH_BTN_SHOW});
+
+            UpDataState.getStudents({ClassID,PageIndex:0,PageSize:12,dispatch,Keyword:key}).then(data=>{
 
 
-            if (data){
+                if (data){
 
-                dispatch({type:UpDataState.GET_THE_CLASS_STUDENTS,data:data});
+                    dispatch({type:UpDataState.GET_THE_CLASS_STUDENTS,data:data});
 
-                dispatch({type:PaginationActions.STUDENT_PAGINATION_CURRENT_UPDATE,data:1});
+                    dispatch({type:MANAGER_STUDENT_SEARCH_RESULT_KEY_CHANGE});
 
-                dispatch({type:PaginationActions.STUDENT_PAGINATION_TOTAL_UPDATE,data:data.Total});
+                    dispatch({type:MANAGER_STUDENT_SEARCH_RESULT_TIPS_SHOW});
 
-                if (data.List.length>0){
+                    dispatch({type:MANAGER_STUDENT_TOTAL_HIDE});
 
-                    let list = data.List.map(item =>{return JSON.stringify({id:item.UserID,name:item.UserName})})
+                    dispatch({type:PaginationActions.STUDENT_PAGINATION_CURRENT_UPDATE,data:1});
 
-                    dispatch({type:UpDataState.INIT_STUDEUNT_PLAIN_OPTIONS,data:list});
+                    dispatch({type:PaginationActions.STUDENT_PAGINATION_TOTAL_UPDATE,data:data.Total});
 
-                }else{
+                    if (data.List.length>0){
 
-                    dispatch({type:UpDataState.INIT_STUDEUNT_PLAIN_OPTIONS,data:[]});
+                        let list = data.List.map(item =>{return JSON.stringify({id:item.UserID,name:item.UserName})})
+
+                        dispatch({type:UpDataState.INIT_STUDEUNT_PLAIN_OPTIONS,data:list});
+
+                    }else{
+
+                        dispatch({type:UpDataState.INIT_STUDEUNT_PLAIN_OPTIONS,data:[]});
+
+                    }
+
+                    dispatch({type:UpDataState.STUDENTS_CHECK_LIST_CHANGE,list:[]});
+
+                    dispatch({type:UpDataState.STUDENTS_CHECKED_NONE});
 
                 }
 
-                dispatch({type:UpDataState.STUDENTS_CHECK_LIST_CHANGE,list:[]});
+                dispatch({type:UpDataState.STUDENT_WRAPPER_LOADING_HIDE});
 
-                dispatch({type:UpDataState.STUDENTS_CHECKED_NONE});
+            })
 
-            }
-
-            dispatch({type:UpDataState.STUDENT_WRAPPER_LOADING_HIDE});
-
-        })
+        }
 
     }
 
@@ -59,11 +92,17 @@ const StudentCancelSearch = (ClassID) => {
 
         dispatch({type:UpDataState.STUDENT_SEARCHKEY_CHANGE,data:''});
 
+        dispatch({type:MANAGER_STUDENT_CLOSE_SEARCH_BTN_HIDE});
+
         UpDataState.getStudents({ClassID:ClassID,dispatch,PageIndex:0,PageSize:12}).then(
 
             data => {
 
                 if (data){
+
+                    dispatch({type:MANAGER_STUDENT_SEARCH_RESULT_TIPS_HIDE});
+
+                    dispatch({type:MANAGER_STUDENT_TOTAL_SHOW});
 
                     dispatch({type:UpDataState.GET_THE_CLASS_STUDENTS,data:data});
 
@@ -90,7 +129,6 @@ const StudentCancelSearch = (ClassID) => {
                 dispatch({type:UpDataState.STUDENT_WRAPPER_LOADING_HIDE});
 
             }
-
 
 
         );
@@ -164,29 +202,35 @@ const GradeClassSearch = (GradeID,key) => {
 
     return (dispatch,getState) => {
 
-        let { SchoolID } = getState().DataState.LoginUser;
+        let RegResult = utils.SearchReg({key,ErrorTips:"您输入的班级名称格式不正确!",dispatch,type:2});
 
-        dispatch({type:UpDataState.THE_GRADE_CLASS_LOADING_SHOW});
+        if (RegResult){
 
-        dispatch({type:UpDataState.THE_GRADE_CLASS_STATICS_HIDE});
+            let { SchoolID } = getState().DataState.LoginUser;
 
-        dispatch({type:UpDataState.THE_GRADE_CLASS_SEARCHKEY_CHANGE,data:key});
+            dispatch({type:UpDataState.THE_GRADE_CLASS_LOADING_SHOW});
 
-        UpDataState.getClassList({SchoolID,GradeID,PageIndex:0,PageSize:12,dispatch,Keyword:key}).then(data=>{
+            dispatch({type:UpDataState.THE_GRADE_CLASS_STATICS_HIDE});
 
-            if (data){
+            dispatch({type:UpDataState.THE_GRADE_CLASS_SEARCHKEY_CHANGE,data:key});
 
-                dispatch({type:UpDataState.THE_GRADE_CLASS_LIST_UPDATE,data:data});
+            UpDataState.getClassList({SchoolID,GradeID,PageIndex:0,PageSize:12,dispatch,Keyword:key}).then(data=>{
 
-                dispatch({type:PaginationActions.CLASS_PAGINATION_CURRENT_UPDATE,data:1});
+                if (data){
 
-                dispatch({type:PaginationActions.CLASS_PAGINATION_TOTAL_UPDATE,data:data.Total})
+                    dispatch({type:UpDataState.THE_GRADE_CLASS_LIST_UPDATE,data:data});
 
-            }
+                    dispatch({type:PaginationActions.CLASS_PAGINATION_CURRENT_UPDATE,data:1});
 
-            dispatch({type:UpDataState.THE_GRADE_CLASS_LOADING_HIDE});
+                    dispatch({type:PaginationActions.CLASS_PAGINATION_TOTAL_UPDATE,data:data.Total})
 
-        })
+                }
+
+                dispatch({type:UpDataState.THE_GRADE_CLASS_LOADING_HIDE});
+
+            })
+
+        }
 
     }
 
@@ -248,6 +292,22 @@ export default {
 
     GradeClassCloseSearch,
 
-    SchoolCancelClassSearch
+    SchoolCancelClassSearch,
+
+    MANAGER_STUDENT_CLOSE_SEARCH_BTN_SHOW,
+
+    MANAGER_STUDENT_CLOSE_SEARCH_BTN_HIDE,
+
+    MANAGER_STUDENT_TOTAL_HIDE,
+
+    MANAGER_STUDENT_TOTAL_SHOW,
+
+    MANAGER_STUDENT_SEARCH_RESULT_TIPS_HIDE,
+
+    MANAGER_STUDENT_SEARCH_RESULT_TIPS_SHOW,
+
+    MANAGER_STUDENT_SEARCH_INIT,
+
+    MANAGER_STUDENT_SEARCH_RESULT_KEY_CHANGE
 
 }

@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import '../../../sass/subSystemAccessSet.scss';
 import { connect } from 'react-redux';
-import { Modal, Loading, Button } from '../../../../common';
+import { Modal, Loading  } from '../../../../common';
 import { DropDown, Search, Empty } from '../../../../common'
-import person from '../../../images/personal_cloud_logo.png'
+
 import ApiAction from '../../action/data/Api'
 import DataChange from '../../action/data/DataChange'
 import AppAlertAction from '../../action/UI/AppAlertAction'
-import AppAlert from '../../reducers/AppAlert';
-import { get } from 'http';
+
 class SubsystemAccessSetting extends Component {
     constructor(props) {
         super(props);
@@ -19,6 +18,10 @@ class SubsystemAccessSetting extends Component {
             UserDropValue: "",
             UserDropTitle: "全部"
         }
+        const { dispatch } = props
+ 
+        dispatch(DataChange.getCurrentSbusystemInfo({}));
+
 
     }
 
@@ -50,7 +53,7 @@ class SubsystemAccessSetting extends Component {
             // this.setState({
             //     simpleSearch: ""
             // }, () => {
-                
+
 
             // })
             dispatch(DataChange.getCurrentSbusystemInfo({ "IsOpened": this.state.AccessDropValue, "UserType": this.state.UserDropValue, "keyword": e.value }));
@@ -64,15 +67,15 @@ class SubsystemAccessSetting extends Component {
             simpleSearch: e.target.value
         })
     }
-    onCancelSearch=(e)=>{
+    onCancelSearch = (e) => {
         let { dispatch } = this.props;
-           this.setState({
-                simpleSearch: ""
-            }, () => {
-                dispatch(DataChange.getCurrentSbusystemInfo({ "IsOpened": this.state.AccessDropValue, "UserType": this.state.UserDropValue, "keyword": e.value }));
+        this.setState({
+            simpleSearch: ""
+        }, () => {
+            dispatch(DataChange.getCurrentSbusystemInfo({ "IsOpened": this.state.AccessDropValue, "UserType": this.state.UserDropValue, "keyword": e.value }));
 
 
-            })
+        })
     }
 
     /*   监听访问状态状态下拉框的的选择事件 
@@ -142,11 +145,11 @@ class SubsystemAccessSetting extends Component {
     @parma4 子系统当前状态
     
     */
-    toggleAccessState = (e, SubSystemID, SubSystemName, status,CanBeClose) => {
+    toggleAccessState = (e, SubSystemID, SubSystemName, status, CanBeClose) => {
         let { subsystemInfo, dispatch } = this.props
         // const { SchoolID } = JSON.parse(sessionStorage.getItem('UserInfo'));
-        if (!CanBeClose){
-            dispatch(AppAlertAction.alertTips({title:"该子系统不能关闭"}))
+        if (!CanBeClose) {
+            dispatch(AppAlertAction.alertTips({ title: "该子系统不能关闭" }))
             return
         }
 
@@ -251,12 +254,12 @@ class SubsystemAccessSetting extends Component {
                             <div className="user-type"> <span title="可访问的用户类别"></span>{item.UserTypeString}</div>
                             <div className="split-line"></div>
                             <div className="access-state"> 当前状态:
-                                <button className={`btn-state ${item.SubSystemStatus === 1&&item.CanBeClose===true ? 'open':
-                                  item.SubSystemStatus === 1&&item.CanBeClose===false?"ban":""}`}
-                                  onClick={(e) => this.toggleAccessState(e, item.SubSystemID, item.SubSystemName, item.SubSystemStatus,item.CanBeClose)}
-                                disabled={!item.CanBeClose===true}
-                                title={!item.CanBeClose===true?"该子系统不能被关闭":''}
-                                    
+                                <button className={`btn-state ${item.SubSystemStatus === 1 && item.CanBeClose === true ? 'open' :
+                                    item.SubSystemStatus === 1 && item.CanBeClose === false ? "ban" : ""}`}
+                                    onClick={(e) => this.toggleAccessState(e, item.SubSystemID, item.SubSystemName, item.SubSystemStatus, item.CanBeClose)}
+                                    disabled={!item.CanBeClose === true}
+                                    title={!item.CanBeClose === true ? "该子系统不能被关闭" : ''}
+
                                 ></button>
                             </div>
                         </div>
@@ -355,7 +358,7 @@ class SubsystemAccessSetting extends Component {
                     <div className="subsystem-search">
                         <Search placeHolder="输入关键词快速搜索"
 
-                            onClickSearch={this.simpleClickSearch} 
+                            onClickSearch={this.simpleClickSearch}
                             Value={this.state.simpleSearch}
                             onCancelSearch={this.onCancelSearch}
                             onChange={this.SearchValueChange}></Search>
@@ -364,11 +367,11 @@ class SubsystemAccessSetting extends Component {
 
                     <div className="subsystem-detail" style={{ display: `${exeit === "0" ? 'block' : 'none'}` }}>
                         共计<span>{subsystemInfo.Total}</span>个系统
-                        
+
                         {
-                            this.state.UserDropValue===""&&this.state.AccessDropValue==="2"&&subsystemInfo.TotalClose!==0?<React.Fragment>，其中<span>{subsystemInfo.TotalClose }</span>个已关闭访问</React.Fragment>:""
+                            this.state.UserDropValue === "" && this.state.AccessDropValue === "2" && subsystemInfo.TotalClose !== 0 ? <React.Fragment>，其中<span>{subsystemInfo.TotalClose}</span>个已关闭访问</React.Fragment> : ""
                         }
-                        </div>
+                    </div>
 
                     <div className="clearfix subsystem-container">
 

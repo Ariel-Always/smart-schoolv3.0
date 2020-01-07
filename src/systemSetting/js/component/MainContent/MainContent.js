@@ -70,7 +70,7 @@ class MainContent extends Component {
             const UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'))
 
 
-            console.log(UserType==="0")
+            console.log(UserType === "0")
             // dispatch(DataChange.getCurrentSbusystemInfo());////模拟测试使用
 
             //判断该用户是否是管理员,如果该用户不是管理员跳转到错误页,
@@ -80,14 +80,14 @@ class MainContent extends Component {
             }
             else {
                 //如果该用户是管理员则检查用户信息和模块ID是否符合
-                QueryPower({UserInfo,ModuleID:"000-2-0-13"}).then(restlu=>{
-                   if (restlu){
+                QueryPower({ UserInfo, ModuleID: "000-2-0-13" }).then(restlu => {
+                    if (restlu) {
 
-                       dispatch(DataChange.getCurrentSemester(SchoolID));
-                       dispatch(DataChange.getCurrentSchoolInfo(SchoolID));
-                       dispatch(DataChange.getCurrentSbusystemInfo({}));
+                        dispatch(DataChange.getCurrentSemester(SchoolID));
+                        //    dispatch(DataChange.getCurrentSchoolInfo(SchoolID));
+                        //    dispatch(DataChange.getCurrentSbusystemInfo({}));
 
-                   }
+                    }
                 })
             }
 
@@ -100,21 +100,20 @@ class MainContent extends Component {
 
                     const UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'))
 
-                    const { SchoolID,UserType } = UserInfo;
+                    const { SchoolID, UserType } = UserInfo;
 
-                    if(UserType!=="0"){
+                    if (UserType !== "0") {
 
                         window.location.href = config.ErrorProxy + "/Error.aspx?errcode=E011";
 
                     }
-                    else{
+                    else {
                         //如果该用户是管理员则检查用户信息和模块ID是否符合
-                        QueryPower({UserInfo,ModuleID:"000-2-0-13"}).then(restlu=>{
-                            if (restlu){
+                        QueryPower({ UserInfo, ModuleID: "000-2-0-13" }).then(restlu => {
+                            if (restlu) {
 
                                 dispatch(DataChange.getCurrentSemester(SchoolID));
-                                dispatch(DataChange.getCurrentSchoolInfo(SchoolID));
-                                dispatch(DataChange.getCurrentSbusystemInfo({}));
+                         
 
                             }
                         })
@@ -168,15 +167,15 @@ class MainContent extends Component {
 
 
     render() {
-        let UserName="";
-        let PhotoPath=""
-        
-        if(sessionStorage.getItem('UserInfo')){
+        let UserName = "";
+        let PhotoPath = ""
+
+        if (sessionStorage.getItem('UserInfo')) {
             const UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'))
-            UserName=UserInfo.UserName
-            PhotoPath=UserInfo.PhotoPath
+            UserName = UserInfo.UserName
+            PhotoPath = UserInfo.PhotoPath
         }
-       
+
         return (
 
 
@@ -186,6 +185,7 @@ class MainContent extends Component {
                 type={"triangle"}
                 module={{ image: setting, cnname: "系统设置", enname: "System Settings", type: "circle" }}
                 userInfo={{ name: UserName, image: PhotoPath }}
+            
             >
                 <div ref="frame-left-menu">
 
@@ -193,7 +193,7 @@ class MainContent extends Component {
 
                 </div>
 
-                <div ref="frame-right-content">
+                <div ref="frame-right-content" >
 
                     <Router>
 

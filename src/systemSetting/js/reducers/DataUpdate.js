@@ -10,7 +10,8 @@ export default (state = {
     periodInfo: [
         { ID: "P1", Name: "小学", Period: "", checked: false },
         { ID: "P2", Name: "初中", Period: "", checked: false },
-        { ID: "P3", Name: "高中", Period: "", checked: false }]
+        { ID: "P3", Name: "高中", Period: "", checked: false }],
+
 
 
 }, action) => {
@@ -29,7 +30,7 @@ export default (state = {
 
             return {
                 ...state,
-                semesterloading: false
+                semesterloading: action.data
 
 
             }
@@ -66,6 +67,11 @@ export default (state = {
                 ...state,
                 subsystemInfo: action.data
             }
+        // case DataChange.UPDATA_SCHOOL_LOGOURL:
+        //     return {
+        //         ...state,
+        //         SchoolLogoUrl: action.data
+        //     }
 
         default:
             return state;

@@ -349,7 +349,15 @@ class GradeContent extends Component{
 
                                 <Statistics classNum={AllGradePreview.Class} teacherNum={AllGradePreview.CourseTecher} studentNum={AllGradePreview.Student}></Statistics>
 
-                                <PartData GradeClick={this.GradeClick.bind(this)} type="grade" PartDataList={AllGradePreview.List}></PartData>
+                                <PartData
+
+                                    GradeClick={this.GradeClick.bind(this)}
+
+                                    type="grade"
+
+                                    PartDataList={AllGradePreview.List}
+
+                                ></PartData>
 
                             </React.Fragment>
 
@@ -369,6 +377,7 @@ class GradeContent extends Component{
                                           ClassClick={this.ClassClick.bind(this)}
                                           ResetClassName={this.ResetClassName.bind(this)}
                                           delClass={this.delClass.bind(this)}
+                                          SearchResultShow={AllGradePreview.ClassContentShow}
                                 >
 
                                 </PartData>

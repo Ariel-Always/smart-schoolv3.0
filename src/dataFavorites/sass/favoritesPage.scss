@@ -66,6 +66,18 @@
       height: 29px;
       width: 230px;
       border: solid 1px #bac7d9;
+      .calender-logo {
+        display: inline-block;
+        width: 16px;
+        height: 14px;
+        background: url("../images/calendar_logo.png") no-repeat;
+      }
+
+      .ant-calendar-picker-clear {
+        display: inline-block;
+        width: 16px;
+        height: 14px;
+      }
     }
   }
   .add-newfolder {
@@ -152,8 +164,11 @@
       .resource-name {
         @include Vcenter();
         left: 104px;
-        min-width: 200px;
-        height: 36px;
+        width: 200px;
+        height: 40px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
         // border: 1px solid #000;
         // line-height: 36px;
         font-size: 15px;
@@ -161,6 +176,7 @@
         .resremark {
           position: absolute;
           left: 0;
+          top: 22px;
           font-size: 14px;
           color: #999999;
         }
@@ -273,32 +289,6 @@
 }
 .moveModal {
   .ant-modal-body {
-    // .folder-root {
-    //     line-height: 18px;
-    //     color: #333333;
-    //     font-size: 14px;
-    //   span {
-    //     float: left;
-    //     width: 16px;
-    //     height: 16px;
-    //     text-align: center;
-    //     line-height: 16;
-    //     border-radius: 3px;
-    //     background: url("../images/plus.png") no-repeat;
-    //     cursor: pointer;
-    //     &.open {
-    //       background: url("../images/minus.png") no-repeat;
-    //     }
-    //     &.close {
-    //         background: url("../images/plus.png") no-repeat;
-    //       }
-    //   }
-    //   img{
-    //       vertical-align: top;
-    //       margin-left:12px ;
-    //       margin-right: 8px;
-    //   }
-    // }
     overflow-y: scroll;
 
     .ant-tree {
@@ -355,8 +345,8 @@
 
           //   }
         }
-        ul{
-            padding-left: 33px;
+        ul {
+          padding-left: 33px;
         }
       }
     }

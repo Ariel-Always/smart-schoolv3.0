@@ -30,7 +30,9 @@ class StudentTabWrapper extends Component{
 
             MonitorClick,
 
-            StudentDetailShow
+            StudentDetailShow,
+
+            SearchResultShow
 
         } = this.props;
 
@@ -42,7 +44,7 @@ class StudentTabWrapper extends Component{
 
                         {
 
-                            StudentList&&StudentList.Total>0?
+                            StudentList && StudentList.Total > 0 ?
 
                                 <React.Fragment>
 
@@ -109,11 +111,11 @@ class StudentTabWrapper extends Component{
                                     <div className="clearfix">
 
                                         {
-                                            StudentList.List&&StudentList.List.map((item,key) => {
+                                            StudentList.List && StudentList.List.map((item, key) => {
                                                 //是否是班长
-                                                let isMonitor = item.UserClass===1?true:false;
+                                                let isMonitor = item.UserClass === 1 ? true : false;
                                                 //性别男女或者保密
-                                                let sex= 'none';
+                                                let sex = 'none';
 
                                                 switch (item.Gender) {
                                                     case '男':
@@ -126,44 +128,58 @@ class StudentTabWrapper extends Component{
                                                         sex = 'none'
                                                 }
 
-                                                const ItemStr = JSON.stringify({id:item.UserID,name:item.UserName});
+                                                const ItemStr = JSON.stringify({id: item.UserID, name: item.UserName});
 
-                                                return <div key={key} className={`person-item-wrapper ${isMonitor?'monitor':''}`} >
+                                                return <div key={key}
+                                                            className={`person-item-wrapper ${isMonitor ? 'monitor' : ''}`}>
 
-                                                            <div className="person-item-content clearfix">
+                                                    <div className="person-item-content clearfix">
 
-                                                                {/*<CheckBox type="circle" value={JSON.stringify({id:item.UserID,name:item.UserName})}></CheckBox>*/}
+                                                        {/*<CheckBox type="circle" value={JSON.stringify({id:item.UserID,name:item.UserName})}></CheckBox>*/}
 
-                                                                <SelfCheckBox onClick={e=>onCheckChange(e)} value={ItemStr} IsChecked={CheckList.includes(ItemStr)?true:false}></SelfCheckBox>
+                                                        <SelfCheckBox onClick={e => onCheckChange(e)} value={ItemStr}
+                                                                      IsChecked={CheckList.includes(ItemStr) ? true : false}></SelfCheckBox>
 
-                                                                <div className="person-item-photo" onClick={e=>StudentDetailShow({UserID:item.UserID,UserType:2})} style={{backgroundImage:`url(${item.PhotoPath})`}}></div>
+                                                        <div className="person-item-photo"
+                                                             onClick={e => StudentDetailShow({
+                                                                 UserID: item.UserID,
+                                                                 UserType: 2
+                                                             })}
+                                                             style={{backgroundImage: `url(${item.PhotoPath})`}}></div>
 
-                                                                    <div className="person-item-info-wrapper">
+                                                        <div className="person-item-info-wrapper">
 
-                                                                        <div className="person-item-info">
+                                                            <div className="person-item-info">
 
-                                                                            <div className="person-item-name" onClick={e=>StudentDetailShow({UserID:item.UserID,UserType:2})} title={item.UserName}>{item.UserName}</div>
+                                                                <div className="person-item-name"
+                                                                     onClick={e => StudentDetailShow({
+                                                                         UserID: item.UserID,
+                                                                         UserType: 2
+                                                                     })} title={item.UserName}>{item.UserName}</div>
 
-                                                                            <div className={`person-sex-icon ${sex}`}></div>
+                                                                <div className={`person-sex-icon ${sex}`}></div>
 
-                                                                        </div>
+                                                            </div>
 
-                                                                        <div className="person-item-id" title={item.UserID}>{item.UserID}</div>
-
-                                                                    </div>
-
-
-                                                                    <div className="cooperate">
-
-                                                                        <div className="set-monitor" onClick={()=>{MonitorClick({UserID:item.UserID,isMonitor})}}>{isMonitor?'取消班长':'设为班长'}</div>
-
-                                                                    </div>
-
-                                                                </div>
-
-                                                            <div className="person-item-border"></div>
+                                                            <div className="person-item-id"
+                                                                 title={item.UserID}>{item.UserID}</div>
 
                                                         </div>
+
+
+                                                        <div className="cooperate">
+
+                                                            <div className="set-monitor" onClick={() => {
+                                                                MonitorClick({UserID: item.UserID, isMonitor})
+                                                            }}>{isMonitor ? '取消班长' : '设为班长'}</div>
+
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div className="person-item-border"></div>
+
+                                                </div>
 
                                             })
                                         }
@@ -172,18 +188,24 @@ class StudentTabWrapper extends Component{
 
                                     <div className="person-checkgroup-wrapper">
 
-                                        <CheckBox checked={allChecked} onChange={()=>{onChangeAll()}}>全选</CheckBox>
+                                        <CheckBox checked={allChecked} onChange={() => {
+                                            onChangeAll()
+                                        }}>全选</CheckBox>
 
-                                        <Button size="small" className="person-adjust-btn" color="blue" onClick={e=>adjustBtnClick(e)}>调班</Button>
+                                        <Button size="small" className="person-adjust-btn" color="blue"
+                                                onClick={e => adjustBtnClick(e)}>调班</Button>
 
                                     </div>
 
-                                    <PagiNation className={'size24'} pageSize={12} onChange={e=>StudentPageChange(e)} total={StudentPagination.Total} current={StudentPagination.CurrentPage}></PagiNation>
+                                    <PagiNation className={'size24'} pageSize={12} onChange={e => StudentPageChange(e)}
+                                                total={StudentPagination.Total}
+                                                current={StudentPagination.CurrentPage}></PagiNation>
 
                                 </React.Fragment>
 
                                 :
-                                <Empty type="5" title="没有学生哦！"></Empty>
+
+                                <Empty type="5" title={SearchResultShow?'搜索不到学生':'该行政班暂未有学生'}></Empty>
 
 
                         }

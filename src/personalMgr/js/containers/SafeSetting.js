@@ -513,7 +513,7 @@ class SafeSetting extends Component{
 
                             <div className="safe-title-explains">
 
-                                {HasSetPwd?`建议您定期更换密码，且设置一个包含数据和字母，并长度超过6位以上的密码。<br/>${LastTimeEditPwd?`上次修改时间：${LastTimeEditPwd}`:''}`:'密码为初始密码，请尽快修改。'}
+                                {HasSetPwd?<span>建议您定期更换密码，且设置一个包含数据和字母，并长度超过6位以上的密码。<br/>{LastTimeEditPwd?`上次修改时间：${LastTimeEditPwd}`:''}</span>:<span>密码为初始密码，请尽快修改。</span>}
 
                             </div>
 
@@ -651,7 +651,7 @@ class SafeSetting extends Component{
 
                                                 <td className="col2">
 
-                                                    <DropDown width={240} height={108}
+                                                    <DropDown width={240} height={999999}
                                                               dropSelectd={qaSelectd}
                                                               dropList={questionsList}
                                                               style={{zIndex: 8}}

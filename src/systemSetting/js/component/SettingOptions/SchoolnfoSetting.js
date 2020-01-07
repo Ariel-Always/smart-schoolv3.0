@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import '../../../sass/SchoolInfoSet.scss'
 import { connect } from 'react-redux'
 import { Modal, Loading } from '../../../../common';
-import { Input,Tooltip } from "antd";
+import { Input,Tooltip,Button } from "antd";
 import DataChange from '../../action/data/DataChange';
 import  ApiActions from '../../action/data/Api'
 import AppAlertAction from '../../action/UI/AppAlertAction';
 import default_school_logo from '../../../images/default_school_logo.png'
-// import ClassCropperModal from '../CorpModle/ClassCropperModal'
+import CropperModal from '../../../../common/js/CropperModal'
 import boom_school_logo from '../../../images/boom_school_logo.png'
-const MAX_FILE_SIZE = 2 * 1024 * 1024 // 文件最大限制为2M
+const default_schoolPic=`http://192.168.129.1:30101/lgftp/SysSetting/Attach/default.png`
 
+const MAX_FILE_SIZE = 2 * 1024 * 1024 // 文件最大限制为2M
+// const { SchoolID ,UserID} = JSON.parse(sessionStorage.getItem('UserInfo'))
 class SchoolnfoSetting extends Component {
     constructor(props) {
         super(props);
@@ -26,10 +28,15 @@ class SchoolnfoSetting extends Component {
             selectedImageFile:null,
             coreModalVisible:false,
             coreResultImage:null,
-            imageUploadModal:false
+            imageUploadModal:false,
+            schoolLogo:default_schoolPic,
+            onlineImg:""
          
             
         }
+        const { dispatch}=props
+        const { SchoolID } = JSON.parse(sessionStorage.getItem('UserInfo'))
+        dispatch(DataChange.getCurrentSchoolInfo(SchoolID));
     }
 
       
@@ -176,15 +183,18 @@ class SchoolnfoSetting extends Component {
                             "SchoolCode": SchoolCode,
                             "SchoolType": SchoolType,
                             "SchoolSessionType":SchoolSessionType,
-                            "SchoolImgUrl":SchoolLogoUrl
+                            "SchoolImgUrl":this.state.onlineImg
                         }).then(data => {
-
+                            console.log(data)
                             if (data === 0) {
-                                
+    
                                 dispatch(DataChange.getCurrentSchoolInfo(SchoolID));
                                 console.log('success');
                                 dispatch(AppAlertAction.alertSuccess({title:"修改成功"}))
                                
+                            }
+                            else{
+                                dispatch(AppAlertAction.alertError({title:data ? data : "未知异常"}))
                             }
 
                         })
@@ -267,40 +277,7 @@ handelSchoolSystem = (e) => {
                             middleNum:"3"
                         }
                     }
-                    // 判断初中学制情况
-                    // else if(e.target.value==="3"||e.target.value==="4"){
-                    //     // 如果点击值符合,判断当前选择中状态
-                    //     //点击一次选中,再次选中则默认取消选中
-                    //     if(schoolInfo.middleNum===e.target.value){
-                    //             schoolInfo={
-                    //                 ...schoolInfo,
-                    //                 middleNum:"0"
-                    //             }
-                                
-                    //     }else{
-                    //         schoolInfo={
-                    //             ...schoolInfo,
-                    //             middleNum:e.target.value
-                    //         }
-                    //     }
-
-                    // }
-                   // 判断高中状态,在默认状态,如果选中点击第一次取消,再次点击选中
-                    // else {
-                    //     if(schoolInfo.highNum===e.target.value){
-                    //         schoolInfo={
-                    //             ...schoolInfo,
-                    //             highNum:"0"
-                    //         }
-                            
-                    // }else{
-                    //     schoolInfo={
-                    //         ...schoolInfo,
-                    //         highNum:e.target.value
-                    //     }
-                    // }
-
-                    // }
+ 
                  }
                     
                     dispatch({
@@ -487,12 +464,12 @@ handleFileChange=(e)=>{
 }
 
 
-handleGetResultImgUrl = key => blob => {
-    const str = URL.createObjectURL(blob)
-    this.setState({
-      [key]: str
-    })
-  }
+// handleGetResultImgUrl = key => blob => {
+//     const str = URL.createObjectURL(blob)
+//     this.setState({
+//       [key]: str
+//     })
+//   }
 
 
 //图片上传弹层点击事件
@@ -510,13 +487,55 @@ upLoadCancel=()=>{
         imageUploadModal:false,
         edit_visible:true
     })
-    console.log("hhhh")
+    // console.log("hhhh")
 }
 //图片上传弹层确认按钮点击事件
+handleGetResultImgUrl =  (blob, filePath) => {
+    let  { dispatch, schoolInfo } = this.props;
+    console.log(blob)
+    const str = URL.createObjectURL(blob);
 
+    this.setState({
+      schoolLogo: str,
+      onlineImg:filePath
+      //[key]: this.state.baseUrl+'/http_subjectResMgr/'+filePath
+    });
+    schoolInfo={
+        ...schoolInfo,
+        SchoolLogoUrl:str
+    }
+    console.log(str)
+    dispatch({
+        type:DataChange.REFRESH_SCHOOL_INFO,
+        data:schoolInfo
+    })
+
+
+  };
+
+//监听使用默认图片按钮
+useDefault=()=>{
+    let {dispatch,schoolInfo} =this.props
+        this.setState({
+            schoolLogo:default_schoolPic,
+            onlineImg:`/SysSetting/Attach/default.png`
+        })
+
+            schoolInfo={
+                ...schoolInfo,
+                SchoolLogoUrl:default_schoolPic
+            }
+            dispatch({
+                type:DataChange.REFRESH_SCHOOL_INFO,
+                data:schoolInfo
+            })
+
+
+}
 
     render() {
         const {  schoolInfo,semesterloading ,periodInfo} = this.props;
+        const {UserID} = JSON.parse(sessionStorage.getItem('UserInfo'))
         // console.log(periodInfo)
         let schoolSys ='';
         let schoolLength='';
@@ -576,7 +595,7 @@ upLoadCancel=()=>{
 
                 <div className="edite-info" onClick={this.openEdite}><span></span>编辑</div>
                 <div className="school-logo">
-                    <img src={default_school_logo}/* src={schoolInfo.SchoolLogoUrl} */ alt="图片丢失"/>
+                    <img src={schoolInfo.SchoolLogoUrl} alt="图片丢失"/>
                 </div>
         <div className="school-name" title={schoolInfo.SchoolName}>{schoolInfo.SchoolName}</div>
                 <div className="school-info">
@@ -600,43 +619,22 @@ upLoadCancel=()=>{
                     <div className="editContent">
                         <div className="content-left"> 
                             <div className="school-logo">
-                             <img  src={boom_school_logo}/* src={schoolInfo.SchoolLogoUrl} */ alt=""/>
+                             <img  src={schoolInfo.SchoolLogoUrl}alt=""/>
                              </div>
                            
-                         {/*  <label  className='btn choose-pic'>
-                                <div className="inputBox">上传图片</div>
-                            
-                                <input type="file"  style={{display:"none"}}
-                                    onChange={this.handleFileChange}
-                                    accept="image/jpg,image/png"
-                                /* className="btn choose-pic"  /></label> */}
-                              {/*this.state.coreModalVisible && (
-                                <ClassCropperModal
-                                    uploadedImageFile={this.state.selectedImageFile}
-                                    onClose={() => {
-                                    this.setState({ coreModalVisible: false })
-                                    }}
-                                    onSubmit={this.handleGetResultImgUrl('coreResultImage')}
-                                />
-                                )*/} 
-                            <button className="btn choose-pic"  onClick={this.imageUpload}>上传图片</button>
-                                <Modal
-                                    type="1"
-                                    title="图片上传"
-                                    onClick={this.imageUpload}
-                                    visible={this.state.imageUploadModal}
-                                    onOk={this.upLoadComfirm}
-                                    onCancel={this.upLoadCancel}
-                                    width={"724px"}
-                                    bodyStyle={{ height: "348px" }}
-                                    okText="确认上传"
 
+                            <Button className="btn choose-pic"  onClick={this.imageUpload}>上传图片</Button>
+ 
 
-                                
-                                >
+                                <CropperModal
+                                    Visiable={this.state.imageUploadModal}
+                                    onClose={this.upLoadCancel}
+                                    onSubmit={(blob,filePath)=>this.handleGetResultImgUrl(blob,filePath)}
+                                    UpDataUrl={`http://192.168.129.1:30101/lgftp/SubjectRes_UploadHandler.ashx?method=doUpload_WholeFile&userid=${UserID}`}
 
-                                </Modal>
-                            <button className="btn upload-pic">使用默认</button>
+                                ></CropperModal>
+
+                            <Button className="btn upload-pic" onClick={this.useDefault}>使用默认</Button>
                             <p className="upload-tips">上传要求：请上传png/jpg格式的图片，图片大小不能超过2MB</p>
                         </div>
 
@@ -688,8 +686,8 @@ upLoadCancel=()=>{
                                  <input type="radio" value="3" 
                                  checked={periodInfo[1].checked===true&& (schoolInfo.middleNum==="3")}
                                  disabled={periodInfo[1].checked===false}
-                                 onClick={this.handelSchoolSystem}
-                                 onChange={this.tempFunction}/>三年制
+                                 onChange={this.tempFunction}
+                                 onClick={this.handelSchoolSystem}/>三年制
                                  
                                 <input type="radio" value="4" 
                                 checked={periodInfo[1].checked===true&& (schoolInfo.middleNum==="4")}
@@ -743,7 +741,8 @@ const mapStateToProps = (state) => {
     return {
           schoolInfo,
           semesterloading,
-          periodInfo
+          periodInfo,
+       
 
     }
 }

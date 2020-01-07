@@ -30,6 +30,12 @@ class AdjustClassModal extends Component{
         return (
             <div className="adjust-class-wrapper">
 
+                <div className="before-tips">
+
+                    提示：为保证系统的正常运行，请勿在教学活动进行时或学期期末时对学生调班。
+
+                </div>
+
                 <div className="adjust-class-obj">
 
                     <span className="props">调班对象:</span>
@@ -64,7 +70,7 @@ class AdjustClassModal extends Component{
                               dropList={gradeList}
                               onChange={(e)=>gradeSelectChange(e)}
                               style={{zIndex:5}}
-                              height={108}>
+                              height={240}>
 
                     </DropDown>
 
@@ -72,11 +78,12 @@ class AdjustClassModal extends Component{
                               onChange={e=>classSelectChange(e)}
                               disabled={classDisabled}
                               dropList={classDropList}
-                              height={108}>
+                              height={240}>
 
                     </DropDown>
 
                 </div>
+
                 <div className="error-tips" style={{display:`${errTipsShow?'block':'none'}`}}>{errTips}</div>
 
             </div>
