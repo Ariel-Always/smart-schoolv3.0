@@ -57,7 +57,7 @@ class YearSemesterSetting extends Component {
             visible_create: true
         })
     }
-    //确认提交前检查,是否正确,如果是undefined 就后台返回的默认事件 和默认学期名
+    //确认提交前检查,是否正确,如果是undefined 就后台返回的默认时间 和默认学期名
     checkData = (StartDate, EndDate, TermName) => {
         const { semesterInfo } = this.props;
         const defaultStartDate = semesterInfo.TermStartDate.substring(0, 10)
@@ -88,8 +88,6 @@ class YearSemesterSetting extends Component {
             })
 
         }
-        //    console.log( defaultStartDate ,defaultEndDate,defaultTermName)
-        //    console.log( StartDate ,EndDate,TermName)
         return { StartDate, EndDate, TermName }
 
     }
@@ -107,7 +105,7 @@ class YearSemesterSetting extends Component {
             let { StartDate, EndDate, TermName } = this.state.createInfo;
             let checkedData = this.checkData(StartDate, EndDate, TermName);
 
-            console.log(checkedData.StartDate, checkedData.EndDate, checkedData.TermName)
+            // console.log(checkedData.StartDate, checkedData.EndDate, checkedData.TermName)
             ApiActions.postMethod('/SysMgr/Setting/SetNewTermInfo', {
                 "UserID": UserID,
                 "StartDate": checkedData.StartDate,
@@ -124,7 +122,7 @@ class YearSemesterSetting extends Component {
 
                 }
                 else {
-                    dispatch(AppAlertAction.alertError({ title: `启用新学期失败!${data.ErrCode}` }))
+                    dispatch(AppAlertAction.alertError({ title: data?data:"未知异常" }))
                 }
 
             })
@@ -153,7 +151,7 @@ class YearSemesterSetting extends Component {
             visible_modify: false
         }, () => {
             const { SchoolID, UserID } = JSON.parse(sessionStorage.getItem('UserInfo'));
-            const token = sessionStorage.getItem('token');
+           
             let { StartDate, EndDate, TermName } = this.state.modifyInfo;
             let checkedData = this.checkData(StartDate, EndDate, TermName);
  
@@ -163,9 +161,7 @@ class YearSemesterSetting extends Component {
                 "EndDate": checkedData.EndDate,
                 "TermName": checkedData.TermName,
                 "SchoolID": SchoolID,
-                "token": token
             }).then(data => {
-
 
                 if (data === 0) {
 
@@ -176,7 +172,7 @@ class YearSemesterSetting extends Component {
 
                 }
                 else {
-                    dispatch(AppAlertAction.alertError({ title: "调整学期期限失败!" }))
+                    dispatch(AppAlertAction.alertError({ title: data?data:"未知异常" }))
                 }
 
             })
@@ -298,14 +294,15 @@ class YearSemesterSetting extends Component {
             data:semesterInfo
         })
     }
-    // 不可选日期
+    /* 不可选日期
+        param1 日历中默认表示所有时间的对象
+        param2 当前目标时间
+    */
     disabledDate = (current,targetTime) => {
-
         
         const str = targetTime
-
-        // console.log(moment().endOf('day'));
-       
+            //返回当前目标时间前后两个月之间的所有日期
+            //换句话说不可以选的日期是以当前目标时间为界，前后两个月之外的时间。
             return  current >  moment(str).add(2, 'months')||current < moment(str).subtract(2, 'months');
 
     }
@@ -342,7 +339,6 @@ class YearSemesterSetting extends Component {
                                     <div className="year-num">
                                         {
                                             
-                                            // `${semesterInfo.StartYear} - ${semesterInfo.EndYear}`
                                            `${semesterInfo.SemesterName}` 
                                         }
                                     </div>
@@ -357,13 +353,13 @@ class YearSemesterSetting extends Component {
                                     <span>学期</span>
                                 </div>
  
-                             <button className={`btn create-newTerm ${semesterInfo.TermStatus === 2 ? '':'disabled bander'}`}
+                             <Button className={`btn create-newTerm ${semesterInfo.TermStatus === 2 ? '':'disabled bander'}`}
                                 // onClick={semesterInfo.TermStatus===2?() => this.createNewTerm():()=>this.nothing()}
-                                disabled={semesterInfo!==2?false:true}    
+                                disabled={semesterInfo.TermStatus===2?false:true}    
                                 onClick={ this.createNewTerm}
                                     
-                        > 启用新学期</button>
-                                
+                        > 启用新学期</Button>
+                                <i className="btn-shadow"></i>
                                 <Modal
                                     type="1"
                                     title="启用新学年"
@@ -437,6 +433,7 @@ class YearSemesterSetting extends Component {
                                 }
 
                             </div>
+                            <i className="btn-greenshadow"></i>
 
                             <div className="semester-limit">
                                 <p className="limit">当前学期期限</p>
@@ -464,6 +461,8 @@ class YearSemesterSetting extends Component {
                                     日
                     </div>
                                 <Button className="btn adjust-limit" onClick={(e) => this.modifyLimit()}>调整学期期限</Button>
+                                <i className="btn-shadow"></i>
+                               
                         
                                 <Modal
                                     type="1"
@@ -499,6 +498,7 @@ class YearSemesterSetting extends Component {
                                 </Modal>
 
                             </div>
+                            <i className="btn-blueshadow"></i>
                             <div className="tips-info">
                     <div className="light"></div>
                     <span>为避免系统的正常运行,请勿随意修改学年学期信息</span>

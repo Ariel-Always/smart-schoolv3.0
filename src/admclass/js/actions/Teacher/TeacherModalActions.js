@@ -7,6 +7,8 @@ import CCActions from '../../actions/Teacher/ClassChargeActions';
 
 import AppAlertSuccess from "../AppAlertSuccess";
 
+import utils from '../utils';
+
 
 const TEACHER_TEACHER_MODAL_SHOW = 'TEACHER_TEACHER_MODAL_SHOW';
 const TEACHER_TEACHER_MODAL_HIDE = 'TEACHER_TEACHER_MODAL_HIDE';
@@ -155,8 +157,6 @@ const teacherModalSelectChange = (selectData) => {
 const  teacherSearchBtnClick = () => {
 
     return (dispatch,getState) => {
-        //展示loading
-        dispatch({type:TEACHER_TEACHER_MODAL_LIST_LOADING_SHOW});
 
         let { type,subjectsSelect,inputContent } = getState().Teacher.TeacherModal;
 
@@ -164,52 +164,59 @@ const  teacherSearchBtnClick = () => {
 
         const { ActiveClassID } = getState().Teacher.ClassCharge;
 
-        let UserID = '';
+        let RegResult = utils.SearchReg({key:inputContent,dispatch,ErrorTips:"您输入的姓名或工号格式不正确",type:1});
 
-        let SubjectID = '';
+        if (RegResult){
 
-        if (type===2||type===4){//排除教师ID
+            //展示loading
+            dispatch({type:TEACHER_TEACHER_MODAL_LIST_LOADING_SHOW});
 
-            UserID = getState().Teacher.TeacherModal.originTeacherInfo.id;
+            let UserID = '';
+
+            let SubjectID = '';
+
+            if (type===2||type===4){//排除教师ID
+
+                UserID = getState().Teacher.TeacherModal.originTeacherInfo.id;
+
+            }
+
+            if(subjectsSelect.value==='none'){
+
+                dispatch(AppAlertActions.alertWarn({title:"请先选择学科！"}));
+
+                dispatch({type:TEACHER_TEACHER_MODAL_LIST_LOADING_HIDE});
+
+                dispatch({type:TEACHER_TEACHER_MODAL_CLOSE_HIDE});
+
+                dispatch({type:TEACHER_TEACHER_MODAL_INPUT_CHANGE,data:''});
+
+
+            }else{
+
+                dispatch({type:TEACHER_TEACHER_MODAL_CLOSE_SHOW});
+
+                SubjectID = subjectsSelect.value;
+
+                ApiActions.GetTeacherForSetCourseTeacher({SchoolID,UserID,SubjectID,Keyword:inputContent,ClassID:ActiveClassID,dispatch}).then(data=>{
+
+                    if (data){
+
+                        dispatch({type:TEACHER_TEACHER_MODAL_UPDATA_TEACHERLIST,list:data});
+
+                        dispatch({type:TEACHER_TEACHER_MODAL_LIST_LOADING_HIDE});
+
+                    }else{
+
+                        dispatch({type:TEACHER_TEACHER_MODAL_LIST_LOADING_SHOW});
+
+                    }
+
+                });
+
+            }
 
         }
-
-        if(subjectsSelect.value==='none'){
-
-            dispatch(AppAlertActions.alertWarn({title:"请先选择学科！"}));
-
-            dispatch({type:TEACHER_TEACHER_MODAL_LIST_LOADING_HIDE});
-
-            dispatch({type:TEACHER_TEACHER_MODAL_CLOSE_HIDE});
-
-            dispatch({type:TEACHER_TEACHER_MODAL_INPUT_CHANGE,data:''});
-
-
-        }else{
-
-            dispatch({type:TEACHER_TEACHER_MODAL_CLOSE_SHOW});
-
-            SubjectID = subjectsSelect.value;
-
-            ApiActions.GetTeacherForSetCourseTeacher({SchoolID,UserID,SubjectID,Keyword:inputContent,ClassID:ActiveClassID,dispatch}).then(data=>{
-
-                if (data){
-
-                    dispatch({type:TEACHER_TEACHER_MODAL_UPDATA_TEACHERLIST,list:data});
-
-                    dispatch({type:TEACHER_TEACHER_MODAL_LIST_LOADING_HIDE});
-
-                }else{
-
-                    dispatch({type:TEACHER_TEACHER_MODAL_LIST_LOADING_SHOW});
-
-                }
-
-            });
-
-        }
-
-
 
     }
 

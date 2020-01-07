@@ -183,7 +183,7 @@ class MainContent extends Component {
                 showLeftMenu={true}
                 showBarner={false}
                 type={"triangle"}
-                module={{ image: setting, cnname: "系统设置", enname: "System Settings", type: "circle" }}
+                module={{ image: setting, cnname: "系统设置", enname: "System Settings"}}
                 userInfo={{ name: UserName, image: PhotoPath }}
             
             >

@@ -14,6 +14,8 @@ import CONFIG from '../../../common/js/config'
 
 import SearchActions from "./SearchActions";
 
+import utils from './utils';
+
 import $ from 'jquery';
 
 
@@ -532,10 +534,6 @@ const teacherModalSelectChange = (selectData) => {
 const  teacherSearchBtnClick = () => {
 
   return (dispatch,getState) => {
-      //展示loading
-      dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_SHOW});
-
-      dispatch({type:UpUIState.ADD_TEACHER_CLOSE_SHOW});
 
       let { type,subjectsSelect,inputContent } = getState().UIState.AddTeacherModal;
 
@@ -543,71 +541,81 @@ const  teacherSearchBtnClick = () => {
 
       const ClassID = getState().UIState.ComponentChange.classInfo.id;
 
-      let UserID = '';
+      let RegResult = utils.SearchReg({type:1,ErrorTips:"您输入的姓名或工号不正确",dispatch,key:inputContent});
 
-      let SubjectID = '';
+      if (RegResult){
 
-      if (type===2||type===4){//排除教师ID
+          //展示loading
+          dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_SHOW});
 
-        UserID = getState().UIState.AddTeacherModal.originTeacherInfo.id;
+          dispatch({type:UpUIState.ADD_TEACHER_CLOSE_SHOW});
 
-      }
+          let UserID = '';
 
-      if(subjectsSelect.value==='none'){
+          let SubjectID = '';
 
-        dispatch(AppAlertActions.alertWarn({title:"请先选择学科！"}));
+          if (type===2||type===4){//排除教师ID
 
-        dispatch({type:ADD_TEACHER_CLOSE_HIDE});
-
-          dispatch({type:UpUIState.ADD_TEACHER_INPUT_CHANGE,data:''});
-
-        dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
-
-      }else{
-
-          SubjectID = subjectsSelect.value;
-
-          if (type===1||type===2){
-
-              ApiActions.GetTeacherForSetCourseTeacher({SchoolID,UserID,Keyword:inputContent,SubjectID,ClassID,dispatch}).then(data=>{
-
-                  if (data){
-
-                      dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:data});
-
-                      dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
-
-                  }else{
-
-                      dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_SHOW});
-
-                  }
-
-              });
-
-          }else{
-
-              getAllTeacher({SchoolID,SubjectIDs:SubjectID,UserID,Keyword:inputContent,dispatch}).then(data=>{
-
-                  if (data){
-
-                      dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:data});
-
-                      dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
-
-                  }else{
-
-                      dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_SHOW});
-
-                  }
-
-              });
+              UserID = getState().UIState.AddTeacherModal.originTeacherInfo.id;
 
           }
 
+          if(subjectsSelect.value==='none'){
+
+              dispatch(AppAlertActions.alertWarn({title:"请先选择学科！"}));
+
+              dispatch({type:ADD_TEACHER_CLOSE_HIDE});
+
+              dispatch({type:UpUIState.ADD_TEACHER_INPUT_CHANGE,data:''});
+
+              dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
+
+          }else{
+
+              SubjectID = subjectsSelect.value;
+
+              if (type===1||type===2){
+
+                  ApiActions.GetTeacherForSetCourseTeacher({SchoolID,UserID,Keyword:inputContent,SubjectID,ClassID,dispatch}).then(data=>{
+
+                      if (data){
+
+                          dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:data});
+
+                          dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
+
+                      }else{
+
+                          dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_SHOW});
+
+                      }
+
+                  });
+
+              }else{
+
+                  getAllTeacher({SchoolID,SubjectIDs:SubjectID,UserID,Keyword:inputContent,dispatch}).then(data=>{
+
+                      if (data){
+
+                          dispatch({type:ADD_TEACHER_UPDATA_TEACHERLIST,list:data});
+
+                          dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_HIDE});
+
+                      }else{
+
+                          dispatch({type:UpUIState.ADD_TEACHER_LIST_LOADING_SHOW});
+
+                      }
+
+                  });
+
+              }
+
+
+          }
 
       }
-
 
 
   }

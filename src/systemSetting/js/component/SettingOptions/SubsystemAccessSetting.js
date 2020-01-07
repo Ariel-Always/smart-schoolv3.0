@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../../../sass/subSystemAccessSet.scss';
 import { connect } from 'react-redux';
-import { Modal, Loading  } from '../../../../common';
+import { Modal, Loading } from '../../../../common';
 import { DropDown, Search, Empty } from '../../../../common'
 
 import ApiAction from '../../action/data/Api'
@@ -19,7 +19,7 @@ class SubsystemAccessSetting extends Component {
             UserDropTitle: "全部"
         }
         const { dispatch } = props
- 
+
         dispatch(DataChange.getCurrentSbusystemInfo({}));
 
 
@@ -46,7 +46,7 @@ class SubsystemAccessSetting extends Component {
         if (e.value === "") {
 
 
-            dispatch(AppAlertAction.alertTips({ title: "查询内容不能为空" }))
+            dispatch(AppAlertAction.alertTips({ title: "搜索内容不能为空", cancelTitle: "确定" }))
         }
         //如果不是空的,按照关键字,和默认选中的下拉框中的值(全部)(全部)来查找
         else {
@@ -191,7 +191,7 @@ class SubsystemAccessSetting extends Component {
     */
     SubsystemAccess = (SubSystemID, option) => {
         const { SchoolID } = JSON.parse(sessionStorage.getItem('UserInfo'));
-
+        const { dispatch } = this.props
         console.log(SubSystemID);
         const url1 = `/SysMgr/Setting/OpenSubSystem`
         const url2 = `/SysMgr/Setting/CloseSubSystem`
@@ -200,11 +200,14 @@ class SubsystemAccessSetting extends Component {
                 "SubSystemID": SubSystemID,
             }).then(data => {
                 if (data === 0) {
-                    const { dispatch } = this.props
+
                     dispatch(AppAlertAction.closeAlert(dispatch));
                     dispatch(AppAlertAction.alertSuccess({ title: "开启成功" }))
                     dispatch(DataChange.getCurrentSbusystemInfo({}));
-                    console.log("success")
+                    // console.log("success")
+                }
+                else {
+                    dispatch(AppAlertAction.alertError({ title: data ? data : "未知异常" }));
                 }
             })
 
@@ -216,11 +219,13 @@ class SubsystemAccessSetting extends Component {
                 "SubSystemID": SubSystemID,
             }).then(data => {
                 if (data === 0) {
-                    const { dispatch } = this.props
+
                     dispatch(AppAlertAction.closeAlert(dispatch));
                     dispatch(AppAlertAction.alertSuccess({ title: "关闭成功" }))
                     dispatch(DataChange.getCurrentSbusystemInfo({}));
-                    console.log("success")
+                    // console.log("success")
+                } else {
+                    dispatch(AppAlertAction.alertError({ title: data ? data : "未知异常" }));
                 }
             })
         }
@@ -306,7 +311,7 @@ class SubsystemAccessSetting extends Component {
 
                             height={120}
 
-                            style={{ zIndex: 1100 }}
+                            style={{ zIndex: 400 }}
                             onChange={this.dropAccessChange}
                         >
 
@@ -348,7 +353,7 @@ class SubsystemAccessSetting extends Component {
 
                             height={120}
 
-                            style={{ zIndex: 1100 }}
+                            style={{ zIndex: 400 }}
                             onChange={this.dropUserTypeChange}
 
                         >

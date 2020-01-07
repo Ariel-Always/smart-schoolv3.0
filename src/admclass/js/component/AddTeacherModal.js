@@ -6,6 +6,22 @@ import ScrollBar from 'react-custom-scrollbars';
 
 class AddTeacherModal extends Component{
 
+    EnterDown(e){
+
+        const { searchBtnClick } = this.props;
+
+        if (e.keyCode===13){
+
+            if (searchBtnClick){
+
+                searchBtnClick(e);
+
+            }
+
+        }
+
+    }
+
     render() {
 
         const {
@@ -94,7 +110,7 @@ class AddTeacherModal extends Component{
 
                             <span className="props">关键词:</span>
 
-                            <Input type="text" className="search-input" placeholder="请输入工号或姓名进行搜索..." onChange={(e) => inputContentChange(e)} onPressEnter={e=>searchBtnClick(e)} value={inputContent}/>
+                            <Input type="text" className="search-input" placeholder="请输入工号或姓名进行搜索..." onChange={(e) => inputContentChange(e)} onKeyUp={this.EnterDown.bind(this)} value={inputContent}/>
 
                             <input type="button" className="search-close" onClick={() => searchClose()} style={{display:`${closeShow?'block':'none'}`}}/>
 

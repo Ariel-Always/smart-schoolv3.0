@@ -14,9 +14,7 @@
 
   .guide {
     width: 881px;
-
     margin-left: 30px;
-
     border-bottom: 1px dashed #ccc;
     padding-bottom: 10px;
     .subsystem-logo {
@@ -89,153 +87,168 @@
     height: 28px;
   }
 
-  .subsystem-container{
-      .Empty{
-          @include Center();
-      }
+  .subsystem-container {
+    .Empty {
+      @include Center();
+    }
 
     padding: 0 54px;
 
     .subsystem-wall {
-        position: relative;
-        width: 258px;
-        height: 139px;
-        float: left;
-        margin-bottom: 20px;
-        margin-left: 30px;   
-        &:nth-child(3n+1){
-    
-            margin-left: 0;
-    
-        }
-        &:nth-child(3n+2){
-    
-            .subsystem-content {
-                .pic-bg {
-                    background: url("../images/tomato_bg.png");
-      
-                }
-
-            }
-    
-        }
-        &:nth-child(3n+3){
-    
-            .subsystem-content {
-                .pic-bg {
-                    background: url("../images/green_bg.png");
-      
-                }
-
-            }
-    
-        }
-    
-        .grey-bg {
-          position: relative;
-          width: 248px;
-          height: 139px;
-          top: 4px;
-          left: 5px;
-            background-color: #abbfd1;
-          border-radius: 5px;
-          border: solid 1px #abbfd1;
-          //   z-index: 8;
-        }
-    
-        .subsystem-content {
-          position: absolute;
-          width: 258px;
-          height: 139px;
-          left: 0px;
-          top: 0px;
-          background-color: #ffffff;
-          border-radius: 5px;
-          border: solid 1px #abbfd1;
-          z-index: 999;
-    
-          .pic-bg {
-            position: absolute;
-            left: 12px;
-            top: 12px;
-            width: 64px;
-            height: 64px;
-            background: url("../images/blue_bg.png");
-      
+      position: relative;
+      width: 258px;
+      height: 139px;
+      float: left;
+      top:0;
+      margin-bottom: 20px;
+      margin-left: 30px;
+    //   transition:top 10s linear 0s;
         
-            img {
-                @include Center();
-              max-width: 64px;
-              max-width: 64px;
-              
-    
-            }
+
+      &:hover {
+        // top: -200px;
+
+        animation: toTop 0.2s ease-in-out;
+
+        animation-fill-mode:forwards;
+        
+        .subsystem-content{
+            box-shadow: 0px 6px 6px 0px #abbfd1;
+        }
+      }
+      &:nth-child(3n + 1) {
+        margin-left: 0;
+      }
+      &:nth-child(3n + 2) {
+        .subsystem-content {
+          .pic-bg {
+            background: url("../images/tomato_bg.png");
           }
-          .subsystemName {
-            position: absolute;
-            left: 84px;
-            top: 29px;
-            color: #333333;
-            font-family: MicrosoftYaHei-Bold;
-            font-size: 16px;
-          }
-          .user-type {
-            position: absolute;
-            left: 84px;
-            top: 55px;
-            height: 13px;
-            font-family: MicrosoftYaHei;
-            font-size: 12px;
-            font-weight: normal;
-            font-stretch: normal;
-            letter-spacing: 0px;
-            color: #999999;
-            line-height: 10px;
-            span {
-              display: inline-block;
-              width: 12px;
-              height: 13px;
-              background: url("../images/usertype_bg_logo.png") no-repeat;
-              margin-right: 3px;
-            }
-          }
-          .split-line {
-            @include Hcenter();
-            top: 88px;
-            width: 226px;
-            height: 1px;
-            border: dashed 1px #cccccc;
-          }
-          .access-state {
-            position: absolute;
-            left: 19px;
-            top: 105px;
-            width: 145px;
-            height: 23px;
-            font-size: 14px;
-            color: #999999;
-            .btn-state {
-              margin-left: 11px;
-              width: 64px;
-              height: 20px;
-              background: url("../images/system_close.png") no-repeat;
-              border: none;
-              border-radius: 12px;
-              vertical-align: top;
-              cursor: pointer;
-              &.open {
-                background: url("../images/system_open.png") no-repeat;
-              }
-              &.ban{
-                  background: url("../images/cannot_close.png") no-repeat;
-                  cursor: not-allowed;
-              }
-            }
+        }
+      }
+      &:nth-child(3n + 3) {
+        .subsystem-content {
+          .pic-bg {
+            background: url("../images/green_bg.png");
           }
         }
       }
 
-  }
+      .grey-bg {
+        position: relative;
+        width: 248px;
+        height: 139px;
+        top: 4px;
+        left: 5px;
+        background-color: #abbfd1;
+        border-radius: 5px;
+        border: solid 1px #abbfd1;
+        //   z-index: 8;
+      }
 
- 
+      .subsystem-content {
+        position: absolute;
+        width: 258px;
+        height: 139px;
+        left: 0px;
+        top: 0px;
+        background-color: #ffffff;
+        border-radius: 5px;
+        border: solid 1px #abbfd1;
+        z-index: 300;
+
+        .pic-bg {
+          position: absolute;
+          left: 12px;
+          top: 12px;
+          width: 64px;
+          height: 64px;
+          background: url("../images/blue_bg.png");
+
+          img {
+            @include Center();
+            max-width: 64px;
+            max-width: 64px;
+          }
+        }
+        .subsystemName {
+          position: absolute;
+          left: 84px;
+          top: 29px;
+          color: #333333;
+          font-family: MicrosoftYaHei-Bold;
+          font-size: 16px;
+        }
+        .user-type {
+          position: absolute;
+          left: 84px;
+          top: 55px;
+          height: 13px;
+          font-family: MicrosoftYaHei;
+          font-size: 12px;
+          font-weight: normal;
+          font-stretch: normal;
+          letter-spacing: 0px;
+          color: #999999;
+          line-height: 10px;
+          span {
+            display: inline-block;
+            width: 12px;
+            height: 13px;
+            background: url("../images/usertype_bg_logo.png") no-repeat;
+            margin-right: 3px;
+          }
+        }
+        .split-line {
+          @include Hcenter();
+          top: 88px;
+          width: 226px;
+          height: 1px;
+          border: dashed 1px #cccccc;
+        }
+        .access-state {
+          position: absolute;
+          left: 19px;
+          top: 105px;
+          width: 145px;
+          height: 23px;
+          font-size: 14px;
+          color: #999999;
+          .btn-state {
+            margin-left: 11px;
+            width: 64px;
+            height: 20px;
+            background: url("../images/system_close.png") no-repeat;
+            border: none;
+            border-radius: 12px;
+            vertical-align: top;
+            cursor: pointer;
+            &.open {
+              background: url("../images/system_open.png") no-repeat;
+            }
+            &.ban {
+              background: url("../images/cannot_close.png") no-repeat;
+              cursor: not-allowed;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes toTop {
+
+    from{
+
+         top:0;   
+
+    }
+
+    to{
+
+        top: -6px;
+
+    }
+
 }

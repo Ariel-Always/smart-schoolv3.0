@@ -6,9 +6,7 @@ import { Input,Tooltip,Button } from "antd";
 import DataChange from '../../action/data/DataChange';
 import  ApiActions from '../../action/data/Api'
 import AppAlertAction from '../../action/UI/AppAlertAction';
-import default_school_logo from '../../../images/default_school_logo.png'
 import CropperModal from '../../../../common/js/CropperModal'
-import boom_school_logo from '../../../images/boom_school_logo.png'
 const default_schoolPic=`http://192.168.129.1:30101/lgftp/SysSetting/Attach/default.png`
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024 // 文件最大限制为2M
@@ -183,7 +181,7 @@ class SchoolnfoSetting extends Component {
                             "SchoolCode": SchoolCode,
                             "SchoolType": SchoolType,
                             "SchoolSessionType":SchoolSessionType,
-                            "SchoolImgUrl":this.state.onlineImg
+                            "SchoolImgUrl":this.state.onlineImg===""?SchoolLogoUrl:this.state.onlineImg
                         }).then(data => {
                             console.log(data)
                             if (data === 0) {
@@ -593,7 +591,7 @@ useDefault=()=>{
             <div className="school-InfoSetting" >
         
 
-                <div className="edite-info" onClick={this.openEdite}><span></span>编辑</div>
+                <div className="edite-info" onClick={this.openEdite} title="点击编辑学校信息"><span></span>编辑</div>
                 <div className="school-logo">
                     <img src={schoolInfo.SchoolLogoUrl} alt="图片丢失"/>
                 </div>

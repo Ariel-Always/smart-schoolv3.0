@@ -9,13 +9,13 @@
   background-color: #fff;
   box-shadow: 0px 3px 5px 0px rgba(0, 0, 0, 0.03);
   border-radius: 12px;
-  padding-top:32px ;
+  padding-top: 32px;
   .guide {
     width: 881px;
     // height: 28px;
     margin: 0 auto;
     border-bottom: 1px dashed #ccc;
-    padding-bottom:10px ;
+    padding-bottom: 10px;
     .semester-logo {
       display: inline-block;
       margin-right: 3px;
@@ -57,6 +57,7 @@
     font-stretch: normal;
     line-height: 16px;
     letter-spacing: 0px;
+    z-index: 300;
     p {
       width: 100%;
       height: 100%;
@@ -86,6 +87,10 @@
     width: 407px;
     height: 320px;
     background: url("../images/semester_green.png") no-repeat;
+    border-radius: 12px;
+    // transition: all 0.1s linear 0s;
+    z-index: 300;
+    
     .term {
       position: absolute;
       top: 12px;
@@ -176,7 +181,7 @@
       background-color: #ffffff;
       cursor: pointer;
       text-align: center;
-    
+
       font-family: MicrosoftYaHei;
       font-size: 16px;
       font-weight: normal;
@@ -184,15 +189,21 @@
       color: #0a693b;
 
       &.bander.disabled {
-     
-          background-color: #d9d9d9;
-          color: #666666;
+        background-color: #d9d9d9;
+        color: #666666;
         //   text-decoration: line-through;
 
-          cursor: not-allowed;
-        
+        cursor: not-allowed;
       }
-
+    }
+    .btn-shadow {
+      position: absolute;
+      left: 129px;
+      top: 267px;
+      display: inline-block;
+      width: 148px;
+      height: 23px;
+      background: url("../images/button_shadow.png") no-repeat;
     }
     .tips {
       position: absolute;
@@ -207,6 +218,10 @@
       color: #ffffff;
       opacity: 0.8;
     }
+    // &:hover {
+    //   box-shadow: 0px 6px 6px 0px rgb(21, 105, 10);
+    //   top: 137px;
+    // }
   }
   .semester-limit {
     display: inline-block;
@@ -216,6 +231,9 @@
     width: 407px;
     height: 320px;
     background: url("../images/semester_blue.png") no-repeat;
+    border-radius: 12px;
+    // transition: all 0.1s ease-in-out 0s;
+    z-index: 300;
     .limit {
       position: absolute;
       top: 12px;
@@ -292,13 +310,25 @@
       height: 32px;
       background-color: #ffffff;
       border-radius: 16px;
-    //   border: none;
+      //   border: none;
       font-family: MicrosoftYaHei;
       font-size: 16px;
       color: #0071ea;
       cursor: pointer;
-
     }
+    .btn-shadow {
+      position: absolute;
+      left: 129px;
+      top: 280px;
+      display: inline-block;
+      width: 148px;
+      height: 23px;
+      background: url("../images/button_shadow.png") no-repeat;
+    }
+    // &:hover {
+    //   box-shadow: 0px 6px 6px 0px rgba(15, 72, 154, 1);
+    //   top: 137px;
+    // }
   }
 
   .tips-info {
@@ -314,7 +344,6 @@
       width: 16px;
       height: 22px;
       background: url("../images/light_but.png") no-repeat;
-
     }
     span {
       display: inline-block;
@@ -331,6 +360,25 @@
       color: #ff0000;
     }
   }
+  .btn-greenshadow {
+    position: absolute;
+    left: 47px;
+    top: 416px;
+    display: inline-block;
+    width: 413px;
+    height: 74px;
+    background: url("../images/green_shadow.png");
+  }
+  .btn-blueshadow {
+    position: absolute;
+    left: 484px;
+    top: 416px;
+    display: inline-block;
+    width: 413px;
+    height: 74px;
+    background: url("../images/blue_shadow.png");
+  }
+
 }
 
 .ModalNewtermContent {
@@ -444,3 +492,4 @@
     top: 112px;
   }
 }
+
