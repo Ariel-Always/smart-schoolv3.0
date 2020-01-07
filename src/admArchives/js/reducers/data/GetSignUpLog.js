@@ -2,7 +2,7 @@ import UpDataState from '../../actions/UpDataState';
 
 
 
-const GetSignUpLog = (state = { DidData: {}, newStatus: 0, WillData: {},Grade:{ value: 0, title: "全部年级"},Class:{value: 0, title: "全部班级"} }, actions) => {
+const GetSignUpLog = (state = { DidData: {}, newStatus: 0, WillData: {PageIndex:0},Grade:{ value: 0, title: "全部年级"},Class:{value: 0, title: "全部班级"} }, actions) => {
     switch (actions.type) {
         case UpDataState.GET_WILL_SIGN_UP_LOG_MSG:
             let WillData = handleData(actions.data);
@@ -20,7 +20,7 @@ const GetSignUpLog = (state = { DidData: {}, newStatus: 0, WillData: {},Grade:{ 
 };
 
 function handleData(data) {
-    const { Total, List } = data;
+    const { Total, List,...Data } = data;
     let keyList = []
     let returnData = List.map((child, index) => {
         keyList.push(index+1)
@@ -61,7 +61,7 @@ function handleData(data) {
         }
     })
 
-    return {Total:Total, returnData: returnData,keyList};
+    return {Total:Total, returnData: returnData,keyList,...Data};
 }
 
 function getStatus(oldData, newData) {

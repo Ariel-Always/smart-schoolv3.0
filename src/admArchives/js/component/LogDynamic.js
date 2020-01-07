@@ -225,6 +225,13 @@ class LogDynamic extends React.Component {
       UserTypeList: { 1: "teacher", 2: "student", 7: "leader" }
     };
   }
+
+  componentWillReceiveProps(nextProps){
+    const {DataState} = nextProps;
+    this.setState({
+      pagination:DataState.LogPreview.unreadLog.PageIndex+1
+    })
+  }
   FileTypeDropMenu = e => {
     const { DataState, dispatch } = this.props;
 
@@ -244,7 +251,7 @@ class LogDynamic extends React.Component {
     this.setState({
       checkedList: [],
       checkAll: false,
-      pagination: 1,
+      // pagination: 1,
       FileTypeSelect: e
     });
   };
@@ -267,7 +274,7 @@ class LogDynamic extends React.Component {
     this.setState({
       checkedList: [],
       checkAll: false,
-      pagination: 1,
+      // pagination: 1,
       HandleTypeSelect: e
     });
   };
@@ -299,7 +306,7 @@ class LogDynamic extends React.Component {
           this.setState({
             checkedList: [],
             checkAll: false,
-            pagination: 1
+            // pagination: 1
           });
           dispatch(actions.UpUIState.hideErrorAlert());
           dispatch(
@@ -322,7 +329,7 @@ class LogDynamic extends React.Component {
           this.setState({
             checkedList: [],
             checkAll: false,
-            pagination: 1,
+            // pagination: 1,
             FileTypeSelect: { value: -1, title: "全部" },
             HandleTypeSelect: { value: -1, title: "全部" }
           });
@@ -563,14 +570,14 @@ class LogDynamic extends React.Component {
                 this.state.HandleTypeSelect.value +
                 "&UserType=" +
                 this.state.FileTypeSelect.value +
-                "&PageIndex=0&PageSize=10&OnlineUserID=" +
+                "&PageIndex="+(this.state.pagination-1)+"&PageSize=10&OnlineUserID=" +
                 this.state.userMsg.UserID
             )
           );
           this.setState({
             checkedList: [],
             checkAll: false,
-            pagination: 1
+            // pagination: 1
           });
         }
       });
@@ -644,7 +651,7 @@ class LogDynamic extends React.Component {
     this.setState({
       checkedList: [],
       checkAll: false,
-      pagination: value
+      // pagination: value
     });
   };
 

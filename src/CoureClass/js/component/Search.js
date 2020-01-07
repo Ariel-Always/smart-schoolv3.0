@@ -167,7 +167,8 @@ class Search extends React.Component {
       checkedList: [],
       checkAll: false,
       UserMsg: props.DataState.LoginUser,
-      pageIndex:1
+      pageIndex:1,
+      Subjects:{}
     };
   }
   //钩子函数
@@ -190,6 +191,36 @@ class Search extends React.Component {
     this.setState({
       options: options
     });
+
+    let route = history.location.pathname;
+    let pathArr = route.split("/");
+    let handleRoute = pathArr[1];
+    let routeID = pathArr[2];
+    let subjectID = pathArr[3];
+    let classID = pathArr[4];
+    // let isExist = false;
+    if (!DataState.GetCoureClassAllMsg.Subject) {
+      return;
+    }
+    if (!(DataState.GetCoureClassAllMsg.Subjects instanceof Object)) {
+      return;
+    }
+    if (this.state.Subjects === DataState.GetCoureClassAllMsg.Subjects) {
+      return;
+    }
+    this.setState({
+      Subjects: DataState.GetCoureClassAllMsg.Subjects
+    });
+    let isExist = false;
+
+    for (let index in DataState.GetCoureClassAllMsg.Subjects) {
+      if (index === DataState.GetCoureClassAllMsg.Subject) {
+        isExist = true;
+      }
+    }
+    if (!isExist) {
+      history.push("/All");
+    }
   }
   //列表复选框改变事件
   onTableCheckBoxChange = e => {
@@ -556,7 +587,7 @@ class Search extends React.Component {
                 current={
                    this.state.pageIndex
                 }
-                defaultPageSize={10}
+                pageSize={10}
                 total={
                   DataState.GetClassAllMsg.allClass
                     ? DataState.GetClassAllMsg.allClass.CourseClassCount

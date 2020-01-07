@@ -23,19 +23,23 @@ class Class extends React.Component {
           title: "序号",
           align: "left",
           key: "OrderNO",
-          width:158,
+          width: 158,
           dataIndex: "OrderNO",
           render: OrderNO => {
             return (
               <div className="CheckBox-content">
-                <label><CheckBox
-                  value={OrderNO.key}
-                  type='gray'
-                  onChange={this.onTableCheckBoxChange.bind(this)}
-                ></CheckBox>
-                <span className="key-content">
-                  {OrderNO.OrderNO >= 10 ? OrderNO.OrderNO : "0" + OrderNO.OrderNO}
-                </span></label>
+                <label>
+                  <CheckBox
+                    value={OrderNO.key}
+                    type="gray"
+                    onChange={this.onTableCheckBoxChange.bind(this)}
+                  ></CheckBox>
+                  <span className="key-content">
+                    {OrderNO.OrderNO >= 10
+                      ? OrderNO.OrderNO
+                      : "0" + OrderNO.OrderNO}
+                  </span>
+                </label>
               </div>
             );
           }
@@ -44,7 +48,7 @@ class Class extends React.Component {
           title: "班级名称",
           align: "left",
           dataIndex: "CourseClass",
-          width:150,
+          width: 150,
           key: "CourseClass",
           render: courseClass => {
             return (
@@ -67,10 +71,10 @@ class Class extends React.Component {
           title: "任课教师",
           align: "center",
           dataIndex: "ClassMsg",
-          width:200,
+          width: 200,
           key: "ClassMsg",
           render: Class => {
-            return (Class.TeacherID === 0 || Class.TeacherID) ? (
+            return Class.TeacherID === 0 || Class.TeacherID ? (
               <React.Fragment>
                 <img
                   className="Class-img"
@@ -81,7 +85,7 @@ class Class extends React.Component {
                   {Class.TeacherName}
                 </span>
                 <span title={Class.TeacherID} className="Class-id">
-                  (<span> {Class.TeacherID }</span>)
+                  (<span> {Class.TeacherID}</span>)
                 </span>
               </React.Fragment>
             ) : (
@@ -93,7 +97,7 @@ class Class extends React.Component {
           title: "学生人数",
           align: "center",
           dataIndex: "StudentCount",
-          width:165,
+          width: 165,
           key: "StudentCount",
           render: StudentCount => {
             return (
@@ -106,7 +110,7 @@ class Class extends React.Component {
         {
           title: "操作",
           align: "center",
-          width:185,
+          width: 185,
           key: "handle",
           dataIndex: "key",
           render: key => {
@@ -136,13 +140,14 @@ class Class extends React.Component {
       pagination: 1,
       checkedList: [],
       checkAll: false,
-      UserMsg: props.DataState.LoginUser
+      UserMsg: props.DataState.LoginUser,
+      Subjects: {}
     };
   }
 
   //钩子函数
   componentWillReceiveProps(nextProps) {
-    const { DataState, UIState } = this.props;
+    const { DataState, UIState } = nextProps;
 
     let options = [];
     let tableSource = nextProps.DataState.GetClassAllMsg.allClass.TableData
@@ -153,18 +158,70 @@ class Class extends React.Component {
       tableSource.map((child, index) => {
         return index;
       });
-      // console.log(nextProps.DataState.GetClassAllMsg.allClass.pageIndex,this.state.pagination)
-
-      if(nextProps.DataState.GetClassAllMsg.allClass.pageIndex && nextProps.DataState.GetClassAllMsg.allClass.pageIndex!==this.state.pagination){
-        this.setState({
-          pagination: nextProps.DataState.GetClassAllMsg.allClass.pageIndex
-        });
-      }
+    // console.log(nextProps.DataState.GetClassAllMsg.allClass.pageIndex,this.state.pagination)
+    // 页码
+    if (
+      nextProps.DataState.GetClassAllMsg.allClass.pageIndex &&
+      nextProps.DataState.GetClassAllMsg.allClass.pageIndex !==
+        this.state.pagination
+    ) {
+      this.setState({
+        pagination: nextProps.DataState.GetClassAllMsg.allClass.pageIndex
+      });
+    }
     this.setState({
       options: options
     });
-  }
 
+    let route = history.location.pathname;
+    let pathArr = route.split("/");
+    let handleRoute = pathArr[1];
+    let routeID = pathArr[2];
+    let subjectID = pathArr[3];
+    let classID = pathArr[4];
+    // let isExist = false;
+    if (!routeID) {
+      return;
+    }
+    if (!(DataState.GetCoureClassAllMsg.Subjects instanceof Object)) {
+      return;
+    }
+    if (this.state.Subjects === DataState.GetCoureClassAllMsg.Subjects) {
+      return;
+    }
+    this.setState({
+      Subjects: DataState.GetCoureClassAllMsg.Subjects
+    });
+    let isExist = false;
+
+    for (let index in DataState.GetCoureClassAllMsg.Subjects) {
+      if (index === routeID) {
+        isExist = true;
+      }
+    }
+    if (!isExist) {
+      history.push("/All");
+    }
+  }
+  // componentWillMount() {
+  //   const { DataState, UIState } = this.props;
+  //   if (
+  //     !(DataState.GetCoureClassAllMsg.Subjects instanceof Object) ||
+  //     DataState.GetClassAllMsg.allClass.subject === undefined
+  //   ) {
+  //     return;
+  //   }
+  //   let isExist = false;
+
+  //   for (let index in DataState.GetCoureClassAllMsg.Subjects) {
+  //     if (index === DataState.GetClassAllMsg.allClass.subject) {
+  //       isExist = true;
+  //     }
+  //   }
+  //   if (!isExist) {
+  //     history.push("/All");
+  //   }
+  // }
   //列表复选框改变事件
   onTableCheckBoxChange = e => {
     //console.log(e.target.value)
@@ -449,7 +506,25 @@ class Class extends React.Component {
   };
   render() {
     const { DataState, UIState } = this.props;
+    if (
+      !(DataState.GetCoureClassAllMsg.Subjects instanceof Array) &&
+      DataState.GetClassAllMsg.allClass.subject === undefined
+    ) {
+      // history.push('/All')
 
+      return "";
+    }
+    let isExist = false;
+
+    for (let index in DataState.GetCoureClassAllMsg.Subjects) {
+      if (index === DataState.GetClassAllMsg.allClass.subject) {
+        isExist = true;
+      }
+    }
+    if (!isExist) {
+      // history.push('/All')
+      return "";
+    }
     // console.log(DataState.GetClassAllMsg.allClass.subject , DataState.GetCoureClassAllMsg)
     let tips =
       DataState.GetClassAllMsg.allClass.subject &&
@@ -500,24 +575,23 @@ class Class extends React.Component {
               ></Table>
             </CheckBoxGroup>
             {Total ? (
-              <div style={{    display: 'inline-block'}}>
-              <CheckBox
-                className="checkAll-box"
-                type='gray'
-                onChange={this.OnCheckAllChange}
-                checked={this.state.checkAll}
-              >
-               <span className='checkAll-title'>全选</span>
-               
-              </CheckBox>
-               <Button
-               onClick={this.onDeleteAllClick}
-               className="deleteAll"
-               color="blue"
-             >
-               删除
-             </Button>
-             </div>
+              <div style={{ display: "inline-block" }}>
+                <CheckBox
+                  className="checkAll-box"
+                  type="gray"
+                  onChange={this.OnCheckAllChange}
+                  checked={this.state.checkAll}
+                >
+                  <span className="checkAll-title">全选</span>
+                </CheckBox>
+                <Button
+                  onClick={this.onDeleteAllClick}
+                  className="deleteAll"
+                  color="blue"
+                >
+                  删除
+                </Button>
+              </div>
             ) : (
               ""
             )}

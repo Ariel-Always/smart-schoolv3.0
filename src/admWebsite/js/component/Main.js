@@ -21,7 +21,7 @@ import CONFIG from "../../../common/js/config";
 import actions from "../actions";
 import "../../scss/Main.scss";
 import WebsiteCustom from "../component/WebsiteCustom";
-import ImgDefault from '../../images/icon-common.png'
+import ImgDefault from "../../images/icon-common.png";
 class Main extends Component {
   constructor(props) {
     super(props);
@@ -46,7 +46,12 @@ class Main extends Component {
       ImgDefault: [true, true, true, true, true, true, true, true]
     };
   }
-  componentWillMount() {}
+  componentWillReceiveProps(nextProps) {
+    const {DataState} = nextProps;
+    this.setState({
+      pagination:DataState.GetWebsiteResourceData.CurrentIndex
+    })
+  }
   // 学段选择
   PeriodDropMenu = e => {
     const { dispatch, DataState } = this.props;
@@ -84,7 +89,7 @@ class Main extends Component {
     this.setState({
       checkList: [],
       checkAll: false,
-      pagination: 1,
+      // pagination: 1,
       PeriodSelect: e,
       SubjectSelect: { value: 0, title: "全部" },
       SubjectParam: "&SubjectID=",
@@ -95,18 +100,17 @@ class Main extends Component {
       PeriodID: PeriodID,
       ImgType: [true, true, true, true, true, true, true, true],
       ImgDefault: [true, true, true, true, true, true, true, true]
-
     });
   };
   // 学科选择
   SubjectDropMenu = e => {
     const { dispatch, DataState } = this.props;
 
-    let SubjectParam = '';
-    if(e.value){
+    let SubjectParam = "";
+    if (e.value) {
       SubjectParam = "&SubjectID=" + e.value;
-    }else{
-      SubjectParam = "&SubjectID=" ;
+    } else {
+      SubjectParam = "&SubjectID=";
     }
     let Url =
       "/SubjectResMgr/WebSiteMgr/GetWebsiteInfoList?TypeID=1&pageSize=8&currentIndex=1" +
@@ -116,7 +120,7 @@ class Main extends Component {
     dispatch(
       actions.UpDataState.getTypeData(
         "/SubjectResMgr/WebSiteMgr/GetTypeList?SubjectID=" +
-          (e.value?e.value:'') +
+          (e.value ? e.value : "") +
           "&Period=" +
           this.state.PeriodID
       )
@@ -126,7 +130,7 @@ class Main extends Component {
     this.setState({
       checkList: [],
       checkAll: false,
-      pagination: 1,
+      // pagination: 1,
       SubjectSelect: e,
       TypeSelect: { value: 0, title: "全部" },
       TypeParam: "&SubTypeID=0",
@@ -134,7 +138,6 @@ class Main extends Component {
       SubjectParam: SubjectParam,
       ImgType: [true, true, true, true, true, true, true, true],
       ImgDefault: [true, true, true, true, true, true, true, true]
-
     });
   };
   // 分类选择
@@ -153,13 +156,12 @@ class Main extends Component {
     this.setState({
       checkList: [],
       checkAll: false,
-      pagination: 1,
+      // pagination: 1,
       TypeSelect: e,
       pageParam: "&pageSize=8&currentIndex=1",
       TypeParam: TypeParam,
       ImgType: [true, true, true, true, true, true, true, true],
       ImgDefault: [true, true, true, true, true, true, true, true]
-
     });
   };
   // 只显示本学校
@@ -178,13 +180,12 @@ class Main extends Component {
     this.setState({
       checkList: [],
       checkAll: false,
-      pagination: 1,
+      // pagination: 1,
       selfSelect: e.target.checked,
       pageParam: "&pageSize=8&currentIndex=1",
       SelfParam: SelfParam,
       ImgType: [true, true, true, true, true, true, true, true],
       ImgDefault: [true, true, true, true, true, true, true, true]
-
     });
   };
   // 添加网站
@@ -233,11 +234,10 @@ class Main extends Component {
     this.setState({
       checkList: [],
       checkAll: false,
-      pagination: page,
+      // pagination: page,
       pageParam: pageParam,
       ImgType: [true, true, true, true, true, true, true, true],
       ImgDefault: [true, true, true, true, true, true, true, true]
-
     });
   };
   // 图片加载失败
@@ -249,7 +249,7 @@ class Main extends Component {
     // console.log('error-'+ImgType[key],ImgType,key)
     this.setState({
       ImgType: ImgType,
-      ImgDefault:ImgDefault
+      ImgDefault: ImgDefault
     });
   };
   // 图片加载成功
@@ -261,7 +261,7 @@ class Main extends Component {
     ImgDefault[key] = false;
     this.setState({
       ImgType: ImgType,
-      ImgDefault:ImgDefault
+      ImgDefault: ImgDefault
     });
   };
 
@@ -319,7 +319,7 @@ class Main extends Component {
     dispatch(actions.UpUIState.hideErrorAlert());
   }
   // 编辑
-  onEditClick = (e,index) => {
+  onEditClick = (e, index) => {
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
     console.log(index);
@@ -378,7 +378,7 @@ class Main extends Component {
     return PeriodID;
   };
   // 删除
-  onDeleteClick = (e,index) => {
+  onDeleteClick = (e, index) => {
     console.log(index);
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
@@ -399,7 +399,7 @@ class Main extends Component {
   // 确认删除
   onDeleteOK = WebsiteIds => {
     const { dispatch, DataState } = this.props;
-    let pageParam = "&pageSize=8&currentIndex=1";
+    let pageParam = "&pageSize=8&currentIndex="+this.state.pagination;
 
     let url = "/SubjectResMgr/WebSiteMgr/DeleteMultiWebsites";
     let Url =
@@ -431,11 +431,10 @@ class Main extends Component {
           this.setState({
             checkList: [],
             checkAll: false,
-            pagination: 1,
-            pageParam: "&pageSize=8&currentIndex=1",
+            // pagination: 1,
+            pageParam: "&pageSize=8&currentIndex="+this.state.pagination,
             ImgType: [true, true, true, true, true, true, true, true],
             ImgDefault: [true, true, true, true, true, true, true, true]
-
           });
         }
       });
@@ -445,7 +444,7 @@ class Main extends Component {
     const { dispatch, DataState, UIState } = this.props;
     const { WebName, WebAddress, Subject, WebType } = DataState.WebsiteData;
     let Url =
-      "/SubjectResMgr/WebSiteMgr/GetWebsiteInfoList?TypeID=1&pageSize=8&currentIndex=1" +
+      "/SubjectResMgr/WebSiteMgr/GetWebsiteInfoList?TypeID=1&pageSize=8&currentIndex="+this.state.pagination +
       this.state.SubjectParam +
       this.state.PeriodParam +
       this.state.SelfParam +
@@ -487,11 +486,11 @@ class Main extends Component {
     postData(
       CONFIG.CustomProxy + url,
       {
-        SchoolID:this.state.UserMsg.SchoolID,
+        SchoolID: this.state.UserMsg.SchoolID,
         CreatorID: this.state.UserMsg.UserID,
         Name: WebsiteData.WebName,
         Url: WebsiteData.WebAddress,
-        SubTypeID: WebsiteData.WebType.value ,
+        SubTypeID: WebsiteData.WebType.value,
         Type: 1,
         SubjectIDs: WebsiteData.Subject.value,
         Period: Period
@@ -510,8 +509,8 @@ class Main extends Component {
           this.setState({
             checkList: [],
             checkAll: false,
-            pagination: 1,
-            pageParam: "&pageSize=8&currentIndex=1",
+            // pagination: 1,
+            pageParam: "&pageSize=8&currentIndex="+this.state.pagination,
             ImgType: [true, true, true, true, true, true, true, true],
             ImgDefault: [true, true, true, true, true, true, true, true]
           });
@@ -549,7 +548,7 @@ class Main extends Component {
     const { dispatch, DataState, UIState } = this.props;
     const { WebName, WebAddress, Subject, WebType } = DataState.WebsiteData;
     let Url =
-      "/SubjectResMgr/WebSiteMgr/GetWebsiteInfoList?TypeID=1&pageSize=8&currentIndex=1" +
+      "/SubjectResMgr/WebSiteMgr/GetWebsiteInfoList?TypeID=1&pageSize=8&currentIndex="+this.state.pagination +
       this.state.SubjectParam +
       this.state.PeriodParam +
       this.state.SelfParam +
@@ -591,11 +590,11 @@ class Main extends Component {
     postData(
       CONFIG.CustomProxy + url,
       {
-        SchoolID:this.state.UserMsg.SchoolID,
+        SchoolID: this.state.UserMsg.SchoolID,
         WebsiteId: WebsiteData.WebsiteId,
         Name: WebsiteData.WebName,
         Url: WebsiteData.WebAddress,
-        SubTypeID: WebsiteData.WebType.value ,
+        SubTypeID: WebsiteData.WebType.value,
 
         SubjectIDs: Subject.value ? Subject.value : "",
         Period: Period
@@ -614,8 +613,8 @@ class Main extends Component {
           this.setState({
             checkList: [],
             checkAll: false,
-            pagination: 1,
-            pageParam: "&pageSize=8&currentIndex=1",
+            // pagination: 1,
+            pageParam: "&pageSize=8&currentIndex="+this.state.pagination,
             ImgType: [true, true, true, true, true, true, true, true],
             ImgDefault: [true, true, true, true, true, true, true, true]
           });
@@ -648,14 +647,14 @@ class Main extends Component {
     dispatch(actions.UpDataState.setInitWebsiteData({}));
   };
   // 卡点击
-  onContentCardClick = (url)=> {
-    window.open(url)
-  }
+  onContentCardClick = url => {
+    window.open(url);
+  };
   // 复选
-  onCheckBoxClick = (e)=>{
+  onCheckBoxClick = e => {
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
-  }
+  };
   render() {
     const { DataState, UIState } = this.props;
     let { List, Total, Current } = DataState.GetWebsiteResourceData;
@@ -721,94 +720,115 @@ class Main extends Component {
         </div>
         <hr className="Main-hr"></hr>
         <div className="Main-content">
-          {List instanceof Array && List.length>0?
-          <CheckBoxGroup
-            value={this.state.checkList}
-            onChange={this.onCheckBoxGroupChange.bind(this)}
-          >
-            {List.map((child, index) => {
-              return (
-                <div key={index} className="content-card" onClick={this.onContentCardClick.bind(this,child.Url)}>
-                  <div className="card-left">
-                    <CheckBox onClick={e=>this.onCheckBoxClick(e)} type="gray" value={index}></CheckBox>
-                    {this.state.ImgType[index] ? (
-                      <div
-                        className={`img-box ${!this.state.ImgDefault[index]? "ImgError_" + child.TypeColor:''}`}
+          {List instanceof Array && List.length > 0 ? (
+            <CheckBoxGroup
+              value={this.state.checkList}
+              onChange={this.onCheckBoxGroupChange.bind(this)}
+            >
+              {List.map((child, index) => {
+                return (
+                  <div
+                    key={index}
+                    className="content-card"
+                    onClick={this.onContentCardClick.bind(this, child.Url)}
+                  >
+                    <div className="card-left">
+                      <CheckBox
+                        onClick={e => this.onCheckBoxClick(e)}
+                        type="gray"
+                        value={index}
+                      ></CheckBox>
+                      {this.state.ImgType[index] ? (
+                        <div
+                          className={`img-box ${
+                            !this.state.ImgDefault[index]
+                              ? "ImgError_" + child.TypeColor
+                              : ""
+                          }`}
+                        >
+                          <img
+                            style={{
+                              display: !this.state.ImgDefault[index]
+                                ? "inline-block"
+                                : "none"
+                            }}
+                            className={`left-img `}
+                            onError={this.onImgError.bind(this, index)}
+                            onLoad={this.onImgSuccess.bind(this, index)}
+                            src={child.ImgUrl}
+                            alt={child.ImgUrl}
+                          ></img>
+                          <img
+                            // className={`left-img `}
+                            style={{
+                              display: this.state.ImgDefault[index]
+                                ? "inline-block"
+                                : "none"
+                            }}
+                            width={42}
+                            height={42}
+                            src={ImgDefault}
+                            alt={"默认"}
+                          ></img>
+                        </div>
+                      ) : (
+                        <span
+                          className={`ImgError ${"ImgError_" +
+                            child.TypeColor}`}
+                        >
+                          {child.Name.slice(0, 1)}
+                        </span>
+                      )}
+                    </div>
+                    <div className="card-rigth">
+                      <p
+                        title={child.Name}
+                        className="rigth-content webName-content "
                       >
-                        
-                        <img
-                          style={{display:!this.state.ImgDefault[index]?'inline-block':'none'}}
-                          className={`left-img `}
-                          onError={this.onImgError.bind(this, index)}
-                          onLoad ={this.onImgSuccess.bind(this,index)}
-                          src={child.ImgUrl}
-                          alt={child.ImgUrl}
-                        ></img>
-                        <img
-                          // className={`left-img `}
-                          style={{display:this.state.ImgDefault[index]?'inline-block':'none'}}
-                          width={42}
-                          height={42}
-                          src={ImgDefault}
-                          alt={'默认'}
-                        ></img>
-                      </div>
-                    ) : (
+                        <span className="webName">{child.Name}</span>
+                        <span
+                          title={child.SubTypeNamefield}
+                          className={`WebType ${"WebType_" + child.TypeColor}`}
+                        >
+                          {child.SubTypeNamefield}
+                        </span>
+                      </p>
+                      <p
+                        title={child.SubjectName}
+                        className="rigth-content webSubject"
+                      >
+                        {"学科：" + child.SubjectName}
+                      </p>
+                      <a
+                        target="_blank"
+                        href={child.Url}
+                        title={child.Url}
+                        className="rigth-content webUrl"
+                      >
+                        {child.Url}
+                      </a>
+                    </div>
+                    <div className="Edit-content">
                       <span
-                        className={`ImgError ${"ImgError_" + child.TypeColor}`}
-                      >
-                        {child.Name.slice(0, 1)}
-                      </span>
-                    )}
-                  </div>
-                  <div className="card-rigth">
-                    <p
-                      title={child.Name}
-                      className="rigth-content webName-content "
-                    >
-                      <span className="webName">{child.Name}</span>
+                        onClick={e => this.onDeleteClick(e, index)}
+                        className="card-btn btn-delete"
+                      ></span>
                       <span
-                        title={child.SubTypeNamefield}
-                        className={`WebType ${"WebType_" + child.TypeColor}`}
-                      >
-                        {child.SubTypeNamefield}
-                      </span>
-                    </p>
-                    <p
-                      title={child.SubjectName}
-                      className="rigth-content webSubject"
-                    >
-                      {"学科：" + child.SubjectName}
-                    </p>
-                    <a
-                      target="_blank"
-                      href={child.Url}
-                      title={child.Url}
-                      className="rigth-content webUrl"
-                    >
-                      {child.Url}
-                    </a>
+                        onClick={e => this.onEditClick(e, index)}
+                        className="card-btn btn-edit"
+                      ></span>
+                    </div>
                   </div>
-                  <div className="Edit-content">
-                    <span
-                      onClick={e=>this.onDeleteClick(e, index)}
-                      className="card-btn btn-delete"
-                    ></span>
-                    <span
-                      onClick={e=>this.onEditClick(e, index)}
-                      className="card-btn btn-edit"
-                    ></span>
-                  </div>
-                </div>
-              );
-            })}
-          </CheckBoxGroup>
-          :
-          <Empty
-            type="4"
-            className="Empty"
-            // title="您还没有添加教学方案哦~"
-          ></Empty>}
+                );
+              })}
+            </CheckBoxGroup>
+          ) : (
+            <Empty
+              type="4"
+              className="Empty"
+              // title="您还没有添加教学方案哦~"
+            ></Empty>
+          )}
         </div>
         <hr className="Main-hr-2"></hr>
         <div className="Main-event-box">
@@ -837,6 +857,7 @@ class Main extends Component {
             showQuickJumper
             current={this.state.pagination}
             hideOnSinglepage={true}
+            pageSize={8}
             total={Total}
             onChange={this.onPagiNationChange.bind(this)}
           ></PagiNation>
