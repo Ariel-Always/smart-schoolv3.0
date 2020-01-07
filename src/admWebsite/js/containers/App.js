@@ -25,6 +25,8 @@ import {
 import "../../scss/index.scss";
 import actions from "../actions";
 //import { urlAll, proxy } from './config'
+import { QueryPower, QueryAdminPower } from "../../../common/js/power";
+const WEBSITE_MODULEID = "000-2-0-14"; //网站资源管理
 
 class App extends Component {
   constructor(props) {
@@ -41,7 +43,7 @@ class App extends Component {
     //判断token是否存在
     TokenCheck_Connect();
     //sessionStorage.setItem('token','')
-
+    let that = this;
     let token = sessionStorage.getItem("token");
     // sessionStorage.setItem('UserInfo', '')
     if (sessionStorage.getItem("UserInfo")) {
@@ -60,7 +62,7 @@ class App extends Component {
               JSON.parse(sessionStorage.getItem("UserInfo"))
             )
           );
-          this.RequestData();
+          that.RequestData();
 
           clearInterval(timeRun);
         }
@@ -85,19 +87,30 @@ class App extends Component {
     }
     let userMsg = DataState.LoginUser.SchoolID?DataState.LoginUser:JSON.parse(sessionStorage.getItem("UserInfo"));
     // console.log(userMsg)
-    let route = history.location.pathname;
-    let pathArr = route.split("/");
-    let handleRoute = pathArr[1];
-    if (handleRoute !== "") {
-      history.push("/");
-    }
-    dispatch(actions.UpDataState.getSubjectData('/SubjectResMgr/WebSiteMgr/GetSubjectList?schoolId='+userMsg.SchoolID+'&periodId='));
-    dispatch(actions.UpDataState.getTypeData('/SubjectResMgr/WebSiteMgr/GetTypeList?SubjectID=&Period=0'));
-    dispatch(actions.UpDataState.getPeriodData('/SubjectResMgr/WebSiteMgr/GetPeriodList?schoolId='+userMsg.SchoolID));
-
-    let urlData =
-      "/SubjectResMgr/WebSiteMgr/GetWebsiteInfoList?TypeID=1&pageSize=8&currentIndex=1";
-    dispatch(actions.UpDataState.getWebsiteResourceData(urlData));
+    
+    let havePower = QueryPower({
+      UserInfo: userMsg,
+      ModuleID: WEBSITE_MODULEID
+    });
+    havePower.then(res => {
+      if (res) {
+        let route = history.location.pathname;
+        let pathArr = route.split("/");
+        let handleRoute = pathArr[1];
+        if (handleRoute !== "") {
+          history.push("/");
+        }
+        dispatch(actions.UpDataState.getSubjectData('/SubjectResMgr/WebSiteMgr/GetSubjectList?schoolId='+userMsg.SchoolID+'&periodId='));
+        dispatch(actions.UpDataState.getTypeData('/SubjectResMgr/WebSiteMgr/GetTypeList?SubjectID=&Period=0'));
+        dispatch(actions.UpDataState.getPeriodData('/SubjectResMgr/WebSiteMgr/GetPeriodList?schoolId='+userMsg.SchoolID));
+    
+        let urlData =
+          "/SubjectResMgr/WebSiteMgr/GetWebsiteInfoList?TypeID=1&pageSize=8&currentIndex=1";
+        dispatch(actions.UpDataState.getWebsiteResourceData(urlData));
+      }
+      
+    })
+   
   };
 
   //提示弹窗

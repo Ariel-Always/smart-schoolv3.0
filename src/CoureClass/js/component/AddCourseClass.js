@@ -37,6 +37,10 @@ class AddCourseClass extends React.Component {
         let subjectID = pathArr[3];
         let classID = pathArr[4];
         //*************** */
+        let UserMsg = DataState.LoginUser.SchoolID
+      ? DataState.LoginUser
+      : JSON.parse(sessionStorage.getItem("UserInfo"));
+
         if (handleRoute === 'Teacher') {
             let UserMsg = DataState.LoginUser;
             DataState.GetCourseClassDetailsHandleClassMsg.selectData.Teacher = { value: UserMsg.UserID, title: UserMsg.UserName };
@@ -56,6 +60,13 @@ class AddCourseClass extends React.Component {
 
         }
 
+        if (UserMsg.UserType === "0" || UserMsg.UserType === "7")
+        dispatch(
+          actions.UpDataState.getCoureClassAllMsg(
+            "/GetCouseclassSumarry?schoolID=" + UserMsg.SchoolID,
+            window.MenuClcik
+          )
+        );
     }
     componentDidMount(){
 
@@ -266,7 +277,7 @@ class AddCourseClass extends React.Component {
         //*************** */
 
         let data = DataState.GetCourseClassDetailsHandleClassMsg;
-        let SubjectDropList = [{ value: 0, title: '请选择学科' }];
+        let SubjectDropList = [];
         let GradeDropList = [{ value: 0, title: '请选择年级' }];
         let tableSource = data.TableSource ? data.TableSource : [];
         let teacher = data.selectData ? data.selectData.Teacher.length !== 0 ? data.selectData.Teacher : {} : {};

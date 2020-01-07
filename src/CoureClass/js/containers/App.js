@@ -54,8 +54,8 @@ class App extends Component {
       showLeftMenu: true,
       UserMsg: JSON.parse(sessionStorage.getItem("UserInfo"))
     };
-    
 
+    window.MenuClcik = this.MenuClcik.bind(this);
     // if()
     // dispatch(
     //     actions.UpDataState.getCoureClassAllMsg(
@@ -84,7 +84,6 @@ class App extends Component {
           JSON.parse(sessionStorage.getItem("UserInfo"))
         )
       );
-      
 
       this.requestData(route);
     } else {
@@ -96,7 +95,6 @@ class App extends Component {
               JSON.parse(sessionStorage.getItem("UserInfo"))
             )
           );
-          
 
           that.requestData(route);
 
@@ -149,178 +147,192 @@ class App extends Component {
       ? DataState.LoginUser
       : JSON.parse(sessionStorage.getItem("UserInfo"));
 
-      let havePower = QueryPower({
-        UserInfo: UserMsg,
-        ModuleID: COURECLASS_MODULEID
-      });
-      havePower.then(res => {
-        console.log(res)
-        if (res) {
-          let SubjectID = DataState.GetCoureClassAllMsg.Subject;
-          let GradeID = DataState.GetCoureClassAllMsg.Grade;
-      
-          let pathArr = route.split("/");
-          let handleRoute = pathArr[1];
-          let routeID = pathArr[2];
-          let subjectID = pathArr[3];
-          let classID = pathArr[4];
-          // console.log(UserMsg)
-          if(UserMsg.UserType==='0'||UserMsg.UserType==='7')
+    let havePower = QueryPower({
+      UserInfo: UserMsg,
+      ModuleID: COURECLASS_MODULEID
+    });
+    havePower.then(res => {
+      console.log(res);
+      if (res) {
+        let SubjectID = DataState.GetCoureClassAllMsg.Subject;
+        let GradeID = DataState.GetCoureClassAllMsg.Grade;
+
+        let pathArr = route.split("/");
+        let handleRoute = pathArr[1];
+        let routeID = pathArr[2];
+        let subjectID = pathArr[3];
+        let classID = pathArr[4];
+        // console.log(UserMsg)
+        if (UserMsg.UserType === "0" || UserMsg.UserType === "7")
           dispatch(
             actions.UpDataState.getCoureClassAllMsg(
-              "/GetCouseclassSumarry?schoolID=" +
-              UserMsg.SchoolID,
+              "/GetCouseclassSumarry?schoolID=" + UserMsg.SchoolID,
               this.MenuClcik
             )
           );
-          // console.log(route, routeID, subjectID)
+        // console.log(route, routeID, subjectID)
+        dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+        if (route === "/") {
+          if (UserMsg.UserType === "1") {
+            history.push("/Teacher");
+            return;
+          } else if (UserMsg.UserType === "0" || UserMsg.UserType === "7") {
+            history.push("/All");
+          } else {
+            console.log("用户没有权限访问");
+            return;
+          }
+          // this.setState({
+          //   showBarner: true,
+          //   showLeftMenu: true
+          // });
+          // dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
+          // if (!DataState.GetCoureClassAllMsg.MenuParams) return;
+          // dispatch(actions.UpDataState.setCoureClassAllMsg("all"));
+          // dispatch(
+          //   actions.UpDataState.getCoureClassAllMsg(
+          //     "/GetCouseclassSumarry?schoolID=" + UserMsg.SchoolID,
+          //     this.MenuClcik
+          //   )
+          // );
+        } else if (
+          (UserMsg.UserType === "0" || UserMsg.UserType === "7") &&
+          handleRoute === "All"
+        ) {
           dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-          if (route === "/") {
-            if(UserMsg.UserType==='1'){
-              history.push("/Teacher");
-              return;
-            }else if(UserMsg.UserType==='0'||UserMsg.UserType==='7'){
-              history.push("/All");
-            }else{
-              console.log('用户没有权限访问')
-              return;
-            }
-            // this.setState({
-            //   showBarner: true,
-            //   showLeftMenu: true
-            // });
-            // dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-            // if (!DataState.GetCoureClassAllMsg.MenuParams) return;
-            // dispatch(actions.UpDataState.setCoureClassAllMsg("all"));
-            // dispatch(
-            //   actions.UpDataState.getCoureClassAllMsg(
-            //     "/GetCouseclassSumarry?schoolID=" + UserMsg.SchoolID,
-            //     this.MenuClcik
-            //   )
-            // );
-          } else if ((UserMsg.UserType==='0'||UserMsg.UserType==='7') && handleRoute === "All") {
-            dispatch({ type: actions.UpUIState.APP_LOADING_CLOSE });
-            if (!DataState.GetCoureClassAllMsg.MenuParams) return;
-            dispatch(actions.UpDataState.setCoureClassAllMsg("all"));
-            dispatch(
-              actions.UpDataState.getCoureClassAllMsg(
-                "/GetCouseclassSumarry?schoolID=" + UserMsg.SchoolID,
-                this.MenuClcik
-              )
-            );
-            this.setState({
-              showBarner: true,
-              showLeftMenu: true
-            });
-          } else if ((UserMsg.UserType==='0'||UserMsg.UserType==='7') && handleRoute === "Subject" && subjectID === "all") {
-            dispatch({ type: actions.UpUIState.RIGHT_LOADING_OPEN });
-            //if (DataState.getSubjectAllMsg[routeID] === undefined)
-            dispatch(
-              actions.UpDataState.getSubjectAllMsg(
-                "/GetSubjectCouseclassSumarry?subjectID=" + routeID,
-                routeID
-              )
-            );
-            if (!DataState.GetCoureClassAllMsg.MenuParams) return;
-            dispatch(actions.UpDataState.setCoureClassAllMsg(routeID));
-            this.setState({
-              showBarner: true,
-              showLeftMenu: true
-            });
-          } else if ((UserMsg.UserType==='0'||UserMsg.UserType==='7')&&handleRoute === "Subject" && subjectID === "Class") {
-              // console.log('/')
-              this.setState({
-                showBarner: true,
-                showLeftMenu: true
-              });
-            dispatch(
-              actions.UpDataState.getSubjectAllMsg(
-                "/GetSubjectCouseclassSumarry?subjectID=" + routeID,
-                routeID
-              )
-            );
-            dispatch(
-              actions.UpDataState.getClassAllMsg(
-                "/GetGradeCouseclassDetailForPage?schoolID=" +
-                  UserMsg.SchoolID +
-                  "&key=&pageIndex=1&pageSize=10&subjectID=" +
-                  routeID +
-                  "&gradeID=" +
-                  classID,
-                routeID,
-                classID
-              )
-            );
-      
-            if (!DataState.GetCoureClassAllMsg.MenuParams) return;
-            dispatch(actions.UpDataState.setCoureClassAllMsg(classID, routeID));
-          } else if ((UserMsg.UserType==='0'||UserMsg.UserType==='7')&&handleRoute === "Search") {
-            // if (!DataState.GetCoureClassAllMsg.MenuParams)
-            //     return;
-            this.setState({
+          if (!DataState.GetCoureClassAllMsg.MenuParams) return;
+          dispatch(actions.UpDataState.setCoureClassAllMsg("all"));
+          dispatch(
+            actions.UpDataState.getCoureClassAllMsg(
+              "/GetCouseclassSumarry?schoolID=" + UserMsg.SchoolID,
+              this.MenuClcik
+            )
+          );
+          this.setState({
             showBarner: true,
             showLeftMenu: true
           });
-            dispatch(
-              actions.UpDataState.getClassAllMsg(
-                "/GetGradeCouseclassDetailForPage?schoolID=" +
-                  UserMsg.SchoolID +
-                  "&key=" +
-                  routeID +
-                  "&pageIndex=1&pageSize=10&subjectID=" +
-                  SubjectID +
-                  "&gradeID=" +
-                  GradeID
-              )
-            );
-          } else if ((UserMsg.UserType==='0'||UserMsg.UserType==='7')&&handleRoute === "Log") {
-            // if (!DataState.GetCoureClassAllMsg.MenuParams)
-            //     return;
-            //dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss'));
-            this.setState({
-              showBarner: false,
-              showLeftMenu: false
-            });
-          } else if (UserMsg.UserType==='1'&&handleRoute === "Teacher") {
-            this.setState({
-              showBarner: true,
-              showLeftMenu: false
-            });
-            dispatch(
-              actions.UpDataState.getTeacherCourseClassMsg(
-                "/GetCourseClassByUserID?schoolID=" +
-                  UserMsg.SchoolID +
-                  "&teacherID=" +
-                  UserMsg.UserID
-              )
-            );
-            dispatch(
-              actions.UpDataState.getSubjectAndGradeInfoForTeacher(
-                "/GetSubjectAndGradeInfoForTeacher?schoolID=" +
-                  UserMsg.SchoolID +
-                  "&userID=" +
-                  UserMsg.UserID
-              )
-            );
-      
-            
-          } else if (handleRoute === "ImportFile") {
-            this.setState({
-              showBarner: false,
-              showLeftMenu: false
-            });
+        } else if (
+          (UserMsg.UserType === "0" || UserMsg.UserType === "7") &&
+          handleRoute === "Subject" &&
+          subjectID === "all"
+        ) {
+          dispatch({ type: actions.UpUIState.RIGHT_LOADING_OPEN });
+          //if (DataState.getSubjectAllMsg[routeID] === undefined)
+          dispatch(
+            actions.UpDataState.getSubjectAllMsg(
+              "/GetSubjectCouseclassSumarry?subjectID=" + routeID,
+              routeID
+            )
+          );
+          if (!DataState.GetCoureClassAllMsg.MenuParams) return;
+          dispatch(actions.UpDataState.setCoureClassAllMsg(routeID));
+          this.setState({
+            showBarner: true,
+            showLeftMenu: true
+          });
+        } else if (
+          (UserMsg.UserType === "0" || UserMsg.UserType === "7") &&
+          handleRoute === "Subject" &&
+          subjectID === "Class"
+        ) {
+          // console.log('/')
+          this.setState({
+            showBarner: true,
+            showLeftMenu: true
+          });
+          dispatch(
+            actions.UpDataState.getSubjectAllMsg(
+              "/GetSubjectCouseclassSumarry?subjectID=" + routeID,
+              routeID
+            )
+          );
+          dispatch(
+            actions.UpDataState.getClassAllMsg(
+              "/GetGradeCouseclassDetailForPage?schoolID=" +
+                UserMsg.SchoolID +
+                "&key=&pageIndex=1&pageSize=10&subjectID=" +
+                routeID +
+                "&gradeID=" +
+                classID,
+              routeID,
+              classID
+            )
+          );
+
+          if (!DataState.GetCoureClassAllMsg.MenuParams) return;
+          dispatch(actions.UpDataState.setCoureClassAllMsg(classID, routeID));
+        } else if (
+          (UserMsg.UserType === "0" || UserMsg.UserType === "7") &&
+          handleRoute === "Search"
+        ) {
+          // if (!DataState.GetCoureClassAllMsg.MenuParams)
+          //     return;
+          this.setState({
+            showBarner: true,
+            showLeftMenu: true
+          });
+          dispatch(
+            actions.UpDataState.getClassAllMsg(
+              "/GetGradeCouseclassDetailForPage?schoolID=" +
+                UserMsg.SchoolID +
+                "&key=" +
+                routeID +
+                "&pageIndex=1&pageSize=10&subjectID=" +
+                SubjectID +
+                "&gradeID=" +
+                GradeID
+            )
+          );
+        } else if (
+          (UserMsg.UserType === "0" || UserMsg.UserType === "7") &&
+          handleRoute === "Log"
+        ) {
+          // if (!DataState.GetCoureClassAllMsg.MenuParams)
+          //     return;
+          //dispatch(actions.UpDataState.getClassAllMsg('/CoureClass_Class?schoolID=sss'));
+          this.setState({
+            showBarner: false,
+            showLeftMenu: false
+          });
+        } else if (UserMsg.UserType === "1" && handleRoute === "Teacher") {
+          this.setState({
+            showBarner: true,
+            showLeftMenu: false
+          });
+          dispatch(
+            actions.UpDataState.getTeacherCourseClassMsg(
+              "/GetCourseClassByUserID?schoolID=" +
+                UserMsg.SchoolID +
+                "&teacherID=" +
+                UserMsg.UserID
+            )
+          );
+          dispatch(
+            actions.UpDataState.getSubjectAndGradeInfoForTeacher(
+              "/GetSubjectAndGradeInfoForTeacher?schoolID=" +
+                UserMsg.SchoolID +
+                "&userID=" +
+                UserMsg.UserID
+            )
+          );
+        } else if (handleRoute === "ImportFile") {
+          this.setState({
+            showBarner: false,
+            showLeftMenu: false
+          });
+        } else {
+          if (UserMsg.UserType === "1") {
+            history.push("/Teacher");
+          } else if (UserMsg.UserType === "0" || UserMsg.UserType === "7") {
+            history.push("/All");
           } else {
-            if(UserMsg.UserType==='1'){
-              history.push("/Teacher");
-            }else if(UserMsg.UserType==='0'||UserMsg.UserType==='7'){
-              history.push("/All");
-            }else{
-              console.log('用户没有权限访问')
-              return;
-            }
+            console.log("用户没有权限访问");
+            return;
           }
-        }})
-    
+        }
+      }
+    });
   };
 
   MenuClcik = (id, type, sub = null) => {
@@ -368,7 +380,7 @@ class App extends Component {
     let classID = pathArr[4];
     let SubjectID = DataState.GetCoureClassAllMsg.Subject;
     let GradeID = DataState.GetCoureClassAllMsg.Grade;
-    let pageIndex = DataState.GetClassAllMsg.allClass.pageIndex
+    let pageIndex = DataState.GetClassAllMsg.allClass.pageIndex;
     // console.log(deepCompare.deepCompare(data.selectData.Student, data.TableSource))
     if (
       data.selectData.Teacher.value === data.TeacherID &&
@@ -386,8 +398,8 @@ class App extends Component {
       );
       return;
     }
-    let value = data.selectData.CourseClass.CourseClassName
-    if (value==='') {
+    let value = data.selectData.CourseClass.CourseClassName;
+    if (value === "") {
       dispatch(
         actions.UpUIState.showErrorAlert({
           type: "btn-error",
@@ -400,8 +412,8 @@ class App extends Component {
       return;
     }
     //console.log(this.state.courseClassName, e.target.value)
-    let Test = /^[_\->/()（）A-Za-z0-9\u4e00-\u9fa5]{0,50}$/.test(value)
-    if(!Test){
+    let Test = /^[_\->/()（）A-Za-z0-9\u4e00-\u9fa5]{0,50}$/.test(value);
+    if (!Test) {
       dispatch(
         actions.UpUIState.showErrorAlert({
           type: "btn-error",
@@ -450,7 +462,7 @@ class App extends Component {
               onHide: this.onAlertWarnHide.bind(this)
             })
           );
-          if(userMsg.UserType==='0'){
+          if (userMsg.UserType === "0") {
             if (handleRoute === "Search") {
               dispatch(
                 actions.UpDataState.getClassAllMsg(
@@ -458,7 +470,9 @@ class App extends Component {
                     this.state.UserMsg.SchoolID +
                     "&key=" +
                     routeID +
-                    "&pageIndex="+pageIndex+"&pageSize=10&subjectID=" +
+                    "&pageIndex=" +
+                    pageIndex +
+                    "&pageSize=10&subjectID=" +
                     SubjectID +
                     "&gradeID=" +
                     GradeID
@@ -469,7 +483,9 @@ class App extends Component {
                 actions.UpDataState.getClassAllMsg(
                   "/GetGradeCouseclassDetailForPage?schoolID=" +
                     this.state.UserMsg.SchoolID +
-                    "&key=&pageIndex="+pageIndex+"&pageSize=10&subjectID=" +
+                    "&key=&pageIndex=" +
+                    pageIndex +
+                    "&pageSize=10&subjectID=" +
                     routeID +
                     "&gradeID=" +
                     classID,
@@ -478,11 +494,10 @@ class App extends Component {
                 )
               );
             }
-          }else if(userMsg.UserType==='1'){
+          } else if (userMsg.UserType === "1") {
             history.push("/Teacher");
           }
           //dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=1&pageSize=10', routeID, classID));
-          
         }
       });
     dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
@@ -509,7 +524,14 @@ class App extends Component {
     dispatch(actions.UpDataState.setClassStudentTransferMsg({}));
     dispatch(actions.UpDataState.setClassStudentTransferTransferMsg({}));
     dispatch(actions.UpDataState.setSubjectTeacherTransferMsg({}));
-    dispatch(actions.UpDataState.setCourseClassDataMsg({ Subject: {}, Grade: {},Teacher:[],Student:[] }))
+    dispatch(
+      actions.UpDataState.setCourseClassDataMsg({
+        Subject: {},
+        Grade: {},
+        Teacher: [],
+        Student: []
+      })
+    );
     dispatch(actions.UpUIState.ChangeCourseClassModalClose());
     dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
   };
@@ -539,7 +561,7 @@ class App extends Component {
     //     }));
     //     return;
     // }
-    if (data.selectData.CourseClass.CourseClassName==='') {
+    if (data.selectData.CourseClass.CourseClassName === "") {
       dispatch(
         actions.UpUIState.showErrorAlert({
           type: "btn-error",
@@ -551,10 +573,10 @@ class App extends Component {
       );
       return;
     }
-    let value = data.selectData.CourseClass.CourseClassName
+    let value = data.selectData.CourseClass.CourseClassName;
     //console.log(this.state.courseClassName, e.target.value)
-    let Test = /^[_\->/()（）A-Za-z0-9\u4e00-\u9fa5]{0,50}$/.test(value)
-    if(value===''||value===undefined||!Test){
+    let Test = /^[_\->/()（）A-Za-z0-9\u4e00-\u9fa5]{0,50}$/.test(value);
+    if (value === "" || value === undefined || !Test) {
       dispatch(
         actions.UpUIState.showErrorAlert({
           type: "btn-error",
@@ -566,7 +588,11 @@ class App extends Component {
       );
       return;
     }
-    if (data.selectData.Subject&&data.selectData.Subject instanceof Object&&!data.selectData.Subject.value) {
+    if (
+      data.selectData.Subject &&
+      data.selectData.Subject instanceof Object &&
+      !data.selectData.Subject.value
+    ) {
       dispatch(
         actions.UpUIState.showErrorAlert({
           type: "btn-error",
@@ -578,7 +604,11 @@ class App extends Component {
       );
       return;
     }
-    if (data.selectData.Grade&&data.selectData.Grade instanceof Object&&!data.selectData.Grade.value) {
+    if (
+      data.selectData.Grade &&
+      data.selectData.Grade instanceof Object &&
+      !data.selectData.Grade.value
+    ) {
       dispatch(
         actions.UpUIState.showErrorAlert({
           type: "btn-error",
@@ -647,9 +677,9 @@ class App extends Component {
               onHide: this.onAlertWarnHide.bind(this)
             })
           );
-          if(userMsg.UserType==='0'){
+          if (userMsg.UserType === "0") {
             history.push("/All");
-          }else if(userMsg.UserType==='1'){
+          } else if (userMsg.UserType === "1") {
             history.push("/Teacher");
           }
           // dispatch(actions.UpDataState.getClassAllMsg('/GetGradeCouseclassDetailForPage?schoolID=' + this.state.UserMsg.SchoolID + '&pageIndex=1&pageSize=10&subjectID='+routeID+'&gradeID='+classID, routeID, classID));
@@ -659,8 +689,15 @@ class App extends Component {
     dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
 
     // dispatch(actions.UpUIState.ChangeCourseClassModalClose())
-    dispatch(actions.UpDataState.setCourseClassName({CourseClassName: "" }));
-    dispatch(actions.UpDataState.setCourseClassDataMsg({ Subject: {}, Grade: {},Teacher:[],Student:[] }))
+    dispatch(actions.UpDataState.setCourseClassName({ CourseClassName: "" }));
+    dispatch(
+      actions.UpDataState.setCourseClassDataMsg({
+        Subject: {},
+        Grade: {},
+        Teacher: [],
+        Student: []
+      })
+    );
     dispatch(actions.UpDataState.setCourseClassStudentMsg([]));
     dispatch(actions.UpDataState.setSubjectTeacherMsg([]));
     dispatch(actions.UpDataState.setClassStudentTransferMsg([]));
@@ -679,12 +716,11 @@ class App extends Component {
   };
   render() {
     const { UIState, DataState } = this.props;
-    if(DataState.GetCoureClassAllMsg.isError){
-        // console.log('d')
-        
-        // history.push('/All')
-        window.location.href = '/html/CoureClass#/All'
-        
+    if (DataState.GetCoureClassAllMsg.isError) {
+      // console.log('d')
+
+      // history.push('/All')
+      window.location.href = "/html/CoureClass#/All";
     }
     let route = history.location.pathname.split("/");
     let cnname = "教学班管理";
@@ -805,9 +841,7 @@ class App extends Component {
             opacity={false}
             spinning={UIState.AppLoading.modalLoading}
           >
-           
-              <HandleCourseClass></HandleCourseClass>
-           
+            <HandleCourseClass></HandleCourseClass>
           </Loading>
         </Modal>
         <Modal
@@ -827,7 +861,15 @@ class App extends Component {
             spinning={UIState.AppLoading.modalLoading}
           >
             {UIState.AddCourseClassModalShow.Show ? (
-              <AddCourseClass type={DataState.LoginUser.UserType==='0'?'Admin':DataState.LoginUser.UserType==='1'?'Teacher':false}></AddCourseClass>
+              <AddCourseClass
+                type={
+                  DataState.LoginUser.UserType === "0"
+                    ? "Admin"
+                    : DataState.LoginUser.UserType === "1"
+                    ? "Teacher"
+                    : false
+                }
+              ></AddCourseClass>
             ) : (
               ""
             )}
@@ -845,7 +887,7 @@ class App extends Component {
           onOk={this.LogDetailsModalOk}
           onCancel={this.LogDetailsModalCancel}
         >
-          {UIState.LogDetailsModalShow.Show ? <LogDetails></LogDetails> : ""}
+          <LogDetails></LogDetails>
         </Modal>
       </React.Fragment>
     );

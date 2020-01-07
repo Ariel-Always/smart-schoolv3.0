@@ -4,7 +4,9 @@ import UpDataState from '../../actions/UpDataState';
 
 const LogPreview = (state = {
     unreadLogCount: 0, unreadLog: {
-        List: {},
+        List: {
+            PageIndex:0
+        },
         Add: 0,
         Delete: 0,
         Edit: 0,

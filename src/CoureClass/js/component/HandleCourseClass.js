@@ -56,6 +56,10 @@ class HandleCourseClass extends React.Component {
     //     DataState.GetCourseClassDetailsHandleClassMsg.selectData.Teacher = { value: UserMsg.UserID, title: UserMsg.UserName };
     //     //dispatch(actions.UpDataState.setSubjectTeacherTransferMsg({value:UserMsg.UserID,title:UserMsg.UserName}))
     // }
+    let UserMsg = DataState.LoginUser.SchoolID
+      ? DataState.LoginUser
+      : JSON.parse(sessionStorage.getItem("UserInfo"));
+
     if (this.props.type === "Teacher") {
       let Subjects = DataState.GetTeacherSubjectAndGradeMsg.Subjects;
 
@@ -69,6 +73,13 @@ class HandleCourseClass extends React.Component {
         actions.UpDataState.setCourseClassDataMsg({ Subject: Subjects[0] })
       );
     }
+    // if (UserMsg.UserType === "0" || UserMsg.UserType === "7")
+    //       dispatch(
+    //         actions.UpDataState.getCoureClassAllMsg(
+    //           "/GetCouseclassSumarry?schoolID=" + UserMsg.SchoolID,
+    //           this.MenuClcik
+    //         )
+    //       );
   }
   //数据绑定
   onCourseClassNameChange = e => {

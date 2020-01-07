@@ -332,6 +332,9 @@ class RegisterWillExamine extends React.Component {
       //   TeacherClassSelect: TeacherClass[0],
       //   secondParam: "&classID=" + TeacherClass[0].value
       // });
+      this.setState({
+        pagination:DataState.GetSignUpLog.WillData.PageIndex+1
+      })
     }
     // if(DataState.GetSignUpLog.Grade.value!==this.state.firstSelect.value||DataState.GetSignUpLog.Class.value!==this.state.secondSelect.value){
 
@@ -377,7 +380,7 @@ class RegisterWillExamine extends React.Component {
         checkedList: [],
         firstParam: "&gradeID=" + e.value,
         checkAll: false,
-        pagination: 1,
+        // pagination: 1,
         keyword: "",
         CancelBtnShow: "n",
         searchValue: "",
@@ -411,7 +414,7 @@ class RegisterWillExamine extends React.Component {
         DropMenuShow: false,
         checkedList: [],
         checkAll: false,
-        pagination: 1,
+        // pagination: 1,
         secondParam: "",
         firstParam: "",
         keyword: "",
@@ -429,7 +432,7 @@ class RegisterWillExamine extends React.Component {
       secondSelect: e,
       checkedList: [],
       checkAll: false,
-      pagination: 1,
+      // pagination: 1,
       keyword: "",
       CancelBtnShow: "n",
       searchValue: ""
@@ -480,7 +483,7 @@ class RegisterWillExamine extends React.Component {
       TeacherClassSelect: e,
       checkedList: [],
       checkAll: false,
-      pagination: 1,
+      // pagination: 1,
       keyword: "",
       CancelBtnShow: "n",
       searchValue: ""
@@ -559,7 +562,7 @@ class RegisterWillExamine extends React.Component {
   onPagiNationChange = e => {
     const { dispatch } = this.props;
     this.setState({
-      pagination: e,
+      // pagination: e,
       checkedList: [],
       checkAll: false
     });
@@ -910,7 +913,7 @@ class RegisterWillExamine extends React.Component {
       this.setState({
         keyword: e.value,
         CancelBtnShow: "y",
-        pagination: 1,
+        // pagination: 1,
         searchWord: e.value,
         checkedList: [],
         checkAll: false
@@ -1009,7 +1012,7 @@ class RegisterWillExamine extends React.Component {
       CancelBtnShow: "n",
       keyword: "",
       searchValue: "",
-      pagination: 1,
+      // pagination: 1,
       checkAll: false,
       checkedList: []
     });

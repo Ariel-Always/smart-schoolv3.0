@@ -1,6 +1,6 @@
 import UpDataState from  '../../actions/UpDataState';
 import Public from '../../../../common/js/public'
-const GetWebsiteResourceData = (state = {Total:0,List:[],Current:1}, actions)=>{
+const GetWebsiteResourceData = (state = {Total:0,List:[],CurrentIndex:1}, actions)=>{
     let Data = {}
     switch (actions.type) {
         case UpDataState.GET_WEBSITE_RESOURCE_DATA:
