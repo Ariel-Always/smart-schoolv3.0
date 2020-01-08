@@ -205,7 +205,7 @@ class StudentTabWrapper extends Component{
 
                                 :
 
-                                <Empty type="5" title={SearchResultShow?'搜索不到学生':'该行政班暂未有学生'}></Empty>
+                                <Empty type="5" title={SearchResultShow?'搜索不到学生':'该行政班暂无学生'}></Empty>
 
 
                         }

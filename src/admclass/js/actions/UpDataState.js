@@ -496,7 +496,7 @@ const teacherModalSelectChange = (selectData) => {
 
         if (type===1||type===2){
 
-            ApiActions.GetTeacherForSetCourseTeacher({SchoolID,UserID:TeacherID,SubjectID,ClassID,dispatch}).then(data=>{
+            ApiActions.GetTeacherForSetCourseTeacher({SchoolID,UserID:TeacherID,Keyword:inputContent,SubjectID,ClassID,dispatch}).then(data=>{
 
                 if (data){
 
@@ -918,8 +918,6 @@ const UpdateClassName = ({IsAllPreview,GradeID,ClassID,ClassName}) => {
               /*dispatch(AppAlertActions.alertSuccess({title:"修改成功！"}));*/
 
               dispatch(AASActions.AlertSuccess({title:"修改成功！"}));
-
-              console.log(IsAllPreview);
 
               if (IsAllPreview){
 

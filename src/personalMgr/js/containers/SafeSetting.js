@@ -38,13 +38,13 @@ class SafeSetting extends Component{
 
                 if (pwdSetShow){
 
-                    $(this.refs['pwd-content']).slideUp();
+                    $(this.refs['pwd-content']).stop().slideUp();
 
                     dispatch({ type:SafeSettingActions.SAFE_SETTING_CONTENT_SLIDE_UP,data:type});
 
                 }else{
 
-                    $(this.refs['pwd-content']).slideDown();
+                    $(this.refs['pwd-content']).stop().slideDown();
 
                     dispatch({ type:SafeSettingActions.SAFE_SETTING_CONTENT_SLIDE_DOWN,data:type});
 
@@ -58,13 +58,13 @@ class SafeSetting extends Component{
 
                 if (emailSetShow){
 
-                    $(this.refs['email-content']).slideUp();
+                    $(this.refs['email-content']).stop().slideUp();
 
                     dispatch({ type:SafeSettingActions.SAFE_SETTING_CONTENT_SLIDE_UP,data:type});
 
                 }else{
 
-                    $(this.refs['email-content']).slideDown();
+                    $(this.refs['email-content']).stop().slideDown();
 
                     dispatch({ type:SafeSettingActions.SAFE_SETTING_CONTENT_SLIDE_DOWN,data:type});
 
@@ -76,13 +76,13 @@ class SafeSetting extends Component{
 
                 if (qaSetShow){
 
-                    $(this.refs['qa-content']).slideUp();
+                    $(this.refs['qa-content']).stop().slideUp();
 
                     dispatch({ type:SafeSettingActions.SAFE_SETTING_CONTENT_SLIDE_UP,data:type});
 
                 }else{
 
-                    $(this.refs['qa-content']).slideDown();
+                    $(this.refs['qa-content']).stop().slideDown();
 
                     dispatch({ type:SafeSettingActions.SAFE_SETTING_CONTENT_SLIDE_DOWN,data:type});
 
@@ -126,13 +126,13 @@ class SafeSetting extends Component{
 
             dispatch({type:SafeSettingActions.SAFE_SETTING_QUESTIONS_WRAPPER_HIDE});
 
-            $(this.refs['add-qa-wrapper']).slideUp();
+            $(this.refs['add-qa-wrapper']).stop().slideUp();
 
         }else{
 
             dispatch({type:SafeSettingActions.SAFE_SETTING_QUESTIONS_WRAPPER_SHOW});
 
-            $(this.refs['add-qa-wrapper']).slideDown();
+            $(this.refs['add-qa-wrapper']).stop().slideDown();
 
             dispatch(SafeSettingActions.clearQuestions());
 

@@ -611,7 +611,7 @@ class BaseSetting extends Component{
 
                                     <React.Fragment>
 
-                                        <Tooltip visible={ShortNameTipsShow} placement="right" title="用户名由3-20位的字母、数字组成（且不能为admin）">
+                                        <Tooltip getPopupContainer={triggerNode =>triggerNode.parentNode} visible={ShortNameTipsShow} placement="right" title="用户名由3-20位的字母、数字组成（且不能为admin）">
 
                                             <Input value={ShortNameValue}   maxLength={15} onChange={this.ShortNameChange.bind(this)} onBlur={this.CheckShortName.bind(this)}/>
 
@@ -792,7 +792,7 @@ class BaseSetting extends Component{
 
                                                                             <div className="detail-item-title">{title}</div>
 
-                                                                             <div className="detail-content-wrapper" style={{width:RoleDetail[key]?(RoleDetail[key].split(',').length*80+172):172}} dangerouslySetInnerHTML={{__html:RoleInnerHTML}}></div>
+                                                                             <div className="detail-content-wrapper" style={{width:RoleDetail[key]?(RoleDetail[key].split('、').length*80+172):172}} dangerouslySetInnerHTML={{__html:RoleInnerHTML}}></div>
 
                                                                             <span className="close-btn" onClick={e=>this.TeacherRoalDetailsClose(e,key)}>×</span>
 
@@ -840,7 +840,7 @@ class BaseSetting extends Component{
 
                                 editorStatus?
 
-                                    <Tooltip visible={QQTipsShow} placement="right" title="QQ由5-18位纯数字组成">
+                                    <Tooltip getPopupContainer={triggerNode =>triggerNode.parentNode} visible={QQTipsShow} placement="right" title="QQ由5-18位纯数字组成">
 
                                         <Input value={QQValue} onChange={this.QQChange.bind(this)} onBlur={this.CheckQQ.bind(this)}/>
 
@@ -863,7 +863,7 @@ class BaseSetting extends Component{
 
                                 editorStatus?
 
-                                    <Tooltip visible={WeixinTipsShow} placement="right" title="微信为手机号、QQ、邮箱或微信ID">
+                                    <Tooltip getPopupContainer={triggerNode =>triggerNode.parentNode} visible={WeixinTipsShow} placement="right" title="微信为手机号、QQ、邮箱或微信ID">
 
                                         <Input value={WeixinValue} onChange={this.WeiChatChange.bind(this)} onBlur={this.CheckWeiChat.bind(this)}/>
 
@@ -886,7 +886,7 @@ class BaseSetting extends Component{
 
                                 editorStatus?
 
-                                    <Tooltip visible={WeiboTipsShow} placement="right" title="微博为手机号码、邮箱地址">
+                                    <Tooltip getPopupContainer={triggerNode =>triggerNode.parentNode} visible={WeiboTipsShow} placement="right" title="微博为手机号码、邮箱地址">
 
                                     <Input value={WeiboValue} onChange={this.WeiBoChange.bind(this)} onBlur={this.CheckWeiBo.bind(this)}/>
 
@@ -909,7 +909,7 @@ class BaseSetting extends Component{
 
                                 editorStatus?
 
-                                    <Tooltip visible={TelephoneTipsShow} placement="right" title="电话由数字及-/组成">
+                                    <Tooltip getPopupContainer={triggerNode =>triggerNode.parentNode} visible={TelephoneTipsShow} placement="right" title="电话由数字及-/组成">
 
                                         <Input value={TelephoneValue} onChange={this.TelChange.bind(this)} onBlur={this.CheckTel.bind(this)}/>
 

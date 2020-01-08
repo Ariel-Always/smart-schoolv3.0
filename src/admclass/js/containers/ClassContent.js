@@ -8,7 +8,7 @@ import PartData from '../component/PartData';
 import connect from "react-redux/es/connect/connect";
 import UpDataState from '../actions/UpDataState';
 import PaginationActions from '../actions/PaginationActions';
-
+import AASActions from '../actions/AppAlertSuccess';
 import AppAlertActions from "../actions/AppAlertActions";
 import SearchActions from "../actions/SearchActions";
 import UpUIState from "../actions/UpUIState";
@@ -229,7 +229,7 @@ class ClassContent extends Component{
 
             if (data==='success'){
 
-                dispatch(AppAlertActions.alertSuccess({title:"删除班级成功！"}));
+                dispatch(AASActions.AlertSuccess({title:"删除班级成功！"}));
 
                 if (SearchKey){
 

@@ -88,6 +88,10 @@ const Init = () => {
 
         dispatch({type:SAFE_SETTING_LOADING_SHOW});
 
+        dispatch({type:SAFE_SETTING_CONTENT_SLIDE_UP});
+
+        dispatch({type:SAFE_SETTING_QUESTIONS_WRAPPER_HIDE});
+
         let { UserID } = getState().LoginUser;
 
         let SecurityInfo =  GetSecurityInfo({UserID,dispatch});

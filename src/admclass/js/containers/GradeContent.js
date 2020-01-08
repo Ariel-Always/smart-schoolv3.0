@@ -16,6 +16,8 @@ import AppAlertActions from '../actions/AppAlertActions';
 
 import PaginationActions from "../actions/PaginationActions";
 
+import AASActions from '../actions/AppAlertSuccess';
+
 import {Input} from "antd";
 
 class GradeContent extends Component{
@@ -294,7 +296,7 @@ class GradeContent extends Component{
 
             if (data==='success'){
 
-                dispatch(AppAlertActions.alertSuccess({title:"删除班级成功！"}));
+                dispatch(AASActions.AlertSuccess({title:"删除班级成功！"}));
 
                 dispatch(SearchActions.SchoolClassSearch(AllGradePreview.SearchKey));
 

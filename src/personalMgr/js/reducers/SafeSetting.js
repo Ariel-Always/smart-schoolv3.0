@@ -164,7 +164,7 @@ const SafeSetting = (state={
 
                 default:
 
-                    return state;
+                    return {...state,pwdSetShow:false,qaSetShow:false,emailSetShow:false};
 
             }
 
@@ -186,7 +186,7 @@ const SafeSetting = (state={
 
                 default:
 
-                    return state;
+                    return {...state,pwdSetShow:true,qaSetShow:true,emailSetShow:true};
 
             }
 

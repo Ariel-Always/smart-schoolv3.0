@@ -276,7 +276,7 @@ class DoubleSingleTable extends Component{
 
                                         (item.ScheduleType===2?
 
-                                            <div className="ongoing-flag"></div>
+                                            <div className="ongoing-flag"><span>进行中</span></div>
 
                                             :'')
 

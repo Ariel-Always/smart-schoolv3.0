@@ -72,7 +72,25 @@ const BaseSetting = (state={
 
         case BaseActions.BASE_INFO_UPDATE:
 
-            return {...state,editorStatus:false, ...actions.data};
+            return {
+
+                ...state,
+
+                editorStatus:false,
+
+                ShortNameTipsShow:false,
+
+                QQTipsShow:false,
+
+                WeixinTipsShow:false,
+
+                WeiboTipsShow:false,
+
+                TelephoneTipsShow:false,
+
+                ...actions.data
+
+            };
 
         case BaseActions.BASE_SETTING_EDITOR_OPEN:
 

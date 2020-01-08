@@ -88,6 +88,8 @@ const Init = () => {
 
         let { BaseSetting } = getState();
 
+
+
         getBaseInfo({UserID,UserType,dispatch}).then(data => {
 
             if (data){
