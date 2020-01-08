@@ -92,14 +92,20 @@ class RegisterWillExamine extends React.Component {
           render: arr => {
             return (
               <div className="name-content">
-                <img
+                {/* <img
                   alt={arr.UserName}
                   onClick={this.onUserNameClick.bind(this, arr.key)}
                   className="name-img"
                   width="47"
                   height="47"
                   src={arr.PhotoPath}
-                ></img>
+                ></img> */}
+                  <i
+                  alt={arr.UserName}
+                  onClick={this.onUserNameClick.bind(this, arr.key)}
+                  className="name-img"
+                  style={{width:'47px',height:'47px',display:'inline-block',background:`url(${arr.PhotoPath}) no-repeat center center / 47px`}}
+                ></i>
               </div>
             );
           }
@@ -332,10 +338,11 @@ class RegisterWillExamine extends React.Component {
       //   TeacherClassSelect: TeacherClass[0],
       //   secondParam: "&classID=" + TeacherClass[0].value
       // });
-      this.setState({
-        pagination:DataState.GetSignUpLog.WillData.PageIndex+1
-      })
+      
     }
+    this.setState({
+      pagination:DataState.GetSignUpLog.WillData.PageIndex+1
+    })
     // if(DataState.GetSignUpLog.Grade.value!==this.state.firstSelect.value||DataState.GetSignUpLog.Class.value!==this.state.secondSelect.value){
 
     //   if(DataState.GetSignUpLog.Class.value===0){

@@ -73,13 +73,13 @@ class App extends Component {
           // spinning={false}
         >
           <div className="modal-top">
-            <div className="top-img">
-              <img
+            <div className="top-img" alt={data.UserName}   style={{background:`url(${data.PhotoPath_NoCache}) no-repeat center center / 80px`}}>
+              {/* <img
                 width={80}
                 height={80}
                 alt={data.UserName}
                 src={data.PhotoPath_NoCache}
-              ></img>
+              ></img> */}
             </div>
             <p className="top-userName" title={data.UserName}>
               {data.UserName}

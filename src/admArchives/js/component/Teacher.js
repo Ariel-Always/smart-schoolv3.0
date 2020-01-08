@@ -67,14 +67,20 @@ class Teacher extends React.Component {
           render: arr => {
             return (
               <div className="name-content">
-                <img
+                {/* <img
                   alt={arr.UserName}
                   onClick={this.onUserNameClick.bind(this, arr.key)}
                   className="name-img"
                   width="47"
                   height="47"
                   src={arr.UserImg}
-                ></img>
+                ></img> */}
+                <i
+                  alt={arr.UserName}
+                  onClick={this.onUserNameClick.bind(this, arr.key)}
+                  className="name-img"
+                  style={{width:'47px',height:'47px',display:'inline-block',background:`url(${arr.UserImg}) no-repeat center center / 47px`}}
+                ></i>
               </div>
             );
           }

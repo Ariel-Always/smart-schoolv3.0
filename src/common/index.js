@@ -2559,8 +2559,8 @@ class DetailsModal extends React.Component {
                 {...params}
             >
                 <div className='modal-top'>
-                    <div className='top-img'>
-                        <img width={80} height={80} alt={data.userName} src={data.userImg} ></img>
+                    <div className='top-img' alt={data.userName}   style={{background:`url(${data.userImg}) no-repeat center center / 80px`}}>
+                        
                     </div>
                     <p className='top-userName' title={data.userName}>{data.userName}<span style={{ opacity: 0.64, marginLeft: 3 + 'px' }}>{(data.Gende === '男' ? '♂' :  data.Gende === '女' ? '♀' : '')}</span></p>
                     <p className='top-userText' title={data.userText}>{data.userText}</p>

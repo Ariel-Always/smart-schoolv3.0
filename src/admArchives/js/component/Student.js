@@ -69,14 +69,13 @@ class Student extends React.Component {
           render: arr => {
             return (
               <div className="name-content">
-                <img
+                <i
                   alt={arr.UserName}
                   onClick={this.onUserNameClick.bind(this, arr.key)}
                   className="name-img"
-                  width="47"
-                  height="47"
-                  src={arr.PhotoPath}
-                ></img>
+                  style={{width:'47px',height:'47px',display:'inline-block',background:`url(${arr.PhotoPath}) no-repeat center center / 47px`}}
+                ></i>
+
               </div>
             );
           }

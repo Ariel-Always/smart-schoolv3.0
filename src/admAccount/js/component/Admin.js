@@ -280,7 +280,7 @@ class Admin extends React.Component {
       dispatch(
         actions.UpUIState.showErrorAlert({
           type: "btn-error",
-          title: "您输入的学号或姓名格式不正确",
+          title: "您输入的工号或姓名格式不正确",
           ok: this.onAlertWarnOk.bind(this),
           cancel: this.onAlertWarnClose.bind(this),
           close: this.onAlertWarnClose.bind(this)

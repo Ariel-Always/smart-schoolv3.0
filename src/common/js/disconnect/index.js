@@ -88,7 +88,7 @@ export function TokenCheck(IsDesk = false, SysID = "000") {
           }, 60000);
           if (url.split("html/")[1]) {
             //有就说明不在登录页
-            if (url.split("html/")[1].split("?")[0] === "admDisconnect") {
+            if (url.includes("html/admDisconnect")) {
               //本身在掉线界面
 
               if (getQueryVariable("lg_preurl")) {
