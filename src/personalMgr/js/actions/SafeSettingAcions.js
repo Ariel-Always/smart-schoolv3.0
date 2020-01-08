@@ -96,6 +96,8 @@ const Init = () => {
 
         dispatch({type:SAFE_SETTING_ERROR_TIPS_INIT});
 
+        dispatch({type:SAFE_SETTING_EMAIL_INPUT_CHANGE,data:{}});
+
         let { UserID } = getState().LoginUser;
 
         let SecurityInfo =  GetSecurityInfo({UserID,dispatch});

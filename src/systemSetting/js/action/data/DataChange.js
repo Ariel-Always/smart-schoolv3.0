@@ -21,7 +21,7 @@ const getCurrentSemester = (SchoolID) => {
     return dispatch => {
         dispatch({
             type: SEMESTER_LOADING_HIDE,
-            data:true
+            data: true
         })
         const url = `/SysMgr/Setting/GetCurrentTermInfo?SchoolID=${SchoolID}`;
 
@@ -47,21 +47,21 @@ const getCurrentSemester = (SchoolID) => {
                 else if (item === "TermStartDate") {
                     semesterInfo = {
                         ...semesterInfo,
-                        "StartYear": new Date(semesterInfo[item].replace(/-/g,'/')).getFullYear().toString(),
-                        "StartMonth": new Date(semesterInfo[item].replace(/-/g,'/')).getMonth() + 1,
-                        "StartDay": new Date(semesterInfo[item].replace(/-/g,'/')).getDate(),
+                        "StartYear": new Date(semesterInfo[item].replace(/-/g, '/')).getFullYear().toString(),
+                        "StartMonth": new Date(semesterInfo[item].replace(/-/g, '/')).getMonth() + 1,
+                        "StartDay": new Date(semesterInfo[item].replace(/-/g, '/')).getDate(),
+                        defaultStartDate: semesterInfo.TermStartDate
                     }
 
                 }
                 else if (item === "TermEndDate") {
 
-                    
-
                     semesterInfo = {
                         ...semesterInfo,
-                        "EndYear": new Date(semesterInfo[item].replace(/-/g,'/')).getFullYear(),
-                        "EndMonth": new Date(semesterInfo[item].replace(/-/g,'/')).getMonth() + 1,
-                        "EndDay": new Date(semesterInfo[item].replace(/-/g,'/')).getDate(),
+                        "EndYear": new Date(semesterInfo[item].replace(/-/g, '/')).getFullYear(),
+                        "EndMonth": new Date(semesterInfo[item].replace(/-/g, '/')).getMonth() + 1,
+                        "EndDay": new Date(semesterInfo[item].replace(/-/g, '/')).getDate(),
+                        defaultEndDate: semesterInfo.TermEndDate
 
                     }
 
@@ -74,9 +74,9 @@ const getCurrentSemester = (SchoolID) => {
                 "SemesterName": SemesterName
 
             }
-            console.log( typeof semesterInfo.StartYear) ;
-            console.log( typeof semesterInfo.StartMonth);
-            console.log( semesterInfo)
+            console.log(typeof semesterInfo.StartYear);
+            console.log(typeof semesterInfo.StartMonth);
+            console.log(semesterInfo)
             if (json.StatusCode === 200) {
                 dispatch({
                     type: GET_CURRENT_SEMESTER_INFO,
@@ -84,9 +84,9 @@ const getCurrentSemester = (SchoolID) => {
                 })
                 dispatch({
                     type: SEMESTER_LOADING_HIDE,
-                    data:false
+                    data: false
                 })
-             
+
 
             }
             else {
@@ -113,7 +113,7 @@ const getCurrentSchoolInfo = (SchoolID) => {
     return dispatch => {
         dispatch({
             type: SEMESTER_LOADING_HIDE,
-            data:true
+            data: true
         })
         const url = `/SysMgr/Setting/GetSchoolInfo?SchoolID=${SchoolID}`;
         ApiActions.getMethod(url).then(json => {
@@ -199,7 +199,7 @@ const getCurrentSchoolInfo = (SchoolID) => {
                 // console.log(schoolInfo)
                 dispatch({
                     type: SEMESTER_LOADING_HIDE,
-                    data:false
+                    data: false
                 })
             }
             else {
@@ -225,7 +225,7 @@ const getCurrentSbusystemInfo = ({ UserType, IsOpened, keyword }) => {
     return dispatch => {
         dispatch({
             type: SEMESTER_LOADING_HIDE,
-            data:true
+            data: true
         })
         const url = `/SysMgr/Setting/GetAccessInfo?UserType=${UserType}&IsOpened=${IsOpened}&keyword=${keyword}`;
         ApiActions.getMethod(url).then(json => {
@@ -274,7 +274,7 @@ const getCurrentSbusystemInfo = ({ UserType, IsOpened, keyword }) => {
                 })
                 dispatch({
                     type: SEMESTER_LOADING_HIDE,
-                    data:false
+                    data: false
                 })
             }
             else {

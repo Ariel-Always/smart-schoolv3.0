@@ -2,66 +2,66 @@ import React, { Component } from 'react';
 import '../../../sass/SchoolInfoSet.scss'
 import { connect } from 'react-redux'
 import { Modal, Loading } from '../../../../common';
-import { Input,Tooltip,Button } from "antd";
+import { Input, Tooltip, Button } from "antd";
 import DataChange from '../../action/data/DataChange';
-import  ApiActions from '../../action/data/Api'
+import ApiActions from '../../action/data/Api'
 import AppAlertAction from '../../action/UI/AppAlertAction';
 import CropperModal from '../../../../common/js/CropperModal'
-const default_schoolPic=`http://192.168.129.1:30101/lgftp/SysSetting/Attach/default.png`
+const default_schoolPic = `http://192.168.129.1:30101/lgftp/SysSetting/Attach/default.png`//默认图标的网络地址
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024 // 文件最大限制为2M
-// const { SchoolID ,UserID} = JSON.parse(sessionStorage.getItem('UserInfo'))
+
 class SchoolnfoSetting extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             edit_visible: false,
-            active:1,
-            SchInfoUpdate:{},
-            emptyNameTipsShow:false,
-            emptyCodeTipsShow:false,
-            tipsTitle:"",
-            codeTipsTitle:"",
-            selectedImageFile:null,
-            coreModalVisible:false,
-            coreResultImage:null,
-            imageUploadModal:false,
-            schoolLogo:default_schoolPic,
-            onlineImg:""
-         
-            
+            active: 1,
+          
+            emptyNameTipsShow: false,
+            emptyCodeTipsShow: false,
+            tipsTitle: "",
+            codeTipsTitle: "",
+            selectedImageFile: null,
+            coreModalVisible: false,
+            coreResultImage: null,
+            imageUploadModal: false,
+            schoolLogo: default_schoolPic,
+            onlineImg: ""
+
+
         }
-        const { dispatch}=props
+        const { dispatch } = props
         const { SchoolID } = JSON.parse(sessionStorage.getItem('UserInfo'))
         dispatch(DataChange.getCurrentSchoolInfo(SchoolID));
     }
 
-      
 
-//切换年级的选中状态
-    changeActive=(ID)=>{
-        let  { dispatch ,periodInfo, schoolInfo}=this.props;
-           let newPeriodInfo=periodInfo.map(item=>{
-                    if(item.ID===ID){
-                      return{
-                        ...item,
-                        checked:!item.checked
-                      } 
-                    }
-                    else{
-                        return item
-                    }
-            })
-            dispatch({
-                type:DataChange.INIT_PERIOD_LIST,
-                data:newPeriodInfo,
 
-            })
+    //切换年级的选中状态
+    changeActive = (ID) => {
+        let { dispatch, periodInfo, schoolInfo } = this.props;
+        let newPeriodInfo = periodInfo.map(item => {
+            if (item.ID === ID) {
+                return {
+                    ...item,
+                    checked: !item.checked
+                }
+            }
+            else {
+                return item
+            }
+        })
+        dispatch({
+            type: DataChange.INIT_PERIOD_LIST,
+            data: newPeriodInfo,
+
+        })
     }
 
 
-//监听右上角编辑的状态
+    //监听右上角编辑的状态
     openEdite = () => {
         this.setState({
             edit_visible: true
@@ -70,14 +70,14 @@ class SchoolnfoSetting extends Component {
 
     }
 
-//确认保存编辑好的信息
+    //确认保存编辑好的信息
     editComfirm = () => {
 
-        let {primaryNum ,middleNum ,SchoolCode, SchoolName,SchoolLogoUrl}=this.props.schoolInfo
-        const {dispatch,periodInfo} =this.props
-        let SchoolType=""
-        let SchoolSessionType=""
-        console.log(primaryNum ,middleNum ,SchoolCode, SchoolName,SchoolLogoUrl);
+        let { primaryNum, middleNum, SchoolCode, SchoolName, SchoolLogoUrl } = this.props.schoolInfo
+        const { dispatch, periodInfo } = this.props
+        let SchoolType = ""
+        let SchoolSessionType = ""
+        console.log(primaryNum, middleNum, SchoolCode, SchoolName, SchoolLogoUrl);
 
         if (periodInfo[0].checked === true && periodInfo[1].checked === false && periodInfo[2].checked === false) {
             SchoolType = 1
@@ -89,532 +89,510 @@ class SchoolnfoSetting extends Component {
             SchoolType = 4
         } else if (periodInfo[0].checked === true && periodInfo[1].checked === true && periodInfo[2].checked === true) {
             SchoolType = 7
-        }  else if (periodInfo[0].checked === false && periodInfo[1].checked === true && periodInfo[2].checked === true) {
+        } else if (periodInfo[0].checked === false && periodInfo[1].checked === true && periodInfo[2].checked === true) {
             SchoolType = 6
         }
         else {
             SchoolType = "error";
         }
 
-        // let total= parseInt(primaryNum)  + parseInt(middleNum)+parseInt(highNum);
-        
-     
-        // console.log(total);
-      
-        
-        // switch(total){
-        //     case 21://小学+初中+高中
-        //     SchoolType=7;
-        //     break;
-        //     case 9://小学+初中
-        //     SchoolType=3;
-        //     break;
-        //     case 5://只有五年制小学
-        //     SchoolType=1;
-        //     break;
-        //     case 6://只有六年制小学
-        //     SchoolType=1;
-        //     break;
-        //     case 3://只有三年制初中
-        //     SchoolType=2;
-        //     break;
-        //     case 4://只有四年制初中
-        //     SchoolType=2;
-        //     break;
-        //     case 12://只有高中
-        //     SchoolType=4;
-        //     break;
-        //     default:
-        //         SchoolType="error"
-        //         break
-            
-        // }
         console.log(SchoolType)
         //如果学校名称或者学校代码为空则显示错误信息
-    if(SchoolCode===""||SchoolName===""){
-                       dispatch(AppAlertAction.alertError({title:"学校代码或名称不能为空!"})) 
-                       console.log(SchoolName)
-         }
-         else{
-            
-             if(SchoolName.length>=21){
-                dispatch(AppAlertAction.alertError({title:"学校名称过长!"})) 
+        if (SchoolCode === "" || SchoolName === "") {
+            dispatch(AppAlertAction.alertError({ title: "学校代码或名称不能为空!" }))
+            console.log(SchoolName)
+        }
+        else {
+
+            if (SchoolName.length >= 21) {
+                dispatch(AppAlertAction.alertError({ title: "学校名称过长!" }))
                 this.setState({
-                    emptyNameTipsShow:true
+                    emptyNameTipsShow: true
                 })
                 return;
-             }
-             if( !/^\d+$/.test(SchoolCode)){
-                dispatch(AppAlertAction.alertError({title:"学校代码需为纯数字"})) 
+            }
+            if (!/^\d+$/.test(SchoolCode)) {
+                dispatch(AppAlertAction.alertError({ title: "学校代码需为纯数字" }))
                 this.setState({
-                    emptyCodeTipsShow:true
+                    emptyCodeTipsShow: true
                 })
                 return;
-             }
-             if(SchoolCode.length>=21){
-                dispatch(AppAlertAction.alertError({title:"学校代码过长!"})) 
+            }
+            if (SchoolCode.length >= 21) {
+                dispatch(AppAlertAction.alertError({ title: "学校代码过长!" }))
                 this.setState({
-                    emptyCodeTipsShow :true
+                    emptyCodeTipsShow: true
                 })
                 return;
-             }
-                    //当SchoolType 不是ERROR的时候才执行post数据
-            if(SchoolType!=="error"){
-                        //根据学制参照情况判断SchoolSessionType
-                if(SchoolType===7||SchoolType===3||SchoolType===6){
-                     SchoolSessionType= `${primaryNum}/${middleNum}`
-                 }
-                  else{
-                        SchoolSessionType= "6/3"
-                 }
-                     this.setState({
+            }
+            //当SchoolType 不是ERROR的时候才执行post数据
+            if (SchoolType !== "error") {
+                //根据学制参照情况判断SchoolSessionType
+                if (SchoolType === 7 || SchoolType === 3 || SchoolType === 6) {
+                    SchoolSessionType = `${primaryNum}/${middleNum}`
+                }
+                else {
+                    SchoolSessionType = "6/3"
+                }
+                this.setState({
                     edit_visible: false,
-                    emptyNameTipsShow:false,
-                    emptyCodeTipsShow:false
-                 },()=>{
-                      const {SchoolID,UserID} = JSON.parse(sessionStorage.getItem('UserInfo'))
+                    emptyNameTipsShow: false,
+                    emptyCodeTipsShow: false
+                }, () => {
+                    const { SchoolID, UserID } = JSON.parse(sessionStorage.getItem('UserInfo'))
 
-                     ApiActions.postMethod('/SysMgr/Setting/EditSchoolInfo', {
-                            "UserID":UserID,
-                            "SchoolID": SchoolID,
-                            "SchoolName": SchoolName,
-                            "SchoolCode": SchoolCode,
-                            "SchoolType": SchoolType,
-                            "SchoolSessionType":SchoolSessionType,
-                            "SchoolImgUrl":this.state.onlineImg===""?SchoolLogoUrl:this.state.onlineImg
-                        }).then(data => {
-                            console.log(data)
-                            if (data === 0) {
-    
-                                dispatch(DataChange.getCurrentSchoolInfo(SchoolID));
-                                console.log('success');
-                                dispatch(AppAlertAction.alertSuccess({title:"修改成功"}))
-                               
-                            }
-                            else{
-                                dispatch(AppAlertAction.alertError({title:data ? data : "未知异常"}))
-                            }
+                    ApiActions.postMethod('/SysMgr/Setting/EditSchoolInfo', {
+                        "UserID": UserID,
+                        "SchoolID": SchoolID,
+                        "SchoolName": SchoolName,
+                        "SchoolCode": SchoolCode,
+                        "SchoolType": SchoolType,
+                        "SchoolSessionType": SchoolSessionType,
+                        "SchoolImgUrl": this.state.onlineImg === "" ? SchoolLogoUrl : this.state.onlineImg
+                    }).then(data => {
+                        console.log(data)
+                        if (data === 0) {
 
-                        })
+                            dispatch(DataChange.getCurrentSchoolInfo(SchoolID));
+                            console.log('success');
+                            dispatch(AppAlertAction.alertSuccess({ title: "修改成功" }))
+
+                        }
+                        else {
+                            dispatch(AppAlertAction.alertError({ title: data ? data : "未知异常" }))
+                        }
+
+                    })
                 })
             }
-   else{
-       this.setState({
-           // edit_visible: false,
-           emptyNameTipsShow:false,
-           emptyCodeTipsShow:false
-       },()=>{
+            else {
+                this.setState({
+                    // edit_visible: false,
+                    emptyNameTipsShow: false,
+                    emptyCodeTipsShow: false
+                }, () => {
 
-           dispatch(AppAlertAction.alertError({title:"请正确选择学制关系!"}))
-           // alert( "小学与初中学制搭配错误!")
-       })
-   }
-   
+                    dispatch(AppAlertAction.alertError({ title: "请正确选择学制关系!" }))
+                    // alert( "小学与初中学制搭配错误!")
+                })
+            }
 
-      }
+
+        }
 
 
     }
 
-//取消（关闭）编辑框
+    //取消（关闭）编辑框
     editCancel = () => {
         this.setState({
             edit_visible: false,
-            emptyNameTipsShow:false,
-            emptyCodeTipsShow:false
+            emptyNameTipsShow: false,
+            emptyCodeTipsShow: false
 
 
         })
-        const { SchoolID}=JSON.parse(sessionStorage.getItem('UserInfo'));
-        const {dispatch}=this.props
+        const { SchoolID } = JSON.parse(sessionStorage.getItem('UserInfo'));
+        const { dispatch } = this.props
         dispatch(DataChange.getCurrentSchoolInfo(SchoolID));
-        
+
     }
 
 
-//监听小学的学制的选择情况
-handelSchoolSystem = (e) => {
-            let { schoolInfo ,dispatch,periodInfo } = this.props
-            console.log("当前点击值" + e.target.value);
-            console.log("一开始时的内容" + schoolInfo.primaryNum);
-        
-            if (Object.keys(schoolInfo).length !== 0) {
-                //判断小学的学制选择情况
-                    // if(e.target.value==="6"||e.target.value==="5"){
-                    //     // 如果后台的也是六年制,视为取消当前选中的六年制
-                    //     if(schoolInfo.primaryNum===e.target.value){
-                    //             schoolInfo={
-                    //                 ...schoolInfo,
-                    //                 primaryNum:"0"
-                    //             }
-                                
-                    //     }else{
-                    //         schoolInfo={
-                    //             ...schoolInfo,
-                    //             primaryNum:e.target.value
-                    //         }
-                    //     }
+    //监听小学的学制的选择情况
+    handelSchoolSystem = (e) => {
+        let { schoolInfo, dispatch, periodInfo } = this.props
+        console.log("当前点击值" + e.target.value);
+        console.log("一开始时的内容" + schoolInfo.primaryNum);
 
- 
-                    // }
-                    if(e.target.value==="5"||e.target.value==="4"){
-              
-                            schoolInfo={
-                                ...schoolInfo,
-                                primaryNum:"5",
-                                middleNum:"4"
-                            }
-                    }
-                    // else if(){
+        if (Object.keys(schoolInfo).length !== 0) {
+            //判断小学的学制选择情况
+            // if(e.target.value==="6"||e.target.value==="5"){
+            //     // 如果后台的也是六年制,视为取消当前选中的六年制
+            //     if(schoolInfo.primaryNum===e.target.value){
+            //             schoolInfo={
+            //                 ...schoolInfo,
+            //                 primaryNum:"0"
+            //             }
 
-                    // }
-                    else if(e.target.value==="6"||e.target.value==="3"){
-                        schoolInfo={
-                            ...schoolInfo,
-                            primaryNum:"6",
-                            middleNum:"3"
-                        }
-                    }
- 
-                 }
-                    
-                    dispatch({
-                        type:DataChange.REFRESH_SCHOOL_INFO,
-                        data:schoolInfo
-                    })
-                 
+            //     }else{
+            //         schoolInfo={
+            //             ...schoolInfo,
+            //             primaryNum:e.target.value
+            //         }
+            //     }
+
+
+            // }
+            if (e.target.value === "5" || e.target.value === "4") {
+
+                schoolInfo = {
+                    ...schoolInfo,
+                    primaryNum: "5",
+                    middleNum: "4"
+                }
             }
-        
-   
+            // else if(){
 
-//监听学校代码的获取事件
-      getSchoolCode=(e)=>{
-
-        let valueableCode=e.target.value.substring(0,20)
-        let timerID=""
-        
-        if(e.target.value!==""){
-            this.setState({
-                emptyCodeTipsShow:false
-            })
-          }
-          let isNum = /^\d+$/.test(e.target.value)
-        if(isNum===false){
-            this.setState({
-                emptyCodeTipsShow:true,
-                codeTipsTitle:"学校代码必须是数字"
-            })
-        }  
-        if(e.target.value.length>20){
-            
-            this.setState({
-                codeTipsTitle:"学校代码不能超过20位数字",
-                emptyCodeTipsShow:true,
-              
-
-            })
-
-            timerID=setTimeout(()=>{
-                 this.setState({
-                    emptyCodeTipsShow:false
-                 },()=>{
-                    clearTimeout(timerID) 
-                 })
-              
-            },1000)
-           
-
+            // }
+            else if (e.target.value === "6" || e.target.value === "3") {
+                schoolInfo = {
+                    ...schoolInfo,
+                    primaryNum: "6",
+                    middleNum: "3"
+                }
+            }
 
         }
-        let {schoolInfo,dispatch}=this.props
-            schoolInfo={
-                ...schoolInfo,
-                SchoolCode:e.target.value.length>20?valueableCode:e.target.value
-            }
-                
-                
-                dispatch({
-                    type:DataChange.REFRESH_SCHOOL_INFO,
-                    data:schoolInfo
-                })
-               
-      }  
 
-//学校代码输入框失去焦点后的回调事件
-visibleCode=(e)=>{
-    if(e.target.value===""){
-        this.setState({
-            emptyCodeTipsShow:true,
-            codeTipsTitle:"学校代码不能为空"
+        dispatch({
+            type: DataChange.REFRESH_SCHOOL_INFO,
+            data: schoolInfo
         })
+
     }
-    else if(e.target.value.length>20){
-        this.setState({
-            emptyCodeTipsShow:true,
-            codeTipsTitle:"学校代码不能超过20位数字"
-        })
-    }
-    else{
-        this.setState({
-            emptyCodeTipsShow:false
-        })
-    }
-    
-} 
 
-//监听学校名字改变的事件
-getSchoolName = (e) => {
-    let { schoolInfo, dispatch } = this.props
-    let timerID=0
 
-    //定义输入数据的有效长度
-    let valueableLength = ""
-    //当学校名称不为空，提示框信息不显示
-    
-    if (e.target.value !== "") {
 
-        this.setState({
-            emptyNameTipsShow: false
-        })
+    //监听学校代码的获取事件
+    getSchoolCode = (e) => {
 
-        //当输入数据长度超过20,提示学校名称长度不能超过20
-        // 截取前20个作为输入
+        let valueableCode = e.target.value.substring(0, 20)
+        let timerID = ""
+
+        if (e.target.value !== "") {
+            this.setState({
+                emptyCodeTipsShow: false
+            })
+        }
+        let isNum = /^\d+$/.test(e.target.value)
+        if (isNum === false) {
+            this.setState({
+                emptyCodeTipsShow: true,
+                codeTipsTitle: "学校代码必须是数字"
+            })
+        }
         if (e.target.value.length > 20) {
-            
-            valueableLength = e.target.value.substring(0, 20)
+
             this.setState({
-                tipsTitle: "学校名称不能超过20个字符",
-                emptyNameTipsShow: true,
+                codeTipsTitle: "学校代码不能超过20位数字",
+                emptyCodeTipsShow: true,
+
 
             })
-            timerID= setTimeout(()=>{
+
+            timerID = setTimeout(() => {
                 this.setState({
-                    emptyNameTipsShow: false
-                        },()=>{
-                            clearInterval(timerID);
-                        })
-            },1000)
+                    emptyCodeTipsShow: false
+                }, () => {
+                    clearTimeout(timerID)
+                })
+
+            }, 1000)
+
+
 
         }
- 
+        let { schoolInfo, dispatch } = this.props
+        schoolInfo = {
+            ...schoolInfo,
+            SchoolCode: e.target.value.length > 20 ? valueableCode : e.target.value
+        }
+
+
+        dispatch({
+            type: DataChange.REFRESH_SCHOOL_INFO,
+            data: schoolInfo
+        })
 
     }
-    schoolInfo = {
-        ...schoolInfo,
-        SchoolName: e.target.value.length > 20 ? valueableLength : e.target.value
 
-    }
-
-    dispatch({
-        type: DataChange.REFRESH_SCHOOL_INFO,
-        data: schoolInfo
-    })
-
-} 
- 
-//学校名称输入框失去焦点后的回调事件
-    visibleName=(e)=>{
-        if(e.target.value===""){
+    //学校代码输入框失去焦点后的回调事件
+    visibleCode = (e) => {
+        if (e.target.value === "") {
             this.setState({
-                emptyNameTipsShow:true,
-                tipsTitle:"学校名称不能为空"
+                emptyCodeTipsShow: true,
+                codeTipsTitle: "学校代码不能为空"
             })
         }
-        else if(e.target.value.length>20){
+        else if (e.target.value.length > 20) {
             this.setState({
-                emptyNameTipsShow:true,
-                tipsTitle:"学校名称不能超过20个字符"
+                emptyCodeTipsShow: true,
+                codeTipsTitle: "学校代码不能超过20位数字"
             })
         }
         else {
             this.setState({
-                emptyNameTipsShow:false,
-               
+                emptyCodeTipsShow: false
             })
         }
-        
+
     }
 
-//配合使用onClick 无用的onChange回调
-tempFunction=()=>{
-        
-}
+    //监听学校名字改变的事件
+    getSchoolName = (e) => {
+        let { schoolInfo, dispatch } = this.props
+        let timerID = 0
 
-//上传图片的时候file输入框的监听事件
-handleFileChange=(e)=>{
-    const  {dispatch} =this.props
-    const file =e.target.files[0];
-    if(file){
-        if(file.size<=MAX_FILE_SIZE){
+        //定义输入数据的有效长度
+        let valueableLength = ""
+        //当学校名称不为空，提示框信息不显示
+
+        if (e.target.value !== "") {
+
             this.setState({
-                selectedImageFile:file //将文件占时存放到state中
-            },()=>{
-                this.setState({
-                    coreModalVisible:true//弹出裁剪框
-                })
-                console.log(file)
+                emptyNameTipsShow: false
             })
+
+            //当输入数据长度超过20,提示学校名称长度不能超过20
+            // 截取前20个作为输入
+            if (e.target.value.length > 20) {
+
+                valueableLength = e.target.value.substring(0, 20)
+                this.setState({
+                    tipsTitle: "学校名称不能超过20个字符",
+                    emptyNameTipsShow: true,
+
+                })
+                timerID = setTimeout(() => {
+                    this.setState({
+                        emptyNameTipsShow: false
+                    }, () => {
+                        clearInterval(timerID);
+                    })
+                }, 1000)
+
+            }
+
+
         }
-        else{
-            dispatch(AppAlertAction.alertError({title:"文件过大"}))
+        schoolInfo = {
+            ...schoolInfo,
+            SchoolName: e.target.value.length > 20 ? valueableLength : e.target.value
+
         }
-    }
-}
 
-
-// handleGetResultImgUrl = key => blob => {
-//     const str = URL.createObjectURL(blob)
-//     this.setState({
-//       [key]: str
-//     })
-//   }
-
-
-//图片上传弹层点击事件
-imageUpload=()=>{
-    this.setState({
-        imageUploadModal:true,
-        edit_visible:false
-    })
-}
-
-//图片上传弹层关闭和取消事件
-upLoadCancel=()=>{
-
-    this.setState({
-        imageUploadModal:false,
-        edit_visible:true
-    })
-    // console.log("hhhh")
-}
-//图片上传弹层确认按钮点击事件
-handleGetResultImgUrl =  (blob, filePath) => {
-    let  { dispatch, schoolInfo } = this.props;
-    console.log(blob)
-    const str = URL.createObjectURL(blob);
-
-    this.setState({
-      schoolLogo: str,
-      onlineImg:filePath
-      //[key]: this.state.baseUrl+'/http_subjectResMgr/'+filePath
-    });
-    schoolInfo={
-        ...schoolInfo,
-        SchoolLogoUrl:str
-    }
-    console.log(str)
-    dispatch({
-        type:DataChange.REFRESH_SCHOOL_INFO,
-        data:schoolInfo
-    })
-
-
-  };
-
-//监听使用默认图片按钮
-useDefault=()=>{
-    let {dispatch,schoolInfo} =this.props
-        this.setState({
-            schoolLogo:default_schoolPic,
-            onlineImg:`/SysSetting/Attach/default.png`
+        dispatch({
+            type: DataChange.REFRESH_SCHOOL_INFO,
+            data: schoolInfo
         })
 
-            schoolInfo={
-                ...schoolInfo,
-                SchoolLogoUrl:default_schoolPic
-            }
-            dispatch({
-                type:DataChange.REFRESH_SCHOOL_INFO,
-                data:schoolInfo
+    }
+
+    //学校名称输入框失去焦点后的回调事件
+    visibleName = (e) => {
+        if (e.target.value === "") {
+            this.setState({
+                emptyNameTipsShow: true,
+                tipsTitle: "学校名称不能为空"
             })
+        }
+        else if (e.target.value.length > 20) {
+            this.setState({
+                emptyNameTipsShow: true,
+                tipsTitle: "学校名称不能超过20个字符"
+            })
+        }
+        else {
+            this.setState({
+                emptyNameTipsShow: false,
+
+            })
+        }
+
+    }
+
+    //配合使用onClick 无用的onChange回调
+    tempFunction = () => {
+
+    }
+
+    //上传图片的时候file输入框的监听事件
+    handleFileChange = (e) => {
+        const { dispatch } = this.props
+        const file = e.target.files[0];
+        if (file) {
+            if (file.size <= MAX_FILE_SIZE) {
+                this.setState({
+                    selectedImageFile: file //将文件占时存放到state中
+                }, () => {
+                    this.setState({
+                        coreModalVisible: true//弹出裁剪框
+                    })
+                    console.log(file)
+                })
+            }
+            else {
+                dispatch(AppAlertAction.alertError({ title: "文件过大" }))
+            }
+        }
+    }
 
 
-}
+    // handleGetResultImgUrl = key => blob => {
+    //     const str = URL.createObjectURL(blob)
+    //     this.setState({
+    //       [key]: str
+    //     })
+    //   }
+
+
+    //图片上传弹层点击事件
+    imageUpload = () => {
+        this.setState({
+            imageUploadModal: true,
+            edit_visible: false
+        })
+    }
+
+    //图片上传弹层关闭和取消事件
+    upLoadCancel = () => {
+
+        this.setState({
+            imageUploadModal: false,
+            edit_visible: true
+        })
+        // console.log("hhhh")
+    }
+    //图片上传弹层确认按钮点击事件
+    handleGetResultImgUrl = (blob, filePath) => {
+        let { dispatch, schoolInfo } = this.props;
+        console.log(blob)
+        const str = URL.createObjectURL(blob);
+
+        this.setState({
+            schoolLogo: str,
+            onlineImg: filePath
+            //[key]: this.state.baseUrl+'/http_subjectResMgr/'+filePath
+        });
+        schoolInfo = {
+            ...schoolInfo,
+            SchoolLogoUrl: str
+        }
+        console.log(str)
+        dispatch({
+            type: DataChange.REFRESH_SCHOOL_INFO,
+            data: schoolInfo
+        })
+
+
+    };
+
+    //监听使用默认图片按钮
+    useDefault = () => {
+        let { dispatch, schoolInfo } = this.props
+        this.setState({
+            schoolLogo: default_schoolPic,
+            onlineImg: `/SysSetting/Attach/default.png`
+        })
+
+        schoolInfo = {
+            ...schoolInfo,
+            SchoolLogoUrl: default_schoolPic
+        }
+        dispatch({
+            type: DataChange.REFRESH_SCHOOL_INFO,
+            data: schoolInfo
+        })
+
+
+    }
+    //裁剪工具所返回的参数判断，overSize图片过大，fileNull未选择图片进行上传
+    paramDetect=(param)=>{
+        const {dispatch}=this.props
+        if(param==="overSize"){
+
+            dispatch(AppAlertAction.alertError({title:"图片过大"}))
+        }
+        else if(param==="fileNull"){
+            dispatch(AppAlertAction.alertTips({title:"你还没选择图片喔~",cancelTitle:"确定"}))
+        }
+    }
 
     render() {
-        const {  schoolInfo,semesterloading ,periodInfo} = this.props;
-        const {UserID} = JSON.parse(sessionStorage.getItem('UserInfo'))
+        const { schoolInfo, semesterloading, periodInfo } = this.props;
+        const { UserID } = JSON.parse(sessionStorage.getItem('UserInfo'))
         // console.log(periodInfo)
-        let schoolSys ='';
-        let schoolLength='';
+        let schoolSys = '';
+        let schoolLength = '';
 
 
 
-//根据学校类型选择渲染内容
-            switch(schoolInfo.SchoolType){
+        //根据学校类型选择渲染内容
+        switch (schoolInfo.SchoolType) {
 
-                    case 7:
-                        schoolSys =  `${schoolInfo.primaryType}+${schoolInfo.middleType}+${schoolInfo.highType}`
-                        schoolLength="十二年一贯制"  
-                    break;  
+            case 7:
+                schoolSys = `${schoolInfo.primaryType}+${schoolInfo.middleType}+${schoolInfo.highType}`
+                schoolLength = "十二年一贯制"
+                break;
 
-                    case 1:
-                        schoolSys = schoolInfo.primaryType;
-                        schoolLength=`${schoolInfo.primaryNum==="6"?"六年一贯制":"五年一贯制"}`
-                   
-                    break;  
+            case 1:
+                schoolSys = schoolInfo.primaryType;
+                schoolLength = `${schoolInfo.primaryNum === "6" ? "六年一贯制" : "五年一贯制"}`
 
-                    case 2:
-                    schoolSys = schoolInfo.middleType;
-                    schoolLength=`${schoolInfo.middleNum==="3"?"三年一贯制":"四年一贯制"}`
-                    break;
-                    
-                    case 3:
-                    schoolSys = `${schoolInfo.primaryType}+${schoolInfo.middleType}`;
-                    schoolLength="九年一贯制"
-                    break;
+                break;
 
-                    case 4:
-                    schoolSys = "三年制初中";
-                    schoolLength="三年一贯制";
-                    selected="4"
-                    break;
+            case 2:
+                schoolSys = schoolInfo.middleType;
+                schoolLength = `${schoolInfo.middleNum === "3" ? "三年一贯制" : "四年一贯制"}`
+                break;
 
-                    case 6:
-                        schoolSys=`${schoolInfo.middleType}+三年制高中`
-                        schoolLength=`${schoolInfo.middleNum==="3"?"六年一贯制":"七年一贯制"}`
-                        break
+            case 3:
+                schoolSys = `${schoolInfo.primaryType}+${schoolInfo.middleType}`;
+                schoolLength = "九年一贯制"
+                break;
 
-                
-                    default:
-                    schoolSys="学制获取失败";
-                 
-            }
-        
-      
+            case 4:
+                schoolSys = "三年制初中";
+                schoolLength = "三年一贯制";
+                selected = "4"
+                break;
+
+            case 6:
+                schoolSys = `${schoolInfo.middleType}+三年制高中`
+                schoolLength = `${schoolInfo.middleNum === "3" ? "六年一贯制" : "七年一贯制"}`
+                break
+
+
+            default:
+                schoolSys = "学制获取失败";
+
+        }
+
+
 
 
         return (
 
-            <Loading spinning={semesterloading}  opacity={false} tip="请稍后...">
+            <Loading spinning={semesterloading} opacity={false} tip="请稍后...">
 
-            <div className="school-InfoSetting" >
-        
+                <div className="school-InfoSetting" >
 
-                <div className="edite-info" onClick={this.openEdite} title="点击编辑学校信息"><span></span>编辑</div>
-                <div className="school-logo">
-                    <img src={schoolInfo.SchoolLogoUrl} alt="图片丢失"/>
-                </div>
-        <div className="school-name" title={schoolInfo.SchoolName}>{schoolInfo.SchoolName}</div>
-                <div className="school-info">
-        <div className="school-code">学校代码:<span>{schoolInfo.SchoolCode}</span></div>
-                    <div className="school-type">学校类型:
-                    
-        <span>{schoolLength}</span>({schoolSys})</div>
-                </div>
-                <Modal
-                    type="1"
-                    onClick={this.openEdite}
-                    title="编辑学校基础资料"
-                    onOk={this.editComfirm}
-                    onCancel={this.editCancel}
-                    width={"724px"}
-                    bodyStyle={{ height: "348px" }}
-                    visible={this.state.edit_visible}
-                    okText="保存"
 
-                >
-                    <div className="editContent">
+                    <div className="edite-info" onClick={this.openEdite} title="点击编辑学校信息"><span></span>编辑</div>
+                    <div className="school-logo">
+                        <img src={schoolInfo.SchoolLogoUrl} alt="图片丢失" />
+                    </div>
+                    <div className="school-name" title={schoolInfo.SchoolName}>{schoolInfo.SchoolName}</div>
+                    <div className="school-info">
+                        <div className="school-code">学校代码:<span>{schoolInfo.SchoolCode}</span></div>
+                        <div className="school-type">学校类型:
+                    <span>{schoolLength}</span>({schoolSys})
+                        </div>
+                    </div>
+                    <Modal
+                        type="1"
+                        onClick={this.openEdite}
+                        title="编辑学校基础资料"
+                        onOk={this.editComfirm}
+                        onCancel={this.editCancel}
+                        width={"724px"}
+                        bodyStyle={{ height: "348px" }}
+                        visible={this.state.edit_visible}
+                        okText="保存"
+
+                    >
+                        <div className="editContent">
                         <div className="content-left"> 
                             <div className="school-logo">
                              <img  src={schoolInfo.SchoolLogoUrl}alt=""/>
@@ -629,7 +607,7 @@ useDefault=()=>{
                                     onClose={this.upLoadCancel}
                                     onSubmit={(blob,filePath)=>this.handleGetResultImgUrl(blob,filePath)}
                                     UpDataUrl={`http://192.168.129.1:30101/lgftp/SubjectRes_UploadHandler.ashx?method=doUpload_WholeFile&userid=${UserID}`}
-
+                                    onCheck={(param)=>this.paramDetect(param)}
                                 ></CropperModal>
 
                             <Button className="btn upload-pic" onClick={this.useDefault}>使用默认</Button>
@@ -661,49 +639,49 @@ useDefault=()=>{
 
                             <div className="win-school-type">学校类型: 
                             
-                            <div className="primary-school"> 
-                                <span /* className={`${this.state.active===1?"click":""}`}  */
-                                className={`${periodInfo[0].checked===true?'click':""}`}
-                                onClick={()=>this.changeActive("P1")}>小学</span><i></i>
-                                <input type="radio" value="5" /* checked={schoolInfo.primaryNum==="5"}  */
-                                checked={periodInfo[0].checked===true&& (schoolInfo.primaryNum==="5")}
-                                disabled={periodInfo[0].checked===false}
-                                onChange={this.tempFunction}
-                                onClick={this.handelSchoolSystem}/>五年制
-                                <input  type="radio" value="6" /* checked={schoolInfo.primaryNum==="6"}  */
-                                checked={periodInfo[0].checked===true&& (schoolInfo.primaryNum==="6")}
-                                disabled={periodInfo[0].checked===false}
-                                onChange={this.tempFunction}
-                                onClick={this.handelSchoolSystem}/>六年制
-                                     
-                            </div>
-                            <div className="middle-school"> 
-                                <span /* className={`${this.state.active===2?"click":""}`} */
-                                className={`${periodInfo[1].checked===true?'click':""}`}
-                                onClick={()=>this.changeActive("P2")}>初中</span><i></i>
-                                 <input type="radio" value="3" 
-                                 checked={periodInfo[1].checked===true&& (schoolInfo.middleNum==="3")}
-                                 disabled={periodInfo[1].checked===false}
-                                 onChange={this.tempFunction}
-                                 onClick={this.handelSchoolSystem}/>三年制
-                                 
-                                <input type="radio" value="4" 
-                                checked={periodInfo[1].checked===true&& (schoolInfo.middleNum==="4")}
-                                disabled={periodInfo[1].checked===false}
-                                onChange={this.tempFunction}
-                                onClick={this.handelSchoolSystem}/>四年制
-                               
-                            </div>
-                            <div className="high-school"> 
-                                <span /* className={`${this.state.active===3?"click":""}`} */
-                                className={`${periodInfo[2].checked===true?'click':""}`}
-                                onClick={()=>this.changeActive("P3")}>高中</span><i></i>
-                                <input type="radio" value="12" /* checked={schoolInfo.highNum==="12"}  */
-                                checked={periodInfo[2].checked===true}
-                                onChange={this.tempFunction}
-                                onClick={this.handelSchoolSystem}/>三年制
+                                <div className="primary-school"> 
+                                    <span /* className={`${this.state.active===1?"click":""}`}  */
+                                    className={`${periodInfo[0].checked===true?'click':""}`}
+                                    onClick={()=>this.changeActive("P1")}>小学</span><i></i>
+                                    <input type="radio" value="5" /* checked={schoolInfo.primaryNum==="5"}  */
+                                    checked={periodInfo[0].checked===true&& (schoolInfo.primaryNum==="5")}
+                                    disabled={periodInfo[0].checked===false}
+                                    onChange={this.tempFunction}
+                                    onClick={this.handelSchoolSystem}/>五年制
+                                    <input  type="radio" value="6" /* checked={schoolInfo.primaryNum==="6"}  */
+                                    checked={periodInfo[0].checked===true&& (schoolInfo.primaryNum==="6")}
+                                    disabled={periodInfo[0].checked===false}
+                                    onChange={this.tempFunction}
+                                    onClick={this.handelSchoolSystem}/>六年制
+                                        
+                                </div>
+                                <div className="middle-school"> 
+                                    <span /* className={`${this.state.active===2?"click":""}`} */
+                                    className={`${periodInfo[1].checked===true?'click':""}`}
+                                    onClick={()=>this.changeActive("P2")}>初中</span><i></i>
+                                    <input type="radio" value="3" 
+                                    checked={periodInfo[1].checked===true&& (schoolInfo.middleNum==="3")}
+                                    disabled={periodInfo[1].checked===false}
+                                    onChange={this.tempFunction}
+                                    onClick={this.handelSchoolSystem}/>三年制
+                                    
+                                    <input type="radio" value="4" 
+                                    checked={periodInfo[1].checked===true&& (schoolInfo.middleNum==="4")}
+                                    disabled={periodInfo[1].checked===false}
+                                    onChange={this.tempFunction}
+                                    onClick={this.handelSchoolSystem}/>四年制
                                 
-                            </div>
+                                </div>
+                                <div className="high-school"> 
+                                    <span /* className={`${this.state.active===3?"click":""}`} */
+                                    className={`${periodInfo[2].checked===true?'click':""}`}
+                                    onClick={()=>this.changeActive("P3")}>高中</span><i></i>
+                                    <input type="radio" value="12" /* checked={schoolInfo.highNum==="12"}  */
+                                    checked={periodInfo[2].checked===true}
+                                    onChange={this.tempFunction}
+                                    onClick={this.handelSchoolSystem}/>三年制
+                                    
+                                </div>
                         
                             </div>
 
@@ -711,36 +689,39 @@ useDefault=()=>{
                             <div className="edit-tips">
                                 <span></span>
                                 修改学校代码和学校类型会引起基础数据重新初始化，请谨慎操作
-                                {/* {console.log(this.state.SchInfoUpdate)} */}
+                              
                             </div>
 
                         </div>
 
 
                     </div>
-                </Modal>
+               
+                    </Modal>
 
-            </div>
+
+
+                </div>
             </Loading>
 
 
         );
     }
-        }
+}
 
 
 const mapStateToProps = (state) => {
     const { DataUpdate } = state;
-   
-    const   {schoolInfo ,semesterloading,periodInfo}= DataUpdate
+
+    const { schoolInfo, semesterloading, periodInfo } = DataUpdate
     console.log(periodInfo)
 
-    
+
     return {
-          schoolInfo,
-          semesterloading,
-          periodInfo,
-       
+        schoolInfo,
+        semesterloading,
+        periodInfo,
+
 
     }
 }

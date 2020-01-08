@@ -941,7 +941,19 @@ const SafeSetting = (state={
 
                 default:
 
-                    return state;
+                    return {
+
+                        ...state,
+
+                        emailValue:{
+
+                            newEmail:'',
+
+                            pwd:''
+
+                        }
+
+                    };
 
             }
 
