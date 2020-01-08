@@ -54,11 +54,11 @@ class RegisterWillExamine extends React.Component {
                 <label style={{whiteSpace:'normal'}}>
                   <CheckBox
                     type="gray"
-                    value={key}
+                    value={key.key}
                     onChange={this.onCheckChange}
                   ></CheckBox>
                   <span className="key-content">
-                    {key >= 10 ? key : "0" + key}
+                    {key.OrderNo >= 10 ? key.OrderNo : "0" + key.OrderNo}
                   </span>
                 </label>
               </div>
