@@ -132,6 +132,7 @@ const SafeSetting = (state={
         newAnswerTipsShow:false
 
     },
+
     loginHistory:{
 
         show:false
@@ -145,6 +146,48 @@ const SafeSetting = (state={
         case SafeSettingActions.SAFE_SETTING_INIT_DATA_UPDATE:
 
             return { ...state,initData:{...state.initData,...actions.data}};
+
+        case SafeSettingActions.SAFE_SETTING_ERROR_TIPS_INIT:
+
+            return {
+
+                ...state,
+
+                pwdErrorTips:{
+
+                    ...state.pwdErrorTips,
+
+                    origin:false,
+
+                    new:false,
+
+                    reNew:false
+
+                },
+
+                qaErrorTips:{
+
+                    ...state.qaErrorTips,
+
+                    self:false,
+
+                    answer:false,
+
+                    pwd:false
+
+                },
+
+                emailErrorTips:{
+
+                    ...state.emailErrorTips,
+
+                    newEmail:false,
+
+                    pwd:false
+
+                }
+
+            };
             
         case SafeSettingActions.SAFE_SETTING_CONTENT_SLIDE_UP:
             

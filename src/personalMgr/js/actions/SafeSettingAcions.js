@@ -79,6 +79,8 @@ const SAFE_SETTING_LOADING_SHOW = 'SAFE_SETTING_LOADING_SHOW';
 
 const SAFE_SETTING_LOADING_HIDE = 'SAFE_SETTING_LOADING_HIDE';
 
+const SAFE_SETTING_ERROR_TIPS_INIT = 'SAFE_SETTING_ERROR_TIPS_INIT';
+
 
 
 //初始化界面
@@ -91,6 +93,8 @@ const Init = () => {
         dispatch({type:SAFE_SETTING_CONTENT_SLIDE_UP});
 
         dispatch({type:SAFE_SETTING_QUESTIONS_WRAPPER_HIDE});
+
+        dispatch({type:SAFE_SETTING_ERROR_TIPS_INIT});
 
         let { UserID } = getState().LoginUser;
 
@@ -1285,6 +1289,8 @@ export default{
     SAFE_SETTING_LOADING_SHOW,
 
     SAFE_SETTING_LOADING_HIDE,
+
+    SAFE_SETTING_ERROR_TIPS_INIT,
 
     Init,
 
