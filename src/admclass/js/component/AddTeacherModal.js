@@ -83,6 +83,8 @@ class AddTeacherModal extends Component{
 
                     <div className="left-wrapper">
 
+                        <Loading tip="加载中..." spinning={teacherLoadingShow}>
+
                         <div className="subject-select">
 
                             <span className="props">所教学科:</span>
@@ -118,11 +120,9 @@ class AddTeacherModal extends Component{
 
                         </div>
 
-
-
                         <div className="teacher-list-wrapper">
 
-                            <Loading tip="加载中..." spinning={teacherLoadingShow}>
+
 
                                 <ScrollBar style={{width:724,height:360,marginLeft:12}}>
 
@@ -166,7 +166,7 @@ class AddTeacherModal extends Component{
 
                                                             :
 
-                                                            <Empty type="4" title="未找到对应学科的教师"></Empty>
+                                                            <Empty type="4" title="暂时没有课任课的教师"></Empty>
 
                                                 }
 
@@ -179,9 +179,9 @@ class AddTeacherModal extends Component{
 
                                 </ScrollBar>
 
-                            </Loading>
-
                         </div>
+
+                        </Loading>
 
                     </div>
 
