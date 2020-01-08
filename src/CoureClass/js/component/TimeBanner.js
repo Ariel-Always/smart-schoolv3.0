@@ -196,7 +196,7 @@ class TimeBanner extends React.Component {
         <Router>
           {handleRoute !== "Teacher" ? (
             <div>
-              <span className="timeBanner_tips">
+              {DataState.GetCoureClassAllMsg.newData.LastLogCount?(<span className="timeBanner_tips">
                 当前共有
                 <span style={{ color: "#333", fontSize: 16 + "px" }}>
                   {DataState.GetCoureClassAllMsg.newData
@@ -213,7 +213,20 @@ class TimeBanner extends React.Component {
                 >
                   查看详情
                 </Link>
-              </span>
+              </span>):(<span className="timeBanner_tips">
+                <span>当前没有更新记录</span>
+               
+                <Link
+                  to="/Log/Record"
+                  target="_blank"
+                  rel="tips_handle"
+                  style={{marginLeft:'5px'}}
+                  onClick={this.onCheckLogClick.bind(this)}
+                  className="tips_handle"
+                >
+                  查看历史记录
+                </Link>
+              </span>)}
               <div className="handle-content">
                 <Button
                   onClick={this.onAddCourseClassClick.bind(this)}
