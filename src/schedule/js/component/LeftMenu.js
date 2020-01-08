@@ -117,7 +117,7 @@ class LeftMenu extends Component{
 
                             }
 
-                            <ScrollBars   autoHeight autoHeightMin={200} autoHeightMax={this.state.MaxHeight-100}>
+                            <ScrollBars style={{height:this.state.MaxHeight-100}}>
 
                                 <div className={`left-menu-search-wrapper ${type}`}>
 
@@ -154,7 +154,9 @@ class LeftMenu extends Component{
 
                         <div className={`pick-wrapper ${type}`}>
 
-                            <ScrollBars autoHeight autoHeightMin={200} autoHeightMax={this.state.MaxHeight-100}>
+                            {/*autoHeight autoHeightMin={200} autoHeightMax={this.state.MaxHeight-100}*/}
+
+                            <ScrollBars style={{height:this.state.MaxHeight-100}}>
 
                             {
 
