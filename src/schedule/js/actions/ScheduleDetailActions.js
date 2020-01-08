@@ -4,6 +4,7 @@ import AppAlertActions from "./AppAlertActions";
 
 import ComPageRefresh from './ComPageRefresh';
 
+import utils from './utils';
 
 
 //课程详情弹窗的参数修改
@@ -396,53 +397,60 @@ const ClassRoomSearchClick = (SearchValue) => {
 
         if (Key){
 
-            dispatch({type:COMPONENT_ADJUST_CLASSROOM_MODAL_SEARCH_LOADING_SHOW});
+            let RegResult = utils.SearchReg({type:2,ErrorTips:"您输入的教师名称和ID格式不正确",dispatch,key:Key});
 
-            dispatch({type:COMPONENT_ADJUST_CLASSROOM_MODAL_SEARCH_CANCEL_BTN_SHOW});
+            if (RegResult){
 
-            dispatch({type:COMPONENT_ADJUST_CLASSROOM_MODAL_SEARCH_WRAPPER_SHOW});
+                dispatch({type:COMPONENT_ADJUST_CLASSROOM_MODAL_SEARCH_LOADING_SHOW});
 
-            const { SchoolID } = getState().LoginUser;
+                dispatch({type:COMPONENT_ADJUST_CLASSROOM_MODAL_SEARCH_CANCEL_BTN_SHOW});
 
-            const { ClassRoomList,NowClassRoomID } = getState().ScheduleDetail.AdjustClassRoom;
+                dispatch({type:COMPONENT_ADJUST_CLASSROOM_MODAL_SEARCH_WRAPPER_SHOW});
 
-            let SearchList = [];
+                const { SchoolID } = getState().LoginUser;
 
-            ApiActions.GetClassRoomByClassTypeAndKey({SchoolID,PeriodID:'',ClassRoomTypeID:'',Key,dispatch}).then(data=>{
+                const { ClassRoomList,NowClassRoomID } = getState().ScheduleDetail.AdjustClassRoom;
 
-                if (data){
+                let SearchList = [];
 
-                    data.map(item=>{
+                ApiActions.GetClassRoomByClassTypeAndKey({SchoolID,PeriodID:'',ClassRoomTypeID:'',Key,dispatch}).then(data=>{
 
-                        let ClassTypeName = ClassRoomList.find(i=>i.ID===item.ClassRoomTypeID).Name;
+                    if (data){
 
-                        if (item.ClassRoomID!==NowClassRoomID){
+                        data.map(item=>{
 
-                            SearchList.push({
+                            let ClassTypeName = ClassRoomList.find(i=>i.ID===item.ClassRoomTypeID).Name;
 
-                                ID:item.ClassRoomID,
+                            if (item.ClassRoomID!==NowClassRoomID){
 
-                                Name:item.ClassRoomName,
+                                SearchList.push({
 
-                                TypeID:item.ClassRoomTypeID,
+                                    ID:item.ClassRoomID,
 
-                                TypeName:ClassTypeName
+                                    Name:item.ClassRoomName,
 
-                            });
+                                    TypeID:item.ClassRoomTypeID,
 
-                        }
+                                    TypeName:ClassTypeName
 
-                    })
+                                });
 
-                }
+                            }
 
-                dispatch({type:COMPONENT_ADJUST_CLASSROOM_MODAL_SEARCH_LIST_UPDATE,data:SearchList});
+                        })
+
+                    }
+
+                    dispatch({type:COMPONENT_ADJUST_CLASSROOM_MODAL_SEARCH_LIST_UPDATE,data:SearchList});
 
 
 
-                dispatch({type:COMPONENT_ADJUST_CLASSROOM_MODAL_SEARCH_LOADING_HIDE});
+                    dispatch({type:COMPONENT_ADJUST_CLASSROOM_MODAL_SEARCH_LOADING_HIDE});
 
-            });
+                });
+
+
+            }
 
         }else{
 
@@ -587,43 +595,50 @@ const ReplaceSearchClick = (SearchValue) => {
 
         if (Key){
 
-            dispatch({type:COMPONENT_REPLACE_SCHEDULE_MODAL_SEARCH_LOADING_SHOW});
+            let RegResult = utils.SearchReg({ErrorTips:"您输入的姓名或工号格式不正确",dispatch,type:1,key:Key});
 
-            dispatch({type:COMPONENT_REPLACE_SCHEDULE_MODAL_SEARCH_CANCEL_BTN_SHOW});
+            if (RegResult){
 
-            dispatch({type:COMPONENT_REPLACE_SCHEDULE_MODAL_SEARCH_WRAPPER_SHOW});
+                dispatch({type:COMPONENT_REPLACE_SCHEDULE_MODAL_SEARCH_LOADING_SHOW});
 
-            const { SchoolID } = getState().LoginUser;
+                dispatch({type:COMPONENT_REPLACE_SCHEDULE_MODAL_SEARCH_CANCEL_BTN_SHOW});
 
-            const { SubjectID } = getState().ScheduleDetail.ScheduleDetail;
+                dispatch({type:COMPONENT_REPLACE_SCHEDULE_MODAL_SEARCH_WRAPPER_SHOW});
 
-            let SearchList = [];
+                const { SchoolID } = getState().LoginUser;
 
-            ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,PeriodID:'',SubjectID,Key,dispatch}).then(data=>{
+                const { SubjectID } = getState().ScheduleDetail.ScheduleDetail;
 
-                if (data){
+                let SearchList = [];
 
-                    data.map(item=>{
+                ApiActions.GetTeacherBySubjectIDAndKey({SchoolID,PeriodID:'',SubjectID,Key,dispatch}).then(data=>{
 
-                        SearchList.push({
+                    if (data){
 
-                            ID:item.TeacherID,
+                        data.map(item=>{
 
-                            Name:item.TeacherName
+                            SearchList.push({
 
-                        });
+                                ID:item.TeacherID,
 
-                    })
+                                Name:item.TeacherName
 
-                }
+                            });
 
-                dispatch({type:COMPONENT_REPLACE_SCHEDULE_MODAL_SEARCH_LIST_UPDATE,data:SearchList});
+                        })
+
+                    }
+
+                    dispatch({type:COMPONENT_REPLACE_SCHEDULE_MODAL_SEARCH_LIST_UPDATE,data:SearchList});
 
 
 
-                dispatch({type:COMPONENT_REPLACE_SCHEDULE_MODAL_SEARCH_LOADING_HIDE});
+                    dispatch({type:COMPONENT_REPLACE_SCHEDULE_MODAL_SEARCH_LOADING_HIDE});
 
-            });
+                });
+
+            }
+
 
         }else{
 

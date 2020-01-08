@@ -204,21 +204,27 @@ class App extends Component{
 
                         }else{
 
-                            let GetAdjustPower =  QueryOtherPower({UserType,ModuleID:'000-2-0-07',SchoolID:UserInfo.SchoolID,Power:'Teacher_Schedule_U'});
+                            let GetAdjustPower =  QueryOtherPower({UserType,SchoolID:UserInfo.SchoolID,Power:'Teacher_Schedule_U'});
 
-                            let GetImportPower = QueryOtherPower({UserType,ModuleID:'000-2-0-07',SchoolID:UserInfo.SchoolID,Power:'Teacher_Schedule_C'});
+                            let GetImportPower = QueryOtherPower({UserType,SchoolID:UserInfo.SchoolID,Power:'Teacher_Schedule_C'})
 
-                            dispatch(ModuleCommonActions.getCommonInfo());
+                            Promise.all([GetAdjustPower,GetImportPower]).then(res=>{
 
-                            if (Hash.includes('Import')){
+                                dispatch({type:TeacherPowerActions.TEACHER_POWER_CHANGE,data:{Adjust:res[0],AddImport:res[1]}});
 
-                                dispatch({type:RouterSetActions.ROUTER_SET_TO_IMPORT})
+                                dispatch(ModuleCommonActions.getCommonInfo());
 
-                            }else{
+                                if (Hash.includes('Import')){
 
-                                dispatch({type:RouterSetActions.ROUTER_SET_TO_DEFAULT})
+                                    dispatch({type:RouterSetActions.ROUTER_SET_TO_IMPORT})
 
-                            }
+                                }else{
+
+                                    dispatch({type:RouterSetActions.ROUTER_SET_TO_DEFAULT})
+
+                                }
+
+                            });
 
                         }
 

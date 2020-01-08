@@ -14,6 +14,7 @@ const getMethod = async (url, level = 2) => {
             /*fetchAsync = await getData(CONFIG.proxy+url);*/
 
             fetchAsync = await getData(Api + url, level,"cors",false,false);
+            // fetchAsync = await getData(Api + url, level);
         }
         catch (e) {
             return e;
@@ -67,6 +68,7 @@ const postMethod = async (url, params, level = 2) => {
             /*fetchAsync = await getData(CONFIG.proxy+url);*/
 
             fetchAsync = await postData(Api + url, params, level,"urlencoded",false,false);
+            // fetchAsync = await postData(Api + url, params, level);
 
         }
         catch (e) {

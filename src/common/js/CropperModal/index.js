@@ -1,16 +1,19 @@
 import React, { Component } from "react";
+import ReactDOM from 'react-dom'
 import PropTypes from "prop-types";
 import Cropper from "react-cropper"; // 引入Cropper
 import "cropperjs/dist/cropper.css"; // 引入Cropper对应的css
 import { Modal } from "../../index.js";
 import "./ClassCropperModal.scss";
 import {postData} from '../fetch'
+import {ErrorAlert} from '../fetch/util'
 const MAX_FILE_SIZE = 2 * 1024 * 1024; //文件最大限制为2MB
 export default class ClassCropperModal extends Component {
   static propTypes = {
     // uploadedImageFile: PropTypes.object.isRequired,
     onClose: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    onCheck:PropTypes.func.isRequired,
     Visiable: PropTypes.bool.isRequired,
     UpDataUrl: PropTypes.string.isRequired,
   };
@@ -43,6 +46,10 @@ export default class ClassCropperModal extends Component {
   }
 
   handleSubmit = () => {
+      if(this.state.classModalFile===null){
+         
+          return  this.props.onCheck("fileNull")
+      }
     if (!this.state.submitting) {
       // let url = `/homepage_images` // 你要上传的url
       // 拿到文件名
@@ -121,7 +128,18 @@ export default class ClassCropperModal extends Component {
           }
         );
       } else {
-        console.log("文件过大");
+        ReactDOM.render(
+            // eslint-disable-next-line react/react-in-jsx-scope
+            <ErrorAlert
+            //   key={"alert" + "400-" + Math.round(Math.random() * 10000)}
+              show={true}
+              title={"文件过大"}
+            />,
+            document.getElementById("alert")
+          );
+
+        //   this.props.onCheck("overSize")
+        // console.log("文件过大");
       }
     }
     console.log(this.state.classModalFile);
