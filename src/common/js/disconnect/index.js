@@ -394,10 +394,10 @@ export function TokenCheck_Disconnect() {
   TokenCheck();
   // let i = 0
   // console.log(i++)
-  //   setTimeout(function() {
-  //     TokenCheck();
-  //     // console.log(i++)
-  //   }, 60000);
+  setInterval(function() {
+      TokenCheck();
+      // console.log(i++)
+    }, 60000);
 }
 
 export function TokenCheck_Connect(IsDesk) {

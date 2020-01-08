@@ -371,6 +371,7 @@ class Empty extends React.Component {
             style: props.style,
             className: props.className ? props.className : '',
             noTitle: props.noTitle,
+            className_1:'tips-error-1',
             imageStyle: props.imageStyle,
             titleStyle: !props.noTitle ? props.titleStyle ? props.titleStyle : '' : 'noTitle'
         }
@@ -430,6 +431,8 @@ class Empty extends React.Component {
     }
 
     componentWillMount() {
+        this.selectType(this.state.type)
+
     }
 
     render() {
