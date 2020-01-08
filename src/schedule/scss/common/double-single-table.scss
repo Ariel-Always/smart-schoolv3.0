@@ -517,11 +517,9 @@
 
       background: url("#{$image-url}/active-class-flag.png") no-repeat right top;
 
-      &:after{
+      &>span{
 
         position: absolute;
-
-        content:'进行中';
 
         color: #ffffff;
 

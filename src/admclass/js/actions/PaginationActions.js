@@ -24,7 +24,7 @@ const GradeClassPageChange = (GradeID,PageIndex) =>{
 
       dispatch({type:UpDataState.THE_GRADE_CLASS_LOADING_SHOW});
 
-      UpDataState.getClassList({SchoolID,GradeID,PageIndex,PageSize:1,dispatch,Keyword:SearchKey}).then(data=>{
+      UpDataState.getClassList({SchoolID,GradeID,PageIndex,PageSize:12,dispatch,Keyword:SearchKey}).then(data=>{
 
          if (data){
 
@@ -55,7 +55,7 @@ const SchoolClassPageChange = (PageIndex) =>{
 
         dispatch({type:UpDataState.ALL_GRADE_CLASS_LOADING_SHOW});
 
-        UpDataState.getClassList({SchoolID,PageIndex,PageSize:1,dispatch,Keyword:SearchKey}).then(data=>{
+        UpDataState.getClassList({SchoolID,PageIndex,PageSize:12,dispatch,Keyword:SearchKey}).then(data=>{
 
             if (data){
 

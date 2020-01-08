@@ -200,7 +200,19 @@ class StudentContent extends Component{
 
     adjustClassSure({AdjustClassID,UserIDs,ThisClassID}){
 
-        const { dispatch } = this.props;
+        const { dispatch,DataState } = this.props;
+
+        const { TheStudentList } = DataState;
+
+        const { SearchResultTipsShow,SearchKey } = TheStudentList;
+
+        let Keyword = '';
+
+        if (SearchResultTipsShow){
+
+            Keyword = SearchKey;
+
+        }
 
         UpDataState.adjustClass({ClassID:AdjustClassID,UserIDs,dispatch}).then(data=>{
 
@@ -218,7 +230,7 @@ class StudentContent extends Component{
 
                 dispatch({type:UpDataState.STUDENTS_CHECKED_NONE});
 
-                UpDataState.getStudents({ClassID:ThisClassID,PageIndex:0,PageSize:12,dispatch}).then(data=>{
+                UpDataState.getStudents({ClassID:ThisClassID,Keyword,PageIndex:0,PageSize:12,dispatch}).then(data=>{
 
                     if (data){
 

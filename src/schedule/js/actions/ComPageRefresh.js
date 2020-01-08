@@ -117,77 +117,81 @@ const ComPageInit  = (PageInit) => {
 const ComPageUpdate = (dispatch) =>{
 
     let hash = window.location.hash.split('?')[0];
+    
+    if (hash.includes('#/teacher/class/total') || hash.includes('#/teacher/class/student')){
+
+        dispatch(TeacherIndexActions.TeacherClassHourChange());
+
+    }
 
     if (hash.includes('#/teacher/subject-teacher/subject')){
 
-        dispatch({type:MSCGCRActions.SCGCR_INFO_UPDATE,data:{}});
+        // dispatch({type:MSCGCRActions.SCGCR_INFO_UPDATE,data:{}});
 
-        dispatch(TeacherIndexActions.STSPageInit());
+        dispatch(TeacherIndexActions.STSPageInit(true));
 
     }
 
     if (hash.includes('#/teacher/subject-teacher/teacher')){
 
-        dispatch(TeacherIndexActions.STTPageInit());
+        // dispatch({type:TSCGCRActions.SCGCR_INFO_UPDATE,data:{}});
 
-        dispatch({type:TSCGCRActions.SCGCR_INFO_UPDATE,data:{}});
+        dispatch(TeacherIndexActions.STTPageInit(true));
 
     }
 
     if (hash.includes('#/teacher/mine')){
 
-        dispatch(TeacherIndexActions.TeacherPersonalInit());
-
-        dispatch({type:TSCGCRActions.SCGCR_INFO_UPDATE,data:{}});
+        dispatch(TeacherIndexActions.TeacherPersonalInit(true));
 
     }
 
     if (hash.includes('#/manager/subject-teacher/subject')){
 
-        dispatch({type:MSCGCRActions.SCGCR_INFO_UPDATE,data:{}});
+        // dispatch({type:MSCGCRActions.SCGCR_INFO_UPDATE,data:{}});
 
-        dispatch(ManagerIndexActions.STSPageInit());
+        dispatch(ManagerIndexActions.STSPageInit(true));
 
     }
 
 
     if (hash.includes('#/manager/subject-teacher/teacher')){
 
-        dispatch({type:MSCGCRActions.SCGCR_INFO_UPDATE,data:{}});
+        // dispatch({type:MSCGCRActions.SCGCR_INFO_UPDATE,data:{}});
 
-        dispatch(ManagerIndexActions.STTPageInit());
+        dispatch(ManagerIndexActions.STTPageInit(true));
 
     }
 
     if (hash.includes('#/manager/class/total')){
 
-        dispatch({type:MSCGCRActions.SCGCR_INFO_UPDATE,data:{}});
+        // dispatch({type:MSCGCRActions.SCGCR_INFO_UPDATE,data:{}});
 
-        dispatch(ManagerIndexActions.ClassTotalInit());
+        dispatch(ManagerIndexActions.ClassTotalInit(true));
 
     }
 
     if (hash.includes('#/manager/class/single')){
 
-        dispatch({type:MSCGCRActions.SCGCR_INFO_UPDATE,data:{}});
+        // dispatch({type:MSCGCRActions.SCGCR_INFO_UPDATE,data:{}});
 
-        dispatch(ManagerIndexActions.ClassSingleInit());
+        dispatch(ManagerIndexActions.ClassSingleInit(true));
 
     }
 
     if (hash.includes('#/manager/room/total')){
 
-        dispatch({type:MSCGCRActions.SCGCR_INFO_UPDATE,data:{}});
+        // dispatch({type:MSCGCRActions.SCGCR_INFO_UPDATE,data:{}});
 
-        dispatch(ManagerIndexActions.ClassRoomTotalInit());
+        dispatch(ManagerIndexActions.ClassRoomTotalInit(true));
 
     }
 
     if (hash.includes('#/manager/room/single')){
 
-        dispatch({type:MSCGCRActions.SCGCR_INFO_UPDATE,data:{}});
+        // dispatch({type:MSCGCRActions.SCGCR_INFO_UPDATE,data:{}});
 
-        dispatch(ManagerIndexActions.ClassRoomSingleInit());
+        dispatch(ManagerIndexActions.ClassRoomSingleInit(true));
 
     }
 

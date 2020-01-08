@@ -433,7 +433,8 @@ export function TokenCheck_Connect(IsDesk) {
   // }, 60000)
 }
 
-export function LogOut(SysID = "000") {
+export function LogOut(SysID="000",IsPersonnal) {
+
   let token = sessionStorage.getItem("token") || getQueryVariable("lg_tk");
 
   $.ajax({
@@ -452,10 +453,13 @@ export function LogOut(SysID = "000") {
 
       if (json.data.result) {
         //result为true
-        localStorage.removeItem("token");
-        sessionStorage.clear();
 
         window.location.href = "/UserMgr/Login/Login.aspx";
+
+        localStorage.removeItem("token");
+
+        sessionStorage.clear();
+
       }
     },
 

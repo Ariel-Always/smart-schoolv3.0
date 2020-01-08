@@ -22,7 +22,7 @@ import $ from 'jquery';
 
 
 //学科教师总表学科总课表界面初始化
-const STSPageInit = () => {
+const STSPageInit = (ResetClassHour) => {
 
     return (dispatch,getState) => {
 
@@ -41,7 +41,150 @@ const STSPageInit = () => {
 
             dispatch({type:STSActions.STS_NOW_WEEK_CHANGE,data:NowWeekNo});
 
-            if (Object.keys(Teacher.SubjectCourseGradeClassRoom).length>0){
+
+            //判断是否需要重新加载课时信息
+
+
+
+            if (ResetClassHour){
+
+                ApiActions.GetAllOptionByPeriodID({
+
+                    SchoolID,PeriodID,UserID,UserType,dispatch
+
+                }).then(data=>{
+
+                    if (data){
+
+                        const SubjectList = data.ItemSubject;
+
+                        let SubjectID = '';
+
+                        if (SubjectList.length>1){
+
+                            SubjectID = SubjectList[0].SubjectID;
+
+                            let SList = SubjectList.map(item =>{
+
+                                return {
+
+                                    value:item.SubjectID,
+
+                                    title:item.SubjectName
+
+                                }
+
+                            });
+
+                            dispatch({type:STSActions.TEACHER_STS_SUBJECT_DROP_SHOW});
+
+                            dispatch({type:STSActions.TEACHER_STS_SUBJECT_DROP_CHANGE,data:{value:SubjectID,title:SubjectList[0].SubjectName}});
+
+                            dispatch({type:STSActions.TEACHER_STS_SUBJECT_DROP_LIST_CHANGE,data:SList})
+
+
+                        }else if (SubjectList.length === 1) {
+
+                            SubjectID = SubjectList[0].SubjectID;
+
+                            let SubjectName = SubjectList[0].SubjectName;
+
+                            dispatch({type:STSActions.TEACHER_STS_SUBJECT_DROP_HIDE});
+
+                            dispatch({type:STSActions.TEACHER_STS_SUBJECT_TITLE_CHANGE,data:{id:SubjectID,title:SubjectName}});
+
+                        }else{
+
+                            dispatch({type:STSActions.TEACHER_STS_SUBJECT_DROP_HIDE});
+
+                            dispatch({type:STSActions.TEACHER_STS_SUBJECT_TITLE_CHANGE,data:{title:'暂无',id:''}});
+
+                        }
+
+                        dispatch({type:SCGCRActions.SCGCR_INFO_INIT,data:data});
+
+
+
+                        ApiActions.GetAllScheduleOfTeachersBySubjectIDForPage({
+
+                            SubjectID,SchoolID, PeriodID,PageIndex:1,PageSize:10,dispatch
+
+                        }).then(json=>{
+
+                            if (json){
+
+                                let SubjectTeacherSchedule = [];
+
+
+                                SubjectTeacherSchedule =  json.ItemTeacher.map((item) => {
+
+                                    let teacherObj = {
+
+                                        id:item.TeacherID,
+
+                                        name:item.TeacherName
+
+                                    };
+
+                                    let list = utils.ScheduleRemoveRepeat(json.ItemSchedule.map((i) => {
+
+                                        if (i.TeacherID === item.TeacherID){
+
+                                            return {
+
+                                                ...i,
+
+                                                type:i.ScheduleType,
+
+                                                title:(i.ClassName!==''?i.ClassName:i.CourseClassName),
+
+                                                titleID:(i.ClassName!==''?i.ClassID:i.CourseClassID),
+
+                                                secondTitle:i.SubjectName,
+
+                                                secondTitleID:i.SubjectID,
+
+                                                thirdTitle:i.ClassRoomName,
+
+                                                thirdTitleID:i.ClassRoomID,
+
+                                                WeekDay:i.WeekDay,
+
+                                                ClassHourNO:i.ClassHourNO
+
+                                            };
+
+                                        }else {
+
+                                            return ;
+
+                                        }
+
+                                    }).filter(i => {return i!==undefined}));
+
+                                    teacherObj['list'] = list;
+
+                                    return teacherObj;
+
+                                });
+
+                                dispatch({type:STSActions.TEACHER_SUBJECT_TEACHER_SUBJECT_TEACHER_COUNT,data:json.TeacherCount});
+
+                                dispatch({type:STSActions.SUBJECT_TEACHER_SCHEDULE_INIT,data:SubjectTeacherSchedule});
+
+                            }
+
+                            dispatch({type:STSActions.LOADING_HIDE});
+
+                            dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
+
+                        });
+
+                    }
+
+                });
+
+            }else if (Object.keys(Teacher.SubjectCourseGradeClassRoom).length>0){
 
                 const SubjectList = Teacher.SubjectCourseGradeClassRoom.ItemSubject;
 
@@ -405,7 +548,7 @@ const STSPageInit = () => {
 };
 
 //学科教师总表教师课表界面初始化
-const STTPageInit = () => {
+const STTPageInit = (ResetClassHour) => {
 
     return (dispatch,getState) => {
 
@@ -425,7 +568,130 @@ const STTPageInit = () => {
         //将课程、学期、等等放到redux中
         dispatch({type:STTActions.STT_NOW_WEEK_CHANGE,data:NowWeekNo});
 
-        if (Object.keys(Teacher.SubjectCourseGradeClassRoom).length>0){
+        if (ResetClassHour){
+
+            let GetAllOptionByPeriodID = ApiActions.GetAllOptionByPeriodID({SchoolID,PeriodID,UserID,UserType,dispatch});
+
+            let GetTeacherBySubjectIDAndKey = ApiActions.GetTeacherBySubjectIDAndKey({
+
+                SchoolID,PeriodID,Flag:0
+
+            });
+
+            Promise.all([GetAllOptionByPeriodID,GetTeacherBySubjectIDAndKey]).then(res => {
+
+                //根据获取的学科信息和教师信息组织数据
+
+                if(res[0]){
+
+                    dispatch({type:SCGCRActions.SCGCR_INFO_INIT,data:res[0]});
+
+                    let subjectList = res[0].ItemSubject;
+
+                    let leftMenuData = [];
+
+                    if (res[1].length>0){
+
+                        if (subjectList.length > 1){
+
+                            leftMenuData = subjectList.map((item) => {
+
+                                let list = res[1].map((i) => {
+
+                                    if (i.SubjectID===item.SubjectID){
+
+                                        return {
+
+                                            id:i.TeacherID,
+
+                                            name:i.TeacherName
+
+                                        }
+
+                                    }else{
+
+                                        return;
+
+                                    }
+
+                                }).filter((i) =>i!==undefined);
+
+                                return {
+
+                                    id:item.SubjectID,
+
+                                    name:item.SubjectName,
+
+                                    list
+
+                                }
+
+                            });
+
+                            dispatch({type:STTActions.STT_SCHEDULE_INIT,data:leftMenuData});
+
+                        }else{
+
+                            let list = res[1].map((i) => {
+
+                                if (i.SubjectID===res[0].ItemSubject[0].SubjectID){
+
+                                    return {
+
+                                        id:i.TeacherID,
+
+                                        name:i.TeacherName
+
+                                    }
+
+                                }else{
+
+                                    return;
+
+                                }
+
+
+
+                            }).filter(it=>it!==undefined);
+
+                            //查找subjectID和对应的Subjectname
+                            /*let subjectID = '';
+
+                            for (let i = 0; i <= res[1].length-1; i++){
+
+                                subjectID = res[1][i].SubjectID;
+
+                                break;
+
+                            }
+
+                            let subjectName = subjectList.find((item) => {return item.SubjectID === subjectID }).SubjectName;
+    */
+                            let subjectName = res[0].ItemSubject[0].SubjectName;
+
+                            dispatch({type:STTActions.SEARCH_TEACHER_RESULT_UPDATE,data:list});
+
+                            dispatch({type:STTActions.SEARCH_TEACHER_RESULT_SHOW});
+
+                            dispatch({type:STTActions.SEARCH_TITLE_SHOW,data:`${subjectName}任课教师列表`});
+
+                        }
+
+                    }else{
+
+                        dispatch({type:STTActions.STT_SCHEDULE_INIT,data:[]});
+
+                    }
+
+                }
+
+                dispatch({type:STTActions.SCHEDULE_LOADING_HIDE});
+
+                dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
+
+            });
+
+        }else if (Object.keys(Teacher.SubjectCourseGradeClassRoom).length>0){
 
             ApiActions.GetTeacherBySubjectIDAndKey({
 
@@ -659,7 +925,7 @@ const STTPageInit = () => {
 
 //获取教师的个人课表
 
-const TeacherPersonalInit = () => {
+const TeacherPersonalInit = (ResetClassHour) => {
 
     return (dispatch,getState) => {
 
@@ -700,7 +966,65 @@ const TeacherPersonalInit = () => {
 
         dispatch({type:TPActions.TP_NOW_WEEK_CHANGE,data:NowWeekNo});
 
-        if (Object.keys(Teacher.SubjectCourseGradeClassRoom).length>0){
+        if (ResetClassHour){
+
+            let GetAllOptionByPeriodID = ApiActions.GetAllOptionByPeriodID({
+
+                SchoolID,PeriodID,UserID,UserType,dispatch
+
+            });
+
+            Promise.all([GetAllOptionByPeriodID,GetScheduleByUserID]).then(res => {
+
+
+                if (res[0]){
+
+                    dispatch({type:SCGCRActions.SCGCR_INFO_INIT,data:res[0]});
+
+                }
+
+                if (res[1]){
+
+                    let schedule = utils.ScheduleRemoveRepeat(res[1].ItemSchedule.map((item) => {
+
+                        return {
+
+                            ...item,
+
+                            title:item.SubjectName,
+
+                            titleID:item.SubjectID,
+
+                            secondTitle:(item.ClassName===''?item.CourseClassName:item.ClassName),
+
+                            secondTitleID:(item.ClassName===''?item.CourseClassID:item.ClassID),
+
+                            thirdTitle:item.ClassRoomName,
+
+                            thirdTitleID:item.ClassRoomID,
+
+                            WeekDay:item.WeekDay,
+
+                            ClassHourNO:item.ClassHourNO,
+
+                            ScheduleType:item.ScheduleType
+
+                        }
+
+
+                    }));
+
+                    dispatch({type:TPActions.TP_SCHEDULE_CHANGE,data:{schedule}});
+
+                }
+
+                dispatch({type:TPActions.TP_SCHEDULE_LOADING_HIDE});
+
+                dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
+
+            });
+
+        }else if (Object.keys(Teacher.SubjectCourseGradeClassRoom).length>0){
 
             Promise.all([GetScheduleByUserID]).then(res=>{
 
@@ -810,6 +1134,34 @@ const TeacherPersonalInit = () => {
 
 };
 
+
+const TeacherClassHourChange = () =>{
+
+    return (dispatch,getState)=>{
+
+        let {PeriodWeekTerm,LoginUser,Teacher} = getState();
+        //如果前面获取的周次、学段信息已获得
+        let {SchoolID,UserID,UserType} = LoginUser;//需要的参数后期加入
+
+        let PeriodID = PeriodWeekTerm.ItemPeriod[PeriodWeekTerm.defaultPeriodIndex].PeriodID;//所需的参数
+
+        ApiActions.GetAllOptionByPeriodID({
+
+            SchoolID,PeriodID,UserID,UserType,dispatch
+
+        }).then(data=>{
+
+            if (data){
+
+                dispatch({type:SCGCRActions.SCGCR_INFO_INIT,data:data});
+
+            }
+
+        });
+
+    }
+
+};
 
 //获取教师班级课表
 
@@ -1360,6 +1712,8 @@ export default {
 
     ClassTotalInit,
 
-    ClassStudentPageInit
+    ClassStudentPageInit,
+
+    TeacherClassHourChange
 
 }

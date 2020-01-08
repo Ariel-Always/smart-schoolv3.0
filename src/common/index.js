@@ -974,7 +974,7 @@ class Search extends React.Component {
                                     type="text" placeholder={placeHolder ? placeHolder : '输入关键词快速搜索'}
                                     onFocus={this.onInputFocus.bind(this)}
                                     onBlur={this.onInputBlur.bind(this)}
-                                    onKeyPress={this.handleEnterKey.bind(this)}
+                                    onKeyUp={this.handleEnterKey.bind(this)}
                                     value={Value?Value:this.state.Value}
                                     onChange={onChange?(e)=>onChange(e):this.InputChange.bind(this)}
                                 />
@@ -1542,8 +1542,6 @@ class Alert extends React.Component {
                 }
             }
 
-
-
         }
 
         /*if(this.AlertBody&&show&&!this.state.readyShow){
@@ -1765,7 +1763,6 @@ class Alert extends React.Component {
 
         let okContent, cancelContent = '';
 
-
         switch (type) {
             case "btn-success":
             case "btn-error":
@@ -1798,55 +1795,61 @@ class Alert extends React.Component {
 
         return (
             <React.Fragment>
+
                 {
 
-                    maskShow ?
-                        <React.Fragment>
-                            <div className="alert_dialog_mask" style={{ display: `${show ? 'block' : 'none'}` }}></div>
-                            <div className="alert_dialog_tab" style={{ display: `${show ? 'block' : 'none'}` }}>
-                                <div ref={ref=>this.AlertBody=ref} className="border alert_dialog_wrapper" id="alert_dialog_wrapper" >
+                    show?
 
-                                    {/*style={{left:this.state.left,top:this.state.top}} 这个地方应该是AlertBody的行内样式*/}
+                        maskShow ?
+                            <React.Fragment>
+                                <div className="alert_dialog_mask" style={{ display: `${show ? 'block' : 'none'}` }}></div>
+                                <div className="alert_dialog_tab" style={{ display: `${show ? 'block' : 'none'}` }}>
+                                    <div ref={ref=>this.AlertBody=ref} className="border alert_dialog_wrapper" id="alert_dialog_wrapper" >
 
-                                    <div className="alert_dialog_dragheader"></div>
+                                        {/*style={{left:this.state.left,top:this.state.top}} 这个地方应该是AlertBody的行内样式*/}
 
-                                    <div className="alert_close_btn" onClick={this.closeAlert.bind(this)}></div>
-                                    <div className={`alert_dialog_content ${abstract?'has-abstract':''}`}>
-                                        {
-                                            abstract ?
-                                                <div className={`big_icon ${type}`}></div>
-                                                :<div className={`left-icon ${type}`}></div>
-                                        }
-                                        <div className={`alert_dialog_msg ${abstract ? 'big' : type}`}>
-                                            {title}
+                                        <div className="alert_dialog_dragheader"></div>
+
+                                        <div className="alert_close_btn" onClick={this.closeAlert.bind(this)}></div>
+                                        <div className={`alert_dialog_content ${abstract?'has-abstract':''}`}>
+                                            {
+                                                abstract ?
+                                                    <div className={`big_icon ${type}`}></div>
+                                                    :<div className={`left-icon ${type}`}></div>
+                                            }
+                                            <div className={`alert_dialog_msg ${abstract ? 'big' : type}`}>
+                                                {title}
+                                            </div>
+                                            {
+                                                abstract ?
+                                                    <div className="alert_dialog_abstract">{abstract}</div>
+                                                    : ''
+                                            }
                                         </div>
-                                        {
-                                            abstract ?
-                                                <div className="alert_dialog_abstract">{abstract}</div>
-                                                : ''
-                                        }
-                                    </div>
-                                    <div className="alert_dialog_footer">
-                                        {
-                                            okShow ?
-                                                <input type="button" className="ok" onClick={this.ok.bind(this)} value={okContent} />
-                                                : ''
-                                        }
-                                        {
-                                            cancelShow ?
-                                                <input type="button" className="cancel" onClick={this.cancel.bind(this)} value={cancelContent} />
-                                                : ''
-                                        }
+                                        <div className="alert_dialog_footer">
+                                            {
+                                                okShow ?
+                                                    <input type="button" className="ok" onClick={this.ok.bind(this)} value={okContent} />
+                                                    : ''
+                                            }
+                                            {
+                                                cancelShow ?
+                                                    <input type="button" className="cancel" onClick={this.cancel.bind(this)} value={cancelContent} />
+                                                    : ''
+                                            }
+                                        </div>
                                     </div>
                                 </div>
+                            </React.Fragment>
+                            :
+                            <div className={`alert_tips_tab ${show ? 'animation' : ''}`} ref="alert_tips_tab">
+                                <div className="border">
+                                    <div className={`alert_tab_content ${type}`}>{title}</div>
+                                </div>
                             </div>
-                        </React.Fragment>
-                        :
-                        <div className={`alert_tips_tab ${show ? 'animation' : ''}`} ref="alert_tips_tab">
-                            <div className="border">
-                                <div className={`alert_tab_content ${type}`}>{title}</div>
-                            </div>
-                        </div>
+
+                        :''
+
                 }
 
             </React.Fragment>
