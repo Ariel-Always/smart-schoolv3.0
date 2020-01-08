@@ -683,7 +683,7 @@ const dateChecked = (date) => {
 //课时日期选取
 const classHourDateChecked = (date) => {
 
-    return dispatch => {
+    return (dispatch,getState) => {
 
         dispatch({type:REPLACE_SHCEDULE_CLASSHOUR_DATE_CHECKED,data:date});
 
