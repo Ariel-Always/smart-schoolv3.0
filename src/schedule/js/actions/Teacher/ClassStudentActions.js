@@ -151,6 +151,15 @@ const TEACHER_CS_LEFT_MENU_CANCEL_BTN_SHOW = 'TEACHER_CS_LEFT_MENU_CANCEL_BTN_SH
 
 const TEACHER_CS_LEFT_MENU_CANCEL_BTN_HIDE = 'TEACHER_CS_LEFT_MENU_CANCEL_BTN_HIDE';
 
+//显示班级与否
+
+const TEACHER_CS_ACTIVE_CLASSES_CHANGE = 'TEACHER_CS_ACTIVE_CLASSES_CHANGE';
+
+const TEACHER_CS_CLASSES_EMPTY_SHOW = 'TEACHER_CS_CLASSES_EMPTY_SHOW';
+
+const TEACHER_CS_CLASSES_EMPTY_HIDE = 'TEACHER_CS_CLASSES_EMPTY_HIDE';
+
+
 //学科教师总表教师课表，教师更改
 const ClassStudentUpdate = (pickInfo) => {
 
@@ -160,7 +169,7 @@ const ClassStudentUpdate = (pickInfo) => {
 
         let { SchoolID } = LoginUser;
 
-        const { Classes } = Teacher.GangerClass;
+        const { ActiveClasses } = Teacher.ClassStudent;
 
         let UserID = pickInfo.catChildrenId;
 
@@ -168,7 +177,7 @@ const ClassStudentUpdate = (pickInfo) => {
 
         let {WeekNO} = Teacher.ClassStudent;
 
-        if (Classes.length>1){
+        if (ActiveClasses.length>1){
 
             ApiActions.GetClassInfoByGanger({SchoolID,ClassID:pickInfo.catId,dispatch}).then(json=>{
 
@@ -384,9 +393,9 @@ const StudentSearch = (val) => {
 
             let { SchoolID } = LoginUser;
 
-            let { Classes } = Teacher.GangerClass;
+            let { ActiveClasses } = Teacher.ClassStudent;
 
-            const ClassesStr = Classes.map(item=>item.ClassID).join(',');
+            const ClassesStr = ActiveClasses.map(item=>item.ClassID).join(',');
 
             ApiActions.GetSudentInfoByClassIDAndKey({
 
@@ -440,9 +449,9 @@ const CancelStuSearch = () => {
 
       dispatch({type:TEACHER_CS_SEARCH_LOADING_SHOW});
 
-      const { Classes } = getState().Teacher.GangerClass;
+      const { ActiveClasses } = getState().Teacher.ClassStudent;
 
-      const ClassesStr = Classes.map(item=>item.ClassID).join(',');
+      const ClassesStr = ActiveClasses.map(item=>item.ClassID).join(',');
 
       ApiActions.GetSudentInfoByClassIDAndKey({ClassID:ClassesStr,Key:'',dispatch}).then(json=>{
 
@@ -450,9 +459,9 @@ const CancelStuSearch = () => {
 
               //判断是单个的行政班还是多个的行政班
 
-              if (Classes.length>1){//多个行政班的情况下
+              if (ActiveClasses.length>1){//多个行政班的情况下
 
-                  const StudentList = Classes.map(item=>{
+                  const StudentList = ActiveClasses.map(item=>{
 
                       let list = json.map(i=>{ return i.ClassID===item.ClassID?{id:i.StudentID,name:i.StudentName}:undefined }).filter(it=>it!==undefined);
 
@@ -490,7 +499,7 @@ const CancelStuSearch = () => {
 
                   });
 
-                  const { ClassName } = Classes[0];
+                  const { ClassName } = ActiveClasses[0];
 
                   dispatch({type:TEACHER_CS_SEARCH_STUDENT_RESULT_UPDATE,data:list});
 
@@ -1296,6 +1305,14 @@ export default {
     TEACHER_CS_REPLACE_SCHEDULE_MODAL_SEARCH_LOADING_SHOW,
 
     TEACHER_CS_REPLACE_SCHEDULE_MODAL_SEARCH_LOADING_HIDE,
+
+    //显示班级与否
+
+    TEACHER_CS_CLASSES_EMPTY_SHOW,
+
+    TEACHER_CS_CLASSES_EMPTY_HIDE,
+
+    TEACHER_CS_ACTIVE_CLASSES_CHANGE,
 
     ClassStudentUpdate,
 

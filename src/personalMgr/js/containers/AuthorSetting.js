@@ -315,7 +315,7 @@ class AuthorSetting extends Component{
 
                 >
 
-                <Loading spinning={IframeLoading} opacity={false} tip="加载中,请稍后...">
+                <Loading spinning={IframeLoading} opacity={false} tip="加载中,请稍候...">
 
                 {
 

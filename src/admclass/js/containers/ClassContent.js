@@ -300,6 +300,9 @@ class ClassContent extends Component{
                     <Loading spinning={TheGradePreview.ClassLoading}>
 
                         <PartData type="class"
+
+                                  className={!TheGradePreview.StaticsShow?'school-grade-class':''}
+
                                   PartDataList={TheGradePreview.List}
                                   ClassClick={this.ClassClick.bind(this)}
                                   ResetClassName={this.ResetClassName.bind(this)}

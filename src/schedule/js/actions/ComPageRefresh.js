@@ -117,8 +117,21 @@ const ComPageInit  = (PageInit) => {
 const ComPageUpdate = (dispatch) =>{
 
     let hash = window.location.hash.split('?')[0];
+
+    if (hash.includes('#/teacher/class/total')){
+
+        dispatch(TeacherIndexActions.ClassTotalInit());
+
+    }
+
+    if (hash.includes('#/teacher/class/student')){
+
+        dispatch(TeacherIndexActions.ClassStudentPageInit())
+
+    }
     
     if (hash.includes('#/teacher/class/total') || hash.includes('#/teacher/class/student')){
+
 
         dispatch(TeacherIndexActions.TeacherClassHourChange());
 

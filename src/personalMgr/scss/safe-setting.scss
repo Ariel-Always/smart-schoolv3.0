@@ -42,15 +42,17 @@
 
   .safe-setting-content{
 
-    padding: 4px 54px 44px 74px;
+    padding: 4px 54px 44px 54px;
 
   }
 
   .safe-item-wrapper{
 
-    padding-left: 42px;
+    padding-left:50px;
 
-    background: url("#{$image-url}/safe-unset-icon.png") no-repeat left 20px;
+    margin-bottom:32px;
+
+    background: url("#{$image-url}/safe-unset-icon.png") no-repeat left 2px;
 
     &.set{
 
@@ -77,6 +79,8 @@
 
     border-bottom: 1px solid #e6e6e6;
 
+    padding-bottom: 18px;
+
     &.no-border{
 
       border-bottom:0;
@@ -95,11 +99,13 @@
 
     float: left;
 
-    width: 112px;
+    //width: 112px;
 
     color: #333333;
 
-    line-height: 72px;
+    line-height:36px;
+
+    height: 36px;
 
     font-size: 16px;
 
@@ -109,15 +115,21 @@
 
   .safe-title-explains{
 
-    position: absolute;
+    //position: absolute;
+    //
+    //left: 124px;
+    //
+    //top:50%;
+    //
+    //@include transform(translateY(-50%));
+
+    float: left;
+
+    margin-left: 60px;
+
+    height: 36px;
 
     max-width:528px;
-
-    left: 124px;
-
-    top:50%;
-
-    @include transform(translateY(-50%));
 
     color: #999999;
 
@@ -131,7 +143,11 @@
 
     float: right;
 
-    margin-top:28px;
+    //margin-top:28px;
+
+    height:36px;
+
+    line-height: 36px;
 
     margin-right: 12px;
 
@@ -203,7 +219,7 @@
 
     position: relative;
 
-    width: 774px;
+    width:786px;
 
     border: 1px solid #98ccd7;
 
@@ -249,7 +265,7 @@
 
       width: 96px;
 
-      height: 46px;
+      height:40px;
 
       text-align: right;
 
@@ -341,7 +357,9 @@
 
     margin-bottom:20px;
 
-    margin-left:100px;
+    margin-top:10px;
+
+    margin-left:106px;
 
   }
 

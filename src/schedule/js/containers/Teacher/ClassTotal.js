@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 
 import { connect } from 'react-redux';
 
-import {Loading,DropDown} from "../../../../common";
+import {Loading,DropDown,Empty} from "../../../../common";
 
 import TeacherIndexActions from "../../actions/Teacher/TeacherIndexActions";
 
@@ -147,71 +147,85 @@ class ClassTotal extends Component{
         const { ScheduleDetail,ChangeTime,AdjustClassRoom,ReplaceSchedule } = ClassTotal;
 
 
-        return <div className="class-total-content">
+        return <div className="class-total-content teacher-class-total">
 
             <Loading spinning={ClassTotal.LoadingShow} tip="正在为您查找，请稍后...">
 
                 {
 
-                    ClassTotal.ClassDropShow?
+                    ClassTotal.ClassEmpty?
 
-                        <DropDown
-
-                            dropSelectd={ClassTotal.ClassDropSelectd}
-
-                            dropList={ClassTotal.ClassDropList}
-
-                            style={{zIndex:5}}
-
-                            height={108}
-
-                            onChange={this.ClassChange.bind(this)}>
-
-                        </DropDown>
+                        <Empty className="empty-class" type="4" title="您在该学段下没有行政班"></Empty>
 
                         :
 
-                        <div className={`class-name ${ClassTotal.ClassName===''?'unset':''}`}>{ClassTotal.ClassName?ClassTotal.ClassName:'您未有授课班级'}</div>
+                        <React.Fragment>
+
+                            {
+
+                                ClassTotal.ClassDropShow?
+
+                                    <DropDown
+
+                                        dropSelectd={ClassTotal.ClassDropSelectd}
+
+                                        dropList={ClassTotal.ClassDropList}
+
+                                        style={{zIndex:5}}
+
+                                        height={108}
+
+                                        onChange={this.ClassChange.bind(this)}>
+
+                                    </DropDown>
+
+                                    :
+
+                                    <div className={`class-name ${ClassTotal.ClassName===''?'unset':''}`}>{ClassTotal.ClassName?ClassTotal.ClassName:'您未有授课班级'}</div>
+
+                            }
+
+                            <TermPick
+
+                                ItemTermName={PeriodWeekTerm.ItemTerm?PeriodWeekTerm.ItemTerm.TermName:''}
+
+                                NowWeekNo={ClassTotal.WeekNO}
+
+                                ItemWeek ={ClassTotal.WeekList}
+
+                                weekPickEvent = {this.weekPickEvent.bind(this)}
+
+                                weekNextEvent = {this.weekNextEvent.bind(this)}
+
+                                weekPrevEvent = {this.weekPrevEvent.bind(this)}
+                            >
+
+                            </TermPick>
+
+                            <div className="single-double-table-wrapper" style={{marginTop:20}}>
+
+                                <SingleDoubleTable
+                                    topHeight = {64}
+                                    commonHeight = {90}
+                                    commonWidth={136}
+                                    leftOneWidth ={56}
+                                    leftTwoWidth = {136}
+                                    ItemClassHourCount={ClassTotal.ItemClassHourCount}
+                                    ItemClassHour={ClassTotal.ItemClassHour}
+                                    ItemWeek = {PeriodWeekTerm.ItemWeek}
+                                    NowWeekNo={ClassTotal.WeekNO}
+                                    schedule={ClassTotal.Schedule}
+                                    NowDate={PeriodWeekTerm.NowDate}
+                                    OptionalClassShow={this.OptionalClassShow.bind(this)}
+                                    ScheduleDetailShow={this.ScheduleDetailShow.bind(this)}>
+
+                                </SingleDoubleTable>
+
+                            </div>
+
+                        </React.Fragment>
 
                 }
-
-                <TermPick
-
-                    ItemTermName={PeriodWeekTerm.ItemTerm?PeriodWeekTerm.ItemTerm.TermName:''}
-
-                    NowWeekNo={ClassTotal.WeekNO}
-
-                    ItemWeek ={ClassTotal.WeekList}
-
-                    weekPickEvent = {this.weekPickEvent.bind(this)}
-
-                    weekNextEvent = {this.weekNextEvent.bind(this)}
-
-                    weekPrevEvent = {this.weekPrevEvent.bind(this)}
-                >
-
-                </TermPick>
-
-                <div className="single-double-table-wrapper" style={{marginTop:20}}>
-
-                    <SingleDoubleTable
-                        topHeight = {64}
-                        commonHeight = {90}
-                        commonWidth={136}
-                        leftOneWidth ={56}
-                        leftTwoWidth = {136}
-                        ItemClassHourCount={ClassTotal.ItemClassHourCount}
-                        ItemClassHour={ClassTotal.ItemClassHour}
-                        ItemWeek = {PeriodWeekTerm.ItemWeek}
-                        NowWeekNo={ClassTotal.WeekNO}
-                        schedule={ClassTotal.Schedule}
-                        NowDate={PeriodWeekTerm.NowDate}
-                        OptionalClassShow={this.OptionalClassShow.bind(this)}
-                        ScheduleDetailShow={this.ScheduleDetailShow.bind(this)}>
-
-                    </SingleDoubleTable>
-
-                </div>
 
             </Loading>
 

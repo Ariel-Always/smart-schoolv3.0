@@ -8,7 +8,7 @@ import TermPick from  '../../component/TermPick';
 
 import LeftMenu from '../../component/LeftMenu';
 
-import { Loading } from "../../../../common";
+import { Loading,Empty } from "../../../../common";
 
 import ComPageRefresh from '../../actions/ComPageRefresh';
 
@@ -189,79 +189,93 @@ class ClassStudent extends Component{
 
                 <Loading tip="请稍后..." spinning={ClassStudent.ScheduleLoadingShow}>
 
-                    <LeftMenu
-                        title="学生列表"
-                        type="person"
-                        pickList={ClassStudent.StudentList}
-                        searchTitleShow={true}
-                        searchTitle={ClassStudent.searchTitle}
-                        pickClick={this.menuPickClick.bind(this)}
-                        searchClick={this.searchClick.bind(this)}
-                        cancelSearch={this.cancelSearch.bind(this)}
-                        searchShow={ClassStudent.searchWrapperShow}
-                        searchResult={ClassStudent.searchResult}
-                        leftMenuSearchLoading={ClassStudent.searchLoadingShow}
-                        PickID={ClassStudent.PickStudentID}
-                        CancelBtnShow={ClassStudent.CancelBtnShow}
-                        SearchValue={ClassStudent.SearchValue}
-                        SearchValueChange={this.LeftMenuSearchValueChange.bind(this)}
-                        placeHolder={"请输入学生姓名或学号搜索"}
-                    >
+                    {
 
-                    </LeftMenu>
+                        ClassStudent.EmptyClassShow?
 
-                    <div className="pick-teacher-wrapper">
+                            <Empty className="empty-class" type="4" title="您在该学段下没有行政班"></Empty>
 
-                        {
+                            :
 
-                            ClassStudent.PickStudentID!==''?
+                            <React.Fragment>
 
-                                <React.Fragment>
+                                <LeftMenu
+                                    title="学生列表"
+                                    type="person"
+                                    pickList={ClassStudent.StudentList}
+                                    searchTitleShow={true}
+                                    searchTitle={ClassStudent.searchTitle}
+                                    pickClick={this.menuPickClick.bind(this)}
+                                    searchClick={this.searchClick.bind(this)}
+                                    cancelSearch={this.cancelSearch.bind(this)}
+                                    searchShow={ClassStudent.searchWrapperShow}
+                                    searchResult={ClassStudent.searchResult}
+                                    leftMenuSearchLoading={ClassStudent.searchLoadingShow}
+                                    PickID={ClassStudent.PickStudentID}
+                                    CancelBtnShow={ClassStudent.CancelBtnShow}
+                                    SearchValue={ClassStudent.SearchValue}
+                                    SearchValueChange={this.LeftMenuSearchValueChange.bind(this)}
+                                    placeHolder={"请输入学生姓名或学号搜索"}
+                                >
 
-                                    <span className="teacher-name">{ClassStudent.PickStudentName}</span>
+                                </LeftMenu>
 
-                                    <span className="course-count"> (本周共<span className="count">{ClassStudent.ScheduleCount}</span>节课)</span>
+                                <div className="pick-teacher-wrapper">
 
-                                </React.Fragment>
+                                    {
 
-                                :<div className="please-select-teacher">请选择学生</div>
+                                        ClassStudent.PickStudentID!==''?
 
-                        }
+                                            <React.Fragment>
 
-                    </div>
+                                                <span className="teacher-name">{ClassStudent.PickStudentName}</span>
 
-                    <TermPick
+                                                <span className="course-count"> (本周共<span className="count">{ClassStudent.ScheduleCount}</span>节课)</span>
 
-                        ItemWeek={ItemWeek}
+                                            </React.Fragment>
 
-                        ItemTermName={PeriodWeekTerm.ItemTerm?PeriodWeekTerm.ItemTerm.TermName:''}
+                                            :<div className="please-select-teacher">请选择学生</div>
 
-                        NowWeekNo={ClassStudent.WeekNO}
+                                    }
 
-                        weekPickEvent = {this.weekPickEvent.bind(this)}
+                                </div>
 
-                        weekNextEvent = {this.weekNextEvent.bind(this)}
+                                <TermPick
 
-                        weekPrevEvent = {this.weekPrevEvent.bind(this)}>
+                                    ItemWeek={ItemWeek}
 
-                    </TermPick>
+                                    ItemTermName={PeriodWeekTerm.ItemTerm?PeriodWeekTerm.ItemTerm.TermName:''}
 
-                    <SingleDoubleTable
-                        topHeight = {64}
-                        commonHeight = {90}
-                        commonWidth={106}
-                        leftOneWidth ={32}
-                        leftTwoWidth = {110}
-                        ItemClassHourCount={ClassStudent.ItemClassHourCount}
-                        ItemClassHour={ClassStudent.ItemClassHour}
-                        ItemWeek = {PeriodWeekTerm.ItemWeek}
-                        NowWeekNo={ClassStudent.WeekNO}
-                        schedule={ClassStudent.Schedule}
-                        NowDate={PeriodWeekTerm.NowDate}
-                        ScheduleDetailShow={this.ScheduleDetailShow.bind(this)}
-                    >
+                                    NowWeekNo={ClassStudent.WeekNO}
 
-                    </SingleDoubleTable>
+                                    weekPickEvent = {this.weekPickEvent.bind(this)}
+
+                                    weekNextEvent = {this.weekNextEvent.bind(this)}
+
+                                    weekPrevEvent = {this.weekPrevEvent.bind(this)}>
+
+                                </TermPick>
+
+                                <SingleDoubleTable
+                                    topHeight = {64}
+                                    commonHeight = {90}
+                                    commonWidth={106}
+                                    leftOneWidth ={32}
+                                    leftTwoWidth = {110}
+                                    ItemClassHourCount={ClassStudent.ItemClassHourCount}
+                                    ItemClassHour={ClassStudent.ItemClassHour}
+                                    ItemWeek = {PeriodWeekTerm.ItemWeek}
+                                    NowWeekNo={ClassStudent.WeekNO}
+                                    schedule={ClassStudent.Schedule}
+                                    NowDate={PeriodWeekTerm.NowDate}
+                                    ScheduleDetailShow={this.ScheduleDetailShow.bind(this)}
+                                >
+
+                                </SingleDoubleTable>
+
+                            </React.Fragment>
+
+                    }
 
                 </Loading>
 

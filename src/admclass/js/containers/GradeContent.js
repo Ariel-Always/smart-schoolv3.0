@@ -374,7 +374,7 @@ class GradeContent extends Component{
 
                                 <Loading spinning={AllGradePreview.ClassLoading}>
 
-                                <PartData type="class"
+                                <PartData type="class" className="school-grade-class"
                                           PartDataList={AllGradePreview.ClassInfo.List}
                                           ClassClick={this.ClassClick.bind(this)}
                                           ResetClassName={this.ResetClassName.bind(this)}
