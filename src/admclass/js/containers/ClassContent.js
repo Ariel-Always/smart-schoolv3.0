@@ -41,6 +41,9 @@ class ClassContent extends Component{
 
     }
 
+
+
+
     //班级搜索
 
     GradeClassSearch(e){
@@ -280,7 +283,7 @@ class ClassContent extends Component{
 
                     <div className="search-wrapper clearfix">
 
-                        <Search className="admclass-search" onCancelSearch={this.GradeClassCancelSearch.bind(this)} onClickSearch={this.GradeClassSearch.bind(this)} placeHolder="请输入班级名称进行搜索..."></Search>
+                        <Search className="admclass-search" CancelBtnShow={TheGradePreview.CancelBtnShow} onCancelSearch={this.GradeClassCancelSearch.bind(this)} onClickSearch={this.GradeClassSearch.bind(this)} placeHolder="请输入班级名称进行搜索..."></Search>
 
                     </div>
 

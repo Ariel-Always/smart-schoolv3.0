@@ -238,8 +238,8 @@
 }
 
 #preview_area {
-    position: relative;
-    padding-left: 32px;
+    position:relative;
+    padding-left:36px;
 
 }
 
@@ -285,7 +285,7 @@
 }
 #crop_zoomIn {
     position: absolute;
-    left: 16px;
+    left: 24px;
     bottom: 12px;
     background: url('./Cropper/zoomin.png') no-repeat center;
 }
@@ -294,7 +294,7 @@
 }
 #crop_zoomOut {
     position: absolute;
-    left: 52px;
+    left: 60px;
     bottom: 12px;
     background: url('./Cropper/zoomout.png') no-repeat center;
 }

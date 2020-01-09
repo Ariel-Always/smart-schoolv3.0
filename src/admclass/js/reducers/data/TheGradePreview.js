@@ -6,7 +6,9 @@ const TheGradePreview = (state={
 
     ClassLoading:false,
 
-    StaticsShow:true
+    StaticsShow:true,
+
+    CancelBtnShow:'n'
 
 },actions) => {
 
@@ -21,6 +23,8 @@ const TheGradePreview = (state={
                 ClassLoading:false,
 
                 StaticsShow:true,
+
+                CancelBtnShow:'n',
 
                 ...actions.data,
 
@@ -49,6 +53,14 @@ const TheGradePreview = (state={
         case UpDataState.THE_GRADE_CLASS_LIST_UPDATE:
 
             return { ...state,...actions.data };
+
+        case UpDataState.THE_GRADE_CLASS_SEARCH_CANCEL_BTN_SHOW:
+
+            return { ...state,CancelBtnShow:'y' };
+
+        case UpDataState.THE_GRADE_CLASS_SEARCH_CANCEL_BTN_HIDE:
+
+            return { ...state,CancelBtnShow:'n' };
 
         default:
 

@@ -337,7 +337,7 @@ class GradeContent extends Component{
 
                     <div className="search-wrapper clearfix">
 
-                        <Search className="admclass-search" onCancelSearch={this.SchoolCancelClassSearch.bind(this)} onClickSearch={this.SchoolClassSearch.bind(this)} placeHolder="请输入班级名称搜索"></Search>
+                        <Search CancelBtnShow={AllGradePreview.CancelBtnShow} className="admclass-search" onCancelSearch={this.SchoolCancelClassSearch.bind(this)} onClickSearch={this.SchoolClassSearch.bind(this)} placeHolder="请输入班级名称搜索"></Search>
 
                     </div>
 
