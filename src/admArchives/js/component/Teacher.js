@@ -800,7 +800,7 @@ class Teacher extends React.Component {
             dispatch(
               actions.UpUIState.showErrorAlert({
                 type: "btn-error",
-                title: name.join('、')+'带有教学班，不允许删除',
+                title: name.join('、')+'有正在任课的班级，不允许删除',
                 ok: this.onAlertQueryClose.bind(this),
                 cancel: this.onAlertQueryClose.bind(this),
                 close: this.onAlertQueryClose.bind(this)
