@@ -871,7 +871,8 @@ class Student extends React.Component {
             "&PageIndex=" +
             (this.state.pagination - 1) +
             keyword +
-            firstSelect
+            firstSelect +
+            secondSelect
           //  +
           // "&sortFiled=" +
           // sorter.columnKey +

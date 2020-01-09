@@ -2,7 +2,7 @@ import UpDataState from "../../actions/UpDataState";
 import history from "../../containers/history";
 
 const GetCoureClassAllMsg = (
-  state = { Subject: "", Grade: "", isError: false,Subjects:{} },
+  state = { Subject: "", Grade: "", isError: false,Subjects:{} ,newData:{LastLogCount:0,ItemSubject:[],CourseClassCount:'',TeacherCount:'',SubjectCount:''}},
   actions
 ) => {
   switch (actions.type) {
