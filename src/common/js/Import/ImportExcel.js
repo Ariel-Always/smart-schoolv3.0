@@ -204,9 +204,9 @@ class Import extends Component{
 
                         this.setState({
 
-                            BackEndData:ExcelData,
+                            BackEndData:Array.from(ExcelData),
 
-                            BackEndDataCopy:ExcelData
+                            BackEndDataCopy:Array.from(ExcelData)
 
                         },()=>{
 
@@ -315,7 +315,7 @@ class Import extends Component{
 
         this.setState({
 
-            BackEndData:NewData
+            BackEndData:Array.from(NewData)
 
         });
 
@@ -369,7 +369,7 @@ class Import extends Component{
 
        const { BackEndDataCopy } = this.state;
 
-       this.setState({BackEndData:BackEndDataCopy});
+       this.setState({BackEndData:Array.from(BackEndDataCopy)});
 
     }
 

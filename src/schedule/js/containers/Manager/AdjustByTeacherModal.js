@@ -39,6 +39,8 @@ class AdjustByTeacherModal extends Component{
 
         dispatch({type:ABTAction.ADJUST_BY_TEACHER_TAB_CHANGE,data:activeKey});
 
+        dispatch({type:ABTAction.MANAGER_ADJUST_BY_TEACHER_MODAL_INIT});
+
     }
 
 
@@ -79,9 +81,9 @@ class AdjustByTeacherModal extends Component{
                    onCancel={this.CloseModal.bind(this)}
                    onOk={this.ModalOk.bind(this)} >
 
-                <Loading tip="加载中..." type="loading"  spinning={LoadingShow}>
+                <Loading tip="加载中..." type="loading"  spinning={LoadingShow} opacity={false}>
 
-                    <div className="modal-wrapper">
+                    <div className="modal-wrapper" style={{position:'relative',zIndex:3}}>
 
                         <Tabs type="card" onChange={this.tabChange.bind(this)} activeKey={activeKey} tabBarStyle={{width:840}} tabBarGutter={0}>
 

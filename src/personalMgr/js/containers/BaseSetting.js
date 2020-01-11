@@ -8,7 +8,7 @@ import { Input,Tooltip } from "antd";
 
 import { connect } from 'react-redux';
 
-
+import ScrollBars from 'react-custom-scrollbars';
 
 class BaseSetting extends Component{
 
@@ -18,8 +18,13 @@ class BaseSetting extends Component{
 
         const { dispatch } = props;
 
-        dispatch(BaseActions.Init());
+        this.state={
 
+          zIndex:3
+
+        };
+
+        dispatch(BaseActions.Init());
 
     }
 
@@ -286,9 +291,13 @@ class BaseSetting extends Component{
 
             dispatch({type:BaseActions.BASE_SETTING_MANAGER_MODULES_HIDE});
 
+            this.setState({zIndex:3});
+
         }else{
 
             dispatch({type:BaseActions.BASE_SETTING_MANAGER_MODULES_SHOW});
+
+            this.setState({zIndex:1082});
 
         }
 
@@ -302,7 +311,9 @@ class BaseSetting extends Component{
 
         const { dispatch } = this.props;
 
-        dispatch({type:BaseActions.BASE_SETTING_MANAGER_MODULES_HIDE})
+        dispatch({type:BaseActions.BASE_SETTING_MANAGER_MODULES_HIDE});
+
+        this.setState({zIndex:3});
 
     }
     //教师点击身份详情
@@ -311,6 +322,7 @@ class BaseSetting extends Component{
         const { dispatch } = this.props;
 
         dispatch({type:BaseActions.BASE_SETTING_TEACHER_ROAL_DETAILS_STATUS_SHOW,data:key});
+
 
     }
     //教师角色面板关闭
@@ -336,6 +348,8 @@ class BaseSetting extends Component{
 
                 dispatch({type: BaseActions.BASE_SETTING_MANAGER_MODULES_HIDE});
 
+                this.setState({zIndex:3});
+
             }
 
         }
@@ -347,6 +361,8 @@ class BaseSetting extends Component{
                 if (!this.refs[`teacher-roal-detail${i}`].contains(e.target)){
 
                     dispatch({type: BaseActions.BASE_SETTING_TEACHER_ROAL_DETAILS_STATUS_HIDE,data:i});
+
+
 
                 }
 
@@ -648,42 +664,48 @@ class BaseSetting extends Component{
 
                         }
 
-                        <div className="role-wrapper clearfix">
+                        <div className="role-wrapper clearfix" style={{zIndex:this.state.zIndex}}>
 
                             <div className="detial-wrapper"  style={{display:`${ManagerModuleShow?'block':'none'}`}}>
 
 
-                                {
 
-                                    Modules&&Modules.length>0?
+                                    {
 
-                                    Modules.map((item,key) => {
+                                        Modules&&Modules.length>0?
 
-                                        let content =  item.ModuleList.map(i =>i.ModuleName);
+                                            Modules.map((item,key) => {
 
-                                        return <div key={key} className="detail-item-wrapper">
+                                                let content =  item.ModuleList.map(i =>i.ModuleName);
 
-                                            <div className="detail-item-title">{item.ModuleGroupName}</div>
+                                                return <div key={key} className="detail-item-wrapper">
 
-                                            <div className="detail-content-wrapper">
+                                                    <div className="detail-item-title">{item.ModuleGroupName}</div>
 
-                                                {
 
-                                                    content.join(',')
 
-                                                }
+                                                    <div className="detail-content-wrapper">
 
-                                            </div>
 
-                                        </div>
+                                                        {
 
-                                    })
+                                                            content.join(',')
 
-                                    :
+                                                        }
 
-                                    <div className="no-permission">您还没有任何权限！</div>
+                                                    </div>
 
-                                }
+                                                </div>
+
+                                            })
+
+                                            :
+
+                                            <div className="no-permission">您还没有任何权限！</div>
+
+                                    }
+
+
 
                                 <span className="close-btn" onClick={this.roleDetailClose.bind(this)}>×</span>
 
@@ -792,7 +814,11 @@ class BaseSetting extends Component{
 
                                                                             <div className="detail-item-title">{title}</div>
 
+                                                                             <ScrollBars style={{width:RoleDetail[key]?(RoleDetail[key].split('、').length*80+230):230}} autoHeight autoHeightMax={172}>
+
                                                                              <div className="detail-content-wrapper" style={{width:RoleDetail[key]?(RoleDetail[key].split('、').length*80+172):172}} dangerouslySetInnerHTML={{__html:RoleInnerHTML}}></div>
+
+                                                                             </ScrollBars>
 
                                                                             <span className="close-btn" onClick={e=>this.TeacherRoalDetailsClose(e,key)}>×</span>
 

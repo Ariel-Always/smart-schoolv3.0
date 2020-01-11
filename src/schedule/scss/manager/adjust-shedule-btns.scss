@@ -6,6 +6,18 @@
 
   z-index:11;
 
+  span{
+
+    &:hover{
+
+      color:#1ca7fe;
+
+      text-decoration: underline;
+
+    }
+
+  }
+
   &>span{
 
     margin-left: 32px;

@@ -33,7 +33,11 @@ const AdjustByTeacherModal = (state={
 
         replaceTeacherOptions:{
 
+            dropDisabled:true,
+
             dropSelectd:{value:"none",title:"请选择任课教师"},
+
+            dropList:[],
 
             searchList:[],
 
@@ -327,7 +331,15 @@ const AdjustByTeacherModal = (state={
 
                 teacherList:[],
 
-                ClassHourList:[],
+                ClassHourList:[]
+
+            };
+
+        case ABTActions.MANAGER_ADJUST_BY_TEACHER_MODAL_INIT:
+
+            return {
+
+                ...state,
 
                 replaceSchedule:{
 
@@ -347,7 +359,11 @@ const AdjustByTeacherModal = (state={
 
                     replaceTeacherOptions:{
 
+                        dropDisabled:true,
+
                         dropSelectd:{value:"none",title:"请选择任课教师"},
+
+                        dropList:[],
 
                         searchList:[],
 
@@ -866,6 +882,50 @@ const AdjustByTeacherModal = (state={
 
                 }
 
+
+            };
+
+        case ABTActions.MANAGER_REPLACE_SCHEDULE_REPLACE_TEACHER_DROP_ABLED:
+
+            return {
+
+                ...state,
+
+                replaceSchedule:{
+
+                    ...state.replaceSchedule,
+
+                    replaceTeacherOptions:{
+
+                        ...state.replaceSchedule.replaceTeacherOptions,
+
+                        dropDisabled:false
+
+                    }
+
+                }
+
+            };
+
+        case ABTActions.MANAGER_REPLACE_SCHEDULE_REPLACE_TEACHER_DROP_LIST_UPDATE:
+
+            return {
+
+                ...state,
+
+                replaceSchedule:{
+
+                    ...state.replaceSchedule,
+
+                    replaceTeacherOptions:{
+
+                        ...state.replaceSchedule.replaceTeacherOptions,
+
+                        dropList:actions.data
+
+                    }
+
+                }
 
             };
 

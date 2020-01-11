@@ -313,6 +313,8 @@ class App extends Component{
 
         dispatch({type:ABTActions.ADJUST_BY_TEACHER_SHOW});
 
+        dispatch(ABTActions.AdjustByTeacherModalInit());
+
     }
 
     //弹出调整教室弹窗

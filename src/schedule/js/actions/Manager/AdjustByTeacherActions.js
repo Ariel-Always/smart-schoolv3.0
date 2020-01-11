@@ -23,6 +23,8 @@ const ADJUST_BY_TEACHER_LOADING_HIDE = 'ADJUST_BY_TEACHER_LOADING_HIDE';
 
 const ADJUST_BY_TEACHER_CLASS_HOURS_LIST_UPDATE = 'ADJUST_BY_TEACHER_CLASS_HOURS_LIST_UPDATE';
 
+const MANAGER_ADJUST_BY_TEACHER_MODAL_INIT = 'MANAGER_ADJUST_BY_TEACHER_MODAL_INIT';
+
 
 
 const REPLACE_SHCEDULE_ERROR_TIPS_SHOW = 'REPLACE_SHCEDULE_ERROR_TIPS_SHOW';
@@ -67,7 +69,9 @@ const REPLACE_SHCEDULE_TEACHER_SEARCH_LIST_UPDATE = 'REPLACE_SHCEDULE_TEACHER_SE
 
 const REPLACE_SHCEDULE_TEACHER_SEARCH_LOADING_HIDE = 'REPLACE_SHCEDULE_TEACHER_SEARCH_LOADING_HIDE';
 
+const MANAGER_REPLACE_SCHEDULE_REPLACE_TEACHER_DROP_ABLED = 'MANAGER_REPLACE_SCHEDULE_REPLACE_TEACHER_DROP_ABLED';
 
+const MANAGER_REPLACE_SCHEDULE_REPLACE_TEACHER_DROP_LIST_UPDATE = 'MANAGER_REPLACE_SCHEDULE_REPLACE_TEACHER_DROP_LIST_UPDATE';
 
 
 
@@ -202,7 +206,7 @@ const STOP_SCHEDULE_CLASSHOUR_LOADING_HIDE = 'STOP_SCHEDULE_CLASSHOUR_LOADING_HI
 
 
 //找人代课初始化
-const replaceScheduleInit = () => {
+const AdjustByTeacherModalInit = () => {
 
     return ( dispatch,getState ) => {
 
@@ -272,6 +276,8 @@ const replaceScheduleInit = () => {
 
         });
 
+        dispatch({type:MANAGER_ADJUST_BY_TEACHER_MODAL_INIT});
+
     };
 
 };
@@ -283,7 +289,13 @@ const teacherDropChange = (info) => {
 
     return ( dispatch,getState ) => {
 
+        const { teacherList } = getState().Manager.AdjustByTeacherModal;
+
+        const dropID = info.id;
+
         dispatch({type:REPLACE_SHCEDULE_TEACHER_DROP_CHANGE,data:{value:info.id,title:info.value}});
+
+        dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_DROP_CHANGE,data:{value:"none",title:"请选择教师"}});
 
         ApiActions.GetSubjectAndClassInfoByTeacherID({TeacherID:info.id,dispatch}).then(data=>{
 
@@ -321,6 +333,39 @@ const teacherDropChange = (info) => {
 
                 }).filter(i => i!==undefined);
 
+                const TeacherList = teacherList.filter(item=>item.id===list[0].value)[0].list;
+
+                const ReplaceTeacherList = TeacherList.map(item=>{
+
+                    if (item.id!==dropID){
+
+                        return {
+
+                            value:item.id,
+
+                            title:<span className="target-teacher" title={`${item.name}[${item.id}]`}>{item.name}<span className="target-teacher-id">[{item.id}]</span></span>
+
+                        }
+
+                    }else{
+
+                        return;
+
+                    }
+
+                }).filter(i=>i!==undefined);
+
+                dispatch({type:MANAGER_REPLACE_SCHEDULE_REPLACE_TEACHER_DROP_ABLED});
+
+                if (ReplaceTeacherList.length>0){
+
+                    dispatch({type:MANAGER_REPLACE_SCHEDULE_REPLACE_TEACHER_DROP_LIST_UPDATE,data:ReplaceTeacherList});
+
+                }else{
+
+                    dispatch({type:MANAGER_REPLACE_SCHEDULE_REPLACE_TEACHER_DROP_LIST_UPDATE,data:[{value:"none",title:"该学科下暂无教师"}]});
+
+                }
 
                 dispatch({type:REPLACE_SHCEDULE_CLASS_LIST_UPDATE,data:{classList,ClassTotalList:data.ItemClass}});
 
@@ -359,6 +404,49 @@ const teacherDropChange = (info) => {
                         name:subjectObj.name
 
                     }});
+
+                if (data.ItemSubject.length===1){
+
+                    const TeacherList = teacherList.filter(item=>item.id===subject.SubjectID)[0].list;
+
+                    const ReplaceTeacherList = TeacherList.map(item=>{
+
+                        if (item.id!==dropID){
+
+                            return {
+
+                                value:item.id,
+
+                                title:<span className="target-teacher" title={`${item.name}[${item.id}]`}>{item.name}<span className="target-teacher-id">[{item.id}]</span></span>
+
+                            }
+
+                        }else{
+
+                            return;
+
+                        }
+
+                    }).filter(i=>i!==undefined);
+
+                    if (ReplaceTeacherList.length>0){
+
+                        dispatch({type:MANAGER_REPLACE_SCHEDULE_REPLACE_TEACHER_DROP_LIST_UPDATE,data:ReplaceTeacherList});
+
+
+                    }else{
+
+                        dispatch({type:MANAGER_REPLACE_SCHEDULE_REPLACE_TEACHER_DROP_LIST_UPDATE,data:[{value:"none",title:"该学科下暂无教师"}]});
+
+                    }
+
+                    dispatch({type:MANAGER_REPLACE_SCHEDULE_REPLACE_TEACHER_DROP_ABLED});
+
+                }else{
+
+                    dispatch({type:MANAGER_REPLACE_SCHEDULE_REPLACE_TEACHER_DROP_LIST_UPDATE,data:[{vale:"none",title:"该学科下暂无教师"}]});
+
+                }
 
             }
 
@@ -441,7 +529,7 @@ const replaceTeacherDropChange = (info) => {
 
     return ( dispatch,getState ) => {
 
-        dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_DROP_CHANGE,data:{value:info.id,title:info.value}});
+        dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_DROP_CHANGE,data:info});
 
     }
 
@@ -519,7 +607,11 @@ const TSChange = (e) => {
 
         const SubjectID = e.value;
 
+        const { teacherList } = getState().Manager.AdjustByTeacherModal;
+
         const { ClassTotalList } = getState().Manager.AdjustByTeacherModal.replaceSchedule;
+
+        const dropTeacherID = getState().Manager.AdjustByTeacherModal.replaceSchedule.teacherOptions.dropSelectd.value;
 
         let ClassList = ClassTotalList.filter(item=>item.SubjectID===SubjectID);
 
@@ -534,6 +626,42 @@ const TSChange = (e) => {
             }
 
         });
+
+        const TeacherList = teacherList.filter(item=>item.id===SubjectID)[0].list;
+
+        const ReplaceTeacherList = TeacherList.map(item=>{
+
+
+            if (item.id!==dropTeacherID){
+
+                return {
+
+                    value:item.id,
+
+                    title:<span className="target-teacher" title={`${item.name}[${item.id}]`}>{item.name}<span className="target-teacher-id">[{item.id}]</span></span>
+
+                }
+
+            }else{
+
+                return;
+
+            }
+
+
+        }).filter(i=>i!==undefined);
+
+        if (ReplaceTeacherList.length>0){
+
+            dispatch({type:MANAGER_REPLACE_SCHEDULE_REPLACE_TEACHER_DROP_LIST_UPDATE,data:ReplaceTeacherList});
+
+        }else{
+
+            dispatch({type:MANAGER_REPLACE_SCHEDULE_REPLACE_TEACHER_DROP_LIST_UPDATE,data:[{value:"none",title:"该学科下暂无教师"}]});
+
+        }
+
+        dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_DROP_CHANGE,data:{value:"none",title:"请选择教师"}});
 
         dispatch({type:REPLACE_SHCEDULE_CLASS_LIST_UPDATE,data:{classList}});
 
@@ -3481,7 +3609,7 @@ const ModalCommit = () => {
 
 
           //所有的都已经OK了可以向后台发送请求了
-          if (originTeacherOk&replaceTeacherOk&classOk&dayLineOk){
+          if (originTeacherOk&&replaceTeacherOk&&classOk&&dayLineOk){
 
               let Type,Item = '';
 
@@ -3584,7 +3712,7 @@ const ModalCommit = () => {
 
                       dispatch(AppAlertActions.alertSuccess({title:"找人代课成功！"}));
 
-                      ComPageRefresh.ComPageUpdate(dispatch);
+                      dispatch(ComPageRefresh.ComPageScheduleBetterUpdate());
 
                   }
 
@@ -3701,7 +3829,7 @@ const ModalCommit = () => {
 
                      dispatch(AppAlertActions.alertSuccess({title:"与人换课成功！"}));
 
-                     ComPageRefresh.ComPageUpdate(dispatch);
+                     dispatch(ComPageRefresh.ComPageScheduleBetterUpdate());
 
                  }
 
@@ -4096,6 +4224,10 @@ export default {
 
     REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_LOADING_HIDE,
 
+    MANAGER_REPLACE_SCHEDULE_REPLACE_TEACHER_DROP_ABLED,
+
+    MANAGER_REPLACE_SCHEDULE_REPLACE_TEACHER_DROP_LIST_UPDATE,
+
     REPLACE_SHCEDULE_TEACHER_SEARCH_CLOSE,
 
     REPLACE_SHCEDULE_REPLACE_TEACHER_SEARCH_CLOSE,
@@ -4232,7 +4364,9 @@ export default {
 
     STOP_SCHEDULE_ERROR_TIPS_HIDE,
 
-    replaceScheduleInit,
+    MANAGER_ADJUST_BY_TEACHER_MODAL_INIT,
+
+    AdjustByTeacherModalInit,
 
     teacherDropChange,
 
