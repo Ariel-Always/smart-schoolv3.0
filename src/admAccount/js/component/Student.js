@@ -262,6 +262,8 @@ class Student extends React.Component {
       this.setState({
         DropMenuShow: true,
         firstSelect: e,
+        secondSelect: { value: 0, title: "全部班级" },
+
         searchValue: "",
         checkedList: [],
         checkAll: false,

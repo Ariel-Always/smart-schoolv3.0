@@ -471,7 +471,7 @@ class All extends React.Component {
         title: {},
         xAxis: {
           type: "category",
-          data: userData.SubjectNames,
+          data: this.XData(userData.SubjectNames),
           name: "学科",
           nameTextStyle: {
             color: "#999",
@@ -483,6 +483,8 @@ class All extends React.Component {
           axisLabel: {
             // interval: 0,
             rotate: this.Xrotate(userData.SubjectNames),
+            width:30,
+            rich:{},
             textStyle: {
               color: "#999",
               // bold:false
@@ -605,6 +607,22 @@ class All extends React.Component {
       return 25;
     }
   };
+  // X处理名称样式
+  XData = (data) => {
+    if(!(data instanceof Array)){
+      return data
+    }
+    return data.map(child=>{
+      let dots = ''
+      if(child.length>=9){
+        dots = '...'
+      }
+      let value = child.split('').splice(0,8).join('')+dots;
+      let textStyle = {
+      }
+      return {value,textStyle}
+    })
+  }
   // 柱状图 柱宽
   BarWidth = data => {
     if (!(data instanceof Array)) {
