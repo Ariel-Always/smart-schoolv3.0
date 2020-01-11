@@ -14,7 +14,7 @@ class AdjustBtnsWrapper extends Component{
 
             adjustByTeacherShow,Import,ScheduleSettingShow,adjustByClassRoomShow,
 
-            Intellenct
+            Intellenct,IntellenctUrl
 
         } = this.props;
 
@@ -24,19 +24,33 @@ class AdjustBtnsWrapper extends Component{
 
                 <span className="schedule-setting" onClick={()=>ScheduleSettingShow()}>课程表设置</span>
 
-                <span className="enter-schedule">
+                {
 
-                    <span>录入课程安排</span>
+                    IntellenctUrl?
 
-                    <div className="import-list-wrapper" id="import-list-wrapper" >
+                        <span className="enter-schedule">
 
-                        <div className="import-schedule" onClick={()=>Import()}><span>导入课表</span></div>
+                            <span>录入课程安排</span>
 
-                        <div className="intellenct-schedule" onClick={()=>Intellenct()}><span>智能排课</span></div>
+                            <div className="import-list-wrapper" id="import-list-wrapper" >
 
-                    </div>
+                                <div className="import-schedule" onClick={()=>Import()}><span>导入课表</span></div>
 
-                </span>
+                                <div className="intellenct-schedule" onClick={()=>Intellenct()}><span>智能排课</span></div>
+
+                            </div>
+
+                        </span>
+
+                        :
+
+                        <span className="import-schedule single" onClick={()=>Import()}>导入课表</span>
+
+                }
+
+
+
+
 
                 <span className="adjust-schedule" id="adjust-schedule"  >
 
