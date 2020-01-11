@@ -2642,25 +2642,25 @@ class DetailsModal extends React.Component {
                             </span>
                             <span className='col-right' title={(data.jobType?data.jobType:'')+' '+(data.discription?data.discription:'')}>{data.hasTrack ? (<span className='text-overflow'><span className='text' style={{marginRight:10+'px'}}>{data.jobType}</span><span className='text'>{data.discription}</span></span>) : <span className='content-null'>--</span>}</span>
                         </div>
-                        <div className='row' style={{ marginTop: 20 + 'px' }}>
+                        <div className='row' style={{ display: type !== 'admin' ? 'block' : 'none' ,marginTop: 20 + 'px' }}>
                             <span className='col-left'>
                                 {'身份证号码'}
                             </span>
-                            <span className='col-right' title={data.userIDCard}>{data.userIDCard ? data.userIDCard : <span className='content-null'>未填写</span>}</span>
+                            <span className='col-right'  title={data.userIDCard}>{data.userIDCard ? data.userIDCard : <span className='content-null'>未填写</span>}</span>
                         </div>
-                        <div className='row'>
+                        <div className='row' style={{ display: type !== 'admin' ? 'block' : 'none' }}>
                             <span className='col-left'>
                                 {'联系电话'}
                             </span>
                             <span className='col-right' title={data.userPhone}>{data.userPhone ? data.userPhone : <span className='content-null'>未填写</span>}</span>
                         </div>
-                        <div className='row'>
+                        <div className='row' style={{ display: type !== 'admin' ? 'block' : 'none' }}>
                             <span className='col-left'>
                                 {'电子邮箱'}
                             </span>
                             <span className='col-right' title={data.userMail}>{data.userMail ? data.userMail : <span className='content-null'>未填写</span>}</span>
                         </div>
-                        <div className='row row-adress'>
+                        <div className='row row-adress' style={{ display: type !== 'admin' ? 'block' : 'none' }}>
                             <span className='col-left'>
                                 {'家庭住址'}
                             </span>
@@ -2677,6 +2677,30 @@ class DetailsModal extends React.Component {
                                 {'注册IP'}
                             </span>
                             <span className='col-right'  title={data.userRegisterIP}>{data.userRegisterIP ? data.userRegisterIP : <span className='content-null'>未填写</span>}</span>
+                        </div>
+                        <div className='row' style={{marginTop: 20 + 'px',  display: type === 'admin' ? 'block' : 'none' }}>
+                            <span className='col-left' >
+                                {'QQ'}
+                            </span>
+                            <span className='col-right'  title={data.QQ}>{data.QQ ? data.QQ : <span className='content-null'>未填写</span>}</span>
+                        </div>
+                        <div className='row' style={{ display: type === 'admin' ? 'block' : 'none' }}>
+                            <span className='col-left' >
+                                {'微信'}
+                            </span>
+                            <span className='col-right'  title={data.Weixin}>{data.Weixin ? data.Weixin : <span className='content-null'>未填写</span>}</span>
+                        </div>
+                        <div className='row' style={{ display: type === 'admin' ? 'block' : 'none' }}>
+                            <span className='col-left' >
+                                {'微博'}
+                            </span>
+                            <span className='col-right'  title={data.Weibo}>{data.Weibo ? data.Weibo : <span className='content-null'>未填写</span>}</span>
+                        </div>
+                        <div className='row' style={{marginBottom: 20 + 'px', display: type === 'admin' ? 'block' : 'none' }}>
+                            <span className='col-left' >
+                                {'联系电话'}
+                            </span>
+                            <span className='col-right'  title={data.Telephone}>{data.Telephone ? data.Telephone : <span className='content-null'>未填写</span>}</span>
                         </div>
                     </div>
                 </div>
