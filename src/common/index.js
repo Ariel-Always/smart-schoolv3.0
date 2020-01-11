@@ -1213,7 +1213,19 @@ class DropDown extends React.Component {
 
                             mutipleOptions.searchList.map((item, ks) => {
 
-                                return <li key={ks} className={`dropdown_item3_li ${item.id === this.state.range2ListActive ? 'active' : ''}`}
+                                let CanActive = '';
+
+                                if (mutipleOptions.dropSelectd){
+
+                                    CanActive = mutipleOptions.dropSelectd.value === item.id?'active':'';
+
+                                }else{
+
+                                    CanActive = this.state.range2ListActive === item.id ? 'active' : '';
+
+                                }
+
+                                return <li key={ks} className={`dropdown_item3_li ${CanActive}`}
                                 onClick={this.onMultipleRang2DropChange.bind(this, {
                                     name: item.name,
                                     id: item.id,
@@ -1249,8 +1261,24 @@ class DropDown extends React.Component {
                         <ul ref={`dropdown_list_ul3_${k1}`} className={`dropdown_list_ul3 clearfix`} style={{ display: `${this.state.range2ListShow === k1 ? 'block' : 'none'}` }}>
                             {//遍历第二个数组
                                 item1.list.map((item2, k2) => {
+
+                                    let CanActive = '';
+
+                                    if (mutipleOptions.dropSelectd){
+
+                                        CanActive = mutipleOptions.dropSelectd.value === item2.id?'active':'';
+
+                                    }else{
+
+                                        CanActive = this.state.range2ListActive === item2.id ? 'active' : '';
+
+                                    }
+
                                     return <li key={k2}
-                                               className={`dropdown_item3_li ${this.state.range2ListActive === item2.id ? 'active' : ''}`} //判断是否是active
+
+
+
+                                               className={`dropdown_item3_li ${CanActive}`} //判断是否是active
                                                title={TitleShow?(Title?Title:item2.name):''}
                                                onClick={this.onMultipleRang2DropChange.bind(this, {
                                                    name: item2.name,
@@ -1292,6 +1320,7 @@ class DropDown extends React.Component {
                                 onClickSearch={this.onClickSearch.bind(this)}
                                 onCancelSearch={this.onCancelSearch.bind(this)}
                                 CancelBtnShow={mutipleOptions.CancelBtnShow}
+                                Value={mutipleOptions.inputValue}
                             >
 
                             </Search>

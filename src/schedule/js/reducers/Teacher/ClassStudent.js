@@ -39,6 +39,10 @@ const ClassStudent = (state={
 
     ItemClassHour:[],
 
+    EmptyClassShow:false,
+
+    ActiveClasses:[],
+
     ScheduleDetail:{
 
         Show:false,
@@ -152,6 +156,10 @@ const ClassStudent = (state={
                 ItemClassHourCount:[],
 
                 ItemClassHour:[],
+
+                EmptyClassShow:false,
+
+                ActiveClasses:[],
 
                 ScheduleDetail:{
 
@@ -530,6 +538,17 @@ const ClassStudent = (state={
 
             return { ...state,ReplaceSchedule:{...state.ReplaceSchedule,SearchLoadingShow:false}};
 
+        case CSActions.TEACHER_CS_CLASSES_EMPTY_SHOW:
+
+            return { ...state,EmptyClassShow:true };
+
+        case CSActions.TEACHER_CS_CLASSES_EMPTY_HIDE:
+
+            return { ...state,EmptyClassShow:false };
+
+        case CSActions.TEACHER_CS_ACTIVE_CLASSES_CHANGE:
+
+            return { ...state,ActiveClasses:actions.data };
 
         default:
 

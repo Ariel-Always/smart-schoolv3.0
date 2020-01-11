@@ -124,7 +124,7 @@ class AddTeacherModal extends Component{
 
 
 
-                                <ScrollBar style={{width:724,height:360,marginLeft:12}}>
+                                <ScrollBar style={{width:732,height:360,marginLeft:12}}>
 
                                     {
 

@@ -32,6 +32,8 @@ const ClassTotal = (state={
 
     OptionalClassCurrentPage:1,
 
+    ClassEmpty:false,
+
     ScheduleDetail:{
 
         Show:false,
@@ -413,6 +415,13 @@ const ClassTotal = (state={
 
             return { ...state,ReplaceSchedule:{...state.ReplaceSchedule,SearchLoadingShow:false}};
 
+        case CTActions.TEACHER_CT_EMPTY_CLASSES_SHOW:
+
+            return { ...state,ClassEmpty:true };
+
+        case CTActions.TEACHER_CT_EMPTY_CLASSES_HIDE:
+
+            return { ...state,ClassEmpty:false };
 
         default:
 

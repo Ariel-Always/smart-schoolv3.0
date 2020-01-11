@@ -1179,123 +1179,147 @@ const ClassTotalInit = () => {
 
         const { Classes } = getState().Teacher.GangerClass;
 
-        let WeekList = [];
+        const { ItemPeriod,defaultPeriodIndex } = PeriodWeekTerm;
 
-        ItemWeek.map(item=>{
 
-            WeekList.push({
+        const ActivePeriodID = ItemPeriod[defaultPeriodIndex].PeriodID;
 
-                value:item.WeekNO,
+        const ActiveClasses =  Classes.filter(item=>item.PeriodID===ActivePeriodID);
 
-                title:item.WeekNO
+        if (ActiveClasses.length>0){
 
-            });
+           dispatch({type:CTActions.TEACHER_CT_EMPTY_CLASSES_HIDE});
 
-        });
+            let WeekList = [];
 
-        dispatch({type:CTActions.TEACHER_CLASS_TOTAL_WEEK_LIST_UPDATE,data:WeekList});
+            ItemWeek.map(item=>{
 
-        dispatch({type:CTActions.TEACHER_CLASS_TOTAL_WEEK_CHANGE,data:WeekNO});
+                WeekList.push({
 
-        //获取第一个班级的ID和name
-        console.log(Classes);
+                    value:item.WeekNO,
 
-        let {ClassID,ClassName} = Classes[0];
-
-        //判断班级数量
-
-        if (Classes.length>1){
-
-            let list = Classes.map(item=>{ return { value:item.ClassID,title:item.ClassName}});
-
-            dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_DROP_SHOW});
-
-            dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_DROP_CHANGE,data:{value:ClassID,title:ClassName}});
-
-            dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_DROP_LIST_UPDATE,data:list});
-
-        }else{
-
-            dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_DROP_HIDE});
-
-            dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_UPDATE,data:{ClassID,ClassName}});
-
-        }
-
-        //获取该行政班级的课时
-
-        ApiActions.GetClassInfoByGanger({SchoolID,ClassID,dispatch}).then(data=>{
-
-            if (data){
-
-                const { ItemClassHour,ItemClassHourCount } = data;
-
-                dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_CLASSHOUR_UPDATE,data:{ItemClassHour,ItemClassHourCount}});
-
-                ApiActions.GetScheduleOfClassOne({SchoolID,ClassID,WeekNO,dispatch}).then(json=>{
-
-                    if (json){
-
-                        let Schedule = utils.ScheduleRemoveRepeat(json.ItemSchedule.map((item) => {
-
-                            return {
-
-                                ...item,
-
-                                title:item.SubjectName,
-
-                                titleID:item.SubjectID,
-
-                                secondTitle:item.TeacherName,
-
-                                secondTitleID:item.TeacherID,
-
-                                thirdTitle:item.ClassRoomName,
-
-                                thirdTitleID:item.ClassRoomID,
-
-                                WeekDay:item.WeekDay,
-
-                                ClassHourNO:item.ClassHourNO,
-
-                                ScheduleType:item.ScheduleType
-
-                            }
-
-                        }));
-
-                        json.ItemCourseClass.map(item=>{
-
-                            let ShiftClass = {
-
-                                ClassID:item.ClassID,
-
-                                WeekDay:item.WeekDayNO,
-
-                                ClassHourNO:item.ClassHourNO,
-
-                                IsShift:true
-
-                            };
-
-                            Schedule.push(ShiftClass);
-
-                        });
-
-                        dispatch({type:CTActions.TEACHER_CLASS_TOTAL_SCHEDULE_UPDATE,data:Schedule});
-
-                    }
-
-                    dispatch({type:CTActions.TEACHER_CLASS_TOTAL_LOADING_HIDE});
-
-                    dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
+                    title:item.WeekNO
 
                 });
 
+            });
+
+            dispatch({type:CTActions.TEACHER_CLASS_TOTAL_WEEK_LIST_UPDATE,data:WeekList});
+
+            dispatch({type:CTActions.TEACHER_CLASS_TOTAL_WEEK_CHANGE,data:WeekNO});
+
+            //获取第一个班级的ID和name
+
+
+            let {ClassID,ClassName} = ActiveClasses[0];
+
+            //判断班级数量
+
+            if (ActiveClasses.length>1){
+
+                let list = ActiveClasses.map(item=>{ return { value:item.ClassID,title:item.ClassName}});
+
+                dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_DROP_SHOW});
+
+                dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_DROP_CHANGE,data:{value:ClassID,title:ClassName}});
+
+                dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_DROP_LIST_UPDATE,data:list});
+
+            }else{
+
+                dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_DROP_HIDE});
+
+                dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_UPDATE,data:{ClassID,ClassName}});
 
             }
 
-        });
+            //获取该行政班级的课时
+
+            ApiActions.GetClassInfoByGanger({SchoolID,ClassID,dispatch}).then(data=>{
+
+                if (data){
+
+                    const { ItemClassHour,ItemClassHourCount } = data;
+
+                    dispatch({type:CTActions.TEACHER_CLASS_TOTAL_CLASS_CLASSHOUR_UPDATE,data:{ItemClassHour,ItemClassHourCount}});
+
+                    ApiActions.GetScheduleOfClassOne({SchoolID,ClassID,WeekNO,dispatch}).then(json=>{
+
+                        if (json){
+
+                            let Schedule = utils.ScheduleRemoveRepeat(json.ItemSchedule.map((item) => {
+
+                                return {
+
+                                    ...item,
+
+                                    title:item.SubjectName,
+
+                                    titleID:item.SubjectID,
+
+                                    secondTitle:item.TeacherName,
+
+                                    secondTitleID:item.TeacherID,
+
+                                    thirdTitle:item.ClassRoomName,
+
+                                    thirdTitleID:item.ClassRoomID,
+
+                                    WeekDay:item.WeekDay,
+
+                                    ClassHourNO:item.ClassHourNO,
+
+                                    ScheduleType:item.ScheduleType
+
+                                }
+
+                            }));
+
+                            json.ItemCourseClass.map(item=>{
+
+                                let ShiftClass = {
+
+                                    ClassID:item.ClassID,
+
+                                    WeekDay:item.WeekDayNO,
+
+                                    ClassHourNO:item.ClassHourNO,
+
+                                    IsShift:true
+
+                                };
+
+                                Schedule.push(ShiftClass);
+
+                            });
+
+                            dispatch({type:CTActions.TEACHER_CLASS_TOTAL_SCHEDULE_UPDATE,data:Schedule});
+
+                        }
+
+                        dispatch({type:CTActions.TEACHER_CLASS_TOTAL_LOADING_HIDE});
+
+                        dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
+
+                    });
+
+
+                }
+
+            });
+
+
+
+        }else{
+
+            dispatch({type:CTActions.TEACHER_CT_EMPTY_CLASSES_SHOW});
+
+            dispatch({type:CTActions.TEACHER_CLASS_TOTAL_LOADING_HIDE});
+
+            dispatch({type:AppLoadingActions.APP_LOADING_HIDE});
+
+        }
+
 
 
         /*ApiActions.GetClassInfoByGanger({SchoolID,UserID,UserType,UserClass,dispatch}).then(data=>{
@@ -1519,25 +1543,131 @@ const ClassStudentPageInit = () =>{
 
       const { Classes } = getState().Teacher.GangerClass;
 
-      const { ClassID,ClassName } = Classes[0];
+      const { ItemPeriod,defaultPeriodIndex } = PeriodWeekTerm;
 
-      let WeekList = [];
+      const ActivePeriodID = ItemPeriod[defaultPeriodIndex].PeriodID;
 
-      ItemWeek.map(item=>{
+      const ActiveClasses =  Classes.filter(item=>item.PeriodID===ActivePeriodID);
 
-          WeekList.push({
+      console.log(ActiveClasses);
 
-              value:item.WeekNO,
+      if (ActiveClasses.length>0){
 
-              title:item.WeekNO
+          let WeekList = [];
+
+          ItemWeek.map(item=>{
+
+              WeekList.push({
+
+                  value:item.WeekNO,
+
+                  title:item.WeekNO
+
+              });
 
           });
 
-      });
+          const { ClassID,ClassName } = ActiveClasses[0];
 
-      dispatch({type:CSActions.TEACHER_CS_WEEK_LIST_UPDATE,data:WeekList});
+          dispatch({type:CSActions.TEACHER_CS_WEEK_LIST_UPDATE,data:WeekList});
 
-      dispatch({type:CSActions.TEACHER_CS_WEEK_CHANGE,data:WeekNO});
+          dispatch({type:CSActions.TEACHER_CS_WEEK_CHANGE,data:WeekNO});
+
+          dispatch({type:CSActions.TEACHER_CS_ACTIVE_CLASSES_CHANGE,data:ActiveClasses});
+
+          //获取第一个班级的课时信息。
+          ApiActions.GetClassInfoByGanger({SchoolID,ClassID, dispatch}).then(data => {
+
+              if (data) {
+
+                  const {ItemClassHour, ItemClassHourCount} = data;
+
+                  /* dispatch({type:CSActions.TEACHER_CS_CLASS_INFO_UPDATE,data:{ClassName,ClassID}});*/
+
+                  dispatch({type: CSActions.TEACHER_CLASS_TOTAL_STUDENT_CLASSHOUR_UPDATE, data: {ItemClassHour, ItemClassHourCount}});
+
+                  //将所有的班级ID拼接成班级ID串。
+
+                  const ClassList = ActiveClasses.map(item=>item.ClassID);
+
+                  const ClassesStr = ClassList.join(',');
+
+                  //获取行政班的学生信息
+                  ApiActions.GetSudentInfoByClassIDAndKey({ClassID:ClassesStr,Key:'',dispatch}).then(json=>{
+
+                      if (json){
+
+                          //判断是单个的行政班还是多个的行政班
+
+                          if (ActiveClasses.length>1){//多个行政班的情况下
+
+                              const StudentList = ActiveClasses.map(item=>{
+
+                                  let list = json.map(i=>{ return i.ClassID===item.ClassID?{id:i.StudentID,name:i.StudentName}:undefined }).filter(it=>it!==undefined);
+
+                                  // let StuList = list.map(i=>{return {id:i.StudentID,name:i.StudentName}});
+
+                                  return {
+
+                                      id:item.ClassID,
+
+                                      name:item.ClassName,
+
+                                      list
+
+                                  }
+
+                              });
+
+                              dispatch({type:CSActions.TEACHER_CS_STUDENT_LEFT_LIST_UPDATE,data:StudentList});
+
+                          }else{
+
+                              let list = json.map((i) => {
+
+                                  return {
+
+                                      id:i.StudentID,
+
+                                      name:i.StudentName
+
+                                  }
+
+                              });
+
+                              dispatch({type:CSActions.TEACHER_CS_SEARCH_STUDENT_RESULT_UPDATE,data:list});
+
+                              dispatch({type:CSActions.TEACHER_CS_SEARCH_STU_RESULT_SHOW});
+
+                              dispatch({type:CSActions.TEACHER_CS_SEARCH_TITLE_SHOW,data:`${ClassName}学生列表`});
+
+                          }
+
+                      }
+
+                      dispatch({type:CSActions.TEACHER_CS_LOADING_HIDE});
+
+                      dispatch({type:AppLoadingActions.APP_LOADING_HIDE})
+
+                  })
+
+
+              }
+
+          });
+
+      }else{
+
+          dispatch({type:CSActions.TEACHER_CS_CLASSES_EMPTY_SHOW});
+
+          dispatch({type:CSActions.TEACHER_CS_LOADING_HIDE});
+
+          dispatch({type:AppLoadingActions.APP_LOADING_HIDE})
+
+
+      }
+
+
 
       /*ApiActions.GetClassInfoByGanger({SchoolID,ClassID:Classes[0].ClassID, dispatch}).then(data => {
 
@@ -1587,86 +1717,6 @@ const ClassStudentPageInit = () =>{
 
       //新的代码 2019-12-19
 
-      //获取第一个班级的课时信息。
-      ApiActions.GetClassInfoByGanger({SchoolID,ClassID:Classes[0].ClassID, dispatch}).then(data => {
-
-               if (data) {
-
-                   const {ItemClassHour, ItemClassHourCount} = data;
-
-                  /* dispatch({type:CSActions.TEACHER_CS_CLASS_INFO_UPDATE,data:{ClassName,ClassID}});*/
-
-                   dispatch({type: CSActions.TEACHER_CLASS_TOTAL_STUDENT_CLASSHOUR_UPDATE, data: {ItemClassHour, ItemClassHourCount}});
-
-                   //将所有的班级ID拼接成班级ID串。
-
-                   const ClassList = Classes.map(item=>item.ClassID);
-
-                   const ClassesStr = ClassList.join(',');
-
-                   //获取行政班的学生信息
-                   ApiActions.GetSudentInfoByClassIDAndKey({ClassID:ClassesStr,Key:'',dispatch}).then(json=>{
-
-                       if (json){
-
-                           //判断是单个的行政班还是多个的行政班
-
-                           if (Classes.length>1){//多个行政班的情况下
-
-                                const StudentList = Classes.map(item=>{
-
-                                    let list = json.map(i=>{ return i.ClassID===item.ClassID?{id:i.StudentID,name:i.StudentName}:undefined }).filter(it=>it!==undefined);
-
-                                    // let StuList = list.map(i=>{return {id:i.StudentID,name:i.StudentName}});
-
-                                    return {
-
-                                        id:item.ClassID,
-
-                                        name:item.ClassName,
-
-                                        list
-
-                                    }
-
-                                });
-
-                                dispatch({type:CSActions.TEACHER_CS_STUDENT_LEFT_LIST_UPDATE,data:StudentList});
-
-                           }else{
-
-                               let list = json.map((i) => {
-
-                                   return {
-
-                                       id:i.StudentID,
-
-                                       name:i.StudentName
-
-                                   }
-
-                               });
-
-                               dispatch({type:CSActions.TEACHER_CS_SEARCH_STUDENT_RESULT_UPDATE,data:list});
-
-                               dispatch({type:CSActions.TEACHER_CS_SEARCH_STU_RESULT_SHOW});
-
-                               dispatch({type:CSActions.TEACHER_CS_SEARCH_TITLE_SHOW,data:`${ClassName}学生列表`});
-
-                           }
-
-                       }
-
-                       dispatch({type:CSActions.TEACHER_CS_LOADING_HIDE});
-
-                       dispatch({type:AppLoadingActions.APP_LOADING_HIDE})
-
-                   })
-
-
-               }
-
-           });
 
 
   }

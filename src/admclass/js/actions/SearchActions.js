@@ -145,28 +145,36 @@ const SchoolClassSearch = (key) => {
 
     return (dispatch,getState) => {
 
-        let { SchoolID } = getState().DataState.LoginUser;
+        let RegRuslt = utils.SearchReg({key,ErrorTips:"您输入的班级名称格式不正确",type:2,dispatch});
 
-        dispatch({type:UpDataState.ALL_GRADE_CLASS_LOADING_SHOW});
+        if (RegRuslt){
 
-        dispatch({type:UpDataState.ALL_GRADE_CLASS_CONTENT_SHOW});
+            let { SchoolID } = getState().DataState.LoginUser;
 
-        dispatch({type:UpDataState.ALL_GRADE_CLASS_SEARCHKEY_CHANGE,data:key});
+            dispatch({type:UpDataState.ALL_GRADE_CLASS_LOADING_SHOW});
 
-        UpDataState.getClassList({SchoolID:SchoolID,PageIndex:0,PageSize:12,dispatch,Keyword:key}).then(data=>{
+            dispatch({type:UpDataState.ALL_GRADE_CLASS_SEARCH_CANCEL_BTN_SHOW});
 
-            if (data){
+            dispatch({type:UpDataState.ALL_GRADE_CLASS_CONTENT_SHOW});
 
-                dispatch({type:UpDataState.ALL_GRADE_CLASS_LIST_UPDATE,data:data});
+            dispatch({type:UpDataState.ALL_GRADE_CLASS_SEARCHKEY_CHANGE,data:key});
 
-                dispatch({type:PaginationActions.GRADE_PAGINATION_CURRENT_UPDATE,data:1});
+            UpDataState.getClassList({SchoolID:SchoolID,PageIndex:0,PageSize:12,dispatch,Keyword:key}).then(data=>{
 
-                dispatch({type:PaginationActions.GRADE_PAGINATION_TOTAL_UPDATE,data:data.Total});
-            }
+                if (data){
 
-            dispatch({type:UpDataState.ALL_GRADE_CLASS_LOADING_HIDE});
+                    dispatch({type:UpDataState.ALL_GRADE_CLASS_LIST_UPDATE,data:data});
 
-        })
+                    dispatch({type:PaginationActions.GRADE_PAGINATION_CURRENT_UPDATE,data:1});
+
+                    dispatch({type:PaginationActions.GRADE_PAGINATION_TOTAL_UPDATE,data:data.Total});
+                }
+
+                dispatch({type:UpDataState.ALL_GRADE_CLASS_LOADING_HIDE});
+
+            })
+
+        }
 
     }
 
@@ -182,6 +190,8 @@ const SchoolCancelClassSearch = () => {
         let { SchoolID } = getState().DataState.LoginUser;
 
         dispatch({type:UpDataState.ALL_GRADE_CLASS_CONTENT_HIDE});
+
+        dispatch({type:UpDataState.ALL_GRADE_CLASS_SEARCH_CANCEL_BTN_HIDE});
 
         dispatch({type:UpDataState.ALL_GRADE_CLASS_SEARCHKEY_CHANGE,data:''});
 
@@ -209,6 +219,8 @@ const GradeClassSearch = (GradeID,key) => {
             let { SchoolID } = getState().DataState.LoginUser;
 
             dispatch({type:UpDataState.THE_GRADE_CLASS_LOADING_SHOW});
+
+            dispatch({type:UpDataState.THE_GRADE_CLASS_SEARCH_CANCEL_BTN_SHOW});
 
             dispatch({type:UpDataState.THE_GRADE_CLASS_STATICS_HIDE});
 
@@ -249,6 +261,8 @@ const GradeClassCloseSearch = (GradeID) => {
       dispatch({type:UpDataState.THE_GRADE_CLASS_LOADING_SHOW});
 
       dispatch({type:UpDataState.THE_GRADE_CLASS_STATICS_SHOW});
+
+      dispatch({type:UpDataState.THE_GRADE_CLASS_SEARCH_CANCEL_BTN_HIDE});
 
       dispatch({type:UpDataState.THE_GRADE_CLASS_SEARCHKEY_CHANGE,data:''});
 

@@ -12,7 +12,9 @@ const AllGradePreview = (state={
 
     Total:0,
 
-    ClassInfo:""
+    ClassInfo:"",
+
+    CancelBtnShow:'n'
 
 },actions)=>{
 
@@ -33,6 +35,8 @@ const AllGradePreview = (state={
                 Total:0,
 
                 SearchKey:'',
+
+                CancelBtnShow:'n',
 
                 ...actions.data
 
@@ -62,6 +66,14 @@ const AllGradePreview = (state={
         case UpDataState.ALL_GRADE_CLASS_LIST_UPDATE:
 
             return { ...state,ClassInfo:actions.data };
+
+        case UpDataState.ALL_GRADE_CLASS_SEARCH_CANCEL_BTN_SHOW:
+
+            return { ...state,CancelBtnShow:'y' };
+
+        case UpDataState.ALL_GRADE_CLASS_SEARCH_CANCEL_BTN_HIDE:
+
+            return { ...state,CancelBtnShow:'n' };
 
         default:
 

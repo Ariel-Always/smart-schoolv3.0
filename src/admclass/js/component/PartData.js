@@ -6,7 +6,7 @@ class PartData extends Component{
 
     render() {
 
-        const { PartDataList,type,GradeClick,ClassClick,ResetClassName,delClass,SearchResultShow } = this.props;
+        const { className,PartDataList,type,GradeClick,ClassClick,ResetClassName,delClass,SearchResultShow } = this.props;
 
 
         let DataItem ='';
@@ -143,7 +143,7 @@ class PartData extends Component{
         }
 
         return (
-            <div className="partdata-tab-wrapper clearfix">
+            <div className={`partdata-tab-wrapper ${className} clearfix`}>
 
                 {DataItem}
 

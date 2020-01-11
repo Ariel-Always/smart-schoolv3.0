@@ -8,8 +8,12 @@
 
     th{
 
-      background-color:#d6f7ff;
-      
+      //background-color:#d6f7ff;
+
+      @include background-image(linear-gradient(#e5f0f3, #e5f0f3), linear-gradient(#ffffff, #ffffff));
+
+
+
       .week{
 
         font-size: 16px;
@@ -93,13 +97,19 @@
 
     .noon{
 
-      background-color: #d6f7ff;
+      //background-color: #d6f7ff;
+
+      @include background-image(linear-gradient(#e5f0f3, #e5f0f3), linear-gradient(#ffffff, #ffffff));
+
 
     }
 
     .course-time{
 
-      background-color: #d6f7ff;
+      //background-color: #d6f7ff;
+
+      @include background-image(linear-gradient(#e5f0f3, #e5f0f3), linear-gradient(#ffffff, #ffffff));
+
 
     }
 
@@ -186,7 +196,7 @@
 
         height: 100%;
 
-        @include box-shadow(-3px 0 5px 1px #aaddea);
+        @include box-shadow(-2px 0 10px 1px #aaddea);
 
       }
 
@@ -204,7 +214,7 @@
 
         height: 100%;
 
-        @include box-shadow(3px 0 5px 1px #aaddea);
+        @include box-shadow(2px 0 10px 1px #aaddea);
 
       }
 

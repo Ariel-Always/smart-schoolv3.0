@@ -43,7 +43,7 @@
                 + '</div>'
                 + '<input id="btn_openCut" type="button" data-toggle="modal" data-target="#modal_photoCut" value="" style="display:none" />'
                 + '<div id="modal_photoCut" style="display: none;" >'
-                + '     <div class="modal_dialog" style="width:650px;height:568px;">'
+                + '     <div class="modal_dialog" style="width:538px;height:500px;">'
                 + '         <div class="modal_border"></div>'
                 + '     <div class="modal_content">'
                 + '     <div class="modal_content_header">'

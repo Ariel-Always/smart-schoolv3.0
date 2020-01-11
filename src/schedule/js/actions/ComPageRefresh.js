@@ -117,8 +117,21 @@ const ComPageInit  = (PageInit) => {
 const ComPageUpdate = (dispatch) =>{
 
     let hash = window.location.hash.split('?')[0];
+
+    if (hash.includes('#/teacher/class/total')){
+
+        dispatch(TeacherIndexActions.ClassTotalInit());
+
+    }
+
+    if (hash.includes('#/teacher/class/student')){
+
+        dispatch(TeacherIndexActions.ClassStudentPageInit())
+
+    }
     
     if (hash.includes('#/teacher/class/total') || hash.includes('#/teacher/class/student')){
+
 
         dispatch(TeacherIndexActions.TeacherClassHourChange());
 
@@ -241,6 +254,46 @@ const ComPageScheduleUpdate = () => {
 
 };
 
+const ComPageScheduleBetterUpdate = () =>{
+
+    return dispatch=>{
+
+        const Hash = location.hash;
+
+        if (Hash.includes('manager/subject-teacher/subject')){
+
+            dispatch(ManagerIndexActions.STSPageInit());
+
+        }else if (Hash.includes('manager/subject-teacher/teacher')){
+
+            dispatch(STTActions.STTWeekUpdate())
+
+        }else if (Hash.includes('manager/class/total')){
+
+            dispatch(ManagerIndexActions.ClassTotalInit());
+
+        }else if (Hash.includes('manager/class/single')){
+
+            dispatch(CSActions.WeekUpdate())
+
+        }else if (Hash.includes('manager/room/total')){
+
+            dispatch(ManagerIndexActions.ClassRoomTotalInit());
+
+        }else if (Hash.includes('manager/room/single')){
+
+            dispatch(CRSActions.WeekUpdate())
+
+        }else if (Hash.includes('teacher/mine')){
+
+            dispatch(TPActions.TPSUpdate())
+
+        }
+
+    }
+
+}
+
 
 export default{
 
@@ -248,6 +301,8 @@ export default{
 
     ComPageUpdate,
 
-    ComPageScheduleUpdate
+    ComPageScheduleUpdate,
+
+    ComPageScheduleBetterUpdate
 
 };

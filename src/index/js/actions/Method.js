@@ -7,8 +7,6 @@ const Api = CONFIG.DeskTopProxy;
 //获取数据以及封装数据格式
 const getGetData =  async (url,level,api=Api,mode='cors',arr=false) =>{
 
-    console.log(Api+url);
-
     try {
 
         let fetchAsync = '';
@@ -26,9 +24,7 @@ const getGetData =  async (url,level,api=Api,mode='cors',arr=false) =>{
 
         let json = await fetchAsync.json();
 
-
-
-       return json;
+        return json;
 
     }
     catch (e) {

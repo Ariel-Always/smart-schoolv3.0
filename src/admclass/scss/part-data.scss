@@ -1,7 +1,19 @@
 //tab
 
 .partdata-tab-wrapper{
+
     margin:24px 0;
+
+    &.school-grade-class{
+
+     .emptyBox{
+
+       margin-top:60px;
+
+     }
+
+    }
+
 }
 .partdata-tab-item{
     position: relative;

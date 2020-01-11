@@ -117,7 +117,7 @@ class LeftMenu extends Component{
 
                             }
 
-                            <ScrollBars style={{height:this.state.MaxHeight-100}}>
+                            <ScrollBars style={{height:this.state.MaxHeight-122}}>
 
                                 <div className={`left-menu-search-wrapper ${type}`}>
 

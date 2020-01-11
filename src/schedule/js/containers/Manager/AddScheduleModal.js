@@ -65,9 +65,32 @@ class AddScheduleModal extends Component{
 
         }).filter(i=>i!==undefined);
 
+        dispatch({type: ASMActions.MANAGER_ADD_SCHEDULE_MODAL_CLASS_TEACHER_DROP_CHANGE});
+
         dispatch({type:ASMActions.MANAGER_ADD_SCHEDULE_MODAL_CLASS_TEACHER_LIST_UPDATE,data:{teacherList,classList}});
 
-        dispatch({type: ASMActions.MANAGER_ADD_SCHEDULE_MODAL_CLASS_TEACHER_DROP_CHANGE});
+        if (teacherList.length===0){
+
+               dispatch({type:ASMActions.MANAGER_ADD_SCHEDULE_MODAL_TEACHER_DROP_DISABLED});
+
+               dispatch({type:ASMActions.MANAGER_ADD_SCHEDULE_MODAL_TEACHER_DROP_CHANGE,data:{value:"none",title:"该学科下暂无教师"}});
+
+        }
+
+        //切换学科清除搜索输入的内容
+
+        dispatch({type:ASMActions.ADD_SCHEDULE_MODAL_CLASS_SEARCH_CLOSE});
+
+        $('.select-class .search_cancel_input').hide();
+
+        $('.select-class .search_text_input').val('');
+
+        $('.select-class .dropdown_item1_name.slide .dropdown_item3_li.active').removeClass('.active');
+
+        $('.select-class .dropdown_item1_name.slide').removeClass('slide');
+
+        $('.select-class .dropdown_item1_name').next('.dropdown_list_ul3').hide();
+
 
     }
 
@@ -158,7 +181,7 @@ class AddScheduleModal extends Component{
 
         }
 
-        if (Object.keys(AddScheduleModal.checkedTeacher).length <= 0){
+        if (Object.keys(AddScheduleModal.checkedTeacher).length <= 0||AddScheduleModal.checkedTeacher.value==='none'){
 
             dispatch({type:ASMActions.ADD_SCHEDULE_MODAL_TEACHER_ERROR_SHOW});
 
@@ -194,7 +217,7 @@ class AddScheduleModal extends Component{
 
             (Object.keys(AddScheduleModal.checkedClass).length > 0)&&
 
-            (Object.keys(AddScheduleModal.checkedTeacher).length > 0)&&
+            (Object.keys(AddScheduleModal.checkedTeacher).length > 0&&AddScheduleModal.checkedTeacher.value!=='none')&&
 
             (Object.keys(AddScheduleModal.checkedWeek).length > 0)&&
 
@@ -319,7 +342,7 @@ class AddScheduleModal extends Component{
 
                                         <DropDown
                                             width={150}
-                                            height={108}
+                                            height={200}
                                             onChange={this.subjectChange.bind(this)}
                                             style={{zIndex:10}}
                                             dropSelectd={AddScheduleModal.checkedSubject?AddScheduleModal.checkedSubject:{value:"none",title:"请选择学科"}}
@@ -342,7 +365,11 @@ class AddScheduleModal extends Component{
                                     <Tooltip title="请选择班级" getPopupContainer={trigger =>trigger.parentNode} visible={AddScheduleModal.classErrorShow} placement="right">
 
                                         <DropDown
+
+                                        className="select-class"
+
                                         width={150}
+
                                         type="multiple"
 
                                         disabled={AddScheduleModal.classDisabled}
@@ -351,6 +378,7 @@ class AddScheduleModal extends Component{
 
                                         mutipleOptions={{
                                             range:2,
+                                            dropSelectd:AddScheduleModal.checkedClass?AddScheduleModal.checkedClass:{value:'none'},
                                             dropMultipleList:AddScheduleModal.classList,
                                             dropMultipleChange:this.classChange.bind(this),
                                             dropClickSearch:this.classSearchClick.bind(this),

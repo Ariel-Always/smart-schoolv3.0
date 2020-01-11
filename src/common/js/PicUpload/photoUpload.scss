@@ -238,8 +238,8 @@
 }
 
 #preview_area {
-    position: relative;
-    padding-left: 32px;
+    position:relative;
+    padding-left:36px;
 
 }
 
@@ -285,7 +285,7 @@
 }
 #crop_zoomIn {
     position: absolute;
-    left: 16px;
+    left: 24px;
     bottom: 12px;
     background: url('./Cropper/zoomin.png') no-repeat center;
 }
@@ -294,7 +294,7 @@
 }
 #crop_zoomOut {
     position: absolute;
-    left: 52px;
+    left: 60px;
     bottom: 12px;
     background: url('./Cropper/zoomout.png') no-repeat center;
 }
@@ -353,9 +353,9 @@
 
         position: absolute;
 
-        top:calc(50% - 284px);
+        top:calc(50% - 250px);
 
-        left:calc(50% - 325px);
+        left:calc(50% - 270px);
 
         &.frame_modal_open{
 
@@ -498,7 +498,7 @@
 
         position: relative;
 
-        height: 464px;
+        height:396px;
 
     }
 

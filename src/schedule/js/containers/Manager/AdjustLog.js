@@ -162,7 +162,13 @@ class App extends Component{
 
                 align:"center",
 
-                width:150
+                width:150,
+
+                render:(item)=>{
+
+                    return <div className="log-type">{item}</div>
+
+                }
 
             },
 

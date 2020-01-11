@@ -190,6 +190,18 @@ const AddScheduleModal = (state={
 
             return { ...state,checkedClass:'',checkedTeacher:''};
 
+        case ASMActions.MANAGER_ADD_SCHEDULE_MODAL_TEACHER_DROP_DISABLED:
+
+            return { ...state,teacherDisabled:true };
+
+        case ASMActions.MANAGER_ADD_SCHEDULE_MODAL_TEACHER_DROP_ABLED:
+
+            return { ...state,teacherDisabled:false };
+
+        case ASMActions.MANAGER_ADD_SCHEDULE_MODAL_TEACHER_DROP_CHANGE:
+
+            return { ...state,checkedTeacher:actions.data };
+
         case ASMActions.MANAGER_ADD_SCHEDULE_MODAL_CLASS_TEACHER_LIST_UPDATE:
 
             return { ...state,...actions.data };
