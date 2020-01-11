@@ -286,6 +286,7 @@ class ChangeSubject extends React.Component {
                 <Input
                   type="text"
                   width={200}
+                  maxLength={8}
                   onChange={this.onSubjectInputChange.bind(this)}
                   onBlur={this.onSubjectInputBlur.bind(this)}
                   value={this.state.SubjectInput}
