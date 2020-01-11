@@ -728,6 +728,8 @@ class App extends Component{
 
                                             Intellenct={this.PathToIntellenct.bind(this)}
 
+                                            IntellenctUrl={Manager.Intellenct.Url}
+
                                         >
 
                                         </AdjustBtnsWrapper>

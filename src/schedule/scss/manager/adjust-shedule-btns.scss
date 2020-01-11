@@ -226,4 +226,14 @@
 
   }
 
+  .import-schedule{
+
+    &.single{
+
+      background-image:url("#{$image-url}/import-schedule.png");
+
+    }
+
+  }
+
 }
