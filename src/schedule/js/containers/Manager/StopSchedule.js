@@ -14,6 +14,8 @@ import moment from 'moment';
 
 import 'moment/locale/zh-cn';
 
+import utils from "../../actions/utils";
+
 moment.locale('zh-cn');
 
 
@@ -44,6 +46,14 @@ class StopSchedule extends Component{
         const { dispatch } = this.props;
 
         dispatch(ABTActions.stopScheduleTeacherSearchClose());
+
+    }
+
+    dateDisabled(current){
+
+        const { dispatch } = this.props;
+
+        return dispatch(utils.DateDisabled(current));
 
     }
 
@@ -131,7 +141,7 @@ class StopSchedule extends Component{
 
                     <ConfigProvider locale={zhCN}>
 
-                        <DatePicker value={date?moment(date,'YYYY-MM-DD'):null} onChange={this.datePick.bind(this)}></DatePicker>
+                        <DatePicker disabledDate={this.dateDisabled.bind(this)} value={date?moment(date,'YYYY-MM-DD'):null} onChange={this.datePick.bind(this)}></DatePicker>
 
                     </ConfigProvider>
 
@@ -218,7 +228,15 @@ class StopSchedule extends Component{
 
                             </div>
 
-                            :''
+                            :<div style={{color:'#999999'}}>
+
+                                {
+
+                                    (teacherDrop.value!=='none')&&(date!=='')?`该教师在${date}暂无课程`:'请选择教师'
+
+                                }
+
+                             </div>
                     }
 
                 </Loading>

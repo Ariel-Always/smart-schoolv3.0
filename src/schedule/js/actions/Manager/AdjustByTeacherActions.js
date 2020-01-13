@@ -944,6 +944,17 @@ const dateChecked = (date) => {
 
             dateCheckedList = [];
 
+        }else if (dateCheckedList.includes(date)) {
+
+            let findIndex = dateCheckedList.findIndex(item=>item===date);
+
+            if (findIndex>=0){
+
+                dateCheckedList.splice(findIndex,1);
+
+            }
+
+
         }else{
 
             dateCheckedList.push(date);

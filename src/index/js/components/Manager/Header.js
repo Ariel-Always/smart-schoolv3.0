@@ -107,11 +107,11 @@ class Header extends Component{
 
                             </div>
 
-                            <div className="frame-home-header-menu">
+                            {/*<div className="frame-home-header-menu">*/}
 
-                                <a className="frame-home-tel-menu" title="通讯录"></a>
+                                {/*<a className="frame-home-tel-menu" title="通讯录"></a>*/}
 
-                            </div>
+                            {/*</div>*/}
 
                         </div>
 

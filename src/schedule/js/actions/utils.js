@@ -1,5 +1,7 @@
 import AppAlertActions from './AppAlertActions';
 
+import moment from 'moment';
+
 //移除重复的课表
 const ScheduleRemoveRepeat = (Schedule) =>{
 
@@ -61,10 +63,28 @@ const SearchReg = ({key,type,dispatch,ErrorTips}) => {
 
 };
 
+//限制日期
+
+const DateDisabled = (current) => {
+
+    return (dispatch,getState)=>{
+
+        const { NowDate,ItemWeek } = getState().PeriodWeekTerm;
+
+        let LastDate = ItemWeek[ItemWeek.length-1].EndDate;
+
+        return current>=moment(LastDate)||current<=moment(NowDate);
+
+    }
+
+};
+
 export default {
 
     ScheduleRemoveRepeat,
 
-    SearchReg
+    SearchReg,
+
+    DateDisabled
 
 }

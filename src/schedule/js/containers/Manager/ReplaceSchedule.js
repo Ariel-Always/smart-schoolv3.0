@@ -14,6 +14,8 @@ import moment from 'moment';
 
 import 'moment/locale/zh-cn';
 
+import utils from "../../actions/utils";
+
 moment.locale('zh-cn');
 
 class ReplaceSchedule extends Component{
@@ -134,23 +136,38 @@ class ReplaceSchedule extends Component{
     //dateRanger改变date日历的显示方式
     dateRander(current,today){
 
-        const { replaceSchedule } = this.props;
+        const { replaceSchedule,NowDate,ItemWeek } = this.props;
 
         const { dateCheckedList } = replaceSchedule;
 
         let currentDate = moment(current).format('L').replace(/\//g,'-');
 
+        let LastDate = ItemWeek[ItemWeek.length-1].EndDate;
+
         if (dateCheckedList.includes(currentDate)){
 
             return <div className="ant-calendar-date" style={{background:'#1890ff',color:"#ffffff"}}>{current.date()}</div>
 
+        }else if (current<=moment(LastDate)&&current>=moment(NowDate)) {
+
+            return <div className="ant-calendar-date" style={{color:'rgba(0, 0, 0, 0.65)',background:'transparent'}}>{current.date()}</div>
+
         }else{
 
-            return <div className="ant-calendar-date">{current.date()}</div>
+            return <div className="ant-calendar-date" >{current.date()}</div>
 
         }
 
     }
+
+    dateDisabled(current){
+
+        const { dispatch } = this.props;
+
+        return  dispatch(utils.DateDisabled(current));
+
+    }
+
     //课时列表的点击选择
     classHourDateChecked(date,dateString){
 
@@ -470,7 +487,6 @@ class ReplaceSchedule extends Component{
 
                                 <Loading spinning={monthsLoading}>
 
-
                                     {
 
                                         monthsList.map((item,key) => {
@@ -582,7 +598,7 @@ class ReplaceSchedule extends Component{
 
                                         <Tooltip visible={dateTips} title={dateTipsTitle} getPopupContainer={triggerNode => triggerNode.parentNode} placement="right">
 
-                                            <DatePicker showToday={false} dateRender={this.dateRander.bind(this)} onChange={this.dateChecked.bind(this)} style={{width:626}}></DatePicker>
+                                            <DatePicker showToday={false} dateRender={this.dateRander.bind(this)} disabledDate={this.dateDisabled.bind(this)} onChange={this.dateChecked.bind(this)} style={{width:626}}></DatePicker>
 
                                         </Tooltip>
 
@@ -613,7 +629,7 @@ class ReplaceSchedule extends Component{
 
                                     <Tooltip visible={classHourDateTips} title={classHourDateTipsTitle} getPopupContainer={triggerNode => triggerNode.parentNode} placement="right">
 
-                                    <DatePicker showToday={false} value={classHourDate?moment(classHourDate,'YYYY-MM-DD'):null} onChange={this.classHourDateChecked.bind(this)}></DatePicker>
+                                    <DatePicker disabledDate={this.dateDisabled.bind(this)} showToday={false} value={classHourDate?moment(classHourDate,'YYYY-MM-DD'):null} onChange={this.classHourDateChecked.bind(this)}></DatePicker>
 
                                     </Tooltip>
 
@@ -726,11 +742,17 @@ const mapStateToProps = (state) => {
 
     const { replaceSchedule,teacherList } = state.Manager.AdjustByTeacherModal;
 
+    const { NowDate,ItemWeek } = state.PeriodWeekTerm;
+
     return{
 
         replaceSchedule,
 
-        teacherList
+        teacherList,
+
+        NowDate,
+
+        ItemWeek
 
     }
 
