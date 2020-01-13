@@ -208,7 +208,8 @@ class SubsystemAccessSetting extends Component {
 
                     dispatch(AppAlertAction.closeAlert(dispatch));
                     dispatch(AppAlertAction.alertSuccess({ title: "开启成功" }))
-                    dispatch(DataChange.getCurrentSbusystemInfo({}));
+                    dispatch(DataChange.getCurrentSbusystemInfo({ "IsOpened": this.state.AccessDropValue, "UserType": this.state.UserDropValue }));
+
                     // console.log("success")
                 }
                 else {
@@ -231,7 +232,7 @@ class SubsystemAccessSetting extends Component {
 
                     dispatch(AppAlertAction.closeAlert(dispatch));
                     dispatch(AppAlertAction.alertSuccess({ title: "关闭成功" }))
-                    dispatch(DataChange.getCurrentSbusystemInfo({}));
+                    dispatch(DataChange.getCurrentSbusystemInfo({ "IsOpened": this.state.AccessDropValue, "UserType": this.state.UserDropValue }));
                     // console.log("success")
                 } else {
                     dispatch({
@@ -264,24 +265,25 @@ class SubsystemAccessSetting extends Component {
             }
             renderSubSystem = subsystemInfo.List.map((item, key) => {
                 return (
-                    <div className="subsystem-wall">
-                        <div className="grey-bg"></div>
-                        <div className="subsystem-content">
-                            <div className="pic-bg"> <img src={item.SubSystemImgUrl} alt="图片丢失" title={item.SubSystemName} /></div>
-                            <span className="subsystemName">{item.SubSystemName}</span>
-                            <div className="user-type"> <span title="可访问的用户类别"></span>{item.UserTypeString}</div>
-                            <div className="split-line"></div>
-                            <div className="access-state"> 当前状态:
+                    item.CanBeClose !== false ?
+                        <div className="subsystem-wall">
+                            <div className="grey-bg"></div>
+                            <div className="subsystem-content">
+                                <div className="pic-bg"> <img src={item.SubSystemImgUrl} alt="图片丢失" title={item.SubSystemName} /></div>
+                                <span className="subsystemName">{item.SubSystemName}</span>
+                                <div className="user-type"> <span title="可访问的用户类别"></span>{item.UserTypeString}</div>
+                                <div className="split-line"></div>
+                                <div className="access-state"> 当前状态:
                                 <button className={`btn-state ${item.SubSystemStatus === 1 && item.CanBeClose === true ? 'open' :
-                                    item.SubSystemStatus === 1 && item.CanBeClose === false ? "ban" : ""}`}
-                                    onClick={(e) => this.toggleAccessState(e, item.SubSystemID, item.SubSystemName, item.SubSystemStatus, item.CanBeClose)}
-                                    disabled={!item.CanBeClose === true}
-                                    title={!item.CanBeClose === true ? "该子系统不能被关闭" : ''}
+                                        item.SubSystemStatus === 1 && item.CanBeClose === false ? "ban" : ""}`}
+                                        onClick={(e) => this.toggleAccessState(e, item.SubSystemID, item.SubSystemName, item.SubSystemStatus, item.CanBeClose)}
+                                        // disabled={item.CanBeClose === false}
+                                        title={item.CanBeClose === false ? "该子系统不能被关闭" : ''}
 
-                                ></button>
+                                    ></button>
+                                </div>
                             </div>
-                        </div>
-                    </div>);
+                        </div> : "");
 
             })
 

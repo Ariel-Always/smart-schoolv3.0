@@ -86,6 +86,7 @@ class MainContent extends Component {
                         dispatch(DataChange.getCurrentSemester(SchoolID));
                         //    dispatch(DataChange.getCurrentSchoolInfo(SchoolID));
                         //    dispatch(DataChange.getCurrentSbusystemInfo({}));
+                        dispatch(DataChange.getServerAdd())
 
                     }
                 })
@@ -113,7 +114,8 @@ class MainContent extends Component {
                             if (restlu) {
 
                                 dispatch(DataChange.getCurrentSemester(SchoolID));
-                         
+                                dispatch(DataChange.getServerAdd())
+
 
                             }
                         })
@@ -183,9 +185,9 @@ class MainContent extends Component {
                 showLeftMenu={true}
                 showBarner={false}
                 type={"triangle"}
-                module={{ image: setting, cnname: "系统设置", enname: "System Settings"}}
+                module={{ image: setting, cnname: "系统设置", enname: "System Settings" }}
                 userInfo={{ name: UserName, image: PhotoPath }}
-            
+
             >
                 <div ref="frame-left-menu">
 

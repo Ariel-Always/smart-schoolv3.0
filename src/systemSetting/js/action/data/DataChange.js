@@ -2,6 +2,7 @@
 import ApiActions from '../data/Api';
 import AppAlertAction from '../UI/AppAlertAction'
 import { init } from 'echarts';
+import Api from '../data/Api';
 const GET_CURRENT_SEMESTER_INFO = "GET_CURRENT_SEMESTER_INFO";//获取当前学年学期的信息
 const SEMESTER_LOADING_HIDE = "SEMESTER_LOADING_HIDE";//loading界面的展示或消失
 const REFRESH_SEMESTER_INFO = "REFRESH_SEMESTER_INFO"//刷新学期信息
@@ -11,6 +12,7 @@ const CET_CURRENT_SUBSYSTEM_INFO = "CET_CURRENT_SUBSYSTEM_INFO"//获取子系统
 const REFRESH_SUBSYSTEM_INFO = "REFRESH_SUBSYSTEM_INFO"//刷新当前子系统信息
 const INIT_PERIOD_LIST = "INIT_PERIOD_LIST"//初始化学制选择表
 // const UPDATA_SCHOOL_LOGOURL="UPDATA_SCHOOL_LOGOURL"//更新学校校徽
+const GET_SERVER_ADDRESS="GET_SERVER_ADDRESS"//获取服务器地址
 
 
 
@@ -104,7 +106,24 @@ const getCurrentSemester = (SchoolID) => {
 
     }
 }
-
+//获取服务器地址
+ const getServerAdd=()=>{
+     return dispatch=>{
+         const url ="/Base/GetBaseServerAddr"
+         ApiActions.getMethod(url,1).then(json=>{
+             if(json.StatusCode===200){
+                 let serverAdd=json.Data.ResHttp
+                 dispatch({
+                     type:GET_SERVER_ADDRESS,
+                     data:serverAdd
+                 })
+             }
+             else{
+                  dispatch(AppAlertAction.alertError({ title: `数据加载发生错误：${json.Msg}` }))
+             }
+         })
+     }
+ }
 
 
 
@@ -413,5 +432,7 @@ export default {
     REFRESH_SUBSYSTEM_INFO,
     INIT_PERIOD_LIST,
     // UPDATA_SCHOOL_LOGOURL
+    GET_SERVER_ADDRESS,
+    getServerAdd
 
 }

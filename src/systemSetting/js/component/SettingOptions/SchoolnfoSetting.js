@@ -27,7 +27,7 @@ class SchoolnfoSetting extends Component {
             coreModalVisible: false,
             coreResultImage: null,
             imageUploadModal: false,
-            schoolLogo: default_schoolPic,
+            schoolLogo: "",
             onlineImg: ""
 
 
@@ -463,7 +463,7 @@ class SchoolnfoSetting extends Component {
     imageUpload = () => {
         this.setState({
             imageUploadModal: true,
-            edit_visible: false
+            edit_visible: true
         })
     }
 
@@ -502,15 +502,15 @@ class SchoolnfoSetting extends Component {
 
     //监听使用默认图片按钮
     useDefault = () => {
-        let { dispatch, schoolInfo } = this.props
+        let { dispatch, schoolInfo,serverAddress } = this.props
         this.setState({
-            schoolLogo: default_schoolPic,
+            schoolLogo: `${serverAddress}SysSetting/Attach/default.png `,
             onlineImg: `/SysSetting/Attach/default.png`
         })
 
         schoolInfo = {
             ...schoolInfo,
-            SchoolLogoUrl: default_schoolPic
+            SchoolLogoUrl: `${serverAddress}SysSetting/Attach/default.png `
         }
         dispatch({
             type: DataChange.REFRESH_SCHOOL_INFO,
@@ -532,7 +532,7 @@ class SchoolnfoSetting extends Component {
     }
 
     render() {
-        const { schoolInfo, semesterloading, periodInfo } = this.props;
+        const { schoolInfo, semesterloading, periodInfo,serverAddress } = this.props;
         const { UserID } = JSON.parse(sessionStorage.getItem('UserInfo'))
         // console.log(periodInfo)
         let schoolSys = '';
@@ -629,7 +629,7 @@ class SchoolnfoSetting extends Component {
                                     Visiable={this.state.imageUploadModal}
                                     onClose={this.upLoadCancel}
                                     onSubmit={(blob,filePath)=>this.handleGetResultImgUrl(blob,filePath)}
-                                    UpDataUrl={`http://192.168.129.1:30101/lgftp/SubjectRes_UploadHandler.ashx?method=doUpload_WholeFile&userid=${UserID}`}
+                                    UpDataUrl={`${serverAddress}SubjectRes_UploadHandler.ashx?method=doUpload_WholeFile&userid=${UserID}`}
                                     onCheck={(param)=>this.paramDetect(param)}
                                 ></CropperModal>
 
@@ -736,7 +736,7 @@ class SchoolnfoSetting extends Component {
 const mapStateToProps = (state) => {
     const { DataUpdate } = state;
 
-    const { schoolInfo, semesterloading, periodInfo } = DataUpdate
+    const { schoolInfo, semesterloading, periodInfo,serverAddress } = DataUpdate
     console.log(periodInfo)
 
 
@@ -744,6 +744,7 @@ const mapStateToProps = (state) => {
         schoolInfo,
         semesterloading,
         periodInfo,
+        serverAddress
 
 
     }

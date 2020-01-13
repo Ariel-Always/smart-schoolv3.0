@@ -491,7 +491,7 @@ class YearSemesterSetting extends Component {
                     <i className="btn-blueshadow"></i>
                     <div className="tips-info">
                         <div className="light"></div>
-                        <span>为避免系统的正常运行,请勿随意修改学年学期信息</span>
+                        <span>为避免影响系统的正常运行,请勿随意修改学年学期信息</span>
                     </div>
 
                 </div>

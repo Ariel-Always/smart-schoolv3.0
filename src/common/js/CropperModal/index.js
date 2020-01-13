@@ -82,8 +82,23 @@ export default class ClassCropperModal extends Component {
             // headers:{
             //     "Content-Type": "multipart/form-data"
             // } 
-        }).then(res=>res.json()
+        }).then(res=>res.json(),err=>{return false}
         ).then(json=>{
+            if(!json){
+                let title = "服务器出现未知异常，请重试或联系管理员";
+                ReactDOM.render(
+                  
+                    // eslint-disable-next-line react/react-in-jsx-scope
+                    <ErrorAlert
+                    //   key={"alert" + "400-" + Math.round(Math.random() * 10000)}
+                      show={true}
+                      title={title}
+                    />,
+                    document.getElementById("alert")
+                    
+                    );
+                    return false;
+                }
             if(json.result){
                 this.props.onSubmit(blob,json.filePath);
                 this.props.onClose();

@@ -332,18 +332,19 @@ class FavoritesPage extends Component {
         else if (optionType === "reNameFolder") {
             //当前操作是重命名目录
             let flag = true;
-            // for (let item of folderResInfo.List) {
-            //     if (item.IsFolder === true && item.Name === this.state.modalInput) {
-            //         dispatch(AppAlertAction.alertError({ title: "该目录名称已被占用!" }))
-            //         flag = false
-            //         break;
-            //     }
-            // }
+         
             if (this.state.targetName === this.state.modalInput) {
                 dispatch(AppAlertAction.alertTips({ title: "未进行任何修改", cancelTitle: "确定" }))
                 // this.ModalClose()
                 flag = false
                 return;
+            }
+               for (let item of folderResInfo.List) {
+                if (item.IsFolder === true && item.Name === this.state.modalInput) {
+                    dispatch(AppAlertAction.alertError({ title: "该目录名称已被占用!" }))
+                    flag = false
+                    break;
+                }
             }
             if (this.state.modalInput === "") {
                 dispatch(AppAlertAction.alertTips({ title: "目录名不能为空", cancelTitle: "确定" }))
@@ -389,9 +390,16 @@ class FavoritesPage extends Component {
             let flag = true;
             if (this.state.targetName === this.state.modalInput) {
                 dispatch(AppAlertAction.alertTips({ title: "未进行任何修改", cancelTitle: "确定" }))
-                console.log("没有修改")
+                // console.log("没有修改")
                 flag = false
                 return;
+            }
+            for (let item of folderResInfo.List) {
+                if (item.IsFolder === false && item.Name === this.state.modalInput) {
+                    dispatch(AppAlertAction.alertError({ title: "该资料名称已被占用!" }))
+                    flag = false
+                    break;
+                }
             }
             if (this.state.modalInput === "") {
                 dispatch(AppAlertAction.alertTips({ title: "目录名不能为空", cancelTitle: "确定" }))
