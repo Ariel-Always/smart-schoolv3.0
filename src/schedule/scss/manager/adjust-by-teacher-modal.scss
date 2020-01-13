@@ -198,6 +198,40 @@
 
     padding:30px 0 0 40px;
 
+    .teacher-wrapper{
+
+      position: relative;
+
+      z-index: 5;
+
+    }
+
+    .class-wrapper{
+
+      position: relative;
+
+      z-index:4;
+
+    }
+
+    .replace-teacher-wrapper{
+
+      position: relative;
+
+      z-index: 3;
+
+    }
+
+    .deadline-wrapper{
+
+      position:relative;
+
+      z-index:2;
+
+    }
+
+
+
     &>div{
 
       margin:16px 0;
@@ -416,7 +450,13 @@
 
       .ant-calendar-picker+.ant-spin-nested-loading{
 
-        display: inline-block;
+        display:block;
+
+      }
+
+      .trangle+.ant-spin-nested-loading{
+
+        display:block;
 
       }
 
@@ -535,6 +575,8 @@
       border: 1px solid #d3d3c3;
 
       margin-left: 104px;
+
+      z-index: 1;
 
     }
 

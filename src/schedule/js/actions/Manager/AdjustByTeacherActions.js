@@ -73,6 +73,17 @@ const MANAGER_REPLACE_SCHEDULE_REPLACE_TEACHER_DROP_ABLED = 'MANAGER_REPLACE_SCH
 
 const MANAGER_REPLACE_SCHEDULE_REPLACE_TEACHER_DROP_LIST_UPDATE = 'MANAGER_REPLACE_SCHEDULE_REPLACE_TEACHER_DROP_LIST_UPDATE';
 
+const MANAGER_REPLACE_SCHEDULE_MONTHS_LOADING_HIDE = 'MANAGER_REPLACE_SCHEDULE_MONTHS_LOADING_HIDE';
+
+const MANAGER_REPLACE_SCHEDULE_MONTHS_LOADING_SHOW = 'MANAGER_REPLACE_SCHEDULE_MONTHS_LOADING_SHOW';
+
+const MANAGER_REPLACE_SCHEDULE_WEEKS_LOADING_HIDE = 'MANAGER_REPLACE_SCHEDULE_WEEKS_LOADING_HIDE';
+
+const MANAGER_REPLACE_SCHEDULE_WEEKS_LOADING_SHOW = 'MANAGER_REPLACE_SCHEDULE_WEEKS_LOADING_SHOW';
+
+
+
+
 
 
 const REPLACE_SHCEDULE_REPLACE_TEACHER_DROP_CHANGE = 'REPLACE_SHCEDULE_REPLACE_TEACHER_DROP_CHANGE';
@@ -296,6 +307,10 @@ const teacherDropChange = (info) => {
         dispatch({type:REPLACE_SHCEDULE_TEACHER_DROP_CHANGE,data:{value:info.id,title:info.value}});
 
         dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_DROP_CHANGE,data:{value:"none",title:"请选择教师"}});
+
+        dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:'originTeacher'}});
+
+        dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:'class'}});
 
         ApiActions.GetSubjectAndClassInfoByTeacherID({TeacherID:info.id,dispatch}).then(data=>{
 
@@ -531,6 +546,8 @@ const replaceTeacherDropChange = (info) => {
 
         dispatch({type:REPLACE_SHCEDULE_REPLACE_TEACHER_DROP_CHANGE,data:info});
 
+        dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:'replaceTeacher'}});
+
     }
 
 };
@@ -703,6 +720,8 @@ const classChecked = (id) => {
 
       }
 
+      dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:'class'}});
+
       dispatch({type:REPLACE_SHCEDULE_CLASS_CHECKED,data:classCheckedList});
 
   }
@@ -716,6 +735,16 @@ const radioChange = (id) => {
       dispatch({type:REPLACE_SHCEDULE_RADIO_CHANGE,data:id});
 
         let { SchoolID } = getState().LoginUser;
+
+        dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:'month'}});
+
+        dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:'week'}});
+
+        dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:'date'}});
+
+        dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:'classHourDate'}});
+
+        dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:'classHour'}});
 
         ApiActions.GetAllDateTimeInfo({SchoolID,dispatch}).then(data => {
 
@@ -739,6 +768,8 @@ const radioChange = (id) => {
 
                     dispatch({type: REPLACE_SHCEDULE_MONTHS_LIST_UPDATE, data: list});
 
+                    dispatch({type:MANAGER_REPLACE_SCHEDULE_MONTHS_LOADING_HIDE});
+
                 }
 
                 if (id === 'week') {
@@ -750,6 +781,8 @@ const radioChange = (id) => {
                     list.sort((a,b)=>parseInt(a) - parseInt(b));
 
                     dispatch({type: REPLACE_SHCEDULE_WEEK_LIST_UPDATE, data: list});
+
+                    dispatch({type:MANAGER_REPLACE_SCHEDULE_WEEKS_LOADING_HIDE});
 
                 }
 
@@ -870,6 +903,8 @@ const monthChecked = (id) => {
 
         dispatch({type:REPLACE_SHCEDULE_MONTHS_CHECKED,data:monthsCheckedList});
 
+        dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:'month'}});
+
     }
 
 };
@@ -891,6 +926,8 @@ const weekChecked = (id) => {
         }
 
         dispatch({type:REPLACE_SHCEDULE_MONTHS_CHECKED,data:weeksCheckedList});
+
+        dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:'week'}});
 
     }
 
@@ -914,6 +951,8 @@ const dateChecked = (date) => {
         }
 
         dispatch({type:REPLACE_SHCEDULE_DATE_CHECKED,data:dateCheckedList});
+
+        dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:'date'}});
 
     }
 
@@ -999,6 +1038,8 @@ const classHourDateChecked = (date) => {
 
             });
 
+            dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:'classHourDate'}});
+
         }
 
     }
@@ -1013,9 +1054,9 @@ const classHourChecked = (opts) => {
 
         const { classHourCheckedList,classHourPlainOpts } = getState().Manager.AdjustByTeacherModal.replaceSchedule;
 
-        let checkedList = [];
-
         console.log(opts);
+
+        let checkedList = [];
 
         if (opts.type === 'noon'){
 
@@ -1147,6 +1188,9 @@ const classHourChecked = (opts) => {
         }
 
         dispatch({type:REPLACE_SHCEDULE_CLASSHOUR_CHECKED_LIST_CHANGE,data:checkedList});
+
+        dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:'classHour'}});
+
 
     }
 
@@ -4227,6 +4271,14 @@ export default {
     MANAGER_REPLACE_SCHEDULE_REPLACE_TEACHER_DROP_ABLED,
 
     MANAGER_REPLACE_SCHEDULE_REPLACE_TEACHER_DROP_LIST_UPDATE,
+
+    MANAGER_REPLACE_SCHEDULE_MONTHS_LOADING_HIDE,
+
+    MANAGER_REPLACE_SCHEDULE_MONTHS_LOADING_SHOW,
+
+    MANAGER_REPLACE_SCHEDULE_WEEKS_LOADING_HIDE,
+
+    MANAGER_REPLACE_SCHEDULE_WEEKS_LOADING_SHOW,
 
     REPLACE_SHCEDULE_TEACHER_SEARCH_CLOSE,
 

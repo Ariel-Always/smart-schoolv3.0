@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 
-import { Loading,DropDown,Radio } from "../../../../common";
+import { Loading,DropDown } from "../../../../common";
 
 import { DatePicker,ConfigProvider,Tooltip } from 'antd';
 
@@ -180,14 +180,6 @@ class ReplaceSchedule extends Component{
 
     }
 
-
-
-
-
-
-
-
-
     render() {
 
         const { replaceSchedule,teacherList } = this.props;
@@ -212,9 +204,13 @@ class ReplaceSchedule extends Component{
 
             monthsCheckedList,
 
+            monthsLoading,
+
             weeksList,
 
             weeksCheckedList,
+
+            weeksLoading,
 
             dateCheckedList,
 
@@ -301,26 +297,32 @@ class ReplaceSchedule extends Component{
 
                         <div className="props">老师:</div>
 
-                            <DropDown
-                            width={160}
-                            dropSelectd={teacherOptions.dropSelectd}
-                            type="multiple"
-                            style={{zIndex:21}}
-                            mutipleOptions={{
-                                range:2,
-                                dropMultipleList:teacherList,
-                                dropMultipleChange:this.teacherDropChange.bind(this),
-                                dropClickSearch:this.teacherClickSearch.bind(this),
-                                dropCancelSearch:this.teacherSearchClose.bind(this),
-                                searchList:teacherOptions.searchList,
-                                searchPlaceholder:"请输入姓名或工号进行搜索...",
-                                searchOpen:teacherOptions.searchOpen,
-                                searchLoadingShow:teacherOptions.searchLoadingShow
-                            }}>
+                            <Tooltip placement="right" getPopupContainer={triggerNode =>triggerNode.parentNode} title={originTeacherTipsTitle} visible={originTeacherTips}>
 
-                        </DropDown>
+                                <DropDown
+                                    width={160}
+                                    dropSelectd={teacherOptions.dropSelectd}
+                                    type="multiple"
+                                    style={{zIndex:21}}
+                                    mutipleOptions={{
+                                        range:2,
+                                        dropMultipleList:teacherList,
+                                        dropMultipleChange:this.teacherDropChange.bind(this),
+                                        dropClickSearch:this.teacherClickSearch.bind(this),
+                                        dropCancelSearch:this.teacherSearchClose.bind(this),
+                                        searchList:teacherOptions.searchList,
+                                        searchPlaceholder:"请输入姓名或工号进行搜索...",
+                                        searchOpen:teacherOptions.searchOpen,
+                                        searchLoadingShow:teacherOptions.searchLoadingShow
+                                    }}>
 
-                        <span className="error-tips" style={{display:`${originTeacherTips?'inline-block':'none'}`}}>{originTeacherTipsTitle}</span>
+                                </DropDown>
+
+                            </Tooltip>
+
+
+
+                        {/*<span className="error-tips" style={{display:`${originTeacherTips?'inline-block':'none'}`}}>{originTeacherTipsTitle}</span>*/}
 
                     </div>
 
@@ -350,19 +352,41 @@ class ReplaceSchedule extends Component{
 
                             {
 
-                                classList.length>0?classList.map((item,key) => {
+                                classList.length>0?
 
-                                  return <div key={key} className={`class-item check-item ${classCheckedList.includes(item.id)?'active':''}`} onClick={this.classChecked.bind(this,item.id)}>
+                                    classList.map((item,key) => {
 
-                                          {
+                                        if (key===classList.length-1){
 
-                                              item.name
+                                            return <Tooltip placement="right" autoAdjustOverflow={false} getPopupContainer={triggerNode =>triggerNode.parentNode} title={classTipsTitle} visible={classTips}>
 
-                                          }
+                                                <div key={key} className={`class-item check-item ${classCheckedList.includes(item.id)?'active':''}`} onClick={this.classChecked.bind(this,item.id)}>
 
-                                         </div>
+                                                {
 
-                                })
+                                                    item.name
+
+                                                }
+
+                                            </div>
+
+                                            </Tooltip>
+
+                                        }else{
+
+                                            return <div key={key} className={`class-item check-item ${classCheckedList.includes(item.id)?'active':''}`} onClick={this.classChecked.bind(this,item.id)}>
+
+                                                {
+
+                                                    item.name
+
+                                                }
+
+                                            </div>
+
+                                        }
+
+                                    })
 
                                     :TeacherSubjectTip
 
@@ -370,15 +394,15 @@ class ReplaceSchedule extends Component{
 
                         </div>
 
-                        {
+                        {/*{*/}
 
-                            classList.length>0?
+                            {/*classList.length>0?*/}
 
-                                <span className="error-tips" style={{display:`${classTips?'inline-block':'none'}`}}>{classTipsTitle}</span>
+                                {/*<span className="error-tips" style={{display:`${classTips?'inline-block':'none'}`}}>{classTipsTitle}</span>*/}
 
-                                :''
+                                {/*:''*/}
 
-                        }
+                        {/*}*/}
 
                     </div>
 
@@ -386,31 +410,35 @@ class ReplaceSchedule extends Component{
 
                         <div className="props">代课老师:</div>
 
+                        <Tooltip placement="right" autoAdjustOverflow={false} getPopupContainer={triggerNode =>triggerNode.parentNode} title={replaceTeacherTipsTitle} visible={replaceTeacherTips}>
+
                             <DropDown
-                            width={160}
-                            height={200}
-                            dropSelectd={replaceTeacherOptions.dropSelectd?replaceTeacherOptions.dropSelectd:{value:"none",title:"请选择任课教师"}}
-                            onChange={this.replaceTeacherDropChange.bind(this)}
-                            disabled={replaceTeacherOptions.dropDisabled}
-                            dropList={replaceTeacherOptions.dropList}
-                            style={{zIndex:9}}
-                            // type="multiple"
-                            // mutipleOptions={{
-                            //     range:2,
-                            //     dropMultipleList:teacherList,
-                            //     dropMultipleChange:this.replaceTeacherDropChange.bind(this),
-                            //     dropClickSearch:this.replaceTeacherClickSearch.bind(this),
-                            //     dropCancelSearch:this.replaceTeacherSearchClose.bind(this),
-                            //     searchList:replaceTeacherOptions.searchList,
-                            //     searchPlaceholder:"请输入姓名或工号进行搜索...",
-                            //     searchOpen:replaceTeacherOptions.searchOpen,
-                            //     searchLoadingShow:replaceTeacherOptions.searchLoadingShow
-                            // }}
-                            >
+                                width={160}
+                                height={200}
+                                dropSelectd={replaceTeacherOptions.dropSelectd?replaceTeacherOptions.dropSelectd:{value:"none",title:"请选择任课教师"}}
+                                onChange={this.replaceTeacherDropChange.bind(this)}
+                                disabled={replaceTeacherOptions.dropDisabled}
+                                dropList={replaceTeacherOptions.dropList}
+                                style={{zIndex:9}}
+                                // type="multiple"
+                                // mutipleOptions={{
+                                //     range:2,
+                                //     dropMultipleList:teacherList,
+                                //     dropMultipleChange:this.replaceTeacherDropChange.bind(this),
+                                //     dropClickSearch:this.replaceTeacherClickSearch.bind(this),
+                                //     dropCancelSearch:this.replaceTeacherSearchClose.bind(this),
+                                //     searchList:replaceTeacherOptions.searchList,
+                                //     searchPlaceholder:"请输入姓名或工号进行搜索...",
+                                //     searchOpen:replaceTeacherOptions.searchOpen,
+                                //     searchLoadingShow:replaceTeacherOptions.searchLoadingShow
+                                // }}
+                                >
 
-                        </DropDown>
+                            </DropDown>
 
-                        <span className="error-tips" style={{display:`${replaceTeacherTips?'inline-block':'none'}`}}>{replaceTeacherTipsTitle}</span>
+                        </Tooltip>
+
+                        {/*<span className="error-tips" style={{display:`${replaceTeacherTips?'inline-block':'none'}`}}>{replaceTeacherTipsTitle}</span>*/}
 
                     </div>
 
@@ -440,27 +468,53 @@ class ReplaceSchedule extends Component{
 
                             <div className="byMonth dateline-pick-wrapper clearfix">
 
-                                {
+                                <Loading spinning={monthsLoading}>
 
-                                    monthsList.map((item,key) => {
 
-                                        return <div key={key} className={`month-item check-item ${monthsCheckedList.includes(item.id)?'active':''}`} onClick={this.monthChecked.bind(this,item.id)}>
+                                    {
 
-                                            {
+                                        monthsList.map((item,key) => {
 
-                                                item.name
+                                            if (key===monthsList.length-1){
+
+                                                return <Tooltip placement="right" visible={monthTips} getPopupContainer={triggerNode => triggerNode.parentNode} title={monthTipsTitle} >
+
+                                                            <div key={key} className={`month-item check-item ${monthsCheckedList.includes(item.id)?'active':''}`} onClick={this.monthChecked.bind(this,item.id)}>
+
+                                                                {
+
+                                                                    item.name
+
+                                                                }
+
+                                                            </div>
+
+                                                        </Tooltip>
+
+                                            }else{
+
+                                                return <div key={key} className={`month-item check-item ${monthsCheckedList.includes(item.id)?'active':''}`} onClick={this.monthChecked.bind(this,item.id)}>
+
+                                                    {
+
+                                                        item.name
+
+                                                    }
+
+                                                </div>
 
                                             }
 
-                                        </div>
+                                        })
 
-                                    })
+                                    }
 
-                                }
+                                </Loading>
+
 
                                 <div className="trangle"></div>
 
-                                <span className="error-tips" style={{display:`${monthTips?'inline-block':'none'}`}}>{monthTipsTitle}</span>
+                                {/*<span className="error-tips" style={{display:`${monthTips?'inline-block':'none'}`}}>{monthTipsTitle}</span>*/}
 
                             </div>
 
@@ -474,24 +528,43 @@ class ReplaceSchedule extends Component{
 
                             <div className="byWeek dateline-pick-wrapper clearfix">
 
+                                <Loading spinning={weeksLoading}>
+
                                 {
 
                                     weeksList.map((item,key) => {
 
-                                        return <div key={key} className={`week-item check-item ${weeksCheckedList.includes(item)?'active':''}`} onClick={this.weekChecked.bind(this,item)}>
+                                        if (key===weeksList.length-1){
 
-                                            第{item}周
+                                            return <Tooltip placement="right" visible={weekTips} getPopupContainer={triggerNode => triggerNode.parentNode} title={weekTipsTitle} >
 
-                                        </div>
+                                                <div key={key} className={`week-item check-item ${weeksCheckedList.includes(item)?'active':''}`} onClick={this.weekChecked.bind(this,item)}>
+
+                                                    第{item}周
+
+                                                </div>
+
+                                            </Tooltip>
+
+                                        }else{
+
+                                            return <div key={key} className={`week-item check-item ${weeksCheckedList.includes(item)?'active':''}`} onClick={this.weekChecked.bind(this,item)}>
+
+                                                第{item}周
+
+                                            </div>
+
+                                        }
 
                                     })
 
                                 }
 
+                                </Loading>
+
                                 <div className="trangle"></div>
 
-                                <span className="error-tips" style={{display:`${weekTips?'inline-block':'none'}`}}>{weekTipsTitle}</span>
-
+                                {/*<span className="error-tips" style={{display:`${weekTips?'inline-block':'none'}`}}>{weekTipsTitle}</span>*/}
 
                             </div>
 
@@ -507,7 +580,11 @@ class ReplaceSchedule extends Component{
 
                                     <ConfigProvider locale={zhCN}>
 
-                                        <DatePicker showToday={false} dateRender={this.dateRander.bind(this)} onChange={this.dateChecked.bind(this)} style={{width:626}}></DatePicker>
+                                        <Tooltip visible={dateTips} title={dateTipsTitle} getPopupContainer={triggerNode => triggerNode.parentNode} placement="right">
+
+                                            <DatePicker showToday={false} dateRender={this.dateRander.bind(this)} onChange={this.dateChecked.bind(this)} style={{width:626}}></DatePicker>
+
+                                        </Tooltip>
 
                                     </ConfigProvider>
 
@@ -515,7 +592,7 @@ class ReplaceSchedule extends Component{
 
                                 <div className="trangle"></div>
 
-                                <span className="error-tips" style={{display:`${dateTips?'inline-block':'none'}`}}>{dateTipsTitle}</span>
+                                {/*<span className="error-tips" style={{display:`${dateTips?'inline-block':'none'}`}}>{dateTipsTitle}</span>*/}
 
 
                             </div>
@@ -534,7 +611,11 @@ class ReplaceSchedule extends Component{
 
                                 <ConfigProvider locale={zhCN}>
 
+                                    <Tooltip visible={classHourDateTips} title={classHourDateTipsTitle} getPopupContainer={triggerNode => triggerNode.parentNode} placement="right">
+
                                     <DatePicker showToday={false} value={classHourDate?moment(classHourDate,'YYYY-MM-DD'):null} onChange={this.classHourDateChecked.bind(this)}></DatePicker>
+
+                                    </Tooltip>
 
                                 </ConfigProvider>
 
@@ -552,14 +633,17 @@ class ReplaceSchedule extends Component{
 
                                 }
 
-                                <span className="error-tips" style={{display:`${classHourDateTips?'inline-block':'none'}`}}>{classHourDateTipsTitle}</span>
+                                {/*<span className="error-tips" style={{display:`${classHourDateTips?'inline-block':'none'}`}}>{classHourDateTipsTitle}</span>*/}
 
 
                                 <Loading opacity={false} className="class-hour-loading" type="loading"  spinning={classHourLoadingShow}>
 
                                     <div className="title">节次:</div>
 
-                                    <div className="classHour-wrapper">
+
+                                    <Tooltip visible={classHourTips} title={classHourTipsTitle} getPopupContainer={triggerNode => triggerNode.parentNode} placement="right">
+
+                                        <div className="classHour-wrapper">
 
                                         {
 
@@ -617,11 +701,13 @@ class ReplaceSchedule extends Component{
 
                                     </div>
 
+                                    </Tooltip>
+
                                 </Loading>
 
                                 <div className="trangle"></div>
 
-                                <span className="error-tips" style={{display:`${classHourTips?'inline-block':'none'}`}}>{classHourTipsTitle}</span>
+                                {/*<span className="error-tips" style={{display:`${classHourTips?'inline-block':'none'}`}}>{classHourTipsTitle}</span>*/}
 
                             </div>
 
@@ -633,6 +719,7 @@ class ReplaceSchedule extends Component{
 
         );
     }
+
 }
 
 const mapStateToProps = (state) => {

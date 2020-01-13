@@ -75,9 +75,13 @@ const AdjustByTeacherModal = (state={
 
         monthsList:[],
 
+        monthsLoading:true,
+
         monthsCheckedList:[],
 
         weeksList:[],
+
+        weeksLoading:true,
 
         weeksCheckedList:[],
 
@@ -401,9 +405,13 @@ const AdjustByTeacherModal = (state={
 
                     monthsCheckedList:[],
 
+                    monthsLoading:true,
+
                     weeksList:[],
 
                     weeksCheckedList:[],
+
+                    weeksLoading:true,
 
                     dateCheckedList:[],
 
@@ -924,6 +932,70 @@ const AdjustByTeacherModal = (state={
                         dropList:actions.data
 
                     }
+
+                }
+
+            };
+
+        case ABTActions.MANAGER_REPLACE_SCHEDULE_MONTHS_LOADING_HIDE:
+
+            return {
+
+                ...state,
+
+                replaceSchedule:{
+
+                    ...state.replaceSchedule,
+
+                    monthsLoading:false
+
+                }
+
+            };
+
+        case ABTActions.MANAGER_REPLACE_SCHEDULE_MONTHS_LOADING_SHOW:
+
+            return {
+
+                ...state,
+
+                replaceSchedule:{
+
+                    ...state.replaceSchedule,
+
+                    monthsLoading:true
+
+                }
+
+            };
+
+        case ABTActions.MANAGER_REPLACE_SCHEDULE_WEEKS_LOADING_HIDE:
+
+            return {
+
+                ...state,
+
+                replaceSchedule:{
+
+                    ...state.replaceSchedule,
+
+                    weeksLoading:false
+
+                }
+
+            };
+
+        case ABTActions.MANAGER_REPLACE_SCHEDULE_WEEKS_LOADING_SHOW:
+
+            return {
+
+                ...state,
+
+                replaceSchedule:{
+
+                    ...state.replaceSchedule,
+
+                    weeksLoading:true
 
                 }
 
@@ -1747,7 +1819,6 @@ const AdjustByTeacherModal = (state={
                         changeTime: {
 
                             ...state.changeTime,
-
 
                             searchList:actions.data.value
 
