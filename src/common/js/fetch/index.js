@@ -91,7 +91,11 @@ function postData(
         // console.log(clone.json())
         return clone.json();
       },
-      err => {}
+      err => {
+
+        
+
+      }
     )
     .then(json => {
       // console.log(json, json.StatusCode === 200)

@@ -26,6 +26,8 @@ const alertQuery = ({ title, ok, cancel, close, okTitle, cancelTitle }) => {
 
 const alertTips = ({ title, ok, cancel, close, okTitle, cancelTitle }) => {
 
+    console.log(title,ok);
+
     return dispatch => {
         dispatch({
             type: COLLECTOR_ALERT_SHOW,
@@ -78,6 +80,9 @@ const alertSuccess = ({ title }) => {
 }
 
 const closeAlert = (dispatch) => {
+
+    console.log(234);
+
     return () => {
         dispatch({
             type: COLLECTOR_ALERT_HIDE

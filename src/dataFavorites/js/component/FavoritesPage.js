@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { Search, DropDown, Empty, Modal } from '../../../common/index'
-import { DatePicker, Button, Input, Pagination, Tree } from 'antd'
+import { DatePicker, Button, Input, Pagination, Tree, Tooltip } from 'antd'
 import { connect } from 'react-redux';
 import { Loading } from '../../../common/index'
 import '../../sass/favoritesPage.scss'
 import AppAlertAction from '../action/AppAlertAction'
 import ApiAction from '../action/Api'
-
+import LoadingAction from '../action/LoadingAction'
 import CollectorAction from '../action/CollectorAction';
 const { TreeNode } = Tree;
 const { RangePicker } = DatePicker
@@ -35,6 +35,7 @@ class FavoritesPage extends Component {
             currentPage: 1,//默认请求收藏夹第一页的数据
             selectedFolder: "",//移动目录弹层中被选中的目录Id
             emptyTips: "目录中空空如也，快去添加更多的收藏吧~",//当搜索或者打开空目录时的提示用语
+            overNameTipsShow: false,//超过20个字符的提示语
         };
     }
     //监听搜索框的查询事件
@@ -48,8 +49,14 @@ class FavoritesPage extends Component {
         }
         else {
             this.setState({
-                emptyTips: "没有符合条件的资料喔~"
+                emptyTips: "没有符合条件的资料喔~",
+                currentPath: [{ "folderId": "", "folderName": "资料收藏夹" }]
             })
+            dispatch({
+                type: CollectorAction.UPDATE_CURRENT_PATH,
+                data: this.state.currentPath
+            })
+
             dispatch(CollectorAction.getFolderResInfo({ typeId: '', startTime: '', endDate: '', keyword: e.value }, "searchAll"))
         }
 
@@ -250,7 +257,8 @@ class FavoritesPage extends Component {
             modalTitle: title,
             newName: tips,
             beRenameID: ID,
-            modalInput: Name ? Name : ""
+            modalInput: Name ? Name : "",
+            targetName: Name,
         })
         // console.log(this.state.modalOptionType)
     }
@@ -270,7 +278,13 @@ class FavoritesPage extends Component {
         if (optionType === "addFolder") {
             //当前用户操作的是添加目录操作
             if (this.state.modalInput === "") {
-                dispatch(AppAlertAction.alertTips({ title: "文件夹名称不能为空！" ,cancelTitle:"确定"}))
+                dispatch(AppAlertAction.alertTips({ title: "目录名称不能为空！", cancelTitle: "确定" }))
+                return
+            }
+            if (this.state.modalInput.length > 20) {
+                dispatch(AppAlertAction.alertError({ title: "目录名称过长", cancelTitle: "确定" }))
+
+                return;
             }
             else {
                 let flag = true;
@@ -282,6 +296,10 @@ class FavoritesPage extends Component {
                     }
                 }
                 if (flag) {
+                    dispatch({
+                        type: LoadingAction.FAV_LOADING_SHOW,
+                        data: true
+                    })
                     let url = `/SysMgr/Favorite/AddFolderInfo`
                     ApiAction.postMethod(url, {
                         FolderName: this.state.modalInput,
@@ -289,12 +307,18 @@ class FavoritesPage extends Component {
                         sysId: "蓝鸽浏览器收藏"
                         // sysId: ""
                     }).then(data => {
+
                         if (data === 0) {
                             dispatch(AppAlertAction.alertSuccess({ title: "添加目录成功" }))
                             //dispatch(CollectorAction.getFolderResInfo({ typeId: "", folderID: currFoleder, startTime: '', endDate: '', keyword: "" }))
                             dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder, pageIndex: this.state.currentPage }))
                         }
                         else {
+                            dispatch({
+                                type: LoadingAction.FAV_LOADING_SHOW,
+                                data: false
+                            })
+
                             dispatch(AppAlertAction.alertError({ title: data ? data : "未知异常" }))
                         }
                     })
@@ -308,17 +332,37 @@ class FavoritesPage extends Component {
         else if (optionType === "reNameFolder") {
             //当前操作是重命名目录
             let flag = true;
-            for (let item of folderResInfo.List) {
-                if (item.IsFolder === true && item.Name === this.state.modalInput) {
-                    dispatch(AppAlertAction.alertError({ title: "该目录名称已被占用!" }))
-                    flag = false
-                    break;
-                }
+            // for (let item of folderResInfo.List) {
+            //     if (item.IsFolder === true && item.Name === this.state.modalInput) {
+            //         dispatch(AppAlertAction.alertError({ title: "该目录名称已被占用!" }))
+            //         flag = false
+            //         break;
+            //     }
+            // }
+            if (this.state.targetName === this.state.modalInput) {
+                dispatch(AppAlertAction.alertTips({ title: "未进行任何修改", cancelTitle: "确定" }))
+                // this.ModalClose()
+                flag = false
+                return;
+            }
+            if (this.state.modalInput === "") {
+                dispatch(AppAlertAction.alertTips({ title: "目录名不能为空", cancelTitle: "确定" }))
+                flag = false
+                return;
+            }
+            if (this.state.modalInput.length > 20) {
+                dispatch(AppAlertAction.alertError({ title: "目录名称过长", cancelTitle: "确定" }))
+                flag = false
+                return;
             }
             console.log(flag)
             if (flag === true) {
-                const url = `/SysMgr/Favorite/UpdateFolderName`
-                ApiAction.postMethod(url, { folderId: ID, newFolderName: this.state.modalInput }).then(data => {
+                dispatch({
+                    type: LoadingAction.FAV_LOADING_SHOW,
+                    data: true
+                })
+                const url = `/SysMgr/Favorite/UpdateFolderName`;
+                ApiAction.postMethod(url, { folderId: ID, newFolderName: this.state.modalInput }, 2, dispatch).then(data => {
                     if (data === 0) {
                         dispatch(AppAlertAction.alertSuccess({ title: "目录重命名成功" }))
                         //dispatch(CollectorAction.getFolderResInfo({ typeId: "", folderID: currFoleder, startTime: '', endDate: '', keyword: "" }))
@@ -326,8 +370,15 @@ class FavoritesPage extends Component {
                         dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder, pageIndex: this.state.currentPage }))
                     }
                     else {
+                        dispatch({
+                            type: LoadingAction.FAV_LOADING_SHOW,
+                            data: false
+                        })
+
                         dispatch(AppAlertAction.alertError({ title: data ? data : "未知异常" }))
                     }
+
+
 
                 })
             }
@@ -336,13 +387,27 @@ class FavoritesPage extends Component {
         else {
             //当前操作是重命名资料
             let flag = true;
-            for (let item of folderResInfo.List) {
-                if (item.IsFolder === false && item.Name === this.state.modalInput) {
-                    dispatch(AppAlertAction.alertError({ title: "该资料名称已被占用!" }))
-                    flag = false
-                    break;
-                }
-            } if (flag) {
+            if (this.state.targetName === this.state.modalInput) {
+                dispatch(AppAlertAction.alertTips({ title: "未进行任何修改", cancelTitle: "确定" }))
+                console.log("没有修改")
+                flag = false
+                return;
+            }
+            if (this.state.modalInput === "") {
+                dispatch(AppAlertAction.alertTips({ title: "目录名不能为空", cancelTitle: "确定" }))
+                flag = false
+                return;
+            }
+            if (this.state.modalInput.length > 20) {
+                dispatch(AppAlertAction.alertError({ title: "目录名称过长", cancelTitle: "确定" }))
+                flag = false
+                return;
+            }
+            if (flag) {
+                dispatch({
+                    type: LoadingAction.FAV_LOADING_SHOW,
+                    data: true
+                })
                 const url = `/SysMgr/Favorite/UpdateCollectionName`
                 ApiAction.postMethod(url, { resId: ID, newName: this.state.modalInput }).then(data => {
                     if (data === 0) {
@@ -355,6 +420,11 @@ class FavoritesPage extends Component {
 
                     }
                     else {
+                        dispatch({
+                            type: LoadingAction.FAV_LOADING_SHOW,
+                            data: false
+                        })
+
                         dispatch(AppAlertAction.alertError({ title: data ? data : "未知异常" }))
                     }
 
@@ -403,8 +473,13 @@ class FavoritesPage extends Component {
     deleteFoleder = (currFoleder, ID) => {
         const { dispatch, rightSelect } = this.props
         const url = `/SysMgr/Favorite/DeleteFolderInfo`
+        dispatch({
+            type: LoadingAction.FAV_LOADING_SHOW,
+            data: true
+        })
         ApiAction.postMethod(url, { FolderId: ID }).then(data => {
             if (data === 0) {
+
                 dispatch(AppAlertAction.alertSuccess({ title: "删除目录成功" }))
                 //dispatch(CollectorAction.getFolderResInfo({ typeId: "", folderID: currFoleder, startTime: '', endDate: '', keyword: "" }))
                 dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder, pageIndex: this.state.currentPage }))
@@ -421,6 +496,11 @@ class FavoritesPage extends Component {
                 }
             }
             else {
+                dispatch({
+                    type: LoadingAction.FAV_LOADING_SHOW,
+                    data: false
+                })
+
                 dispatch(AppAlertAction.alertError({ title: data ? data : "未知异常" }))
             }
         })
@@ -430,10 +510,16 @@ class FavoritesPage extends Component {
         @param2 被取消收藏的资料ID
     */
     cancelcollect = (currFoleder, ID) => {
+
         const { dispatch, rightSelect } = this.props
         const url = `/SysMgr/Favorite/CancelCollectRes`
+        dispatch({
+            type: LoadingAction.FAV_LOADING_SHOW,
+            data: true
+        })
         ApiAction.postMethod(url, { resIds: ID }).then(data => {
             if (data === 0) {
+
                 dispatch(AppAlertAction.alertSuccess({ title: "取消收藏成功" }))
                 //dispatch(CollectorAction.getFolderResInfo({ typeId: "", folderID: currFoleder, startTime: '', endDate: '', keyword: "" }))
                 dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder, pageIndex: this.state.currentPage }))
@@ -448,6 +534,10 @@ class FavoritesPage extends Component {
                 }
             }
             else {
+                dispatch({
+                    type: LoadingAction.FAV_LOADING_SHOW,
+                    data: false
+                })
                 dispatch(AppAlertAction.alertError({ title: data ? data : "未知异常" }))
             }
         })
@@ -468,7 +558,35 @@ class FavoritesPage extends Component {
     NameChange = (e) => {
         this.setState({
             modalInput: e.target.value
+
         })
+
+        if (e.target.value.length > 20) {
+            this.setState({
+                overNameTipsShow: true
+            })
+
+        }
+        else {
+            this.setState({
+                overNameTipsShow: false
+            })
+        }
+
+
+
+    }
+    enterComfirm = (e) => {
+        // console.log("what")
+        if (e.keyCode === 108 || e.keyCode === 13) {
+            // console.log("what")
+            // console.log(this.state.modalOptionType)
+            // console.log(this.state.beRenameID)
+            // console.log(this.state.modalTitle)
+            // console.log(this.state.modalInput)
+            // console.log(this.state.targetName)
+            this.modalComfirm()
+        }
     }
     /* 移动目录和资料弹层的显示与隐藏
         作用：用来控制移动目录或者资料弹层的显示与隐藏，同时记录当前操作弹层的类型
@@ -498,6 +616,10 @@ class FavoritesPage extends Component {
         let optionType = this.state.MoveOptionType
         let ID = this.state.beMoveID
         let currFoleder = this.state.currentPath[this.state.currentPath.length - 1].folderId
+        dispatch({
+            type: LoadingAction.FAV_LOADING_SHOW,
+            data: true
+        })
         if (optionType === "single" || optionType === "folder") {
             const url = `/SysMgr/Favorite/TransferResInfo`
             ApiAction.postMethod(url, {
@@ -514,9 +636,18 @@ class FavoritesPage extends Component {
                     //     endDate: '',
                     //     keyword: ""
                     // }))
-                    dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder, pageIndex: this.state.currentPage }))
+                    this.setState({
+                        moveModalShow: false
+                    }, () => {
+                        dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder, pageIndex: this.state.currentPage }))
+                    })
+
 
                 } else {
+                    dispatch({
+                        type: LoadingAction.FAV_LOADING_SHOW,
+                        data: false
+                    })
                     dispatch(AppAlertAction.alertError({ title: data ? data : "未知异常" }))
                 }
             })
@@ -536,6 +667,10 @@ class FavoritesPage extends Component {
 
             } else {
                 const url = `/SysMgr/Favorite/TransferResInfo`
+                dispatch({
+                    type: LoadingAction.FAV_LOADING_SHOW,
+                    data: true
+                })
                 ApiAction.postMethod(url, {
                     resIds: resIdsList.join(","),
                     oldFolderID: currFoleder,
@@ -550,9 +685,18 @@ class FavoritesPage extends Component {
                         //     endDate: '',
                         //     keyword: ""
                         // }))
-                        dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder, pageIndex: this.state.currentPage }))
+                        this.setState({
+                            moveModalShow: false
+                        }, () => {
+                            dispatch(CollectorAction.getFolderResInfo({ folderID: currFoleder, pageIndex: this.state.currentPage }))
+                        })
+
 
                     } else {
+                        dispatch({
+                            type: LoadingAction.FAV_LOADING_SHOW,
+                            data: false
+                        })
                         dispatch(AppAlertAction.alertError({ title: data ? data : "未知异常" }))
                     }
                 })
@@ -564,9 +708,7 @@ class FavoritesPage extends Component {
 
 
 
-        this.setState({
-            moveModalShow: false
-        })
+
 
     }
 
@@ -695,7 +837,8 @@ class FavoritesPage extends Component {
             Mend,
             moveModalShow,
             selectAll,
-            emptyTips
+            emptyTips,
+            overNameTipsShow
 
 
         } = this.state
@@ -824,10 +967,20 @@ class FavoritesPage extends Component {
                     bodyStyle={{ height: "136px" }}
                     onCancel={this.ModalClose}
                     onOk={() => this.modalComfirm()}
+                    destroyOnClose={true}
 
                 >
                     <div className="modal-contain">
-                        {newName}:<Input placeholder="最多输入两百字" value={modalInput} onChange={this.NameChange} />
+
+                        {newName}:
+
+                        <Tooltip visible={overNameTipsShow} placement="topRight" title={"最多只能输入20个字符"}>
+                            <Input placeholder="最多输入20个字符" value={modalInput}
+                                onKeyUp={this.enterComfirm}
+                                onChange={this.NameChange} />
+                        </Tooltip>
+
+
                     </div>
                 </Modal>
                 {
@@ -874,6 +1027,7 @@ class FavoritesPage extends Component {
                     onOk={this.moveModalConfirm}
                     onCancel={this.ModalClose}
                     className="moveModal"
+                    destroyOnClose={true}
                 >
 
                     <Tree

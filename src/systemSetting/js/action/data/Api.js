@@ -72,7 +72,7 @@ const postMethod = async (url, params, level = 2) => {
 
         }
         catch (e) {
-            return e;
+            
         }
 
         let json = await fetchAsync.json();

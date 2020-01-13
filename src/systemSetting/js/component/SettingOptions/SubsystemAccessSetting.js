@@ -8,6 +8,7 @@ import ApiAction from '../../action/data/Api'
 import DataChange from '../../action/data/DataChange'
 import AppAlertAction from '../../action/UI/AppAlertAction'
 
+
 class SubsystemAccessSetting extends Component {
     constructor(props) {
         super(props);
@@ -195,6 +196,10 @@ class SubsystemAccessSetting extends Component {
         console.log(SubSystemID);
         const url1 = `/SysMgr/Setting/OpenSubSystem`
         const url2 = `/SysMgr/Setting/CloseSubSystem`
+        dispatch({
+            type: DataChange.SEMESTER_LOADING_HIDE,
+            data: true
+        })
         if (option === "open") {
             ApiAction.postMethod(url1, {
                 "SubSystemID": SubSystemID,
@@ -207,6 +212,10 @@ class SubsystemAccessSetting extends Component {
                     // console.log("success")
                 }
                 else {
+                    dispatch({
+                        type: DataChange.SEMESTER_LOADING_HIDE,
+                        data: false
+                    })
                     dispatch(AppAlertAction.alertError({ title: data ? data : "未知异常" }));
                 }
             })
@@ -225,6 +234,10 @@ class SubsystemAccessSetting extends Component {
                     dispatch(DataChange.getCurrentSbusystemInfo({}));
                     // console.log("success")
                 } else {
+                    dispatch({
+                        type: DataChange.SEMESTER_LOADING_HIDE,
+                        data: false
+                    })
                     dispatch(AppAlertAction.alertError({ title: data ? data : "未知异常" }));
                 }
             })

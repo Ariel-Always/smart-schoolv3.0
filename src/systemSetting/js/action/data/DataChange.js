@@ -19,10 +19,10 @@ const INIT_PERIOD_LIST = "INIT_PERIOD_LIST"//初始化学制选择表
 const getCurrentSemester = (SchoolID) => {
 
     return dispatch => {
-        dispatch({
-            type: SEMESTER_LOADING_HIDE,
-            data: true
-        })
+        // dispatch({
+        //     type: SEMESTER_LOADING_HIDE,
+        //     data: true
+        // })
         const url = `/SysMgr/Setting/GetCurrentTermInfo?SchoolID=${SchoolID}`;
 
 
@@ -41,7 +41,8 @@ const getCurrentSemester = (SchoolID) => {
                     semesterInfo = {
                         ...semesterInfo,
                         "termNum": termNum,
-                        "ChineseName": ChineseName
+                        "ChineseName": ChineseName,
+                        defaultTerm: item
                     }
                 }
                 else if (item === "TermStartDate") {
@@ -111,10 +112,10 @@ const getCurrentSemester = (SchoolID) => {
 
 const getCurrentSchoolInfo = (SchoolID) => {
     return dispatch => {
-        dispatch({
-            type: SEMESTER_LOADING_HIDE,
-            data: true
-        })
+        // dispatch({
+        //     type: SEMESTER_LOADING_HIDE,
+        //     data: true
+        // })
         const url = `/SysMgr/Setting/GetSchoolInfo?SchoolID=${SchoolID}`;
         ApiActions.getMethod(url).then(json => {
             let schoolInfo = json.Data;
@@ -123,21 +124,28 @@ const getCurrentSchoolInfo = (SchoolID) => {
                 { ID: "P2", Name: "初中", Period: "", checked: false },
                 { ID: "P3", Name: "高中", Period: "", checked: false }
             ]
-            // console.log(schoolInfo)
+            let arr = schoolInfo.SchoolSessionType.split('/')
+
             if (json.StatusCode === 200) {
                 for (let item in schoolInfo) {
                     if (item === "SchoolSessionType") {
-                        let sessionType = parseInt(schoolInfo[item])
-                        if (sessionType === 5) {
+                        let firstParam = schoolInfo[item].split('/')[0]//表示小学的学制长  0表示没有初中
+                        let secondParam = schoolInfo[item].split('/')[1]//表示初中的学制长 0表示没有初中
+                        let thirdParam = schoolInfo[item].split('/')[2]//表示高中的学制长 0表示没有高中
+                        //默认是六年制小学与三年制初中搭配，五年制小学与四年制高中搭配
+                        if (firstParam === "5") {
+                            //如果第一个参数是5，无论第二第三个参数是什么，都设置为如下
                             schoolInfo = {
                                 ...schoolInfo,
                                 primaryType: "五年制小学",
                                 middleType: "四年制初中",
                                 primaryNum: "5",
-                                middleNum: "4"
+                                middleNum: "4",
+
                             }
                         }
-                        else {
+                        else if (firstParam === "6") {
+                            //如果第一个参数是6，无论第二第三个参数是什么，都设置为如下
                             schoolInfo = {
                                 ...schoolInfo,
                                 primaryType: "六年制小学",
@@ -146,15 +154,58 @@ const getCurrentSchoolInfo = (SchoolID) => {
                                 middleNum: "3"
                             }
                         }
+                        else if (firstParam === "0" && secondParam === "3") {
+                            /*   如果参数为03X 表示只有初中或者初中+高中，但默认绑定六年制小学
+                                 绑定时的数据只在修改学校基础信息中体现。
+                                 举个例子,当前情况下学校只有初中，但想添加一个小学，此时需要点击小学的选项卡，
+                                 如果此时初中为三年制，则点击小学后，绑定的就是六年制的小学，而不是无对应显示或五年制小学
+                                 下面的情况以此类推 
+                             */
 
+                            schoolInfo = {
+                                ...schoolInfo,
+                                primaryType: "六年制小学",
+                                middleType: "三年制初中",
+                                primaryNum: "6",
+                                middleNum: "3",
+
+                            }
+                        }
+                        else if (firstParam === "0" && secondParam === "4") {
+                            //如上面判断类似
+                            schoolInfo = {
+                                ...schoolInfo,
+                                primaryType: "五年制小学",
+                                middleType: "四年制初中",
+                                primaryNum: "5",
+                                middleNum: "4",
+
+                            }
+
+                        }
+                        else if (firstParam === "0" && secondParam === "0" && thirdParam === "3") {
+                            //如果只有参数为003，则表示只有高中，默认绑定是六年制小学与三年制初中,只是在修改学校基础信息上起作用
+                            schoolInfo = {
+                                ...schoolInfo,
+                                primaryType: "六年制小学",
+                                middleType: "三年制初中",
+                                primaryNum: "6",
+                                middleNum: "3",
+
+                            }
+
+                        }
                     }
+
+
                     else if (item === "SchoolType") {
                         if (schoolInfo[item] === 7) {
                             schoolInfo = {
                                 ...schoolInfo,
                                 highType: "三年制高中",
-                                highNum: "12"
+                                highNum: "3"
                             }
+
                             for (let i of periodInfo) {
                                 i.checked = true
                             }
@@ -223,10 +274,10 @@ const getCurrentSbusystemInfo = ({ UserType, IsOpened, keyword }) => {
     keyword = keyword ? keyword : "";
 
     return dispatch => {
-        dispatch({
-            type: SEMESTER_LOADING_HIDE,
-            data: true
-        })
+        // dispatch({
+        //     type: SEMESTER_LOADING_HIDE,
+        //     data: true
+        // })
         const url = `/SysMgr/Setting/GetAccessInfo?UserType=${UserType}&IsOpened=${IsOpened}&keyword=${keyword}`;
         ApiActions.getMethod(url).then(json => {
             // let subsystemInfo = json.Data;

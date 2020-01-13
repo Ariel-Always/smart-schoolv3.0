@@ -3,7 +3,7 @@ import '../../sass/collectorRank.scss'
 import { connect } from 'react-redux';
 import CollectorAction from '../action/CollectorAction'
 import AppAlertAction from '../action/AppAlertAction'
-import { Loading } from '../../../common/index'
+import { Loading,Empty } from '../../../common/index'
 import ApiAction from '../action/Api';
 class CollectorRank extends Component {
     constructor(props) {
@@ -133,27 +133,35 @@ class CollectorRank extends Component {
     render() {
         const { selected } = this.state
         const { collectionResult, rankLoading } = this.props
-
+        let tipInfo = "";
+        let exeit = "0";
+        let collectorRes=""
         //根据点击项结果渲染右侧列表内容区信息
-        let collectorRes = collectionResult.map((item, key) => {
-            return (<li className={`clearfix ${selected === "recent" ? 'recent' : 'rank'}`}> <div className="ranklogo">
-                {key < 9 ? `0${key + 1}` : `${key + 1}`}
-            </div>
-                <div className="collector-detail"
-                    onClick={() => this.skipTolink(item.ResLinkForWeb)}
-                >
-                    <span className="top-wrap" title={item.Name}>{item.Name}</span>
-                    <span className="bottom-wrap" >{selected === "recent" ? `${item.CreateTime}` : `${item.TypeName}`}  &nbsp;|&nbsp;
+        if (collectionResult) {
+            if (collectionResult.length === 0) {
+                // console.log("不存在")
+                tipInfo = <Empty type="3" className="Empty" title={"最近暂无收藏"} />
+                exeit = "1"
+            }
+             collectorRes = collectionResult.map((item, key) => {
+                return (<li className={`clearfix ${selected === "recent" ? 'recent' : 'rank'}`}> <div className="ranklogo">
+                    {key < 9 ? `0${key + 1}` : `${key + 1}`}
+                </div>
+                    <div className="collector-detail"
+                        onClick={() => this.skipTolink(item.ResLinkForWeb)}
+                    >
+                        <span className="top-wrap" title={item.Name}>{item.Name}</span>
+                        <span className="bottom-wrap" >{selected === "recent" ? `${item.CreateTime}` : `${item.TypeName}`}  &nbsp;|&nbsp;
                     {selected === "recent" ? `${item.TypeName}` : `${item.CollectionCount}收藏`}</span>
-                </div>{
-                    selected === "rank" ? <div className={`collect-logo ${item.isClollected === true ? 'checked' : ''}`} onClick={() => this.rankCollectAction(item.ID, item.isClollected)}></div> : ""
-                }
+                    </div>{
+                        selected === "rank" ? <div className={`collect-logo ${item.isClollected === true ? 'checked' : ''}`} onClick={() => this.rankCollectAction(item.ID, item.isClollected)}></div> : ""
+                    }
 
-                <div className="splitline"></div>
-            </li>);
+                    <div className="splitline"></div>
+                </li>);
 
-        })
-
+            })
+        }
 
         return (
             <div className="collector-integration">
@@ -171,7 +179,11 @@ class CollectorRank extends Component {
                         <div className="splitline"></div>
                     </li> */}
                     <Loading spinning={rankLoading} opacity={false} tip="请稍后...">
+
+
                         {collectorRes}
+                        {tipInfo}
+
                     </Loading>
 
                 </ul>

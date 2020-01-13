@@ -3,11 +3,8 @@ import '../../../sass/yearSemesterSet.scss'
 import { connect } from 'react-redux';
 import { Modal, Loading, DropDown } from '../../../../common';
 import moment from 'moment';
-
 import ApiActions from '../../action/data/Api';
-
 import DataChange from '../../action/data/DataChange'
-
 import { DatePicker, Button } from 'antd'
 import AppAlertAction from '../../action/UI/AppAlertAction';
 
@@ -89,7 +86,15 @@ class YearSemesterSetting extends Component {
         if (semesterInfo.TermStartDate === "" || semesterInfo.TermEndDate === "") {
             dispatch(AppAlertAction.alertError({ title: "开始日期或结束日期不能为空！" }))
 
+        } if (semesterInfo.TermStartDate === semesterInfo.defaultStartDate &&
+            semesterInfo.TermEndDate === semesterInfo.defaultEndDate &&
+            semesterInfo.defaultTerm === semesterInfo.Term) {
+            dispatch(AppAlertAction.alertTips({ title: "未进行任何修改", cancelTitle: "确定" }))
         } else {
+            dispatch({
+                type: DataChange.SEMESTER_LOADING_HIDE,
+                data: true
+            })
             this.setState({
                 visible_create: false,
             }, () => {
@@ -111,6 +116,10 @@ class YearSemesterSetting extends Component {
 
                     }
                     else {
+                        dispatch({
+                            type: DataChange.SEMESTER_LOADING_HIDE,
+                            data: false
+                        })
                         dispatch(AppAlertAction.alertError({ title: data ? data : "未知异常" }))
                     }
 
@@ -142,7 +151,15 @@ class YearSemesterSetting extends Component {
         if (semesterInfo.TermStartDate === "" || semesterInfo.TermEndDate === "") {
             dispatch(AppAlertAction.alertError({ title: "开始日期或结束日期不能为空！" }))
 
+        }
+        if (semesterInfo.TermStartDate === semesterInfo.defaultStartDate &&
+            semesterInfo.TermEndDate === semesterInfo.defaultEndDate) {
+            dispatch(AppAlertAction.alertTips({ title: "未进行任何修改", cancelTitle: "确定" }))
         } else {
+            dispatch({
+                type: DataChange.SEMESTER_LOADING_HIDE,
+                data: true
+            })
             this.setState({
                 visible_modify: false
             }, () => {
@@ -165,6 +182,10 @@ class YearSemesterSetting extends Component {
 
                     }
                     else {
+                        dispatch({
+                            type: DataChange.SEMESTER_LOADING_HIDE,
+                            data: false
+                        })
                         dispatch(AppAlertAction.alertError({ title: data ? data : "未知异常" }))
                     }
 
@@ -206,7 +227,10 @@ class YearSemesterSetting extends Component {
 
     }
 
-    //监听调整学期期限中开始时间输入框中值的变化
+   /*  监听调整学期期限中开始时间输入框中值的变化
+   param 1 所选日期的Moment对象
+   param 2　所有日期的字符串格式
+   */
     getPainDate = (value, datastring) => {
         console.log(datastring)
         let { dispatch, semesterInfo } = this.props
@@ -241,7 +265,7 @@ class YearSemesterSetting extends Component {
     disabledDate = (current, targetTime, type) => {
         const { semesterInfo } = this.props
 
-       
+
 
         let str = ""
         if (type === "start") {
@@ -258,7 +282,7 @@ class YearSemesterSetting extends Component {
 
     }
 
-    
+
 
 
 
@@ -281,7 +305,7 @@ class YearSemesterSetting extends Component {
 
                         <p>本学期共<span>{semesterInfo.TotalWeeks}</span>周 , 当前<span>{semesterInfo.TermStatus === 2 ? "学期已经结束" :
                             semesterInfo.TermStatus === 0 ? "学期未开始" :
-                                semesterInfo.TermStatus === 1 ? `第${semesterInfo.CurrentWeek}周` : "学期状态有误"} </span>  </p>
+                                semesterInfo.TermStatus === 1 ? `第${semesterInfo.CurrentWeek}周` : ""} </span>  </p>
 
 
                     </div>
@@ -291,7 +315,7 @@ class YearSemesterSetting extends Component {
                             <div className="year-num">
                                 {
 
-                                    `${semesterInfo.SemesterName}`
+                                    `${semesterInfo.SemesterName ? semesterInfo.SemesterName : ""}`
                                 }
                             </div>
                             <span>学年</span>
@@ -439,7 +463,7 @@ class YearSemesterSetting extends Component {
                                         placeholder="请选择日期"
                                         format="YYYY-MM-DD"
                                         onChange={this.getPainDate}
-                                       
+
                                         disabledDate={(e) => this.disabledDate(e, semesterInfo.TermStartDate, "start")}
                                         showToday={false}
                                         suffixIcon={<i className="calender-logo"></i>}
@@ -453,7 +477,7 @@ class YearSemesterSetting extends Component {
                                         value={semesterInfo.TermEndDate === "" ? null : moment(semesterInfo.TermEndDate)}
                                         format="YYYY-MM-DD"
                                         onChange={this.getOffDate}
-                                    
+
                                         disabledDate={(e) => this.disabledDate(e, semesterInfo.TermEndDate, "end")}
                                         showToday={false}
                                         suffixIcon={<i className="calender-logo"></i>}

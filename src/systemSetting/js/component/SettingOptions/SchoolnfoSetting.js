@@ -73,24 +73,36 @@ class SchoolnfoSetting extends Component {
     //确认保存编辑好的信息
     editComfirm = () => {
 
-        let { primaryNum, middleNum, SchoolCode, SchoolName, SchoolLogoUrl } = this.props.schoolInfo
+        let { primaryNum, middleNum, highNum,SchoolCode, SchoolName, SchoolLogoUrl } = this.props.schoolInfo
         const { dispatch, periodInfo } = this.props
-        let SchoolType = ""
-        let SchoolSessionType = ""
-        console.log(primaryNum, middleNum, SchoolCode, SchoolName, SchoolLogoUrl);
+        let SchoolType = ""//学制的代码数字
+        let SchoolSessionType = ""//学制类型对应的参数（7=>3/6/3 或者5/4/3）
+        // console.log(primaryNum, middleNum, SchoolCode, SchoolName, SchoolLogoUrl);
 
+        highNum=highNum?highNum:"3"
         if (periodInfo[0].checked === true && periodInfo[1].checked === false && periodInfo[2].checked === false) {
-            SchoolType = 1
+            SchoolType = 1;//只有小学
+            SchoolSessionType = `${primaryNum}/0/0`
+
         } else if (periodInfo[1].checked === true && periodInfo[0].checked === false && periodInfo[2].checked === false) {
-            SchoolType = 2
+            SchoolType = 2;//只有初中
+            SchoolSessionType = `0/${middleNum}/0`
+
         } else if (periodInfo[0].checked === true && periodInfo[1].checked === true && periodInfo[2].checked === false) {
-            SchoolType = 3
+            SchoolType = 3//小学加初中
+            SchoolSessionType = `${primaryNum}/${middleNum}/0`
+
         } else if (periodInfo[2].checked === true && periodInfo[0].checked === false && periodInfo[1].checked === false) {
-            SchoolType = 4
+            SchoolType = 4//只有高中
+            SchoolSessionType = `0/0/${highNum}`
+
         } else if (periodInfo[0].checked === true && periodInfo[1].checked === true && periodInfo[2].checked === true) {
-            SchoolType = 7
+            SchoolType = 7//小学+初中+高中
+            SchoolSessionType = `${primaryNum}/${middleNum}/${highNum}`
+
         } else if (periodInfo[0].checked === false && periodInfo[1].checked === true && periodInfo[2].checked === true) {
-            SchoolType = 6
+            SchoolType = 6//初中+高中
+            SchoolSessionType = `0/${middleNum}/${highNum}`
         }
         else {
             SchoolType = "error";
@@ -128,17 +140,21 @@ class SchoolnfoSetting extends Component {
             //当SchoolType 不是ERROR的时候才执行post数据
             if (SchoolType !== "error") {
                 //根据学制参照情况判断SchoolSessionType
-                if (SchoolType === 7 || SchoolType === 3 || SchoolType === 6) {
-                    SchoolSessionType = `${primaryNum}/${middleNum}`
-                }
-                else {
-                    SchoolSessionType = "6/3"
-                }
+                // if (SchoolType === 7 || SchoolType === 3 || SchoolType === 6) {
+                //     SchoolSessionType = `${primaryNum}/${middleNum}`
+                // }
+                // else {
+                //     SchoolSessionType = "6/3"
+                // }
                 this.setState({
                     edit_visible: false,
                     emptyNameTipsShow: false,
                     emptyCodeTipsShow: false
                 }, () => {
+                    dispatch({
+                        type: DataChange.SEMESTER_LOADING_HIDE,
+                        data: true
+                    })
                     const { SchoolID, UserID } = JSON.parse(sessionStorage.getItem('UserInfo'))
 
                     ApiActions.postMethod('/SysMgr/Setting/EditSchoolInfo', {
@@ -153,12 +169,17 @@ class SchoolnfoSetting extends Component {
                         console.log(data)
                         if (data === 0) {
 
-                            dispatch(DataChange.getCurrentSchoolInfo(SchoolID));
+                            
                             console.log('success');
                             dispatch(AppAlertAction.alertSuccess({ title: "修改成功" }))
+                            dispatch(DataChange.getCurrentSchoolInfo(SchoolID));
 
                         }
                         else {
+                            dispatch({
+                                type: DataChange.SEMESTER_LOADING_HIDE,
+                                data: false
+                            })
                             dispatch(AppAlertAction.alertError({ title: data ? data : "未知异常" }))
                         }
 
@@ -172,6 +193,7 @@ class SchoolnfoSetting extends Component {
                     emptyCodeTipsShow: false
                 }, () => {
 
+                   
                     dispatch(AppAlertAction.alertError({ title: "请正确选择学制关系!" }))
                     // alert( "小学与初中学制搭配错误!")
                 })
@@ -408,25 +430,25 @@ class SchoolnfoSetting extends Component {
     }
 
     //上传图片的时候file输入框的监听事件
-    handleFileChange = (e) => {
-        const { dispatch } = this.props
-        const file = e.target.files[0];
-        if (file) {
-            if (file.size <= MAX_FILE_SIZE) {
-                this.setState({
-                    selectedImageFile: file //将文件占时存放到state中
-                }, () => {
-                    this.setState({
-                        coreModalVisible: true//弹出裁剪框
-                    })
-                    console.log(file)
-                })
-            }
-            else {
-                dispatch(AppAlertAction.alertError({ title: "文件过大" }))
-            }
-        }
-    }
+    // handleFileChange = (e) => {
+    //     const { dispatch } = this.props
+    //     const file = e.target.files[0];
+    //     if (file) {
+    //         if (file.size <= MAX_FILE_SIZE) {
+    //             this.setState({
+    //                 selectedImageFile: file //将文件占时存放到state中
+    //             }, () => {
+    //                 this.setState({
+    //                     coreModalVisible: true//弹出裁剪框
+    //                 })
+    //                 console.log(file)
+    //             })
+    //         }
+    //         else {
+    //             dispatch(AppAlertAction.alertError({ title: "文件过大" }))
+    //         }
+    //     }
+    // }
 
 
     // handleGetResultImgUrl = key => blob => {
@@ -545,7 +567,7 @@ class SchoolnfoSetting extends Component {
             case 4:
                 schoolSys = "三年制初中";
                 schoolLength = "三年一贯制";
-                selected = "4"
+                // selected = "4"
                 break;
 
             case 6:
@@ -590,6 +612,7 @@ class SchoolnfoSetting extends Component {
                         bodyStyle={{ height: "348px" }}
                         visible={this.state.edit_visible}
                         okText="保存"
+                        destroyOnClose={true}
 
                     >
                         <div className="editContent">

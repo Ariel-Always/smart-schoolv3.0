@@ -183,6 +183,10 @@
         &.folder {
           line-height: 36px;
         }
+        &:hover{
+            // color: #0099ff;
+            color: #ff6600;
+        }
       }
 
       .option-logo {
@@ -218,6 +222,8 @@
         .option-logo {
           opacity: 1;
         }
+        background-color: rgba(245, 245, 245, 0.5);
+        // background-color: rgba(0,153,255,0.3);
       }
 
       .createtime {

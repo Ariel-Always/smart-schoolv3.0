@@ -44,9 +44,16 @@
     list-style: none;
     padding-left: 28px;
     padding-right: 24px;
-    .ant-spin-container{
-        width: 280px; 
-        min-height: 620px;
+    .ant-spin-container {
+      width: 280px;
+      min-height: 620px;
+      .emptyBox {
+        width: 283px;
+        margin: 154px 0px 0px 0px;
+        .empty {
+          width: 299px;
+        }
+      }
     }
 
     li {
@@ -54,8 +61,11 @@
       height: 47px;
       position: relative;
       margin-top: 16px;
-    //   &:nth-child(1) {
-    //     margin-top: 0;
+      //   &:nth-child(1) {
+      //     margin-top: 0;
+      //   }
+    //   &:hover {
+    //     background-color: rgba(245, 245, 245, 0.5);
     //   }
       .ranklogo {
         float: left;
@@ -88,6 +98,10 @@
           white-space: nowrap;
           overflow: hidden;
           cursor: pointer;
+          &:hover {
+            // color: #0099ff;
+            color: #ff6600;
+          }
         }
         .bottom-wrap {
           position: absolute;

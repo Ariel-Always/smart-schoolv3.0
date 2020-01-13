@@ -27,10 +27,7 @@ const getFolderResInfo = (
     return dispatch => {
 
         console.log(startTime);
-        dispatch({
-            type: UiLoading.FAV_LOADING_SHOW,
-            data: true
-        })
+      
         let url = "";
         if (type === "default") {
             url = `/SysMgr/Favorite/GetResInfo?typeId=${typeId}&folderID=${folderID}&keyword=${keyword}&startTime=${startTime}&endDate=${endDate}&pageIndex=${pageIndex}&pageSize=${pageSize}`
@@ -77,11 +74,13 @@ const getFolderResInfo = (
                     type: GET_FOLDER_RESCOURCE_INFO,
                     data: folderResInfo
                 })
-                dispatch({
-                    type: UiLoading.FAV_LOADING_SHOW,
-                    data: false
-                })
+                
             }
+
+            dispatch({
+                type: UiLoading.FAV_LOADING_SHOW,
+                data: false
+            })
 
 
         })
