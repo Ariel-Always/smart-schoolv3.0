@@ -77,33 +77,36 @@ class App extends Component {
     let route = history.location.pathname;
     // TokenCheck()
     //判断token是否存在
-    TokenCheck_Connect();
-    let token = sessionStorage.getItem("token");
-    // sessionStorage.setItem('UserInfo', '')
-    if (sessionStorage.getItem("UserInfo")) {
-      dispatch(
-        actions.UpDataState.getLoginUser(
-          JSON.parse(sessionStorage.getItem("UserInfo"))
-        )
-      );
-      this.requestData(route);
-    } else {
-      getUserInfo(token, "000");
-      let that = this;
-      let timeRun = setInterval(function() {
-        if (sessionStorage.getItem("UserInfo")) {
-          dispatch(
-            actions.UpDataState.getLoginUser(
-              JSON.parse(sessionStorage.getItem("UserInfo"))
-            )
-          );
-          that.requestData(route);
+    let that = this;
 
-          clearInterval(timeRun);
-        }
-      }, 1000);
-      //dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
-    }
+    TokenCheck_Connect(false,()=>{
+      let token = sessionStorage.getItem("token");
+      // sessionStorage.setItem('UserInfo', '')
+      if (sessionStorage.getItem("UserInfo")) {
+        dispatch(
+          actions.UpDataState.getLoginUser(
+            JSON.parse(sessionStorage.getItem("UserInfo"))
+          )
+        );
+        that.requestData(route);
+      } else {
+        getUserInfo(token, "000");
+        let timeRun = setInterval(function() {
+          if (sessionStorage.getItem("UserInfo")) {
+            dispatch(
+              actions.UpDataState.getLoginUser(
+                JSON.parse(sessionStorage.getItem("UserInfo"))
+              )
+            );
+            that.requestData(route);
+  
+            clearInterval(timeRun);
+          }
+        }, 1000);
+        //dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
+      }
+    });
+    
   }
 
   componentWillMount() {
@@ -303,6 +306,7 @@ class App extends Component {
 
   render() {
     const { UIState, DataState } = this.props;
+    let UserID = DataState.LoginUser.UserID
 
     return (
       <React.Fragment>
@@ -337,7 +341,7 @@ class App extends Component {
                 size="large"
                 spinning={UIState.AppLoading.RightLoading}
               >
-                <Router>
+               { UserID?<Router>
                   <Route
                     path="/"
                     history={history}
@@ -367,7 +371,7 @@ class App extends Component {
                     history={history}
                     component={Admin}
                   ></Route>
-                </Router>
+                </Router>:''}
               </Loading>
             </div>
           </Frame>

@@ -14,6 +14,8 @@ import moment from 'moment';
 
 import 'moment/locale/zh-cn';
 
+import utils from "../../actions/utils";
+
 moment.locale('zh-cn');
 
 
@@ -26,6 +28,14 @@ class ChangeClassRoom extends Component{
         const { dispatch } = this.props;
 
         dispatch(ABTActions.changeClassRoomDatePick(dateString));
+
+    }
+
+    dateDisabled(current){
+
+        const { dispatch } = this.props;
+
+        return  dispatch(utils.DateDisabled(current));
 
     }
 
@@ -105,7 +115,7 @@ class ChangeClassRoom extends Component{
 
                     <ConfigProvider locale={zhCN}>
 
-                        <DatePicker value={date?moment(date):null} onChange={this.dateChange.bind(this)}></DatePicker>
+                        <DatePicker disabledDate={this.dateDisabled.bind(this)} value={date?moment(date):null} onChange={this.dateChange.bind(this)}></DatePicker>
 
                     </ConfigProvider>
 

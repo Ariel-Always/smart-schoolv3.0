@@ -15,8 +15,8 @@ class YearSemesterSetting extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            visible_create: false,
-            visible_modify: false,
+            visible_create: false,//开启新学年弹层的显示与隐藏
+            visible_modify: false,//调整学年期限弹层的显示与隐藏
 
 
 
@@ -85,11 +85,13 @@ class YearSemesterSetting extends Component {
 
         if (semesterInfo.TermStartDate === "" || semesterInfo.TermEndDate === "") {
             dispatch(AppAlertAction.alertError({ title: "开始日期或结束日期不能为空！" }))
+            return false
 
         } if (semesterInfo.TermStartDate === semesterInfo.defaultStartDate &&
             semesterInfo.TermEndDate === semesterInfo.defaultEndDate &&
             semesterInfo.defaultTerm === semesterInfo.Term) {
             dispatch(AppAlertAction.alertTips({ title: "未进行任何修改", cancelTitle: "确定" }))
+            return false
         } else {
             dispatch({
                 type: DataChange.SEMESTER_LOADING_HIDE,
@@ -150,11 +152,13 @@ class YearSemesterSetting extends Component {
 
         if (semesterInfo.TermStartDate === "" || semesterInfo.TermEndDate === "") {
             dispatch(AppAlertAction.alertError({ title: "开始日期或结束日期不能为空！" }))
+            return false
 
         }
         if (semesterInfo.TermStartDate === semesterInfo.defaultStartDate &&
             semesterInfo.TermEndDate === semesterInfo.defaultEndDate) {
             dispatch(AppAlertAction.alertTips({ title: "未进行任何修改", cancelTitle: "确定" }))
+            return false
         } else {
             dispatch({
                 type: DataChange.SEMESTER_LOADING_HIDE,
@@ -227,10 +231,10 @@ class YearSemesterSetting extends Component {
 
     }
 
-   /*  监听调整学期期限中开始时间输入框中值的变化
-   param 1 所选日期的Moment对象
-   param 2　所有日期的字符串格式
-   */
+    /*  监听调整学期期限中开始时间输入框中值的变化
+    param 1 所选日期的Moment对象
+    param 2　所有日期的字符串格式
+    */
     getPainDate = (value, datastring) => {
         console.log(datastring)
         let { dispatch, semesterInfo } = this.props
@@ -244,7 +248,10 @@ class YearSemesterSetting extends Component {
         })
     }
 
-    //监听调整学期期限中放假时间输入框中值的变化
+    /* 监听调整学期期限中放假时间输入框中值的变化
+       param 1 所选日期的Moment对象
+       param 2　所有日期的字符串格式
+     */
 
     getOffDate = (value, datastring) => {
 
@@ -296,19 +303,21 @@ class YearSemesterSetting extends Component {
             <Loading spinning={semesterloading} opacity={false} tip="请稍后...">
 
                 <div className="year-semester" >
-                    <div className="guide">
+                    {semesterInfo.TotalWeeks ? <React.Fragment><div className="guide">
+
                         <div className="semester-logo"></div>
                         <span>学年学期设置</span>
                     </div>
-                    <i></i>
-                    <div className="semester-info">
+                        <i></i>
+                        <div className="semester-info">
 
-                        <p>本学期共<span>{semesterInfo.TotalWeeks}</span>周 , 当前<span>{semesterInfo.TermStatus === 2 ? "学期已经结束" :
-                            semesterInfo.TermStatus === 0 ? "学期未开始" :
-                                semesterInfo.TermStatus === 1 ? `第${semesterInfo.CurrentWeek}周` : ""} </span>  </p>
+                            <p>本学期共<span>{semesterInfo.TotalWeeks}</span>周 , 当前<span>{semesterInfo.TermStatus === 2 ? "学期已经结束" :
+                                semesterInfo.TermStatus === 0 ? "学期未开始" :
+                                    semesterInfo.TermStatus === 1 ? `第${semesterInfo.CurrentWeek}周` : ""} </span>  </p>
 
 
-                    </div>
+                        </div> </React.Fragment> : ""}
+
                     <div className="current-semester">
                         <p className="term">当前学年学期</p>
                         <div className="term-year">

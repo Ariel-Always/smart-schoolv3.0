@@ -611,7 +611,295 @@ const AdjustByTeacherModal = (state={
 
         case ABTActions.ADJUST_BY_TEACHER_TAB_CHANGE:
 
-            return{...state,activeKey:actions.data};
+            return{
+
+                ...state,
+
+                activeKey:actions.data,
+
+                replaceSchedule:{
+
+                    ...state.replaceSchedule,
+
+                    loadingShow:true,
+
+                    replaceTeacherOptions:{
+
+                        dropSelectd:{value:"none",title:"请选择任课教师"},
+
+                        searchList:[],
+
+                        searchLoadingShow:false,
+
+                        searchOpen:false
+
+                    },
+
+                    // teacherSubject:{
+                    //
+                    //     dropShow:false,
+                    //
+                    //     select:{
+                    //
+                    //         dropSelectd:'',
+                    //
+                    //         dropList:[]
+                    //
+                    //     },
+                    //
+                    //     name:'',
+                    //
+                    //     id:''
+                    //
+                    // },
+                    //
+                    // classList:[],
+
+                    classCheckedList:[],
+
+                    activeRadio:"all",
+
+                    monthsList:[],
+
+                    monthsCheckedList:[],
+
+                    weeksList:[],
+
+                    weeksCheckedList:[],
+
+                    dateCheckedList:[],
+
+                    classHourDate:'',
+
+                    WeekDay:'',
+
+                    WeekNO:'',
+
+                    dateLoadingShow:true,
+
+                    classHourList:[],
+
+                    classHourCheckedList:[],
+
+                    classHourLoadingShow:true,
+
+                    classHourPlainOpts:[],
+
+                    originTeacherTips:false,
+
+                    originTeacherTipsTitle:'',
+
+                    replaceTeacherTips:false,
+
+                    replaceTeacherTipsTitle:'',
+
+                    classTips:false,
+
+                    classTipsTitle:'',
+
+                    monthTips:false,
+
+                    monthTipsTitle:'',
+
+                    weekTips:false,
+
+                    weekTipsTitle:'',
+
+                    dateTips:false,
+
+                    dateTipsTitle:'',
+
+                    classHourDateTips:false,
+
+                    classHourDateTipsTitle:'',
+
+                    classHourTips:false,
+
+                    classHourTipsTitle:'',
+
+                },
+
+                changeSchedule:{
+
+                    originDropSelectd:{value:"none",title:"请选择任课教师"},
+
+                    originSearchList:[],
+
+                    originSearchOpen:false,
+
+                    originSearchLoadingShow:true,
+
+                    originDate:'',
+
+                    originSchedulePickDisabled:true,
+
+                    originScheduleList:[],
+
+                    originScheduleDropSelectd:{value:"none",title:"请选择节次"},
+
+                    targetDropSelectd:{value:"none",title:"请选择任课教师"},
+
+                    targetSearchList:[],
+
+                    targetSearchOpen:false,
+
+                    targetSearchLoadingShow:true,
+
+                    targetDate:'',
+
+                    targetSchedulePickDisabled:true,
+
+                    targetScheduleList:[],
+
+                    targetScheduleDropSelectd:{value:"none",title:"请选择节次"},
+
+                    originTeacherTips:false,
+
+                    originDateTips:false,
+
+                    originScheduleTips:false,
+
+                    targetTeacherTips:false,
+
+                    targetDateTips:false,
+
+                    targetScheduleTips:false
+
+                },
+
+                changeTime:{
+
+                    oldClassRoomList:[],
+
+                    teacherDrop:{value:"none",title:"请选择教师"},
+
+                    searchList:[],
+
+                    searchOpen:false,
+
+                    searchLoadingShow:true,
+
+                    originDate:'',
+
+                    oldClassHourDrop:{value:"none",title:"请选择节次"},
+
+                    oldClassHourList:[],
+
+                    oldClassHourDisabled:true,
+
+                    oldWeek:'',
+
+                    oldWeekLoading:true,
+
+                    newDate:'',
+
+                    newClassHourDrop:{value:"none",title:"请选择节次"},
+
+                    newClassHourList:[],
+
+                    newClassHourDisabled:true,
+
+                    newWeek:'',
+
+                    newWeekLoading:true,
+
+                    newClassRoomDrop:{value:"none",title:"请选择教室"},
+
+                    newClassRoomList:[],
+
+                    newClassRoomDisabled:true,
+
+                    errorTips:false,
+
+                    teacherTips:false,
+
+                    originDateTips:false,
+
+                    originScheduleTips:false,
+
+                    targetDateTips:false,
+
+                    targetScheduleTips:false,
+
+                    targetClassRoomTips:false
+
+                },
+
+                ChangeClassRoom:{
+
+                    loadingShow:true,
+
+                    teacherDrop:{value:"none",title:"请选择教师"},
+
+                    teacherSearchList:[],
+
+                    teacherSearchOpen:false,
+
+                    teacherSearchLoadingShow:true,
+
+                    teacherClassRoomList:[],
+
+                    date:"",
+
+                    classHourDrop:{value:"none",title:"请选择节次"},
+
+                    classHourList:[],
+
+                    classHourDisabled:true,
+
+                    WeekNO:"",
+
+                    WeekDay:"",
+
+                    ClassHour:"",
+
+                    teacherClassRoom:{id:"none",name:"请选择节次来获取上课教室"},
+
+                    classRoomDrop:{value:"none",title:"请选择教室"},
+
+                    classRoomList:[],
+
+                    classRoomDisabled:true,
+
+                    teacherTips:false,
+
+                    dateTips:false,
+
+                    scheduleTips:false,
+
+                    targetClassRoomTips:false
+
+                },
+
+                StopSchedule: {
+
+                    date:"",
+
+                    classHours:[],
+
+                    classHoursCheckedList:[],
+
+                    classHoursPlainOpts:[],
+
+                    teacherDrop:{value:"none",title:"请选择教师"},
+
+                    teacherSearchOpen:false,
+
+                    teacherSearchLoadingShow:false,
+
+                    teacherSearchList:[],
+
+                    classHourLoading:false,
+
+                    dateTips:false,
+
+                    scheduleTips:false,
+
+                    teacherTips:false
+
+                }
+
+            };
 
         case ABTActions.ADJUST_BY_TEACHER_TEACHER_LIST_UPDATE:
 

@@ -210,7 +210,7 @@ class Input extends React.Component {
             prefix: props.prefix, /*前置图标*/
             suffix: props.suffix, /*后置图标*/
             onClick: props.onClick,
-            onChange: props.onChange ? props.onChange : this.onInputChange.bind(this),
+            onChange: this.onInputChange.bind(this),
             onFocus: props.onFocus,
             onKeyDown: props.onKeyDown,
             onBlur: props.onBlur,
@@ -224,9 +224,16 @@ class Input extends React.Component {
     //onChange
     onInputChange = (e) => {
       // console.log(e.target.value)
+      if(this.props.onChange){
+          e.target.value = e.target.value.trim()
+        this.props.onChange(e)
+        console.log(e.target.value)
+      }else{
         this.setState({
-            value: e.target.value
+            value: e.target.value.trim()
         })
+      }
+        
     }
     /*
      * 根据type选择组件
@@ -469,7 +476,7 @@ class Modal extends React.Component {
             onOk: props.onOk, /*点击确定回调*/
             visible: props.visible, /*对话框是否可见*/
             className: props.className ? props.className : '', /**/
-            destroyOnClose:props.destroyOnClose ? props.destroyOnClose : false,
+            destroyOnClose:props.destroyOnClose ? props.destroyOnClose : true,
 
         }
     }
@@ -519,9 +526,52 @@ class Modal extends React.Component {
         this.setState({ title: title });
 
     }
-
+// 拖拽modal
 
     componentDidMount(){
+//         let modalHeader = $('.ant-modal-header');
+//         let modal = $(this.refs.Modal);
+        
+//         console.log(modalHeader,modal)
+//         modal.click((e)=>{
+// console.log(e)
+//         })
+//         modal.mousedown(function(e) {
+//             // e.pageX
+//             console.log('215')
+//             var positionDiv = $(this).offset();
+//             var distenceX = e.pageX - positionDiv.left;
+//             var distenceY = e.pageY - positionDiv.top;
+//             //alert(distenceX)
+//             // alert(positionDiv.left);
+        
+//             $(document).mousemove(function(e) {
+//                 var x = e.pageX - distenceX;
+//                 var y = e.pageY - distenceY;
+        
+//                 if (x < 0) {
+//                     x = 0;
+//                 } else if (x > $(document).width() - modal.outerWidth(true)) {
+//                     x = $(document).width() - modal.outerWidth(true);
+//                 }
+        
+//                 if (y < 0) {
+//                     y = 0;
+//                 } else if (y > $(document).height() - modal.outerHeight(true)) {
+//                     y = $(document).height() - $modal.outerHeight(true);
+//                 }
+        
+//                 modal.css({
+//                     'left': x + 'px',
+//                     'top': y + 'px'
+//                 });
+//             });
+        
+//             $(document).mouseup(function() {
+//                 $(document).off('mousemove');
+//             });
+//         });
+
 
        /* $('.ant-modal').each((index,that)=>{
 
@@ -610,7 +660,10 @@ class Modal extends React.Component {
     render() {
 
         return (
-            <AntdModal ref={ref=>this.Modal=ref} onOk={this.state.onOk}
+            <AntdModal 
+            // ref={ref=>this.Modal=ref} 
+            ref='Modal'
+            onOk={this.state.onOk}
                 onCancel={this.state.onCancel}
                 title={this.state.title}
                 className={`initModel ${this.state.ModalStyle} ${this.state.className}`}
@@ -635,6 +688,7 @@ class Modal extends React.Component {
                     </Button>,
 
                 ]}
+                id="AntdModal"
             >
                 {this.props.children}
             </AntdModal>
@@ -2591,7 +2645,14 @@ class DetailsModal extends React.Component {
                 {...params}
             >
                 <div className='modal-top'>
-                    <div className='top-img' alt={data.userName}   style={{background:`url(${data.userImg}) no-repeat center center / 80px`}}>
+                    <div className='top-img' alt={data.userName}   style={{
+                        backgroundColor:'#fff',
+                        backgroundRepeat:'no-repeat',
+                        backgroundImage:`url(${data.userImg})`,
+                        backgroundPosition: 'center center',
+                        backgroundSize:'80px'
+                        // ,background:`url(${data.userImg}) no-repeat center center / 80px`
+                        }}>
                         
                     </div>
                     <p className='top-userName' title={data.userName}>{data.userName}<span style={{ opacity: 0.64, marginLeft: 3 + 'px' }}>{(data.Gende === '男' ? '♂' :  data.Gende === '女' ? '♀' : '')}</span></p>

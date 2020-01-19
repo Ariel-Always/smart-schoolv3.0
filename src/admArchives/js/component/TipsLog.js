@@ -17,12 +17,12 @@ class TipsLog extends React.Component {
               Logs.map((child, index) => {
                 return (
                   <div key={index} className="box-content">
-                    <div className="content">
+                    <div className="content" style={{ borderBottom: "1px #c1c1c1 dashed"}}>
                       <span title={child.Content} className={`content-text `}>
                         {child.Content}
                       </span>
                     </div>
-                    <hr style={{ border: "1px #c1c1c1 dotted",width:'380px' }} />
+                    {/* <hr style={{ borderBottom: "1px #c1c1c1 dashed",width:'380px' }} /> */}
                   </div>
                 );
               })}

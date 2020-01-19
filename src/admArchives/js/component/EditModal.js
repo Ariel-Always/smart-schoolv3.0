@@ -383,7 +383,7 @@ class EditModal extends React.Component {
     onEditIDChange = (e) => {
         const { dispatch } = this.props
         this.setState({
-            UserIDChange: e.target.value
+            UserIDChange: e.target.value.trim()
         })
         //用户ID（工号/学号）检测  
         //长度是1~30位，只能由字母与数字组成。
@@ -445,7 +445,7 @@ class EditModal extends React.Component {
        
 
         this.setState({
-            defaultUserName: e.target.value
+            defaultUserName: e.target.value.trim()
         })
 
     }
@@ -573,7 +573,7 @@ class EditModal extends React.Component {
 
 
         this.setState({
-            IDCardChange: e.target.value
+            IDCardChange: e.target.value.trim()
         })
 
     }
@@ -609,7 +609,7 @@ class EditModal extends React.Component {
     onEditPhoneChange = (e) => {
 
         this.setState({
-            PhoneChange: e.target.value
+            PhoneChange: e.target.value.trim()
         })
 
     }
@@ -643,7 +643,7 @@ class EditModal extends React.Component {
     onEditMailChange = (e) => {
 
         this.setState({
-            MailChange: e.target.value
+            MailChange: e.target.value.trim()
         })
 
     }
@@ -689,7 +689,7 @@ class EditModal extends React.Component {
     onEditAddressChange = (e) => {
 
         this.setState({
-            AddressChange: e.target.value
+            AddressChange: e.target.value.trim()
         })
 
     }

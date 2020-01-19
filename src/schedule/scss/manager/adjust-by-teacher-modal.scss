@@ -578,6 +578,14 @@
 
       z-index: 1;
 
+      .error-tips{
+
+        margin-top: 4px;
+
+        margin-left: 8px;
+
+      }
+
     }
 
     .month-item{
@@ -799,6 +807,8 @@
 
       margin-left:48px;
 
+      z-index:5;
+
       .props{
 
         margin-right: 12px;
@@ -843,6 +853,10 @@
 
     .old-time-wrapper,
     .new-time-wrapper{
+
+      position: relative;
+
+      z-index: 4;
 
       width: 300px;
 
@@ -1078,6 +1092,8 @@
 
       position: relative;
 
+      z-index: 3;
+
       .props:not(:first-child){
 
         margin-left: 138px;
@@ -1128,6 +1144,8 @@
 
       position: relative;
 
+      z-index: 5;
+
       .error-tips{
 
         left: 212px;
@@ -1141,6 +1159,8 @@
     .time-wrapper{
 
       position: relative;
+
+      z-index: 4;
 
       .error-tips{
 
@@ -1203,6 +1223,8 @@
     .teacher-wrapper{
 
       position: relative;
+
+      z-index: 5;
 
       .props{
 
@@ -1388,6 +1410,8 @@
 
       position: relative;
 
+      z-index: 3;
+
       margin-left:86px;
 
       .error-tips{
@@ -1403,6 +1427,8 @@
     .checked-date-wrapper{
 
       position: relative;
+
+      z-index: 4;
 
       .error-tips{
 

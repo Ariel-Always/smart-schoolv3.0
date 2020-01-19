@@ -94,6 +94,8 @@ class TeacherPersonalSchedule extends Component{
 
         dispatch({type:AdjustByTeacherActions.ADJUST_BY_TEACHER_SHOW});
 
+        dispatch(AdjustByTeacherActions.AdjustByTeacherScheduleInit());
+
     }
 
     //导入课表

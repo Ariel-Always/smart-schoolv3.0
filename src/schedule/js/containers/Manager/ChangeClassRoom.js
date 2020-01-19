@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 
 import ABTActions from "../../actions/Manager/AdjustByTeacherActions";
 
-import { DatePicker,ConfigProvider } from 'antd';
+import { DatePicker,ConfigProvider,Tooltip } from 'antd';
 
 import zhCN from 'antd/es/locale/zh_CN';
 
@@ -148,25 +148,29 @@ class ChangeClassRoom extends Component{
 
                     <span className="props">老师:</span>
 
-                    <DropDown  width={150}
-                               dropSelectd={teacherDrop}
-                               type="multiple"
-                               style={{zIndex:5}}
-                               mutipleOptions={{
-                                   range:2,
-                                   dropMultipleList:teacherList,
-                                   dropMultipleChange:this.teacherDropChange.bind(this),
-                                   dropClickSearch:this.teacherClickSearch.bind(this),
-                                   dropCancelSearch:this.teacherSearchClose.bind(this),
-                                   searchList:teacherSearchList,
-                                   searchPlaceholder:"请输入姓名或工号进行搜索...",
-                                   searchOpen:teacherSearchOpen,
-                                   searchLoadingShow:teacherSearchLoadingShow
-                               }}>
+                    <Tooltip title="请选择教师" visible={teacherTips} getPopupContainer={triggerNode =>triggerNode.parentNode} placement="right" autoAdjustOverflow={false}>
 
-                    </DropDown>
+                        <DropDown  width={150}
+                                   dropSelectd={teacherDrop}
+                                   type="multiple"
+                                   style={{zIndex:5}}
+                                   mutipleOptions={{
+                                       range:2,
+                                       dropMultipleList:teacherList,
+                                       dropMultipleChange:this.teacherDropChange.bind(this),
+                                       dropClickSearch:this.teacherClickSearch.bind(this),
+                                       dropCancelSearch:this.teacherSearchClose.bind(this),
+                                       searchList:teacherSearchList,
+                                       searchPlaceholder:"请输入姓名或工号进行搜索...",
+                                       searchOpen:teacherSearchOpen,
+                                       searchLoadingShow:teacherSearchLoadingShow
+                                   }}>
 
-                    <span className="error-tips" style={{display:`${teacherTips?'block':'none'}`}}>请选择教师</span>
+                        </DropDown>
+
+                    </Tooltip>
+
+                    {/*<span className="error-tips" style={{display:`${teacherTips?'block':'none'}`}}>请选择教师</span>*/}
 
                 </div>
 
@@ -176,15 +180,20 @@ class ChangeClassRoom extends Component{
 
                     <ConfigProvider locale={zhCN}>
 
+                        <Tooltip title="请选择日期" visible={dateTips} getPopupContainer={triggerNode =>triggerNode.parentNode} placement="right" autoAdjustOverflow={false}>
+
                         <DatePicker disabledDate={this.dateDisabled.bind(this)} value={date?moment(date):null} onChange={this.dateChange.bind(this)}></DatePicker>
+
+                        </Tooltip>
 
                     </ConfigProvider>
 
-                    <span className="error-tips" style={{display:`${dateTips?'block':'none'}`}}>请选择日期</span>
+                    {/*<span className="error-tips" style={{display:`${dateTips?'block':'none'}`}}>请选择日期</span>*/}
 
+                    <Tooltip title="请选择课时" visible={scheduleTips} getPopupContainer={triggerNode =>triggerNode.parentNode} placement="right" autoAdjustOverflow={false}>
 
-                    <DropDown width={150}
-                              height={72}
+                        <DropDown width={150}
+                              height={200}
                               style={{zIndex:4}}
                               dropSelectd={classHourDrop}
                               dropList={classHourList}
@@ -194,7 +203,9 @@ class ChangeClassRoom extends Component{
 
                     </DropDown>
 
-                    <span className="error-tips" style={{display:`${scheduleTips?'block':'none'}`}}>请选择课时</span>
+                    </Tooltip>
+
+                    {/*<span className="error-tips" style={{display:`${scheduleTips?'block':'none'}`}}>请选择课时</span>*/}
 
 
                     <span className="week-wrapper">{WeekNO?`第${WeekNO}周`:''} {WeekDay} { ClassHour }</span>
@@ -210,8 +221,10 @@ class ChangeClassRoom extends Component{
 
                     <span className="props">新的教室:</span>
 
+                    <Tooltip title="请选择教室" visible={targetClassRoomTips} getPopupContainer={triggerNode =>triggerNode.parentNode} placement="right" autoAdjustOverflow={false}>
+
                     <DropDown width={150}
-                              height={72}
+                              height={200}
                               style={{zIndex:2}}
                               dropSelectd={classRoomDrop}
                               dropList={classRoomList}
@@ -220,7 +233,9 @@ class ChangeClassRoom extends Component{
 
                     </DropDown>
 
-                    <span className="error-tips" style={{display:`${targetClassRoomTips?'block':'none'}`}}>请选择教室</span>
+                    </Tooltip>
+
+                    {/*<span className="error-tips" style={{display:`${targetClassRoomTips?'block':'none'}`}}>请选择教室</span>*/}
 
                 </div>
 

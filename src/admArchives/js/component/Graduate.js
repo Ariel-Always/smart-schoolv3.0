@@ -757,7 +757,7 @@ class Graduate extends React.Component {
               <span className="tips menu-location ">毕业生档案管理</span>
             </span>
           </div>
-          <hr className="Graduate-hr" />
+          <div className="Graduate-hr" ></div>
           <div className="Graduate-content">
             <div className="content-top">
               <div className="dropMenu-box">

@@ -308,6 +308,7 @@ const getCurrentSbusystemInfo = ({ UserType, IsOpened, keyword }) => {
                 let Total = subsystemInfo.List.length;
                 //计算子系统关闭的数量
                 let closeNum = 0;
+                let overside=0
 
                 subsystemInfo.List.map((item, key) => {
                     //暂时存放UserType解析出来的(数字转成对应的中文)
@@ -317,6 +318,9 @@ const getCurrentSbusystemInfo = ({ UserType, IsOpened, keyword }) => {
                     if (item.SubSystemStatus === 0) {
                         closeNum++;
 
+                    }
+                    if(item.CanBeClose===false){
+                        overside++
                     }
                     //将每个子系统的UserType解析出来的(数字转成对应的中文)
                     //0：管理员，1：教师，2：学生，3：家长，7：领导、
@@ -333,7 +337,7 @@ const getCurrentSbusystemInfo = ({ UserType, IsOpened, keyword }) => {
                 //将计算值添加到数据结构中
                 subsystemInfo = {
                     ...subsystemInfo,
-                    Total: Total,
+                    Total: Total-overside,
                     TotalClose: closeNum
                 }
 
@@ -355,60 +359,60 @@ const getCurrentSbusystemInfo = ({ UserType, IsOpened, keyword }) => {
 
     }
 }
+//测试使用 无效
+// const getCurrentSbusystemInfo1 = () => {
+//     return dispatch => {
+//         const url = `/temp/SystemInfo`;
+//         ApiActions.tempGetMethod(url).then(json => {
+//             let subsystemInfo = json.Data;
+//             // console.log(subsystemInfo)
 
-const getCurrentSbusystemInfo1 = () => {
-    return dispatch => {
-        const url = `/temp/SystemInfo`;
-        ApiActions.tempGetMethod(url).then(json => {
-            let subsystemInfo = json.Data;
-            // console.log(subsystemInfo)
-
-            //计算有多少个子系统Total
-            let Total = subsystemInfo.List.length;
-            //转换英文to中文用户类型
-            let zhUserName = ""
-            let namelist = []
-            //计算子系统关闭的数量
-            let closeNum = 0
-            subsystemInfo.List.map((item, key) => {
-                // let count = 0;
-                if (item.SubSystemStatus === 1) {
-                    closeNum++;
-                    // console.log("找到了")
-                }
-                // namelist=item.UserType.split(',')
-
-
-            })
-            // console.log(count)
-            //将计算值添加到数据结构中
-            subsystemInfo = {
-                ...subsystemInfo,
-                "Total": Total,
-                "TotalClose": closeNum
-            }
+//             //计算有多少个子系统Total
+//             let Total = subsystemInfo.List.length;
+//             //转换英文to中文用户类型
+//             let zhUserName = ""
+//             let namelist = []
+//             //计算子系统关闭的数量
+//             let closeNum = 0
+//             subsystemInfo.List.map((item, key) => {
+//                 // let count = 0;
+//                 if (item.SubSystemStatus === 1) {
+//                     closeNum++;
+//                     // console.log("找到了")
+//                 }
+//                 // namelist=item.UserType.split(',')
 
 
+//             })
+//             // console.log(count)
+//             //将计算值添加到数据结构中
+//             subsystemInfo = {
+//                 ...subsystemInfo,
+//                 "Total": Total,
+//                 "TotalClose": closeNum
+//             }
 
 
 
 
-            dispatch({
-                type: CET_CURRENT_SUBSYSTEM_INFO,
-                data: subsystemInfo
-            })
-            dispatch({
-                type: SEMESTER_LOADING_HIDE
-            })
 
 
-            // console.log("错误提示："+json.Msg)
-            // console.log(json.StatusCode)
+//             dispatch({
+//                 type: CET_CURRENT_SUBSYSTEM_INFO,
+//                 data: subsystemInfo
+//             })
+//             dispatch({
+//                 type: SEMESTER_LOADING_HIDE
+//             })
 
-        });
 
-    }
-}
+//             // console.log("错误提示："+json.Msg)
+//             // console.log(json.StatusCode)
+
+//         });
+
+//     }
+// }
 
 
 
@@ -427,7 +431,7 @@ export default {
     GET_CURRENT_SCHOOL_INFO,
     REFRESH_SCHOOL_INFO,
     getCurrentSbusystemInfo,
-    getCurrentSbusystemInfo1,
+    // getCurrentSbusystemInfo1,
     CET_CURRENT_SUBSYSTEM_INFO,
     REFRESH_SUBSYSTEM_INFO,
     INIT_PERIOD_LIST,

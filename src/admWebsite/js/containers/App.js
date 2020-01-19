@@ -41,38 +41,41 @@ class App extends Component {
     const { dispatch, DataState } = this.props;
     let route = history.location.pathname;
     //判断token是否存在
-    TokenCheck_Connect();
-    //sessionStorage.setItem('token','')
     let that = this;
-    let token = sessionStorage.getItem("token");
-    // sessionStorage.setItem('UserInfo', '')
+
+    TokenCheck_Connect(false,()=>{
+//sessionStorage.setItem('token','')
+let token = sessionStorage.getItem("token");
+// sessionStorage.setItem('UserInfo', '')
+if (sessionStorage.getItem("UserInfo")) {
+  dispatch(
+    actions.UpDataState.getLoginUser(
+      JSON.parse(sessionStorage.getItem("UserInfo"))
+    )
+  );
+  that.RequestData();
+} else {
+  getUserInfo(token, "000");
+  let timeRun = setInterval(function() {
     if (sessionStorage.getItem("UserInfo")) {
       dispatch(
         actions.UpDataState.getLoginUser(
           JSON.parse(sessionStorage.getItem("UserInfo"))
         )
       );
-      this.RequestData();
-    } else {
-      getUserInfo(token, "000");
-      let timeRun = setInterval(function() {
-        if (sessionStorage.getItem("UserInfo")) {
-          dispatch(
-            actions.UpDataState.getLoginUser(
-              JSON.parse(sessionStorage.getItem("UserInfo"))
-            )
-          );
-          that.RequestData();
+      that.RequestData();
 
-          clearInterval(timeRun);
-        }
-      }, 1000);
-      //dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
+      clearInterval(timeRun);
     }
+  }, 1000);
+  //dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
+}
 
-    history.listen(() => {
-      this.RequestData();
+history.listen(() => {
+  this.RequestData();
+});
     });
+    
   }
 
   // 第一次访问所要请求的接口
@@ -136,6 +139,7 @@ class App extends Component {
 
   render() {
     const { UIState, DataState } = this.props;
+    let UserID = DataState.LoginUser.UserID
 
     return (
       <React.Fragment>
@@ -176,7 +180,7 @@ class App extends Component {
               ref="frame-right-content"
             >
               <Loading spinning={UIState.AppLoading.appLoading}>
-                <Main></Main>
+                {UserID?<Main></Main>:''}
               </Loading>
             </div>
           </Frame>

@@ -71,7 +71,7 @@ class Record extends React.Component {
                     render: OperateParams => {
                         return (
                             <p style={{ textAlign: 'left', marginBottom: 0, paddinLeft: 10 + 'px' }}>
-                                <span className='OperateParams'>{OperateParams.OperateParams.map((param,index) => {
+                                <span className='OperateParams' title={OperateParams.OperateParams.join('')}>{OperateParams.OperateParams.map((param,index) => {
                                     if(index%2){
                 
                                         return <span key={param} className='key-params'>{param}</span>
@@ -137,7 +137,7 @@ class Record extends React.Component {
 
 
         let userMsg = DataState.LoginUser;
-        dispatch(actions.UpDataState.getCourseClassRecordMsg('/GetGourseClassLogForPage?userID=' + userMsg.UserID + '&userType=' + userMsg.UserType + '&schoolID=' + userMsg.SchoolID + '&startDate=' + this.state.startTime + '&endDate=' + this.state.endTime + '&operateType=0'))
+        // dispatch(actions.UpDataState.getCourseClassRecordMsg('/GetGourseClassLogForPage?userID=' + userMsg.UserID + '&userType=' + userMsg.UserType + '&schoolID=' + userMsg.SchoolID + '&startDate=' + this.state.startTime + '&endDate=' + this.state.endTime + '&operateType=0'))
     }
 
     //钩子
@@ -428,7 +428,7 @@ class Record extends React.Component {
                         </Router>
 
                     </div>
-                    <hr className='log-hr' />
+                    <div className='log-hr' ></div>
                 </div>
                 <div className='log-content'>
                     <div className='content-top clearfix'>

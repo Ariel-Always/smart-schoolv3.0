@@ -14,6 +14,8 @@ import moment from 'moment';
 
 import 'moment/locale/zh-cn';
 
+import utils from "../../actions/utils";
+
 moment.locale('zh-cn');
 
 
@@ -37,6 +39,14 @@ class AdjustByClassRoomContent extends Component{
         const { dispatch } = this.props;
 
         dispatch(ABCRActions.OriginClassRoomSearch(e.value));
+
+    }
+
+    disabledDate(current){
+
+        const { dispatch } = this.props;
+
+        return dispatch(utils.DateDisabled(current))
 
     }
 
@@ -238,11 +248,11 @@ class AdjustByClassRoomContent extends Component{
     //dateRanger改变date日历的显示方式
     dateRander(current,today){
 
-        const { AdjustByClassRoom } = this.props;
+        const { AdjustByClassRoom,ItemWeek,NowDate } = this.props;
 
         const { dateCheckedList } = AdjustByClassRoom;
 
-        let currentDate = moment(current).format('L').replace(/\//g,'-');
+        /*let currentDate = moment(current).format('L').replace(/\//g,'-');
 
         if (dateCheckedList.includes(currentDate)){
 
@@ -251,6 +261,24 @@ class AdjustByClassRoomContent extends Component{
         }else{
 
             return <div className="ant-calendar-date">{current.date()}</div>
+
+        }*/
+
+        let currentDate = moment(current).format('L').replace(/\//g,'-');
+
+        let LastDate = ItemWeek[ItemWeek.length-1].EndDate;
+
+        if (dateCheckedList.includes(currentDate)){
+
+            return <div className="ant-calendar-date" style={{background:'#1890ff',color:"#ffffff"}}>{current.date()}</div>
+
+        }else if (current<=moment(LastDate)&&current>=moment(NowDate)) {
+
+            return <div className="ant-calendar-date" style={{color:'rgba(0, 0, 0, 0.65)',background:'transparent'}}>{current.date()}</div>
+
+        }else{
+
+            return <div className="ant-calendar-date" >{current.date()}</div>
 
         }
 
@@ -473,7 +501,7 @@ class AdjustByClassRoomContent extends Component{
 
                                     <ConfigProvider locale={zhCN}>
 
-                                        <DatePicker showToday={false} dateRender={this.dateRander.bind(this)} onChange={this.dateChecked.bind(this)} style={{width:626}}></DatePicker>
+                                        <DatePicker disabledDate={this.disabledDate.bind(this)} showToday={false} dateRender={this.dateRander.bind(this)} onChange={this.dateChecked.bind(this)} style={{width:626}}></DatePicker>
 
                                     </ConfigProvider>
 
@@ -500,7 +528,7 @@ class AdjustByClassRoomContent extends Component{
 
                                     <ConfigProvider locale={zhCN}>
 
-                                        <DatePicker showToday={false} value={classHourDate?moment(classHourDate,'YYYY-MM-DD'):null} onChange={this.classHourDateChecked.bind(this)}></DatePicker>
+                                        <DatePicker disabledDate={this.disabledDate.bind(this)} showToday={false} value={classHourDate?moment(classHourDate,'YYYY-MM-DD'):null} onChange={this.classHourDateChecked.bind(this)}></DatePicker>
 
                                     </ConfigProvider>
 
@@ -609,9 +637,11 @@ const mapStateToProps = (state) => {
 
     const { AdjustByClassRoom } = state.Manager;
 
+    const { ItemWeek,NowDate } = state.PeriodWeekTerm;
+
     return{
 
-        AdjustByClassRoom
+        AdjustByClassRoom,ItemWeek,NowDate
 
     }
 

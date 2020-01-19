@@ -91,7 +91,7 @@ class Header extends Component{
 
                                     <a href="/html/personalMgr" target="_blank" className="perMgrLink menu">账号管理</a>
 
-                                    <a className="help menu">帮助</a>
+                                    {/*<a className="help menu">帮助</a>*/}
 
                                     <a className="logout menu" onClick={()=>LogOut()}>退出登录</a>
 

@@ -20,7 +20,8 @@ class ToolCustom extends React.Component {
       ToolType: 1,
       ToolImgUrl: "",
       classResultImgUrl: "",
-      picVisible: false
+      picVisible: false,
+      ImgUrlProxy:''
     };
   }
 
@@ -34,6 +35,17 @@ class ToolCustom extends React.Component {
       ToolType: ToolData.ToolType,
       classResultImgUrl: ToolData.ToolImgUrl?ToolData.ToolImgUrl:''
     });
+    getData(CONFIG.ImgUrlProxy+'/Base/GetBaseServerAddr').then(res=>res.json(),err=>{
+      console.log(err)
+      return false
+    }).then(json=>{
+      if(json===false){
+        return false
+      }
+      this.setState({
+        ImgUrlProxy:json.Data.ResHttp
+      })
+    })
   }
   //   工具名称修改
   onToolNameChange = e => {
@@ -184,8 +196,8 @@ class ToolCustom extends React.Component {
           <ClassCropperModal
             // uploadedImageFile={classModalFile}
             UpDataUrl={
-              CONFIG.ImgUrlProxy +
-              "/http_subjectResMgr/WebUploadHandler.ashx?method=doUpload_WholeFile&userid=" +
+              this.state.ImgUrlProxy +
+              "SubjectRes_UploadHandler.ashx?method=doUpload_WholeFile&userid=" +
               LoginUser.UserID
             }
             Visiable={this.state.picVisible}

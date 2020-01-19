@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 
 import { Loading,DropDown } from "../../../../common";
 
-import { DatePicker,ConfigProvider } from 'antd';
+import { DatePicker,ConfigProvider,Tooltip } from 'antd';
 
 import { connect } from 'react-redux';
 
@@ -113,25 +113,30 @@ class StopSchedule extends Component{
 
                     <span className="props">老师:</span>
 
-                    <DropDown  width={150}
-                               dropSelectd={teacherDrop}
-                               type="multiple"
-                               style={{zIndex:5}}
-                               mutipleOptions={{
-                                   range:2,
-                                   dropMultipleList:teacherList,
-                                   dropMultipleChange:this.teacherDropChange.bind(this),
-                                   dropClickSearch:this.teacherClickSearch.bind(this),
-                                   dropCancelSearch:this.teacherSearchClose.bind(this),
-                                   searchList:teacherSearchList,
-                                   searchPlaceholder:"请输入姓名或工号进行搜索...",
-                                   searchOpen:teacherSearchOpen,
-                                   searchLoadingShow:teacherSearchLoadingShow
-                               }}>
+                    <Tooltip visible={teacherTips} title="请选择教师" placement="right" autoAdjustOverflow={false} getPopupContainer={triggerNode => triggerNode.parentNode}>
 
-                    </DropDown>
+                        <DropDown  width={150}
+                                   dropSelectd={teacherDrop}
+                                   type="multiple"
+                                   style={{zIndex:5}}
+                                   mutipleOptions={{
+                                       range:2,
+                                       dropMultipleList:teacherList,
+                                       dropMultipleChange:this.teacherDropChange.bind(this),
+                                       dropClickSearch:this.teacherClickSearch.bind(this),
+                                       dropCancelSearch:this.teacherSearchClose.bind(this),
+                                       searchList:teacherSearchList,
+                                       searchPlaceholder:"请输入姓名或工号进行搜索...",
+                                       searchOpen:teacherSearchOpen,
+                                       searchLoadingShow:teacherSearchLoadingShow
+                                   }}>
 
-                    <span className="error-tips" style={{display:`${teacherTips?'block':'none'}`}}>请选择教师</span>
+                        </DropDown>
+
+                    </Tooltip>
+
+
+                    {/*<span className="error-tips" style={{display:`${teacherTips?'block':'none'}`}}>请选择教师</span>*/}
 
                 </div>
 
@@ -141,11 +146,15 @@ class StopSchedule extends Component{
 
                     <ConfigProvider locale={zhCN}>
 
-                        <DatePicker disabledDate={this.dateDisabled.bind(this)} value={date?moment(date,'YYYY-MM-DD'):null} onChange={this.datePick.bind(this)}></DatePicker>
+                        <Tooltip visible={dateTips} title="请选择日期" placement="right" autoAdjustOverflow={false} getPopupContainer={triggerNode => triggerNode.parentNode}>
+
+                            <DatePicker disabledDate={this.dateDisabled.bind(this)} value={date?moment(date,'YYYY-MM-DD'):null} onChange={this.datePick.bind(this)}></DatePicker>
+
+                        </Tooltip>
 
                     </ConfigProvider>
 
-                    <span className="error-tips" style={{display:`${dateTips?'block':'none'}`}}>请选择日期</span>
+                    {/*<span className="error-tips" style={{display:`${dateTips?'block':'none'}`}}>请选择日期</span>*/}
 
                 </div>
 
@@ -210,11 +219,27 @@ class StopSchedule extends Component{
 
                                                     });
 
-                                                    return <div key={k} className={`check-item ${itemChecked?'active':''}`} onClick={this.classHoursChecked.bind(this,{type:'item',pid:item.type,id:i.id})}>
+                                                    if ((key===classHours.length-1)&&(k===item.list.length-1)){
 
-                                                        第{i.name}节
+                                                        return <Tooltip visible={scheduleTips} title="请选择节次" placement="right" autoAdjustOverflow={false} getPopupContainer={triggerNode => triggerNode.parentNode}>
 
-                                                    </div>
+                                                                    <div key={k} className={`check-item ${itemChecked?'active':''}`} onClick={this.classHoursChecked.bind(this,{type:'item',pid:item.type,id:i.id})}>
+
+                                                                        第{i.name}节
+
+                                                                    </div>
+
+                                                                </Tooltip>
+
+                                                    }else{
+
+                                                        return <div key={k} className={`check-item ${itemChecked?'active':''}`} onClick={this.classHoursChecked.bind(this,{type:'item',pid:item.type,id:i.id})}>
+
+                                                            第{i.name}节
+
+                                                        </div>
+
+                                                    }
 
                                                 })
 
@@ -241,7 +266,7 @@ class StopSchedule extends Component{
 
                 </Loading>
 
-                <span className="error-tips" style={{display:`${scheduleTips?'block':'none'}`}}>请选择节次</span>
+                {/*<span className="error-tips" style={{display:`${scheduleTips?'block':'none'}`}}>请选择节次</span>*/}
 
             </div>
 

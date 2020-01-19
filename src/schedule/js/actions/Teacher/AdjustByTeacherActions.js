@@ -202,7 +202,7 @@ const STOP_SCHEDULE_CLASSHOUR_LOADING_HIDE = 'STOP_SCHEDULE_CLASSHOUR_LOADING_HI
 
 
 //找人代课初始化
-const replaceScheduleInit = () => {
+const AdjustByTeacherScheduleInit = () => {
 
     return ( dispatch,getState ) => {
 
@@ -479,6 +479,16 @@ const radioChange = (id) => {
 
       dispatch({type:REPLACE_SHCEDULE_RADIO_CHANGE,data:id});
 
+      dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:'month'}});
+
+        dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:'week'}});
+
+        dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:'date'}});
+
+        dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:'classHourDate'}});
+
+        dispatch({type:REPLACE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:'classHour'}});
+
       let { SchoolID } = getState().LoginUser;
 
         ApiActions.GetAllDateTimeInfo({SchoolID,dispatch}).then(data => {
@@ -668,6 +678,16 @@ const dateChecked = (date) => {
         if (date ===''){
 
             dateCheckedList = [];
+
+        }else if (dateCheckedList.includes(date)){
+
+            let findIndex = dateCheckedList.findIndex(item=>item===date);
+
+            if (findIndex>=0){
+
+                dateCheckedList.splice(findIndex,1);
+
+            }
 
         }else{
 
@@ -2114,6 +2134,8 @@ const stopScheduleDateChange = (date) => {
 
         dispatch({type:STOP_SCHEDULE_DATE_PICK,data:date});
 
+        dispatch({type:STOP_SCHEDULE_ERROR_TIPS_HIDE,data:{type:'schedule'}});
+
         if (date !== ''){
 
             dispatch({type:STOP_SCHEDULE_CLASSHOUR_LOADING_SHOW});
@@ -3304,7 +3326,7 @@ export default {
 
     STOP_SCHEDULE_ERROR_TIPS_HIDE,
 
-    replaceScheduleInit,
+    AdjustByTeacherScheduleInit,
 
     replaceTeacherDropChange,
 

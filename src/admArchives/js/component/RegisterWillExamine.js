@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import logo from "../../images/admAriHeadImg-1.png";
 import { Menu, Loading, Alert } from "../../../common";
-import Frame from '../../../common/Frame';
+import Frame from "../../../common/Frame";
 import {
   HashRouter as Router,
   Route,
@@ -51,7 +51,7 @@ class RegisterWillExamine extends React.Component {
           render: key => {
             return (
               <div className="registerTime-content">
-                <label style={{whiteSpace:'normal'}}>
+                <label style={{ whiteSpace: "normal" }}>
                   <CheckBox
                     type="gray"
                     value={key.key}
@@ -100,11 +100,16 @@ class RegisterWillExamine extends React.Component {
                   height="47"
                   src={arr.PhotoPath}
                 ></img> */}
-                  <i
+                <i
                   alt={arr.UserName}
                   onClick={this.onUserNameClick.bind(this, arr.key)}
                   className="name-img"
-                  style={{width:'47px',height:'47px',display:'inline-block',background:`url(${arr.PhotoPath}) no-repeat center center / 47px`}}
+                  style={{
+                    width: "47px",
+                    height: "47px",
+                    display: "inline-block",
+                    background: `url(${arr.PhotoPath}) no-repeat center center / 47px`
+                  }}
                 ></i>
               </div>
             );
@@ -224,7 +229,7 @@ class RegisterWillExamine extends React.Component {
       alertQueryTitle: "查询提示~",
       firstSelect: { value: 0, title: "全部年级" },
       secondSelect: { value: 0, title: "全部班级" },
-      TeacherClassSelect: { },
+      TeacherClassSelect: {},
       firstParam: "",
       secondParam: "",
       handleUserMsg: [],
@@ -263,22 +268,21 @@ class RegisterWillExamine extends React.Component {
       }
       this.setState({
         firstSelect: DataState.GetSignUpLog.Grade,
-        secondSelect: DataState.GetSignUpLog.Class
+        secondSelect: DataState.GetSignUpLog.Class,
+        firstParam: "&gradeID=" + DataState.GetSignUpLog.Grade.value,
+        secondParam: "&classID=" + DataState.GetSignUpLog.Class.value
       });
       if (DataState.GetSignUpLog.Class.value === 0) {
         this.StudentDropMenu(DataState.GetSignUpLog.Grade);
       } else {
         this.StudentDropMenuSecond(DataState.GetSignUpLog.Class);
       }
-    }  else if(userMsg.UserType === "1" && userMsg.UserClass[2] === "1"){
+    } else if (userMsg.UserType === "1" && userMsg.UserClass[2] === "1") {
       isWho = "2";
-// console.log(DataState.GetSignUpLog.Class)
-     if(  DataState.GetSignUpLog.Class.value!==0
-     ){
-
-
-       this.TeacherDropMenuSecond(DataState.GetSignUpLog.Class);
-     }
+      // console.log(DataState.GetSignUpLog.Class)
+      if (DataState.GetSignUpLog.Class.value !== 0) {
+        this.TeacherDropMenuSecond(DataState.GetSignUpLog.Class);
+      }
     }
     this.setState({
       isWho: isWho
@@ -293,7 +297,7 @@ class RegisterWillExamine extends React.Component {
     //   this.StudentDropMenuSecond(DataState.GetSignUpLog.Class);
 
     // }
-   
+
     //  let Classes = [{ value: 0, title: "全部班级" }];
 
     // this.setState({
@@ -326,11 +330,14 @@ class RegisterWillExamine extends React.Component {
   componentWillReceiveProps(nextProps) {
     const { dispatch, DataState } = nextProps;
     let TeacherClass = DataState.GradeClassMsg.TeacherClass;
-    console.log(TeacherClass,this.state.TeacherClassSelect)
+    console.log(TeacherClass, this.state.TeacherClassSelect);
     let userMsg = DataState.LoginUser;
-    if (userMsg.UserType === "1" && userMsg.UserClass[2] === "1"&&
+    if (
+      userMsg.UserType === "1" &&
+      userMsg.UserClass[2] === "1" &&
       Object.keys(this.state.TeacherClassSelect).length === 0 &&
-      TeacherClass[0]&&DataState.GetSignUpLog.Class.value===0
+      TeacherClass[0] &&
+      DataState.GetSignUpLog.Class.value === 0
     ) {
       // console.log(TeacherClass,this.state.TeacherClassSelect)
       this.TeacherDropMenuSecond(TeacherClass[0]);
@@ -338,11 +345,10 @@ class RegisterWillExamine extends React.Component {
       //   TeacherClassSelect: TeacherClass[0],
       //   secondParam: "&classID=" + TeacherClass[0].value
       // });
-      
     }
     this.setState({
-      pagination:DataState.GetSignUpLog.WillData.PageIndex+1
-    })
+      pagination: DataState.GetSignUpLog.WillData.PageIndex + 1
+    });
     // if(DataState.GetSignUpLog.Grade.value!==this.state.firstSelect.value||DataState.GetSignUpLog.Class.value!==this.state.secondSelect.value){
 
     //   if(DataState.GetSignUpLog.Class.value===0){
@@ -372,6 +378,12 @@ class RegisterWillExamine extends React.Component {
       type: actions.UpDataState.SET_REGISTER_GRADE_CLASS_MSG,
       data: { Grade: e }
     });
+    if( e.value===0){
+      dispatch({
+        type: actions.UpDataState.SET_REGISTER_GRADE_CLASS_MSG,
+        data: { Class:{ value: 0, title: "全部班级" } }
+      });
+    }
     ////console.log(this.refs.dropMenuSecond)
     if (e.value !== 0) {
       let ClassArr = this.props.DataState.GradeClassMsg.returnData.AllClasses[
@@ -535,7 +547,7 @@ class RegisterWillExamine extends React.Component {
   };
   OnCheckAllChange = e => {
     //console.log(e.target.checked, this.state.keyList)
-    const {DataState} = this.props
+    const { DataState } = this.props;
     if (e.target.checked) {
       this.setState({
         checkedList: DataState.GetSignUpLog.WillData.keyList,
@@ -549,11 +561,14 @@ class RegisterWillExamine extends React.Component {
     }
   };
   onCheckBoxGroupChange = checkedList => {
-    const {DataState} = this.props
-    console.log(checkedList)
+    const { DataState } = this.props;
+    console.log(checkedList);
     this.setState({
       checkedList,
-      checkAll: checkedList.length === DataState.GetSignUpLog.WillData.keyList.length ? true : false
+      checkAll:
+        checkedList.length === DataState.GetSignUpLog.WillData.keyList.length
+          ? true
+          : false
     });
   };
   onExamineClick = key => {
@@ -729,9 +744,9 @@ class RegisterWillExamine extends React.Component {
   onFailQueryOk = () => {
     const { dispatch, DataState } = this.props;
     let checkedList = this.state.checkedList;
-    console.log(checkedList,DataState)
+    console.log(checkedList, DataState);
     let logID = checkedList.map((child, index) => {
-      console.log(child)
+      console.log(child);
       return DataState.GetSignUpLog.WillData.returnData[child - 1].UserMsg
         .logID;
     });
@@ -903,8 +918,10 @@ class RegisterWillExamine extends React.Component {
         })
       );
       return;
-    } 
-    let Test = /^[A-Za-z0-9]{1,30}$|^[a-zA-Z0-9_.·\u4e00-\u9fa5 ]{0,48}[a-zA-Z0-9_.·\u4e00-\u9fa5]$/.test(e.value)
+    }
+    let Test = /^[A-Za-z0-9]{1,30}$|^[a-zA-Z0-9_.·\u4e00-\u9fa5 ]{0,48}[a-zA-Z0-9_.·\u4e00-\u9fa5]$/.test(
+      e.value
+    );
     if (!Test) {
       dispatch(
         actions.UpUIState.showErrorAlert({
@@ -917,27 +934,26 @@ class RegisterWillExamine extends React.Component {
       );
       return;
     }
-      this.setState({
-        keyword: e.value,
-        CancelBtnShow: "y",
-        // pagination: 1,
-        searchWord: e.value,
-        checkedList: [],
-        checkAll: false
-      });
-      dispatch(
-        actions.UpDataState.getWillSignUpLog(
-          "/GetSignUpLogToPage?SchoolID=" +
-            this.state.userMsg.SchoolID +
-            "&PageIndex=0&PageSize=10&status=0&keyword=" +
-            e.value +
-            this.state.sortType +
-            this.state.sortFiled +
-            this.state.firstParam +
-            this.state.secondParam
-        )
-      );
-    
+    this.setState({
+      keyword: e.value,
+      CancelBtnShow: "y",
+      // pagination: 1,
+      searchWord: e.value,
+      checkedList: [],
+      checkAll: false
+    });
+    dispatch(
+      actions.UpDataState.getWillSignUpLog(
+        "/GetSignUpLogToPage?SchoolID=" +
+          this.state.userMsg.SchoolID +
+          "&PageIndex=0&PageSize=10&status=0&keyword=" +
+          e.value +
+          this.state.sortType +
+          this.state.sortFiled +
+          this.state.firstParam +
+          this.state.secondParam
+      )
+    );
   };
   //监听table的change进行排序操作
   onTableChange = (page, filters, sorter) => {
@@ -1038,7 +1054,7 @@ class RegisterWillExamine extends React.Component {
   render() {
     const { UIState, DataState } = this.props;
     let TeacherClass = DataState.GradeClassMsg.TeacherClass;
-    console.log(TeacherClass,this.state.TeacherClassSelect)
+    console.log(TeacherClass, this.state.TeacherClassSelect);
     return (
       <React.Fragment>
         <div className="main-select">

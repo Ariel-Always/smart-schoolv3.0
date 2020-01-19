@@ -6,12 +6,12 @@ import CollectorAction from '../action/CollectorAction'
 const CollectDataChange = (state = {
     folderResInfo: {
         List: []
-    },
-    collectionResult: [],
-    typeList: [],
-    currentPath: [{ "folderId": "", "folderName": "资料收藏夹" }],
-    folderInfo:[],
-    rightSelect:"recent"
+    },//目录下所有资料的信息
+    collectionResult: [],//存储右侧排行榜和最近收藏共用的数组
+    typeList: [], //存储资料的来源列表
+    currentPath: [{ "folderId": "", "folderName": "资料收藏夹" }],//默认用户所有目录的默认路径路径
+    folderInfo:[],  //存储收藏夹整体目录结构列表
+    rightSelect:"recent"//右侧内容去默认渲染最近收藏 
 
 
 }, action) => {

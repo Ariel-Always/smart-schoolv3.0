@@ -91,7 +91,7 @@ class HandleCourseClass extends React.Component {
     //console.log(this.state.courseClassName, e.target.value)
     dispatch(
       actions.UpDataState.setCourseClassName({
-        CourseClassName: e.target.value,
+        CourseClassName: e.target.value.trim(),
         ...data
       })
     );

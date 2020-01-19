@@ -40,7 +40,7 @@ class LogRecord extends React.Component {
           title: "编号",
           dataIndex: "LogID",
           key: "LogID",
-          width: 130,
+          width: 150,
           sorter: true,
           align: "center",
           render: LogID => {
@@ -86,7 +86,7 @@ class LogRecord extends React.Component {
           title: "用户档案",
           align: "left",
           colSpan:2,
-          width: 90,
+          width: 110,
           key: "UserName",
           dataIndex: "UserName",
           sorter: true,
@@ -164,7 +164,7 @@ class LogRecord extends React.Component {
               姓名<br></br>工号
             </span>
           ),
-          width: 120,
+          width: 140,
           align: "center",
           key: "Operator",
           dataIndex: "Operator",
@@ -185,7 +185,7 @@ class LogRecord extends React.Component {
         {
           title: "操作时间",
           align: "center",
-          width: 210,
+          width: 170,
           key: "LogTime",
           dataIndex: "LogTime",
           render: LogTime => {
@@ -200,7 +200,7 @@ class LogRecord extends React.Component {
         {
           title: "操作者IP",
           align: "center",
-          width: 170,
+          width: 150,
           key: "OperatorIP",
           dataIndex: "OperatorIP",
           render: OperatorIP => {
@@ -835,7 +835,7 @@ class LogRecord extends React.Component {
             </span>
             {/* <Link to='/UserArchives/LogRecord' target='_blank' className='link-record'>查看全部变更记录</Link> */}
           </div>
-          <hr className="Graduate-hr" />
+          <div className="Graduate-hr" ></div>
           <div className="Graduate-content">
             <div className="content-top">
               <div className="dropMenu-box">

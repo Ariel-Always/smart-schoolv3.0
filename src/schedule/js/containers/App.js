@@ -73,144 +73,28 @@ class App extends Component{
         super(props);
 
         const {dispatch} = props;
-        //获取公共的信息
-
-        TokenCheck_Connect();
 
         const Hash = location.hash;
 
-        if (sessionStorage.getItem('UserInfo')){
+        //获取公共的信息
 
-            let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
+        TokenCheck_Connect(false,()=>{
 
-            const { UserType,UserClass } = UserInfo;
+            if (sessionStorage.getItem('UserInfo')){
 
-            //判断权限
+                let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
 
-            if (parseInt(UserType)===0||parseInt(UserType)===1){
+                const { UserType,UserClass } = UserInfo;
 
-                if (parseInt(UserType)===0){//判断管理员权限
+                //判断权限
 
-                    QueryPower({UserInfo,ModuleID:'000-2-0-07'}).then(data=>{
+                if (parseInt(UserType)===0||parseInt(UserType)===1){
 
-                        if (data){
+                    if (parseInt(UserType)===0){//判断管理员权限
 
-                            dispatch(ModuleCommonActions.getCommonInfo());
+                        QueryPower({UserInfo,ModuleID:'000-2-0-07'}).then(data=>{
 
-                            if (Hash.includes('Import')){
-
-                                dispatch({type:RouterSetActions.ROUTER_SET_TO_IMPORT})
-
-                            }else{
-
-                                dispatch({type:RouterSetActions.ROUTER_SET_TO_DEFAULT})
-
-                            }
-
-                        }else{
-
-                            window.location.href='/Error.aspx?errcode=E011';
-
-                        }
-
-                    });
-
-                }else{
-
-                   let GetAdjustPower =  QueryOtherPower({UserType,SchoolID:UserInfo.SchoolID,Power:'Teacher_Schedule_U'});
-
-                   let GetImportPower = QueryOtherPower({UserType,SchoolID:UserInfo.SchoolID,Power:'Teacher_Schedule_C'})
-
-                    Promise.all([GetAdjustPower,GetImportPower]).then(res=>{
-
-                        dispatch({type:TeacherPowerActions.TEACHER_POWER_CHANGE,data:{Adjust:res[0],AddImport:res[1]}});
-
-                        dispatch(ModuleCommonActions.getCommonInfo());
-
-                        if (Hash.includes('Import')){
-
-                            dispatch({type:RouterSetActions.ROUTER_SET_TO_IMPORT})
-
-                        }else{
-
-                            dispatch({type:RouterSetActions.ROUTER_SET_TO_DEFAULT})
-
-                        }
-
-                    });
-
-
-
-                }
-
-            }else{//无权限角色
-
-                window.location.href='/Error.aspx?errcode=E011';
-
-            }
-
-        }else{
-
-
-            let getUserInfo = setInterval(()=>{
-
-                if (sessionStorage.getItem('UserInfo')){
-
-                    let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
-
-                   /* dispatch(ModuleCommonActions.getCommonInfo());
-
-                    if (Hash.includes('Import')){
-
-                        dispatch({type:RouterSetActions.ROUTER_SET_TO_IMPORT})
-
-                    }else{
-
-                        dispatch({type:RouterSetActions.ROUTER_SET_TO_DEFAULT})
-
-                    }*/
-
-                    const { UserType,UserClass } = UserInfo;
-
-                    //判断权限
-
-                    if (parseInt(UserType)===0||parseInt(UserType===1)){
-
-                        if (parseInt(UserType)===0){//判断管理员权限
-
-                            QueryPower({UserInfo,ModuleID:'000-2-0-07'}).then(data=>{
-
-                                if (data){
-
-                                    dispatch(ModuleCommonActions.getCommonInfo());
-
-                                    if (Hash.includes('Import')){
-
-                                        dispatch({type:RouterSetActions.ROUTER_SET_TO_IMPORT})
-
-                                    }else{
-
-                                        dispatch({type:RouterSetActions.ROUTER_SET_TO_DEFAULT})
-
-                                    }
-
-                                }else{
-
-                                    window.location.href='/Error.aspx?errcode=E011';
-
-                                }
-
-                            });
-
-                        }else{
-
-                            let GetAdjustPower =  QueryOtherPower({UserType,SchoolID:UserInfo.SchoolID,Power:'Teacher_Schedule_U'});
-
-                            let GetImportPower = QueryOtherPower({UserType,SchoolID:UserInfo.SchoolID,Power:'Teacher_Schedule_C'})
-
-                            Promise.all([GetAdjustPower,GetImportPower]).then(res=>{
-
-                                dispatch({type:TeacherPowerActions.TEACHER_POWER_CHANGE,data:{Adjust:res[0],AddImport:res[1]}});
+                            if (data){
 
                                 dispatch(ModuleCommonActions.getCommonInfo());
 
@@ -224,25 +108,140 @@ class App extends Component{
 
                                 }
 
-                            });
+                            }else{
 
-                        }
+                                window.location.href='/Error.aspx?errcode=E011';
 
-                    }else{//无权限角色
+                            }
 
-                        window.location.href='/Error.aspx?errcode=E011';
+                        });
+
+                    }else{
+
+                        let GetAdjustPower =  QueryOtherPower({UserType,SchoolID:UserInfo.SchoolID,Power:'Teacher_Schedule_U'});
+
+                        let GetImportPower = QueryOtherPower({UserType,SchoolID:UserInfo.SchoolID,Power:'Teacher_Schedule_C'})
+
+                        Promise.all([GetAdjustPower,GetImportPower]).then(res=>{
+
+                            dispatch({type:TeacherPowerActions.TEACHER_POWER_CHANGE,data:{Adjust:res[0],AddImport:res[1]}});
+
+                            dispatch(ModuleCommonActions.getCommonInfo());
+
+                            if (Hash.includes('Import')){
+
+                                dispatch({type:RouterSetActions.ROUTER_SET_TO_IMPORT})
+
+                            }else{
+
+                                dispatch({type:RouterSetActions.ROUTER_SET_TO_DEFAULT})
+
+                            }
+
+                        });
 
                     }
 
-                    clearInterval(getUserInfo);
+                }else{//无权限角色
+
+                    window.location.href='/Error.aspx?errcode=E011';
 
                 }
 
-            },10);
-
-        }
+            }else{
 
 
+                let getUserInfo = setInterval(()=>{
+
+                    if (sessionStorage.getItem('UserInfo')){
+
+                        let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
+
+                        /* dispatch(ModuleCommonActions.getCommonInfo());
+
+                         if (Hash.includes('Import')){
+
+                             dispatch({type:RouterSetActions.ROUTER_SET_TO_IMPORT})
+
+                         }else{
+
+                             dispatch({type:RouterSetActions.ROUTER_SET_TO_DEFAULT})
+
+                         }*/
+
+                        const { UserType,UserClass } = UserInfo;
+
+                        //判断权限
+
+                        if (parseInt(UserType)===0||parseInt(UserType===1)){
+
+                            if (parseInt(UserType)===0){//判断管理员权限
+
+                                QueryPower({UserInfo,ModuleID:'000-2-0-07'}).then(data=>{
+
+                                    if (data){
+
+                                        dispatch(ModuleCommonActions.getCommonInfo());
+
+                                        if (Hash.includes('Import')){
+
+                                            dispatch({type:RouterSetActions.ROUTER_SET_TO_IMPORT})
+
+                                        }else{
+
+                                            dispatch({type:RouterSetActions.ROUTER_SET_TO_DEFAULT})
+
+                                        }
+
+                                    }else{
+
+                                        window.location.href='/Error.aspx?errcode=E011';
+
+                                    }
+
+                                });
+
+                            }else{
+
+                                let GetAdjustPower =  QueryOtherPower({UserType,SchoolID:UserInfo.SchoolID,Power:'Teacher_Schedule_U'});
+
+                                let GetImportPower = QueryOtherPower({UserType,SchoolID:UserInfo.SchoolID,Power:'Teacher_Schedule_C'})
+
+                                Promise.all([GetAdjustPower,GetImportPower]).then(res=>{
+
+                                    dispatch({type:TeacherPowerActions.TEACHER_POWER_CHANGE,data:{Adjust:res[0],AddImport:res[1]}});
+
+                                    dispatch(ModuleCommonActions.getCommonInfo());
+
+                                    if (Hash.includes('Import')){
+
+                                        dispatch({type:RouterSetActions.ROUTER_SET_TO_IMPORT})
+
+                                    }else{
+
+                                        dispatch({type:RouterSetActions.ROUTER_SET_TO_DEFAULT})
+
+                                    }
+
+                                });
+
+                            }
+
+                        }else{//无权限角色
+
+                            window.location.href='/Error.aspx?errcode=E011';
+
+                        }
+
+                        clearInterval(getUserInfo);
+
+                    }
+
+                },10);
+
+            }
+
+        });
 
     }
 

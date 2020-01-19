@@ -13,7 +13,10 @@ const STORE_RIGHT_CONTENT="STORE_RIGHT_CONTENT"//存储右侧当前被选中显�
 
 
 
-//获取收藏夹下所有信息
+/* 获取目录下所有信息
+   @param1 请求接口是所需要的参数 
+
+*/
 const getFolderResInfo = (
     { typeId = '',
         folderID = "",

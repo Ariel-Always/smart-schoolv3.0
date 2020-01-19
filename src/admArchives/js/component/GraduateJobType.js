@@ -23,7 +23,7 @@ class GraduateJobType extends React.Component {
     onDiscriptionChange = (e) => {
         const { dispatch } = this.props;
         this.setState({
-            Discription: e.target.value
+            Discription: e.target.value.trim()
         })
     }
     onDiscriptionBlur = (e) => {

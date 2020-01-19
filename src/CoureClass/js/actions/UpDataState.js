@@ -134,7 +134,7 @@ const getClassAllMsg = (url, subject, Class) => {
     }
 }
 //获取教学班信息
-const getCourseClassDetailsMsg = (url) => {
+const getCourseClassDetailsMsg = (url,log=false) => {
     return (dispatch) => {
         dispatch({ type: actions.UpUIState.MODAL_LOADING_OPEN });
 
@@ -145,6 +145,10 @@ const getCourseClassDetailsMsg = (url) => {
               // console.log(json.Data)
                 dispatch({ type: GET_COURSE_CLASS_DETAILS_MSG, data: json.Data });
                 dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
+                if(log){
+                    dispatch(actions.UpUIState.CourseClassDetailsModalOpen());
+
+                }
             }
         });
     }
@@ -333,7 +337,7 @@ const getCourseClassRecordMsg = (url) => {
     }
 }
 //教学班调整详情
-const getLogDetailsMsg = (url) => {
+const getLogDetailsMsg = (url,log=false) => {
     
 
     return (dispatch) => {
@@ -347,6 +351,10 @@ const getLogDetailsMsg = (url) => {
               // console.log(json.Data)
                 dispatch({ type: GET_LOG_DETAILS_MSG, data: json.Data });
                 dispatch({ type: actions.UpUIState.MODAL_LOADING_CLOSE });
+                if(log){
+                    dispatch(actions.UpUIState.LogDetailsModalOpen());
+
+                }
             }
         });
     }

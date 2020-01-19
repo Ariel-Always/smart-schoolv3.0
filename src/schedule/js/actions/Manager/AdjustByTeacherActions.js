@@ -1219,6 +1219,10 @@ const originTeacherDropChange = (info) => {
 
         dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_DROP_CHANGE,data:{value:info.id,title:info.value}});
 
+        dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_DROP_SELECTD ,data:{value:'none',title:'请选择课时'}});
+
+        dispatch({type:CHANGE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:'originTeacher'}});
+
         if (originDate !== ''){
 
             let TeacherID = info.id;
@@ -1228,53 +1232,62 @@ const originTeacherDropChange = (info) => {
             ApiActions.GetScheduleByTeacherIDAndDate({TeacherID,ClassDate,dispatch}).then(data => {
 
                 if (data){
+                    
+                    if (data.length>0){
 
-                    let list = data.map(item => {
+                        let list = data.map(item => {
 
-                        let noon = '';
+                            let noon = '';
 
-                        switch (item.ClassHourType) {
+                            switch (item.ClassHourType) {
 
-                            case 1:
+                                case 1:
 
-                                noon = '上午';
+                                    noon = '上午';
 
-                                break;
+                                    break;
 
-                            case 2:
+                                case 2:
 
-                                noon = '下午';
+                                    noon = '下午';
 
-                                break;
+                                    break;
 
-                            case 3:
+                                case 3:
 
-                                noon = '晚上';
+                                    noon = '晚上';
 
-                                break;
+                                    break;
 
-                            default:
+                                default:
 
-                                noon = '上午';
+                                    noon = '上午';
 
-                        }
+                            }
 
-                        let title = <span>第{item.ClassHourNO}节<span className="noon">({noon})</span></span>
+                            let title = <span>第{item.ClassHourNO}节<span className="noon">({noon})</span></span>
 
-                        return {
+                            return {
 
-                            value:item.ScheduleID,
+                                value:item.ScheduleID,
 
-                            title:title
+                                title:title
 
-                        }
+                            }
 
 
-                    });
+                        });
+
+                        dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_LIST_UPDATE,data:list})
+
+
+                    }else{
+
+                        dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_LIST_UPDATE,data:[{value:'none',title:"该教师暂无课程"}]})
+
+                    }
 
                     dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_ABLED});
-
-                    dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_LIST_UPDATE,data:list})
 
                 }
 
@@ -1358,6 +1371,10 @@ const originDateChecked = (date) => {
 
         dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_DATE_PICK,data:date});
 
+        dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_DROP_SELECTD ,data:{value:'none',title:'请选择课时'}});
+
+        dispatch({type:CHANGE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:'originDate'}});
+
         if (date !== ''){
 
             let { originDropSelectd } = getState().Manager.AdjustByTeacherModal.changeSchedule;
@@ -1374,52 +1391,61 @@ const originDateChecked = (date) => {
 
                    if (data){
 
-                        let list = data.map(item => {
+                       if (data.length>0){
 
-                            let noon = '';
+                           let list = data.map(item => {
 
-                           switch (item.ClassHourType) {
+                               let noon = '';
 
-                               case 1:
+                               switch (item.ClassHourType) {
 
-                                   noon = '上午';
+                                   case 1:
 
-                                   break;
+                                       noon = '上午';
 
-                               case 2:
+                                       break;
 
-                                   noon = '下午';
+                                   case 2:
 
-                                   break;
+                                       noon = '下午';
 
-                               case 3:
+                                       break;
 
-                                   noon = '晚上';
+                                   case 3:
 
-                                   break;
+                                       noon = '晚上';
 
-                               default:
+                                       break;
 
-                                   noon = '上午';
+                                   default:
 
-                           }
+                                       noon = '上午';
 
-                           let title = <span>第{item.ClassHourNO}节<span className="noon">({noon})</span></span>
+                               }
 
-                           return {
+                               let title = <span>第{item.ClassHourNO}节<span className="noon">({noon})</span></span>
 
-                               value:item.ScheduleID,
+                               return {
 
-                               title:title
+                                   value:item.ScheduleID,
 
-                           }
+                                   title:title
+
+                               }
 
 
-                        });
+                           });
+
+                           dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_LIST_UPDATE,data:list})
+
+                       }else{
+
+                           dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_LIST_UPDATE,data:[{value:'none',title:"该教师暂无课程"}]})
+
+
+                       }
 
                         dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_ABLED});
-
-                        dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_LIST_UPDATE,data:list})
 
                    }
 
@@ -1444,9 +1470,9 @@ const originScheduleDropChange = (info) => {
 
     return ( dispatch ) => {
 
-        console.log(info);
-
         dispatch({type:CHANGE_SHCEDULE_ORIGIN_TEACHER_SCHEDULE_DROP_SELECTD,data:info});
+
+        dispatch({type:CHANGE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:'originSchedule'}});
 
     }
 
@@ -1456,11 +1482,13 @@ const targetTeacherDropChange = (info) => {
 
     return ( dispatch,getState ) => {
 
-        console.log(info);
-
         let { targetDate } = getState().Manager.AdjustByTeacherModal.changeSchedule;
 
         dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_DROP_CHANGE,data:{value:info.id,title:info.value}});
+
+        dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_DROP_SELECTD,data:{value:'none',title:'请选择课时'}});
+
+        dispatch({type:CHANGE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:'targetTeacher'}});
 
         if (targetDate !== ''){
 
@@ -1472,52 +1500,60 @@ const targetTeacherDropChange = (info) => {
 
                 if (data){
 
-                    let list = data.map(item => {
+                    if (data.length>0){
 
-                        let noon = '';
+                        let list = data.map(item => {
 
-                        switch (item.ClassHourType) {
+                            let noon = '';
 
-                            case 1:
+                            switch (item.ClassHourType) {
 
-                                noon = '上午';
+                                case 1:
 
-                                break;
+                                    noon = '上午';
 
-                            case 2:
+                                    break;
 
-                                noon = '下午';
+                                case 2:
 
-                                break;
+                                    noon = '下午';
 
-                            case 3:
+                                    break;
 
-                                noon = '晚上';
+                                case 3:
 
-                                break;
+                                    noon = '晚上';
 
-                            default:
+                                    break;
 
-                                noon = '上午';
+                                default:
 
-                        }
+                                    noon = '上午';
 
-                        let title = <span>第{item.ClassHourNO}节<span className="noon">({noon})</span></span>
+                            }
 
-                        return {
+                            let title = <span>第{item.ClassHourNO}节<span className="noon">({noon})</span></span>
 
-                            value:item.ScheduleID,
+                            return {
 
-                            title:title
+                                value:item.ScheduleID,
 
-                        }
+                                title:title
+
+                            }
 
 
-                    });
+                        });
+
+                        dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_LIST_UPDATE,data:list})
+
+                    }else{
+
+                        dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_LIST_UPDATE,data:[{value:"none",title:"该教师暂无课程"}]})
+
+                    }
 
                     dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_ABLED});
-
-                    dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_LIST_UPDATE,data:list})
 
                 }
 
@@ -1601,6 +1637,10 @@ const targetDateChecked = (date) => {
 
         dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_DATE_PICK,data:date});
 
+        dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_DROP_SELECTD,data:{value:'none',title:'请选择课时'}});
+
+        dispatch({type:CHANGE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:'targetDate'}});
+
         if (date !== ''){
 
             let { targetDropSelectd } = getState().Manager.AdjustByTeacherModal.changeSchedule;
@@ -1615,52 +1655,60 @@ const targetDateChecked = (date) => {
 
                     if (data){
 
-                        let list = data.map(item => {
+                        if (data.length>0){
 
-                            let noon = '';
+                            let list = data.map(item => {
 
-                            switch (item.ClassHourType) {
+                                let noon = '';
 
-                                case 1:
+                                switch (item.ClassHourType) {
 
-                                    noon = '上午';
+                                    case 1:
 
-                                    break;
+                                        noon = '上午';
 
-                                case 2:
+                                        break;
 
-                                    noon = '下午';
+                                    case 2:
 
-                                    break;
+                                        noon = '下午';
 
-                                case 3:
+                                        break;
 
-                                    noon = '晚上';
+                                    case 3:
 
-                                    break;
+                                        noon = '晚上';
 
-                                default:
+                                        break;
 
-                                    noon = '上午';
+                                    default:
 
-                            }
+                                        noon = '上午';
 
-                            let title = <span>第{item.ClassHourNO}节<span className="noon">({noon})</span></span>
+                                }
 
-                            return {
+                                let title = <span>第{item.ClassHourNO}节<span className="noon">({noon})</span></span>
 
-                                value:item.ScheduleID,
+                                return {
 
-                                title:title
+                                    value:item.ScheduleID,
 
-                            }
+                                    title:title
+
+                                }
 
 
-                        });
+                            });
+
+                            dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_LIST_UPDATE,data:list})
+
+                        }else{
+
+                            dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_LIST_UPDATE,data:[{value:"none",title:"该教师暂无课程"}]})
+
+                        }
 
                         dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_ABLED});
-
-                        dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_LIST_UPDATE,data:list})
 
                     }
 
@@ -1687,6 +1735,8 @@ const targetScheduleDropChange = (info) => {
 
         dispatch({type:CHANGE_SHCEDULE_TARGET_TEACHER_SCHEDULE_DROP_SELECTD,data:info});
 
+        dispatch({type:CHANGE_SHCEDULE_ERROR_TIPS_HIDE,data:{type:'targetSchedule'}});
+
     }
 
 };
@@ -1704,6 +1754,8 @@ const changeTimeTeacherDropChange = (info) => {
         dispatch({type:CHANGE_TIME_TEACHER_DROP_CHANGE,data:{type:'drop',value:{value:info.id,title:info.value}}});
 
         dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:'weekChange',value:{...oldWeek,ClassHour:''}}});
+
+        dispatch({type:CHANGE_TIME_ERROR_TIPS_HIDE,data:{type:'teacher'}});
 
         if (originDate !== ''){
 
@@ -1780,7 +1832,6 @@ const changeTimeTeacherDropChange = (info) => {
                     dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:'classHourListChange',value:list}});
 
                     dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:"oldClassRoomListChange",value:classRoomList}});
-
 
                 }
 
@@ -1867,6 +1918,8 @@ const changeTimeOriginDate = (date) => {
         let ClassDate = date;
 
         dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:"date",value:date}});
+
+        dispatch({type:CHANGE_TIME_ERROR_TIPS_HIDE,data:{type:'originDate'}});
 
         if (date !== ''){
 
@@ -2128,6 +2181,8 @@ const changTimeOldClassHourPick = (info) =>{
 
         dispatch({type:CHANGE_TIME_ORIGIN_CHANGE,data:{type:"classHourPick",value:info}});
 
+        dispatch({type:CHANGE_TIME_ERROR_TIPS_HIDE,data:{type:'originSchedule'}});
+
         if (newClassHourDrop.value==='none'){
 
             dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"classRoomDrop",value:classRoomObject}});
@@ -2150,6 +2205,7 @@ const changeTimeNewTimeChange = (date) => {
 
         let { newClassRoomDrop,newClassHourDrop } = getState().Manager.AdjustByTeacherModal.changeTime;
 
+        dispatch({type:CHANGE_TIME_ERROR_TIPS_HIDE,data:{type:'targetDate'}});
 
         if (date !== ''){
 
@@ -2457,6 +2513,8 @@ const changeTimeNewClassHourPick = (info) => {
 
       dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"weekChange",value:{...newWeek,ClassHour:info.title}}});
 
+      dispatch({type:CHANGE_TIME_ERROR_TIPS_HIDE,data:{type:'targetSchedule'}});
+
       let ClassHourNO = info.value;
 
       let ClassDate = getState().Manager.AdjustByTeacherModal.changeTime.newDate;
@@ -2538,6 +2596,8 @@ const changeTimeNewClassRoomPick = (info) => {
 
         dispatch({type:CHANGE_TIME_NEW_CHANGE,data:{type:"classRoomDrop",value:info}});
 
+        dispatch({type:CHANGE_TIME_ERROR_TIPS_HIDE,data:{type:'targetClassRoom'}});
+
         if (newDate!==''&&newClassHourDrop.value!=='none'){
 
             ApiActions.ClassRoomIsUseded({ClassDate:newDate,ClassHourNO:newClassHourDrop.value,ClassRoomID:info.value,dispatch}).then(data=>{
@@ -2580,6 +2640,8 @@ const changeClassRoomTeacherPick = (info) => {
         dispatch({type:CHANGE_CLASS_ROOM_CLASSROOM_CHANGE,data:{type:"classRoomDrop",value:{value:"none",title:"请选择教室"}}});
 
         dispatch({type:CHANGE_CLASS_ROOM_CLASSROOM_CHANGE,data:{type:"classRoomDisabled"}});
+
+        dispatch({type:CHANGE_CLASS_ROOM_ERROR_TIPS_HIDE,data:{type:'teacher'}});
 
         if (date !== ''){
 
@@ -2689,6 +2751,8 @@ const changeClassRoomDatePick = (date) => {
     return (dispatch,getState) => {
 
         dispatch({type:CHANGE_CLASS_ROOM_DATE_CHANGE,data:date});
+
+        dispatch({type:CHANGE_CLASS_ROOM_ERROR_TIPS_HIDE,data:{type:'date'}});
 
         if (date !== ''){
 
@@ -2882,6 +2946,8 @@ const changeClassRoomClassHourPick = (info) => {
 
         const { value,title } = info;
 
+        dispatch({type:CHANGE_CLASS_ROOM_ERROR_TIPS_HIDE,data:{type:'schedule'}});
+
         dispatch({type:CHANGE_CLASS_ROOM_CLASS_HOUR_CHANGE,data:{type:"classHourDrop",value:info}});
 
         let classRoom = teacherClassRoomList.find(item=>item.ScheduleID===value);
@@ -2998,6 +3064,8 @@ const changeClassRoomClassRoomPick = (info) => {
 
         dispatch({type:CHANGE_CLASS_ROOM_CLASSROOM_CHANGE,data:{type:"classRoomDrop",value:info}});
 
+        dispatch({type:CHANGE_CLASS_ROOM_ERROR_TIPS_HIDE,data:{type:'targetClassRoom'}});
+
     }
 
 };
@@ -3012,7 +3080,9 @@ const stopScheduleTeacherPick = (info) => {
 
           let { date } = getState().Manager.AdjustByTeacherModal.StopSchedule;
 
-          console.log(date);
+          dispatch({type:STOP_SCHEDULE_ERROR_TIPS_HIDE,data:{type:"teacher"}});
+
+          dispatch({type:STOP_SCHEDULE_ERROR_TIPS_HIDE,data:{type:"schedule"}});
 
           dispatch({type:STOP_SCHEDULE_TEACHER_CHANGE,data:{type:'drop',value:{value:info.id,title:info.value}}});
 
@@ -3196,6 +3266,10 @@ const stopScheduleDateChange = (date) => {
 
         dispatch({type:STOP_SCHEDULE_DATE_PICK,data:date});
 
+        dispatch({type:STOP_SCHEDULE_ERROR_TIPS_HIDE,data:{type:"date"}});
+
+        dispatch({type:STOP_SCHEDULE_ERROR_TIPS_HIDE,data:{type:"schedule"}});
+
         if (date !== ''){
 
             let { teacherDrop } = getState().Manager.AdjustByTeacherModal.StopSchedule;
@@ -3321,6 +3395,8 @@ const stopScheduleClassHoursChecked = (opts) => {
     return (dispatch,getState) => {
 
         const { classHoursCheckedList,classHoursPlainOpts } = getState().Manager.AdjustByTeacherModal.StopSchedule;
+
+        dispatch({type:STOP_SCHEDULE_ERROR_TIPS_HIDE,data:{type:"schedule"}});
 
         let checkedList = [];
 

@@ -13,6 +13,7 @@ import zhCN from 'antd/es/locale/zh_CN';
 import moment from 'moment';
 
 import 'moment/locale/zh-cn';
+import utils from "../../actions/utils";
 
 moment.locale('zh-cn');
 
@@ -64,6 +65,15 @@ class ChangeSchedule extends Component{
         dispatch(ABTActions.targetTeacherSearchClose())
 
     }
+
+    dateDisabled(current){
+
+        const { dispatch } = this.props;
+
+        return  dispatch(utils.DateDisabled(current));
+
+    }
+
     //待选日期选择
     targetDateChecked(date,dateString){
 
@@ -142,7 +152,7 @@ class ChangeSchedule extends Component{
 
                         <ConfigProvider locale={zhCN}>
 
-                            <DatePicker style={{width:150,marginLeft:8,height:28}}  value={originDate?moment(originDate,'YYYY-MM-DD'):null} onChange={this.originDateChecked.bind(this)}></DatePicker>
+                            <DatePicker disabledDate={this.dateDisabled.bind(this)} style={{width:150,marginLeft:8,height:28}}  value={originDate?moment(originDate,'YYYY-MM-DD'):null} onChange={this.originDateChecked.bind(this)}></DatePicker>
 
                         </ConfigProvider>
 
@@ -208,7 +218,7 @@ class ChangeSchedule extends Component{
 
                         <ConfigProvider locale={zhCN}>
 
-                            <DatePicker style={{width:150,marginLeft:8,height:28}}  value={targetDate?moment(targetDate,'YYYY-MM-DD'):null} onChange={this.targetDateChecked.bind(this)}></DatePicker>
+                            <DatePicker disabledDate={this.dateDisabled.bind(this)} style={{width:150,marginLeft:8,height:28}}  value={targetDate?moment(targetDate,'YYYY-MM-DD'):null} onChange={this.targetDateChecked.bind(this)}></DatePicker>
 
                         </ConfigProvider>
 

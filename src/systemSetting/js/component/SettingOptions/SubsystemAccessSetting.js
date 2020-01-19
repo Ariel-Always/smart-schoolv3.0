@@ -13,10 +13,10 @@ class SubsystemAccessSetting extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            simpleSearch: '',
-            AccessDropValue: "2",
+            simpleSearch: '', //搜索框中的输入值
+            AccessDropValue: "2",//默认的访问类型（对应的默认title为全部）
             AccessDropTitle: "全部",
-            UserDropValue: "",
+            UserDropValue: "",//默认的用户类型（对应的默认title为全部）
             UserDropTitle: "全部"
         }
         const { dispatch } = props
@@ -161,7 +161,7 @@ class SubsystemAccessSetting extends Component {
             //表示当前状态已关闭, 需要开启
             dispatch(AppAlertAction.alertQuery({
                 title: `是否开启对[${SubSystemName}]的访问`,
-                ok: () => { return this.SubsystemAccess.bind(this, SubSystemID, "open") },
+                ok: () => { return this.SubsystemAccess.bind(this, SubSystemID, "open") },//调用SubsystemAccess方法进行开启
                 okTitle: "是",
                 cancelTitle: "否"
 
@@ -173,7 +173,7 @@ class SubsystemAccessSetting extends Component {
             dispatch(AppAlertAction.alertQuery(
                 {
                     title: `是否关闭对[${SubSystemName}]的访问`,
-                    ok: () => { return this.SubsystemAccess.bind(this, SubSystemID, "close") },
+                    ok: () => { return this.SubsystemAccess.bind(this, SubSystemID, "close") },//调用SubsystemAccess方法进行关闭
                     okTitle: "是",
                     cancelTitle: "否"
 
@@ -194,13 +194,14 @@ class SubsystemAccessSetting extends Component {
         const { SchoolID } = JSON.parse(sessionStorage.getItem('UserInfo'));
         const { dispatch } = this.props
         console.log(SubSystemID);
-        const url1 = `/SysMgr/Setting/OpenSubSystem`
-        const url2 = `/SysMgr/Setting/CloseSubSystem`
+        const url1 = `/SysMgr/Setting/OpenSubSystem`//开启子系统的接口地址
+        const url2 = `/SysMgr/Setting/CloseSubSystem`//关闭系统的接口地址
         dispatch({
             type: DataChange.SEMESTER_LOADING_HIDE,
             data: true
         })
         if (option === "open") {
+            //如果操作为开启子系统，则执行如下代码
             ApiAction.postMethod(url1, {
                 "SubSystemID": SubSystemID,
             }).then(data => {
@@ -208,6 +209,7 @@ class SubsystemAccessSetting extends Component {
 
                     dispatch(AppAlertAction.closeAlert(dispatch));
                     dispatch(AppAlertAction.alertSuccess({ title: "开启成功" }))
+                    //根据当前用户类型和开启状态下拉框的值来请求符合要求的子系统
                     dispatch(DataChange.getCurrentSbusystemInfo({ "IsOpened": this.state.AccessDropValue, "UserType": this.state.UserDropValue }));
 
                     // console.log("success")
@@ -225,13 +227,15 @@ class SubsystemAccessSetting extends Component {
 
         }
         else {
+            //如果当前操作为关闭子系统，执行如下代码
             ApiAction.postMethod(url2, {
                 "SubSystemID": SubSystemID,
             }).then(data => {
                 if (data === 0) {
-
+                    
                     dispatch(AppAlertAction.closeAlert(dispatch));
                     dispatch(AppAlertAction.alertSuccess({ title: "关闭成功" }))
+                    //根据当前用户类型和开启状态下拉框的值来请求符合要求的子系统
                     dispatch(DataChange.getCurrentSbusystemInfo({ "IsOpened": this.state.AccessDropValue, "UserType": this.state.UserDropValue }));
                     // console.log("success")
                 } else {
@@ -387,7 +391,9 @@ class SubsystemAccessSetting extends Component {
 
                     <div className="subsystem-detail" style={{ display: `${exeit === "0" ? 'block' : 'none'}` }}>
                         共计<span>{subsystemInfo.Total}</span>个系统
-
+                            {/* 如果用户下拉框的值为""(空字符串表示全部)同时访问的参数下来框的值为"2"(表示全部)，同时总子系统中没有被关闭的
+                                才渲染如下对应的内容。简单的说就是，仅当两个下来框的都选中"全部" 时才显示有多少个已关闭的子系统
+                            */}
                         {
                             this.state.UserDropValue === "" && this.state.AccessDropValue === "2" && subsystemInfo.TotalClose !== 0 ? <React.Fragment>，其中<span>{subsystemInfo.TotalClose}</span>个已关闭访问</React.Fragment> : ""
                         }

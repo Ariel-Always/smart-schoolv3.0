@@ -476,6 +476,13 @@ class Student extends React.Component {
 
   StudentEdit = (e, key) => {
     //  console.log(e, key)
+    const { dispatch, DataState } = this.props;
+
+    dispatch(
+      actions.UpDataState.getGradeClassMsg(
+        "/GetGradeClassTree?schoolID=" +  this.state.userMsg.SchoolID
+      )
+    );
     this.setState({
       studentModalVisible: true,
       userKey: e
@@ -814,6 +821,13 @@ class Student extends React.Component {
   };
   onAddStudent = e => {
     //  console.log(e)
+    const { dispatch, DataState } = this.props;
+
+    dispatch(
+      actions.UpDataState.getGradeClassMsg(
+        "/GetGradeClassTree?schoolID=" +  this.state.userMsg.SchoolID
+      )
+    );
     this.setState({
       addStudentModalVisible: true,
       userKey: "add"
@@ -1148,7 +1162,7 @@ class Student extends React.Component {
               </Link>
             </div>
           </div>
-          <hr className="Student-hr" />
+          <div className="Student-hr" ></div>
           <div className="Student-content">
             <div className="content-top">
               <DropDown

@@ -14,6 +14,8 @@ import moment from 'moment';
 
 import 'moment/locale/zh-cn';
 
+import utils from "../../actions/utils";
+
 moment.locale('zh-cn');
 
 
@@ -37,6 +39,14 @@ class ChangeTime extends Component{
         const { dispatch } = this.props;
 
         dispatch(ABTActions.changTimeOldClassHourPick(info));
+
+    }
+
+    dateDisabled(current){
+
+        const { dispatch } = this.props;
+
+        return  dispatch(utils.DateDisabled(current));
 
     }
 
@@ -146,7 +156,7 @@ class ChangeTime extends Component{
 
                             <ConfigProvider locale={zhCN}>
 
-                                <DatePicker value={originDate?moment(originDate):null} onChange={this.originTimeChange.bind(this)}></DatePicker>
+                                <DatePicker disabledDate={this.dateDisabled.bind(this)} value={originDate?moment(originDate):null} onChange={this.originTimeChange.bind(this)}></DatePicker>
 
                             </ConfigProvider>
 
@@ -180,7 +190,7 @@ class ChangeTime extends Component{
 
                             <ConfigProvider locale={zhCN}>
 
-                                <DatePicker value={newDate?moment(newDate):null} onChange={this.newTimeChange.bind(this)}></DatePicker>
+                                <DatePicker disabledDate={this.dateDisabled.bind(this)} value={newDate?moment(newDate):null} onChange={this.newTimeChange.bind(this)}></DatePicker>
 
                             </ConfigProvider>
 

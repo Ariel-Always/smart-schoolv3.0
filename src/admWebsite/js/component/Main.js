@@ -718,7 +718,7 @@ class Main extends Component {
             <span className="btn-title">添加网站</span>
           </div>
         </div>
-        <hr className="Main-hr"></hr>
+        <div className="Main-hr"></div>
         <div className="Main-content">
           {List instanceof Array && List.length > 0 ? (
             <CheckBoxGroup
@@ -830,7 +830,7 @@ class Main extends Component {
             ></Empty>
           )}
         </div>
-        <hr className="Main-hr-2"></hr>
+        <div className="Main-hr-2"></div>
         <div className="Main-event-box">
           {List instanceof Array && List.length > 0 ? (
             <div>

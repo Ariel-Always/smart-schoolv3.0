@@ -92,7 +92,7 @@ class Index extends Component{
 
                     case 2:
 
-                        dispatch(AppAlertActions.alertTips({title:"您还购买该模块，请先购买"}));
+                        dispatch(AppAlertActions.alertTips({title:"您还没购买该模块，请先购买"}));
 
                         break;
 

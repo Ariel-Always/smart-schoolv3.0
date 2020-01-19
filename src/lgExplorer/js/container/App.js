@@ -4,6 +4,7 @@ import { Alert } from '../../../common/index'
 import { connect } from 'react-redux'
 import { TokenCheck_Connect } from '../../../common/js/disconnect';
 import HomeData from '../action/HomeData'
+import versionChenck from '../../../common/js/public'
 
 import React, { Component } from 'react';
 class APP extends Component {
@@ -16,39 +17,42 @@ class APP extends Component {
         // dispatch(LoadingData.getLinkData());
         //获取接口二中的数据
         //dispatch(LoadingData.getResBaseData());
-        TokenCheck_Connect()
-
-        if (sessionStorage.getItem('UserInfo')) {
-            // let SubjectId = document.cookie
-            let SubjectId="S2-English"
-            // alert(SubjectId)
-            const { dispatch } = this.props;
-           
-            dispatch({
-                type: HomeData.GETCOURSEID_FROM_COOKIE,
-                data: SubjectId
-            })
-            dispatch(HomeData.getPeriodList(SubjectId))
-
-
+        versionChenck.IEVersion() //如果是檢查IE版本是否符合
+        TokenCheck_Connect(false, () => {
+            
+            if (sessionStorage.getItem('UserInfo')) {
+                let SubjectId = document.cookie
+          
+                // let SubjectId = "S2-English"
+                dispatch({
+                    type: HomeData.GETCOURSEID_FROM_COOKIE,
+                    data: SubjectId
+                })
+                dispatch(HomeData.getPeriodList(SubjectId))
+                
 
 
-        } else {
-            let timerID = setInterval(() => {
-                if (sessionStorage.getItem('UserInfo')) {
-                    let SubjectId = document.cookie
-                    const { dispatch } = this.props;
-                    dispatch({
-                        type: HomeData.GETCOURSEID_FROM_COOKIE,
-                        data: SubjectId
-                    })
-                    dispatch(HomeData.getPeriodList(SubjectId));
-                    clearInterval(timerID)
-                }
 
-            }, 20)
 
-        }
+            } else {
+                let timerID = setInterval(() => {
+                    if (sessionStorage.getItem('UserInfo')) {
+                        let SubjectId = document.cookie
+                        dispatch({
+                            type: HomeData.GETCOURSEID_FROM_COOKIE,
+                            data: SubjectId
+                        })
+                        dispatch(HomeData.getPeriodList(SubjectId));
+                       
+                        clearInterval(timerID)
+                    }
+
+                }, 20)
+
+            }
+        })
+
+
 
 
     }

@@ -62,7 +62,7 @@ class WebsiteCustom extends React.Component {
   //   网站名称修改
   onWebNameChange = e => {
     this.setState({
-      WebName: e.target.value
+      WebName: e.target.value.trim()
     });
   };
   // 网站名称修改失去焦点
@@ -91,7 +91,7 @@ class WebsiteCustom extends React.Component {
   //   网站地址修改
   onWebAddressChange = e => {
     this.setState({
-      WebAddress: e.target.value
+      WebAddress: e.target.value.trim()
     });
   };
   // 网站地址修改失去焦点

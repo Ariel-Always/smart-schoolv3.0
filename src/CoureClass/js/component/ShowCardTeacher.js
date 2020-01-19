@@ -102,7 +102,7 @@ class ShowCardTeacher extends React.Component {
                 <div className='box-main'>
                     <div className='main-content'>
                         <p className='content-tips'>{this.props.params.CourseClassName}</p>
-                        <hr className='content-hr' />
+                        <div className='content-hr' ></div>
                         <div className='content-details'>
                             <div className='details-row clearfix'>
                                 <span className='left'>学科：</span>

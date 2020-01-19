@@ -58,6 +58,9 @@ function handleData(data,pageIndex,pageSize) {
     return { newList, keyList, pensonalList,pageIndex:PageIndex,pageSize };
 }
 function handleSubject(name = '', id = '') {
+    if(typeof name !== 'string'){
+        name = ''
+    }
     let nameArr = name.split(',');
     let idArr = id.split(',');
     let showTwo = '';

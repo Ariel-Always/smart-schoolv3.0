@@ -36,7 +36,7 @@ function Power(props) {
             <div className='box-top'>
                 <span className='top-tip'>{data.PowerName+':'}</span>
             </div>
-            <hr style={{ border: '1px #ccc dotted' }} />
+            <div style={{ borderTop: '1px #ccc dashed' }} ></div>
             <div className='box-content'>
                 {dataList}
             </div>

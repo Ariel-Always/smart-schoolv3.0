@@ -699,7 +699,7 @@ class Leader extends React.Component {
               <span className="tips menu35 ">领导账号管理</span>
             </span>
           </div>
-          <hr className="Leader-hr" />
+          <div className="Leader-hr" ></div>
           <div className="Leader-content">
             <div className="content-render">
               <div>

@@ -7,7 +7,7 @@ import DataChange from '../../action/data/DataChange';
 import ApiActions from '../../action/data/Api'
 import AppAlertAction from '../../action/UI/AppAlertAction';
 import CropperModal from '../../../../common/js/CropperModal'
-const default_schoolPic = `http://192.168.129.1:30101/lgftp/SysSetting/Attach/default.png`//默认图标的网络地址
+import default_schoolPic from '../../../images/boom_school_logo.png'  //默认图标的网络地址
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024 // 文件最大限制为2M
 
@@ -221,7 +221,7 @@ class SchoolnfoSetting extends Component {
     }
 
 
-    //监听小学的学制的选择情况
+    //监听学制（radio）的选择情况
     handelSchoolSystem = (e) => {
         let { schoolInfo, dispatch, periodInfo } = this.props
         console.log("当前点击值" + e.target.value);
@@ -520,16 +520,16 @@ class SchoolnfoSetting extends Component {
 
     }
     //裁剪工具所返回的参数判断，overSize图片过大，fileNull未选择图片进行上传
-    paramDetect=(param)=>{
-        const {dispatch}=this.props
-        if(param==="overSize"){
+    // paramDetect=(param)=>{
+    //     const {dispatch}=this.props
+    //     if(param==="overSize"){
 
-            dispatch(AppAlertAction.alertError({title:"图片过大"}))
-        }
-        else if(param==="fileNull"){
-            dispatch(AppAlertAction.alertTips({title:"你还没选择图片喔~",cancelTitle:"确定"}))
-        }
-    }
+    //         dispatch(AppAlertAction.alertError({title:"图片过大"}))
+    //     }
+    //     else if(param==="fileNull"){
+    //         dispatch(AppAlertAction.alertTips({title:"你还没选择图片喔~",cancelTitle:"确定"}))
+    //     }
+    // }
 
     render() {
         const { schoolInfo, semesterloading, periodInfo,serverAddress } = this.props;
@@ -550,13 +550,13 @@ class SchoolnfoSetting extends Component {
 
             case 1:
                 schoolSys = schoolInfo.primaryType;
-                schoolLength = `${schoolInfo.primaryNum === "6" ? "六年一贯制" : "五年一贯制"}`
+                schoolLength = schoolInfo.primaryNum === "6" ? "六年一贯制" : "五年一贯制"
 
                 break;
 
             case 2:
                 schoolSys = schoolInfo.middleType;
-                schoolLength = `${schoolInfo.middleNum === "3" ? "三年一贯制" : "四年一贯制"}`
+                schoolLength = schoolInfo.middleNum === "3" ? "三年一贯制" : "四年一贯制"
                 break;
 
             case 3:
@@ -572,7 +572,7 @@ class SchoolnfoSetting extends Component {
 
             case 6:
                 schoolSys = `${schoolInfo.middleType}+三年制高中`
-                schoolLength = `${schoolInfo.middleNum === "3" ? "六年一贯制" : "七年一贯制"}`
+                schoolLength = schoolInfo.middleNum === "3" ? "六年一贯制" : "七年一贯制"
                 break
 
 
@@ -593,7 +593,7 @@ class SchoolnfoSetting extends Component {
 
                     <div className="edite-info" onClick={this.openEdite} title="点击编辑学校信息"><span></span>编辑</div>
                     <div className="school-logo">
-                        <img src={schoolInfo.SchoolLogoUrl} alt="图片丢失" />
+                        <img src={schoolInfo.SchoolLogoUrl===""||schoolInfo.SchoolLogoUrl===null?default_schoolPic:schoolInfo.SchoolLogoUrl} alt="图片丢失" />
                     </div>
                     <div className="school-name" title={schoolInfo.SchoolName}>{schoolInfo.SchoolName}</div>
                     <div className="school-info">
@@ -618,7 +618,7 @@ class SchoolnfoSetting extends Component {
                         <div className="editContent">
                         <div className="content-left"> 
                             <div className="school-logo">
-                             <img  src={schoolInfo.SchoolLogoUrl}alt=""/>
+                             <img  src={schoolInfo.SchoolLogoUrl===""||schoolInfo.SchoolLogoUrl===null?default_schoolPic:schoolInfo.SchoolLogoUrl}alt=""/>
                              </div>
                            
 
@@ -630,7 +630,7 @@ class SchoolnfoSetting extends Component {
                                     onClose={this.upLoadCancel}
                                     onSubmit={(blob,filePath)=>this.handleGetResultImgUrl(blob,filePath)}
                                     UpDataUrl={`${serverAddress}SubjectRes_UploadHandler.ashx?method=doUpload_WholeFile&userid=${UserID}`}
-                                    onCheck={(param)=>this.paramDetect(param)}
+                                    // onCheck={(param)=>this.paramDetect(param)}
                                 ></CropperModal>
 
                             <Button className="btn upload-pic" onClick={this.useDefault}>使用默认</Button>

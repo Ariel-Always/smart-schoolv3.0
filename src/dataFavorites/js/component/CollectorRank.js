@@ -40,7 +40,7 @@ class CollectorRank extends Component {
     /* 收藏项的点击事件
     @param1 收藏项点击后跳转的相对地址（网络地址） */
     skipTolink = (address) => {
-        window.location.href = address
+        window.open(address, 'top');
     }
 
 
@@ -66,10 +66,10 @@ class CollectorRank extends Component {
             ApiAction.postMethod(url, { "resInfoId": ResId, "resRemark": resRemark, "folderId": currentFolderId }).then(data => {
                 if (data === 0) {
                     console.log("success")
-                    this.upDateCollector(ResId)
+                    this.upDateCollector(ResId)//调用取消收藏的方法
                     dispatch(AppAlertAction.alertSuccess({ title: "收藏成功!" }))
-                    dispatch(CollectorAction.getFolderResInfo({ folderID: currentFolderId }))
-                    dispatch(CollectorAction.getCollectionRankList());
+                    dispatch(CollectorAction.getFolderResInfo({ folderID: currentFolderId }))//刷新右侧内容区
+                    dispatch(CollectorAction.getCollectionRankList());//刷新排行版的内容
 
                 }
                 else {

@@ -707,7 +707,7 @@ class Leader extends React.Component {
               </Link>
             </div>
           </div>
-          <hr className="Leader-hr" />
+          <div className="Leader-hr" ></div>
           <div className="Leader-content">
             <div className="content-render">
               <CheckBoxGroup

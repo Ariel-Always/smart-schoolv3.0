@@ -649,7 +649,7 @@ class Subject extends React.Component {
                 +添加学科
               </Button>
             </div>
-            <hr className="Adm-hr" />
+            <div className="Adm-hr" ></div>
             <div className="Adm-content">
               <div className="content-top">
                 <DropDown

@@ -32,39 +32,39 @@ class App extends Component{
 
         const { dispatch } = props;
 
-        TokenCheck_Connect();
+        TokenCheck_Connect(false,()=>{
 
-        if (sessionStorage.getItem('UserInfo')){
+            if (sessionStorage.getItem('UserInfo')){
 
-            let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
+                let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
 
-            dispatch({type:LoginUserActions.UPDATE_LOGIN_USER,data:UserInfo});
+                dispatch({type:LoginUserActions.UPDATE_LOGIN_USER,data:UserInfo});
 
-            dispatch({type:MCIActions.MODULE_COMMON_INFO_MENU_CHANGE,data:"base"});
-
-
-        }else{
+                dispatch({type:MCIActions.MODULE_COMMON_INFO_MENU_CHANGE,data:"base"});
 
 
-            let getUserInfo = setInterval(()=>{
-
-                if (sessionStorage.getItem('UserInfo')){
-
-                    let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
-
-                    dispatch({type:LoginUserActions.UPDATE_LOGIN_USER,data:UserInfo});
-
-                    dispatch({type:MCIActions.MODULE_COMMON_INFO_MENU_CHANGE,data:"base"});
-
-                    clearInterval(getUserInfo);
-
-                }
-
-            },20);
-
-        }
+            }else{
 
 
+                let getUserInfo = setInterval(()=>{
+
+                    if (sessionStorage.getItem('UserInfo')){
+
+                        let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
+
+                        dispatch({type:LoginUserActions.UPDATE_LOGIN_USER,data:UserInfo});
+
+                        dispatch({type:MCIActions.MODULE_COMMON_INFO_MENU_CHANGE,data:"base"});
+
+                        clearInterval(getUserInfo);
+
+                    }
+
+                },20);
+
+            }
+
+        });
 
     }
     //点击menu

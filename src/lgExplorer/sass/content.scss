@@ -49,7 +49,6 @@
         border-radius: 4px;
         // margin-left: 20px;
         margin-right: 3px;
-        color: #ccc;
         text-indent: 1em;
         box-sizing: border-box;
       }
@@ -335,6 +334,7 @@
             width: 268px;
             position: relative;
             border-radius: 15px;
+            display: none;//功能完善后去掉此行代码
             p {
               position: absolute;
               top: 235px;
@@ -346,6 +346,7 @@
               font-stretch: normal;
             }
             &:nth-child(1) {
+                
               background: url("../images/base_tecplan.png");
               color: #4a1900;
             }
@@ -358,6 +359,8 @@
               color: #00480d;
             }
             &:nth-child(4) {
+                display: block;//①等功能毛奇志浏览器功能完成后把这两句代码删除
+                margin: auto;//②
               background: url("../images/base_desktop.png");
               color: #000b52;
             }

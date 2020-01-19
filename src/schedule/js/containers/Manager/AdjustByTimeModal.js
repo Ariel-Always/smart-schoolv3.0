@@ -16,6 +16,8 @@ import 'moment/locale/zh-cn';
 
 import date from '../../../images/date.png'
 
+import utils from '../../actions/utils';
+
 moment.locale('zh-cn');
 
 
@@ -38,6 +40,14 @@ class AdjustByTimeModal extends Component{
         const { dispatch } = this.props;
 
         dispatch(ABTMActions.oldClassHourChecked(opts));
+
+    }
+
+    dateDisabled(current){
+
+        const { dispatch } = this.props;
+
+        return dispatch(utils.DateDisabled(current));
 
     }
 
@@ -239,7 +249,7 @@ class AdjustByTimeModal extends Component{
                                 <ConfigProvider locale={zhCN}>
 
 
-                                    <DatePicker className="date-pick" value={oldDate?moment((oldDate),'YYYY-MM-DD'):null} onChange={this.oldDateChange.bind(this)}></DatePicker>
+                                    <DatePicker disabledDate={this.dateDisabled.bind(this)} className="date-pick" value={oldDate?moment((oldDate),'YYYY-MM-DD'):null} onChange={this.oldDateChange.bind(this)}></DatePicker>
 
                                     <Loading spinning={oldDateLoadingShow} type="loading">
 
@@ -340,7 +350,7 @@ class AdjustByTimeModal extends Component{
 
                                 <ConfigProvider locale={zhCN}>
 
-                                    <DatePicker className="date-pick" value={newDate?moment((newDate),'YYYY-MM-DD'):null} onChange={this.newDateChange.bind(this)}></DatePicker>
+                                    <DatePicker disabledDate={this.dateDisabled.bind(this)} className="date-pick" value={newDate?moment((newDate),'YYYY-MM-DD'):null} onChange={this.newDateChange.bind(this)}></DatePicker>
 
                                     <Loading spinning={newDateLoadingShow} type="loading">
 

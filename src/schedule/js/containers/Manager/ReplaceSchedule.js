@@ -489,39 +489,45 @@ class ReplaceSchedule extends Component{
 
                                     {
 
-                                        monthsList.map((item,key) => {
+                                        monthsList.length>0?
 
-                                            if (key===monthsList.length-1){
+                                            monthsList.map((item,key) => {
 
-                                                return <Tooltip placement="right" visible={monthTips} getPopupContainer={triggerNode => triggerNode.parentNode} title={monthTipsTitle} >
+                                                if (key===monthsList.length-1){
 
-                                                            <div key={key} className={`month-item check-item ${monthsCheckedList.includes(item.id)?'active':''}`} onClick={this.monthChecked.bind(this,item.id)}>
+                                                    return <Tooltip placement="right" visible={monthTips} getPopupContainer={triggerNode => triggerNode.parentNode} title={monthTipsTitle} >
 
-                                                                {
+                                                                <div key={key} className={`month-item check-item ${monthsCheckedList.includes(item.id)?'active':''}`} onClick={this.monthChecked.bind(this,item.id)}>
 
-                                                                    item.name
+                                                                    {
 
-                                                                }
+                                                                        item.name
 
-                                                            </div>
+                                                                    }
 
-                                                        </Tooltip>
+                                                                </div>
 
-                                            }else{
+                                                            </Tooltip>
 
-                                                return <div key={key} className={`month-item check-item ${monthsCheckedList.includes(item.id)?'active':''}`} onClick={this.monthChecked.bind(this,item.id)}>
+                                                }else{
 
-                                                    {
+                                                    return <div key={key} className={`month-item check-item ${monthsCheckedList.includes(item.id)?'active':''}`} onClick={this.monthChecked.bind(this,item.id)}>
 
-                                                        item.name
+                                                        {
 
-                                                    }
+                                                            item.name
 
-                                                </div>
+                                                        }
 
-                                            }
+                                                    </div>
 
-                                        })
+                                                }
+
+                                            })
+
+                                            :
+
+                                            <div style={{color:'#999999'}}>该学期没有未结束的月份</div>
 
                                     }
 
@@ -548,7 +554,9 @@ class ReplaceSchedule extends Component{
 
                                 {
 
-                                    weeksList.map((item,key) => {
+                                    weeksList.length>0?
+
+                                        weeksList.map((item,key) => {
 
                                         if (key===weeksList.length-1){
 
@@ -573,6 +581,10 @@ class ReplaceSchedule extends Component{
                                         }
 
                                     })
+
+                                        :
+
+                                        <div style={{color:'#999999'}}>该学期没有未结束的月份</div>
 
                                 }
 

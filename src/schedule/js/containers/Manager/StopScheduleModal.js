@@ -14,6 +14,8 @@ import moment from 'moment';
 
 import 'moment/locale/zh-cn';
 
+import utils from '../../actions/utils';
+
 moment.locale('zh-cn');
 
 class StopScheduleModal extends Component{
@@ -33,6 +35,14 @@ class StopScheduleModal extends Component{
         const { dispatch } = this.props;
 
         dispatch(StopScheduleActions.classHoursChecked(opts));
+
+    }
+
+    dateDisabled(current){
+
+        const { dispatch } = this.props;
+
+        return dispatch(utils.DateDisabled(current));
 
     }
 
@@ -113,7 +123,7 @@ class StopScheduleModal extends Component{
 
                                 <ConfigProvider locale={zhCN}>
 
-                                    <DatePicker value={date?moment(date,'YYYY-MM-DD'):null} onChange={this.datePick.bind(this)}></DatePicker>
+                                    <DatePicker disabledDate={this.dateDisabled.bind(this)} value={date?moment(date,'YYYY-MM-DD'):null} onChange={this.datePick.bind(this)}></DatePicker>
 
                                     <Loading spinning={dateLoadingShow} type="loading">
 

@@ -45,48 +45,50 @@ class App extends Component {
     const { dispatch, DataState } = this.props;
     let route = history.location.pathname;
     //判断token是否存在
-    TokenCheck_Connect();
+    TokenCheck_Connect(false,()=>{
+      let token = sessionStorage.getItem("token");
+      // sessionStorage.setItem('UserInfo', '')
+      if (sessionStorage.getItem("UserInfo")) {
+        dispatch(
+          actions.UpDataState.getLoginUser(
+            JSON.parse(sessionStorage.getItem("UserInfo"))
+          )
+        );
+        dispatch(
+          actions.UpDataState.getTeachingSolutionTermMsg(
+            "/GetTermInfoList"
+          )
+        );
+        dispatch(
+          actions.UpDataState.getTeachingSolutionMsg(
+            "/ListTeachingSolutions?period=&beginTime=&endTime=&pageSize=12&currentPage=1&userId=" +
+              JSON.parse(sessionStorage.getItem("UserInfo")).UserID
+          )
+        );
+      } else {
+        getUserInfo(token, "000");
+        let timeRun = setInterval(function() {
+          if (sessionStorage.getItem("UserInfo")) {
+            dispatch(
+              actions.UpDataState.getLoginUser(
+                JSON.parse(sessionStorage.getItem("UserInfo"))
+              )
+            );
+            dispatch(
+              actions.UpDataState.getTeachingSolutionMsg(
+                "/ListTeachingSolutions?period=&beginTime=&endTime=&pageSize=12&currentPage=1&userId=" +
+                  JSON.parse(sessionStorage.getItem("UserInfo")).UserID
+              )
+            );
+            clearInterval(timeRun);
+          }
+        }, 1000);
+        //dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
+      }
+    });
     //sessionStorage.setItem('token','')
 
-    let token = sessionStorage.getItem("token");
-    // sessionStorage.setItem('UserInfo', '')
-    if (sessionStorage.getItem("UserInfo")) {
-      dispatch(
-        actions.UpDataState.getLoginUser(
-          JSON.parse(sessionStorage.getItem("UserInfo"))
-        )
-      );
-      dispatch(
-        actions.UpDataState.getTeachingSolutionTermMsg(
-          "/GetTermInfoList"
-        )
-      );
-      dispatch(
-        actions.UpDataState.getTeachingSolutionMsg(
-          "/ListTeachingSolutions?period=&beginTime=&endTime=&pageSize=12&currentPage=1&userId=" +
-            JSON.parse(sessionStorage.getItem("UserInfo")).UserID
-        )
-      );
-    } else {
-      getUserInfo(token, "000");
-      let timeRun = setInterval(function() {
-        if (sessionStorage.getItem("UserInfo")) {
-          dispatch(
-            actions.UpDataState.getLoginUser(
-              JSON.parse(sessionStorage.getItem("UserInfo"))
-            )
-          );
-          dispatch(
-            actions.UpDataState.getTeachingSolutionMsg(
-              "/ListTeachingSolutions?period=&beginTime=&endTime=&pageSize=12&currentPage=1&userId=" +
-                JSON.parse(sessionStorage.getItem("UserInfo")).UserID
-            )
-          );
-          clearInterval(timeRun);
-        }
-      }, 1000);
-      //dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
-    }
+    
   }
   //查看弹窗
   TeachingSolutionDetailsModalOk = () => {
@@ -103,7 +105,7 @@ class App extends Component {
     // console.log(e.target.value)
     const { dispatch } = this.props;
     this.setState({
-      resetName: e.target.value
+      resetName: e.target.value.trim()
     });
   };
   //重命名弹窗ok回调
@@ -203,6 +205,7 @@ class App extends Component {
   };
   render() {
     const { UIState, DataState } = this.props;
+    let UserID = DataState.LoginUser.UserID
 
     return (
       <React.Fragment>
@@ -242,11 +245,11 @@ class App extends Component {
             >
               {/* {DataState.GetTeachingSolutionMsg.solutionData instanceof Array &&
               DataState.GetTeachingSolutionMsg.solutionData.length ? */}
-               
+               {UserID?
                 <TeachingAbsolution
                   upData={this.upData.bind(this)}
-                ></TeachingAbsolution>
-              
+                ></TeachingAbsolution>:''
+              }
               {/* : (
                 <Empty
                   type="4"

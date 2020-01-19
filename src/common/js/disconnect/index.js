@@ -4,7 +4,8 @@ import $ from "jquery";
 
 import Public from "../public";
 
-export function TokenCheck(IsDesk = false, SysID = "000") {
+export function TokenCheck(IsDesk = false, SysID = "000",fun=()=>{},isFirst=false) {
+  // console.log(fun)
   let session_token = sessionStorage.getItem("token");
 
   let url_token = getQueryVariable("lg_tk"); //lg_tk为链接上带的token
@@ -64,7 +65,11 @@ export function TokenCheck(IsDesk = false, SysID = "000") {
 
           sessionStorage.setItem("token", token);
           localStorage.setItem("token", token);
+          if(isFirst){
+            getUserInfo(token, "000",fun);
 
+          }
+          // fun()
           if (!sessionStorage.getItem("UserInfo")) {
             getUserInfo(token, "000");
           }
@@ -146,8 +151,13 @@ export function TokenCheck(IsDesk = false, SysID = "000") {
 
                   sessionStorage.setItem("token", token_2);
                   localStorage.setItem("token", token_2);
+                  // fun()
+                  if(isFirst){
+                    getUserInfo(token, "000",fun);
+        
+                  }
                   if (!sessionStorage.getItem("UserInfo")) {
-                    getUserInfo(token, "000");
+                    getUserInfo(token, "000",fun);
                   }
 
                   setTimeout(function() {
@@ -209,8 +219,13 @@ export function TokenCheck(IsDesk = false, SysID = "000") {
         
                           sessionStorage.setItem("token", token_3);
                           localStorage.setItem("token", token_3);
+                          // fun()
+                          if(isFirst){
+                            getUserInfo(token, "000",fun);
+                
+                          }
                           if (!sessionStorage.getItem("UserInfo")) {
-                            getUserInfo(token, "000");
+                            getUserInfo(token, "000",fun);
                           }
         
                           setTimeout(function() {
@@ -346,7 +361,7 @@ export function getQueryVariable(variable) {
   return false;
 }
 //验证成功后进行用户信息获取
-export function getUserInfo(token, SysID) {
+export function getUserInfo(token, SysID="000",fun=()=>{}) {
   let date = new Date();
   let time = date.getTime();
   //回调函数
@@ -379,6 +394,7 @@ export function getUserInfo(token, SysID) {
       // console.log(JSON.stringify(UserInfo))
 
       sessionStorage.setItem("UserInfo", JSON.stringify(UserInfo));
+      fun()
       //   sessionStorage.setItem("lastTime", time);
     },
     error: function() {}
@@ -400,7 +416,7 @@ export function TokenCheck_Disconnect() {
     }, 60000);
 }
 
-export function TokenCheck_Connect(IsDesk) {
+export function TokenCheck_Connect(IsDesk=false,fun=()=>{}) {
   let lastTime = sessionStorage.getItem("lastTime");
   let date = new Date();
   let time = date.getTime();
@@ -418,8 +434,8 @@ export function TokenCheck_Connect(IsDesk) {
   }, 500);
   /*   if (time - lastTime >= 60000) {*/
   sessionStorage.setItem("lastTime", time);
-
-  TokenCheck(IsDesk);
+// console.log(fun)
+  TokenCheck(IsDesk,"000",fun,true);
   /*}*/
   // setTimeout(function() {
   //     let lastTime = sessionStorage.getItem('lastTime')

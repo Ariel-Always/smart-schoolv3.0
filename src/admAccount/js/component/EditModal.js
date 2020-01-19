@@ -380,7 +380,7 @@ class EditModal extends React.Component {
   onEditIDChange = e => {
     const { dispatch } = this.props;
     this.setState({
-      UserIDChange: e.target.value
+      UserIDChange: e.target.value.trim()
     });
   };
   onEditIDBlur = e => {
@@ -406,7 +406,7 @@ class EditModal extends React.Component {
     const { dispatch } = this.props;
 
     this.setState({
-      defaultUserName: e.target.value
+      defaultUserName: e.target.value.trim()
     });
   };
   onEditNameBlur = e => {
@@ -643,7 +643,7 @@ class EditModal extends React.Component {
                         }
                       )}
                     </CheckBoxGroup>
-                    <hr
+                  <div
                       style={{
                         display:
                           this.state.PowerList.length === index + 1
@@ -651,7 +651,7 @@ class EditModal extends React.Component {
                             : "block"
                       }}
                       className="editModal-hr"
-                    />
+                    ></div>
                   </div>
                 );
               })}

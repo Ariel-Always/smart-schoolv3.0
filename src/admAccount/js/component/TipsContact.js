@@ -18,7 +18,7 @@ class TipsContact extends React.Component{
                     <div className='box-top'>
                         <span className='top-tip'>联系方式：</span>
                     </div>
-                    <hr style={{border:'1px #ccc dotted'}}/>
+                    <div style={{borderTop:'1px #ccc dashed'}}></div>
                     <div className='box-content'>
                         <div className='content'>
                             <img alt='QQ' src={img_QQ} width='28' height='28'/>

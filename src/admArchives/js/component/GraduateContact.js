@@ -27,7 +27,7 @@ class GraduateContact extends React.Component {
     onTelephoneChange = (e) => {
         const { dispatch } = this.props;
         this.setState({
-            Telephone: e.target.value
+            Telephone: e.target.value.trim()
         })
     }
     onTelephoneBlur = (e) => {
@@ -47,7 +47,7 @@ class GraduateContact extends React.Component {
     onEmailChange = (e) => {
         const { dispatch } = this.props;
         this.setState({
-            Email: e.target.value
+            Email: e.target.value.trim()
         })
     }
     onEmailBlur = (e) => {
@@ -72,7 +72,7 @@ class GraduateContact extends React.Component {
     onHomeAddressChange = (e) => {
         const { dispatch } = this.props;
         this.setState({
-            HomeAddress: e.target.value
+            HomeAddress: e.target.value.trim()
         })
     }
     onHomeAddressBlur = (e) => {

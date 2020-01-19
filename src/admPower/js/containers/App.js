@@ -64,32 +64,35 @@ class App extends Component {
     let route = history.location.pathname;
     //判断token是否存在
     //判断token是否存在
-    TokenCheck_Connect();
     let that = this
-    let token = sessionStorage.getItem("token");
-    // sessionStorage.setItem('UserInfo', '')
-    if (sessionStorage.getItem("UserInfo")) {
-      dispatch(
-        actions.UpDataState.getLoginUser(
-          JSON.parse(sessionStorage.getItem("UserInfo"))
-        )
-      );
-      this.QuerySelfPower();
-    } else {
-      getUserInfo(token, "000");
-      let timeRun = setInterval(function() {
-        if (sessionStorage.getItem("UserInfo")) {
-          dispatch(
-            actions.UpDataState.getLoginUser(
-              JSON.parse(sessionStorage.getItem("UserInfo"))
-            )
-          );
-          that.QuerySelfPower();
-          clearInterval(timeRun);
-        }
-      }, 1000);
-      //dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
-    }
+
+    TokenCheck_Connect(false,()=>{
+      let token = sessionStorage.getItem("token");
+      // sessionStorage.setItem('UserInfo', '')
+      if (sessionStorage.getItem("UserInfo")) {
+        dispatch(
+          actions.UpDataState.getLoginUser(
+            JSON.parse(sessionStorage.getItem("UserInfo"))
+          )
+        );
+        that.QuerySelfPower();
+      } else {
+        getUserInfo(token, "000");
+        let timeRun = setInterval(function() {
+          if (sessionStorage.getItem("UserInfo")) {
+            dispatch(
+              actions.UpDataState.getLoginUser(
+                JSON.parse(sessionStorage.getItem("UserInfo"))
+              )
+            );
+            that.QuerySelfPower();
+            clearInterval(timeRun);
+          }
+        }, 1000);
+        //dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
+      }
+    });
+    
 
     //
 
@@ -138,6 +141,7 @@ class App extends Component {
 
   render() {
     const { UIState, DataState } = this.props;
+    let UserID = DataState.LoginUser.UserID
 
     return (
       <React.Fragment>
@@ -162,14 +166,14 @@ class App extends Component {
             showLeftMenu={false}
           >
             <div ref="frame-right-content">
-              <Loading
+             { UserID?<Loading
                 opacity={false}
                 tip="加载中..."
                 size="large"
                 spinning={UIState.AppLoading.rightLoading}
               >
                 <PowerContent></PowerContent>
-              </Loading>
+              </Loading>:''}
             </div>
           </Frame>
         </Loading>

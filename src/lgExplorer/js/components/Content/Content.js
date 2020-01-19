@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import '../../../sass/content.scss';
 import { connect } from 'react-redux'
 import { Loading } from '../../../../common'
-
+import {  Input   } from 'antd'
 import HomeData from '../../action/HomeData'
-import { TokenCheck_Connect } from '../../../../common/js/disconnect';
+
 import AppAlertAction from '../../action/AppAlertAction'
 import pic from '../../../images/default_web.png'
 import publicMethod from '../../../../common/js/public.js'
@@ -25,7 +25,7 @@ class Content extends Component {
 
 
     }
-    //监听输入框中的内容改变
+    //监听网站资源页面中搜索框框中的内容改变
     inputChange = (event) => {
 
         // const { dispatch } = this.props;
@@ -33,7 +33,7 @@ class Content extends Component {
         this.setState({
             searchValue: event.target.value
         })
-        event.target.style.color = "black";
+        // event.target.style.color = "black";
 
     }
 
@@ -112,6 +112,7 @@ class Content extends Component {
         @ID 该类中网址的ID
         @Name 该网址对应的名称 
     */
+
     webPicLoadError = (e, { GroupID, ID, Name }) => {
         e.target.src = ""
         const { WebsiteResLink, dispatch } = this.props
@@ -161,7 +162,11 @@ class Content extends Component {
 
     }
 
-    //监听图片的onLoad事件
+    /* 监听图片的onLoad事件
+        @param1 事件对象
+        @param2 GroupID 是图片所属的（组别）分类
+                ID      图片对应资源的ID
+    */
     webPicLoading = (e, { GroupID, ID }) => {
         const { WebsiteResLink, dispatch } = this.props
         const newWebResbLink = WebsiteResLink.map(item => {
@@ -204,13 +209,15 @@ class Content extends Component {
         })
 
     }
-   
 
-    //监听年级信息栏
+
+    /* 监听年级信息栏
+    @param1 学段ID（小、初、高）
+    */
     periodChange = (PeriodId) => {
 
 
-        let { dispatch, WebsiteResLink,SubjectId } = this.props;
+        let { dispatch, WebsiteResLink, SubjectId } = this.props;
         WebsiteResLink = [];
         dispatch({
             type: HomeData.REFRESH_WEBSITELINK_RESOURCE,
@@ -265,14 +272,11 @@ class Content extends Component {
         // this.myResClick.bind( AccessParam, AccessType)
         window.external.MyMessageBox(AccessType, AccessParam)
     }
-    //
-    myResClick = (AccessParam, AccessType) => {
-        const { dispatch } = this.props
-        window.external.MyMessageBox(AccessType, AccessParam)
-        // dispatch(AppAlertAction.closeAlert(dispatch))
-        // console.log(AccessParam, AccessType)
-    }
 
+   /*  当我的资料库中的内容被点击的时候向浏览器发送参数
+   @param1 访问类型
+   @param2 访问参数
+   */
     sendParam = (AccessType, AccessParam) => {
 
         window.external.MyMessageBox(AccessType, AccessParam)
@@ -330,8 +334,6 @@ class Content extends Component {
 
                                                     /> : ""
                                             }
-
-
                                             <span>{i.word}</span>
                                         </div>
                                         <a href={i.Url} title={i.Name} target="_self">{i.Name}</a>
@@ -467,7 +469,7 @@ class Content extends Component {
                 <div className="page-one" style={{ display: `${tabActive === 'website' ? 'block' : 'none'}` }}>
                     <Loading spinning={defaultLoading} opacity={false} tip="请稍后...">
                         <div className="serach">
-                            <input
+                            <Input
                                 placeholder="搜你想搜的..."
                                 onChange={this.inputChange}
                                 className="input-search" type="text"
@@ -531,7 +533,7 @@ const mapStateToProps = (state) => {
     // console.log(HomeDataUpdate.ResLinkList)
     return {
         tabActive: Toggle.tabActive,
-       
+
         WebsiteResLink: HomeDataUpdate.WebsiteResLink,
         PeriodList: HomeDataUpdate.PeriodList,
         ResLinkList: HomeDataUpdate.ResLinkList,
@@ -539,7 +541,7 @@ const mapStateToProps = (state) => {
         defaultLoading: HomeDataUpdate.defaultLoading,
         periodWebsiteLoading: HomeDataUpdate.periodWebsiteLoading,
         resourceLoading: HomeDataUpdate.resourceLoading,
-        SubjectId:HomeDataUpdate.SubjectId
+        SubjectId: HomeDataUpdate.SubjectId
 
     }
 

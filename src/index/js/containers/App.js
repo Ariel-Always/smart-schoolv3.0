@@ -24,60 +24,79 @@ class App extends Component {
 
         const { dispatch } = props;
 
-        TokenCheck_Connect(true);
+        const that = this;
 
-        if (sessionStorage.getItem('UserInfo')){
+        TokenCheck_Connect(true,()=>{
 
-            let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
+            if (sessionStorage.getItem('UserInfo')){
 
-            const {UserType} = UserInfo;
+                let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
 
-            if (parseInt(UserType)===0||parseInt(UserType)===1){
+                const {UserType,SubjectIDs} = UserInfo;
 
-                dispatch({type:LoginUserActions.LOGIN_USER_INFO_UPDATE,data:UserInfo});
+                if (parseInt(UserType)===0||parseInt(UserType)===1){
 
-                window.BsToCs = new Bs2CsCommon((e)=>dispatch(this.BsToCsCallBack(e)));
+                    if (parseInt(UserType)===1&&SubjectIDs===''){
 
-            }else{
-
-                //window.location.href='/Error.aspx?errcode=E011';
-
-                LogOut();
-
-            }
-
-        }else{
-
-
-            let getUserInfo = setInterval(()=>{
-
-                if (sessionStorage.getItem('UserInfo')){
-
-                    let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
-
-                    const {UserType} = UserInfo;
-
-                    if (parseInt(UserType)===0||parseInt(UserType)===1){
-
-                        dispatch({type:LoginUserActions.LOGIN_USER_INFO_UPDATE,data:UserInfo});
-
-                        window.BsToCs = new Bs2CsCommon((e)=>dispatch(this.BsToCsCallBack(e)));
+                        window.location.href='/Error.aspx?errcode=E011';
 
                     }else{
 
-                       /* window.location.href='/Error.aspx?errcode=E011';*/
-
-                        LogOut();
+                        dispatch({type:LoginUserActions.LOGIN_USER_INFO_UPDATE,data:UserInfo});
 
                     }
 
-                    clearInterval(getUserInfo);
+                    window.BsToCs = new Bs2CsCommon((e)=>dispatch(that.BsToCsCallBack(e)));
+
+                }else{
+
+                    window.location.href='/Error.aspx?errcode=E011';
+
+                    //LogOut();
 
                 }
 
-            },20)
+            }else{
 
-        }
+                let getUserInfo = setInterval(()=>{
+
+                    if (sessionStorage.getItem('UserInfo')){
+
+                        let UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'));
+
+                        const {UserType,SubjectIDs} = UserInfo;
+
+                        if (parseInt(UserType)===0||parseInt(UserType)===1){
+
+                            if (parseInt(UserType)===1&&SubjectIDs===''){
+
+                                window.location.href='/Error.aspx?errcode=E011';
+
+                            }else{
+
+                                dispatch({type:LoginUserActions.LOGIN_USER_INFO_UPDATE,data:UserInfo});
+
+                            }
+
+                            window.BsToCs = new Bs2CsCommon((e)=>dispatch(that.BsToCsCallBack(e)));
+
+                        }else{
+
+                            window.location.href='/Error.aspx?errcode=E011';
+
+                            //LogOut();
+
+                        }
+
+                        clearInterval(getUserInfo);
+
+                    }
+
+                },20)
+
+            }
+
+        });
 
     }
 

@@ -246,7 +246,9 @@ class RegisterDidExamine extends React.Component {
       }
       this.setState({
         firstSelect: DataState.GetSignUpLog.Grade,
-        secondSelect: DataState.GetSignUpLog.Class
+        secondSelect: DataState.GetSignUpLog.Class,
+        firstParam: "&gradeID=" + DataState.GetSignUpLog.Grade.value,
+        secondParam: "&classID=" + DataState.GetSignUpLog.Class.value
       });
       if (DataState.GetSignUpLog.Class.value === 0) {
         this.StudentDropMenu(DataState.GetSignUpLog.Grade);
@@ -382,6 +384,12 @@ class RegisterDidExamine extends React.Component {
       type: actions.UpDataState.SET_REGISTER_GRADE_CLASS_MSG,
       data: { Grade: e }
     });
+    if(e.value===0){
+      dispatch({
+        type: actions.UpDataState.SET_REGISTER_GRADE_CLASS_MSG,
+        data: { Class: { value: 0, title: "全部班级" } }
+      });
+    }
 
     ////console.log(this.refs.dropMenuSecond)
     if (e.value !== 0) {

@@ -88,7 +88,7 @@ class AddCourseClass extends React.Component {
         // //console.log(this.state.courseClassName, e.target.value)
         // dispatch(actions.UpDataState.setCourseClassName({ CourseClassName: e.target.value, ...data }))
         this.setState({
-            courseClassName: e.target.value,
+            courseClassName: e.target.value.trim(),
         })
     }
     //数据绑定

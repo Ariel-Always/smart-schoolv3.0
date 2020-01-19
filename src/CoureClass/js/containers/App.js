@@ -74,40 +74,41 @@ class App extends Component {
     // let UserMsg = DataState.LoginUser.SchoolID ? DataState.LoginUser : JSON.parse(sessionStorage.getItem('UserInfo'))
     let that = this;
     //判断token是否存在
-    TokenCheck_Connect();
-    this.requestData(route);
-    let token = sessionStorage.getItem("token");
-    // sessionStorage.setItem('UserInfo', '')
-    if (sessionStorage.getItem("UserInfo")) {
-      dispatch(
-        actions.UpDataState.getLoginUser(
-          JSON.parse(sessionStorage.getItem("UserInfo"))
-        )
-      );
+    TokenCheck_Connect(false, () => {
+      that.requestData(route);
+      let token = sessionStorage.getItem("token");
+      // sessionStorage.setItem('UserInfo', '')
+      if (sessionStorage.getItem("UserInfo")) {
+        dispatch(
+          actions.UpDataState.getLoginUser(
+            JSON.parse(sessionStorage.getItem("UserInfo"))
+          )
+        );
 
-      this.requestData(route);
-    } else {
-      getUserInfo(token, "000");
-      let timeRun = setInterval(function() {
-        if (sessionStorage.getItem("UserInfo")) {
-          dispatch(
-            actions.UpDataState.getLoginUser(
-              JSON.parse(sessionStorage.getItem("UserInfo"))
-            )
-          );
+        that.requestData(route);
+      } else {
+        getUserInfo(token, "000");
+        let timeRun = setInterval(function() {
+          if (sessionStorage.getItem("UserInfo")) {
+            dispatch(
+              actions.UpDataState.getLoginUser(
+                JSON.parse(sessionStorage.getItem("UserInfo"))
+              )
+            );
 
-          that.requestData(route);
+            that.requestData(route);
 
-          clearInterval(timeRun);
-        }
-      }, 1000);
-      //dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
-    }
-    history.listen(() => {
-      //路由监听
-      let route = history.location.pathname;
-      //this.requestData(route);
-      this.requestData(route);
+            clearInterval(timeRun);
+          }
+        }, 1000);
+        //dispatch(actions.UpDataState.getLoginUser(JSON.parse(sessionStorage.getItem('UserInfo'))));
+      }
+      history.listen(() => {
+        //路由监听
+        let route = history.location.pathname;
+        //this.requestData(route);
+        that.requestData(route);
+      });
     });
   }
   componentWillUpdate() {
@@ -295,6 +296,40 @@ class App extends Component {
             showBarner: false,
             showLeftMenu: false
           });
+          // const { dispatch, DataState, UIState } = this.props;
+
+          // let userMsg = DataState.LoginUser;
+          if (routeID === "Record") {
+            dispatch(
+              actions.UpDataState.getCourseClassRecordMsg(
+                "/GetGourseClassLogForPage?userID=" +
+                UserMsg.UserID +
+                  "&userType=" +
+                  UserMsg.UserType +
+                  "&schoolID=" +
+                  UserMsg.SchoolID +
+                  "&startDate=" +
+                  
+                  "&endDate=" +
+                  
+                  "&operateType=0"
+              )
+            );
+          } else {
+            dispatch(
+              actions.UpDataState.getCourseClassDynamicMsg(
+                "/GetGourseClassLogNew?userID=" +
+                  UserMsg.UserID +
+                  "&userType=" +
+                  UserMsg.UserType +
+                  "&schoolID=" +
+                  UserMsg.SchoolID +
+                  "&startDate=" +
+                  "&endDate=" +
+                  "&operateType=0"
+              )
+            );
+          }
         } else if (UserMsg.UserType === "1" && handleRoute === "Teacher") {
           this.setState({
             showBarner: true,
@@ -716,6 +751,8 @@ class App extends Component {
   };
   render() {
     const { UIState, DataState } = this.props;
+    let UserID = DataState.LoginUser.UserID
+
     if (DataState.GetCoureClassAllMsg.isError) {
       // console.log('d')
 
@@ -766,7 +803,7 @@ class App extends Component {
                 size="large"
                 spinning={UIState.AppLoading.rightLoading}
               >
-                <Router>
+               {UserID? <Router>
                   <Route path="/All" exact component={All}></Route>
                   <Route
                     path="/Subject/:subjectID/all"
@@ -781,8 +818,8 @@ class App extends Component {
                   <Route path="/Log/Dynamic" component={Dynamic}></Route>
                   <Route path="/Teacher" component={Teacher}></Route>
                   <Route path="/ImportFile" component={ImportFile}></Route>
-                </Router>
-
+                </Router>:''
+}
                 {/* <Route path='/UserArchives/All' exact history={history} component={All}></Route>
                             <Route path='/UserArchives/Student' exact history={history} component={Student}></Route>
                             <Route path='/UserArchives/Teacher' exact history={history} component={Teacher}></Route>

@@ -35,7 +35,7 @@ class All extends React.Component {
                         </span>
 
                     </div>
-                    <hr className='All-hr' />
+                    <div className='All-hr' ></div>
                     <div className='All-content'>
                         <div className='content-All-box'>
                             <div className='all All-coureClass'>

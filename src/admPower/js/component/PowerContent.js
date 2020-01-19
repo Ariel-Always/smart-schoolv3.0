@@ -142,7 +142,7 @@ class PowerContent extends React.Component {
 
 
                     </div>
-                    <hr className='power-hr' />
+                    <div className='power-hr' ></div>
                     {Power.student ? (<div className='power-content'>
                         <div className='content-row clearfix'>
                             <div className='left'>

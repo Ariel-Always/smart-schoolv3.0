@@ -359,6 +359,14 @@ class Teacher extends React.Component {
   };
 
   TeacherEdit = e => {
+    const { dispatch } = this.props;
+
+    dispatch(
+      actions.UpDataState.getSubjectTeacherMsg(
+        "/GetSubject?schoolID=" + this.state.userMsg.SchoolID,
+        false
+      )
+    )
     this.setState({
       TeacherModalVisible: true,
       userKey: e.key
@@ -440,10 +448,73 @@ class Teacher extends React.Component {
     let haveMistake = false;
     for (let visi in visible) {
       if (visible[visi]) {
-        return;
+        haveMistake = true;
       }
     }
+//用户ID必填
+if (changeTeacherMsg.userID === "") {
+  dispatch(
+    actions.UpUIState.editModalTipsVisible({
+      UserIDTipsVisible: true
+    })
+  );
+  haveMistake = true;
+}
+//用户名必填
+if (changeTeacherMsg.userName === "") {
+  dispatch(
+    actions.UpUIState.editModalTipsVisible({
+      UserNameTipsVisible: true
+    })
+  );
+  haveMistake = true;
+}
+//性别必选
+if (!changeTeacherMsg.gender) {
+  dispatch(
+    actions.UpUIState.editModalTipsVisible({
+      GenderTipsVisible: true
+    })
+  );
+  haveMistake = true;
+}
+//职称必选
+if (changeTeacherMsg.titleID === "") {
+  dispatch(
+    actions.UpUIState.editModalTipsVisible({
+      TitleIDVisible: true
+    })
+  );
+  haveMistake = true;
+}
+//学科存在
+let SubjectListChange = DataState.SubjectTeacherMsg.returnData.SubjectListChange;
+let isSubject = false
+SubjectListChange.map(child=>{
+  typeof changeTeacherMsg.subjectIDs === 'string'&&changeTeacherMsg.subjectIDs.split(',').map(subjectID=>{
+    if(child.value===subjectID){
+      isSubject = true
+    }
+  })
+  
+})
 
+//学科必选
+if (changeTeacherMsg.subjectIDs === ""||!isSubject) {
+  dispatch(
+    actions.UpUIState.editModalTipsVisible({
+      changeSubjectTipsVisible: true
+    })
+  );
+  haveMistake = true;
+}
+
+
+
+
+if (haveMistake) {
+  return;
+}
     // console.log(visible)
     if (
       Public.comparisonObject(initTeacherMsg, changeTeacherMsg) &&
@@ -908,6 +979,14 @@ class Teacher extends React.Component {
   };
   onAddTeacher = e => {
     // console.log(e);
+    const { dispatch } = this.props;
+
+    dispatch(
+      actions.UpDataState.getSubjectTeacherMsg(
+        "/GetSubject?schoolID=" + this.state.userMsg.SchoolID,
+        false
+      )
+    )
     this.setState({
       addTeacherModalVisible: true,
       userKey: "add"
@@ -1054,7 +1133,7 @@ class Teacher extends React.Component {
               </Link>
             </div>
           </div>
-          <hr className="Teacher-hr" />
+          <div className="Teacher-hr" ></div>
           <div className="Teacher-content">
             <div className="content-top">
               <DropDown

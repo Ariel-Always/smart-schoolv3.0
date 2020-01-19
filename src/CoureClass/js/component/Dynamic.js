@@ -100,7 +100,7 @@ class Dynamic extends React.Component {
                   paddinLeft: 10 + "px"
                 }}
               >
-                <span className="OperateParams">
+                <span className="OperateParams" title={OperateParams.OperateParams.join('')}>
                   {OperateParams.OperateParams.map((param, index) => {
                     if (index % 2) {
                       return (
@@ -185,24 +185,24 @@ class Dynamic extends React.Component {
       UserMsg: props.DataState.LoginUser
     };
 
-    const { dispatch, DataState, UIState } = this.props;
+    // const { dispatch, DataState, UIState } = this.props;
 
-    let userMsg = DataState.LoginUser;
-    dispatch(
-      actions.UpDataState.getCourseClassDynamicMsg(
-        "/GetGourseClassLogNew?userID=" +
-          userMsg.UserID +
-          "&userType=" +
-          userMsg.UserType +
-          "&schoolID=" +
-          userMsg.SchoolID +
-          "&startDate=" +
-          this.state.startTime +
-          "&endDate=" +
-          this.state.endTime +
-          "&operateType=0"
-      )
-    );
+    // let userMsg = DataState.LoginUser;
+    // dispatch(
+    //   actions.UpDataState.getCourseClassDynamicMsg(
+    //     "/GetGourseClassLogNew?userID=" +
+    //       userMsg.UserID +
+    //       "&userType=" +
+    //       userMsg.UserType +
+    //       "&schoolID=" +
+    //       userMsg.SchoolID +
+    //       "&startDate=" +
+    //       this.state.startTime +
+    //       "&endDate=" +
+    //       this.state.endTime +
+    //       "&operateType=0"
+    //   )
+    // );
   }
 
   //钩子
@@ -283,12 +283,10 @@ class Dynamic extends React.Component {
     } else if (classIDs.length === 1) {
       url = "/GetCourseClassDetail?courseClassID=" + IDs;
 
-      dispatch(actions.UpUIState.CourseClassDetailsModalOpen());
-      dispatch(actions.UpDataState.getCourseClassDetailsMsg(url));
+      dispatch(actions.UpDataState.getCourseClassDetailsMsg(url,true));
     } else {
       url = "/GetCourseClassByIDs?courseClassIDs=" + IDs;
-      dispatch(actions.UpUIState.LogDetailsModalOpen());
-      dispatch(actions.UpDataState.getLogDetailsMsg(url));
+      dispatch(actions.UpDataState.getLogDetailsMsg(url,true));
     }
   };
   //操作时间
@@ -590,7 +588,7 @@ class Dynamic extends React.Component {
               </Link>
             </Router>
           </div>
-          <hr className="log-hr" />
+          <div className="log-hr" ></div>
         </div>
         <div className="log-content">
           <div className="content-top clearfix">

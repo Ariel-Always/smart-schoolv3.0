@@ -679,7 +679,7 @@ class LogDynamic extends React.Component {
               查看全部变更记录
             </Link>
           </div>
-          <hr className="Graduate-hr" />
+          <div className="Graduate-hr" ></div>
           <div className="Graduate-content">
             <div className="content-top">
               <p className="top-tips">

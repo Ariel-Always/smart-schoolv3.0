@@ -109,6 +109,8 @@ const PageInit = () => {
 
         dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_LOADING_SHOW});
 
+
+
         let {LoginUser} = getState();
 
         let { SchoolID } = LoginUser;
@@ -380,6 +382,16 @@ const radioChange = (id) => {
 
         let { SchoolID } = getState().LoginUser;
 
+        dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_ERROR_TIPS_HIDE,data:{type:'month'}});
+
+        dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_ERROR_TIPS_HIDE,data:{type:'week'}});
+
+        dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_ERROR_TIPS_HIDE,data:{type:'date'}});
+
+        dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_ERROR_TIPS_HIDE,data:{type:'classHourDate'}});
+
+        dispatch({type:MANAGER_ADJUST_BY_CLASSROOM_ERROR_TIPS_HIDE,data:{type:'classHour'}});
+
         ApiActions.GetAllDateTimeInfo({SchoolID,dispatch}).then(data => {
 
             if (data) {
@@ -565,6 +577,16 @@ const dateChecked = (date) => {
         if (date ===''){
 
             dateCheckedList = [];
+
+        }else if (dateCheckedList.includes(date)) {
+
+            let findIndex = dateCheckedList.findIndex(item=>item===date);
+
+            if (findIndex>=0){
+
+                dateCheckedList.splice(findIndex,1);
+
+            }
 
         }else{
 

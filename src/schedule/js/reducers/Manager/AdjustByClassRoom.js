@@ -212,6 +212,14 @@ const AdjustByClassRoom = (state={
 
                 classHourTipsTitle:'',
 
+                OriginClassRoomTips:false,
+
+                OriginClassRoomTipsTitle:'',
+
+                TargetClassRoomTips:false,
+
+                TargetClassRoomTipsTitle:''
+
                 };
 
         case ABCRActions.MANAGER_ADJUST_BY_CLASSROOM_HIDE:

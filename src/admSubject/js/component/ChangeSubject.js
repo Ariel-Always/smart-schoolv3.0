@@ -213,7 +213,7 @@ class ChangeSubject extends React.Component {
     const { dispatch, DataState } = this.props;
 
     this.setState({
-      SubjectInput: e.target.value
+      SubjectInput: e.target.value.trim()
     });
   };
   onSubjectInputBlur = e => {
@@ -228,7 +228,7 @@ class ChangeSubject extends React.Component {
           SubjectID: ""
         })
       );
-      dispatch(actions.UpDataState.handleSubjectModalMsg(""));
+      // dispatch(actions.UpDataState.handleSubjectModalMsg(""));
     } else {
       dispatch({ type: actions.UpUIState.TIPS_VISIBLE_OPEN });
     }

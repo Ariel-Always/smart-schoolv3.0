@@ -9,6 +9,7 @@ import { Menu } from '../../../../common'
 import config from '../../../../common/js/config'
 import history from '../../containers/history'
 import { QueryPower } from '../../../../common/js/power'
+import  versionChenck from '../../../../common/js/public'
 
 
 
@@ -60,74 +61,77 @@ class MainContent extends Component {
             route: false,
         }
         const { dispatch } = props;
-        //判断是否登录成功
-        TokenCheck_Connect();
-
         const Hash = location.hash;
-
-        if (sessionStorage.getItem('UserInfo')) {
-            const { SchoolID, UserType } = JSON.parse(sessionStorage.getItem('UserInfo'))
-            const UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'))
-
-
-            console.log(UserType === "0")
-            // dispatch(DataChange.getCurrentSbusystemInfo());////模拟测试使用
-
-            //判断该用户是否是管理员,如果该用户不是管理员跳转到错误页,
-            if (UserType !== "0") {
-                window.location.href = config.ErrorProxy + "/Error.aspx?errcode=E011";
-
-            }
-            else {
-                //如果该用户是管理员则检查用户信息和模块ID是否符合
-                QueryPower({ UserInfo, ModuleID: "000-2-0-13" }).then(restlu => {
-                    if (restlu) {
-
-                        dispatch(DataChange.getCurrentSemester(SchoolID));
-                        //    dispatch(DataChange.getCurrentSchoolInfo(SchoolID));
-                        //    dispatch(DataChange.getCurrentSbusystemInfo({}));
-                        dispatch(DataChange.getServerAdd())
-
-                    }
-                })
-            }
-
-        } else {
-
-            //如果登录不成功则开启定时器,直到登录后获取到token
-            let getUserInfo = setInterval(() => {
-
-                if (sessionStorage.getItem('UserInfo')) {
-
-                    const UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'))
-
-                    const { SchoolID, UserType } = UserInfo;
-
-                    if (UserType !== "0") {
-
-                        window.location.href = config.ErrorProxy + "/Error.aspx?errcode=E011";
-
-                    }
-                    else {
-                        //如果该用户是管理员则检查用户信息和模块ID是否符合
-                        QueryPower({ UserInfo, ModuleID: "000-2-0-13" }).then(restlu => {
-                            if (restlu) {
-
-                                dispatch(DataChange.getCurrentSemester(SchoolID));
-                                dispatch(DataChange.getServerAdd())
+        versionChenck.IEVersion() //如果是檢查IE版本是否符合
+        //判断是否登录成功
+        TokenCheck_Connect(false, () => {
+            if (sessionStorage.getItem('UserInfo')) {
+                const { SchoolID, UserType } = JSON.parse(sessionStorage.getItem('UserInfo'))
+                const UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'))
 
 
-                            }
-                        })
-                    }
-                    // dispatch(DataChange.getCurrentSbusystemInfo());//模拟测试使用
+                console.log(UserType === "0")
+                // dispatch(DataChange.getCurrentSbusystemInfo());////模拟测试使用
 
-                    clearInterval(getUserInfo);
+                //判断该用户是否是管理员,如果该用户不是管理员跳转到错误页,
+                if (UserType !== "0") {
+                    window.location.href = config.ErrorProxy + "/Error.aspx?errcode=E011";
+
+                }
+                else {
+                    //如果该用户是管理员则检查用户信息和模块ID是否符合
+                    QueryPower({ UserInfo, ModuleID: "000-2-0-13" }).then(restlu => {
+                        if (restlu) {
+
+                            dispatch(DataChange.getCurrentSemester(SchoolID));
+                            //    dispatch(DataChange.getCurrentSchoolInfo(SchoolID));
+                            //    dispatch(DataChange.getCurrentSbusystemInfo({}));
+                            dispatch(DataChange.getServerAdd())
+
+                        }
+                    })
                 }
 
-            }, 20);
+            } else {
 
-        }
+                //如果登录不成功则开启定时器,直到登录后获取到token
+                let getUserInfo = setInterval(() => {
+
+                    if (sessionStorage.getItem('UserInfo')) {
+
+                        const UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'))
+
+                        const { SchoolID, UserType } = UserInfo;
+
+                        if (UserType !== "0") {
+
+                            window.location.href = config.ErrorProxy + "/Error.aspx?errcode=E011";
+
+                        }
+                        else {
+                            //如果该用户是管理员则检查用户信息和模块ID是否符合
+                            QueryPower({ UserInfo, ModuleID: "000-2-0-13" }).then(restlu => {
+                                if (restlu) {
+
+                                    dispatch(DataChange.getCurrentSemester(SchoolID));
+                                    dispatch(DataChange.getServerAdd())
+
+
+                                }
+                            })
+                        }
+                        // dispatch(DataChange.getCurrentSbusystemInfo());//模拟测试使用
+
+                        clearInterval(getUserInfo);
+                    }
+
+                }, 20);
+
+            }
+        });
+
+
+
 
 
 
@@ -171,7 +175,7 @@ class MainContent extends Component {
     render() {
         let UserName = "";
         let PhotoPath = ""
-
+        //获取用户信息，并渲染到骨架上
         if (sessionStorage.getItem('UserInfo')) {
             const UserInfo = JSON.parse(sessionStorage.getItem('UserInfo'))
             UserName = UserInfo.UserName

@@ -113,10 +113,14 @@ class RegisterExamine extends React.Component {
        document.title='班级管理'
         
       }
+
+      console.log('554')
     if (pathname.split("/")[2] === "RegisterDidExamine") {
       this.setState({
         handleClick: false
       });
+      console.log('554')
+
       if (userMsg.UserType === "0" || userMsg.UserType === "7") {
         dispatch(
           actions.UpDataState.getDidSignUpLog(
@@ -132,6 +136,8 @@ class RegisterExamine extends React.Component {
       this.setState({
         handleClick: true
       });
+      console.log('554',userMsg.UserType === "0" || userMsg.UserType === "7",userMsg)
+
       if (userMsg.UserType === "0" || userMsg.UserType === "7") {
         dispatch(
           actions.UpDataState.getWillSignUpLog(

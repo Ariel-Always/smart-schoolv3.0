@@ -147,6 +147,8 @@ class ChangeSchedule extends Component{
 
             targetDropSelectd,
 
+            targetDropDisabled,
+
             targetSearchList,
 
             targetSearchOpen,
@@ -183,61 +185,73 @@ class ChangeSchedule extends Component{
 
                     <div className="title">需要换课的老师及课程</div>
 
-                    <div className="change-info-wrapper clearfix">
+                    <div className="change-info-wrapper clearfix" style={{position:'relative',zIndex:'5'}}>
 
                         <div className="props">老师:</div>
 
-                        <DropDown  width={150}
-                                   dropSelectd={originDropSelectd}
-                                   type="multiple"
-                                   style={{zIndex:5}}
-                                   mutipleOptions={{
-                                       range:2,
-                                       dropMultipleList:teacherList,
-                                       dropMultipleChange:this.originTeacherDropChange.bind(this),
-                                       dropClickSearch:this.originTeacherClickSearch.bind(this),
-                                       dropCancelSearch:this.originTeacherSearchClose.bind(this),
-                                       searchList:originSearchList,
-                                       searchPlaceholder:"请输入姓名或工号进行搜索...",
-                                       searchOpen:originSearchOpen,
-                                       searchLoadingShow:originSearchLoadingShow
-                                   }}>
+                        <Tooltip placement="right" visible={originTeacherTips} title="请选择教师" autoAdjustOverflow={false} getPopupContainer={triggerNode => triggerNode.parentNode}>
 
-                        </DropDown>
+                            <DropDown  width={150}
+                                       dropSelectd={originDropSelectd}
+                                       type="multiple"
+                                       style={{zIndex:5}}
+                                       mutipleOptions={{
+                                           range:2,
+                                           dropMultipleList:teacherList,
+                                           dropMultipleChange:this.originTeacherDropChange.bind(this),
+                                           dropClickSearch:this.originTeacherClickSearch.bind(this),
+                                           dropCancelSearch:this.originTeacherSearchClose.bind(this),
+                                           searchList:originSearchList,
+                                           searchPlaceholder:"请输入姓名或工号进行搜索...",
+                                           searchOpen:originSearchOpen,
+                                           searchLoadingShow:originSearchLoadingShow
+                                       }}>
 
-                        <span className="error-tips" style={{display:`${originTeacherTips?'block':'none'}`}}>请选择教师</span>
+                            </DropDown>
+
+                        </Tooltip>
+
+                        {/*<span className="error-tips" style={{display:`${originTeacherTips?'block':'none'}`}}>请选择教师</span>*/}
 
                     </div>
 
-                    <div className="change-info-wrapper clearfix">
+                    <div className="change-info-wrapper clearfix" style={{position:'relative',zIndex:'4'}}>
 
                         <div className="props">日期:</div>
 
                         <ConfigProvider locale={zhCN}>
 
-                            <DatePicker disabledDate={this.dateDisabled.bind(this)} style={{width:150,marginLeft:8,height:28}}  value={originDate?moment(originDate,'YYYY-MM-DD'):null} onChange={this.originDateChecked.bind(this)}></DatePicker>
+                            <Tooltip placement="right" visible={originDateTips} title="请选择日期" autoAdjustOverflow={false} getPopupContainer={triggerNode => triggerNode.parentNode}>
+
+                                <DatePicker disabledDate={this.dateDisabled.bind(this)} style={{width:150,marginLeft:8,height:28}}  value={originDate?moment(originDate,'YYYY-MM-DD'):null} onChange={this.originDateChecked.bind(this)}></DatePicker>
+
+                            </Tooltip>
 
                         </ConfigProvider>
 
-                        <span className="error-tips" style={{display:`${originDateTips?'block':'none'}`}}>请选择日期</span>
+                        {/*<span className="error-tips" style={{display:`${originDateTips?'block':'none'}`}}>请选择日期</span>*/}
 
                     </div>
 
-                    <div className="change-info-wrapper clearfix">
+                    <div className="change-info-wrapper clearfix" style={{position:'relative',zIndex:'3'}}>
 
                         <div className="props">节次:</div>
 
-                        <DropDown
+                        <Tooltip placement="right" visible={originScheduleTips} title="请选择节次" autoAdjustOverflow={false} getPopupContainer={triggerNode => triggerNode.parentNode}>
+
+                            <DropDown
                             dropSelectd={originScheduleDropSelectd}
                             dropList={originScheduleList}
                             width={150}
-                            height={108}
+                            height={200}
                             disabled={originSchedulePickDisabled}
                             onChange={this.originScheduleDropChange.bind(this)}>
 
                         </DropDown>
 
-                        <span className="error-tips" style={{display:`${originScheduleTips?'block':'none'}`}}>请选择节次</span>
+                        </Tooltip>
+
+                        {/*<span className="error-tips" style={{display:`${originScheduleTips?'block':'none'}`}}>请选择节次</span>*/}
 
 
                     </div>
@@ -248,14 +262,17 @@ class ChangeSchedule extends Component{
 
                     <div className="title">进行换课的老师及课程</div>
 
-                    <div className="change-info-wrapper clearfix">
+                    <div className="change-info-wrapper clearfix" style={{position:'relative',zIndex:'5'}}>
 
                         <div className="props">老师:</div>
 
-                        <DropDown  width={150}
+                        <Tooltip placement="right" visible={targetTeacherTips} title="请选择教师" autoAdjustOverflow={false} getPopupContainer={triggerNode => triggerNode.parentNode}>
+
+                            <DropDown  width={150}
                                    dropSelectd={targetDropSelectd}
-                                   type="multiple"
+
                                    style={{zIndex:5}}
+                                   type="multiple"
                                    mutipleOptions={{
                                        range:2,
                                        dropMultipleList:teacherList,
@@ -266,45 +283,56 @@ class ChangeSchedule extends Component{
                                        searchPlaceholder:"请输入姓名或工号进行搜索...",
                                        searchOpen:targetSearchOpen,
                                        searchLoadingShow:targetSearchLoadingShow
-                                   }}>
+                                   }}
+
+                            >
 
                         </DropDown>
 
-                        <span className="error-tips" style={{display:`${targetTeacherTips?'block':'none'}`}}>请选择教师</span>
+                        </Tooltip>
 
+                        {/*<span className="error-tips" style={{display:`${targetTeacherTips?'block':'none'}`}}>请选择教师</span>*/}
 
                     </div>
 
-                    <div className="change-info-wrapper clearfix">
+                    <div className="change-info-wrapper clearfix" style={{position:'relative',zIndex:'4'}}>
 
                         <div className="props">日期:</div>
 
                         <ConfigProvider locale={zhCN}>
 
-                            <DatePicker disabledDate={this.dateDisabled.bind(this)} style={{width:150,marginLeft:8,height:28}}  value={targetDate?moment(targetDate,'YYYY-MM-DD'):null} onChange={this.targetDateChecked.bind(this)}></DatePicker>
+                            <Tooltip placement="right" visible={targetDateTips} title="请选择日期" autoAdjustOverflow={false} getPopupContainer={triggerNode => triggerNode.parentNode}>
+
+                                <DatePicker disabledDate={this.dateDisabled.bind(this)} style={{width:150,marginLeft:8,height:28}}  value={targetDate?moment(targetDate,'YYYY-MM-DD'):null} onChange={this.targetDateChecked.bind(this)}></DatePicker>
+
+                            </Tooltip>
 
                         </ConfigProvider>
 
-                        <span className="error-tips" style={{display:`${targetDateTips?'block':'none'}`}}>请选择日期</span>
+                        {/*<span className="error-tips" style={{display:`${targetDateTips?'block':'none'}`}}>请选择日期</span>*/}
 
                     </div>
 
-                    <div className="change-info-wrapper clearfix">
+                    <div className="change-info-wrapper clearfix" style={{position:'relative',zIndex:'3'}}>
 
                         <div className="props">节次:</div>
 
-                        <DropDown
+                        <Tooltip placement="right" visible={targetScheduleTips} title="请选择节次" autoAdjustOverflow={false} getPopupContainer={triggerNode => triggerNode.parentNode}>
+
+                            <DropDown
                             dropSelectd={targetScheduleDropSelectd}
                             dropList={targetScheduleList}
                             width={150}
-                            height={108}
+                            height={200}
                             disabled={targetSchedulePickDisabled}
                             onChange={this.targetScheduleDropChange.bind(this)}
                             style={{zIndex:2}}>
 
                         </DropDown>
 
-                        <span className="error-tips" style={{display:`${targetScheduleTips?'block':'none'}`}}>请选择节次</span>
+                        </Tooltip>
+
+                        {/*<span className="error-tips" style={{display:`${targetScheduleTips?'block':'none'}`}}>请选择节次</span>*/}
 
                     </div>
 

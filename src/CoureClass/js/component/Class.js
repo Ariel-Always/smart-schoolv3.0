@@ -555,7 +555,7 @@ class Class extends React.Component {
               <span className="tips tip-menu">{tips}</span>
             </span>
           </div>
-          <hr className="Class-hr" />
+          <div className="Class-hr" ></div>
           <div className="Class-content">
             <CheckBoxGroup
               style={{ width: "100%" }}

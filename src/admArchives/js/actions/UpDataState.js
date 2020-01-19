@@ -244,7 +244,7 @@ const getSubjectTeacherMsg = (url, SubjectID = "all") => {
       .then(json => {
         if (json.StatusCode === 200) {
           dispatch({ type: GET_SUBJECT_TEACHER_MSG, data: json.Data });
-          if (SubjectID !== "all") {
+          if(SubjectID!==false){if (SubjectID !== "all") {
             let state = getState();
             let SubjectList =
               state.DataState.SubjectTeacherMsg.returnData.SubjectList;
@@ -263,7 +263,7 @@ const getSubjectTeacherMsg = (url, SubjectID = "all") => {
             } });
           }
           
-        }
+        }}
       });
   };
 };

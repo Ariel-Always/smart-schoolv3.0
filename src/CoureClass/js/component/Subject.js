@@ -88,7 +88,7 @@ class Subject extends React.Component {
               <span className="tips menu10">教学班级总览</span>
             </span>
           </div>
-          <hr className="All-hr" />
+          <div className="All-hr" ></div>
           <div className="All-content">
             <div className="content-All-box">
               <div className="all All-coureClass">

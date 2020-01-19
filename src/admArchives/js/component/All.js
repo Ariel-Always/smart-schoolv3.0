@@ -644,7 +644,7 @@ class All extends React.Component {
           <p className="All-tips">
             <span className="tips menu10 ">用户档案总览</span>
           </p>
-          <hr className="All-hr" />
+          <div className="All-hr" ></div>
           <div className="All-content user-content">
             <div id="all-user-content"></div>
             <div className="echarts-tips">
@@ -670,7 +670,7 @@ class All extends React.Component {
           <p className="All-tips">
             <span className="tips menu10 ">各年级学生人数</span>
           </p>
-          <hr className="All-hr" />
+          <div className="All-hr" ></div>
           <div
             id="all-student-content"
             className="All-content student-content"
@@ -680,7 +680,7 @@ class All extends React.Component {
           <p className="All-tips">
             <span className="tips menu10 ">各学科教师人数</span>
           </p>
-          <hr className="All-hr" />
+        <div className="All-hr" ></div>
           <div
             id="all-teacher-content"
             className="All-content teacher-content"

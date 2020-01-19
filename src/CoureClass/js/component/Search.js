@@ -523,11 +523,11 @@ class Search extends React.Component {
             <span className="top-tips">
               <span
                 className="tips "
-                style={{
-                  display: DataState.GetClassAllMsg.allClass.CourseClassCount
-                    ? "inline-block"
-                    : "none"
-                }}
+                // style={{
+                //   display: DataState.GetClassAllMsg.allClass.CourseClassCount
+                //     ? "inline-block"
+                //     : "none"
+                // }}
               >
                 搜索结果: 共找到
                 <span style={{color:'#666'}}>
@@ -539,7 +539,7 @@ class Search extends React.Component {
               </span>
             </span>
           </div>
-          <hr className="Search-hr" />
+          <div className="Search-hr" ></div>
           <div className="Search-content">
             <CheckBoxGroup
               style={{ width: "100%" }}

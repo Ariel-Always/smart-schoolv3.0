@@ -81,7 +81,7 @@ class AdjustByTeacherModal extends Component{
                    onCancel={this.CloseModal.bind(this)}
                    onOk={this.ModalOk.bind(this)} >
 
-                <Loading tip="加载中..."  type="loading" spinning={LoadingShow}>
+                <Loading tip="加载中..."  type="loading" opacity={false} spinning={LoadingShow}>
 
                     <div className="modal-wrapper">
 

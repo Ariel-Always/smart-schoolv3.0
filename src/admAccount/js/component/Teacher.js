@@ -949,7 +949,7 @@ class Teacher extends React.Component {
                             <Link className='link' to='/ImportTeacher' replace>导入学生</Link>
                         </div> */}
           </div>
-          <hr className="Teacher-hr" />
+          <div className="Teacher-hr" ></div>
           <div className="Teacher-content">
             <div className="content-top">
               <DropDown

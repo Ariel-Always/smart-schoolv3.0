@@ -1062,7 +1062,7 @@ class Admin extends React.Component {
               </span>
             </div>
           </div>
-          <hr className="Admin-hr" />
+          <div className="Admin-hr" ></div>
           <div className="Admin-content">
             <div className="content-top">
               <Search
