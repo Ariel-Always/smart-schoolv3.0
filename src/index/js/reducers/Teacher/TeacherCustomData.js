@@ -22,12 +22,15 @@ const TeacherCustomData = (
     AllData:{
       Period:{},
       period: 0
-    }
+    },
+    ToolImgUrlProxy:''
   },
   actions
 ) => {
   let TipsShow = "";
   switch (actions.type) {
+    case TeacherCustomActions.GET_IMG_URL_PROXY:
+      return Object.assign({}, state, { ToolImgUrlProxy:actions.data.ResHttp});
     case TeacherCustomActions.GET_CUSTOM_DATA:
       let data = handleData(actions.data, actions.data2, actions.key);
       return Object.assign({}, state, { ...data });

@@ -80,6 +80,13 @@ class Tool extends React.Component {
     };
     this.onDragEnd = this.onDragEnd.bind(this);
   }
+  componentWillMount(){
+    const { Teacher, dispatch } = this.props;
+  
+    // console.log('54454')
+    dispatch(TeacherCustomActions.getImgUrlProxy('/Base/GetBaseServerAddr'))
+    
+  }
   componentWillReceiveProps(nextProps) {
     const { Teacher } = nextProps;
     this.setState({

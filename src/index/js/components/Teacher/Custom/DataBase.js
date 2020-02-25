@@ -840,8 +840,9 @@ class DataBase extends React.Component {
                                           snapshot={snapshot}
                                           style={getItemStyle(
                                             snapshot.isDragging,
-                                            provided.draggableProps.style,
-                                            item
+                                            provided.draggableProps.style
+                                            // ,
+                                            // item
                                           )}
                                         ></Card>
                                       )}

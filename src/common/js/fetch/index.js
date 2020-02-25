@@ -49,7 +49,7 @@ function postData(
     ContentType = ContentTypeArr[0];
   } else if (content_type === "json") {
     ContentType = ContentTypeArr[1];
-  }else if (content_type === "file") {
+  } else if (content_type === "file") {
     ContentType = ContentTypeArr[2];
   } else {
     ContentType = ContentTypeArr[0];
@@ -83,25 +83,37 @@ function postData(
   // }, err => {
 
   // })
-  result
-    .then(
-      res => {
+  result.then(
+    res => {
+      
         //做提前处理
         let clone = res.clone();
         // console.log(clone.json())
-        return clone.json();
-      },
+        return clone;
+     
+    }
+  ).then(response => {
+    //当请求成功时直接返回response，失败则进行json解析返回失败信息
+    // console.log(response.status)
+    if (response.status === 200) {
+      return response;
+    } else {
+      return response.json().then(json => {
+        //   console.log(json)
+        return Promise.reject(json);
+      });
+    }
+  })
+    .then(
+      res => res.json(),
       err => {
-
-        
-
+        return false;
       }
     )
     .then(json => {
       // console.log(json, json.StatusCode === 200)
-      if(element!==false){
+      if (element !== false) {
         handleStatusCode(json, element);
-
       }
     });
   return result;
@@ -212,8 +224,8 @@ function getData(
   //     });
   // }
   // console.log(isIE());
-  if(isIE()){
-    url = encodeURI(url)
+  if (isIE()) {
+    url = encodeURI(url);
   }
   // console.log(url)
   let result = fetch(AESEncryptionUrl(url, TESTKEY, SecurityLevel, IsDesk), {
@@ -241,21 +253,37 @@ function getData(
   //     return data
   // })
 
-  result
-    .then(
-      res => {
+  result.then(
+    res => {
         //做提前处理
-        let clone = res.clone();
-        // console.log(clone.json())
-        return clone.json();
-      },
-      err => {}
+      let clone = res.clone();
+      // console.log(clone.json())
+      return clone
+    }
+  ).then(response => {
+    // console.log(response.status)
+    //当请求成功时直接返回response，失败则进行json解析返回失败信息
+    if (response.status === 200) {
+      return response;
+    } else {
+      return response.json().then(json => {
+        //   console.log(json)
+        return Promise.reject(json);
+      });
+    }
+  })
+    .then(
+      res => res.json()
+      ,
+      err => {
+        return false
+
+      }
     )
     .then(json => {
       // console.log(json, json.StatusCode === 200)
-      if(element!==false){
+      if (element !== false) {
         handleStatusCode(json, element);
-
       }
     });
 

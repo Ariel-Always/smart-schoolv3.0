@@ -538,7 +538,7 @@ class Website extends React.Component {
   };
   // 取消搜索
   onCancelSearch = e => {
-    const { dispatch } = this.props;
+    const { dispatch,Teacher } = this.props;
 
     this.setState({
       CancelBtnShow: "n",

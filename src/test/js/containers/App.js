@@ -10,20 +10,30 @@ class App extends Component {
     super(props);
     const { dispatch } = props;
     this.state = {
-     
+     colors:['#fff','#fff'],
+     deviation:70
     };
   }
 
   componentWillMount() {
     console.log(Aniamtion)
   }
-
+  
+  onDeviationBlur = (e) => {
+    
+  }
+  onDeviationChange = (e) => {
+    this.setState({
+      deviation:e.target.value
+    })
+  }
   
   render() {
   
     return (
       <div style={{width:'100%',height:'100%'}}>
-       <Aniamtion.WaveRound></Aniamtion.WaveRound>
+       <Aniamtion.WaveRound colors = {this.state.colors} deviation={this.state.deviation}></Aniamtion.WaveRound>
+       <input onChange={this.onDeviationChange.bind(this)} onBlur={this.onDeviationBlur.bind(this)} value={this.state.deviation}></input>
       </div>
     );
   }

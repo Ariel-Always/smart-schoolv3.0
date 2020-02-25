@@ -29,23 +29,26 @@ class ToolCustom extends React.Component {
     const { dispatch, Teacher } = this.props;
     let ToolData = Teacher.ToolData;
     let TeacherCustomData = Teacher.TeacherCustomData;
+
     this.setState({
       ToolName: ToolData.ToolName,
       ToolUrl: ToolData.ToolUrl,
       ToolType: ToolData.ToolType,
-      classResultImgUrl: ToolData.ToolImgUrl?ToolData.ToolImgUrl:''
+      classResultImgUrl: ToolData.ToolImgUrl?ToolData.ToolImgUrl:'',
+      ImgUrlProxy:TeacherCustomData.ToolImgUrlProxy
     });
-    getData(CONFIG.ImgUrlProxy+'/Base/GetBaseServerAddr').then(res=>res.json(),err=>{
-      console.log(err)
-      return false
-    }).then(json=>{
-      if(json===false){
-        return false
-      }
-      this.setState({
-        ImgUrlProxy:json.Data.ResHttp
-      })
-    })
+    
+    // getData(CONFIG.ImgUrlProxy+'/Base/GetBaseServerAddr').then(res=>res.json(),err=>{
+    //   console.log(err)
+    //   return false
+    // }).then(json=>{
+    //   if(json===false){
+    //     return false
+    //   }
+    //   this.setState({
+    //     ImgUrlProxy:json.Data.ResHttp
+    //   })
+    // })
   }
   //   工具名称修改
   onToolNameChange = e => {
@@ -168,6 +171,7 @@ class ToolCustom extends React.Component {
   };
   render() {
     const { LoginUser, Teacher, AppLoading } = this.props;
+
     return (
       <div className="ToolCustom" id="ToolCustom">
         <div className="box-left">

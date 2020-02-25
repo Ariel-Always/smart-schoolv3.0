@@ -65,6 +65,9 @@ const SET_COMBINE_CUSTOM_MODAL_DATA = "SET_COMBINE_CUSTOM_MODAL_DATA";
 const SET_ALL_CUSTOM_DATA = "SET_ALL_CUSTOM_DATA";
 
 const SET_COMBINE_NAME_DATA = "SET_COMBINE_NAME_DATA";
+
+const GET_IMG_URL_PROXY = "GET_IMG_URL_PROXY";
+
 const getCustomData = (
   key,
   techerID,
@@ -489,6 +492,24 @@ const setCombineNameData = data => {
   };
 };
 
+const getImgUrlProxy = url => {
+  return dispatch => {
+    // console.log(url)
+    getData(CONFIG.ImgUrlProxy + url, 2)
+      .then(res => {
+        return res.json();
+      })
+      .then(json => {
+        if (json === false) {
+          return false;
+        }
+        if (json.StatusCode === 200) {
+          dispatch({ type: GET_IMG_URL_PROXY, data: json.Data });
+        }
+      });
+  };
+};
+
 export default {
   GET_CUSTOM_DATA,
 
@@ -551,5 +572,6 @@ export default {
   setAllCustomData,
   SET_COMBINE_NAME_DATA,
   setCombineNameData,
-
+  GET_IMG_URL_PROXY,
+  getImgUrlProxy
 };

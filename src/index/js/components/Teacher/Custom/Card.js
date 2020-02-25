@@ -57,6 +57,7 @@ class Card extends React.Component {
     } else if (data.type === "database") {
       ImgDefault = database;
     }
+    // console.log(this.state.isTrue)
     // console.log((this.props.type === "alter"&&data.type === "Website") ?'Card-alter':'Card-other')
     return (
       <div

@@ -799,14 +799,14 @@ class Main extends Component {
                       >
                         {"学科：" + child.SubjectName}
                       </p>
-                      <a
-                        target="_blank"
-                        href={child.Url}
+                      <p
+                        // target="_blank"
+                        // href={child.Url}
                         title={child.Url}
                         className="rigth-content webUrl"
                       >
                         {child.Url}
-                      </a>
+                      </p>
                     </div>
                     <div className="Edit-content">
                       <span
