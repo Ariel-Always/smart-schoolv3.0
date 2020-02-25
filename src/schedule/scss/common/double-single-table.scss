@@ -578,6 +578,42 @@
 
   }
 
+  #tb{
+
+    &>.ant-table-content{
+
+      &>.ant-table-scroll{
+
+        &>.ant-table-header{
+
+            padding-bottom: 1px!important;
+
+        }
+
+      }
+
+      &>.ant-table-fixed-left{
+
+        .ant-table-fixed{
+
+          .ant-table-row:first-child{
+
+            div.double-single-left-col{
+
+              height:91px!important;
+
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
 
 }
 
